@@ -293,7 +293,7 @@ function get_nodes_history(){
 			  $.get('<?php echo $base_url;?>'+url,function(res){
 				  node_addr = res.node_addr;
 				  historys = res.history;
-				  for(b=0;b<historys.length;b++){
+				  for(b=historys.length-1;b!=-1;b--){
 					  id = '#h_'+node_addr;
 					  str = '<span class="span_history" title="'+node_addr+':\n'+historys[b].node_date+'\n'+historys[b].node_points+'" style="background:'+historys[b].node_color+'"></span>';
 					  $(id).append(str);
