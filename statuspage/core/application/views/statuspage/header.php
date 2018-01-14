@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="<?php echo $base_url;?>static/frontend/css/base.css" />
 <link rel="stylesheet" href="<?php echo $base_url;?>static/frontend/css/home.css" />
 </head>
-
+<body>
 <section id="menu" class="white">
     <nav class="navbar navbar-dropdown bg-color">
         <div class="container">
