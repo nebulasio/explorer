@@ -1,0 +1,14 @@
+{
+    "name": "nebulasio/statuspage",
+    "description": "this is status page of nebulas",
+    "type": "Project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "luoam",
+            "email": "xiaoman.whu@foxmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
