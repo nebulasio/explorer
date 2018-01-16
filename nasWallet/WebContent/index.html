@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>星云链测试网 | Nebulas Testnet</title>
+<link href="https://cdn.bootcss.com/tether/1.4.3/css/tether.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="static/frontend/img/logo.png" type="image/png">
+<link rel="apple-touch-icon" href="static/frontend/img/logo.png">
+<link rel="stylesheet" href="static/frontend/css/base.css" />
+<link rel="stylesheet" href="static/frontend/css/home.css" />
+</head>
+<body>
+<section id="menu" class="white">
+    <nav class="navbar navbar-dropdown bg-color">
+        <div class="container">
+            <div class="mbr-table">
+                <div class="mbr-table-cell">
+                    <div class="navbar-brand">
+                        <a href="#" class="navbar-logo">
+                        <img src="static/frontend/img/logo-b.png" alt="Nebulas" style="height: 54px;">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-md-12">
+            <div style=" font-size: 2rem; text-align: left; padding-right: 1rem; margin-bottom: 1rem;" id="tab"><span><a class="create" href="index.html">Create New Wallet</a></span>   <span class="left"><a href="sendNas.html">Send NAS</a></span></div>
+            <hr/>
+        </div>
+    </div>
+</section>
+
+
+<div class="container wallet">
+	<form id="newWallet" class="col-md-12">
+		<div class="form-group">
+			<label for="password">Enter a password:</label>
+			<input type="password" class="form-control" id="password" placeholder="Do NOT forget to save this!">
+		</div>
+		<button id="genNewWallet" type="submit" class="btn btn-default col-md-12 text-center">Create New Wallet</button>		
+	</form>
+	<div class="col-xs-12">
+	<p class="wallet_help">This password encrypts your private key. <br />This does not act as a seed to generate your keys. <br />You will need this password + your private key to unlock your wallet.</p>
+	</div>
+</div>
+
+<!-- footer -->
+<section class=" mbr-section mbr-section-sm-padding mbr-footer ">
+	<div class="container ">
+		<div class="row ">
+			<div class="mbr-footer-content col-xs-12 text-xs-center footer-title ">
+				<a href="# ">
+					<img src="static/frontend/img/logo-b.png " alt="Nebulas Testnet ">
+				</a>
+			</div>
+			<div class="mbr-footer-content col-xs-12 text-xs-center ">
+				<p>
+					<a href="https://nebulas.io/">Home</a>
+					<a href="https://nebulas.io/technology.html">Technology</a>
+					<a href="https://nebulas.io/community.html">Community</a>
+					<a href="https://nebulas.io/team.html">Team</a>
+					<a href="https://nebulas.io/resources.html">Resources</a>
+					<a href="https://medium.com/nebulasio" target="_blank">Blog</a>
+				</p>
+			</div>
+			<div class="mbr-footer-content col-xs-12 text-xs-center ">
+				<p>Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<script src="https://cdn.bootcss.com/tether/1.4.3/js/tether.min.js "></script>
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js "></script>
+<script src="https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js "></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js "></script>
+<script src="static/frontend/js/home.v1.js "></script>
+</body>
+</html>

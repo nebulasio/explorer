@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>星云链测试网 | Nebulas Testnet</title>
+<link href="https://cdn.bootcss.com/tether/1.4.3/css/tether.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="static/frontend/img/logo.png" type="image/png">
+<link rel="apple-touch-icon" href="static/frontend/img/logo.png">
+<link rel="stylesheet" href="static/frontend/css/base.css" />
+<link rel="stylesheet" href="static/frontend/css/home.css" />
+</head>
+<body>
+<section id="menu" class="white">
+    <nav class="navbar navbar-dropdown bg-color">
+        <div class="container">
+            <div class="mbr-table">
+                <div class="mbr-table-cell">
+                    <div class="navbar-brand">
+                        <a href="#" class="navbar-logo">
+                        <img src="static/frontend/img/logo-b.png" alt="Nebulas" style="height: 54px;">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-md-12">
+            <div style=" font-size: 2rem; text-align: left; padding-right: 1rem; margin-bottom: 1rem;" id="tab"><span><a href="index.html">Create New Wallet</a></span>    <span class="left"><a class="create" href="sendNas.html">Send NAS</a></span></div>
+            <hr/>
+        </div>
+    </div>
+</section>
+
+
+<div id="unlock" class="container wallet">
+	<div id="unlockWallet" class="col-md-12">
+		<div class="form-group">
+			<label for="openfile">Select Your Wallet File:</label>
+			<a class="form-control openfile" onclick="openFiledialog()">SELECT WALLET FILE...</a>
+			<input type="file" id="openfile" style="display:none;">
+		</div>
+		<div class="form-group">
+			<label for="password">Your wallet is encrypted. Good! Please enter the password.</label>
+			<input type="password" class="form-control" id="password" placeholder="">
+		</div>
+		<button id="unlock" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick="unlock()">Unlock</button>		
+	</div>
+	<div class="col-xs-12">
+	<p class="wallet_help">This is not a recommended way to access your wallet.<br />
+Entering your private key on a website dangerous. If our website is compromised or you accidentally visit a different website, your funds will be stolen. </p>
+	</div>
+</div>
+<div id="send" class="container send">
+	<div id="sendNas" class="col-md-12">
+		<div class="form-group">
+			<label for="toaddress">To Address</label>
+			<input type="text" class="form-control" id="toaddress" placeholder="">
+		</div>
+		<div class="form-group">
+			<label for="amount">Value / Amount to Send</label>			
+			<div class="input-group">
+		      <input type="text" class="form-control" id="amount" placeholder="Amount">
+		      <div class="input-group-addon">NAS</div>
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="limit">Gas Limit</label>
+			<input type="text" class="form-control" id="limit" placeholder="">
+		</div>
+		<div class="form-group">
+			<label for="price">Gas Price</label>			
+			<div class="input-group">
+		      <input type="text" class="form-control" id="price" placeholder="">
+		      <div class="input-group-addon">WEI</div>
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="nonce">Nonce</label>
+			<input type="text" class="form-control" id="nonce" placeholder="">
+		</div>
+		<button id="generate" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick="generate()">Generate Transaction</button>	
+	</div>
+</div>
+<div id="transaction" class="container transaction">
+<div class="col-md-6">
+	<div class="form-group">
+		<label for="raw">Raw Transaction</label>
+		<textarea class="form-control" rows="3" id="raw"></textarea>
+	</div>
+</div>
+<div class="col-md-6">
+	<div class="form-group">
+		<label for="signed">Signed Transaction</label>
+		<textarea class="form-control" rows="3" id="signed"></textarea>
+	</div>
+</div>
+<div class="col-md-12">
+<button id="sendtransaction" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center" onclick="sendtransaction()">Send Transaction</button>
+</div>
+
+</div>
+<!-- footer -->
+<section class=" mbr-section mbr-section-sm-padding mbr-footer ">
+	<div class="container ">
+		<div class="row ">
+			<div class="mbr-footer-content col-xs-12 text-xs-center footer-title ">
+				<a href="# ">
+					<img src="static/frontend/img/logo-b.png " alt="Nebulas Testnet ">
+				</a>
+			</div>
+			<div class="mbr-footer-content col-xs-12 text-xs-center ">
+				<p>
+					<a href="https://nebulas.io/">Home</a>
+					<a href="https://nebulas.io/technology.html">Technology</a>
+					<a href="https://nebulas.io/community.html">Community</a>
+					<a href="https://nebulas.io/team.html">Team</a>
+					<a href="https://nebulas.io/resources.html">Resources</a>
+					<a href="https://medium.com/nebulasio" target="_blank">Blog</a>
+				</p>
+			</div>
+			<div class="mbr-footer-content col-xs-12 text-xs-center ">
+				<p>Copyright &copy; 2017 Nebulas.io, 814 Mission Street, San Francisco</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<script src="https://cdn.bootcss.com/tether/1.4.3/js/tether.min.js "></script>
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js "></script>
+<script src="https://cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js "></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js "></script>
+<script src="static/frontend/js/home.v1.js "></script>
+<script>
+function openFiledialog(){
+	return $("#openfile").click();
+}
+
+function unlock(){
+	$("#unlock").hide();
+	$("#send").show();
+	return false;
+}
+function generate(){
+	$("#transaction").show();
+	return false;
+}
+</script>
+</body>
+</html>
