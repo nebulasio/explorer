@@ -19,5 +19,5 @@ public interface NebBlockMapper {
 
     NebBlock selectByHeight(Long height);
 
-
+    Long getMaxHeight();
 }

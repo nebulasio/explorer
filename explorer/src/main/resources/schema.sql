@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `neb_transaction` (
   `value`        VARCHAR(64) COMMENT 'value of transaction',
   `nonce`        BIGINT(16) UNSIGNED COMMENT 'transaction nonce',
   `timestamp`    DATETIME COMMENT 'transaction timestamp',
-  `type`         VARCHAR(32) COMMENT 'transaction type',
+  `type`         VARCHAR(32) COMMENT 'transaction type, such as: binary',
   `data`         TEXT COMMENT 'transaction data',
   `gas_price`    VARCHAR(64) COMMENT 'Gas price',
   `gas_limit`    VARCHAR(64) COMMENT 'Gas limit',

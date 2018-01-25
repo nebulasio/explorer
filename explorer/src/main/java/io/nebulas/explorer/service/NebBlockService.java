@@ -42,5 +42,8 @@ public class NebBlockService {
         return nebBlockRepository.getByHeight(height);
     }
 
+    public Long getMaxHeight() {
+        return nebBlockRepository.getMaxHeight();
+    }
 
 }
