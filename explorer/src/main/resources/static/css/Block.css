@@ -1,0 +1,71 @@
+/*
+* @Author: lol
+* @Date:   2018-01-23 12:52:58
+* @Last Modified by:   lol
+* @Last Modified time: 2018-01-23 14:15:02
+*/
+
+.wrapper {
+    width: 88%;
+    margin: 0 auto;
+}
+
+.banner{
+    width: 100%;
+    background-color: #f7f7f7;
+    height: 800px;
+    position: relative;
+}
+#myTab{
+    position: absolute;
+    top: 0%;
+    left: 0%;
+}
+.head{
+    width: 90%;
+    position: absolute;
+    left: 5%;
+    top: 3%;
+}
+.tab-content{
+    width:90%;
+    position: absolute;
+    height: 700px;
+    top: 8%;
+    left: 5%;
+    background-color: #fff;
+}
+.overview_tab{
+    width: 100%;
+    height: 60px;
+    background-color: #31708f;
+    position: absolute;
+    color:#fff;
+}
+
+.wrapper {
+    width: 88%;
+    margin: 0 auto;
+}
+
+.overview_banner_list{
+    position: absolute;
+    top: 10%;
+    height: 700px;
+    width: 100%;
+}
+.overview_banner_list>div{
+    width: 100%;
+    height: 40px;
+    /* background-color: black; */
+}
+.list_left{
+    width: 10%;
+    position: absolute;
+    left: 4%;
+}
+.list_right{
+    width: 80%;
+    left:18%;
+    position: absolute;
+}
