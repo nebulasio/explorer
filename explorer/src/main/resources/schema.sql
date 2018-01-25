@@ -1,22 +1,3 @@
-DROP TABLE IF EXISTS `expl_country`;
-
-CREATE TABLE IF NOT EXISTS `expl_country` (
-  `id`     CHAR(24) PRIMARY KEY
-  COMMENT '记录id',
-  `code`   VARCHAR(2)   NOT NULL
-  COMMENT '国家码',
-  `enname` VARCHAR(128) NOT NULL
-  COMMENT '英文名',
-  `cnname` VARCHAR(128) NOT NULL
-  COMMENT '中文名'
-)
-  ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COMMENT '国家';
-
-CREATE UNIQUE INDEX `uniq_expl_country_code`
-  ON `expl_country` (`code`);
-
 DROP TABLE IF EXISTS `neb_block`;
 
 CREATE TABLE IF NOT EXISTS `neb_block` (
@@ -93,4 +74,3 @@ CREATE TABLE IF NOT EXISTS `neb_transaction` (
   ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
   COMMENT 'nebulas transaction';
-
