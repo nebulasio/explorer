@@ -10,7 +10,6 @@ spring:
       platform: mysql
       initialize: false
       schema: classpath:schema.sql
-      data: classpath:data.sql
       url: jdbc:mysql://127.0.0.1:3306/explorer?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
       username: explorer
       password: 123456
@@ -55,7 +54,6 @@ spring:
       platform: mysql
       initialize: false
       schema: classpath:schema.sql
-      data: classpath:data.sql
       url: jdbc:mysql://rm-2ze10u545o44d5pvy.mysql.rds.aliyuncs.com:3306/expldev?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
       username: expldev
       password: 438Wd73o23Rq
