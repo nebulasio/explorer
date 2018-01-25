@@ -1,0 +1,22 @@
+Building
+--------
+ 
+ To build this project you will need Gradle 3. You can get it at:
+ 
+     https://gradle.org/
+
+ Clean compilation products:
+ 
+     gradle clean
+     
+ Compile and Build:
+ 
+     gradle build
+     
+ Run in a tomcat server:
+ 
+     gradle bootRun
+
+ Once started, the application should be available at:
+
+     http://localhost:8080

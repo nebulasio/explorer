@@ -1,0 +1,76 @@
+server:
+  port: 8080
+logging:
+  config: classpath:logback.xml
+spring:
+    application:
+      name: explorer
+    datasource:
+      sql-script-encoding: UTF-8
+      platform: mysql
+      initialize: false
+      schema: classpath:schema.sql
+      data: classpath:data.sql
+      url: jdbc:mysql://127.0.0.1:3306/explorer?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
+      username: explorer
+      password: 123456
+      separator: ;
+      name: explorer
+      hikari:
+        connection-timeout: 60000
+        maximum-pool-size: 5
+
+mybatis:
+  config-location: classpath:mybatis-config.xml
+
+grpc:
+  client:
+    local-grpc-server:
+      host:
+        - 35.182.48.19
+      port:
+        - 8684
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      keepAliveTimeout: 200
+
+page:
+  baseUrl: http://localhost:8080
+  hostUrl: http://localhost:8080
+
+---
+spring:
+    profiles: dev
+    thymeleaf:
+      cache: false
+environment: dev
+
+---
+spring:
+    profiles: test
+    thymeleaf:
+      cache: true
+    datasource:
+      sql-script-encoding: UTF-8
+      platform: mysql
+      initialize: false
+      schema: classpath:schema.sql
+      data: classpath:data.sql
+      url: jdbc:mysql://rm-2ze10u545o44d5pvy.mysql.rds.aliyuncs.com:3306/expldev?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
+      username: expldev
+      password: 438Wd73o23Rq
+      separator: ;
+      name: expldev
+      hikari:
+        connection-timeout: 60000
+        maximum-pool-size: 5
+server:
+  port: 32736
+environment: test
+
+---
+spring:
+    profiles: prod
+    thymeleaf:
+      cache: true
+environment: production
