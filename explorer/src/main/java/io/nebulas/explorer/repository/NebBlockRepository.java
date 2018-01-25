@@ -27,4 +27,8 @@ public class NebBlockRepository {
         return mapper.save(entity);
     }
 
+    public Long getMaxHeight() {
+        return mapper.getMaxHeight();
+    }
+
 }

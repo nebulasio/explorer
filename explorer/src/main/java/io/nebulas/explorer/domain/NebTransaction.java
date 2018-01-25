@@ -30,7 +30,7 @@ public class NebTransaction implements Serializable {
     private String value;
     private Long nonce;
     private Date timestamp;
-    private Integer type;
+    private String type;
     private String data;
     private String gasPrice;
     private String gasLimit;

@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,15 +22,8 @@ import java.util.List;
 public class NebTransactionService {
     private final NebTransactionRepository nebTransactionRepository;
 
-    /**
-     * save single nebluas transaction entity
-     *
-     * @param transaction
-     * @return
-     */
-    public boolean saveNebTransaction(NebTransaction transaction) {
-
-        return true;
+    public Integer saveNebTransaction(NebTransaction transaction) {
+        return nebTransactionRepository.saveNebTransaction(transaction);
     }
 
     /**
@@ -40,10 +32,8 @@ public class NebTransactionService {
      * @param transactions
      * @return
      */
-    public boolean batchSaveNebTransaction(List<NebTransaction> transactions) {
-
-
-        return true;
+    public Integer batchSaveNebTransaction(List<NebTransaction> transactions) {
+        return nebTransactionRepository.batchSaveNebTransaction(transactions);
     }
 
     /**
@@ -56,19 +46,11 @@ public class NebTransactionService {
         if (StringUtils.isEmpty(hash)) {
             return null;
         }
-
-
-        return null;
+        return nebTransactionRepository.selectByHash(hash);
     }
 
-    /**
-     *
-     * @param blockHeight
-     * @return
-     */
-    public List<NebTransaction> findNebTransactionInBlockByBlockHeight(Long blockHeight){
-
-
-        return Collections.emptyList();
+    public List<NebTransaction> getNebTransactionByBlockHeight(Long blockHeight) {
+        return nebTransactionRepository.selectByBlockHeight(blockHeight);
     }
+
 }

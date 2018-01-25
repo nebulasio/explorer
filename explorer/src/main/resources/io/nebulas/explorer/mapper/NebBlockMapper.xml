@@ -25,10 +25,15 @@
     #{coinbase,jdbcType=VARCHAR}, #{nonce,jdbcType=BIGINT})
   </insert>
 
-  <select id="selectByHeight" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByHeight" resultMap="BaseResultMap" parameterType="java.lang.Long">
     select
     <include refid="Base_Column_List" />
     from neb_block
     where height = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="getMaxHeight" resultType="java.lang.Long">
+    SELECT MAX(`height`)
+    FROM `neb_block`
   </select>
 </mapper>

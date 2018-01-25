@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
+import static io.nebulas.explorer.util.BlockUtil.collectTxs;
 
 /**
  * Title.
@@ -46,24 +47,28 @@ public class SysService {
             Block block = grpcClientService.getBlockByHash(nebState.getTail(), true);
             log.info("top block: {}", toJSONString(block));
 
-            final Long height = block.getHeight();
-            for (long pos = 1L; pos <= height; pos++) {
-                Block blk;
-                try {
-                    blk = grpcClientService.getBlockByHeight(pos, true);
-                } catch (StatusRuntimeException e) {
-                    log.error("get block by height error", e);
+            final Long goalHeight = block.getHeight();
+            final Long lastHeightO = nebBlockService.getMaxHeight();
+            long lastHeight = lastHeightO == null ? 0L : lastHeightO;
+            for (long h = lastHeight + 1; h <= goalHeight; h++) {
+                NebBlock nebBlock = nebBlockService.getByHeight(h);
+                if (nebBlock != null) {
                     continue;
                 }
-                log.info("iterate Block {} : {}", pos, toJSONString(blk));
+                Block blk;
+                try {
+                    blk = grpcClientService.getBlockByHeight(h, true);
+                } catch (StatusRuntimeException e) {
+                    log.error("get block by goalHeight error", e);
+                    continue;
+                }
 
-                // TODO: insert into neb_block
                 NebBlock nebBlk = NebBlock.builder()
                         .id(IdGenerator.getId())
                         .height(blk.getHeight())
                         .hash(blk.getHash())
                         .parentHash(blk.getParentHash())
-                        .timestamp(new Date(blk.getTimestamp()))
+                        .timestamp(new Date(blk.getTimestamp() * 1000))
                         .miner(blk.getMiner())
                         .coinbase(blk.getCoinbase())
                         .nonce(blk.getNonce())
@@ -75,42 +80,23 @@ public class SysService {
                     continue;
                 }
 
-
                 List<Transaction> txs = blk.getTransactions();
-                List<NebTransaction> nebTxsList = new ArrayList<>(100);
+                List<NebTransaction> nebTxsList = new ArrayList<>(txs.size());
+
+                List<String> gasUsedList = new ArrayList<>(txs.size());
+
                 for (Transaction tx : txs) {
                     String gasUsed = grpcClientService.getGasUsed(tx.getHash());
                     if (gasUsed != null) {
                         log.info("gas used: {}", gasUsed);
-                    }
-
-                    // TODO: insert into neb_transaction
-                    NebTransaction nebTxs = NebTransaction.builder()
-                            .hash(tx.getHash())
-                            .blockHeight(blk.getHeight())
-                            .blockHash(blk.getHash())
-                            .from(tx.getFrom())
-                            .to(tx.getTo())
-                            .status(tx.getStatus())
-                            .value(tx.getValue())
-                            .nonce(tx.getNonce())
-                            .timestamp(new Date(tx.getTimestamp()))
-                            .type(1111111) //todo
-                            .data(tx.getData())
-                            .gasPrice(tx.getGasPrice())
-                            .gasLimit(tx.getGasLimit())
-                            .gasUsed(gasUsed)
-                            .build();
-                    nebTxsList.add(nebTxs);
-
-                    if (100 == nebTxsList.size()) {
-                        nebTransactionService.batchSaveNebTransaction(nebTxsList);
-                        nebTxsList.clear();
+                        gasUsedList.add("");
+                    } else {
+                        gasUsedList.add(gasUsed);
                     }
                 }
-                if (0 < nebTxsList.size()) {
+                collectTxs(block, txs, nebTxsList, gasUsedList);
+                if (nebTxsList.size() > 0) {
                     nebTransactionService.batchSaveNebTransaction(nebTxsList);
-                    nebTxsList.clear();
                 }
             }
 

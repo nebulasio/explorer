@@ -23,12 +23,58 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, hash, blockHeight, blockHash, from, to, status, value, nonce, timestamp, type, data, gas_price, gas_limit, gas_used, created_at
+      `id`,
+      `hash`,
+      `block_hash`,
+      `block_height`,
+      `from`,
+      `to`,
+      `status`,
+      `value`,
+      `nonce`,
+      `timestamp`,
+      `type`,
+      `data`,
+      `gas_price`,
+      `gas_limit`,
+      `gas_used`,
+      `created_at`
   </sql>
     <select id="selectByHash" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select
+        SELECT
         <include refid="Base_Column_List"/>
-        from neb_transaction
-        where hash = #{hash,jdbcType=VARCHAR}
+        FROM `neb_transaction`
+        WHERE `hash` = #{hash,jdbcType=VARCHAR}
     </select>
+
+    <insert id="batchSaveNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
+        INSERT INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,
+        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
+        VALUES
+        <foreach collection="transactions" item="tx" separator=",">
+            (
+            #{tx.id}, #{tx.hash}, #{tx.blockHash}, #{tx.blockHeight}, #{tx.from}, #{tx.to}, #{tx.status}, #{tx.value},
+            #{tx.nonce}, #{tx.timestamp}, #{tx.type}, #{tx.data}, #{tx.gasPrice}
+            , #{tx.gasLimit}, #{tx.gasUsed}, #{tx.createdAt}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectByBlockHeight" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `block_height` = #{blockHeight}
+    </select>
+
+    <insert id="saveNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
+        INSERT INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,
+        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
+        VALUES
+        (
+            #{id}, #{hash}, #{blockHash}, #{blockHeight}, #{from}, #{to}, #{status}, #{value},
+            #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}
+            , #{gasLimit}, #{gasUsed}, #{createdAt}
+            )
+    </insert>
+
 </mapper>

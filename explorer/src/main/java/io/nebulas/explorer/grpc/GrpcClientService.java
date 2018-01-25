@@ -1,22 +1,32 @@
 package io.nebulas.explorer.grpc;
 
+import com.alibaba.fastjson.JSONObject;
 import io.grpc.Channel;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+import io.nebulas.explorer.domain.NebBlock;
+import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.DposContext;
 import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Transaction;
+import io.nebulas.explorer.service.NebBlockService;
+import io.nebulas.explorer.service.NebTransactionService;
+import io.nebulas.explorer.util.IdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.springboot.autoconfigure.grpc.client.GrpcClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rpcpb.ApiRpc;
 import rpcpb.ApiServiceGrpc;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+
+import static io.nebulas.explorer.util.BlockUtil.collectTxs;
 
 /**
  * Title.
@@ -33,36 +43,72 @@ public class GrpcClientService {
     @GrpcClient("local-grpc-server")
     private Channel serverChannel;
 
+    @Autowired
+    private NebBlockService nebBlockService;
+
+    @Autowired
+    private NebTransactionService nebTransactionService;
+
     public void subscribe(String topic) {
         ApiServiceGrpc.ApiServiceStub asyncStub = ApiServiceGrpc.newStub(serverChannel);
         final CountDownLatch finishLatch = new CountDownLatch(1);
         StreamObserver<ApiRpc.SubscribeResponse> responseObserver = new StreamObserver<ApiRpc.SubscribeResponse>() {
             @Override
             public void onNext(ApiRpc.SubscribeResponse sr) {
-                // TODO: refer to Const
                 String dataStr = sr.getData();
                 log.info("msg type: {}, data: {}", sr.getMsgType(), dataStr);
-                if (Const.TopicSendTransaction.equals(sr.getMsgType())) {
-                    // TODO: insert into neb_transaction
+                JSONObject data = JSONObject.parseObject(dataStr);
+                if (Const.TopicLinkBlock.equals(sr.getMsgType())) {
+                    Long height = data.getLong("height");
+                    if (height == null) {
+                        log.error("empty height");
+                    } else {
+                        NebBlock nebBlock = nebBlockService.getByHeight(height);
+                        if (nebBlock == null) {
+                            try {
+                                Block block = getBlockByHeight(height, true);
+                                if (block == null) {
+                                    log.warn("block with height {} not ready", height);
+                                } else {
+                                    NebBlock newBlock = NebBlock.builder()
+                                            .id(IdGenerator.getId())
+                                            .height(block.getHeight())
+                                            .hash(block.getHash())
+                                            .parentHash(block.getParentHash())
+                                            .timestamp(new Date(block.getTimestamp() * 1000))
+                                            .miner(block.getMiner())
+                                            .coinbase(block.getCoinbase())
+                                            .nonce(block.getNonce())
+                                            .createdAt(new Date()).build();
+                                    nebBlockService.saveNebBlock(newBlock);
+                                    List<Transaction> txs = block.getTransactions();
 
-                } else if (Const.TopicDeploySmartContract.equals(sr.getMsgType())) {
-                    // TODO: insert into neb_transaction
+                                    List<NebTransaction> nebTxsList = new ArrayList<>(txs.size());
 
-                } else if (Const.TopicCallSmartContract.equals(sr.getMsgType())) {
-                    // TODO: insert into neb_transaction
+                                    List<String> gasUsedList = new ArrayList<>(txs.size());
 
-                } else if (Const.TopicDelegate.equals(sr.getMsgType())) {
-                    // TODO: insert into neb_transaction
+                                    for (Transaction tx : txs) {
+                                        String gasUsed = getGasUsed(tx.getHash());
+                                        if (gasUsed != null) {
+                                            log.info("gas used: {}", gasUsed);
+                                            gasUsedList.add("");
+                                        } else {
+                                            gasUsedList.add(gasUsed);
+                                        }
+                                    }
 
-                } else if (Const.TopicCandidate.equals(sr.getMsgType())) {
-                    // TODO: insert into neb_transaction
-
-                } else if (Const.TopicPendingTransaction.equals(sr.getMsgType())) {
-                    // TODO: insert into neb_transaction
-
-                } else if (Const.TopicLinkBlock.equals(sr.getMsgType())) {
-                    // TODO: insert into neb_block
-
+                                    collectTxs(block, txs, nebTxsList, gasUsedList);
+                                    if (nebTxsList.size() > 0) {
+                                        nebTransactionService.batchSaveNebTransaction(nebTxsList);
+                                    }
+                                }
+                            } catch (UnsupportedEncodingException e) {
+                                log.error("not block yet", e);
+                            }
+                        } else {
+                            log.warn("block with height {} already existed", height);
+                        }
+                    }
                 }
             }
 
