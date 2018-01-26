@@ -8,27 +8,24 @@ label {
     font-weight: normal;
 }
 
-.c333 { color: #333; }
-.c777 { color: #777; }
-.mt16 { margin-top: 16px; }
-.mt20 { margin-top: 20px; }
-.mt30 { margin-top: 30px; }
-.t8{top:8%;}
-.t18{top:18%;}
+.c333   { color: #333; }
+.c777   { color: #777; }
+.mt16   { margin-top: 16px; }
+.mt20   { margin-top: 20px; }
+.mt30   { margin-top: 30px; }
+.t8     { top: 8%; }
+.t18    { top: 18%; }
 
 /*  footer
     ============================================================ */
 
 .footer {
-    width: 100%;
-    height: 300px;
     background-color: #272727;
     margin-top: 30px;
 }
 
-.footer_banner {
-    margin: 0 auto;
-    width: 88%;
+.footer .container {
+    background-color: transparent;
 }
 
 .footer_left {
@@ -37,7 +34,6 @@ label {
 
 .footer_left_up {
     height: 100px;
-    width: 100%;
     text-align: center;
     margin-top: 6%;
 }

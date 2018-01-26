@@ -6,64 +6,65 @@
     <link rel="stylesheet" href="../lib/bootstrap.min.css">
     <link rel="stylesheet" href="../css/common.css">
     <style>
-        .wrapper {
-    width: 88%;
-    margin: 0 auto;
-}
+        .banner {
+            width: 100%;
+            background-color: #f7f7f7;
+            height: 800px;
+            position: relative;
+        }
 
-.banner{
-    width: 100%;
-    background-color: #f7f7f7;
-    height: 800px;
-    position: relative;
-}
-#myTab{
-    position: absolute;
-    top: 0%;
-    left: 0%;
-}
-.head{
-    width: 90%;
-    position: absolute;
-    top: 3%;
-}
-.tab-content{
-    width:90%;
-    position: absolute;
-    height: 700px;
-    top: 8%;
-    left: 5%;
-    background-color: #fff;
-}
-.overview_tab{
-    width: 100%;
-    height: 60px;
-    background-color: #31708f;
-    position: absolute;
-    color:#fff;
-}
+        #myTab {
+            position: absolute;
+            top: 0%;
+            left: 0%;
+        }
 
-.overview_banner_list{
-    position: absolute;
-    top: 18%;
-    height: 700px;
-    width: 100%;
-}
-.overview_banner_list>div{
-    width: 100%;
-    height: 40px;
-    /* background-color: black; */
-}
-.list_left{
-    width: 10%;
-    position: absolute;
-    left: 4%;
-}
-.list_right{
-    width: 80%;
-    left:18%;
-    position: absolute;
-}
+        .head {
+            width: 90%;
+            position: absolute;
+            top: 3%;
+        }
+
+        .tab-content {
+            width: 90%;
+            position: absolute;
+            height: 700px;
+            top: 8%;
+            left: 5%;
+            background-color: #fff;
+        }
+
+        .overview_tab {
+            width: 100%;
+            height: 60px;
+            background-color: #31708f;
+            position: absolute;
+            color: #fff;
+        }
+
+        .overview_banner_list {
+            position: absolute;
+            top: 18%;
+            height: 700px;
+            width: 100%;
+        }
+
+        .overview_banner_list>div {
+            width: 100%;
+            height: 40px;
+        }
+
+        .list_left {
+            width: 10%;
+            position: absolute;
+            left: 4%;
+        }
+
+        .list_right {
+            width: 80%;
+            left: 18%;
+            position: absolute;
+        }
     </style>
     <title>Block</title>
 </head>
@@ -73,8 +74,7 @@
     <div class=container>
         <!-- get grouped for better mobile display -->
         <div class="mt20 navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-                aria-expanded="false">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -277,62 +277,67 @@
         <div class=tab></div>
     </div>
 </div>
-<div class="footer">
-    <div class=" footer_banner row">
-        <div class="footer_left col-md-3">
-            <div class="footer_left_up">
-                <img src="../img/logo.png">
-            </div>
-            <div class="footer_left_down">
-                <p>Etherscan is a Block Explorer and Analytics Platform for Ethereum, a decentralized smart contracts platform.</p>
-            </div>
-        </div>
-        <div class="footer_middle col-md-6">
-            <div class="footer_banner_tab">
-                <h4>Latest Discussions</h4>
-            </div>
-            <div class="footer_list">
-                <div class="footer_list_banner">
-                    <img src="../img/msg.png" alt="">
-                    <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments">Please, Please send the 1 ether back to my address 0x5b...</a>
-                </div>
-                <div class="footer_list_banner">
-                    <img src="../img/msg.png" alt="">
-                    <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments">Please, Please send the 1 ether back to my address 0x5b...</a>
-                </div>
-                <div class="footer_list_banner">
-                    <img src="../img/msg.png" alt="">
-                    <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments">Please, Please send the 1 ether back to my address 0x5b...</a>
-                </div>
-                <div class="footer_list_banner">
-                    <img src="../img/msg.png" alt="">
-                    <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments">Please, Please send the 1 ether back to my address 0x5b...</a>
-                </div>
 
+<!--    [components] footer
+    ============================================================ -->
+<div class=footer>
+    <div class=container>
+        <div class=row>
+            <div class="footer_left col-md-3 ">
+                <div class="footer_left_up ">
+                    <img src="../img/logo.png ">
+                </div>
+                <div class="footer_left_down ">
+                    <p>Etherscan is a Block Explorer and Analytics Platform for Ethereum, a decentralized smart contracts platform.</p>
+                </div>
             </div>
-        </div>
-        <div class="footer_right col-md-3">
-            <div class="footer_banner_tab">
-                <h4>Links</h4>
-            </div>
-            <div class="footer_link-list">
-                <div class="footer_link-list_banner">
-                    <img src="../img/email_icon.png" alt="">
-                    <a href="#">Contact Us</a>
-                </div>
-                <div class="footer_link-list_banner">
-                    <img src="../img/icon_2.png" alt="">
-                    <a href="#">Forum</a>
-                </div>
-                <div class="footer_link-list_banner">
-                    <img src="../img/icon_3.png" alt="">
-                    <a href="#">Twitter</a>
-                </div>
-                <div class="footer_link-list_banner">
-                    <img src="../img/email_icon.png" alt="">
-                    <a href="#">Contact Us</a>
-                </div>
 
+            <div class="footer_middle col-md-6 ">
+                <div class="footer_banner_tab ">
+                    <h4>Latest Discussions</h4>
+                </div>
+                <div class="footer_list ">
+                    <div class="footer_list_banner ">
+                        <img src="../img/msg.png " alt=" ">
+                        <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments ">Please, Please send the 1 ether back to my address 0x5b...</a>
+                    </div>
+                    <div class="footer_list_banner ">
+                        <img src="../img/msg.png " alt=" ">
+                        <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments ">Please, Please send the 1 ether back to my address 0x5b...</a>
+                    </div>
+                    <div class="footer_list_banner ">
+                        <img src="../img/msg.png " alt=" ">
+                        <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments ">Please, Please send the 1 ether back to my address 0x5b...</a>
+                    </div>
+                    <div class="footer_list_banner ">
+                        <img src="../img/msg.png " alt=" ">
+                        <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments ">Please, Please send the 1 ether back to my address 0x5b...</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer_right col-md-3 ">
+                <div class="footer_banner_tab ">
+                    <h4>Links</h4>
+                </div>
+                <div class="footer_link-list ">
+                    <div class="footer_link-list_banner ">
+                        <img src="../img/email_icon.png " alt=" ">
+                        <a href="# ">Contact Us</a>
+                    </div>
+                    <div class="footer_link-list_banner ">
+                        <img src="../img/icon_2.png " alt=" ">
+                        <a href="# ">Forum</a>
+                    </div>
+                    <div class="footer_link-list_banner ">
+                        <img src="../img/icon_3.png " alt=" ">
+                        <a href="# ">Twitter</a>
+                    </div>
+                    <div class="footer_link-list_banner ">
+                        <img src="../img/email_icon.png " alt=" ">
+                        <a href="# ">Contact Us</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
