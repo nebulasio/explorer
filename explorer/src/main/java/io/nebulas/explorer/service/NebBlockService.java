@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,11 +58,19 @@ public class NebBlockService {
      * @param hash block hash
      * @return block entity
      */
-    public NebBlock getByHash(String hash){
-       if(StringUtils.isEmpty(hash)){
-           return null;
-       }
-       return nebBlockMapper.getByHash(hash);
+    public NebBlock getByHash(String hash) {
+        if (StringUtils.isEmpty(hash)) {
+            return null;
+        }
+        return nebBlockMapper.getByHash(hash);
+    }
+
+
+    public Long countBlockCntByMiner(String miner) {
+        if (StringUtils.isEmpty(miner)) {
+            return 0L;
+        }
+        return nebBlockMapper.countByMiner(miner);
     }
 
     /**
@@ -70,7 +79,7 @@ public class NebBlockService {
      * @return
      */
     public PageIterator<NebBlock> findNebBlockPageIterator(int page, int pageSize) {
-        int cnt = nebBlockMapper.count();
+        long cnt = nebBlockMapper.count();
         PageIterator<NebBlock> pageIterator = PageIterator.create(page, pageSize, cnt);
         if (cnt > 0) {
             List<NebBlock> blkList = nebBlockMapper.findOrderByHeightDesc(pageIterator.getOffset(), pageIterator.getPageSize());
@@ -78,4 +87,12 @@ public class NebBlockService {
         }
         return pageIterator;
     }
+
+    public List<NebBlock> findNebBlockByMiner(String miner, int offset, int limit) {
+        if (StringUtils.isEmpty(miner)) {
+            return Collections.emptyList();
+        }
+        return nebBlockMapper.findByMiner(miner, offset, limit);
+    }
+
 }

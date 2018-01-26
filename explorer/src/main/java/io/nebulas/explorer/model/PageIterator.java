@@ -23,10 +23,10 @@ public class PageIterator<T> implements Serializable {
     private int page;
     private int pageSize;
     private int totalPage;
-    private int totalCount;
+    private long totalCount;
     private List<T> data;
 
-    public static <T> PageIterator<T> create(int page, int pageSize, int totalCount) {
+    public static <T> PageIterator<T> create(int page, int pageSize, long totalCount) {
         if (page < 0) {
             page = 0;
         }

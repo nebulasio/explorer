@@ -119,7 +119,7 @@
         <foreach collection="addressHashes" item="item" open="(" close=")" separator=",">${item,jdbcType=VARCHAR}</foreach>
     </select>
 
-    <select id="countNormalTxnCntByFromTo" parameterType="java.lang.String" resultType="java.lang.Long">
+    <select id="countNormalTxnCntByFromTo" parameterType="java.lang.String" resultType="java.lang.Integer">
         SELECT count(1)
         FROM `neb_transaction`
         WHERE type = 0

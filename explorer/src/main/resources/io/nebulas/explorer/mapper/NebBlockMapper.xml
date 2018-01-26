@@ -41,9 +41,15 @@
         WHERE `hash` = #{hash,jdbcType=VARCHAR}
     </select>
 
-    <select id="count" resultType="java.lang.Integer">
+    <select id="count" resultType="java.lang.Long">
         select count(1)
         from neb_block
+    </select>
+
+    <select id="countByMiner" resultType="java.lang.Long" parameterType="java.lang.String">
+        select count(1)
+        from `neb_block`
+        where miner = #{miner,jdbcType=VARCHAR}
     </select>
 
     <select id="findOrderByHeightDesc" parameterType="map" resultType="NebBlock">
@@ -52,5 +58,13 @@
         from neb_block
         order by height DESC
         limit ${offset},${limit}
+    </select>
+
+    <select id="findByMiner" parameterType="map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM `neb_block`
+        WHERE miner = #{miner,jdbcType=VARCHAR}
+        ORDER BY `timestamp` DESC
+        LIMIT ${offset}, ${limit}
     </select>
 </mapper>
