@@ -24,9 +24,15 @@ public class TxController extends BaseController {
     }
 
     @RequestMapping("/txsInternal")
-    public String index(Model model) {
+    public String txsInternal(Model model) {
         execute(model);
         return "txsInternal";
+    }
+
+    @RequestMapping("/txs")
+    public String txs(Model model) {
+        execute(model);
+        return "txs";
     }
 
 }
