@@ -5,7 +5,9 @@ import io.nebulas.explorer.core.BaseController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Title.
@@ -24,15 +26,21 @@ public class TxController extends BaseController {
     }
 
     @RequestMapping("/txsInternal")
-    public String txsInternal(Model model) {
+    public String txsInternal(@RequestParam(value = "block", required = false) Long block, Model model) {
         execute(model);
         return "txsInternal";
     }
 
     @RequestMapping("/txs")
-    public String txs(Model model) {
+    public String txs(@RequestParam(value = "block", required = false) Long block, Model model) {
         execute(model);
         return "txs";
+    }
+
+    @RequestMapping("/tx/{tx}")
+    public String tx(@PathVariable("tx") String tx, Model model) {
+        execute(model);
+        return "tx";
     }
 
     @RequestMapping("/txsPending")
