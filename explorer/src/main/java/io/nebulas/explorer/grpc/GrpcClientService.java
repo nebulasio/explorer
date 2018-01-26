@@ -80,7 +80,7 @@ public class GrpcClientService {
                                             .coinbase(block.getCoinbase())
                                             .nonce(block.getNonce())
                                             .createdAt(new Date()).build();
-                                    nebBlockService.saveNebBlock(newBlock);
+                                    nebBlockService.addNebBlock(newBlock);
                                     List<Transaction> txs = block.getTransactions();
 
                                     List<NebTransaction> nebTxsList = new ArrayList<>(txs.size());
@@ -99,7 +99,7 @@ public class GrpcClientService {
 
                                     collectTxs(block, txs, nebTxsList, gasUsedList);
                                     if (nebTxsList.size() > 0) {
-                                        nebTransactionService.batchSaveNebTransaction(nebTxsList);
+                                        nebTransactionService.batchAddNebTransaction(nebTxsList);
                                     }
                                 }
                             } catch (UnsupportedEncodingException e) {

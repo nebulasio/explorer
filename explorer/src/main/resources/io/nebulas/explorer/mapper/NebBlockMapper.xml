@@ -16,20 +16,20 @@
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, height, hash, parent_hash, timestamp, miner, coinbase, nonce, created_at
+    `id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`, `created_at`
   </sql>
-  <insert id="save" parameterType="NebBlock">
-    insert into neb_block (id, height, hash, parent_hash, timestamp, miner, coinbase, nonce)
-    values (#{id,jdbcType=VARCHAR}, #{height,jdbcType=BIGINT}, #{hash,jdbcType=VARCHAR},
+  <insert id="add" parameterType="NebBlock">
+    INSERT INTO `neb_block` (`id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`)
+    VALUES (#{id,jdbcType=VARCHAR}, #{height,jdbcType=BIGINT}, #{hash,jdbcType=VARCHAR},
     #{parentHash,jdbcType=VARCHAR}, #{timestamp,jdbcType=TIMESTAMP}, #{miner,jdbcType=VARCHAR},
     #{coinbase,jdbcType=VARCHAR}, #{nonce,jdbcType=BIGINT})
   </insert>
 
-  <select id="selectByHeight" resultMap="BaseResultMap" parameterType="java.lang.Long">
-    select
+  <select id="getByHeight" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    SELECT
     <include refid="Base_Column_List" />
-    from neb_block
-    where height = #{id,jdbcType=BIGINT}
+    FROM `neb_block`
+    WHERE `height` = #{id,jdbcType=BIGINT}
   </select>
 
   <select id="getMaxHeight" resultType="java.lang.Long">

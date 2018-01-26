@@ -74,9 +74,9 @@ public class SysService {
                         .nonce(blk.getNonce())
                         .build();
 
-                boolean blkSaveResult = nebBlockService.saveNebBlock(nebBlk);
+                boolean blkSaveResult = nebBlockService.addNebBlock(nebBlk);
                 if (!blkSaveResult) {
-                    log.error("save nebulas block error");
+                    log.error("add nebulas block error");
                     continue;
                 }
 
@@ -96,16 +96,10 @@ public class SysService {
                 }
                 collectTxs(block, txs, nebTxsList, gasUsedList);
                 if (nebTxsList.size() > 0) {
-                    nebTransactionService.batchSaveNebTransaction(nebTxsList);
+                    nebTransactionService.batchAddNebTransaction(nebTxsList);
                 }
             }
 
-            grpcClientService.subscribe(Const.TopicSendTransaction);
-            grpcClientService.subscribe(Const.TopicDeploySmartContract);
-            grpcClientService.subscribe(Const.TopicCallSmartContract);
-            grpcClientService.subscribe(Const.TopicDelegate);
-            grpcClientService.subscribe(Const.TopicCandidate);
-            grpcClientService.subscribe(Const.TopicPendingTransaction);
             grpcClientService.subscribe(Const.TopicLinkBlock);
 
             long elapsed = System.currentTimeMillis() - start;

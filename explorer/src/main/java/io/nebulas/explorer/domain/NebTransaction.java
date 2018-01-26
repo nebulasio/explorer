@@ -1,8 +1,6 @@
 package io.nebulas.explorer.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,6 +17,8 @@ import java.util.Date;
 @Builder
 @Data
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class NebTransaction implements Serializable {
     private String id;
     private String hash;
