@@ -3,7 +3,7 @@ package io.nebulas.explorer.domain;
 import lombok.*;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * explorer.neb_block  nebulas block

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * explorer.neb_address  nebulas address
