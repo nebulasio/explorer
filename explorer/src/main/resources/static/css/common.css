@@ -8,13 +8,13 @@ label {
     font-weight: normal;
 }
 
-.mt20 {
-    margin-top: 20px;
-}
-
-.mt30 {
-    margin-top: 30px;
-}
+.c333 { color: #333; }
+.c777 { color: #777; }
+.mt16 { margin-top: 16px; }
+.mt20 { margin-top: 20px; }
+.mt30 { margin-top: 30px; }
+.t8{top:8%;}
+.t18{top:18%;}
 
 /*  footer
     ============================================================ */
@@ -38,6 +38,8 @@ label {
 .footer_left_up {
     height: 100px;
     width: 100%;
+    text-align: center;
+    margin-top: 6%;
 }
 
 .footer_left_down {
@@ -84,6 +86,11 @@ label {
 .header a {
     color: inherit;
 }
+
+/* 不能这样实现 hover 时展开菜单, 因为菜单展开时有 active 类但这种方式加不上 .active
+.header .dropdown:hover .dropdown-menu {
+    display: block;
+} */
 
 @media (min-width: 768px) {
     .header .navbar-nav > li        > a:hover,
