@@ -1,0 +1,62 @@
+
+explorer/explorer/src/main/resources/public
+
+==================== 目标
+
+1. 组件, 包括 header, footer, table row, 每页都写出来, 后台负责抽出
+    公用样式放 common.css
+    分页, table row - wangzimei
+    页眉, 页脚 - kurry
+2. 静态页面, 后端下载 https://github.com/15010159959/nas-explorer
+3. 联调
+4. 两周后, todo list
+已有的 php 代码不用管
+
+home
+kurry       0
+    https://etherscan.io/
+
+transaction on chain
+kurry       0
+    https://etherscan.io/txs
+
+transaction pending
+kurry       0
+    https://etherscan.io/txsPending
+
+transaction 详情页
+kurry       0
+    https://etherscan.io/tx/0x13273ee142b8225dc1052b2dc7ad4906973cb97d9b71007fc808e31115fc4624
+
+block 详情页
+kurry       0
+    https://etherscan.io/block/4951841
+
+block 下的 transactions 列表页
+kurry       0
+    https://etherscan.io/txs?block=4951841
+
+contract internal transactions
+wangzimei   0
+    https://etherscan.io/txsInternal
+
+all address
+wangzimei   0
+    https://etherscan.io/accounts
+
+block 列表
+wangzimei   0
+    https://etherscan.io/blocks
+
+address
+wangzimei   0
+    https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8
+
+====================
+
+5) block 下的 Contract Internal Transactions 列表页
+    https://etherscan.io/txsInternal?block=4951841
+
+7) contract address
+    https://etherscan.io/address/0x1234567461d3f8db7496581774bd869c83d51c93
+
