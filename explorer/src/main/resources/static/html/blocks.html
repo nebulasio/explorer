@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset=utf-8>
-    <link rel=stylesheet href=../lib/bootstrap.min.css>
-    <link rel=stylesheet href=../css/common.css>
-    <meta name=viewport content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../lib/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
     </style>
     <title>Blocks</title>
@@ -13,7 +13,7 @@
     <!--    [components] header
         ============================================================ -->
     <nav class="header navbar navbar-default">
-        <div class=container>
+        <div class="container">
             <!-- get grouped for better mobile display -->
             <div class="mt20 navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -26,14 +26,14 @@
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <div class=navbar-right>
+                <div class="navbar-right">
                     <form class="navbar-form text-right">
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Search">
                         </div>
                         <button type="submit" class="btn btn-default">GO</button>
                     </form>
-                    <div style=clear:both></div>
+                    <div style="clear: both"></div>
                     <nav>
                         <ul class="nav navbar-nav">
                             <li class="active">
@@ -97,12 +97,12 @@
 
     <!--    title and breadcrumb
         ============================================================ -->
-    <div class=title-and-breadcrumb>
-        <div class=container>
-            <h4 class=pull-left>Blocks</h4>
+    <div class="title-and-breadcrumb">
+        <div class="container">
+            <h4 class="pull-left">Blocks</h4>
             <ol class="breadcrumb pull-right">
                 <li>Home</li>
-                <li class=active>Blocks</li>
+                <li class="active">Blocks</li>
             </ol>
         </div>
     </div>
@@ -110,7 +110,7 @@
     <!--    info and pagination
         ============================================================ -->
     <div class="container info-and-pagination">
-        <div class=pull-left>
+        <div class="pull-left">
             <div class=mt30>Showing Block (%1 to %2) out of %3 total blocks</div>
         </div>
 
@@ -120,30 +120,30 @@
             <ul class="pagination pull-right">
                 <li>
                     <!-- don't forget other parameters -->
-                    <a href=?page=%1 aria-label=First>First</a>
+                    <a href="?page=%1" aria-label="First">First</a>
                 </li>
                 <li>
-                    <a href=?page=%2 aria-label=Prev>Prev</a>
+                    <a href="?page=%2" aria-label="Prev">Prev</a>
                 </li>
                 <!-- add "disabled" class to disable a list item -->
-                <li class=disabled>
+                <li class="disabled">
                     <a>Page
                         <b>%5</b> of
                         <b>%6</b>
                     </a>
                 </li>
                 <li>
-                    <a href=?page=%3 aria-label=Next>Next</a>
+                    <a href="?page=%3" aria-label="Next">Next</a>
                 </li>
                 <li>
-                    <a href=?page=%4 aria-label=Last>Last</a>
+                    <a href="?page=%4" aria-label="Last">Last</a>
                 </li>
             </ul>
         </nav>
     </div>
 
     <div class="container mt20">
-        <table class=table>
+        <table class="table">
             <tr>
                 <th>Height</th>
                 <th>Age</th>
@@ -158,15 +158,15 @@
 
             <tr>
                 <td>
-                    <a href=block.html?id=%Block>%Height</a>
+                    <a href="block.html?id=%Block">%Height</a>
                 </td>
                 <td>%Age</td>
                 <td>
-                    <a href=txs.html?block=%Block>%txn</a>
+                    <a href="txs.html?block=%Block">%txn</a>
                 </td>
                 <td>%Uncles</td>
                 <td>
-                    <a href=address.html?id=%Address>%Miner</a>
+                    <a href="address.html?id=%Address">%Miner</a>
                 </td>
                 <td>%GasUsed</td>
                 <td>%GasLimit</td>
@@ -177,30 +177,30 @@
         </table>
     </div>
 
-    <div class=container>
+    <div class="container">
         <!--    [components] pagination
             ============================================================ -->
         <nav aria-label="Page navigation">
             <ul class="pagination pull-right">
                 <li>
                     <!-- don't forget other parameters -->
-                    <a href=?page=%1 aria-label=First>First</a>
+                    <a href="?page=%1" aria-label="First">First</a>
                 </li>
                 <li>
-                    <a href=?page=%2 aria-label=Prev>Prev</a>
+                    <a href="?page=%2" aria-label="Prev">Prev</a>
                 </li>
                 <!-- add "disabled" class to disable a list item -->
-                <li class=disabled>
+                <li class="disabled">
                     <a>Page
                         <b>%5</b> of
                         <b>%6</b>
                     </a>
                 </li>
                 <li>
-                    <a href=?page=%3 aria-label=Next>Next</a>
+                    <a href="?page=%3" aria-label="Next">Next</a>
                 </li>
                 <li>
-                    <a href=?page=%4 aria-label=Last>Last</a>
+                    <a href="?page=%4" aria-label="Last">Last</a>
                 </li>
             </ul>
         </nav>
@@ -208,9 +208,9 @@
 
     <!--    [components] footer
         ============================================================ -->
-    <div class=footer>
-        <div class=container>
-            <div class=row>
+    <div class="footer">
+        <div class="container">
+            <div class="row">
                 <div class="footer_left col-md-3 ">
                     <div class="footer_left_up ">
                         <img src="../img/logo.png ">
@@ -271,6 +271,6 @@
         </div>
     </div>
 
-    <script src=../lib/jquery-3.3.1.min.js></script>
-    <script src=../lib/bootstrap.min.js></script>
+    <script src="../lib/jquery-3.3.1.min.js"></script>
+    <script src="../lib/bootstrap.min.js"></script>
 </body>
