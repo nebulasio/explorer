@@ -100,9 +100,9 @@ public class NebTransactionService {
 
     }
 
-    public Long countNormalTxnCntByFromTo(String addressHash) {
+    public int countNormalTxnCntByFromTo(String addressHash) {
         if (StringUtils.isEmpty(addressHash)) {
-            return 0L;
+            return 0;
         }
         return nebTransactionMapper.countNormalTxnCntByFromTo(addressHash);
     }
