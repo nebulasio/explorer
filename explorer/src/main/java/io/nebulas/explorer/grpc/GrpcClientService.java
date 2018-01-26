@@ -22,7 +22,7 @@ import rpcpb.ApiServiceGrpc;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -79,7 +79,7 @@ public class GrpcClientService {
                                             .miner(block.getMiner())
                                             .coinbase(block.getCoinbase())
                                             .nonce(block.getNonce())
-                                            .createdAt(new Date()).build();
+                                            .createdAt(new Date(System.currentTimeMillis())).build();
                                     nebBlockService.addNebBlock(newBlock);
                                     List<Transaction> txs = block.getTransactions();
 

@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.nebulas.explorer.mapper.NebTransactionMapper">
+    <resultMap id="BaseResultMap" type="NebTransaction">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="hash" property="hash" jdbcType="VARCHAR"/>
+        <result column="block_height" property="blockHeight" jdbcType="BIGINT"/>
+        <result column="block_hash" property="blockHash" jdbcType="VARCHAR"/>
+        <result column="from" property="from" jdbcType="VARCHAR"/>
+        <result column="to" property="to" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="value" property="value" jdbcType="VARCHAR"/>
+        <result column="nonce" property="nonce" jdbcType="BIGINT"/>
+        <result column="timestamp" property="timestamp" jdbcType="TIMESTAMP"/>
+        <result column="type" property="type" jdbcType="TINYINT"/>
+        <result column="data" property="data" jdbcType="VARCHAR"/>
+        <result column="gas_price" property="gasPrice" jdbcType="VARCHAR"/>
+        <result column="gas_limit" property="gasLimit" jdbcType="VARCHAR"/>
+        <result column="gas_used" property="gasUsed" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
     <sql id="Base_Column_List">
       `id`,
       `hash`,
@@ -20,14 +36,18 @@
       `gas_limit`,
       `gas_used`,
       `created_at`
-  </sql>
-    <select id="getByHash" resultType="NebTransaction" parameterType="java.lang.String">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM `neb_transaction`
-        WHERE `hash` = #{hash,jdbcType=VARCHAR}
-    </select>
+    </sql>
 
+    <insert id="addNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
+        INSERT INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,
+        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
+        VALUES
+        (
+        #{id}, #{hash}, #{blockHash}, #{blockHeight}, #{from}, #{to}, #{status}, #{value},
+        #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}
+        , #{gasLimit}, #{gasUsed}, #{createdAt}
+        )
+    </insert>
     <insert id="batchAddNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
         INSERT INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,
         `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
@@ -41,21 +61,43 @@
         </foreach>
     </insert>
 
+    <select id="getByHash" resultType="NebTransaction" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `hash` = #{hash,jdbcType=VARCHAR}
+    </select>
+
     <select id="getByBlockHeight" resultType="NebTransaction" parameterType="java.lang.Long">
         SELECT <include refid="Base_Column_List"/>
         FROM `neb_transaction`
         WHERE `block_height` = #{blockHeight}
     </select>
 
-    <insert id="addNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
-        INSERT INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,
-        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
-        VALUES
-            (
-            #{id}, #{hash}, #{blockHash}, #{blockHeight}, #{from}, #{to}, #{status}, #{value},
-            #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}
-            , #{gasLimit}, #{gasUsed}, #{createdAt}
-            )
-    </insert>
+    <select id="countNormalTxCntByBlockHeight" parameterType="java.lang.Long" resultType="java.lang.Integer" >
+        SELECT count(1)
+        FROM neb_transaction
+        WHERE type = 0 and block_height = #{blockHeight,jdbcType=BIGINT}
+    </select>
 
+    <select id="findNormalTxInBlockByBlockHeight" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM neb_transaction
+        WHERE type = 0 and block_height = #{blockHeight,jdbcType=BIGINT}
+        ORDER BY timestamp desc
+    </select>
+
+    <select id="countNormalTxInBlock" parameterType="map" resultType="io.nebulas.explorer.domain.BlockSummary">
+        select
+        block_height as blockHeight,
+        count(1) as txCnt,
+        sum(cast(gas_used as SIGNED)) as gasUsed,
+        sum(cast(gas_limit as SIGNED)) as gasLimit,
+        sum(cast(gas_price as SIGNED))/count(1) as avgGasPrice
+        from neb_transaction
+        where type = 0 and block_height in
+        <foreach collection="blockHeights" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+        group by block_height
+    </select>
 </mapper>

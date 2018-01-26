@@ -1,5 +1,6 @@
 package io.nebulas.explorer.mapper;
 
+import io.nebulas.explorer.domain.BlockSummary;
 import io.nebulas.explorer.domain.NebTransaction;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,12 +19,17 @@ import java.util.List;
 @Mapper
 public interface NebTransactionMapper {
 
-   NebTransaction getByHash(String hash);
+    Integer addNebTransaction(NebTransaction transaction);
 
-   Integer batchAddNebTransaction(@Param("transactions") List<NebTransaction> transactions);
+    Integer batchAddNebTransaction(@Param("transactions") List<NebTransaction> transactions);
 
-   List<NebTransaction> getByBlockHeight(Long blockHeight);
+    NebTransaction getByHash(String hash);
 
-   Integer addNebTransaction(NebTransaction transaction);
+    List<NebTransaction> getByBlockHeight(Long blockHeight);
 
+    int countNormalTxCntByBlockHeight(Long blockHeight);
+
+    List<NebTransaction> findNormalTxInBlockByBlockHeight(Long blockHeight);
+
+    List<BlockSummary> countNormalTxInBlock(@Param("blockHeights") List<Long> blockHeights);
 }
