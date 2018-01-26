@@ -38,7 +38,7 @@ public interface NebTransactionMapper {
 
     List<Map<String, String>> countNormalTxnCntMapByTo(List<String> addressHashes);
 
-    Long countNormalTxnCntByFromTo(String addressHash);
+    int countNormalTxnCntByFromTo(String addressHash);
 
     List<NebTransaction> findNormalTxnByFromTo(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
 }
