@@ -80,7 +80,7 @@ public class BlockController {
             model.addAttribute("txCntMap", txCntMap);
         }
         model.addAttribute("blockPageIterator", blockPageIterator);
-        return "all";
+        return "block/all";
     }
 
 
