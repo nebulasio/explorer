@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Title.
@@ -32,4 +33,12 @@ public interface NebTransactionMapper {
     List<NebTransaction> findNormalTxInBlockByBlockHeight(Long blockHeight);
 
     List<BlockSummary> countNormalTxInBlock(@Param("blockHeights") List<Long> blockHeights);
+
+    List<Map<String, String>> countNormalTxnCntMapByFrom(List<String> addressHashes);
+
+    List<Map<String, String>> countNormalTxnCntMapByTo(List<String> addressHashes);
+
+    Long countNormalTxnCntByFromTo(String addressHash);
+
+    List<NebTransaction> findNormalTxnByFromTo(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
 }

@@ -68,7 +68,7 @@ public class NebTransactionService {
         return nebTransactionMapper.countNormalTxCntByBlockHeight(blockHeight);
     }
 
-    public List<NebTransaction> findNormalTxsByBlockHeight(Long blockHeight) {
+    public List<NebTransaction> findNormalTxnsByBlockHeight(Long blockHeight) {
         return nebTransactionMapper.findNormalTxInBlockByBlockHeight(blockHeight);
     }
 
@@ -79,4 +79,39 @@ public class NebTransactionService {
         List<BlockSummary> blockSummaryList = nebTransactionMapper.countNormalTxInBlock(blockHeights);
         return blockSummaryList.stream().collect(Collectors.toMap(BlockSummary::getBlockHeight, summary -> summary));
     }
+
+    public Map<String, Integer> countNormalTxnCntByFromTo(List<String> addressHashes) {
+        if (CollectionUtils.isEmpty(addressHashes)) {
+            return Collections.emptyMap();
+        }
+        List<Map<String, String>> fromList = nebTransactionMapper.countNormalTxnCntMapByFrom(addressHashes);
+        Map<String, Integer> fromCntMap = fromList.stream()
+                .collect(Collectors.toMap(k -> k.get("from"), v -> Integer.valueOf(v.get("cnt"))));
+
+        List<Map<String, String>> toList = nebTransactionMapper.countNormalTxnCntMapByTo(addressHashes);
+        Map<String, Integer> toCntMap = toList.stream()
+                .collect(Collectors.toMap(k -> k.get("to"), v -> Integer.valueOf(v.get("cnt"))));
+
+        return addressHashes.stream().collect(Collectors.toMap(k -> k, v -> {
+            Integer fromCnt = fromCntMap.get(v);
+            Integer toCnt = toCntMap.get(v);
+            return (fromCnt == null ? 0 : fromCnt) + (toCnt == null ? 0 : toCnt);
+        }));
+
+    }
+
+    public Long countNormalTxnCntByFromTo(String addressHash) {
+        if (StringUtils.isEmpty(addressHash)) {
+            return 0L;
+        }
+        return nebTransactionMapper.countNormalTxnCntByFromTo(addressHash);
+    }
+
+    public List<NebTransaction> findNormalTxnByFromTo(String addressHash, int offset, int limit) {
+        if (StringUtils.isEmpty(addressHash)) {
+            return Collections.emptyList();
+        }
+        return nebTransactionMapper.findNormalTxnByFromTo(addressHash, offset, limit);
+    }
+
 }

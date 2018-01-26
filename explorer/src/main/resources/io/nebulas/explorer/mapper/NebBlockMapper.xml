@@ -34,6 +34,13 @@
         WHERE `height` = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="getByHash" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_block`
+        WHERE `hash` = #{hash,jdbcType=VARCHAR}
+    </select>
+
     <select id="count" resultType="java.lang.Integer">
         select count(1)
         from neb_block

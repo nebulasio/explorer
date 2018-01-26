@@ -4,6 +4,7 @@ import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.mapper.NebBlockMapper;
 import io.nebulas.explorer.model.PageIterator;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,6 +49,19 @@ public class NebBlockService {
      */
     public NebBlock getByHeight(Long height) {
         return nebBlockMapper.getByHeight(height);
+    }
+
+    /**
+     * Get nebulas block information by block hash
+     *
+     * @param hash block hash
+     * @return block entity
+     */
+    public NebBlock getByHash(String hash){
+       if(StringUtils.isEmpty(hash)){
+           return null;
+       }
+       return nebBlockMapper.getByHash(hash);
     }
 
     /**

@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS `neb_address` (
   `type`       TINYINT(2)  NOT NULL         DEFAULT 0
   COMMENT 'address type, 0: Normal; 1: Contract',
   `alias`      VARCHAR(256) COMMENT 'address alias',
-  `created_at` TIMESTAMP   NOT NULL         DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `current_balance` decimal(30,18)  unsigned  NOT NULL  DEFAULT '0.000000000000000000' COMMENT 'address current balance',
+  `created_at`  timestamp NOT NULL  DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`  timestamp NULL  DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY `uniq_neb_address_hash` (`hash`)
 )
   ENGINE = MyISAM
