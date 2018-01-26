@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="static/frontend/img/logo.png">
 <link rel="stylesheet" href="static/frontend/css/base.css" />
 <link rel="stylesheet" href="static/frontend/css/home.css" />
-<script type="text/javascript" src="dist/wallet.js"></script>
+<script type="text/javascript" src="static/frontend/js/wallet.js"></script>
 </head>
 <body>
 <section id="menu" class="white">
@@ -103,13 +103,13 @@ Entering your private key on a website dangerous. If our website is compromised 
 <div class="col-md-6">
 	<div class="form-group">
 		<label for="raw">Raw Transaction</label>
-		<textarea class="form-control" rows="3" id="raw"></textarea>
+		<textarea class="form-control" rows="8" id="raw"></textarea>
 	</div>
 </div>
 <div class="col-md-6">
 	<div class="form-group">
 		<label for="signed">Signed Transaction</label>
-		<textarea class="form-control" rows="3" id="signed"></textarea>
+		<textarea class="form-control" rows="8" id="signed"></textarea>
 	</div>
 </div>
 <div class="col-md-12">
@@ -119,14 +119,14 @@ Entering your private key on a website dangerous. If our website is compromised 
 <div class="container transaction" id="receipt_div" style="display:none;">
 <div class="col-md-6">
 	<div class="form-group">
-		<label for="raw">hxhash</label>
-		<textarea readonly id="receipt" rows="3" class="form-control"></textarea>
+		<label for="raw">txhash</label>
+		<textarea readonly id="receipt" rows="6" class="form-control"></textarea>
 	</div>
 </div>
 <div class="col-md-6">
 	<div class="form-group">
 		<label for="signed">receipt</label>
-		<textarea readonly id="receipt_state" rows="3" class="form-control"></textarea>
+		<textarea readonly id="receipt_state" rows="6" class="form-control"></textarea>
 	</div>
 </div>
 </div><!-- hxhash -->
