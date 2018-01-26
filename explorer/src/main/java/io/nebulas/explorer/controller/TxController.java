@@ -35,4 +35,10 @@ public class TxController extends BaseController {
         return "txs";
     }
 
+    @RequestMapping("/txsPending")
+    public String txsPending(Model model) {
+        execute(model);
+        return "txsPending";
+    }
+
 }
