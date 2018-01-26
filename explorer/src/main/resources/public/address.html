@@ -6,8 +6,28 @@
     <link rel=stylesheet href=../css/common.css>
     <meta name=viewport content="width=device-width, initial-scale=1.0">
     <style>
-        .overview {
-            color: #333;
+        td.out {
+            width: 50px;
+        }
+
+        td.out::before {
+            background-color: #e67e22;
+            border-radius: 4px;
+            color: white;
+            content: "out";
+            padding: 3px 5px;
+        }
+
+        .container .table th {
+            border-top: 0;
+        }
+
+        .container .title {
+            overflow: auto;
+        }
+
+        .txfee {
+            color: silver;
         }
     </style>
     <title>Address</title>
@@ -19,11 +39,11 @@
         <div class=container>
             <!-- get grouped for better mobile display -->
             <div class="mt20 navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                <button type=button class="navbar-toggle collapsed" data-toggle=collapse data-target=#bs-example-navbar-collapse-1 aria-expanded=false>
+                    <span class=sr-only>Toggle navigation</span>
+                    <span class=icon-bar></span>
+                    <span class=icon-bar></span>
+                    <span class=icon-bar></span>
                 </button>
                 <h4>Explorer</h4>
             </div>
@@ -31,8 +51,8 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <div class=navbar-right>
                     <form class="navbar-form text-right">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
+                        <div class=form-group>
+                            <input type=text class=form-control placeholder=Search>
                         </div>
                         <button type="submit" class="btn btn-default">GO</button>
                     </form>
@@ -113,23 +133,164 @@
         </div>
     </div>
 
-    <div class=container>
-        <div class=row>
-            <div class=col-xs-6>
-                <table class=table>
-                    <th>
-                        <b class=overview>Overview</b> | Ethermine
-                    </th>
-                    <td class="qrcode text-right">&lt;img src=%qrcode&gt;</td>
-                </table>
-            </div>
-            <div class=col-xs-6></div>
-        </div>
+    <div class="c333 container">
+        <table class=table>
+            <tr>
+                <th>
+                    Overview
+                    <span class=c777> | Ethermine</span>
+                </th>
+                <th class=text-right>
+                    * uncomment this img tag
+                    <!-- <img src=%qrcode> -->
+                </th>
+            </tr>
+            <tr>
+                <td>ETH Balance:</td>
+                <td>%xxx</td>
+            </tr>
+            <tr>
+                <td>Ether ETH USD Value:</td>
+                <td>%xxx</td>
+            </tr>
+            <tr>
+                <td>Mined:</td>
+                <td>%xxx</td>
+            </tr>
+            <tr>
+                <td>No Of Transactions:</td>
+                <td>%xxx</td>
+            </tr>
+        </table>
     </div>
 
+    <div class=container>
+        <ul class="nav nav-tabs">
+            <!--
+                when a tab is shown, it's tab button (.nav-tabs > li) has "active" class, i.e. <li class=active>
+                <a> inside active tab can not be clicked, so it does not have href
 
+                NOTE: if url query does not contain "tab" parameter, 302 to ?tab=transactions
 
-    <span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden=true></span>
+                -->
+            <li role="presentation" class=active>
+                <!-- href=?tab=transactions -->
+                <a>Transactions</a>
+            </li>
+            <li role="presentation">
+                <a href=?tab=mined-blocks>Mined Blocks</a>
+            </li>
+        </ul>
+    </div>
+
+    <!--    Transactions
+        ============================================================ -->
+    <div class=container>
+        <div class="mt20 title">
+            <span class="c333 glyphicon glyphicon-sort-by-attributes-alt" aria-hidden=true></span>
+            Latest %1 txns from a total Of
+            <a href=txs.html>%2</a>
+            <a class="btn btn-default pull-right" href=txs.html?id=%id-from-url role=button>View All</a>>
+        </div>
+
+        <table class="mt20 table">
+            <tr>
+                <th>TxHash</th>
+                <th>Block</th>
+                <th>Age</th>
+                <th>From</th>
+                <th></th>
+                <th>To</th>
+                <th>Value</th>
+                <th class=txfee>[TxFee]</th>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href=tx.html?id=%TxHash>%TxHash</a>
+                </td>
+                <td>
+                    <a href=block.html?id=%Block>%Block</a>
+                </td>
+                <td>%Age</td>
+                <td>%From</td>
+                <td class="out text-uppercase"></td>
+                <td>
+                    <a href=address.html?id=%To>%To</a>
+                </td>
+                <td>%Value</td>
+                <td class=TxFee>%TxFee</td>
+            </tr>
+        </table>
+    </div>
+
+    <!--    Mined Blocks
+        ============================================================ -->
+    <div class=container>
+        <div class="mt20 title">
+            <span class="c333 glyphicon glyphicon-sort-by-attributes-alt" aria-hidden=true></span>
+            Latest %1 blocks (From a total of
+            <a href=blocks.html?m=%id-from-url>%2</a> with %3 mined)
+            <a class="btn btn-default pull-right" href=blocks.html?id=%id-from-url role=button>View All</a>
+        </div>
+
+        <table class="mt20 table">
+            <tr>
+                <th>Block</th>
+                <th>Age</th>
+                <th>txn</th>
+                <th>Difficulty</th>
+                <th>GasUsed</th>
+                <th>Reward</th>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href=block.html?id=%Block>%Block</a>
+                </td>
+                <td>%Age</td>
+                <td>%txn</td>
+                <td>%Difficulty</td>
+                <td>%GasUsed</td>
+                <td>%Reward</td>
+            </tr>
+        </table>
+    </div>
+
+    <!--    Mined Uncles
+        ============================================================ -->
+    <!-- <div class=container>
+        <div class="mt20 title">
+            <span class="c333 glyphicon glyphicon-sort-by-attributes-alt" aria-hidden=true></span>
+            Latest %1 uncles (From a total of
+            <a href=uncles.html?id=%id-from-url>%2</a> with %3 mined)
+            <a class="btn btn-default pull-right" href=uncles.html?id=%id-from-url role=button>View All</a>
+        </div>
+
+        <table class="mt20 table">
+            <tr>
+                <th>Block</th>
+                <th>Age</th>
+                <th>UncleNumber</th>
+                <th>Difficulty</th>
+                <th>GasUsed</th>
+                <th>Reward</th>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href=block.html?id=%Block>%Block</a>
+                </td>
+                <td>%Age</td>
+                <td>
+                    <a href=uncle.html?id=%perhaps-uncle-id>%UncleNumber</a>
+                </td>
+                <td>%Difficulty</td>
+                <td>%GasUsed</td>
+                <td>%Reward</td>
+            </tr>
+        </table>
+    </div> -->
 
     <!--    [components] footer
         ============================================================ -->
