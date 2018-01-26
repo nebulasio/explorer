@@ -6,64 +6,16 @@
     <link rel="stylesheet" href="../lib/bootstrap.min.css">
     <link rel="stylesheet" href="../css/common.css">
     <style>
-        .banner {
-            width: 100%;
-            background-color: #f7f7f7;
-            height: 800px;
-            position: relative;
+        .table tbody tr td {
+            border: 0;
         }
 
-        #myTab {
-            position: absolute;
-            top: 0%;
-            left: 0%;
-        }
-
-        .head {
-            width: 90%;
-            position: absolute;
-            top: 3%;
-        }
-
-        .tab-content {
-            width: 90%;
-            position: absolute;
-            height: 700px;
-            top: 8%;
-            left: 5%;
-            background-color: #fff;
-        }
-
-        .overview_tab {
-            width: 100%;
-            height: 60px;
-            background-color: #31708f;
-            position: absolute;
-            color: #fff;
-        }
-
-        .overview_banner_list {
-            position: absolute;
-            top: 18%;
-            height: 700px;
+        textarea {
             width: 100%;
         }
 
-        .overview_banner_list>div {
-            width: 100%;
-            height: 40px;
-        }
-
-        .list_left {
-            width: 10%;
-            position: absolute;
-            left: 4%;
-        }
-
-        .list_right {
-            width: 80%;
-            left: 18%;
-            position: absolute;
+        tr>td:first-child::after {
+            content: ":";
         }
     </style>
     <title>Block</title>
@@ -154,130 +106,104 @@
 </nav>
 
 
-<div class="container">
-    <div class="banner">
-        <div class="head">
+    <!--    tab buttons
+        ============================================================ -->
+        <div class=container>
             <ul class="nav nav-tabs" id="myTab">
                 <li class="active">
-                    <a href="?tab=verview">Overview</a>
+                    <a>Overview</a>
                 </li>
                 <li>
-                    <a href="?tab=comment">Comments</a>
+                    <a href="?tab=txsInternal">Comments</a>
                 </li>
             </ul>
         </div>
-
-        <div class="tab">
-            <div class="overview_tab t8">
-                <h3>Block Information</h3>
-            </div>
-            <div class="overview_banner_list t18">
-                <div class="height">
-                    <span class="list_left">Height:</span>
-                    <span class="list_right">
-                        <button class="prev" value="<prev"></button>
-                        4567814
-                        <button class="next" value="next>"></button>
-                    </span>
-                </div>
-                <div class="TimeStamp">
-                    <span class="list_left">TimeStamp:</span>
-                    <span class="list_right">
-                        2 hrs 3 mins ago (Jan-23-2018 03:53:04 AM +UTC)
-                    </span>
-                </div>
-                <div class="Transactions">
-                    <span class="list_left">Transactions:</span>
-                    <span class="list_right">
-                        <a href="#">274 transactions</a> and
-                        <a href="#">10 contract internal transactions</a> in this block
-                    </span>
-                </div>
-                <div class="Hash">
-                    <span class="list_left">Hash:</span>
-                    <span class="list_right">
-                        0x4edab5c4735f10e3a8aa2297848f483858b252560dfbfbe4c9d657d55345e762
-                    </span>
-                </div>
-                <div class=" Parent Hash">
-                    <span class="list_left">Parent Hash:</span>
-                    <span class="list_right">
-                        <a href="#">0x50780c99ac0b066b95340554c63045970e5b863776a2a0e4ab3e925c0e85d5a6</a>
-                    </span>
-                </div>
-                <div class="Sha3Uncles">
-                    <span class="list_left">Sha3Uncles:</span>
-                    <span class="list_right">
-                        0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347
-                    </span>
-                </div>
-                <div class="  Mined By">
-                    <span class="list_left">Mined By:</span>
-                    <span class="list_right">
-                        <a href="#">0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5</a> (Nanopool) in 29 secs
-                    </span>
-                </div>
-                <div class="Difficulty">
-                    <span class="list_left">Difficulty:</span>
-                    <span class="list_right">
-                        2,381,548,271,824,879
-                    </span>
-                </div>
-                <div class="Total Difficulty">
-                    <span class="list_left">Total Difficulty:</span>
-                    <span class="list_right">
-                        2,174,949,865,886,041,068,523
-                    </span>
-                </div>
-                <div class="Size">
-                    <span class="list_left">Size:</span>
-                    <span class="list_right">
-                        35779 bytes
-                    </span>
-                </div>
-                <div class="Gas Used">
-                    <span class="list_left">Gas Used:</span>
-                    <span class="list_right">
-                        7,984,916 (99.81%)
-                    </span>
-                </div>
-                <div class="Gas Limit">
-                    <span class="list_left">Gas Limit:</span>
-                    <span class="list_right">
-                        8,000,029
-                    </span>
-                </div>
-                <div class="Nonce">
-                    <span class="list_left">Nonce:</span>
-                    <span class="list_right">
-                        0x889303e4c001686f3e
-                    </span>
-                </div>
-                <div class="Block Reward">
-                    <span class="list_left">Block Reward:</span>
-                    <span class="list_right">
-                        3.27657259285203186 Ether (3 + 0.27657259285203186)
-                    </span>
-                </div>
-                <div class="Uncles Reward">
-                    <span class="list_left">Uncles Reward:</span>
-                    <span class="list_right">
-                        0
-                    </span>
-                </div>
-                <div class="Extra Data">
-                    <span class="list_left">Extra Data:</span>
-                    <span class="list_right">
-                        nanopool.org (Hex:0x6e616e6f706f6f6c2e6f7267)
-                    </span>
-                </div>
+    
+        <div class=container>
+            <h3>Block Information</h3>
+        </div>
+    
+        <!--    tabs
+            ============================================================ -->
+        <div class=container>
+            <div class=tab>
+                <table class=table>
+                    <tr>
+                        <td>Height</td>
+                        <td>4567814</td>
+                    </tr>
+                    <tr>
+                        <td>TimeStamp</td>
+                        <td>2 hrs 3 mins ago (Jan-23-2018 03:53:04 AM +UTC)</td>
+                    </tr>
+                    <tr>
+                        <td>Transactions</td>
+                        <td>
+                            274 transactions and 10 contract internal transactions in this block
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hash</td>
+                        <td>0x4edab5c4735f10e3a8aa2297848f483858b252560dfbfbe4c9d657d55345e762</td>
+                    </tr>
+                    <tr>
+                        <td>Parent Hash</td>
+                        <td>0x50780c99ac0b066b95340554c63045970e5b863776a2a0e4ab3e925c0e85d5a6</td>
+                    </tr>
+                    <tr>
+                        <td>Sha3Uncles</td>
+                        <td>
+                            0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mined By</td>
+                        <td>0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5 (Nanopool) in 29 secs</td>
+                    </tr>
+                    <tr>
+                        <td>Difficulty</td>
+                        <td>2,381,548,271,824,879</td>
+                    </tr>
+                    <tr>
+                        <td>Total Difficulty</td>
+                        <td>2,174,949,865,886,041,068,523</td>
+                    </tr>
+                    <tr>
+                        <td>Size</td>
+                        <td>35779 bytes</td>
+                    </tr>
+                    <tr>
+                        <td>Gas Used</td>
+                        <td>7,984,916 (99.81%)</td>
+                    </tr>
+                    <tr>
+                        <td>Gas Limit</td>
+                        <td>8,000,029</td>
+                    </tr>
+                    <tr>
+                        <td>Nonce</td>
+                        <td>0x889303e4c001686f3e</td>
+                    </tr>
+                    <tr>
+                        <td>Block Reward</td>
+                        <td>
+                            3.27657259285203186 Ether (3 + 0.27657259285203186)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Uncles Reward</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Extra Data</td>
+                        <td>nanopool.org (Hex:0x6e616e6f706f6f6c2e6f7267)
+                        </td>
+                    </tr>
+                    
+                </table>
             </div>
         </div>
-
-        <div class=tab></div>
-    </div>
-</div>
-
+    
 <!--    [components] footer
     ============================================================ -->
 <div class=footer>
