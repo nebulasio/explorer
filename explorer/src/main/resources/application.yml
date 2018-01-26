@@ -89,6 +89,9 @@ spring:
 server:
   port: 32736
 environment: test
+page:
+  baseUrl: http://39.106.136.143
+  hostUrl: http://39.106.136.143
 
 ---
 spring:
