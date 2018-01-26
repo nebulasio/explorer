@@ -1,7 +1,7 @@
 package io.nebulas.explorer.service;
 
 import io.nebulas.explorer.domain.NebTransaction;
-import io.nebulas.explorer.repository.NebTransactionRepository;
+import io.nebulas.explorer.mapper.NebTransactionMapper;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -20,20 +20,20 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class NebTransactionService {
-    private final NebTransactionRepository nebTransactionRepository;
+    private final NebTransactionMapper nebTransactionMapper;
 
-    public Integer saveNebTransaction(NebTransaction transaction) {
-        return nebTransactionRepository.saveNebTransaction(transaction);
+    public Integer addNebTransaction(NebTransaction transaction) {
+        return nebTransactionMapper.addNebTransaction(transaction);
     }
 
     /**
-     * batch save nebluas transaction entity
+     * batch add nebluas transaction entity
      *
      * @param transactions
      * @return
      */
-    public Integer batchSaveNebTransaction(List<NebTransaction> transactions) {
-        return nebTransactionRepository.batchSaveNebTransaction(transactions);
+    public Integer batchAddNebTransaction(List<NebTransaction> transactions) {
+        return nebTransactionMapper.batchAddNebTransaction(transactions);
     }
 
     /**
@@ -46,11 +46,11 @@ public class NebTransactionService {
         if (StringUtils.isEmpty(hash)) {
             return null;
         }
-        return nebTransactionRepository.selectByHash(hash);
+        return nebTransactionMapper.getByHash(hash);
     }
 
     public List<NebTransaction> getNebTransactionByBlockHeight(Long blockHeight) {
-        return nebTransactionRepository.selectByBlockHeight(blockHeight);
+        return nebTransactionMapper.getByBlockHeight(blockHeight);
     }
 
 }

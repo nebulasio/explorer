@@ -5,6 +5,8 @@ logging:
 spring:
     application:
       name: explorer
+    aop:
+      proxy-target-class: true
     datasource:
       sql-script-encoding: UTF-8
       platform: mysql
@@ -15,13 +17,22 @@ spring:
       password: 123456
       separator: ;
       name: explorer
+      continue-on-error: false
+      jmx-enabled: true
+      type: com.zaxxer.hikari.HikariDataSource
       hikari:
-        connection-timeout: 60000
-        maximum-pool-size: 5
-
-mybatis:
-  config-location: classpath:mybatis-config.xml
-
+        pool-name: explorer
+        maximum-pool-size: 30
+        allow-pool-suspension: true
+        login-timeout: 100
+        connection-init-sql: SELECT 1
+        connection-test-query: SELECT 1
+        connection-timeout: 5000
+        validation-timeout: 3000
+        minimum-idle: 1
+        auto-commit: false
+        initializationFailTimeout: 200
+        register-mbeans: false
 grpc:
   client:
     local-grpc-server:
@@ -59,9 +70,22 @@ spring:
       password: 438Wd73o23Rq
       separator: ;
       name: expldev
+      continue-on-error: false
+      jmx-enabled: true
+      type: com.zaxxer.hikari.HikariDataSource
       hikari:
-        connection-timeout: 60000
-        maximum-pool-size: 5
+        pool-name: explorer
+        maximum-pool-size: 30
+        allow-pool-suspension: true
+        login-timeout: 100
+        connection-init-sql: SELECT 1
+        connection-test-query: SELECT 1
+        connection-timeout: 5000
+        validation-timeout: 3000
+        minimum-idle: 1
+        auto-commit: false
+        initializationFailTimeout: 200
+        register-mbeans: false
 server:
   port: 32736
 environment: test

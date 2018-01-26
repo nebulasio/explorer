@@ -1,6 +1,7 @@
 package io.nebulas.explorer.service;
 
-import io.nebulas.explorer.repository.NebAddressRepository;
+import io.nebulas.explorer.domain.NebAddress;
+import io.nebulas.explorer.mapper.NebAddressMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class NebAddressService {
-   private final NebAddressRepository nebAddressRepository;
+    private final NebAddressMapper nebAddressMapper;
 
-
+    public NebAddress getByHash(String hash) {
+        return nebAddressMapper.getByHash(hash);
+    }
 }

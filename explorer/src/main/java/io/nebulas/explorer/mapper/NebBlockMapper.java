@@ -15,9 +15,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface NebBlockMapper {
 
-    Integer save(NebBlock block);
+    Integer add(NebBlock block);
 
-    NebBlock selectByHeight(Long height);
+    NebBlock getByHeight(Long height);
 
     Long getMaxHeight();
 }

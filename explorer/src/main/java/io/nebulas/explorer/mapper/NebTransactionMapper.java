@@ -18,12 +18,12 @@ import java.util.List;
 @Mapper
 public interface NebTransactionMapper {
 
-   NebTransaction selectByHash(String hash);
+   NebTransaction getByHash(String hash);
 
-   Integer batchSaveNebTransaction(@Param("transactions") List<NebTransaction> transactions);
+   Integer batchAddNebTransaction(@Param("transactions") List<NebTransaction> transactions);
 
-   List<NebTransaction> selectByBlockHeight(Long blockHeight);
+   List<NebTransaction> getByBlockHeight(Long blockHeight);
 
-   Integer saveNebTransaction(NebTransaction transaction);
+   Integer addNebTransaction(NebTransaction transaction);
 
 }

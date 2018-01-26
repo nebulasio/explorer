@@ -1,7 +1,7 @@
 package io.nebulas.explorer.service;
 
 import io.nebulas.explorer.domain.NebBlock;
-import io.nebulas.explorer.repository.NebBlockRepository;
+import io.nebulas.explorer.mapper.NebBlockMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +17,19 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class NebBlockService {
-    private final NebBlockRepository nebBlockRepository;
+    private final NebBlockMapper nebBlockMapper;
 
     /**
-     * save nebulas block
+     * add nebulas block
      *
      * @param entity
      * @return
      */
-    public boolean saveNebBlock(NebBlock entity) {
+    public boolean addNebBlock(NebBlock entity) {
         if (null == entity) {
             return false;
         }
-        return nebBlockRepository.save(entity) > 0;
+        return nebBlockMapper.add(entity) > 0;
     }
 
     /**
@@ -39,11 +39,11 @@ public class NebBlockService {
      * @return block entity
      */
     public NebBlock getByHeight(Long height) {
-        return nebBlockRepository.getByHeight(height);
+        return nebBlockMapper.getByHeight(height);
     }
 
     public Long getMaxHeight() {
-        return nebBlockRepository.getMaxHeight();
+        return nebBlockMapper.getMaxHeight();
     }
 
 }
