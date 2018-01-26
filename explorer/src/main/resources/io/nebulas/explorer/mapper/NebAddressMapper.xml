@@ -8,7 +8,6 @@
         <result column="alias" property="alias" jdbcType="VARCHAR"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
     </resultMap>
-
     <sql id="Base_Column_List">
         `id`, `hash`, `type`, `alias`, `created_at`
     </sql>

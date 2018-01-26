@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class NebAddressService {
     private final NebAddressMapper nebAddressMapper;
 
-    public NebAddress getByHash(String hash) {
+    public NebAddress getNebAddressByHash(String hash) {
         return nebAddressMapper.getByHash(hash);
     }
 }

@@ -14,5 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface NebAddressMapper {
+
     NebAddress getByHash(String hash);
+
 }

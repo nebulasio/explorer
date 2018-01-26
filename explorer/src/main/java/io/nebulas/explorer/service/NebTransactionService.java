@@ -1,12 +1,17 @@
 package io.nebulas.explorer.service;
 
+import io.nebulas.explorer.domain.BlockSummary;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.mapper.NebTransactionMapper;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * nebulas transaction related operation service
@@ -22,6 +27,12 @@ import java.util.List;
 public class NebTransactionService {
     private final NebTransactionMapper nebTransactionMapper;
 
+    /**
+     * save single nebluas transaction entity
+     *
+     * @param transaction
+     * @return
+     */
     public Integer addNebTransaction(NebTransaction transaction) {
         return nebTransactionMapper.addNebTransaction(transaction);
     }
@@ -53,4 +64,19 @@ public class NebTransactionService {
         return nebTransactionMapper.getByBlockHeight(blockHeight);
     }
 
+    public int countNormalTxCntByBlockHeight(long blockHeight) {
+        return nebTransactionMapper.countNormalTxCntByBlockHeight(blockHeight);
+    }
+
+    public List<NebTransaction> findNormalTxsByBlockHeight(Long blockHeight) {
+        return nebTransactionMapper.findNormalTxInBlockByBlockHeight(blockHeight);
+    }
+
+    public Map<Long, BlockSummary> countNormalTxInBlock(List<Long> blockHeights) {
+        if (CollectionUtils.isEmpty(blockHeights)) {
+            return Collections.emptyMap();
+        }
+        List<BlockSummary> blockSummaryList = nebTransactionMapper.countNormalTxInBlock(blockHeights);
+        return blockSummaryList.stream().collect(Collectors.toMap(BlockSummary::getBlockHeight, summary -> summary));
+    }
 }

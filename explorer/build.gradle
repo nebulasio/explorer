@@ -97,6 +97,7 @@ dependencies {
     compile('org.mongodb:bson:3.6.1')
     compile project(':grpc-lib')
     compile('org.apache.commons:commons-lang3:3.4')
+    compile('org.apache.commons:commons-collections4:4.1')
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('mysql:mysql-connector-java')
     compileOnly('org.projectlombok:lombok')
