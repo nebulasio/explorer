@@ -1,5 +1,17 @@
 
-explorer/explorer/src/main/resources/public
+==================== git
+
+提交至
+https://github.com/nebulasio/explorer.git
+
+目前分支是 develop, 目录是
+explorer/explorer/src/main/resources/static
+
+页面生成 后 的地址
+http://39.106.136.143/
+
+页面生成 前 的地址
+http://39.106.136.143/html/index.html
 
 ==================== 目标
 
