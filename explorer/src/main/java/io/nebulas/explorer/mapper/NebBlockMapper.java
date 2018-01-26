@@ -26,7 +26,12 @@ public interface NebBlockMapper {
 
     NebBlock getByHash(String hash);
 
-    int count();
+    long count();
+
+    long countByMiner(String miner);
 
     List<NebBlock> findOrderByHeightDesc(@Param("offset") int offset, @Param("limit") int limit);
+
+    List<NebBlock> findByMiner(@Param("miner") String miner, @Param("offset") int offset, @Param("limit") int limit);
+
 }
