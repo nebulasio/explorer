@@ -3,36 +3,44 @@ server:
 logging:
   config: classpath:logback.xml
 spring:
-    application:
-      name: explorer
-    aop:
-      proxy-target-class: true
-    datasource:
-      sql-script-encoding: UTF-8
-      platform: mysql
-      initialize: false
-      schema: classpath:schema.sql
-      url: jdbc:mysql://127.0.0.1:3306/explorer?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
-      username: explorer
-      password: 123456
-      separator: ;
-      name: explorer
-      continue-on-error: false
-      jmx-enabled: true
-      type: com.zaxxer.hikari.HikariDataSource
-      hikari:
-        pool-name: explorer
-        maximum-pool-size: 30
-        allow-pool-suspension: true
-        login-timeout: 100
-        connection-init-sql: SELECT 1
-        connection-test-query: SELECT 1
-        connection-timeout: 5000
-        validation-timeout: 3000
-        minimum-idle: 1
-        auto-commit: false
-        initializationFailTimeout: 200
-        register-mbeans: false
+  application:
+    name: explorer
+  aop:
+    proxy-target-class: true
+  datasource:
+    sql-script-encoding: UTF-8
+    platform: mysql
+    initialize: false
+    schema: classpath:schema.sql
+    url: jdbc:mysql://127.0.0.1:3306/explorer?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
+    username: explorer
+    password: 123456
+    separator: ;
+    name: explorer
+    continue-on-error: false
+    jmx-enabled: true
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: explorer
+      maximum-pool-size: 30
+      allow-pool-suspension: true
+      login-timeout: 100
+      connection-init-sql: SELECT 1
+      connection-test-query: SELECT 1
+      connection-timeout: 5000
+      validation-timeout: 3000
+      minimum-idle: 1
+      auto-commit: false
+      initializationFailTimeout: 200
+      register-mbeans: false
+mybatis:
+  executor-type: simple
+  type-aliases-package: io.nebulas.explorer.domain
+  configuration:
+    cache-enabled: false
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 300
 grpc:
   client:
     local-grpc-server:
@@ -50,42 +58,42 @@ page:
 
 ---
 spring:
-    profiles: dev
-    thymeleaf:
-      cache: false
+  profiles: dev
+  thymeleaf:
+    cache: false
 environment: dev
 
 ---
 spring:
-    profiles: test
-    thymeleaf:
-      cache: true
-    datasource:
-      sql-script-encoding: UTF-8
-      platform: mysql
-      initialize: false
-      schema: classpath:schema.sql
-      url: jdbc:mysql://rm-2ze10u545o44d5pvy.mysql.rds.aliyuncs.com:3306/expldev?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
-      username: expldev
-      password: 438Wd73o23Rq
-      separator: ;
-      name: expldev
-      continue-on-error: false
-      jmx-enabled: true
-      type: com.zaxxer.hikari.HikariDataSource
-      hikari:
-        pool-name: explorer
-        maximum-pool-size: 30
-        allow-pool-suspension: true
-        login-timeout: 100
-        connection-init-sql: SELECT 1
-        connection-test-query: SELECT 1
-        connection-timeout: 5000
-        validation-timeout: 3000
-        minimum-idle: 1
-        auto-commit: false
-        initializationFailTimeout: 200
-        register-mbeans: false
+  profiles: test
+  thymeleaf:
+    cache: true
+  datasource:
+    sql-script-encoding: UTF-8
+    platform: mysql
+    initialize: false
+    schema: classpath:schema.sql
+    url: jdbc:mysql://rm-2ze10u545o44d5pvy.mysql.rds.aliyuncs.com:3306/expldev?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
+    username: expldev
+    password: 438Wd73o23Rq
+    separator: ;
+    name: expldev
+    continue-on-error: false
+    jmx-enabled: true
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: explorer
+      maximum-pool-size: 30
+      allow-pool-suspension: true
+      login-timeout: 100
+      connection-init-sql: SELECT 1
+      connection-test-query: SELECT 1
+      connection-timeout: 5000
+      validation-timeout: 3000
+      minimum-idle: 1
+      auto-commit: false
+      initializationFailTimeout: 200
+      register-mbeans: false
 server:
   port: 32736
 environment: test
@@ -95,7 +103,7 @@ page:
 
 ---
 spring:
-    profiles: prod
-    thymeleaf:
-      cache: true
+  profiles: prod
+  thymeleaf:
+    cache: true
 environment: production
