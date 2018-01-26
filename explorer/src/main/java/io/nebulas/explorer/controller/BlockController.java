@@ -1,5 +1,7 @@
 package io.nebulas.explorer.controller;
 
+import io.nebulas.explorer.config.YAMLConfig;
+import io.nebulas.explorer.core.BaseController;
 import io.nebulas.explorer.domain.BlockSummary;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
@@ -7,9 +9,9 @@ import io.nebulas.explorer.model.PageIterator;
 import io.nebulas.explorer.service.NebAddressService;
 import io.nebulas.explorer.service.NebBlockService;
 import io.nebulas.explorer.service.NebTransactionService;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,31 +32,47 @@ import java.util.stream.Collectors;
  * @since 2018-01-24
  */
 @Slf4j
-@AllArgsConstructor
 @Controller
 @RequestMapping("")
-public class BlockController {
+public class BlockController extends BaseController {
     private static final Integer PAGE_SIZE = 20;
     private final NebBlockService nebBlockService;
     private final NebTransactionService nebTransactionService;
     private final NebAddressService nebAddressService;
 
+
+    public BlockController(YAMLConfig config,
+                           NebBlockService nebBlockService,
+                           NebTransactionService nebTransactionService,
+                           NebAddressService nebAddressService) {
+        super(config);
+        this.nebBlockService = nebBlockService;
+        this.nebAddressService = nebAddressService;
+        this.nebTransactionService = nebTransactionService;
+    }
+
     /**
      * Generate block information page
      *
-     * @param height
+     * @param blkKey block hash or block height
      * @return
      */
-    @RequestMapping("/block/{height}")
-    public String detail(@PathVariable("height") Long height, Model model) {
-        NebBlock block = nebBlockService.getByHeight(height);
+    @RequestMapping("/block/{blkKey}")
+    public String detail(@PathVariable("blkKey") String blkKey, Model model) {
+        NebBlock block;
+        if (StringUtils.isNumeric(blkKey)) {
+            block = nebBlockService.getByHeight(Long.valueOf(blkKey));
+        } else {
+            block = nebBlockService.getByHash(blkKey);
+        }
+
         if (null == block) {
             return "";
         }
 
         model.addAttribute("block", block);
         model.addAttribute("txCnt", nebTransactionService.countNormalTxCntByBlockHeight(block.getHeight()));
-//        model.addAttribute("contractInternalTxCnt", 0); //todo
+        model.addAttribute("contractInternalTxCnt", 0); //todo
 
         NebAddress nebAddress = nebAddressService.getNebAddressByHash(block.getMiner());
         if (null != nebAddress) {

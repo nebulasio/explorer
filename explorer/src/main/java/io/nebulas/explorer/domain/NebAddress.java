@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -42,7 +43,14 @@ public class NebAddress implements Serializable {
      */
     private String alias;
 
+    /**
+     * address current balance
+     */
+    private BigDecimal currentBalance;
+
     private Date createdAt;
+
+    private Date updatedAt;
 
     private static final long serialVersionUID = 1L;
 }

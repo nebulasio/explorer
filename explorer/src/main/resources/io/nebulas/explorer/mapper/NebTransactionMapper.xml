@@ -69,12 +69,13 @@
     </select>
 
     <select id="getByBlockHeight" resultType="NebTransaction" parameterType="java.lang.Long">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM `neb_transaction`
         WHERE `block_height` = #{blockHeight}
     </select>
 
-    <select id="countNormalTxCntByBlockHeight" parameterType="java.lang.Long" resultType="java.lang.Integer" >
+    <select id="countNormalTxCntByBlockHeight" parameterType="java.lang.Long" resultType="java.lang.Integer">
         SELECT count(1)
         FROM neb_transaction
         WHERE type = 0 and block_height = #{blockHeight,jdbcType=BIGINT}
@@ -97,7 +98,41 @@
         sum(cast(gas_price as SIGNED))/count(1) as avgGasPrice
         from neb_transaction
         where type = 0 and block_height in
-        <foreach collection="blockHeights" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+        <foreach collection="blockHeights" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}
+        </foreach>
         group by block_height
+    </select>
+
+    <select id="countNormalTxnCntMapByFrom" parameterType="map" resultType="map">
+        SELECT `from`, count(1) as cnt
+        FROM `neb_transaction`
+        WHERE type = 0
+        and `from` in
+        <foreach collection="addressHashes" item="item" open="(" close=")" separator=",">${item,jdbcType=VARCHAR}</foreach>
+    </select>
+
+    <select id="countNormalTxnCntMapByTo" parameterType="map" resultType="java.util.Map">
+        SELECT `to`, count(1) as cnt
+        FROM `neb_transaction`
+        WHERE type = 0
+        and `to` in
+        <foreach collection="addressHashes" item="item" open="(" close=")" separator=",">${item,jdbcType=VARCHAR}</foreach>
+    </select>
+
+    <select id="countNormalTxnCntByFromTo" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_transaction`
+        WHERE type = 0
+          and (`from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR})
+    </select>
+
+    <select id="findNormalTxnByFromTo" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE type = 0
+        and (`from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR})
+        ORDER BY `timestamp` DESC
+        LIMIT ${offset},${limit}
     </select>
 </mapper>

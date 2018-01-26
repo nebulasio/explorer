@@ -117,13 +117,8 @@
                 <li class="active">
                     <a href="#Overview">Overview</a>
                 </li>
-                <li>
-                    <a href="#profile">Comments</a>
-                </li>
             </ul>
         </div>
-
-
         <div class="tab-content">
             <div class="tab-pane active" id="Overview">
                 <div class="overview_tab">
@@ -134,7 +129,7 @@
                         <span class="list_left">Height:</span>
                         <span class="list_right">
                             <button class="prev" value="prev"></button>
-                            <p th:text="${block.height}"/>
+                            <span th:text="${block.height}"/>
                             <button class="next" value="next"></button>
                         </span>
                     </div>
@@ -147,44 +142,29 @@
                     <div class="Transactions">
                         <span class="list_left">Transactions:</span>
                         <span class="list_right">
-                            <a href="#">274 transactions</a> and
-                            <a href="#">10 contract internal transactions</a> in this block
+                            <a href="" target="_blank" th:text="${txCnt +' transactions'}">8 transactions</a>
+                            <!--<span th:if="${contractInternalTxCnt != null && contractInternalTxCnt >0}">and-->
+                            <!--<a href="#" th:text="${contractInternalTxCnt+'contract internal transactions'}">10 contract internal transactions</a>-->
+                            <!--</span>-->
+                            in this block
                         </span>
                     </div>
                     <div class="Hash">
                         <span class="list_left">Hash:</span>
-                        <span class="list_right">
+                        <span class="list_right" th:text="${block.hash}">
                             0x4edab5c4735f10e3a8aa2297848f483858b252560dfbfbe4c9d657d55345e762
                         </span>
                     </div>
                     <div class=" Parent Hash">
                         <span class="list_left">Parent Hash:</span>
                         <span class="list_right">
-                            <a href="#">0x50780c99ac0b066b95340554c63045970e5b863776a2a0e4ab3e925c0e85d5a6</a>
-                        </span>
-                    </div>
-                    <div class="Sha3Uncles">
-                        <span class="list_left">Sha3Uncles:</span>
-                        <span class="list_right">
-                            0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347
+                            <a th:text="${block.parentHash}">0x50780c99ac0b066b95340554c63045970e5b863776a2a0e4ab3e925c0e85d5a6</a>
                         </span>
                     </div>
                     <div class="  Mined By">
                         <span class="list_left">Mined By:</span>
                         <span class="list_right">
-                            <a href="#">0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5</a> (Nanopool) in 29 secs
-                        </span>
-                    </div>
-                    <div class="Difficulty">
-                        <span class="list_left">Difficulty:</span>
-                        <span class="list_right">
-                            2,381,548,271,824,879
-                        </span>
-                    </div>
-                    <div class="Total Difficulty">
-                        <span class="list_left">Total Difficulty:</span>
-                        <span class="list_right">
-                            2,174,949,865,886,041,068,523
+                            <a href="#" th:text="${block.miner}">0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5</a> (Nanopool) in 29 secs
                         </span>
                     </div>
                     <div class="Size">
@@ -217,12 +197,6 @@
                             3.27657259285203186 Ether (3 + 0.27657259285203186)
                         </span>
                     </div>
-                    <div class="Uncles Reward">
-                        <span class="list_left">Uncles Reward:</span>
-                        <span class="list_right">
-                            0
-                        </span>
-                    </div>
                     <div class="Extra Data">
                         <span class="list_left">Extra Data:</span>
                         <span class="list_right">
@@ -231,78 +205,12 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane" id="profile">Comments...</div>
         </div>
 
     </div>
 </div>
-<div class="footer">
-    <div class=" footer_banner row">
-        <div class="footer_left col-md-3">
-            <div class="footer_left_up">
-                <img src="../img/logo.png"/>
-            </div>
-            <div class="footer_left_down">
-                <p>Etherscan is a Block Explorer and Analytics Platform for Ethereum, a decentralized smart contracts platform.</p>
-            </div>
-        </div>
-        <div class="footer_middle col-md-6">
-            <div class="footer_banner_tab">
-                <h4>Latest Discussions</h4>
-            </div>
-            <div class="footer_list">
-                <div class="footer_list_banner">
-                    <img src="../img/msg.png" alt=""/>
-                    <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments">Please, Please send the 1 ether back to my address 0x5b...</a>
-                </div>
-                <div class="footer_list_banner">
-                    <img src="../img/msg.png" alt=""/>
-                    <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments">Please, Please send the 1 ether back to my address 0x5b...</a>
-                </div>
-                <div class="footer_list_banner">
-                    <img src="../img/msg.png" alt=""/>
-                    <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments">Please, Please send the 1 ether back to my address 0x5b...</a>
-                </div>
-                <div class="footer_list_banner">
-                    <img src="../img/msg.png" alt=""/>
-                    <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments">Please, Please send the 1 ether back to my address 0x5b...</a>
-                </div>
-
-            </div>
-        </div>
-        <div class="footer_right col-md-3">
-            <div class="footer_banner_tab">
-                <h4>Links</h4>
-            </div>
-            <div class="footer_link-list">
-                <div class="footer_link-list_banner">
-                    <img src="../img/email_icon.png" alt=""/>
-                    <a href="#">Contact Us</a>
-                </div>
-                <div class="footer_link-list_banner">
-                    <img src="../img/icon_2.png" alt=""/>
-                    <a href="#">Forum</a>
-                </div>
-                <div class="footer_link-list_banner">
-                    <img src="../img/icon_3.png" alt=""/>
-                    <a href="#">Twitter</a>
-                </div>
-                <div class="footer_link-list_banner">
-                    <img src="../img/email_icon.png" alt=""/>
-                    <a href="#">Contact Us</a>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
+<div th:replace="fragments/footer :: footer" th:remove="tag">&nbsp;</div>
 <script>
-
-
-
-
     $(function () {
         $('#myTab a:last').tab('show');
     });
@@ -311,8 +219,6 @@
         e.preventDefault();
         $(this).tab('show');
     });
-
-
 </script>
 </body>
 </html>

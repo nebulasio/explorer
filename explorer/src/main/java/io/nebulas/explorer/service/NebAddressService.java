@@ -5,6 +5,8 @@ import io.nebulas.explorer.mapper.NebAddressMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * nebulas address related operation service
  * <p>
@@ -21,5 +23,13 @@ public class NebAddressService {
 
     public NebAddress getNebAddressByHash(String hash) {
         return nebAddressMapper.getByHash(hash);
+    }
+
+    public long countTotalAddressCnt() {
+        return nebAddressMapper.countTotalAddressCnt();
+    }
+
+    public List<NebAddress> findAddressOrderByBalance(int offset, int limit) {
+        return nebAddressMapper.findAddressOrderByBalance(offset, limit);
     }
 }

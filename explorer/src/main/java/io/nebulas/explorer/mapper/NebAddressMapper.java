@@ -2,6 +2,9 @@ package io.nebulas.explorer.mapper;
 
 import io.nebulas.explorer.domain.NebAddress;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * Title.
@@ -17,4 +20,7 @@ public interface NebAddressMapper {
 
     NebAddress getByHash(String hash);
 
+    long countTotalAddressCnt();
+
+    List<NebAddress> findAddressOrderByBalance(@Param("offset") int offset, @Param("limit") int limit);
 }

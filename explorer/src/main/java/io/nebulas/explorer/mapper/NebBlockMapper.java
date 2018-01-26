@@ -24,6 +24,8 @@ public interface NebBlockMapper {
 
     NebBlock getByHeight(Long height);
 
+    NebBlock getByHash(String hash);
+
     int count();
 
     List<NebBlock> findOrderByHeightDesc(@Param("offset") int offset, @Param("limit") int limit);
