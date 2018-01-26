@@ -1,0 +1,565 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset=utf-8>
+    <meta name=viewport content="width=device-width, initial-scale=1.0">
+    <link rel=stylesheet href=../lib/bootstrap.min.css>
+    <link rel=stylesheet href=../css/common.css>
+    <script src="../lib/jquery-3.3.1.min.js"></script>
+    <script src=../lib/bootstrap.min.js></script>
+    <style>
+        /*
+* @Author: lol
+* @Date:   2018-01-22 17:54:33
+* @Last Modified by:   lol
+* @Last Modified time: 2018-01-23 12:20:55
+*/
+
+        .container {
+            background-color: #f7f7f7;
+        }
+
+        .wrapper {
+            width: 88%;
+            margin: 0 auto;
+        }
+
+        .banner {
+            margin-top: 20px;
+        }
+
+        .banner_left {
+            height: 800px;
+            /* background-color: gray; */
+        }
+
+        .banner_left .list_left {
+            width: 100%;
+            height: 750px;
+            /* border:2px solid black; */
+        }
+
+        .banner_left .list_tab {
+            width: 100%;
+            height: 60px;
+            border-bottom: 3px solid #f7f7f7;
+            background-color: #fff;
+            position: relative;
+        }
+
+        .banner_left .list_tab .img {
+            position: absolute;
+            top: 20%;
+            left: 2%;
+        }
+
+        .banner_left .list_tab .btn {
+            position: absolute;
+            right: 0%;
+            top: 20%;
+        }
+
+        .list_left .list_1 {
+            width: 100%;
+            height: 120px;
+            border-bottom: 4px solid #f7f7f7;
+            background-color: #fff;
+            position: relative;
+        }
+
+        .banner_right {
+            height: 800px;
+            /* background-color: blue; */
+        }
+
+        .banner_right .list_right {
+            width: 100%;
+            height: 750px;
+            /* border:2px solid black; */
+        }
+
+        .banner_right .list_tab {
+            width: 100%;
+            height: 60px;
+            border-bottom: 3px solid #f7f7f7;
+            background-color: #fff;
+            position: relative;
+        }
+
+        .banner_right .list_tab .img {
+            position: absolute;
+            top: 20%;
+            left: 2%;
+        }
+
+        .banner_right .list_tab .btn {
+            position: absolute;
+            right: 0%;
+            top: 20%;
+        }
+
+        /* 右侧列表 状态不同 左边框有不同的状态颜色 */
+
+        .list_right .list_2_1 {
+            width: 100%;
+            height: 120px;
+            border-bottom: 4px solid #f7f7f7;
+            background-color: #fff;
+            border-left: 2px solid yellow;
+            position: relative;
+
+        }
+
+        .list_right .list_2_2 {
+            width: 100%;
+            height: 120px;
+            border-bottom: 4px solid #f7f7f7;
+            background-color: #fff;
+            border-left: 2px solid gray;
+            position: relative;
+
+        }
+
+        .list_right .list_2_3 {
+            width: 100%;
+            height: 120px;
+            border-bottom: 4px solid #f7f7f7;
+            background-color: #fff;
+            border-left: 2px solid red;
+            position: relative;
+
+        }
+
+        .list_banner_left {
+            background-color: gray;
+            width: 30%;
+            height: 90px;
+            position: absolute;
+            left: 2%;
+            top: 12%;
+            color: #fff;
+        }
+
+        .list_banner_left p {
+            margin-left: 38px;
+            margin-top: 18px;
+        }
+
+        .list_banner_left_p1 {
+            margin-left: 40px;
+        }
+
+        .list_banner_left a {
+            color: #fff;
+        }
+
+        .list_banner_right {
+            width: 60%;
+            height: 90px;
+            position: absolute;
+            left: 34%;
+            top: 12%;
+        }
+
+        .list_right_banner_left {
+            width: 10%;
+            height: 80px;
+            position: absolute;
+            top: 4%;
+            left: 2%;
+        }
+
+        .list_right_banner_right {
+            width: 80%;
+            height: 90px;
+            position: absolute;
+            left: 14%;
+            top: 12%;
+        }
+    </style>
+    <title>Explorer</title>
+</head>
+<body>
+    <!--    [components] header
+        ============================================================ -->
+    <nav class="header navbar navbar-default">
+        <div class=container>
+            <!-- get grouped for better mobile display -->
+            <div class="mt20 navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <h4>Explorer</h4>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class=navbar-right>
+                    <form class="navbar-form text-right">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <button type="submit" class="btn btn-default">GO</button>
+                    </form>
+                    <div style=clear:both></div>
+                    <nav>
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                                <a href="#">Home
+                                    <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#blockchain" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">BLOCKCHAIN
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#">View Txns</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"> View Pending Txns</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"> View Contract Internal Txns</a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <a href="#"> View Blocks</a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <a href="#"> View Uncles</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ACCOUNT
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#">ALL Accounts</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"> Verified Contracts</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">TOKEN
+                                    <span class="caret"></span>
+                                </a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CHART
+                                    <span class="caret"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+        <div class="container">
+            <div class="top">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="../img/1.png" height="223" width="551" alt="">
+                    </div>
+                    <div class="col-md-6">
+                        <img src="../img/2.png" height="223" width="550" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="banner">
+                <div class="row">
+                    <div class="col-md-6 banner_left">
+                        <div class="list_tab">
+                            <div class="img">
+                                <img src="../img/list_tab_1.png" height="40" width="110" alt="">
+                            </div>
+                            <a class="btn btn-default pull-right" href="txs.html?id=%block" role="button">View All</a>
+                        </div>
+                        <div class="list_left">
+                            <div class="list_1">
+                                <div class=" list_banner_left">
+                                    <p>
+                                        <a href="block.html?id=%Block">%Block</a>
+                                    </p>
+                                    <p class="list_banner_left_p1"> >%Age</p>
+
+                                </div>
+                                <div class=" list_banner_right">
+                                    Mined By
+                                    <a href="address.html?id=%From">%Name Tag</a>
+                                    <p class="mt16">
+                                        <a href="txs.html?id=%Block">
+                                            <b>%txn</b>
+                                        </a> in 5 secs</p>
+                                    <p> Block Reward 3.23112 Ether</p>
+                                </div>
+                            </div>
+                            <div class="list_1">
+                                <div class=" list_banner_left">
+                                    <p>
+                                        <a href="block.html?id=%Block">%Block</a>
+                                    </p>
+                                    <p class="list_banner_left_p1"> >%Age</p>
+
+                                </div>
+                                <div class=" list_banner_right">
+                                    Mined By
+                                    <a href="address.html?id=%From">%Name Tag</a>
+                                    <p class="mt16">
+                                        <a href="txs.html?id=%Block">
+                                            <b>%txn</b>
+                                        </a> in 5 secs</p>
+                                    <p> Block Reward 3.23112 Ether</p>
+                                </div>
+                            </div>
+                            <div class="list_1">
+                                <div class=" list_banner_left">
+                                    <p>
+                                        <a href="block.html?id=%Block">%Block</a>
+                                    </p>
+                                    <p class="list_banner_left_p1"> >%Age</p>
+
+                                </div>
+                                <div class=" list_banner_right">
+                                    Mined By
+                                    <a href="address.html?id=%From">%Name Tag</a>
+                                    <p class="mt16">
+                                        <a href="txs.html?id=%Block">
+                                            <b>%txn</b>
+                                        </a> in 5 secs</p>
+                                    <p> Block Reward 3.23112 Ether</p>
+                                </div>
+                            </div>
+                            <div class="list_1 ">
+                                <div class=" list_banner_left">
+                                    <p>
+                                        <a href="block.html?id=%Block">%Block</a>
+                                    </p>
+                                    <p class="list_banner_left_p1"> >%Age</p>
+
+                                </div>
+                                <div class=" list_banner_right">
+                                    Mined By
+                                    <a href="address.html?id=%From">%Name Tag</a>
+                                    <p class="mt16">
+                                        <a href="txs.html?id=%Block">
+                                            <b>%txn</b>
+                                        </a> in 5 secs</p>
+                                    <p> Block Reward 3.23112 Ether</p>
+                                </div>
+                            </div>
+                            <div class="list_1 ">
+                                <div class=" list_banner_left">
+                                    <p>
+                                        <a href="block.html?id=%Block">%Block</a>
+                                    </p>
+                                    <p class="list_banner_left_p1"> >%Age</p>
+
+                                </div>
+                                <div class=" list_banner_right">
+                                    Mined By
+                                    <a href="address.html?id=%From">%Name Tag</a>
+                                    <p class="mt16">
+                                        <a href="txs.html?id=%Block">
+                                            <b>%txn</b>
+                                        </a> in 5 secs</p>
+                                    <p> Block Reward 3.23112 Ether</p>
+                                </div>
+                            </div>
+                            <div class="list_1 ">
+                                <div class=" list_banner_left">
+                                    <p>
+                                        <a href="block.html?id=%Block">%Block</a>
+                                    </p>
+                                    <p class="list_banner_left_p1"> >%Age</p>
+
+                                </div>
+                                <div class=" list_banner_right">
+                                    Mined By
+                                    <a href="address.html?id=%From">%Name Tag</a>
+                                    <p class="mt16">
+                                        <a href="txs.html?id=%Block">
+                                            <b>%txn</b>
+                                        </a> in 5 secs</p>
+                                    <p> Block Reward 3.23112 Ether</p>
+                                </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 banner_right ">
+                        <div class="list_tab ">
+                            <div class="img ">
+                                <img src="../img/list_tab_2.png " height="40 " width="110 " alt=" ">
+                            </div>
+                            <a class="btn btn-default pull-right" href="txs.html?id=%txs" role="button">View All</a>                        </div>
+                        <div class="list_right ">
+                            <div class="list_2_1 ">
+                                <div class="list_right_banner_left ">
+                                    <img src="../img/icon.png " height="42 " width="34 " alt=" ">
+                                </div>
+                                <div class="list_right_banner_right ">
+                                    <p>
+                                        <a href="./txs.html ">TX# 0x180ba8f73897c0cb26d76265...</a>
+                                    </p>
+                                    <p>From
+                                        <a href="# ">0x180ba8f73897c0cb... </a>To
+                                        <a href="# ">0x180ba8f73897c0cb... </a>
+                                    </p>
+                                    <p>Amount 0 Ether</p>
+                                </div>
+                            </div>
+                            <div class="list_2_2 ">
+                                <div class="list_right_banner_left ">
+                                    <img src="../img/icon.png " height="42 " width="34 " alt=" ">
+                                </div>
+                                <div class="list_right_banner_right ">
+                                    <p>
+                                        <a href="# ">TX# 0x180ba8f73897c0cb26d76265...</a>
+                                    </p>
+                                    <p>From
+                                        <a href="# ">0x180ba8f73897c0cb... </a>To
+                                        <a href="# ">0x180ba8f73897c0cb... </a>
+                                    </p>
+                                    <p>Amount 0 Ether</p>
+                                </div>
+                            </div>
+                            <div class="list_2_3 ">
+                                <div class="list_right_banner_left ">
+                                    <img src="../img/icon.png " height="42 " width="34 " alt=" ">
+                                </div>
+                                <div class="list_right_banner_right ">
+                                    <p>
+                                        <a href="# ">TX# 0x180ba8f73897c0cb26d76265...</a>
+                                    </p>
+                                    <p>From
+                                        <a href="# ">0x180ba8f73897c0cb... </a>To
+                                        <a href="# ">0x180ba8f73897c0cb... </a>
+                                    </p>
+                                    <p>Amount 0 Ether</p>
+                                </div>
+                            </div>
+                            <div class="list_2_2 ">
+                                <div class="list_right_banner_left ">
+                                    <img src="../img/icon.png " height="42 " width="34 " alt=" ">
+                                </div>
+                                <div class="list_right_banner_right ">
+                                    <p>
+                                        <a href="# ">TX# 0x180ba8f73897c0cb26d76265...</a>
+                                    </p>
+                                    <p>From
+                                        <a href="# ">0x180ba8f73897c0cb... </a>To
+                                        <a href="# ">0x180ba8f73897c0cb... </a>
+                                    </p>
+                                    <p>Amount 0 Ether</p>
+                                </div>
+                            </div>
+                            <div class="list_2_3 ">
+                                <div class="list_right_banner_left ">
+                                    <img src="../img/icon.png " height="42 " width="34 " alt=" ">
+                                </div>
+                                <div class="list_right_banner_right ">
+                                    <p>
+                                        <a href="# ">TX# 0x180ba8f73897c0cb26d76265...</a>
+                                    </p>
+                                    <p>From
+                                        <a href="# ">0x180ba8f73897c0cb... </a>To
+                                        <a href="# ">0x180ba8f73897c0cb... </a>
+                                    </p>
+                                    <p>Amount 0 Ether</p>
+                                </div>
+                            </div>
+                            <div class="list_2_1 ">
+                                <div class="list_right_banner_left ">
+                                    <img src="../img/icon.png " height="42 " width="34 " alt=" ">
+                                </div>
+                                <div class="list_right_banner_right ">
+                                    <p>
+                                        <a href="# ">TX# 0x180ba8f73897c0cb26d76265...</a>
+                                    </p>
+                                    <p>From
+                                        <a href="# ">0x180ba8f73897c0cb... </a>To
+                                        <a href="# ">0x180ba8f73897c0cb... </a>
+                                    </p>
+                                    <p>Amount 0 Ether</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer ">
+        <div class=" footer_banner row ">
+            <div class="footer_left col-md-3 ">
+                <div class="footer_left_up ">
+                    <img src="../img/logo.png ">
+                </div>
+                <div class="footer_left_down ">
+                    <p>Etherscan is a Block Explorer and Analytics Platform for Ethereum, a decentralized smart contracts platform.</p>
+                </div>
+            </div>
+            <div class="footer_middle col-md-6 ">
+                <div class="footer_banner_tab ">
+                    <h4>Latest Discussions</h4>
+                </div>
+                <div class="footer_list ">
+                    <div class="footer_list_banner ">
+                        <img src="../img/msg.png " alt=" ">
+                        <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments ">Please, Please send the 1 ether back to my address 0x5b...</a>
+                    </div>
+                    <div class="footer_list_banner ">
+                        <img src="../img/msg.png " alt=" ">
+                        <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments ">Please, Please send the 1 ether back to my address 0x5b...</a>
+                    </div>
+                    <div class="footer_list_banner ">
+                        <img src="../img/msg.png " alt=" ">
+                        <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments ">Please, Please send the 1 ether back to my address 0x5b...</a>
+                    </div>
+                    <div class="footer_list_banner ">
+                        <img src="../img/msg.png " alt=" ">
+                        <a href="https://etherscan.io/tx/0x82a26dae6e67b722ad9bf2bd5ef9998c82b49d3f010bd0215a8f4e9580e4e2b7#comments ">Please, Please send the 1 ether back to my address 0x5b...</a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="footer_right col-md-3 ">
+                <div class="footer_banner_tab ">
+                    <h4>Links</h4>
+                </div>
+                <div class="footer_link-list ">
+                    <div class="footer_link-list_banner ">
+                        <img src="../img/email_icon.png " alt=" ">
+                        <a href="# ">Contact Us</a>
+                    </div>
+                    <div class="footer_link-list_banner ">
+                        <img src="../img/icon_2.png " alt=" ">
+                        <a href="# ">Forum</a>
+                    </div>
+                    <div class="footer_link-list_banner ">
+                        <img src="../img/icon_3.png " alt=" ">
+                        <a href="# ">Twitter</a>
+                    </div>
+                    <div class="footer_link-list_banner ">
+                        <img src="../img/email_icon.png " alt=" ">
+                        <a href="# ">Contact Us</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
