@@ -98,6 +98,7 @@ dependencies {
     compile project(':grpc-lib')
     compile('org.apache.commons:commons-lang3:3.4')
     compile('org.apache.commons:commons-collections4:4.1')
+    compile('net.sourceforge.nekohtml:nekohtml:1.9.22')
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('mysql:mysql-connector-java')
     compileOnly('org.projectlombok:lombok')

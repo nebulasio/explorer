@@ -61,6 +61,7 @@ spring:
   profiles: dev
   thymeleaf:
     cache: false
+    mode: LEGACYHTML5
 environment: dev
 
 ---
@@ -68,6 +69,7 @@ spring:
   profiles: test
   thymeleaf:
     cache: true
+    mode: LEGACYHTML5
   datasource:
     sql-script-encoding: UTF-8
     platform: mysql
@@ -106,4 +108,5 @@ spring:
   profiles: prod
   thymeleaf:
     cache: true
+    mode: LEGACYHTML5
 environment: production
