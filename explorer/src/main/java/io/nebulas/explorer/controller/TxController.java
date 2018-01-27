@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * Title.
@@ -28,6 +29,19 @@ public class TxController extends BaseController {
     @RequestMapping("/txsInternal")
     public String txsInternal(@RequestParam(value = "block", required = false) Long block, Model model) {
         execute(model);
+
+        //
+        // pagination
+
+        JSONObject pagination = new JSONObject();
+        pagination.put("first", "?page=1");
+        pagination.put("prev", "?page=x-1||first");
+        pagination.put("next", "?page=x+1||last");
+        pagination.put("last", "?page=last");
+        pagination.put("current", "x");
+        pagination.put("total", "total");
+        model.addAttribute("pagination", pagination);
+
         return "txsInternal";
     }
 

@@ -1,16 +1,8 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{${ baseUrl + '/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css' }}">
-    <link rel="stylesheet" th:href="@{${ baseUrl + '/css/common.css' }}">
+    <th-block data-th-replace=fragments::head></th-block>
     <style>
-        .table tbody tr td {
-            border: 0;
-            vertical-align: middle;
-        }
-
         td .pagination {
             margin: 0;
             vertical-align: top;
@@ -23,24 +15,17 @@
         tr>td:first-child::after {
             content: ":";
         }
+
+        .table tbody tr td {
+            border: 0;
+            vertical-align: middle;
+        }
     </style>
     <title>Block</title>
 </head>
 <body>
-    <th:block th:replace=fragments::header></th:block>
-
-    <!--    tab buttons
-        ============================================================ -->
-    <div class="container">
-        <ul class="nav nav-tabs">
-            <li class="active">
-                <a>Overview</a>
-            </li>
-            <li>
-                <a href="?tab=comments">Comments</a>
-            </li>
-        </ul>
-    </div>
+    <th-block data-th-replace=fragments::header></th-block>
+    <th-block data-th-replace=fragments::tab-buttons></th-block>
 
     <div class="container">
         <h3>Block Information</h3>
@@ -54,7 +39,7 @@
                 <tr>
                     <td>Height</td>
                     <td>
-                        <nav aria-label="Page navigation " class="navgation-tab">
+                        <nav aria-label="Page navigation" class="navgation-tab">
                             <ul class="pagination">
                                 <li>
                                     <a href="#" aria-label="Previous">
@@ -62,7 +47,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href=# th:text=${block.height}></a>
+                                    <a href=# data-th-text=${block.height}></a>
                                 </li>
                                 <li>
                                     <a href="#" aria-label="Next">
@@ -75,12 +60,12 @@
                 </tr>
                 <tr>
                     <td>TimeStamp</td>
-                    <td th:text=${block.timestamp}></td>
+                    <td data-th-text=${block.timestamp}></td>
                 </tr>
                 <tr>
                     <td>Transactions</td>
                     <td>
-                        <a href="txs.html?block=%Block" th:text="${txCnt +' transactions'}">transactions</a>
+                        <a href="txs.html?block=%Block" data-th-text="${txCnt +' transactions'}">transactions</a>
                         and
                         <a href="txsInternal.html?block=%Block"> 10 contract internal transactions</a>
                         in this block
@@ -88,12 +73,12 @@
                 </tr>
                 <tr>
                     <td>Hash</td>
-                    <td th:text=${block.hash}></td>
+                    <td data-th-text=${block.hash}></td>
                 </tr>
                 <tr>
                     <td>Parent Hash</td>
                     <td>
-                        <a href=# th:text=${block.parentHash}></a>
+                        <a href=# data-th-text=${block.parentHash}></a>
                     </td>
                 </tr>
                 <tr>
@@ -105,7 +90,7 @@
                 <tr>
                     <td>Mined By</td>
                     <td>
-                        <a href="address.html?mined" th:text=${block.miner}></a>
+                        <a href="address.html?mined" data-th-text=${block.miner}></a>
                         (Nanopool) in 29 secs
                     </td>
                 </tr>
@@ -145,17 +130,14 @@
                 </tr>
                 <tr>
                     <td>Extra Data</td>
-                    <td>nanopool.org (Hex:0x6e616e6f706f6f6c2e6f7267)
-                    </td>
+                    <td>nanopool.org (Hex:0x6e616e6f706f6f6c2e6f7267)</td>
                 </tr>
 
             </table>
         </div>
     </div>
 
-    <th:block th:replace=fragments::footer></th:block>
-
-    <script th:src="@{${ baseUrl + '/webjars/jquery/3.3.1/jquery.min.js' }}"></script>
-    <script th:src="@{${ baseUrl + '/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js' }}"></script>
+    <th-block data-th-replace=fragments::footer></th-block>
+    <th-block data-th-replace=fragments::scripts></th-block>
 </body>
 </html>
