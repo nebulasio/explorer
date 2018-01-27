@@ -17,6 +17,10 @@
         tr>td:first-child::after {
             content: ":";
         }
+        .navgation-tab{
+            height: 42px;
+            margin-top: -28px;
+        }
     </style>
     <title>Block</title>
 </head>
@@ -130,7 +134,23 @@
             <table class="table">
                 <tr>
                     <td>Height</td>
-                    <td>4567814</td>
+                    <td>
+                        <nav aria-label="Page navigation " class="navgation-tab">
+                            <ul class="pagination">
+                              <li>
+                                <a href="#" aria-label="Previous">
+                                  <span aria-hidden="true">&lt; Prev</span>
+                                </a>
+                              </li>
+                              <li><a href="#">1556462</a></li>
+                              <li>
+                                <a href="#" aria-label="Next">
+                                  <span aria-hidden="true">Next &gt;</span>
+                                </a>
+                              </li>
+                            </ul>
+                          </nav>
+                    </td>
                 </tr>
                 <tr>
                     <td>TimeStamp</td>
@@ -139,7 +159,10 @@
                 <tr>
                     <td>Transactions</td>
                     <td>
-                        274 transactions and 10 contract internal transactions in this block
+                        <a href="txs.html?block=%Block">274 transactions</a>
+                        and
+                        <a href="txsInternal.html?block=%Block"> 10 contract internal transactions</a>
+                        in this block
                     </td>
                 </tr>
                 <tr>
@@ -148,7 +171,9 @@
                 </tr>
                 <tr>
                     <td>Parent Hash</td>
-                    <td>0x50780c99ac0b066b95340554c63045970e5b863776a2a0e4ab3e925c0e85d5a6</td>
+                    <td>
+                        <a href="#">0x50780c99ac0b066b95340554c63045970e5b863776a2a0e4ab3e925c0e85d5a6</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>Sha3Uncles</td>
@@ -158,7 +183,10 @@
                 </tr>
                 <tr>
                     <td>Mined By</td>
-                    <td>0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5 (Nanopool) in 29 secs</td>
+                    <td>
+                        <a href="address.html?mined">0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5</a> 
+                        (Nanopool) in 29 secs
+                    </td>
                 </tr>
                 <tr>
                     <td>Difficulty</td>
