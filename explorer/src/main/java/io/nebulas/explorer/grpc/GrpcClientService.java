@@ -15,6 +15,7 @@ import io.nebulas.explorer.service.NebTransactionService;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.springboot.autoconfigure.grpc.client.GrpcClient;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rpcpb.ApiRpc;
@@ -57,7 +58,17 @@ public class GrpcClientService {
             public void onNext(ApiRpc.SubscribeResponse sr) {
                 String dataStr = sr.getData();
                 log.info("msg type: {}, data: {}", sr.getMsgType(), dataStr);
-                JSONObject data = JSONObject.parseObject(dataStr);
+                if (StringUtils.isBlank(dataStr)) {
+                    log.error("empty data");
+                    return;
+                }
+                JSONObject data;
+                try {
+                    data = JSONObject.parseObject(dataStr);
+                } catch (Throwable e) {
+                    log.error(String.format("data string %s can NOT parse into json", dataStr), e);
+                    return;
+                }
                 if (Const.TopicLinkBlock.equals(sr.getMsgType())) {
                     Long height = data.getLong("height");
                     if (height == null) {
