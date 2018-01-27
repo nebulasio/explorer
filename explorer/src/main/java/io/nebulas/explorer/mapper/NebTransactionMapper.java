@@ -5,6 +5,7 @@ import io.nebulas.explorer.domain.NebTransaction;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,4 +42,8 @@ public interface NebTransactionMapper {
     int countNormalTxnCntByFromTo(String addressHash);
 
     List<NebTransaction> findNormalTxnByFromTo(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
+
+    List<NebTransaction> findNormalTxnOrderByTimestamp(@Param("offset") int offset, @Param("limit") int limit);
+
+    List<Map<String,Object>> countTxCntGroupByTimestamp(@Param("from") String from,@Param("to") String to);
 }

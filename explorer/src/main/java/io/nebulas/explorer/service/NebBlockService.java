@@ -88,6 +88,16 @@ public class NebBlockService {
         return pageIterator;
     }
 
+    /**
+     *
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public List<NebBlock> findNebBlockOrderByTimestamp(int page, int pageSize) {
+        return nebBlockMapper.findOrderByTimestamp((page - 1) * pageSize, pageSize);
+    }
+
     public List<NebBlock> findNebBlockByMiner(String miner, int offset, int limit) {
         if (StringUtils.isEmpty(miner)) {
             return Collections.emptyList();

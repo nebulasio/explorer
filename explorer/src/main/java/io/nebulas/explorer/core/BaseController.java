@@ -2,6 +2,7 @@ package io.nebulas.explorer.core;
 
 import io.nebulas.explorer.config.PageConfig;
 import io.nebulas.explorer.config.YAMLConfig;
+import io.nebulas.explorer.util.PageStringUtil;
 import org.springframework.ui.Model;
 
 /**
@@ -24,6 +25,7 @@ public abstract class BaseController {
         PageConfig pageConfig = config.getPage();
         model.addAttribute("baseUrl", pageConfig.getBaseUrl());
         model.addAttribute("hostUrl", pageConfig.getHostUrl());
+        model.addAttribute("pageStringUtil", new PageStringUtil());
     }
 
 }

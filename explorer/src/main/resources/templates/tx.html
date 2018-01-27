@@ -1,15 +1,14 @@
 <!doctype html>
 <html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Nebulas Transaction</title>
-    <meta name="description" content="Nebulas"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
-    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"
-          th:href="@{${baseUrl + '/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css'}}"/>
-    <link rel="stylesheet" href="/css/common.css" th:href="@{${baseUrl + '/css/common.css'}}"/>
+    <meta name="description" content="Nebulas" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" th:href="@{${baseUrl + '/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css'}}" />
+    <link rel="stylesheet" href="/css/common.css" th:href="@{${baseUrl + '/css/common.css'}}" />
     <style>
         .table tbody tr td {
             border: 0;
@@ -19,114 +18,112 @@
             width: 100%;
         }
 
-        tr > td:first-child::after {
+        tr>td:first-child::after {
             content: ":";
         }
     </style>
 </head>
 <body>
-<th:block th:replace="fragments/header :: header">&nbsp;</th:block>
-<!--    tab buttons
+    <th:block th:replace="fragments::header"></th:block>
+    <!--    tab buttons
     ============================================================ -->
-<div class="container">
-    <ul class="nav nav-tabs" id="myTab">
-        <li class="active">
-            <a>Overview</a>
-        </li>
-        <li>
-            <a href="?tab=txsInternal">Internal Transactions</a>
-        </li>
-        <li>
-            <a href="?tab=eventLog">Event Logs</a>
-        </li>
-    </ul>
-</div>
-
-<div class="container">
-    <h3>Transation Information</h3>
-</div>
-
-<!--    tabs
-    ============================================================ -->
-<div class="container">
-    <div class="tab">
-        <table class="table">
-            <tr>
-                <td>TxHash</td>
-                <td>0xefc6ad4318bfce85b06e1d3768c5dd1b8a008a281aac21bbd6d8568d2bd3af5a</td>
-            </tr>
-            <tr>
-                <td>TxReceipt Status</td>
-                <td>Success</td>
-            </tr>
-            <tr>
-                <td>Block Height</td>
-                <td>
-                    <a href="#">45612588</a>
-                    (210 block confirmations)
-                </td>
-            </tr>
-            <tr>
-                <td>TimeStamp</td>
-                <td>49 mins ago (Jan-23-2018 03:53:22 AM +UTC)</td>
-            </tr>
-            <tr>
-                <td>From</td>
-                <td>0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347</td>
-            </tr>
-            <tr>
-                <td>To</td>
-                <td>
-                    Contract
-                    <a href="#">0x6cace0528324a8afc2b157ceba3cdd2a27c4e21f</a>
-                </td>
-            </tr>
-            <tr>
-                <td>Value</td>
-                <td>0 Ether ($0.00)</td>
-            </tr>
-            <tr>
-                <td>Gas Limit</td>
-                <td>8,000,029</td>
-            </tr>
-            <tr>
-                <td>Gas Used By Txn</td>
-                <td>154684213</td>
-            </tr>
-            <tr>
-                <td>Gas Price</td>
-                <td>0.000000005 Ether (5 Gwei)</td>
-            </tr>
-            <tr>
-                <td>Actual Tx Cost/Fee</td>
-                <td>0.000925515 Ether ($0.92)</td>
-            </tr>
-            <tr>
-                <td>Cumulative Gas Used</td>
-                <td>123454321525</td>
-            </tr>
-            <tr>
-                <td>Nonce</td>
-                <td>1234543</td>
-            </tr>
-            <tr>
-                <td>Input Data</td>
-                <td>
-                    <textarea rows="7"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td>Private Note</td>
-                <td>&lt;To access the private Note feature, you must be logged in></td>
-            </tr>
-        </table>
+    <div class="container">
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="active">
+                <a>Overview</a>
+            </li>
+            <li>
+                <a href="?tab=txsInternal">Internal Transactions</a>
+            </li>
+            <li>
+                <a href="?tab=eventLog">Event Logs</a>
+            </li>
+        </ul>
     </div>
-</div>
 
-<th:block th:replace="fragments/footer :: footer">&nbsp;</th:block>
+    <div class="container">
+        <h3>Transation Information</h3>
+    </div>
+
+    <!--    tabs
+    ============================================================ -->
+    <div class="container">
+        <div class="tab">
+            <table class="table">
+                <tr>
+                    <td>TxHash</td>
+                    <td>0xefc6ad4318bfce85b06e1d3768c5dd1b8a008a281aac21bbd6d8568d2bd3af5a</td>
+                </tr>
+                <tr>
+                    <td>TxReceipt Status</td>
+                    <td>Success</td>
+                </tr>
+                <tr>
+                    <td>Block Height</td>
+                    <td>
+                        <a href="#">45612588</a>
+                        (210 block confirmations)
+                    </td>
+                </tr>
+                <tr>
+                    <td>TimeStamp</td>
+                    <td>49 mins ago (Jan-23-2018 03:53:22 AM +UTC)</td>
+                </tr>
+                <tr>
+                    <td>From</td>
+                    <td>0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347</td>
+                </tr>
+                <tr>
+                    <td>To</td>
+                    <td>
+                        Contract
+                        <a href="#">0x6cace0528324a8afc2b157ceba3cdd2a27c4e21f</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Value</td>
+                    <td>0 Ether ($0.00)</td>
+                </tr>
+                <tr>
+                    <td>Gas Limit</td>
+                    <td>8,000,029</td>
+                </tr>
+                <tr>
+                    <td>Gas Used By Txn</td>
+                    <td>154684213</td>
+                </tr>
+                <tr>
+                    <td>Gas Price</td>
+                    <td>0.000000005 Ether (5 Gwei)</td>
+                </tr>
+                <tr>
+                    <td>Actual Tx Cost/Fee</td>
+                    <td>0.000925515 Ether ($0.92)</td>
+                </tr>
+                <tr>
+                    <td>Cumulative Gas Used</td>
+                    <td>123454321525</td>
+                </tr>
+                <tr>
+                    <td>Nonce</td>
+                    <td>1234543</td>
+                </tr>
+                <tr>
+                    <td>Input Data</td>
+                    <td>
+                        <textarea rows="7"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Private Note</td>
+                    <td>&lt;To access the private Note feature, you must be logged in></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <th:block th:replace="fragments::footer"></th:block>
 </body>
-<script src="/webjars/jquery/3.3.1/jquery.min.js"
-        th:src="@{${baseUrl + '/webjars/jquery/3.3.1/jquery.min.js'}}"></script>
-<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"
-        th:src="@{${baseUrl + '/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js'}}"></script>
+<script src="/webjars/jquery/3.3.1/jquery.min.js" th:src="@{${baseUrl + '/webjars/jquery/3.3.1/jquery.min.js'}}"></script>
+<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js" th:src="@{${baseUrl + '/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js'}}"></script>
 </html>
