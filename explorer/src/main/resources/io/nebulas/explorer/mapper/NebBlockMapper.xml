@@ -60,8 +60,17 @@
         limit ${offset},${limit}
     </select>
 
+    <select id="findOrderByTimestamp" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_block`
+        ORDER BY `timestamp` DESC
+        LIMIT ${offset}, ${limit}
+    </select>
+
     <select id="findByMiner" parameterType="map" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM `neb_block`
         WHERE miner = #{miner,jdbcType=VARCHAR}
         ORDER BY `timestamp` DESC

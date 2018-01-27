@@ -30,7 +30,8 @@
 
         .banner_left .list_left {
             width: 100%;
-            height: 750px;
+            height: 725px;
+            overflow: auto;
         }
 
         .banner_left .list_tab {
@@ -67,7 +68,8 @@
 
         .banner_right .list_right {
             width: 100%;
-            height: 750px;
+            height: 725px;
+            overflow: auto;
         }
 
         .banner_right .list_tab {
@@ -154,6 +156,7 @@
             position: absolute;
             top: 4%;
             left: 2%;
+            padding-top: 3%;
         }
 
         .list_right_banner_right {
@@ -186,115 +189,27 @@
                         <div class="img">
                             <img src="../img/list_tab_1.png" height="40" width="110" alt=""/>
                         </div>
-                        <a class="btn btn-default pull-right" href="blocks" role="button">View All</a>
+                        <a class="btn btn-default pull-right" href="/blocks" role="button">View All</a>
                     </div>
                     <div class="list_left">
-                        <div class="list_1">
+                        <div class="list_1" th:each="blk,iterStat : ${blkList}">
                             <div class=" list_banner_left">
                                 <p>
-                                    <a href="block/123">%Block</a>
+                                    <a href="block/123" target="_blank" th:href="@{/block/{blkHeight}(blkHeight=${blk.height})}" th:text="'Block '+${blk.height}">%Block</a>
                                 </p>
-                                <p class="list_banner_left_p1"> >%Age</p>
-
+                                <!--<p class="list_banner_left_p1"> >%Age</p>-->
                             </div>
                             <div class=" list_banner_right">
                                 Mined By
-                                <a href="address/0xea674fdde714fd979de3edf0f56aa9716b898ec8">%Name Tag</a>
+                                <a href="address/0xe" th:href="@{/address/{miner}(miner=${blk.miner})}" th:text="'%'+${pageStringUtil.replace(blk.miner,20,'...')}">%Name Tag</a>
                                 <p class="mt16">
-                                    <a href="txs?block=123">
+                                    <a href="txs?block=123" th:href="@{/txs?block={blkHeight}(blkHeight=${blk.height})}"
+                                       th:text="${txCntMap !=null && txCntMap.get(blk.height) !=null ? txCntMap.get(blk.height) : 0}+' txn'">
                                         <b>%txn</b>
-                                    </a> in 5 secs</p>
-                                <p> Block Reward 3.23112 Ether</p>
-                            </div>
-                        </div>
-                        <div class="list_1">
-                            <div class=" list_banner_left">
-                                <p>
-                                    <a href="block/123">%Block</a>
+                                    </a>
+                                    <!--in 5 secs-->
                                 </p>
-                                <p class="list_banner_left_p1"> >%Age</p>
-
-                            </div>
-                            <div class=" list_banner_right">
-                                Mined By
-                                <a href="address/0xea674fdde714fd979de3edf0f56aa9716b898ec8">%Name Tag</a>
-                                <p class="mt16">
-                                    <a href="txs?block=123">
-                                        <b>%txn</b>
-                                    </a> in 5 secs</p>
-                                <p> Block Reward 3.23112 Ether</p>
-                            </div>
-                        </div>
-                        <div class="list_1">
-                            <div class=" list_banner_left">
-                                <p>
-                                    <a href="block/123">%Block</a>
-                                </p>
-                                <p class="list_banner_left_p1"> >%Age</p>
-
-                            </div>
-                            <div class=" list_banner_right">
-                                Mined By
-                                <a href="address/0xea674fdde714fd979de3edf0f56aa9716b898ec8">%Name Tag</a>
-                                <p class="mt16">
-                                    <a href="txs?block=123">
-                                        <b>%txn</b>
-                                    </a> in 5 secs</p>
-                                <p> Block Reward 3.23112 Ether</p>
-                            </div>
-                        </div>
-                        <div class="list_1 ">
-                            <div class=" list_banner_left">
-                                <p>
-                                    <a href="block/123">%Block</a>
-                                </p>
-                                <p class="list_banner_left_p1"> >%Age</p>
-
-                            </div>
-                            <div class=" list_banner_right">
-                                Mined By
-                                <a href="address/0xea674fdde714fd979de3edf0f56aa9716b898ec8">%Name Tag</a>
-                                <p class="mt16">
-                                    <a href="txs?block=123">
-                                        <b>%txn</b>
-                                    </a> in 5 secs</p>
-                                <p> Block Reward 3.23112 Ether</p>
-                            </div>
-                        </div>
-                        <div class="list_1 ">
-                            <div class=" list_banner_left">
-                                <p>
-                                    <a href="block/123">%Block</a>
-                                </p>
-                                <p class="list_banner_left_p1"> >%Age</p>
-
-                            </div>
-                            <div class=" list_banner_right">
-                                Mined By
-                                <a href="address/0xea674fdde714fd979de3edf0f56aa9716b898ec8">%Name Tag</a>
-                                <p class="mt16">
-                                    <a href="txs?block=123">
-                                        <b>%txn</b>
-                                    </a> in 5 secs</p>
-                                <p> Block Reward 3.23112 Ether</p>
-                            </div>
-                        </div>
-                        <div class="list_1 ">
-                            <div class=" list_banner_left">
-                                <p>
-                                    <a href="block/123">%Block</a>
-                                </p>
-                                <p class="list_banner_left_p1"> >%Age</p>
-
-                            </div>
-                            <div class=" list_banner_right">
-                                Mined By
-                                <a href="address/0xea674fdde714fd979de3edf0f56aa9716b898ec8">%Name Tag</a>
-                                <p class="mt16">
-                                    <a href="txs?block=123">
-                                        <b>%txn</b>
-                                    </a> in 5 secs</p>
-                                <p> Block Reward 3.23112 Ether</p>
+                                <!--<p> Block Reward 3.23112 Ether</p>-->
                             </div>
                         </div>
                     </div>
@@ -304,96 +219,21 @@
                         <div class="img ">
                             <img src="../img/list_tab_2.png " height="40 " width="110 " alt=" "/>
                         </div>
-                        <a class="btn btn-default pull-right" href="txs" role="button">View All</a>                        </div>
+                        <a class="btn btn-default pull-right" href="/txs" role="button">View All</a>                        </div>
                     <div class="list_right ">
-                        <div class="list_2_1 ">
+                        <div class="list_2_1 " th:class="'list_2_'+${iterStat.index%3+1}" th:each="tx,iterStat : ${txList}">
                             <div class="list_right_banner_left ">
                                 <img src="../img/icon.png " height="42 " width="34 " alt=" "/>
                             </div>
                             <div class="list_right_banner_right ">
                                 <p>
-                                    <a href="tx/0x13273ee142b8225dc1052b2dc7ad4906973cb97d9b71007fc808e31115fc4624">TX# 0x180ba8f73897c0cb26d76265...</a>
+                                    <a href="tx/0x13273e" th:href="@{/tx/{hash}(hash=${tx.hash})}" th:text="'TX# '+${pageStringUtil.replace(tx.hash,20,'...')}">TX# 0x180ba8f73897c0cb26d76265...</a>
                                 </p>
                                 <p>From
-                                    <a href="address/0x9901c66f2d4b95f7074b553da78084d708beca70">0x180ba8f73897c0cb... </a>To
-                                    <a href="address/0x9901c66f2d4b95f7074b553da78084d708beca70">0x180ba8f73897c0cb... </a>
+                                    <a href="address/0x9901c66" th:href="@{/address/{from}(from=${tx.from})}" th:text="${pageStringUtil.replace(tx.from,20,'...')}">0x180ba8f73897c0cb... </a>To
+                                    <a href="address/0x9901c66" th:href="@{/address/{to}(from=${tx.to})}" th:text="${pageStringUtil.replace(tx.to,20,'...')}">0x180ba8f73897c0cb... </a>
                                 </p>
-                                <p>Amount 0 Ether</p>
-                            </div>
-                        </div>
-                        <div class="list_2_2 ">
-                            <div class="list_right_banner_left ">
-                                <img src="../img/icon.png " height="42 " width="34 " alt=" "/>
-                            </div>
-                            <div class="list_right_banner_right ">
-                                <p>
-                                    <a href="tx/0x13273ee142b8225dc1052b2dc7ad4906973cb97d9b71007fc808e31115fc4624">TX# 0x180ba8f73897c0cb26d76265...</a>
-                                </p>
-                                <p>From
-                                    <a href="address/0x9901c66f2d4b95f7074b553da78084d708beca70">0x180ba8f73897c0cb... </a>To
-                                    <a href="address/0x9901c66f2d4b95f7074b553da78084d708beca70">0x180ba8f73897c0cb... </a>
-                                </p>
-                                <p>Amount 0 Ether</p>
-                            </div>
-                        </div>
-                        <div class="list_2_3 ">
-                            <div class="list_right_banner_left ">
-                                <img src="../img/icon.png " height="42 " width="34 " alt=" "/>
-                            </div>
-                            <div class="list_right_banner_right ">
-                                <p>
-                                    <a href="tx/0x13273ee142b8225dc1052b2dc7ad4906973cb97d9b71007fc808e31115fc4624">TX# 0x180ba8f73897c0cb26d76265...</a>
-                                </p>
-                                <p>From
-                                    <a href="address/0x9901c66f2d4b95f7074b553da78084d708beca70">0x180ba8f73897c0cb... </a>To
-                                    <a href="address/0x9901c66f2d4b95f7074b553da78084d708beca70">0x180ba8f73897c0cb... </a>
-                                </p>
-                                <p>Amount 0 Ether</p>
-                            </div>
-                        </div>
-                        <div class="list_2_2 ">
-                            <div class="list_right_banner_left ">
-                                <img src="../img/icon.png " height="42 " width="34 " alt=" "/>
-                            </div>
-                            <div class="list_right_banner_right ">
-                                <p>
-                                    <a href="tx/0x13273ee142b8225dc1052b2dc7ad4906973cb97d9b71007fc808e31115fc4624">TX# 0x180ba8f73897c0cb26d76265...</a>
-                                </p>
-                                <p>From
-                                    <a href="address/0x9901c66f2d4b95f7074b553da78084d708beca70">0x180ba8f73897c0cb... </a>To
-                                    <a href="address/0x9901c66f2d4b95f7074b553da78084d708beca70">0x180ba8f73897c0cb... </a>
-                                </p>
-                                <p>Amount 0 Ether</p>
-                            </div>
-                        </div>
-                        <div class="list_2_3 ">
-                            <div class="list_right_banner_left ">
-                                <img src="../img/icon.png " height="42 " width="34 " alt=" "/>
-                            </div>
-                            <div class="list_right_banner_right ">
-                                <p>
-                                    <a href="tx/0x13273ee142b8225dc1052b2dc7ad4906973cb97d9b71007fc808e31115fc4624">TX# 0x180ba8f73897c0cb26d76265...</a>
-                                </p>
-                                <p>From
-                                    <a href="address/0x9901c66f2d4b95f7074b553da78084d708beca70">0x180ba8f73897c0cb... </a>To
-                                    <a href="address/0x9901c66f2d4b95f7074b553da78084d708beca70">0x180ba8f73897c0cb... </a>
-                                </p>
-                                <p>Amount 0 Ether</p>
-                            </div>
-                        </div>
-                        <div class="list_2_1 ">
-                            <div class="list_right_banner_left ">
-                                <img src="../img/icon.png " height="42 " width="34 " alt=" "/>
-                            </div>
-                            <div class="list_right_banner_right ">
-                                <p>
-                                    <a href="tx/0x13273ee142b8225dc1052b2dc7ad4906973cb97d9b71007fc808e31115fc4624">TX# 0x180ba8f73897c0cb26d76265...</a>
-                                </p>
-                                <p>From
-                                    <a href="address/0x9901c66f2d4b95f7074b553da78084d708beca70">0x180ba8f73897c0cb... </a>To
-                                    <a href="address/0x9901c66f2d4b95f7074b553da78084d708beca70">0x180ba8f73897c0cb... </a>
-                                </p>
-                                <p>Amount 0 Ether</p>
+                                <p th:text="'Amount '+${tx.value} + ' Nas'">Amount 0 Ether</p>
                             </div>
                         </div>
                     </div>
