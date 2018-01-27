@@ -18,7 +18,7 @@ import net.devh.springboot.autoconfigure.grpc.client.GrpcClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rpcpb.ApiRpc;
+import rpcpb.Rpc;
 import rpcpb.ApiServiceGrpc;
 
 import java.io.UnsupportedEncodingException;
@@ -53,11 +53,11 @@ public class GrpcClientService {
     public void subscribe(String topic) {
         ApiServiceGrpc.ApiServiceStub asyncStub = ApiServiceGrpc.newStub(serverChannel);
         final CountDownLatch finishLatch = new CountDownLatch(1);
-        StreamObserver<ApiRpc.SubscribeResponse> responseObserver = new StreamObserver<ApiRpc.SubscribeResponse>() {
+        StreamObserver<Rpc.SubscribeResponse> responseObserver = new StreamObserver<Rpc.SubscribeResponse>() {
             @Override
-            public void onNext(ApiRpc.SubscribeResponse sr) {
+            public void onNext(Rpc.SubscribeResponse sr) {
                 String dataStr = sr.getData();
-                log.info("msg type: {}, data: {}", sr.getMsgType(), dataStr);
+                log.info("msg type: {}, data: {}", sr.getTopic(), dataStr);
                 if (StringUtils.isBlank(dataStr)) {
                     log.error("empty data");
                     return;
@@ -69,7 +69,7 @@ public class GrpcClientService {
                     log.error(String.format("data string %s can NOT parse into json", dataStr), e);
                     return;
                 }
-                if (Const.TopicLinkBlock.equals(sr.getMsgType())) {
+                if (Const.TopicLinkBlock.equals(sr.getTopic())) {
                     String hash = data.getString("hash");
                     if (StringUtils.isBlank(hash)) {
                         log.error("empty hash");
@@ -136,13 +136,13 @@ public class GrpcClientService {
                 finishLatch.countDown();
             }
         };
-        asyncStub.subscribe(ApiRpc.SubscribeRequest.newBuilder().addTopic(topic).build()
+        asyncStub.subscribe(Rpc.SubscribeRequest.newBuilder().addTopics(topic).build()
                 , responseObserver);
     }
 
     public String getGasUsed(String hash) {
         ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(serverChannel);
-        ApiRpc.GasResponse gasUsed = stub.getGasUsed(ApiRpc.HashRequest.newBuilder().setHash(hash).build());
+        Rpc.GasResponse gasUsed = stub.getGasUsed(Rpc.HashRequest.newBuilder().setHash(hash).build());
         return populateGas(gasUsed);
     }
 
@@ -152,26 +152,26 @@ public class GrpcClientService {
 
     public Block getBlockByHash(String hash, Boolean fullTransaction) throws UnsupportedEncodingException {
         ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(serverChannel);
-        ApiRpc.BlockResponse block = stub.getBlockByHash(ApiRpc.GetBlockByHashRequest.newBuilder().setHash(hash).setFullTransaction(fullTransaction).build());
+        Rpc.BlockResponse block = stub.getBlockByHash(Rpc.GetBlockByHashRequest.newBuilder().setHash(hash).setFullTransaction(fullTransaction).build());
         return populateBlock(block);
     }
 
     public NebState getNebState() {
         ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(serverChannel);
-        ApiRpc.GetNebStateResponse nebState = stub.getNebState(ApiRpc.NonParamsRequest.newBuilder().build());
+        Rpc.GetNebStateResponse nebState = stub.getNebState(Rpc.NonParamsRequest.newBuilder().build());
         return populateNebState(nebState);
     }
 
     @Deprecated
     public String getDumpData(int count) {
         ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(serverChannel);
-        ApiRpc.BlockDumpResponse response = stub.blockDump(ApiRpc.BlockDumpRequest.newBuilder().setCount(count).build());
+        Rpc.BlockDumpResponse response = stub.blockDump(Rpc.BlockDumpRequest.newBuilder().setCount(count).build());
         return response.getData();
     }
 
     public Transaction getTransactionByHash(String hash) throws UnsupportedEncodingException {
         ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(serverChannel);
-        ApiRpc.TransactionResponse transactionReceipt = stub.getTransactionReceipt(ApiRpc
+        Rpc.TransactionResponse transactionReceipt = stub.getTransactionReceipt(Rpc
                 .GetTransactionByHashRequest.newBuilder()
                 .setHash(hash).build());
         return populateTransaction(transactionReceipt);
@@ -181,14 +181,14 @@ public class GrpcClientService {
         return getBlockByHeight(height, false);
     }
 
-    private String populateGas(ApiRpc.GasResponse gasResponse) {
+    private String populateGas(Rpc.GasResponse gasResponse) {
         if (gasResponse == null) {
             return null;
         }
         return gasResponse.getGas();
     }
 
-    private NebState populateNebState(ApiRpc.GetNebStateResponse nebState) {
+    private NebState populateNebState(Rpc.GetNebStateResponse nebState) {
         if (nebState == null) {
             return null;
         }
@@ -199,20 +199,20 @@ public class GrpcClientService {
 
     public Block getBlockByHeight(long height, boolean fullTransaction) throws UnsupportedEncodingException {
         ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(serverChannel);
-        ApiRpc.BlockResponse response = stub.getBlockByHeight(ApiRpc.GetBlockByHeightRequest.newBuilder()
+        Rpc.BlockResponse response = stub.getBlockByHeight(Rpc.GetBlockByHeightRequest.newBuilder()
                 .setHeight(height)
                 .setFullTransaction(fullTransaction)
                 .build());
         return populateBlock(response);
     }
 
-    private Block populateBlock(ApiRpc.BlockResponse response) throws UnsupportedEncodingException {
+    private Block populateBlock(Rpc.BlockResponse response) throws UnsupportedEncodingException {
         if (response == null) {
             return null;
         }
-        ApiRpc.DposContext dposContext = response.getDposContext();
+        Rpc.DposContext dposContext = response.getDposContext();
         DposContext dposCxt = populateDposContext(dposContext);
-        List<ApiRpc.TransactionResponse> transactionsList = response.getTransactionsList();
+        List<Rpc.TransactionResponse> transactionsList = response.getTransactionsList();
         List<Transaction> transactions = populateTransactionList(transactionsList);
 
         return new Block(response.getHash(), response.getParentHash(), response.getHeight()
@@ -221,19 +221,19 @@ public class GrpcClientService {
                 , dposCxt, transactions);
     }
 
-    private DposContext populateDposContext(ApiRpc.DposContext dposContext) {
+    private DposContext populateDposContext(Rpc.DposContext dposContext) {
         return dposContext == null ? null
                 : new DposContext(dposContext.getDynastyRoot(), dposContext.getNextDynastyRoot()
                 , dposContext.getDelegateRoot(), dposContext.getCandidateRoot(), dposContext.getVoteRoot()
                 , dposContext.getMintCntRoot());
     }
 
-    private List<Transaction> populateTransactionList(List<ApiRpc.TransactionResponse> transactionResponseList) throws UnsupportedEncodingException {
+    private List<Transaction> populateTransactionList(List<Rpc.TransactionResponse> transactionResponseList) throws UnsupportedEncodingException {
         if (transactionResponseList == null || transactionResponseList.isEmpty()) {
             return new ArrayList<>(0);
         }
         List<Transaction> transactions = new ArrayList<>(transactionResponseList.size());
-        for (ApiRpc.TransactionResponse tr : transactionResponseList) {
+        for (Rpc.TransactionResponse tr : transactionResponseList) {
             Transaction transaction = populateTransaction(tr);
             if (transaction != null) {
                 transactions.add(transaction);
@@ -242,7 +242,7 @@ public class GrpcClientService {
         return transactions;
     }
 
-    private Transaction populateTransaction(ApiRpc.TransactionResponse transactionResponse) throws UnsupportedEncodingException {
+    private Transaction populateTransaction(Rpc.TransactionResponse transactionResponse) throws UnsupportedEncodingException {
         return transactionResponse == null ? null
                 : new Transaction(transactionResponse.getHash(), transactionResponse.getChainId()
                 , transactionResponse.getFrom(), transactionResponse.getTo(), transactionResponse.getValue()
