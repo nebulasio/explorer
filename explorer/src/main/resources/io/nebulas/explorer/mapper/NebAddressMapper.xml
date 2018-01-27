@@ -33,5 +33,7 @@
         LIMIT ${offset},${limit}
     </select>
 
-
+    <insert id="add" parameterType="map" useGeneratedKeys="false">
+        INSERT INTO `neb_address` (`id`, `hash`, `type`) VALUES (#{id}, #{hash}, #{type})
+    </insert>
 </mapper>
