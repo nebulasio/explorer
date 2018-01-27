@@ -1,5 +1,6 @@
 package io.nebulas.explorer.service;
 
+import com.google.common.base.Throwables;
 import io.grpc.StatusRuntimeException;
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
@@ -17,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
 import static io.nebulas.explorer.util.BlockUtil.collectTxs;
@@ -40,73 +42,95 @@ public class SysService {
 
     public void init() {
         log.info("sys init starting...");
-        final long start = System.currentTimeMillis();
-        try {
-            NebState nebState = grpcClientService.getNebState();
-            log.info("neb state: {}", toJSONString(nebState));
-            Block block = grpcClientService.getBlockByHash(nebState.getTail(), true);
-            log.info("top block: {}", toJSONString(block));
+        do {
+            final long start = System.currentTimeMillis();
+            try {
+                NebState nebState = grpcClientService.getNebState();
+                log.info("neb state: {}", toJSONString(nebState));
+                Block block = grpcClientService.getBlockByHash(nebState.getTail(), true);
+                log.info("top block: {}", toJSONString(block));
 
-            final Long goalHeight = block.getHeight();
-            final Long lastHeightO = nebBlockService.getMaxHeight();
-            long lastHeight = lastHeightO == null ? 0L : lastHeightO;
-            for (long h = lastHeight + 1; h <= goalHeight; h++) {
-                NebBlock nebBlock = nebBlockService.getByHeight(h);
-                if (nebBlock != null) {
-                    continue;
-                }
-                Block blk;
-                try {
-                    blk = grpcClientService.getBlockByHeight(h, true);
-                } catch (StatusRuntimeException e) {
-                    log.error("get block by goalHeight error", e);
-                    continue;
-                }
+                final Long goalHeight = block.getHeight();
+                final Long lastHeightO = nebBlockService.getMaxHeight();
+                long lastHeight = lastHeightO == null ? 0L : lastHeightO;
+                for (long h = lastHeight + 1; h <= goalHeight; h++) {
+                    NebBlock nebBlock = nebBlockService.getByHeight(h);
+                    if (nebBlock != null) {
+                        continue;
+                    }
+                    Block blk;
+                    try {
+                        blk = grpcClientService.getBlockByHeight(h, true);
+                    } catch (StatusRuntimeException e) {
+                        log.error("get block by goalHeight error", e);
+                        continue;
+                    }
 
-                NebBlock nebBlk = NebBlock.builder()
-                        .id(IdGenerator.getId())
-                        .height(blk.getHeight())
-                        .hash(blk.getHash())
-                        .parentHash(blk.getParentHash())
-                        .timestamp(new Date(blk.getTimestamp() * 1000))
-                        .miner(blk.getMiner())
-                        .coinbase(blk.getCoinbase())
-                        .nonce(blk.getNonce())
-                        .build();
+                    NebBlock nebBlk = NebBlock.builder()
+                            .id(IdGenerator.getId())
+                            .height(blk.getHeight())
+                            .hash(blk.getHash())
+                            .parentHash(blk.getParentHash())
+                            .timestamp(new Date(blk.getTimestamp() * 1000))
+                            .miner(blk.getMiner())
+                            .coinbase(blk.getCoinbase())
+                            .nonce(blk.getNonce())
+                            .build();
 
-                boolean blkSaveResult = nebBlockService.addNebBlock(nebBlk);
-                if (!blkSaveResult) {
-                    log.error("add nebulas block error");
-                    continue;
-                }
+                    boolean blkSaveResult = nebBlockService.addNebBlock(nebBlk);
+                    if (!blkSaveResult) {
+                        log.error("add nebulas block error");
+                        continue;
+                    }
 
-                List<Transaction> txs = blk.getTransactions();
-                List<NebTransaction> nebTxsList = new ArrayList<>(txs.size());
+                    List<Transaction> txs = blk.getTransactions();
+                    List<NebTransaction> nebTxsList = new ArrayList<>(txs.size());
 
-                List<String> gasUsedList = new ArrayList<>(txs.size());
+                    List<String> gasUsedList = new ArrayList<>(txs.size());
 
-                for (Transaction tx : txs) {
-                    String gasUsed = grpcClientService.getGasUsed(tx.getHash());
-                    if (gasUsed != null) {
-                        log.info("gas used: {}", gasUsed);
-                        gasUsedList.add("");
-                    } else {
-                        gasUsedList.add(gasUsed);
+                    for (Transaction tx : txs) {
+                        String gasUsed = grpcClientService.getGasUsed(tx.getHash());
+                        if (gasUsed != null) {
+                            log.info("gas used: {}", gasUsed);
+                            gasUsedList.add("");
+                        } else {
+                            gasUsedList.add(gasUsed);
+                        }
+                    }
+                    collectTxs(block, txs, nebTxsList, gasUsedList);
+                    if (nebTxsList.size() > 0) {
+                        nebTransactionService.batchAddNebTransaction(nebTxsList);
                     }
                 }
-                collectTxs(block, txs, nebTxsList, gasUsedList);
-                if (nebTxsList.size() > 0) {
-                    nebTransactionService.batchAddNebTransaction(nebTxsList);
+
+                grpcClientService.subscribe(Const.TopicLinkBlock);
+
+                long elapsed = System.currentTimeMillis() - start;
+                log.info("{} millis elapsed", elapsed);
+                log.info("sys init end");
+                break;
+            } catch (StatusRuntimeException e) {
+                String errorMessage = Throwables.getRootCause(e).getMessage();
+                if (errorMessage != null && errorMessage.contains("Connection refused")) {
+                    log.error(errorMessage);
+                    try {
+                        // sleep for 10 seconds to enter next retry
+                        TimeUnit.SECONDS.sleep(10);
+                        log.info("entering next retry after 10 seconds ....");
+                    } catch (InterruptedException e1) {
+                        log.error("thread sleep interrupted", e1);
+                    }
+                } else {
+                    log.error("sys init error", e);
+                    break;
                 }
+            } catch (UnsupportedEncodingException e) {
+                log.error("encoding error", e);
+                break;
+            } catch (Throwable e) {
+                log.error("other error", e);
+                break;
             }
-
-            grpcClientService.subscribe(Const.TopicLinkBlock);
-
-            long elapsed = System.currentTimeMillis() - start;
-            log.info("{} millis elapsed", elapsed);
-            log.info("sys init end");
-        } catch (StatusRuntimeException | UnsupportedEncodingException e) {
-            log.error("sys init error", e);
-        }
+        } while (true);
     }
 }
