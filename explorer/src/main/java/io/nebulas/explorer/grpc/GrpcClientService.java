@@ -123,9 +123,9 @@ public class GrpcClientService {
                                         }
                                         if (gasUsed != null) {
                                             log.info("gas used: {}", gasUsed);
-                                            gasUsedList.add("");
-                                        } else {
                                             gasUsedList.add(gasUsed);
+                                        } else {
+                                            gasUsedList.add("");
                                         }
                                     }
 
