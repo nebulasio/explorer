@@ -36,8 +36,8 @@ public class ExplorerApplication {
             log.info("using environment: {}", myConfig.getEnvironment());
             log.info("page: {}", myConfig.getPage());
 
-//            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-//            scheduler.schedule(() -> sysService.init(), 1500L, TimeUnit.MILLISECONDS);
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            scheduler.schedule(() -> sysService.init(), 1500L, TimeUnit.MILLISECONDS);
         };
 
     }
