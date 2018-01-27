@@ -59,6 +59,9 @@ public class BlockController extends BaseController {
     @RequestMapping("/block/{blkKey}")
     public String detail(@PathVariable("blkKey") String blkKey, Model model) {
         NebBlock block;
+
+        execute(model);
+
         if (StringUtils.isNumeric(blkKey)) {
             block = nebBlockService.getByHeight(Long.valueOf(blkKey));
         } else {
@@ -90,6 +93,8 @@ public class BlockController extends BaseController {
     @RequestMapping("/blocks")
     public String blocks(@RequestParam(value = "p", required = false, defaultValue = "1") int page, Model model) {
         PageIterator<NebBlock> blockPageIterator = nebBlockService.findNebBlockPageIterator(page, PAGE_SIZE);
+
+        execute(model);
 
         if (CollectionUtils.isNotEmpty(blockPageIterator.getData())) {
             List<Long> blkHeightList = blockPageIterator.getData().stream().map(NebBlock::getHeight).collect(Collectors.toList());
