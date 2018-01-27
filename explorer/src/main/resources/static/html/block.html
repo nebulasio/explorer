@@ -10,16 +10,21 @@
             border: 0;
         }
 
+        .table>tbody>tr>td {
+            vertical-align: middle;
+        }
+
+        td .pagination {
+            margin: 0;
+            vertical-align: top;
+        }
+
         textarea {
             width: 100%;
         }
 
         tr>td:first-child::after {
             content: ":";
-        }
-        .navgation-tab{
-            height: 42px;
-            margin-top: -28px;
         }
     </style>
     <title>Block</title>
@@ -137,19 +142,21 @@
                     <td>
                         <nav aria-label="Page navigation " class="navgation-tab">
                             <ul class="pagination">
-                              <li>
-                                <a href="#" aria-label="Previous">
-                                  <span aria-hidden="true">&lt; Prev</span>
-                                </a>
-                              </li>
-                              <li><a href="#">1556462</a></li>
-                              <li>
-                                <a href="#" aria-label="Next">
-                                  <span aria-hidden="true">Next &gt;</span>
-                                </a>
-                              </li>
+                                <li>
+                                    <a href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&lt; Prev</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">1556462</a>
+                                </li>
+                                <li>
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">Next &gt;</span>
+                                    </a>
+                                </li>
                             </ul>
-                          </nav>
+                        </nav>
                     </td>
                 </tr>
                 <tr>
@@ -184,7 +191,7 @@
                 <tr>
                     <td>Mined By</td>
                     <td>
-                        <a href="address.html?mined">0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5</a> 
+                        <a href="address.html?mined">0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5</a>
                         (Nanopool) in 29 secs
                     </td>
                 </tr>
