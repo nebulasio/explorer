@@ -23,4 +23,6 @@ public interface NebAddressMapper {
     long countTotalAddressCnt();
 
     List<NebAddress> findAddressOrderByBalance(@Param("offset") int offset, @Param("limit") int limit);
+
+    Integer add(@Param("id") String id, @Param("hash") String hash, @Param("type") Integer type);
 }

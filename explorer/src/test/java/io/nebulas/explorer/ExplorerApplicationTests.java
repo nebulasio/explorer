@@ -1,6 +1,8 @@
 package io.nebulas.explorer;
 
+import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebTransaction;
+import io.nebulas.explorer.service.NebAddressService;
 import io.nebulas.explorer.service.NebTransactionService;
 import io.nebulas.explorer.util.IdGenerator;
 import org.junit.Test;
@@ -19,8 +21,15 @@ public class ExplorerApplicationTests {
     @Autowired
     private NebTransactionService nebTransactionService;
 
-//    @Test
+    @Autowired
+    private NebAddressService nebAddressService;
+
+    @Test
     public void contextLoads() {
+    }
+
+//    @Test
+    public void testTx() {
         List<NebTransaction> txs = new ArrayList<>();
         NebTransaction nebTransaction = NebTransaction.builder()
                 .id(IdGenerator.getId())
@@ -59,6 +68,13 @@ public class ExplorerApplicationTests {
         nebTransactionService.batchAddNebTransaction(txs);
         List<NebTransaction> result = nebTransactionService.getNebTransactionByBlockHeight(146240L);
         System.out.println(result);
+    }
+
+//    @Test
+    public void testAddr() {
+        nebAddressService.addNebAddress("262646262", 0);
+        NebAddress addr = nebAddressService.getNebAddressByHash("262646262");
+        System.out.println(addr);
     }
 
 }

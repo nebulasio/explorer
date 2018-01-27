@@ -3,6 +3,7 @@ package io.nebulas.explorer.service;
 import com.google.common.base.Throwables;
 import io.grpc.StatusRuntimeException;
 import io.nebulas.explorer.config.YAMLConfig;
+import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.grpc.Const;
@@ -14,6 +15,7 @@ import io.nebulas.explorer.model.Zone;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -44,6 +46,7 @@ public class SysService {
     private final GrpcClientService grpcClientService;
     private final NebBlockService nebBlockService;
     private final NebTransactionService nebTransactionService;
+    private final NebAddressService nebAddressService;
     private final YAMLConfig yamlConfig;
 
     public void init() {
@@ -169,6 +172,9 @@ public class SysService {
 
             for (int tpos = 0; tpos < txs.size(); ) {
                 Transaction tx = txs.get(tpos);
+                final int type = StringUtils.isBlank(tx.getContractAddress()) ? 0 : 1;
+                addAddr(tx.getFrom(), type);
+                addAddr(tx.getTo(), type);
                 String gasUsed;
                 try {
                     gasUsed = grpcClientService.getGasUsed(tx.getHash());
@@ -214,6 +220,13 @@ public class SysService {
         }
         long elapsed = System.currentTimeMillis() - start;
         log.info("Thread {}: {} millis elapsed for populating", threadId, elapsed);
+    }
+
+    private void addAddr(String hash, int type) {
+        NebAddress fromAddr = nebAddressService.getNebAddressByHash(hash);
+        if (fromAddr == null) {
+            nebAddressService.addNebAddress(hash, type);
+        }
     }
 
     /**
