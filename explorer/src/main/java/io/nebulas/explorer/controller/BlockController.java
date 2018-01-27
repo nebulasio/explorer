@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
 
 import java.util.List;
 import java.util.Map;
@@ -80,6 +82,28 @@ public class BlockController extends BaseController {
         if (null != nebAddress) {
             model.addAttribute("miner", nebAddress);
         }
+
+        //
+        // tabButtons
+        // pass parameters according to url query
+
+        JSONArray tabButtons = new JSONArray();
+        JSONObject o;
+
+        o = new JSONObject();
+        o.put("href", "");
+        o.put("text", "Overview");
+        o.put("active", true);
+        tabButtons.add(o);
+
+        o = new JSONObject();
+        o.put("href", "?tab=comments");
+        o.put("text", "Comments");
+        o.put("active", false);
+        tabButtons.add(o);
+
+        model.addAttribute("tabButtons", tabButtons);
+
         return "block/information";
     }
 
