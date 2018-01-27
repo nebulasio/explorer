@@ -135,4 +135,23 @@
         ORDER BY `timestamp` DESC
         LIMIT ${offset},${limit}
     </select>
+
+    <select id="findNormalTxnOrderByTimestamp" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE type = 0
+        ORDER BY `timestamp` DESC
+        LIMIT ${offset},${limit}
+    </select>
+
+    <select id="countTxCntGroupByTimestamp" parameterType="map"  resultType="java.util.Map">
+        SELECT
+          LEFT(`timestamp`,10) AS `ts`,
+          COUNT(1) AS `cnt`
+        FROM `neb_transaction`
+        WHERE type = 0
+          and `timestamp` BETWEEN #{from,jdbcType=TIMESTAMP} and #{to,jdbcType=TIMESTAMP}
+        GROUP BY LEFT(`timestamp`,10)
+    </select>
 </mapper>

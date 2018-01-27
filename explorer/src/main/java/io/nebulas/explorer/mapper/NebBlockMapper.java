@@ -32,6 +32,8 @@ public interface NebBlockMapper {
 
     List<NebBlock> findOrderByHeightDesc(@Param("offset") int offset, @Param("limit") int limit);
 
+    List<NebBlock> findOrderByTimestamp(@Param("offset") int offset, @Param("limit") int limit);
+
     List<NebBlock> findByMiner(@Param("miner") String miner, @Param("offset") int offset, @Param("limit") int limit);
 
 }

@@ -55,7 +55,6 @@ public class BlockController extends BaseController {
      * Generate block information page
      *
      * @param blkKey block hash or block height
-     * @return
      */
     @RequestMapping("/block/{blkKey}")
     public String detail(@PathVariable("blkKey") String blkKey, Model model) {
@@ -82,7 +81,7 @@ public class BlockController extends BaseController {
     }
 
     /**
-     * all block list
+     * all block list page
      *
      * @param page
      * @param model

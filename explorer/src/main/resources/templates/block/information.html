@@ -1,222 +1,164 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../lib/bootstrap.min.css"/>
-    <link rel="stylesheet" href="../css/index.css"/>
-    <link rel="stylesheet" href="../css/common.css"/>
-    <script src="../lib/jquery-3.3.1.min.js"></script>
-    <script src="../lib/bootstrap.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{${ baseUrl + '/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css' }}">
+    <link rel="stylesheet" th:href="@{${ baseUrl + '/css/common.css' }}">
+    <style>
+        .table tbody tr td {
+            border: 0;
+        }
+
+        .table>tbody>tr>td {
+            vertical-align: middle;
+        }
+
+        td .pagination {
+            margin: 0;
+            vertical-align: top;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        tr>td:first-child::after {
+            content: ":";
+        }
+    </style>
     <title>Block</title>
 </head>
 <body>
-<div class="header">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Explorer</a>
-            </div>
+    <th:block th:replace=fragments::header></th:block>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#">Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="dropdown active">
-                        <a href="#blockchain" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">BLOCKCHAIN
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#">View Txns</a>
-                            </li>
-                            <li>
-                                <a href="#"> View Pending Txns</a>
-                            </li>
-                            <li>
-                                <a href="#"> View Contract Internal Txns</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li>
-                                <a href="#"> View Blocks</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li>
-                                <a href="#"> View Uncles</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ACCOUNT
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#">ALL Accounts</a>
-                            </li>
-                            <li>
-                                <a href="#"> Verified Contracts</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">TOKEN
-                            <span class="caret"></span>
-                        </a>
-                        <!-- <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                      </ul> -->
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CHART
-                            <span class="caret"></span>
-                        </a>
-                        <!-- <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                      </ul> -->
-                    </li>
-                </ul>
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search"/>
-                    </div>
-                    <button type="submit" class="btn btn-default">GO</button>
-                </form>
-
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container-fluid -->
-    </nav>
-</div>
-
-
-<div class="wrapper">
-    <div class="banner">
-        <div class="head">
-            <ul class="nav nav-tabs" id="myTab">
-                <li class="active">
-                    <a href="#Overview">Overview</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-content">
-            <div class="tab-pane active" id="Overview">
-                <div class="overview_tab">
-                    <h3>Block Information</h3>
-                </div>
-                <div class="overview_banner_list">
-                    <div class="height">
-                        <span class="list_left">Height:</span>
-                        <span class="list_right">
-                            <button class="prev" value="prev"></button>
-                            <span th:text="${block.height}"/>
-                            <button class="next" value="next"></button>
-                        </span>
-                    </div>
-                    <div class="TimeStamp">
-                        <span class="list_left">TimeStamp:</span>
-                        <span class="list_right" th:text="${block.timestamp}">
-                            2 hrs 3 mins ago (Jan-23-2018 03:53:04 AM +UTC)
-                        </span>
-                    </div>
-                    <div class="Transactions">
-                        <span class="list_left">Transactions:</span>
-                        <span class="list_right">
-                            <a href="" target="_blank" th:text="${txCnt +' transactions'}">8 transactions</a>
-                            <!--<span th:if="${contractInternalTxCnt != null && contractInternalTxCnt >0}">and-->
-                            <!--<a href="#" th:text="${contractInternalTxCnt+'contract internal transactions'}">10 contract internal transactions</a>-->
-                            <!--</span>-->
-                            in this block
-                        </span>
-                    </div>
-                    <div class="Hash">
-                        <span class="list_left">Hash:</span>
-                        <span class="list_right" th:text="${block.hash}">
-                            0x4edab5c4735f10e3a8aa2297848f483858b252560dfbfbe4c9d657d55345e762
-                        </span>
-                    </div>
-                    <div class=" Parent Hash">
-                        <span class="list_left">Parent Hash:</span>
-                        <span class="list_right">
-                            <a th:text="${block.parentHash}">0x50780c99ac0b066b95340554c63045970e5b863776a2a0e4ab3e925c0e85d5a6</a>
-                        </span>
-                    </div>
-                    <div class="  Mined By">
-                        <span class="list_left">Mined By:</span>
-                        <span class="list_right">
-                            <a href="#" th:text="${block.miner}">0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5</a> (Nanopool) in 29 secs
-                        </span>
-                    </div>
-                    <div class="Size">
-                        <span class="list_left">Size:</span>
-                        <span class="list_right">
-                            35779 bytes
-                        </span>
-                    </div>
-                    <div class="Gas Used">
-                        <span class="list_left">Gas Used:</span>
-                        <span class="list_right">
-                            7,984,916 (99.81%)
-                        </span>
-                    </div>
-                    <div class="Gas Limit">
-                        <span class="list_left">Gas Limit:</span>
-                        <span class="list_right">
-                            8,000,029
-                        </span>
-                    </div>
-                    <div class="Nonce">
-                        <span class="list_left">Nonce:</span>
-                        <span class="list_right">
-                            0x889303e4c001686f3e
-                        </span>
-                    </div>
-                    <div class="Block Reward">
-                        <span class="list_left">Block Reward:</span>
-                        <span class="list_right">
-                            3.27657259285203186 Ether (3 + 0.27657259285203186)
-                        </span>
-                    </div>
-                    <div class="Extra Data">
-                        <span class="list_left">Extra Data:</span>
-                        <span class="list_right">
-                            nanopool.org (Hex:0x6e616e6f706f6f6c2e6f7267)
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <!--    tab buttons
+        ============================================================ -->
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a>Overview</a>
+            </li>
+            <li>
+                <a href="?tab=comments">Comments</a>
+            </li>
+        </ul>
     </div>
-</div>
-<div th:replace="fragments/footer :: footer" th:remove="tag">&nbsp;</div>
-<script>
-    $(function () {
-        $('#myTab a:last').tab('show');
-    });
 
-    $('#myTab a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-    });
-</script>
+    <div class="container">
+        <h3>Block Information</h3>
+    </div>
+
+    <!--    tabs
+        ============================================================ -->
+    <div class="container">
+        <div class="tab">
+            <table class="table">
+                <tr>
+                    <td>Height</td>
+                    <td>
+                        <nav aria-label="Page navigation " class="navgation-tab">
+                            <ul class="pagination">
+                                <li>
+                                    <a href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&lt; Prev</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href=# th:text=${block.height}></a>
+                                </li>
+                                <li>
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">Next &gt;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </td>
+                </tr>
+                <tr>
+                    <td>TimeStamp</td>
+                    <td th:text=${block.timestamp}></td>
+                </tr>
+                <tr>
+                    <td>Transactions</td>
+                    <td>
+                        <a href="txs.html?block=%Block" th:text="${txCnt +' transactions'}">transactions</a>
+                        and
+                        <a href="txsInternal.html?block=%Block"> 10 contract internal transactions</a>
+                        in this block
+                    </td>
+                </tr>
+                <tr>
+                    <td>Hash</td>
+                    <td th:text=${block.hash}></td>
+                </tr>
+                <tr>
+                    <td>Parent Hash</td>
+                    <td>
+                        <a href=# th:text=${block.parentHash}></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sha3Uncles</td>
+                    <td>
+                        0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mined By</td>
+                    <td>
+                        <a href="address.html?mined" th:text=${block.miner}></a>
+                        (Nanopool) in 29 secs
+                    </td>
+                </tr>
+                <tr>
+                    <td>Difficulty</td>
+                    <td>2,381,548,271,824,879</td>
+                </tr>
+                <tr>
+                    <td>Total Difficulty</td>
+                    <td>2,174,949,865,886,041,068,523</td>
+                </tr>
+                <tr>
+                    <td>Size</td>
+                    <td>35779 bytes</td>
+                </tr>
+                <tr>
+                    <td>Gas Used</td>
+                    <td>7,984,916 (99.81%)</td>
+                </tr>
+                <tr>
+                    <td>Gas Limit</td>
+                    <td>8,000,029</td>
+                </tr>
+                <tr>
+                    <td>Nonce</td>
+                    <td>0x889303e4c001686f3e</td>
+                </tr>
+                <tr>
+                    <td>Block Reward</td>
+                    <td>
+                        3.27657259285203186 Ether (3 + 0.27657259285203186)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Uncles Reward</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Extra Data</td>
+                    <td>nanopool.org (Hex:0x6e616e6f706f6f6c2e6f7267)
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+    <th:block th:replace=fragments::footer></th:block>
+
+    <script th:src="@{${ baseUrl + '/webjars/jquery/3.3.1/jquery.min.js' }}"></script>
+    <script th:src="@{${ baseUrl + '/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js' }}"></script>
 </body>
 </html>
