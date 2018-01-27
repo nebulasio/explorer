@@ -37,9 +37,7 @@ public class ExplorerApplication {
             log.info("page: {}", myConfig.getPage());
 
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            scheduler.schedule(() -> {
-                sysService.init();
-            }, 1500L, TimeUnit.MILLISECONDS);
+            scheduler.schedule(() -> sysService.init(), 1500L, TimeUnit.MILLISECONDS);
         };
 
     }
