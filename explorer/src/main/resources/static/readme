@@ -1,4 +1,12 @@
 
+==================== 配置
+
+thymeleaf - 支持 html
+https://stackoverflow.com/questions/28624768/thymeleaf-strict-html-parsing-issue
+
+thymeleaf - 用 html 语法代替 xml 语法
+https://github.com/thymeleaf/thymeleaf/issues/93
+
 ==================== git
 
 提交至

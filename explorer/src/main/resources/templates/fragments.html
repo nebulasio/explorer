@@ -1,11 +1,10 @@
-<html xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:fragment="footer">
+<th-block data-th-fragment=footer>
     <!--    [components] footer
         ============================================================ -->
-    <div class="footer">
-        <div class="container">
-            <div class="row">
+    <div class=footer>
+        <div class=container>
+            <div class=row>
                 <div class="footer_left col-md-3 ">
                     <div class="footer_left_up ">
                         <img src="../img/logo.png ">
@@ -65,13 +64,13 @@
             </div>
         </div>
     </div>
-</th:block>
+</th-block>
 
-<th:block th:fragment="header">
+<th-block data-th-fragment=header>
     <!--    [components] header
         ============================================================ -->
     <nav class="header navbar navbar-default">
-        <div class="container">
+        <div class=container>
             <!-- get grouped for better mobile display -->
             <div class="mt20 navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -152,25 +151,16 @@
             </div>
         </div>
     </nav>
-</th:block>
+</th-block>
 
-<!--[
-        { href: "xxx", text: "xxx" },
-        { href: "xxx", text: "xxx" },
-        { href: "xxx", text: "xxx", active: true },
-        { href: "xxx", text: "xxx" }
-    ]
-    -->
-<th:block th:fragment=tab-buttons>
+<th-block data-th-fragment=tab-buttons>
     <!--    tab buttons
         ============================================================ -->
     <div class=container>
         <ul class="nav nav-tabs">
-            <li th:each="o, t: ${ tabButtons }" th:class="${ o.active } ? 'active' : ''">
-                <a th:href="${ o.active } ? '' : ${ o.href }" th:text=${o.text}></a>
+            <li data-th-each="o: ${ tabButtons }" data-th-class="${ o.active ? 'active' : '' }">
+                <a data-th-attr="href=${ o.href }" data-th-text="${ o.text }"></a>
             </li>
         </ul>
     </div>
-</th:block>
-
-</html>
+</th-block>
