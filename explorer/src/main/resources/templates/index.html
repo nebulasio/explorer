@@ -168,7 +168,7 @@
     </style>
 </head>
 <body>
-    <th:block th:replace="fragments/header :: header"></th:block>
+    <th:block th:replace="fragments::header"></th:block>
     <div class="wrapper">
         <div class="container">
             <div class="top">
@@ -241,7 +241,7 @@
             </div>
         </div>
     </div>
-    <th:block th:replace="fragments/footer :: footer">&nbsp;</th:block>
+    <th:block th:replace="fragments::footer"></th:block>
 </body>
 <script src="/webjars/jquery/3.3.1/jquery.min.js" th:src="@{${baseUrl + '/webjars/jquery/3.3.1/jquery.min.js'}}"></script>
 <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js" th:src="@{${baseUrl + '/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js'}}"></script>
