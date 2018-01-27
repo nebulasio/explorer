@@ -86,14 +86,15 @@ public class SysService {
                 log.info("sys init end");
                 break;
             } catch (StatusRuntimeException e) {
-                String errorMessage = Throwables.getRootCause(e).getMessage();
+                String errorMessage = e.getMessage();
                 if (errorMessage != null && (errorMessage.contains("Connection refused")
-                        || errorMessage.contains("Network closed for unknown reason"))) {
+                        || errorMessage.contains("Network closed for unknown reason")
+                        || errorMessage.contains("UNKNOWN"))) {
                     log.error(errorMessage);
                     try {
                         // sleep for 10 seconds to enter next retry
-                        TimeUnit.SECONDS.sleep(10);
                         log.info("entering next retry after 10 seconds ....");
+                        TimeUnit.SECONDS.sleep(10);
                     } catch (InterruptedException e1) {
                         log.error("thread sleep interrupted", e1);
                     }
@@ -126,15 +127,16 @@ public class SysService {
                 blk = grpcClientService.getBlockByHeight(h, true);
             } catch (StatusRuntimeException e) {
                 log.error("get block by height error", e);
-                String errorMessage = Throwables.getRootCause(e).getMessage();
+                String errorMessage = e.getMessage();
                 if (errorMessage != null
                         && (errorMessage.contains("Connection refused")
-                        || errorMessage.contains("Network closed for unknown reason"))) {
+                        || errorMessage.contains("Network closed for unknown reason")
+                        || errorMessage.contains("UNKNOWN"))) {
                     log.error(errorMessage);
                     try {
                         // sleep for 10 seconds to enter next retry
-                        TimeUnit.SECONDS.sleep(10);
                         log.info("entering next retry after 10 seconds ....");
+                        TimeUnit.SECONDS.sleep(10);
                     } catch (InterruptedException e1) {
                         log.error("thread sleep interrupted", e1);
                     }
@@ -180,14 +182,15 @@ public class SysService {
                     gasUsed = grpcClientService.getGasUsed(tx.getHash());
                 } catch (StatusRuntimeException e) {
                     log.error("get gas used by tx hash error", e);
-                    String errorMessage = Throwables.getRootCause(e).getMessage();
+                    String errorMessage = e.getMessage();
                     if (errorMessage != null && (errorMessage.contains("Connection refused")
-                            || errorMessage.contains("Network closed for unknown reason"))) {
+                            || errorMessage.contains("Network closed for unknown reason")
+                            || errorMessage.contains("UNKNOWN"))) {
                         log.error(errorMessage);
                         try {
                             // sleep for 10 seconds to enter next retry
-                            TimeUnit.SECONDS.sleep(10);
                             log.info("entering next retry after 10 seconds ....");
+                            TimeUnit.SECONDS.sleep(10);
                         } catch (InterruptedException e1) {
                             log.error("thread sleep interrupted", e1);
                         }
