@@ -51,10 +51,12 @@ grpc:
       enableKeepAlive: true
       keepAliveWithoutCalls: true
       keepAliveTimeout: 200
-
 page:
   baseUrl: http://localhost:8080
   hostUrl: http://localhost:8080
+sync:
+  zone: 100000
+  cpu: 4
 
 ---
 spring:

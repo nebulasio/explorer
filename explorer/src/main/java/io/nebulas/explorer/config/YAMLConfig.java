@@ -21,4 +21,5 @@ import org.springframework.context.annotation.Configuration;
 public class YAMLConfig {
     private String environment;
     private PageConfig page;
+    private SyncConfig sync;
 }

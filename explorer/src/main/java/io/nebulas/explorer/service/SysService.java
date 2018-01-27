@@ -2,6 +2,7 @@ package io.nebulas.explorer.service;
 
 import com.google.common.base.Throwables;
 import io.grpc.StatusRuntimeException;
+import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.grpc.Const;
@@ -9,6 +10,7 @@ import io.nebulas.explorer.grpc.GrpcClientService;
 import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Transaction;
+import io.nebulas.explorer.model.Zone;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +18,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
@@ -39,6 +44,7 @@ public class SysService {
     private final GrpcClientService grpcClientService;
     private final NebBlockService nebBlockService;
     private final NebTransactionService nebTransactionService;
+    private final YAMLConfig yamlConfig;
 
     public void init() {
         log.info("sys init starting...");
@@ -53,56 +59,23 @@ public class SysService {
                 final Long goalHeight = block.getHeight();
                 final Long lastHeightO = nebBlockService.getMaxHeight();
                 long lastHeight = lastHeightO == null ? 0L : lastHeightO;
-                for (long h = lastHeight + 1; h <= goalHeight; h++) {
-                    NebBlock nebBlock = nebBlockService.getByHeight(h);
-                    if (nebBlock != null) {
-                        continue;
-                    }
-                    Block blk;
-                    try {
-                        blk = grpcClientService.getBlockByHeight(h, true);
-                    } catch (StatusRuntimeException e) {
-                        log.error("get block by goalHeight error", e);
-                        continue;
-                    }
 
-                    NebBlock nebBlk = NebBlock.builder()
-                            .id(IdGenerator.getId())
-                            .height(blk.getHeight())
-                            .hash(blk.getHash())
-                            .parentHash(blk.getParentHash())
-                            .timestamp(new Date(blk.getTimestamp() * 1000))
-                            .miner(blk.getMiner())
-                            .coinbase(blk.getCoinbase())
-                            .nonce(blk.getNonce())
-                            .build();
+                List<Zone> zones = divideZones(lastHeight, goalHeight);
 
-                    boolean blkSaveResult = nebBlockService.addNebBlock(nebBlk);
-                    if (!blkSaveResult) {
-                        log.error("add nebulas block error");
-                        continue;
-                    }
-
-                    List<Transaction> txs = blk.getTransactions();
-                    List<NebTransaction> nebTxsList = new ArrayList<>(txs.size());
-
-                    List<String> gasUsedList = new ArrayList<>(txs.size());
-
-                    for (Transaction tx : txs) {
-                        String gasUsed = grpcClientService.getGasUsed(tx.getHash());
-                        if (gasUsed != null) {
-                            log.info("gas used: {}", gasUsed);
-                            gasUsedList.add("");
-                        } else {
-                            gasUsedList.add(gasUsed);
-                        }
-                    }
-                    collectTxs(block, txs, nebTxsList, gasUsedList);
-                    if (nebTxsList.size() > 0) {
-                        nebTransactionService.batchAddNebTransaction(nebTxsList);
+                if (zones.size() > 0) {
+                    log.info("zones {}", zones);
+                    ExecutorService executor = Executors.newFixedThreadPool(zones.size());
+                    for (Zone zone : zones) {
+                        executor.execute(() -> {
+                            // spin loop until success
+                            try {
+                                populate(block, zone.getFrom(), zone.getTo());
+                            } catch (UnsupportedEncodingException e) {
+                                log.error("encoding error", e);
+                            }
+                        });
                     }
                 }
-
                 grpcClientService.subscribe(Const.TopicLinkBlock);
 
                 long elapsed = System.currentTimeMillis() - start;
@@ -111,7 +84,8 @@ public class SysService {
                 break;
             } catch (StatusRuntimeException e) {
                 String errorMessage = Throwables.getRootCause(e).getMessage();
-                if (errorMessage != null && errorMessage.contains("Connection refused")) {
+                if (errorMessage != null && (errorMessage.contains("Connection refused")
+                        || errorMessage.contains("Network closed for unknown reason"))) {
                     log.error(errorMessage);
                     try {
                         // sleep for 10 seconds to enter next retry
@@ -133,4 +107,165 @@ public class SysService {
             }
         } while (true);
     }
+
+    private void populate(Block block, long from, long to) throws UnsupportedEncodingException {
+        long threadId = Thread.currentThread().getId();
+        log.info("Thread {} starting populate", threadId);
+        long start = System.currentTimeMillis();
+        for (long h = from; h <= to; ) {
+            NebBlock nebBlock = nebBlockService.getByHeight(h);
+            if (nebBlock != null) {
+                h++;
+                continue;
+            }
+            Block blk;
+            try {
+                blk = grpcClientService.getBlockByHeight(h, true);
+            } catch (StatusRuntimeException e) {
+                log.error("get block by height error", e);
+                String errorMessage = Throwables.getRootCause(e).getMessage();
+                if (errorMessage != null
+                        && (errorMessage.contains("Connection refused")
+                        || errorMessage.contains("Network closed for unknown reason"))) {
+                    log.error(errorMessage);
+                    try {
+                        // sleep for 10 seconds to enter next retry
+                        TimeUnit.SECONDS.sleep(10);
+                        log.info("entering next retry after 10 seconds ....");
+                    } catch (InterruptedException e1) {
+                        log.error("thread sleep interrupted", e1);
+                    }
+                    // continue loop on this pos
+                    continue;
+                } else {
+                    log.error("sys init error", e);
+                    break;
+                }
+            }
+
+            NebBlock nebBlk = NebBlock.builder()
+                    .id(IdGenerator.getId())
+                    .height(blk.getHeight())
+                    .hash(blk.getHash())
+                    .parentHash(blk.getParentHash())
+                    .timestamp(new Date(blk.getTimestamp() * 1000))
+                    .miner(blk.getMiner())
+                    .coinbase(blk.getCoinbase())
+                    .nonce(blk.getNonce())
+                    .build();
+
+            try {
+                nebBlockService.addNebBlock(nebBlk);
+            } catch (Throwable e) {
+                log.error("add neb block error", e);
+                h++;
+                continue;
+            }
+
+            List<Transaction> txs = blk.getTransactions();
+            List<NebTransaction> nebTxsList = new ArrayList<>(txs.size());
+
+            List<String> gasUsedList = new ArrayList<>(txs.size());
+
+            for (int tpos = 0; tpos < txs.size(); ) {
+                Transaction tx = txs.get(tpos);
+                String gasUsed;
+                try {
+                    gasUsed = grpcClientService.getGasUsed(tx.getHash());
+                } catch (StatusRuntimeException e) {
+                    log.error("get gas used by tx hash error", e);
+                    String errorMessage = Throwables.getRootCause(e).getMessage();
+                    if (errorMessage != null && (errorMessage.contains("Connection refused")
+                            || errorMessage.contains("Network closed for unknown reason"))) {
+                        log.error(errorMessage);
+                        try {
+                            // sleep for 10 seconds to enter next retry
+                            TimeUnit.SECONDS.sleep(10);
+                            log.info("entering next retry after 10 seconds ....");
+                        } catch (InterruptedException e1) {
+                            log.error("thread sleep interrupted", e1);
+                        }
+                        // continue loop on this pos
+                        continue;
+                    } else {
+                        log.error("sys init error", e);
+                        break;
+                    }
+                }
+                if (gasUsed != null) {
+                    log.info("gas used: {}", gasUsed);
+                    gasUsedList.add("");
+                } else {
+                    gasUsedList.add(gasUsed);
+                }
+                tpos++;
+            }
+
+            collectTxs(block, txs, nebTxsList, gasUsedList);
+            if (nebTxsList.size() > 0) {
+                try {
+                    nebTransactionService.batchAddNebTransaction(nebTxsList);
+                } catch (Throwable e) {
+                    log.error("batch add neb tx error", e);
+                    log.error("caution: may skip some tx on block {}", block.getHash());
+                }
+            }
+            h++;
+        }
+        long elapsed = System.currentTimeMillis() - start;
+        log.info("Thread {}: {} millis elapsed for populating", threadId, elapsed);
+    }
+
+    /**
+     * Divide into separated zones
+     * <p>
+     * 1. Zone list size should never exceed cpu threshold
+     * 2. Each zone size should never exceed zone threshold
+     * 3. If the above two principle can NOT meet together, consider cpu threshold as priority
+     *
+     * @param from
+     * @param to
+     * @return zones
+     */
+    private List<Zone> divideZones(long from, long to) {
+        if (from >= to) {
+            return new ArrayList<>(0);
+        }
+        final long total = to - from;
+        final Integer cpuThreshold = yamlConfig.getSync().getCpu();
+        final Long zoneThreshold = yamlConfig.getSync().getZone();
+
+        final long zoneLowThreshold = zoneThreshold / 100;
+        if (total <= zoneLowThreshold) {
+            return Arrays.asList(new Zone(from + 1, to));
+        }
+
+        int traverseCpu = cpuThreshold;
+        for (; traverseCpu > 0; traverseCpu--) {
+            long zoneSize = total / traverseCpu;
+            if (zoneSize > zoneLowThreshold) {
+                break;
+            }
+        }
+
+        final int confirmedCpu = traverseCpu;
+        final long zoneSize = total / confirmedCpu;
+        final long extra = total % confirmedCpu;
+        final long seedZoneSize = zoneSize + (extra / confirmedCpu);
+
+        List<Zone> zones = new ArrayList<>(confirmedCpu);
+        for (int pos = 1; pos <= confirmedCpu; pos++) {
+            long f = (pos - 1) * seedZoneSize + from + 1;
+            long t;
+            if (pos == confirmedCpu) {
+                t = to;
+            } else {
+                t = pos * seedZoneSize + from;
+            }
+            zones.add(new Zone(f, t));
+        }
+
+        return zones;
+    }
+
 }
