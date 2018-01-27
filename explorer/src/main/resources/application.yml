@@ -56,7 +56,7 @@ page:
   hostUrl: http://localhost:8080
 sync:
   zone: 100000
-  cpu: 1
+  cpu: 4
 
 ---
 spring:
