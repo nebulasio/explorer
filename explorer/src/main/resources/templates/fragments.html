@@ -154,4 +154,23 @@
     </nav>
 </th:block>
 
+<!--[
+        { href: "xxx", text: "xxx" },
+        { href: "xxx", text: "xxx" },
+        { href: "xxx", text: "xxx", active: true },
+        { href: "xxx", text: "xxx" }
+    ]
+    -->
+<th:block th:fragment=tab-buttons>
+    <!--    tab buttons
+        ============================================================ -->
+    <div class=container>
+        <ul class="nav nav-tabs">
+            <li th:each="o, t: ${ tabButtons }" th:class="${ o.active } ? 'active' : ''">
+                <a th:href="${ o.active } ? '' : ${ o.href }" th:text=${o.text}></a>
+            </li>
+        </ul>
+    </div>
+</th:block>
+
 </html>
