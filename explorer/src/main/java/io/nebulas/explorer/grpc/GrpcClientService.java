@@ -3,6 +3,7 @@ package io.nebulas.explorer.grpc;
 import com.alibaba.fastjson.JSONObject;
 import io.grpc.Channel;
 import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
@@ -77,10 +78,24 @@ public class GrpcClientService {
                         NebBlock nebBlock = nebBlockService.getByHash(hash);
                         if (nebBlock == null) {
                             try {
-                                Block block = getBlockByHash(hash, true);
+                                Block block;
+                                try {
+                                    block = getBlockByHash(hash, true);
+                                } catch (StatusRuntimeException e) {
+                                    log.error("can not find block {}", hash);
+                                    return;
+                                }
                                 if (block == null) {
                                     log.warn("block with hash {} not ready", hash);
                                 } else {
+                                    log.info("get block by hash {}", block.toString());
+                                    Integer trx = data.getInteger("tx");
+                                    if (trx != null && trx > 0) {
+                                        log.info("guess the block has transaction");
+                                        if (block.getTransactions() == null || block.getTransactions().isEmpty()) {
+                                            log.info("but can not get block transactions by full transaction");
+                                        }
+                                    }
                                     NebBlock newBlock = NebBlock.builder()
                                             .id(IdGenerator.getId())
                                             .height(block.getHeight())
@@ -99,7 +114,13 @@ public class GrpcClientService {
                                     List<String> gasUsedList = new ArrayList<>(txs.size());
 
                                     for (Transaction tx : txs) {
-                                        String gasUsed = getGasUsed(tx.getHash());
+                                        String gasUsed;
+                                        try {
+                                            gasUsed = getGasUsed(tx.getHash());
+                                        } catch (StatusRuntimeException e) {
+                                            log.error("get gas used error", e);
+                                            gasUsed = null;
+                                        }
                                         if (gasUsed != null) {
                                             log.info("gas used: {}", gasUsed);
                                             gasUsedList.add("");
@@ -114,7 +135,7 @@ public class GrpcClientService {
                                     }
                                 }
                             } catch (UnsupportedEncodingException e) {
-                                log.error("not block yet", e);
+                                log.error("no block yet", e);
                             }
                         } else {
                             log.warn("block with hash {} already existed", hash);
