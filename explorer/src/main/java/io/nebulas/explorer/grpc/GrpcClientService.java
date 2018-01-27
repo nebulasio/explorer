@@ -70,16 +70,16 @@ public class GrpcClientService {
                     return;
                 }
                 if (Const.TopicLinkBlock.equals(sr.getMsgType())) {
-                    Long height = data.getLong("height");
-                    if (height == null) {
-                        log.error("empty height");
+                    String hash = data.getString("hash");
+                    if (StringUtils.isBlank(hash)) {
+                        log.error("empty hash");
                     } else {
-                        NebBlock nebBlock = nebBlockService.getByHeight(height);
+                        NebBlock nebBlock = nebBlockService.getByHash(hash);
                         if (nebBlock == null) {
                             try {
-                                Block block = getBlockByHeight(height, true);
+                                Block block = getBlockByHash(hash, true);
                                 if (block == null) {
-                                    log.warn("block with height {} not ready", height);
+                                    log.warn("block with hash {} not ready", hash);
                                 } else {
                                     NebBlock newBlock = NebBlock.builder()
                                             .id(IdGenerator.getId())
@@ -117,7 +117,7 @@ public class GrpcClientService {
                                 log.error("not block yet", e);
                             }
                         } else {
-                            log.warn("block with height {} already existed", height);
+                            log.warn("block with hash {} already existed", hash);
                         }
                     }
                 }
