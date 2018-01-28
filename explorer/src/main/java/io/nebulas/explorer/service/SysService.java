@@ -132,6 +132,7 @@ public class SysService {
 
             if (blk == null) {
                 log.error("block with height {} not found", h);
+                h++;
                 continue;
             }
 
