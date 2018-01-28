@@ -42,15 +42,11 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 300
 grpc:
-  client:
-    local-grpc-server:
-      host:
-        - 35.182.48.19
-      port:
-        - 8684
-      enableKeepAlive: true
-      keepAliveWithoutCalls: true
-      keepAliveTimeout: 200
+  host: 35.182.48.19
+  port: 8684
+  enableKeepAlive: true
+  keepAliveWithoutCalls: true
+  keepAliveTimeout: 200
 page:
   baseUrl: http://localhost:8080
   hostUrl: http://localhost:8080
