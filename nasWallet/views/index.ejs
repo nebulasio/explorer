@@ -42,6 +42,10 @@
 		<div class="form-group">
 			<label for="password">Enter a password:</label>
 			<input type="password" class="form-control" id="password" placeholder="Do NOT forget to save this!">
+			
+		</div>
+		<div class="form-group">
+			<p class="form-control createresult" id="address" style="display:none;"></p>
 		</div>
 		<button id="genNewWallet" type="submit" class="btn btn-default col-xs-12 col-sm-12 col-md-12 text-center">Create New Wallet</button>		
 	</form>
@@ -109,15 +113,20 @@ $("#genNewWallet").click(function(){
 		return false;		
 	}
 	$('#info').modal('show');
-/* 	url = 'tokey.html?password='+password;
-	window.open(url,'_blank') */
  	setTimeout(function () {
-　　　　　　address = account.getAddressString();
-	  keyStr = account.toKeyString(password);
-	  $('#info').modal('hide');
-	  var blob = new Blob([keyStr], {type: "application/json;charset=utf-8"});
-	  saveAs(blob, address);
-　　　　}, 4000); 
+ 		var url = '/create/'+password;
+ 		$.get(url,function(result){
+ 			$('#info').modal('hide');
+ 			address = result.address;
+ 			str = 'Address:'+address+'<br />Private Key:'+result.privateKey
+ 			$("#address").html(str);
+ 			$("#address").show();
+ 			keyStr = JSON.stringify(result.key); 			
+			var blob = new Blob([keyStr], {type: "application/json;charset=utf-8"});
+			saveAs(blob, address);
+ 		});
+	  
+　　　　}, 1000); 
 	return false;
 });
 </script>
