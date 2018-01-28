@@ -1,12 +1,12 @@
 package io.nebulas.explorer.service;
 
-import com.google.common.base.Throwables;
 import io.grpc.StatusRuntimeException;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.grpc.Const;
+import io.nebulas.explorer.grpc.GrpcChannelService;
 import io.nebulas.explorer.grpc.GrpcClientService;
 import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.NebState;
@@ -43,6 +43,7 @@ import static io.nebulas.explorer.util.BlockUtil.collectTxs;
 @AllArgsConstructor
 @Service
 public class SysService {
+    private final GrpcChannelService grpcChannelService;
     private final GrpcClientService grpcClientService;
     private final NebBlockService nebBlockService;
     private final NebTransactionService nebTransactionService;
@@ -55,8 +56,16 @@ public class SysService {
             final long start = System.currentTimeMillis();
             try {
                 NebState nebState = grpcClientService.getNebState();
+                if (nebState == null) {
+                    log.error("neb state not found");
+                    return;
+                }
                 log.info("neb state: {}", toJSONString(nebState));
                 Block block = grpcClientService.getBlockByHash(nebState.getTail(), true);
+                if (block == null) {
+                    log.error("block by hash {} not found", nebState.getTail());
+                    return;
+                }
                 log.info("top block: {}", toJSONString(block));
 
                 final Long goalHeight = block.getHeight();
@@ -87,21 +96,8 @@ public class SysService {
                 break;
             } catch (StatusRuntimeException e) {
                 String errorMessage = e.getMessage();
-                if (errorMessage != null && (errorMessage.contains("Connection refused")
-                        || errorMessage.contains("Network closed for unknown reason")
-                        || errorMessage.contains("UNKNOWN"))) {
-                    log.error(errorMessage);
-                    try {
-                        // sleep for 10 seconds to enter next retry
-                        log.info("entering next retry after 10 seconds ....");
-                        TimeUnit.SECONDS.sleep(10);
-                    } catch (InterruptedException e1) {
-                        log.error("thread sleep interrupted", e1);
-                    }
-                } else {
-                    log.error("sys init error", e);
-                    break;
-                }
+                log.error(errorMessage);
+                reConnect();
             } catch (UnsupportedEncodingException e) {
                 log.error("encoding error", e);
                 break;
@@ -128,24 +124,15 @@ public class SysService {
             } catch (StatusRuntimeException e) {
                 log.error("get block by height error", e);
                 String errorMessage = e.getMessage();
-                if (errorMessage != null
-                        && (errorMessage.contains("Connection refused")
-                        || errorMessage.contains("Network closed for unknown reason")
-                        || errorMessage.contains("UNKNOWN"))) {
-                    log.error(errorMessage);
-                    try {
-                        // sleep for 10 seconds to enter next retry
-                        log.info("entering next retry after 10 seconds ....");
-                        TimeUnit.SECONDS.sleep(10);
-                    } catch (InterruptedException e1) {
-                        log.error("thread sleep interrupted", e1);
-                    }
-                    // continue loop on this pos
-                    continue;
-                } else {
-                    log.error("sys init error", e);
-                    break;
-                }
+                log.error(errorMessage);
+                reConnect();
+                // continue loop on this pos
+                continue;
+            }
+
+            if (blk == null) {
+                log.error("block with height {} not found", h);
+                break;
             }
 
             NebBlock nebBlk = NebBlock.builder()
@@ -162,7 +149,7 @@ public class SysService {
             try {
                 nebBlockService.addNebBlock(nebBlk);
             } catch (Throwable e) {
-                log.error("add neb block error", e);
+                log.error("add neb block error, ignoring....", e);
                 h++;
                 continue;
             }
@@ -183,29 +170,17 @@ public class SysService {
                 } catch (StatusRuntimeException e) {
                     log.error("get gas used by tx hash error", e);
                     String errorMessage = e.getMessage();
-                    if (errorMessage != null && (errorMessage.contains("Connection refused")
-                            || errorMessage.contains("Network closed for unknown reason")
-                            || errorMessage.contains("UNKNOWN"))) {
-                        log.error(errorMessage);
-                        try {
-                            // sleep for 10 seconds to enter next retry
-                            log.info("entering next retry after 10 seconds ....");
-                            TimeUnit.SECONDS.sleep(10);
-                        } catch (InterruptedException e1) {
-                            log.error("thread sleep interrupted", e1);
-                        }
-                        // continue loop on this pos
-                        continue;
-                    } else {
-                        log.error("sys init error", e);
-                        break;
-                    }
+                    log.error(errorMessage);
+                    reConnect();
+                    // continue loop on this pos
+                    continue;
                 }
                 if (gasUsed != null) {
                     log.info("gas used: {}", gasUsed);
-                    gasUsedList.add("");
-                } else {
                     gasUsedList.add(gasUsed);
+                } else {
+                    log.warn("gas used not found for tx hash {}", tx.getHash());
+                    gasUsedList.add("");
                 }
                 tpos++;
             }
@@ -225,9 +200,20 @@ public class SysService {
         log.info("Thread {}: {} millis elapsed for populating", threadId, elapsed);
     }
 
+    private void reConnect() {
+        try {
+            grpcChannelService.renewChannel();
+            // sleep for 10 seconds to enter next retry
+            log.info("entering next retry after 10 seconds ....");
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e1) {
+            log.error("thread sleep interrupted", e1);
+        }
+    }
+
     private void addAddr(String hash, int type) {
-        NebAddress fromAddr = nebAddressService.getNebAddressByHash(hash);
-        if (fromAddr == null) {
+        NebAddress addr = nebAddressService.getNebAddressByHash(hash);
+        if (addr == null) {
             nebAddressService.addNebAddress(hash, type);
         }
     }

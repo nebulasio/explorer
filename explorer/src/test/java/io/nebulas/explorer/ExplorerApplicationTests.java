@@ -2,6 +2,8 @@ package io.nebulas.explorer;
 
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebTransaction;
+import io.nebulas.explorer.grpc.GrpcClientService;
+import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.service.NebAddressService;
 import io.nebulas.explorer.service.NebTransactionService;
 import io.nebulas.explorer.util.IdGenerator;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,11 +27,14 @@ public class ExplorerApplicationTests {
     @Autowired
     private NebAddressService nebAddressService;
 
+    @Autowired
+    private GrpcClientService grpcClientService;
+
     @Test
     public void contextLoads() {
     }
 
-//    @Test
+    //    @Test
     public void testTx() {
         List<NebTransaction> txs = new ArrayList<>();
         NebTransaction nebTransaction = NebTransaction.builder()
@@ -70,11 +76,26 @@ public class ExplorerApplicationTests {
         System.out.println(result);
     }
 
-//    @Test
+    //    @Test
     public void testAddr() {
         nebAddressService.addNebAddress("262646262", 0);
         NebAddress addr = nebAddressService.getNebAddressByHash("262646262");
         System.out.println(addr);
+    }
+
+//    @Test
+    public void testRpc() {
+        try {
+            Block block = grpcClientService
+                    .getBlockByHash("ff6aeddecfe4cc8810e7318e4bc7d52626cfbb6934ec7bbc6ad571b35b344aeg", false);
+            if (block == null) {
+                System.out.println("empty block");
+            } else {
+                System.out.println(String.format("block %s", block.toString()));
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -15,18 +15,18 @@ import io.nebulas.explorer.service.NebBlockService;
 import io.nebulas.explorer.service.NebTransactionService;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.extern.slf4j.Slf4j;
-import net.devh.springboot.autoconfigure.grpc.client.GrpcClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rpcpb.Rpc;
 import rpcpb.ApiServiceGrpc;
+import rpcpb.Rpc;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static io.nebulas.explorer.util.BlockUtil.collectTxs;
 
@@ -42,8 +42,8 @@ import static io.nebulas.explorer.util.BlockUtil.collectTxs;
 @Slf4j
 @Service
 public class GrpcClientService {
-    @GrpcClient("local-grpc-server")
-    private Channel serverChannel;
+    @Autowired
+    private GrpcChannelService grpcChannelService;
 
     @Autowired
     private NebBlockService nebBlockService;
@@ -52,7 +52,8 @@ public class GrpcClientService {
     private NebTransactionService nebTransactionService;
 
     public void subscribe(String topic) {
-        ApiServiceGrpc.ApiServiceStub asyncStub = ApiServiceGrpc.newStub(serverChannel);
+        Channel channel = grpcChannelService.getChannel();
+        ApiServiceGrpc.ApiServiceStub asyncStub = ApiServiceGrpc.newStub(channel);
         final CountDownLatch finishLatch = new CountDownLatch(1);
         StreamObserver<Rpc.SubscribeResponse> responseObserver = new StreamObserver<Rpc.SubscribeResponse>() {
             @Override
@@ -82,7 +83,7 @@ public class GrpcClientService {
                                 try {
                                     block = getBlockByHash(hash, true);
                                 } catch (StatusRuntimeException e) {
-                                    log.error("can not find block {}", hash);
+                                    log.error("get block by hash error, skipped block hash " + hash, e);
                                     return;
                                 }
                                 if (block == null) {
@@ -118,7 +119,7 @@ public class GrpcClientService {
                                         try {
                                             gasUsed = getGasUsed(tx.getHash());
                                         } catch (StatusRuntimeException e) {
-                                            log.error("get gas used error", e);
+                                            log.error("get gas used error, set gas used to null for tx hash " + tx.getHash(), e);
                                             gasUsed = null;
                                         }
                                         if (gasUsed != null) {
@@ -148,7 +149,16 @@ public class GrpcClientService {
             public void onError(Throwable t) {
                 Status status = Status.fromThrowable(t);
                 log.warn("failed: {}", status);
-                finishLatch.countDown();
+                try {
+                    grpcChannelService.renewChannel();
+                    // sleep for 10 seconds to enter next retry
+                    log.info("entering next retry after 10 seconds ....");
+                    TimeUnit.SECONDS.sleep(10);
+                    subscribe(topic);
+                } catch (InterruptedException e1) {
+                    log.error("thread sleep interrupted, skipped reconnect", e1);
+                    finishLatch.countDown();
+                }
             }
 
             @Override
@@ -162,8 +172,17 @@ public class GrpcClientService {
     }
 
     public String getGasUsed(String hash) {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(serverChannel);
-        Rpc.GasResponse gasUsed = stub.getGasUsed(Rpc.HashRequest.newBuilder().setHash(hash).build());
+        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
+        Rpc.GasResponse gasUsed;
+        try {
+            gasUsed = stub.getGasUsed(Rpc.HashRequest.newBuilder().setHash(hash).build());
+        } catch (StatusRuntimeException e) {
+            String errMessage = e.getMessage();
+            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
+                return null;
+            }
+            throw e;
+        }
         return populateGas(gasUsed);
     }
 
@@ -172,29 +191,65 @@ public class GrpcClientService {
     }
 
     public Block getBlockByHash(String hash, Boolean fullTransaction) throws UnsupportedEncodingException {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(serverChannel);
-        Rpc.BlockResponse block = stub.getBlockByHash(Rpc.GetBlockByHashRequest.newBuilder().setHash(hash).setFullTransaction(fullTransaction).build());
+        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
+        Rpc.BlockResponse block;
+        try {
+            block = stub.getBlockByHash(Rpc.GetBlockByHashRequest.newBuilder().setHash(hash).setFullTransaction(fullTransaction).build());
+        } catch (StatusRuntimeException e) {
+            String errMessage = e.getMessage();
+            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
+                return null;
+            }
+            throw e;
+        }
         return populateBlock(block);
     }
 
     public NebState getNebState() {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(serverChannel);
-        Rpc.GetNebStateResponse nebState = stub.getNebState(Rpc.NonParamsRequest.newBuilder().build());
+        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
+        Rpc.GetNebStateResponse nebState;
+        try {
+            nebState = stub.getNebState(Rpc.NonParamsRequest.newBuilder().build());
+        } catch (StatusRuntimeException e) {
+            String errMessage = e.getMessage();
+            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
+                return null;
+            }
+            throw e;
+        }
         return populateNebState(nebState);
     }
 
     @Deprecated
     public String getDumpData(int count) {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(serverChannel);
-        Rpc.BlockDumpResponse response = stub.blockDump(Rpc.BlockDumpRequest.newBuilder().setCount(count).build());
+        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
+        Rpc.BlockDumpResponse response;
+        try {
+            response = stub.blockDump(Rpc.BlockDumpRequest.newBuilder().setCount(count).build());
+        } catch (StatusRuntimeException e) {
+            String errMessage = e.getMessage();
+            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
+                return null;
+            }
+            throw e;
+        }
         return response.getData();
     }
 
     public Transaction getTransactionByHash(String hash) throws UnsupportedEncodingException {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(serverChannel);
-        Rpc.TransactionResponse transactionReceipt = stub.getTransactionReceipt(Rpc
-                .GetTransactionByHashRequest.newBuilder()
-                .setHash(hash).build());
+        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
+        Rpc.TransactionResponse transactionReceipt;
+        try {
+            transactionReceipt = stub.getTransactionReceipt(Rpc
+                    .GetTransactionByHashRequest.newBuilder()
+                    .setHash(hash).build());
+        } catch (StatusRuntimeException e) {
+            String errMessage = e.getMessage();
+            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
+                return null;
+            }
+            throw e;
+        }
         return populateTransaction(transactionReceipt);
     }
 
@@ -219,11 +274,20 @@ public class GrpcClientService {
     }
 
     public Block getBlockByHeight(long height, boolean fullTransaction) throws UnsupportedEncodingException {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(serverChannel);
-        Rpc.BlockResponse response = stub.getBlockByHeight(Rpc.GetBlockByHeightRequest.newBuilder()
-                .setHeight(height)
-                .setFullTransaction(fullTransaction)
-                .build());
+        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
+        Rpc.BlockResponse response;
+        try {
+            response = stub.getBlockByHeight(Rpc.GetBlockByHeightRequest.newBuilder()
+                    .setHeight(height)
+                    .setFullTransaction(fullTransaction)
+                    .build());
+        } catch (StatusRuntimeException e) {
+            String errMessage = e.getMessage();
+            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
+                return null;
+            }
+            throw e;
+        }
         return populateBlock(response);
     }
 

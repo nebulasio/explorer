@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class YAMLConfig {
     private String environment;
+    private GrpcConfig grpc;
     private PageConfig page;
     private SyncConfig sync;
 }
