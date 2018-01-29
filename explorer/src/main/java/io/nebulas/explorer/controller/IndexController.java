@@ -54,7 +54,7 @@ public class IndexController extends BaseController {
         List<NebBlock> blkList = nebBlockService.findNebBlockOrderByTimestamp(1, 10);
         if (CollectionUtils.isNotEmpty(blkList)) {
             List<Long> blkHeightList = blkList.stream().map(NebBlock::getHeight).collect(Collectors.toList());
-            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxInBlock(blkHeightList);
+            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlock(blkHeightList);
             model.addAttribute("txCntMap", txCntMap);
         }
         model.addAttribute("blkList", blkList);

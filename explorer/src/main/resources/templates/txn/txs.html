@@ -1,0 +1,161 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Nebulas Transactions Information</title>
+    <meta name="description" content="Nebulas" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" th:href="@{${baseUrl + '/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css'}}" />
+    <link rel="stylesheet" href="/css/common.css" th:href="@{${baseUrl + '/css/common.css'}}" />
+    <style>
+        .info-and-pagination a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        td,
+        th {
+            border-top-color: #ddd;
+        }
+
+        .glyphicon-arrow-right {
+            color: darkgreen;
+        }
+
+        .glyphicon-btc {
+            color: goldenrod;
+        }
+
+        .glyphicon-ok {
+            color: green;
+        }
+
+        .glyphicon-remove {
+            color: firebrick;
+        }
+    </style>
+</head>
+<body>
+    <th:block th:replace="fragments::header"></th:block>
+
+    <!--    title and breadcrumb
+        ============================================================ -->
+    <div class="title-and-breadcrumb">
+        <div class="container">
+            <h4 class="pull-left">Transactions</h4>
+            <ol class="breadcrumb pull-right">
+                <li>Home</li>
+                <li class="active">Transactions</li>
+            </ol>
+        </div>
+    </div>
+
+    <!--    info and pagination
+        ============================================================ -->
+    <div class="container info-and-pagination">
+        <div class="pull-left">
+            <div class="mt20">Sponsored Link: Winding Tree: Decentralized Travel Distribution. Trusted by Lufthansa, SWISS, Air New Zealand, and more!
+                <a href="#" style="color:rgb(76, 32, 133);">Join Now!</a>
+            </div>
+            <div class="mt20" th:if="${txnCnt >500}">
+                More than > <span th:text="${txnCnt}"></span> transactions found (showing the last 500k records)
+            </div>
+            <div class="mt20" th:if="${txnCnt <=500}">
+                A total of <span th:text="${txnCnt}"></span> transactions found
+            </div>
+        </div>
+
+        <!--    [components] pagination
+            ============================================================ -->
+        <ul class="pagination pull-right">
+            <li>
+                <!-- don't forget other parameters -->
+                <a href="?page=%1" aria-label="First">First</a>
+            </li>
+            <li>
+                <a href="?page=%2" aria-label="Prev">Prev</a>
+            </li>
+            <!-- add "disabled" class to disable a list item -->
+            <li class="disabled">
+                <a>Page
+                    <b>%5</b> of
+                    <b>%6</b>
+                </a>
+            </li>
+            <li>
+                <a href="?page=%3" aria-label="Next">Next</a>
+            </li>
+            <li>
+                <a href="?page=%4" aria-label="Last">Last</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container mt20">
+        <table class="table">
+            <tr>
+                <th>TxHash</th>
+                <th>Block</th>
+                <th>Age</th>
+                <th>From</th>
+                <th></th>
+                <th>To</th>
+                <th>Value</th>
+                <th>[TxFee]</th>
+            </tr>
+            <tr th:each="txn,iterStat : ${txnList}">
+                <td class="ne">
+                    <a href="block.html?id=%123456" th:href="@{/tx/{hash}(hash=${txn.hash})}" th:text="${pageStringUtil.replace(txn.hash,20,'...')}">%TxHash</a>
+                </td>
+                <td class="ne"><a  th:href="@{/block/{height}(height=${txn.blockHeight})}" th:text="${pageStringUtil.replace(txn.blockHeight,20,'...')}"></a></td>
+                <td>
+                    <a href="tx.html?id=%ParentTxHash">2 mins ago</a>
+                </td>
+                <td>
+                    <a href="address.html?id=%From" th:href="@{/address/{hash}(hash=${txn.from})}" th:text="${pageStringUtil.replace(txn.from,20,'...')}">%From</a>
+                </td>
+                <td>
+                    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                </td>
+                <td>
+                    <a href="address.html?id=%To" th:href="@{/address/{hash}(hash=${txn.to})}" th:text="${pageStringUtil.replace(txn.to,20,'...')}">%To</a>
+                </td>
+                <td th:text="${txn.value}">%Value</td>
+                <td th:text="${txn.getTxFee()}">%txFee</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="container">
+        <!--    [components] pagination
+            ============================================================ -->
+        <ul class="pagination pull-right">
+            <li>
+                <!-- don't forget other parameters -->
+                <a href="?page=%1 aria-label=First">First</a>
+            </li>
+            <li>
+                <a href="?page=%2 aria-label=Prev">Prev</a>
+            </li>
+            <!-- add "disabled" class to disable an item -->
+            <li class="disabled">
+                <a>Page
+                    <b>%5</b> of
+                    <b>%6</b>
+                </a>
+            </li>
+            <li>
+                <a href="?page=%3" aria-label="Next">Next</a>
+            </li>
+            <li>
+                <a href="?page=%4" aria-label="Last">Last</a>
+            </li>
+        </ul>
+    </div>
+
+    <th:block th:replace="fragments::footer"></th:block>
+</body>
+<th-block data-th-replace=fragments::scripts></th-block>
+</html>

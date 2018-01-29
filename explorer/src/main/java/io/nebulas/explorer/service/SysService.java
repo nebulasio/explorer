@@ -113,7 +113,7 @@ public class SysService {
         log.info("Thread {} starting populate", threadId);
         long start = System.currentTimeMillis();
         for (long h = from; h <= to; ) {
-            NebBlock nebBlock = nebBlockService.getByHeight(h);
+            NebBlock nebBlock = nebBlockService.getNebBlockByHeight(h);
             if (nebBlock != null) {
                 h++;
                 continue;

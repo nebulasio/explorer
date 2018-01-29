@@ -37,7 +37,7 @@
     </style>
 </head>
 <body>
-<th:block th:replace="fragments/header :: header">&nbsp;</th:block>
+<th:block th:replace="fragments::header">&nbsp;</th:block>
 
 <!--    title and breadcrumb
     ============================================================ -->
@@ -106,11 +106,18 @@
 <!--    Transactions
     ============================================================ -->
 <div class="container" th:if="${part == 'tx'}">
-    <div class="mt20 title">
+    <div class="mt20 title" th:if="${txCnt <= 25}">
         <span class="c333 glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>
-        Latest <span th:text="${txList !=null ? txList.size() : 0}"></span> txns from a total Of
+        Latest <span th:text="${txCnt}"></span> txns
+        <span th:if="${pendingTxCnt >0}">(+<a th:text="${pendingTxCnt+' PendingTxn'}"></a>) </span>
+        <a class="btn btn-default pull-right" th:href="@{/tx?a={hash}(hash=${address.hash})}"
+           href="txs.html?id=%id-from-url" role="button">View All</a>>
+    </div>
+    <div class="mt20 title" th:if="${txCnt > 25 }">
+        <span class="c333 glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>
+        Latest 25 txns from a total Of
         <a href="txs.html" th:text="${txCnt + ' transactions'}">%2</a>
-        <span th:if="${pendingTxCnt >0}">(+<a th:href="" th:text="${pendingTxCnt+' PendingTxn'}"></a>) </span>
+        <span th:if="${pendingTxCnt >0}">(+<a th:text="${pendingTxCnt+' PendingTxn'}"></a>) </span>
         <a class="btn btn-default pull-right" th:href="@{/tx?a={hash}(hash=${address.hash})}"
            href="txs.html?id=%id-from-url" role="button">View All</a>>
     </div>
@@ -137,10 +144,10 @@
                 <span th:if="${tx.blockHeight == 0 }">(pending)</span>
             </td>
             <td>%Age</td>
-            <td th:text="${tx.from}">%From</td>
+            <td th:text="${pageStringUtil.replace(tx.from,20,'...')}">%From</td>
             <td class="out text-uppercase"></td>
             <td>
-                <a href="address.html?id=%To" th:text="${tx.to}">%To</a>
+                <a href="address.html?id=%To" th:text="${pageStringUtil.replace(tx.to,20,'...')}">%To</a>
             </td>
             <td th:text="${tx.value}">%Value</td>
             <td class="txfee" th:text="${tx.blockHeight == 0?'(pending)':tx.getTxFee()}">%TxFee</td>
@@ -151,9 +158,14 @@
 <!--    Mined Blocks
     ============================================================ -->
 <div class="container" th:if="${part == 'mine'}">
-    <div class="mt20 title">
+    <div class="mt20 title" th:if="${minedBlkCnt <=25}">
         <span class="c333 glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>
-        Latest <span th:text="${minedBlkCnt > 25 ? 25 : minedBlkCnt}"></span> blocks (From a total of
+        Latest <span th:text="${minedBlkCnt}"></span> blocks
+        <a class="btn btn-default pull-right" href="blocks.html?id=%id-from-url" role="button">View All</a>
+    </div>
+    <div class="mt20 title" th:if="${minedBlkCnt > 25}">
+        <span class="c333 glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>
+        Latest 25 blocks (From a total of
         <a href="blocks.html?m=%id-from-url" th:text="${minedBlkCnt +' blocks'}">%2</a>)
         <a class="btn btn-default pull-right" href="blocks.html?id=%id-from-url" role="button">View All</a>
     </div>
@@ -169,7 +181,7 @@
 
         <tr th:each="blk,iterStat : ${minedBlkList}">
             <td>
-                <a th:href="/block/{height}(height=${blk.height})" th:text="${blk.height}">%Block</a>
+                <a th:href="@{/block/{height}(height=${blk.height})}" th:text="${blk.height}">%Block</a>
             </td>
             <td>%Age</td>
             <td th:text="${txCntMap!=null && txCntMap.get(blk.height) !=null?txCntMap.get(blk.height).txCnt:0}">%txn
@@ -181,7 +193,7 @@
         </tr>
     </table>
 </div>
-<th:block th:replace="fragments/footer :: footer">&nbsp;</th:block>
+<th:block th:replace="fragments::footer">&nbsp;</th:block>
 </body>
 <script src="/webjars/jquery/3.3.1/jquery.min.js"
         th:src="@{${baseUrl + '/webjars/jquery/3.3.1/jquery.min.js'}}"></script>

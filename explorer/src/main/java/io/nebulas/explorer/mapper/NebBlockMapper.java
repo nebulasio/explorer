@@ -20,15 +20,15 @@ public interface NebBlockMapper {
 
     Integer add(NebBlock block);
 
+    long count();
+
+    long countByMiner(String miner);
+
     Long getMaxHeight();
 
     NebBlock getByHeight(Long height);
 
     NebBlock getByHash(String hash);
-
-    long count();
-
-    long countByMiner(String miner);
 
     List<NebBlock> findOrderByHeightDesc(@Param("offset") int offset, @Param("limit") int limit);
 
