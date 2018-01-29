@@ -98,4 +98,18 @@ public class ExplorerApplicationTests {
         }
     }
 
+//    @Test
+    public void testRpc2() {
+        try {
+            Block block = grpcClientService.getBlockByHeight(329495, true);
+            if (block == null) {
+                System.out.println("empty block");
+            } else {
+                System.out.println(String.format("block %s", block.toString()));
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
