@@ -5,6 +5,7 @@ import io.nebulas.explorer.core.BaseController;
 import io.nebulas.explorer.domain.BlockSummary;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
+import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.model.PageIterator;
 import io.nebulas.explorer.service.NebAddressService;
 import io.nebulas.explorer.service.NebBlockService;
@@ -17,9 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONArray;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("")
 public class BlockController extends BaseController {
-    private static final Integer PAGE_SIZE = 20;
+    private static final Integer PAGE_SIZE = 25;
     private final NebBlockService nebBlockService;
     private final NebTransactionService nebTransactionService;
     private final NebAddressService nebAddressService;
@@ -64,9 +64,9 @@ public class BlockController extends BaseController {
 
         NebBlock block;
         if (StringUtils.isNumeric(blkKey)) {
-            block = nebBlockService.getByHeight(Long.valueOf(blkKey));
+            block = nebBlockService.getNebBlockByHeight(Long.valueOf(blkKey));
         } else {
-            block = nebBlockService.getByHash(blkKey);
+            block = nebBlockService.getNebBlockByHash(blkKey);
         }
 
         if (null == block) {
@@ -74,36 +74,25 @@ public class BlockController extends BaseController {
         }
 
         model.addAttribute("block", block);
-        model.addAttribute("txCnt", nebTransactionService.countTxCntByBlockHeight(block.getHeight()));
-        model.addAttribute("contractInternalTxCnt", 0); //todo
+        model.addAttribute("blkMaxHeight", nebBlockService.getMaxHeight());
+
+        List<NebTransaction> txnList = nebTransactionService.findTxnByBlockHeight(block.getHeight());
+        BigDecimal blkGasUsed = BigDecimal.ZERO;
+        BigDecimal blkGasLimit = BigDecimal.ZERO;
+        for (NebTransaction txn : txnList) {
+            blkGasUsed = blkGasUsed.add(StringUtils.isEmpty(txn.getGasUsed()) ? BigDecimal.ZERO : new BigDecimal(txn.getGasUsed()));
+            blkGasLimit = blkGasLimit.add(StringUtils.isEmpty(txn.getGasLimit()) ? BigDecimal.ZERO : new BigDecimal(txn.getGasLimit()));
+        }
+        model.addAttribute("txCnt", txnList.size());
+        model.addAttribute("blkGasUsed", blkGasUsed.toPlainString());
+        model.addAttribute("blkGasLimit", blkGasLimit.toPlainString());
+        model.addAttribute("blkGasUsedRate", BigDecimal.ZERO.compareTo(blkGasLimit) < 0 ? blkGasUsed.divide(blkGasLimit, 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).toPlainString() : "0");
 
         NebAddress nebAddress = nebAddressService.getNebAddressByHash(block.getMiner());
         if (null != nebAddress) {
             model.addAttribute("miner", nebAddress);
         }
-
-        //
-        // tabButtons
-        // pass parameters according to url query
-
-        JSONArray tabButtons = new JSONArray();
-        JSONObject o;
-
-        o = new JSONObject();
-        o.put("href", "");
-        o.put("text", "Overview");
-        o.put("active", true);
-        tabButtons.add(o);
-
-        o = new JSONObject();
-        o.put("href", "?tab=comments");
-        o.put("text", "Comments");
-        o.put("active", false);
-        tabButtons.add(o);
-
-        model.addAttribute("tabButtons", tabButtons);
-
-        return "block/information";
+        return "block/block";
     }
 
     /**
@@ -120,7 +109,7 @@ public class BlockController extends BaseController {
         PageIterator<NebBlock> blockPageIterator = nebBlockService.findNebBlockPageIterator(page, PAGE_SIZE);
         if (CollectionUtils.isNotEmpty(blockPageIterator.getData())) {
             List<Long> blkHeightList = blockPageIterator.getData().stream().map(NebBlock::getHeight).collect(Collectors.toList());
-            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxInBlock(blkHeightList);
+            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlock(blkHeightList);
             model.addAttribute("txCntMap", txCntMap);
         }
         model.addAttribute("blockPageIterator", blockPageIterator);

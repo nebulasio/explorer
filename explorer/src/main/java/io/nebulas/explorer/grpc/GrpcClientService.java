@@ -76,7 +76,7 @@ public class GrpcClientService {
                     if (StringUtils.isBlank(hash)) {
                         log.error("empty hash");
                     } else {
-                        NebBlock nebBlock = nebBlockService.getByHash(hash);
+                        NebBlock nebBlock = nebBlockService.getNebBlockByHash(hash);
                         if (nebBlock == null) {
                             try {
                                 Block block;
