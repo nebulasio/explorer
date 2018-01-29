@@ -29,21 +29,21 @@ public interface NebTransactionMapper {
 
     List<NebTransaction> getByBlockHeight(Long blockHeight);
 
-    int countNormalTxCntByBlockHeight(Long blockHeight);
+    int countTxnCntByBlockHeight(Long blockHeight);
 
     List<NebTransaction> findNormalTxInBlockByBlockHeight(Long blockHeight);
 
     List<BlockSummary> countNormalTxInBlock(@Param("blockHeights") List<Long> blockHeights);
 
-    List<Map<String, String>> countNormalTxnCntMapByFrom(List<String> addressHashes);
+    List<Map<String, String>> countTxnCntMapByFrom(List<String> addressHashes);
 
-    List<Map<String, String>> countNormalTxnCntMapByTo(List<String> addressHashes);
+    List<Map<String, String>> countTxnCntMapByTo(List<String> addressHashes);
 
-    int countNormalTxnCntByFromTo(String addressHash);
+    long countTxnCntByFromTo(String addressHash);
 
-    List<NebTransaction> findNormalTxnByFromTo(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
+    List<NebTransaction> findTxnByFromTo(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
 
-    List<NebTransaction> findNormalTxnOrderByTimestamp(@Param("offset") int offset, @Param("limit") int limit);
+    List<NebTransaction> findTxnOrderByTimestamp(@Param("offset") int offset, @Param("limit") int limit);
 
     List<Map<String,Object>> countTxCntGroupByTimestamp(@Param("from") String from,@Param("to") String to);
 }
