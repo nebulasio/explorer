@@ -73,6 +73,29 @@ public class NebTransactionService {
         return nebPendingTransactionMapper.batchAdd(transactions);
     }
 
+    public long countTxnCnt() {
+        return nebTransactionMapper.countTxnCnt();
+    }
+
+    public long countTxnCntByBlockHeight(long blockHeight) {
+        return nebTransactionMapper.countTxnCntByBlockHeight(blockHeight);
+    }
+
+    public long countPendingTxnCntByFromTo(String addressHash) {
+        if (StringUtils.isEmpty(addressHash)) {
+            return 0L;
+        }
+        return nebPendingTransactionMapper.countTxnCntByFromTo(addressHash);
+    }
+
+    public long countTxnCntByFromTo(String addressHash) {
+        if (StringUtils.isEmpty(addressHash)) {
+            return 0L;
+        }
+        return nebTransactionMapper.countTxnCntByFromTo(addressHash);
+    }
+
+
     /**
      * get nebulas transaction by hash
      *
@@ -93,23 +116,20 @@ public class NebTransactionService {
         return nebPendingTransactionMapper.getByHash(hash);
     }
 
-    public List<NebTransaction> getNebTransactionByBlockHeight(Long blockHeight) {
-        return nebTransactionMapper.getByBlockHeight(blockHeight);
+
+    public List<NebTransaction> findTxnByBlockHeight(Long blockHeight) {
+        return nebTransactionMapper.findTxnByBlockHeight(blockHeight);
     }
 
-    public int countTxCntByBlockHeight(long blockHeight) {
-        return nebTransactionMapper.countTxnCntByBlockHeight(blockHeight);
+    public List<NebTransaction> findTxnByBlockHeight(Long blockHeight, int page, int pageSize) {
+        return nebTransactionMapper.findTxnByBlockHeightWithLimit(blockHeight, (page - 1) * pageSize, pageSize);
     }
 
-    public List<NebTransaction> findTxnsByBlockHeight(Long blockHeight) {
-        return nebTransactionMapper.findNormalTxInBlockByBlockHeight(blockHeight);
-    }
-
-    public Map<Long, BlockSummary> countTxInBlock(List<Long> blockHeights) {
+    public Map<Long, BlockSummary> countTxnInBlock(List<Long> blockHeights) {
         if (CollectionUtils.isEmpty(blockHeights)) {
             return Collections.emptyMap();
         }
-        List<BlockSummary> blockSummaryList = nebTransactionMapper.countNormalTxInBlock(blockHeights);
+        List<BlockSummary> blockSummaryList = nebTransactionMapper.countTxnInBlock(blockHeights);
         return blockSummaryList.stream().collect(Collectors.toMap(BlockSummary::getBlockHeight, summary -> summary));
     }
 
@@ -133,20 +153,6 @@ public class NebTransactionService {
 
     }
 
-    public long countPendingTxnCntByFromTo(String addressHash){
-        if (StringUtils.isEmpty(addressHash)) {
-            return 0L;
-        }
-        return nebPendingTransactionMapper.countTxnCntByFromTo(addressHash);
-    }
-
-    public long countTxnCntByFromTo(String addressHash) {
-        if (StringUtils.isEmpty(addressHash)) {
-            return 0L;
-        }
-        return nebTransactionMapper.countTxnCntByFromTo(addressHash);
-    }
-
     public List<NebPendingTransaction> findPendingTxnByFromTo(String addressHash, int page, int pageSize) {
         if (StringUtils.isEmpty(addressHash)) {
             return Collections.emptyList();
@@ -164,7 +170,6 @@ public class NebTransactionService {
     public List<NebTransaction> findTxnOrderByTimestamp(int page, int pageSize) {
         return nebTransactionMapper.findTxnOrderByTimestamp((page - 1) * pageSize, pageSize);
     }
-
 
     public Map<String, Long> countTxCntGroupByTimestamp(Date from, Date to) {
         List<Map<String, Object>> txCntResultList = nebTransactionMapper.countTxCntGroupByTimestamp(parseDate2Str(from), parseDate2Str(to));

@@ -18,11 +18,13 @@ import java.util.List;
 @Mapper
 public interface NebAddressMapper {
 
-    NebAddress getByHash(String hash);
+    Integer add(@Param("id") String id, @Param("hash") String hash, @Param("type") Integer type);
 
     long countTotalAddressCnt();
 
+    NebAddress getByHash(String hash);
+
     List<NebAddress> findAddressOrderByBalance(@Param("offset") int offset, @Param("limit") int limit);
 
-    Integer add(@Param("id") String id, @Param("hash") String hash, @Param("type") Integer type);
+    List<NebAddress> findAddressMapByAddressHash(List<String> addressHashes);
 }

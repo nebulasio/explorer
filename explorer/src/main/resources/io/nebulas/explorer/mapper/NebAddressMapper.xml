@@ -13,6 +13,16 @@
     <sql id="Base_Column_List">
         `id`, `hash`, `type`, `alias`,`current_balance`, `created_at`, `updated_at`
     </sql>
+
+    <insert id="add" parameterType="map" useGeneratedKeys="false">
+        INSERT INTO `neb_address` (`id`, `hash`, `type`) VALUES (#{id}, #{hash}, #{type})
+    </insert>
+
+    <select id="countTotalAddressCnt" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_address`
+    </select>
+
     <select id="getByHash" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT
         <include refid="Base_Column_List"/>
@@ -20,20 +30,20 @@
         WHERE `hash` = #{hash,jdbcType=VARCHAR}
     </select>
 
-    <select id="countTotalAddressCnt" resultType="java.lang.Long">
-        SELECT count(1)
-        FROM `neb_address`
-    </select>
-
     <select id="findAddressOrderByBalance" parameterType="map" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_address`
-        ORDER BY current_balance
+        ORDER BY `current_balance`
         LIMIT ${offset},${limit}
     </select>
 
-    <insert id="add" parameterType="map" useGeneratedKeys="false">
-        INSERT INTO `neb_address` (`id`, `hash`, `type`) VALUES (#{id}, #{hash}, #{type})
-    </insert>
+    <select id="findAddressMapByAddressHash" resultType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_address`
+        WHERE `hash` in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+    </select>
+
+
 </mapper>

@@ -75,7 +75,7 @@ public class AddressController extends BaseController {
             List<NebBlock> blkList = nebBlockService.findNebBlockByMiner(address.getHash(), 1, PAGE_SIZE);
             if (CollectionUtils.isNotEmpty(blkList)) {
                 List<Long> blkHeightList = blkList.stream().map(NebBlock::getHeight).collect(Collectors.toList());
-                Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxInBlock(blkHeightList);
+                Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlock(blkHeightList);
                 model.addAttribute("txCntMap", txCntMap);
             }
             model.addAttribute("minedBlkList", blkList);
@@ -91,6 +91,8 @@ public class AddressController extends BaseController {
                         NebTransaction tx = new NebTransaction();
                         PropertyUtils.copyProperties(tx, pTxn);
                         tx.setBlockHeight(0L);
+                        tx.setBlockHash("");
+                        tx.setStatus(0);
                         txList.add(tx);
                     } catch (Exception e) {
                         log.error(e.getMessage(), e);
@@ -106,7 +108,7 @@ public class AddressController extends BaseController {
 
             model.addAttribute("part", "tx");
         }
-        return "address/information";
+        return "address/address";
     }
 
     /**

@@ -48,7 +48,7 @@ public class NebBlockService {
      * @param height block height
      * @return block entity
      */
-    public NebBlock getByHeight(Long height) {
+    public NebBlock getNebBlockByHeight(Long height) {
         return nebBlockMapper.getByHeight(height);
     }
 
@@ -58,13 +58,12 @@ public class NebBlockService {
      * @param hash block hash
      * @return block entity
      */
-    public NebBlock getByHash(String hash) {
+    public NebBlock getNebBlockByHash(String hash) {
         if (StringUtils.isEmpty(hash)) {
             return null;
         }
         return nebBlockMapper.getByHash(hash);
     }
-
 
     public Long countBlockCntByMiner(String miner) {
         if (StringUtils.isEmpty(miner)) {
@@ -98,11 +97,11 @@ public class NebBlockService {
         return nebBlockMapper.findOrderByTimestamp((page - 1) * pageSize, pageSize);
     }
 
-    public List<NebBlock> findNebBlockByMiner(String miner, int offset, int limit) {
+    public List<NebBlock> findNebBlockByMiner(String miner, int page, int pageSize) {
         if (StringUtils.isEmpty(miner)) {
             return Collections.emptyList();
         }
-        return nebBlockMapper.findByMiner(miner, offset, limit);
+        return nebBlockMapper.findByMiner(miner, (page - 1) * pageSize, pageSize);
     }
 
 }

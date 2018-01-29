@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <th-block data-th-replace=fragments::head></th-block>
     <style>
@@ -25,12 +25,19 @@
 </head>
 <body>
     <th-block data-th-replace=fragments::header></th-block>
-    <th-block data-th-replace=fragments::tab-buttons></th-block>
-
+    <div class="container">
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="active">
+                <a>Overview</a>
+            </li>
+            <!--<li>-->
+                <!--<a href="?tab=txsInternal">Comments</a>-->
+            <!--</li>-->
+        </ul>
+    </div>
     <div class="container">
         <h3>Block Information</h3>
     </div>
-
     <!--    tabs
         ============================================================ -->
     <div class="container">
@@ -41,8 +48,8 @@
                     <td>
                         <nav aria-label="Page navigation" class="navgation-tab">
                             <ul class="pagination">
-                                <li>
-                                    <a href="#" aria-label="Previous">
+                                <li >
+                                    <a href="#" th:href="@{/block/{height}(height=${block.height-1})}"  aria-label="Previous" disabled="true">
                                         <span aria-hidden="true">&lt; Prev</span>
                                     </a>
                                 </li>
@@ -50,7 +57,7 @@
                                     <a href=# data-th-text=${block.height}></a>
                                 </li>
                                 <li>
-                                    <a href="#" aria-label="Next">
+                                    <a href="#" th:href="@{/block/{height}(height=${block.height+1})}" aria-label="Next">
                                         <span aria-hidden="true">Next &gt;</span>
                                     </a>
                                 </li>
@@ -65,10 +72,7 @@
                 <tr>
                     <td>Transactions</td>
                     <td>
-                        <a href="txs.html?block=%Block" data-th-text="${txCnt +' transactions'}">transactions</a>
-                        and
-                        <a href="txsInternal.html?block=%Block"> 10 contract internal transactions</a>
-                        in this block
+                        <a href="txs.html?block=%Block" data-th-text="${txCnt +' transactions'}">transactions</a> in this block
                     </td>
                 </tr>
                 <tr>
@@ -81,26 +85,12 @@
                         <a href=# data-th-text=${block.parentHash}></a>
                     </td>
                 </tr>
-                <tr>
-                    <td>Sha3Uncles</td>
-                    <td>
-                        0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347
-                    </td>
-                </tr>
-                <tr>
+                <tr th:if="${miner !=null}">
                     <td>Mined By</td>
                     <td>
-                        <a href="address.html?mined" data-th-text=${block.miner}></a>
-                        (Nanopool) in 29 secs
+                        <a href="address.html?mined" data-th-text=${miner.hash}></a>
+                        <span th:if="${miner.alias !=null}" th:text="${miner.alias}"></span>
                     </td>
-                </tr>
-                <tr>
-                    <td>Difficulty</td>
-                    <td>2,381,548,271,824,879</td>
-                </tr>
-                <tr>
-                    <td>Total Difficulty</td>
-                    <td>2,174,949,865,886,041,068,523</td>
                 </tr>
                 <tr>
                     <td>Size</td>
@@ -108,36 +98,28 @@
                 </tr>
                 <tr>
                     <td>Gas Used</td>
-                    <td>7,984,916 (99.81%)</td>
+                    <td ><span th:text="${blkGasUsed}"> 7,984,916</span> <span th:if="${blkGasUsedRate !='0'}" th:text="'('+${blkGasUsedRate+'%)'}">(99.81%)</span></td>
                 </tr>
                 <tr>
                     <td>Gas Limit</td>
-                    <td>8,000,029</td>
+                    <td th:text="${blkGasLimit}">8,000,029</td>
                 </tr>
                 <tr>
                     <td>Nonce</td>
-                    <td>0x889303e4c001686f3e</td>
+                    <td th:text="${block.nonce}">0x889303e4c001686f3e</td>
                 </tr>
-                <tr>
-                    <td>Block Reward</td>
-                    <td>
-                        3.27657259285203186 Ether (3 + 0.27657259285203186)
-                    </td>
-                </tr>
-                <tr>
-                    <td>Uncles Reward</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>Extra Data</td>
-                    <td>nanopool.org (Hex:0x6e616e6f706f6f6c2e6f7267)</td>
-                </tr>
+                <!--<tr>-->
+                    <!--<td>Block Reward</td>-->
+                    <!--<td>-->
+                        <!--3.27657259285203186 Ether (3 + 0.27657259285203186)-->
+                    <!--</td>-->
+                <!--</tr>-->
 
             </table>
         </div>
     </div>
 
     <th-block data-th-replace=fragments::footer></th-block>
-    <th-block data-th-replace=fragments::scripts></th-block>
 </body>
+<th-block data-th-replace=fragments::scripts></th-block>
 </html>

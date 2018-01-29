@@ -12,15 +12,28 @@
         <result column="nonce" property="nonce" jdbcType="BIGINT"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
     </resultMap>
+
     <sql id="Base_Column_List">
       `id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`, `created_at`
     </sql>
+
     <insert id="add" parameterType="NebBlock">
         INSERT INTO `neb_block` (`id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`)
         VALUES (#{id,jdbcType=VARCHAR}, #{height,jdbcType=BIGINT}, #{hash,jdbcType=VARCHAR},
         #{parentHash,jdbcType=VARCHAR}, #{timestamp,jdbcType=TIMESTAMP}, #{miner,jdbcType=VARCHAR},
         #{coinbase,jdbcType=VARCHAR}, #{nonce,jdbcType=BIGINT})
     </insert>
+
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from neb_block
+    </select>
+
+    <select id="countByMiner" resultType="java.lang.Long" parameterType="java.lang.String">
+        select count(1)
+        from `neb_block`
+        where miner = #{miner,jdbcType=VARCHAR}
+    </select>
 
     <select id="getMaxHeight" resultType="java.lang.Long">
         SELECT MAX(`height`)
@@ -39,17 +52,6 @@
         <include refid="Base_Column_List"/>
         FROM `neb_block`
         WHERE `hash` = #{hash,jdbcType=VARCHAR}
-    </select>
-
-    <select id="count" resultType="java.lang.Long">
-        select count(1)
-        from neb_block
-    </select>
-
-    <select id="countByMiner" resultType="java.lang.Long" parameterType="java.lang.String">
-        select count(1)
-        from `neb_block`
-        where miner = #{miner,jdbcType=VARCHAR}
     </select>
 
     <select id="findOrderByHeightDesc" parameterType="map" resultType="NebBlock">
