@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="../css/common.css">
     <script src="../lib/jquery-3.3.1.min.js"></script>
     <script src="../lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/series-label.js"></script>
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/oldie.js"></script>
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
     <style>
         /*
         * @Author: lol
@@ -183,6 +188,10 @@
         .chart_banner div{
             font-size: 50px;
         }
+        text.highcharts-credits{
+            display: none;
+        }
+
     </style>
     <title>Explorer</title>
 </head>
@@ -294,7 +303,7 @@
                                 </tr>
                             </br>
                                 <tr>
-                                    <td>Market Cap</td>
+                                    <td>Market Cap :</td>
                                     <td>$154542132</td>
                                 </tr>
                         </span>
@@ -586,11 +595,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
-    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
-    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/series-label.js"></script>
-    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/oldie.js"></script>
-    <script type="text/javascript" src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+    
     <script type="text/javascript">
         var chart = Highcharts.chart('chart', {
             title: {
