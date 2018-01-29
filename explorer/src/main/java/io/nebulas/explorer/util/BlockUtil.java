@@ -26,6 +26,7 @@ public class BlockUtil {
         for (Transaction tx : txs) {
             String gasUsed = StringUtils.trimToNull(gasUsedList.get(pos));
             NebTransaction nebTxs = NebTransaction.builder()
+                    .id(IdGenerator.getId())
                     .hash(tx.getHash())
                     .blockHeight(block.getHeight())
                     .blockHash(block.getHash())
@@ -40,6 +41,7 @@ public class BlockUtil {
                     .gasPrice(tx.getGasPrice())
                     .gasLimit(tx.getGasLimit())
                     .gasUsed(gasUsed)
+                    .createdAt(new Date())
                     .build();
             nebTxsList.add(nebTxs);
             pos++;
