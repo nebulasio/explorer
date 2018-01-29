@@ -61,6 +61,19 @@
         </foreach>
     </insert>
 
+
+
+    <select id="countTxnCnt" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_transaction`
+    </select>
+
+    <select id="countTxnCntByBlockHeight" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_transaction`
+        WHERE block_height = #{blockHeight,jdbcType=BIGINT}
+    </select>
+
     <select id="getByHash" resultType="NebTransaction" parameterType="java.lang.String">
         SELECT
         <include refid="Base_Column_List"/>
@@ -68,28 +81,25 @@
         WHERE `hash` = #{hash,jdbcType=VARCHAR}
     </select>
 
-    <select id="getByBlockHeight" resultType="NebTransaction" parameterType="java.lang.Long">
+
+    <select id="findTxnByBlockHeight" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
-        WHERE `block_height` = #{blockHeight}
-    </select>
-
-    <select id="countNormalTxCntByBlockHeight" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        SELECT count(1)
-        FROM neb_transaction
-        WHERE block_height = #{blockHeight,jdbcType=BIGINT}
-    </select>
-
-    <select id="findNormalTxInBlockByBlockHeight" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM neb_transaction
         WHERE block_height = #{blockHeight,jdbcType=BIGINT}
         ORDER BY timestamp desc
     </select>
 
-    <select id="countNormalTxInBlock" parameterType="map" resultType="io.nebulas.explorer.domain.BlockSummary">
+    <select id="findTxnByBlockHeightWithLimit" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE block_height = #{blockHeight,jdbcType=BIGINT}
+        ORDER BY timestamp desc
+        LIMIT ${offset},${limit}
+    </select>
+
+    <select id="countTxnInBlock" parameterType="map" resultType="io.nebulas.explorer.domain.BlockSummary">
         select
         block_height as blockHeight,
         count(1) as txCnt,

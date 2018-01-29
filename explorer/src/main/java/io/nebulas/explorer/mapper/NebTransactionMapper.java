@@ -25,15 +25,17 @@ public interface NebTransactionMapper {
 
     Integer batchAddNebTransaction(@Param("transactions") List<NebTransaction> transactions);
 
+    long countTxnCnt();
+
+    long countTxnCntByBlockHeight(Long blockHeight);
+
     NebTransaction getByHash(String hash);
 
-    List<NebTransaction> getByBlockHeight(Long blockHeight);
+    List<NebTransaction> findTxnByBlockHeight(Long blockHeight);
 
-    int countTxnCntByBlockHeight(Long blockHeight);
+    List<NebTransaction> findTxnByBlockHeightWithLimit(@Param("blockHeight") Long blockHeight, @Param("offset") int offset, @Param("limit") int limit);
 
-    List<NebTransaction> findNormalTxInBlockByBlockHeight(Long blockHeight);
-
-    List<BlockSummary> countNormalTxInBlock(@Param("blockHeights") List<Long> blockHeights);
+    List<BlockSummary> countTxnInBlock(@Param("blockHeights") List<Long> blockHeights);
 
     List<Map<String, String>> countTxnCntMapByFrom(List<String> addressHashes);
 
