@@ -60,10 +60,9 @@ public class BlockController extends BaseController {
      */
     @RequestMapping("/block/{blkKey}")
     public String detail(@PathVariable("blkKey") String blkKey, Model model) {
-        NebBlock block;
-
         execute(model);
 
+        NebBlock block;
         if (StringUtils.isNumeric(blkKey)) {
             block = nebBlockService.getByHeight(Long.valueOf(blkKey));
         } else {
@@ -75,7 +74,7 @@ public class BlockController extends BaseController {
         }
 
         model.addAttribute("block", block);
-        model.addAttribute("txCnt", nebTransactionService.countNormalTxCntByBlockHeight(block.getHeight()));
+        model.addAttribute("txCnt", nebTransactionService.countTxCntByBlockHeight(block.getHeight()));
         model.addAttribute("contractInternalTxCnt", 0); //todo
 
         NebAddress nebAddress = nebAddressService.getNebAddressByHash(block.getMiner());
@@ -116,13 +115,12 @@ public class BlockController extends BaseController {
      */
     @RequestMapping("/blocks")
     public String blocks(@RequestParam(value = "p", required = false, defaultValue = "1") int page, Model model) {
-        PageIterator<NebBlock> blockPageIterator = nebBlockService.findNebBlockPageIterator(page, PAGE_SIZE);
-
         execute(model);
 
+        PageIterator<NebBlock> blockPageIterator = nebBlockService.findNebBlockPageIterator(page, PAGE_SIZE);
         if (CollectionUtils.isNotEmpty(blockPageIterator.getData())) {
             List<Long> blkHeightList = blockPageIterator.getData().stream().map(NebBlock::getHeight).collect(Collectors.toList());
-            Map<Long, BlockSummary> txCntMap = nebTransactionService.countNormalTxInBlock(blkHeightList);
+            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxInBlock(blkHeightList);
             model.addAttribute("txCntMap", txCntMap);
         }
         model.addAttribute("blockPageIterator", blockPageIterator);

@@ -54,11 +54,11 @@ public class IndexController extends BaseController {
         List<NebBlock> blkList = nebBlockService.findNebBlockOrderByTimestamp(1, 10);
         if (CollectionUtils.isNotEmpty(blkList)) {
             List<Long> blkHeightList = blkList.stream().map(NebBlock::getHeight).collect(Collectors.toList());
-            Map<Long, BlockSummary> txCntMap = nebTransactionService.countNormalTxInBlock(blkHeightList);
+            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxInBlock(blkHeightList);
             model.addAttribute("txCntMap", txCntMap);
         }
         model.addAttribute("blkList", blkList);
-        model.addAttribute("txList", nebTransactionService.findNormalTxnOrderByTimestamp(1, 10));
+        model.addAttribute("txList", nebTransactionService.findTxnOrderByTimestamp(1, 10));
         model.addAttribute("historyTxCntGroup", nebTransactionService.countTxCntGroupByTimestamp(LocalDate.now().plusDays(-15).toDate(), LocalDate.now().toDate()));
         return "index";
     }

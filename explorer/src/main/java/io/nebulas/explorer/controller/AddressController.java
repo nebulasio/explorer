@@ -1,14 +1,14 @@
 package io.nebulas.explorer.controller;
 
+import com.google.common.collect.Lists;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.core.BaseController;
-import io.nebulas.explorer.domain.BlockSummary;
-import io.nebulas.explorer.domain.NebAddress;
-import io.nebulas.explorer.domain.NebBlock;
+import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.service.NebAddressService;
 import io.nebulas.explorer.service.NebBlockService;
 import io.nebulas.explorer.service.NebTransactionService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,26 +57,53 @@ public class AddressController extends BaseController {
     public String address(@PathVariable("hash") String hash,
                           @RequestParam(value = "part", required = false) String part,
                           Model model) {
+        execute(model);
         NebAddress address = nebAddressService.getNebAddressByHash(hash);
         if (null == address) {
             return "";
         }
 
         model.addAttribute("address", address);
-        model.addAttribute("txCnt", nebTransactionService.countNormalTxnCntByFromTo(address.getHash()));
+
+        long pendingTxCnt = nebTransactionService.countPendingTxnCntByFromTo(address.getHash());
+
+        model.addAttribute("pendingTxCnt", pendingTxCnt);
+        model.addAttribute("txCnt", nebTransactionService.countTxnCntByFromTo(address.getHash()));
         model.addAttribute("minedBlkCnt", nebBlockService.countBlockCntByMiner(address.getHash()));
 
         if ("mine".equals(part)) {
-            List<NebBlock> blkList = nebBlockService.findNebBlockByMiner(address.getHash(), 1, 25);
-            if(CollectionUtils.isNotEmpty(blkList)) {
+            List<NebBlock> blkList = nebBlockService.findNebBlockByMiner(address.getHash(), 1, PAGE_SIZE);
+            if (CollectionUtils.isNotEmpty(blkList)) {
                 List<Long> blkHeightList = blkList.stream().map(NebBlock::getHeight).collect(Collectors.toList());
-                Map<Long, BlockSummary> txCntMap = nebTransactionService.countNormalTxInBlock(blkHeightList);
+                Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxInBlock(blkHeightList);
                 model.addAttribute("txCntMap", txCntMap);
             }
             model.addAttribute("minedBlkList", blkList);
             model.addAttribute("part", "mine");
         } else {
-            model.addAttribute("txList", nebTransactionService.findNormalTxnByFromTo(address.getHash(), 1, 25));
+
+            if (pendingTxCnt > 0) {
+                List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingTxnByFromTo(address.getHash(), 1, PAGE_SIZE);
+
+                List<NebTransaction> txList = Lists.newLinkedList();
+                pendingTxnList.forEach(pTxn -> {
+                    try {
+                        NebTransaction tx = new NebTransaction();
+                        PropertyUtils.copyProperties(tx, pTxn);
+                        tx.setBlockHeight(0L);
+                        txList.add(tx);
+                    } catch (Exception e) {
+                        log.error(e.getMessage(), e);
+                    }
+                });
+                if (pendingTxnList.size() < PAGE_SIZE) {
+                    txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE - pendingTxnList.size()));
+                }
+                model.addAttribute("txList", txList);
+            } else {
+                model.addAttribute("txList", nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE));
+            }
+
             model.addAttribute("part", "tx");
         }
         return "address/information";
@@ -91,6 +118,7 @@ public class AddressController extends BaseController {
      */
     @RequestMapping("/accounts")
     public String all(@RequestParam(value = "page", required = false, defaultValue = "1") int page, Model model) {
+        execute(model);
         if (page < 1) {
             page = 1;
         }
@@ -109,7 +137,7 @@ public class AddressController extends BaseController {
         model.addAttribute("page", page);
         model.addAttribute("addressList", addressList);
         model.addAttribute("percentageMap", percentageMap);
-        model.addAttribute("txCntMap", nebTransactionService.countNormalTxnCntByFromTo(addressHashList));
+        model.addAttribute("txCntMap", nebTransactionService.countTxnCntByFromTo(addressHashList));
 
         return "address/accounts";
     }
