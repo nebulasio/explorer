@@ -268,11 +268,13 @@
     <div class="container">
         <div class="top">
             <div class="row">
-                <div class="col-md-6">
-                    <img src="../img/1.png" height="223" width="551" alt="">
+                <div class="col-md-9">
+                    <div id="chart" style="max-width:800px;height:300px;"></div>
                 </div>
-                <div class="col-md-6">
-                    <img src="../img/2.png" height="223" width="550" alt="">
+                <div class="col-md-3">
+                    <div class="chart_banner">
+                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -560,6 +562,57 @@
             </div>
         </div>
     </div>
-
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/series-label.js"></script>
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts/modules/oldie.js"></script>
+    <script type="text/javascript" src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+    <script type="text/javascript">
+        var chart = Highcharts.chart('chart', {
+            title: {
+                text: 'transations'
+            },
+            subtitle: {
+                text: '数据来源：Nebulas'
+            },
+            yAxis: {
+                title: {
+                    text: '数量'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+            plotOptions: {
+                series: {
+                    label: {
+                        connectorAllowed: false
+                    },
+                    pointStart: 2010
+                }
+            },
+            series: [{
+                name: 'transation',
+                data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+            }],
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+        });
+        
+    </script>
 </body>
 </html>
