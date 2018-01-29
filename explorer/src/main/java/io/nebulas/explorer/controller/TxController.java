@@ -53,18 +53,6 @@ public class TxController extends BaseController {
 //    public String txsInternal(@RequestParam(value = "block", required = false) Long block, Model model) {
 //        execute(model);
 //
-//        //
-//        // pagination
-//
-//        JSONObject pagination = new JSONObject();
-//        pagination.put("first", "?page=1");
-//        pagination.put("prev", "?page=x-1||first");
-//        pagination.put("next", "?page=x+1||last");
-//        pagination.put("last", "?page=last");
-//        pagination.put("current", "x");
-//        pagination.put("total", "total");
-//        model.addAttribute("pagination", pagination);
-//
 //        return "txsInternal";
 //    }
 
@@ -80,6 +68,7 @@ public class TxController extends BaseController {
 
         List<NebTransaction> txnList;
         long txnCnt;
+
         if (null != block) {
             txnCnt = nebTransactionService.countTxnCntByBlockHeight(block);
             txnList = nebTransactionService.findTxnByBlockHeight(block, page, PAGE_SIZE);
@@ -109,8 +98,8 @@ public class TxController extends BaseController {
         "}"));
 
         model.addAttribute("titleAndBreadcrumb", JSONObject.parseObject("{" +
-            "title  : 'Contract Internal Transactions'  ," +
-            "lis    : ['Home', 'Internal Transactions'] " +
+            "title  : 'Transactions'  ," +
+            "lis    : ['Home', 'Transactions'] " +
         "}"));
 
         return "txn/txs";
