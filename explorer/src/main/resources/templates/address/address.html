@@ -102,12 +102,12 @@
             <a class="btn btn-default pull-right" th:href="@{/tx?a={hash}(hash=${address.hash})}" href="txs.html?id=%id-from-url" role="button">View All</a>>
         </div>
 
-        <tr th:each="tx,iterStat : ${txList}">
+        <tr th:each="tx, iterStat: ${ txList }">
             <td>
-                <a href="tx.html?id=%TxHash" th:href="@{/tx/{hash}(hash=${tx.hash})}" th:text="${pageStringUtil.replace(tx.hash,20,'...')}">%TxHash</a>
+                <a href="tx.html?id=%TxHash" th:href="@{/tx/{hash}(hash=${ tx.hash })}" th:text="${pageStringUtil.replace(tx.hash,20,'...')}">%TxHash</a>
             </td>
             <td>
-                <a href="block.html?id=%Block" th:if="${tx.blockHeight > 0 }" th:href="@{/block/{height}(height=${tx.blockHeight})}" th:text="${tx.blockHeight}">%Block</a>
+                <a href="block.html?id=%Block" th:if="${ tx.blockHeight > 0 }" th:href="@{/block/{ height }(height=${ tx.blockHeight })}" th:text="${tx.blockHeight}">%Block</a>
                 <span th:if="${tx.blockHeight == 0 }">(pending)</span>
             </td>
             <td>%Age</td>

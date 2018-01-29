@@ -103,15 +103,17 @@ public class AddressController extends BaseController {
                     txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE - pendingTxnList.size()));
                 }
                 model.addAttribute("txList", txList);
+
             } else {
                 model.addAttribute("txList", nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE));
             }
 
             model.addAttribute("part", "tx");
         }
+        
 
         model.addAttribute("titleAndBreadcrumb", JSONObject.parseObject("{" +
-            "title:" + address.getHash() + "," +
+            "title: '" + address.getHash() + "'," +
             "lis    : ['Home', '<a href=accounts.html>Normal Accounts</a>', 'Address'] " +
         "}"));
 
