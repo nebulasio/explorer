@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -59,7 +60,15 @@ public class IndexController extends BaseController {
         }
         model.addAttribute("blkList", blkList);
         model.addAttribute("txList", nebTransactionService.findTxnOrderByTimestamp(1, 10));
-        model.addAttribute("historyTxCntGroup", nebTransactionService.countTxCntGroupByTimestamp(LocalDate.now().plusDays(-15).toDate(), LocalDate.now().toDate()));
+        Map<String, Long> kvs = nebTransactionService.countTxCntGroupByTimestamp(LocalDate.now().plusDays(-8).toDate(), LocalDate.now().toDate());
+        List<String> dateList = new ArrayList<>(kvs.size());
+        List<Long> valueList = new ArrayList<>(kvs.size());
+        for (String date : kvs.keySet()) {
+            dateList.add(date);
+            valueList.add(kvs.get(date));
+        }
+        model.addAttribute("dateList", dateList);
+        model.addAttribute("valueList", valueList);
         return "index";
     }
 

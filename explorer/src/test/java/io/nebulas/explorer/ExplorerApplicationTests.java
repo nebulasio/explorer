@@ -72,7 +72,7 @@ public class ExplorerApplicationTests {
                 .createdAt(new Date()).build();
         txs.add(nebTransaction);
         nebTransactionService.batchAddNebTransaction(txs);
-        List<NebTransaction> result = nebTransactionService.getNebTransactionByBlockHeight(146240L);
+        List<NebTransaction> result = nebTransactionService.findTxnByBlockHeight(146240L);
         System.out.println(result);
     }
 
