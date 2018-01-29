@@ -150,12 +150,12 @@ label {
 .title-and-breadcrumb a {
     color: inherit;
 }
-    
-.title-and-breadcrumb .active {
-    color: #3498db;
-}
 
 .title-and-breadcrumb .breadcrumb {
     background-color: initial;
     margin: 0;
+}
+
+.title-and-breadcrumb .breadcrumb > li:last-child {
+    color: #3498db;
 }

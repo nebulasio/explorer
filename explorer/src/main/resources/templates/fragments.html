@@ -211,3 +211,16 @@
         </ul>
     </div>
 </th-block>
+
+<th-block data-th-fragment=title-and-breadcrumb>
+    <!--    title-and-breadcrumb
+        ============================================================ -->
+    <div class=title-and-breadcrumb>
+        <div class=container>
+            <h4 class=pull-left data-th-text="${ titleAndBreadcrumb.title }"></h4>
+            <ul class="breadcrumb pull-right">
+                <li data-th-each="o : ${ titleAndBreadcrumb.lis }" data-th-text="${ o }"></li>
+            </ul>
+        </div>
+    </div>
+</th-block>

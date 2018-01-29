@@ -1,5 +1,6 @@
 package io.nebulas.explorer.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.core.BaseController;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.alibaba.fastjson.JSONObject;
 
 /**
  * Title.
@@ -30,17 +30,19 @@ public class TxController extends BaseController {
     public String txsInternal(@RequestParam(value = "block", required = false) Long block, Model model) {
         execute(model);
 
-        //
-        // pagination
+        model.addAttribute("pagination", JSONObject.parseObject("{" +
+            "first  : '?page=1'             ," +
+            "prev   : '?page=x-1||first'    ," +
+            "next   : '?page=x-1||last'     ," +
+            "last   : '?page=last'          ," +
+            "current: 'x'                   ," +
+            "total  : 'total'               " +
+        "}"));
 
-        JSONObject pagination = new JSONObject();
-        pagination.put("first", "?page=1");
-        pagination.put("prev", "?page=x-1||first");
-        pagination.put("next", "?page=x+1||last");
-        pagination.put("last", "?page=last");
-        pagination.put("current", "x");
-        pagination.put("total", "total");
-        model.addAttribute("pagination", pagination);
+        model.addAttribute("titleAndBreadcrumb", JSONObject.parseObject("{" +
+            "title  : 'Contract Internal Transactions'  ," +
+            "lis    : ['Home', 'Internal Transactions'] " +
+        "}"));
 
         return "txsInternal";
     }
