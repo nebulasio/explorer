@@ -1,5 +1,6 @@
 package io.nebulas.explorer.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.core.BaseController;
 import io.nebulas.explorer.domain.BlockSummary;
@@ -60,7 +61,8 @@ public class IndexController extends BaseController {
         }
         model.addAttribute("blkList", blkList);
         model.addAttribute("txList", nebTransactionService.findTxnOrderByTimestamp(1, 10));
-        Map<String, Long> kvs = nebTransactionService.countTxCntGroupByTimestamp(LocalDate.now().plusDays(-8).toDate(), LocalDate.now().toDate());
+
+        Map<String, Long> kvs = nebTransactionService.countTxCntGroupMapByTimestamp(LocalDate.now().plusDays(-8).toDate(), LocalDate.now().toDate());
         List<String> dateList = new ArrayList<>(kvs.size());
         List<Long> valueList = new ArrayList<>(kvs.size());
         for (String date : kvs.keySet()) {
@@ -69,6 +71,7 @@ public class IndexController extends BaseController {
         }
         model.addAttribute("dateList", dateList);
         model.addAttribute("valueList", valueList);
+
         return "index";
     }
 

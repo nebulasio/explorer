@@ -35,15 +35,15 @@ import java.util.Set;
  */
 @Slf4j
 @Controller
-public class TxController extends BaseController {
+public class TxnController extends BaseController {
     private static final Integer PAGE_SIZE = 25;
     private final NebTransactionService nebTransactionService;
     private final NebAddressService nebAddressService;
 
 
-    public TxController(YAMLConfig config,
-                        NebTransactionService nebTransactionService,
-                        NebAddressService nebAddressService) {
+    public TxnController(YAMLConfig config,
+                         NebTransactionService nebTransactionService,
+                         NebAddressService nebAddressService) {
         super(config);
         this.nebTransactionService = nebTransactionService;
         this.nebAddressService = nebAddressService;
@@ -141,6 +141,8 @@ public class TxController extends BaseController {
                              @RequestParam(value = "p", required = false, defaultValue = "1") int page,
                              Model model) {
         execute(model);
+
+        nebTransactionService.countPendingTxnCnt();
 
 
         return "txsPending";

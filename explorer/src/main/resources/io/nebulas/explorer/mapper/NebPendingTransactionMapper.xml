@@ -55,6 +55,17 @@
         </foreach>
     </insert>
 
+    <select id="countPendingTxnCnt" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_pending_transaction`
+    </select>
+
+    <select id="countPendingTxnCntByFromTo" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_pending_transaction`
+        WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
+    </select>
+
     <select id="getByHash" resultType="NebPendingTransaction" parameterType="java.lang.String">
         SELECT
         <include refid="Base_Column_List"/>
@@ -62,13 +73,7 @@
         WHERE `hash` = #{hash,jdbcType=VARCHAR}
     </select>
 
-    <select id="countTxnCntByFromTo" parameterType="java.lang.String" resultType="java.lang.Integer">
-        SELECT count(1)
-        FROM `neb_pending_transaction`
-        WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
-    </select>
-
-    <select id="findTxnByFromTo" parameterType="map" resultMap="BaseResultMap">
+    <select id="findPendingTxnByFromTo" parameterType="map" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_pending_transaction`
