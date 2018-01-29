@@ -1,5 +1,6 @@
 package io.nebulas.explorer.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.core.BaseController;
@@ -106,6 +107,12 @@ public class AddressController extends BaseController {
 
             model.addAttribute("part", "tx");
         }
+
+        model.addAttribute("titleAndBreadcrumb", JSONObject.parseObject("{" +
+            "title:" + address.getHash() + "," +
+            "lis    : ['Home', '<a href=accounts.html>Normal Accounts</a>', 'Address'] " +
+        "}"));
+
         return "address/information";
     }
 
@@ -138,6 +145,11 @@ public class AddressController extends BaseController {
         model.addAttribute("addressList", addressList);
         model.addAttribute("percentageMap", percentageMap);
         model.addAttribute("txCntMap", nebTransactionService.countTxnCntByFromTo(addressHashList));
+
+        model.addAttribute("titleAndBreadcrumb", JSONObject.parseObject("{" +
+            "title  : 'All Accounts'  ," +
+            "lis    : ['Home', 'Accounts'] " +
+        "}"));
 
         return "address/accounts";
     }
