@@ -179,7 +179,7 @@ public class NebTransactionService {
         Map<String, Long> txCntMap = txCntResultList.stream()
                 .collect(Collectors.toMap(k -> k.get("ts").toString(), v -> Long.valueOf(v.get("cnt").toString())));
 
-        Map<String, Long> resultMap = Maps.newHashMap();
+        Map<String, Long> resultMap = Maps.newLinkedHashMap();
         LocalDate fromLocalDate = LocalDate.fromDateFields(from);
         LocalDate toLocalDate = LocalDate.fromDateFields(to);
         while (fromLocalDate.isBefore(toLocalDate)) {
