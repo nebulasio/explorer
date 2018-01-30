@@ -13,7 +13,6 @@
         <result column="data" property="data" jdbcType="VARCHAR"/>
         <result column="gas_price" property="gasPrice" jdbcType="VARCHAR"/>
         <result column="gas_limit" property="gasLimit" jdbcType="VARCHAR"/>
-        <result column="gas_used" property="gasUsed" jdbcType="VARCHAR"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -28,13 +27,12 @@
       `data`,
       `gas_price`,
       `gas_limit`,
-      `gas_used`,
       `created_at`
     </sql>
 
     <insert id="add" parameterType="NebPendingTransaction" useGeneratedKeys="false">
         INSERT INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`,
-        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
+        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
         VALUES
         (
         #{id}, #{hash}, #{from}, #{to}, #{value},
@@ -44,7 +42,7 @@
     </insert>
     <insert id="batchAdd" parameterType="NebPendingTransaction" useGeneratedKeys="false">
         INSERT INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`,
-        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
+        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
         VALUES
         <foreach collection="transactions" item="tx" separator=",">
             (
@@ -81,5 +79,9 @@
         ORDER BY `timestamp` DESC
         LIMIT ${offset},${limit}
     </select>
+
+    <delete id="delete" parameterType="java.lang.String">
+        DELETE FROM `neb_pending_transaction` WHERE `id` = #{id}
+    </delete>
 
 </mapper>
