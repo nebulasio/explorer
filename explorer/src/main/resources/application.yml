@@ -53,6 +53,10 @@ page:
 sync:
   zone: 100000
   cpu: 4
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password:
 
 ---
 spring:
