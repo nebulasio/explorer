@@ -101,6 +101,7 @@ dependencies {
     compile('commons-beanutils:commons-beanutils:1.9.3')
     compile('joda-time:joda-time:2.9.7')
     compile('net.sourceforge.nekohtml:nekohtml:1.9.22')
+    compile('org.springframework.boot:spring-boot-starter-data-redis')
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('mysql:mysql-connector-java')
     compileOnly('org.projectlombok:lombok')
