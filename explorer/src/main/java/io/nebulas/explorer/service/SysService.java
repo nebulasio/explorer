@@ -28,7 +28,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
-import static io.nebulas.explorer.util.BlockUtil.collectTxs;
 
 /**
  * Title.
@@ -148,6 +147,8 @@ public class SysService {
                     .build();
 
             try {
+                addAddr(blk.getMiner(), 0);
+                addAddr(blk.getCoinbase(), 0);
                 nebBlockService.addNebBlock(nebBlk);
             } catch (Throwable e) {
                 log.error("add neb block error, ignoring....", e);
@@ -156,10 +157,6 @@ public class SysService {
             }
 
             List<Transaction> txs = blk.getTransactions();
-            List<NebTransaction> nebTxsList = new ArrayList<>(txs.size());
-
-            List<String> gasUsedList = new ArrayList<>(txs.size());
-
             for (int tpos = 0; tpos < txs.size(); ) {
                 Transaction tx = txs.get(tpos);
                 final int type = StringUtils.isBlank(tx.getContractAddress()) ? 0 : 1;
@@ -178,22 +175,30 @@ public class SysService {
                 }
                 if (gasUsed != null) {
                     log.info("gas used: {}", gasUsed);
-                    gasUsedList.add(gasUsed);
                 } else {
                     log.warn("gas used not found for tx hash {}", tx.getHash());
-                    gasUsedList.add("");
                 }
-                tpos++;
-            }
 
-            collectTxs(block, txs, nebTxsList, gasUsedList);
-            if (nebTxsList.size() > 0) {
-                try {
-                    nebTransactionService.batchAddNebTransaction(nebTxsList);
-                } catch (Throwable e) {
-                    log.error("batch add neb tx error", e);
-                    log.error("caution: may skip some tx on block {}", block.getHash());
-                }
+                NebTransaction nebTxs = NebTransaction.builder()
+                        .id(IdGenerator.getId())
+                        .hash(tx.getHash())
+                        .blockHeight(block.getHeight())
+                        .blockHash(block.getHash())
+                        .from(tx.getFrom())
+                        .to(tx.getTo())
+                        .status(tx.getStatus())
+                        .value(tx.getValue())
+                        .nonce(tx.getNonce())
+                        .timestamp(new Date(tx.getTimestamp() * 1000))
+                        .type(tx.getType())
+                        .data(tx.getData())
+                        .gasPrice(tx.getGasPrice())
+                        .gasLimit(tx.getGasLimit())
+                        .gasUsed(gasUsed)
+                        .createdAt(new Date())
+                        .build();
+                nebTransactionService.addNebTransaction(nebTxs);
+                tpos++;
             }
             h++;
         }

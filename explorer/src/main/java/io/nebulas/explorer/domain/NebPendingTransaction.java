@@ -68,10 +68,6 @@ public class NebPendingTransaction implements Serializable {
      */
     private String gasLimit;
 
-    /**
-     * Gas used
-     */
-    private String gasUsed;
 
     private Date createdAt;
 
