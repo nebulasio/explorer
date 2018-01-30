@@ -16,10 +16,10 @@ public class Const {
     public static final String TopicSendTransaction = "chain.sendTransaction";
 
     // TopicDeploySmartContract the topic of deploy a smart contract.
-    public static final String TopicDeploySmartContract = "chain.deploySmartContract";
+    public static final String TopicDeploySmartContract = "chain.deployContract";
 
     // TopicCallSmartContract the topic of call a smart contract.
-    public static final String TopicCallSmartContract = "chain.callSmartContract";
+    public static final String TopicCallSmartContract = "chain.callContract";
 
     // TopicDelegate the topic of delegate.
     public static final String TopicDelegate = "chain.delegate";
