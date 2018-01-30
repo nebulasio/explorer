@@ -29,10 +29,10 @@ public class PopulationMonitor {
     private final HashOperations<String, Object, Object> ops;
     private final String key;
 
-    public PopulationMonitor(YAMLConfig myConfig, String applicationId, StringRedisTemplate redisTemplate) {
+    public PopulationMonitor(YAMLConfig myConfig, StringRedisTemplate redisTemplate) {
         this.environment = myConfig.getEnvironment();
         ops = redisTemplate.opsForHash();
-        key = applicationId + environment + KEY;
+        key = environment + KEY;
     }
 
     public void add(Zone zone, long cur) {
@@ -41,6 +41,10 @@ public class PopulationMonitor {
 
     public void delete(Zone zone) {
         ops.delete(key, getHashKey(zone));
+    }
+
+    public void deleteAll() {
+        ops.delete(key, "zone_*");
     }
 
     public Long get(Zone zone) {

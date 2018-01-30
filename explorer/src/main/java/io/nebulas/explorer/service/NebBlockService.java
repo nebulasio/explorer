@@ -87,6 +87,10 @@ public class NebBlockService {
         return pageIterator;
     }
 
+    public long count() {
+        return nebBlockMapper.count();
+    }
+
     /**
      *
      * @param page

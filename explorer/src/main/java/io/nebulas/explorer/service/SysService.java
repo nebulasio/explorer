@@ -51,13 +51,18 @@ public class SysService {
         do {
             final long start = System.currentTimeMillis();
             try {
-                List<Zone> fragments = getFragments();
-                if (fragments.isEmpty()) {
-                    log.info("no fragments");
+                long blockCount = nebBlockService.count();
+                if (blockCount > 0) {
+                    List<Zone> fragments = getFragments();
+                    if (fragments.isEmpty()) {
+                        log.info("no fragments");
+                    } else {
+                        log.info("fragments to tidy: {}", fragments.toString());
+                    }
+                    populateZones(fragments);
                 } else {
-                    log.info("fragments to tidy: {}", fragments.toString());
+                    populationMonitor.deleteAll();
                 }
-                populateZones(fragments);
 
                 NebState nebState = grpcClientService.getNebState();
                 if (nebState == null) {
@@ -160,7 +165,12 @@ public class SysService {
             try {
                 addAddr(blk.getMiner(), 0);
                 addAddr(blk.getCoinbase(), 0);
-                nebBlockService.addNebBlock(nebBlk);
+                NebBlock nblk = nebBlockService.getNebBlockByHash(nebBlk.getHash());
+                if (nblk == null) {
+                    nebBlockService.addNebBlock(nebBlk);
+                } else {
+                    log.warn("duplicate block hash {}", nebBlk.getHash());
+                }
             } catch (Throwable e) {
                 log.error("add neb block error, ignoring....", e);
                 populationMonitor.add(new Zone(from, to), h);
