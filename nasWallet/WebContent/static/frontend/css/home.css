@@ -21,8 +21,9 @@ border-bottom:2px solid #000;
 -o-transition:border-bottom .3s ease-in-out,color .3s ease-in-out;
 transition:border-bottom 0.3s ease-in-out,color 0.3s ease-in-out
 }
-.left{
-	margin-left:40px;
+.right{
+	margin-right:40px;
+	white-space: nowrap;
 }
 
 .openfile{
