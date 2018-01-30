@@ -28,12 +28,7 @@
     </nav>
     <div class="container">
         <div class="col-md-12">
-            <div style=" font-size: 1.8rem; text-align: left; padding-right: 1rem; margin-bottom: 1rem;" id="tab">
-            <span class="right"><a href="index.html">Create New Wallet</a></span>    
-            <span class="right"><a class="create" href="sendNas.html">Send NAS</a></span>
-            <span class="right"><a href="sendOffline.html">Send Offline</a></span>
-            <span class="right"><a href="viewWalletInfo.html">View Wallet Info</a></span>
-            </div>
+            <div style=" font-size: 2rem; text-align: left; padding-right: 1rem; margin-bottom: 1rem;" id="tab"><span><a href="index.html">Create New Wallet</a></span>    <span class="left"><a class="create" href="sendNas.html">Send NAS</a></span></div>
             <hr/>
         </div>
     </div>
@@ -64,7 +59,7 @@ Entering your private key on a website dangerous. If our website is compromised 
 			<div class="row">
 				<div class="col-md-6">
 					<label for="fromaddress">From Address</label>
-					<input type="text" class="form-control" id="fromaddress" placeholder="" disabled>
+					<input type="text" class="form-control" id="fromaddress" placeholder="">
 				</div>
 				<div class="col-md-6">
 					<label for="balance">Balance</label>
@@ -187,7 +182,7 @@ var Transaction = require("wallet").Transaction;
 var utils = require("wallet").Utils;
 var neb = new Neb();
 neb.setRequest(new Neb.HttpRequest("https://testnet.nebulas.io"));
-var account,toaccount,state,tx,txhash;
+var account,toaccount,state,tx,txhash;;
 account= new Account();
 var testnetchainID = 1001;
 var unitMap = {
@@ -246,19 +241,39 @@ function unlock(){
 		    reader.readAsText(selectedFile);
 		    reader.onload = function(){
 		　　　　　　	try{
-		　　　　　　		account.fromKey(this.result,password)
-		　　　　　　		$("#fromaddress").val(account.getAddressString());			　　　　　　		　　　		
-		　　　　　　		$("#unlock").hide();
-		   	    	$("#send").show();
-		   	    	setTimeout(function () {
-		　　　　            state = neb.api.getAccountState(account.getAddressString());
-		　　　　            //statestr = '{"balance":"9100000000000000000000","nonce":"0"}';
-		　　　　            //state = JSON.parse(statestr);
-		　　　　            //console.log(state.balance);
-		　　　　            balance_nas = utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();
-		　　　　            $("#balance").val(balance_nas);
-		　　　　            $("#nonce").val(parseInt(state.nonce)+1);
-		　　　　        }, 1000);　　　
+		　　　　　　		$.ajax({
+		　　　　　　			"url":"/unlock",
+		      			"type":"post",
+		      			"data":{"key":this.result,"password":password},
+		      			"success":function(res){
+		      				try
+		      				{
+			      				if(res.error === '0'){
+			      					account.setPrivateKey(res.PrivateKey);		
+			      					$('#info').modal('hide');
+			      					$("#fromaddress").val(res.address);			　　　　　　		　　　		
+						　　　　　　		$("#unlock").hide();
+						   	    	$("#send").show();
+						   	    	setTimeout(function () {
+						　　　　            state = neb.api.getAccountState(res.address);
+						　　　　            balance_nas = utils.toBigNumber(state.balance).dividedBy(unitValue("nas")).toNumber();
+						　　　　            $("#balance").val(balance_nas);
+						　　　　            $("#nonce").val(state.nonce);
+						　　　　        }, 1000);
+			      				}else{
+			      					throw this.message = res.address;
+			      				}
+		      				}catch(e){
+		    		　　　　　　		bootbox.dialog(
+		    		　　　　				{
+		    		　　　　					title:'Error',
+		    		　　　　					message:e,size:'large'
+		    		　　　　				}
+		    		　　　　				);
+		    		　　　　　　	}	
+		      				
+		      			}
+		　　　　　　		});	　　
 		　　　　　　	}catch(e){
 		　　　　　　		bootbox.dialog(
 		　　　　				{
@@ -266,8 +281,7 @@ function unlock(){
 		　　　　					message:e,size:'large'
 		　　　　				}
 		　　　　				);
-		　　　　　　	}	       	
-		　　　　　　	$('#info').modal('hide');
+		　　　　　　	}	
 		    };      		    
 		　　　　}, 1000);
 	    $('#info').modal('show');
@@ -283,13 +297,11 @@ function generate(){
     	balance = $("#balance").val();    	
     	gaslimit = $("#limit").val();
     	gasprice = $("#price").val();
-    	nonce = $("#nonce").val();
     	tmp = utils.toBigNumber(gaslimit).times(utils.toBigNumber(gasprice)).dividedBy(unitValue("nas"));
-    	console.log(tmp);
     	if(utils.toBigNumber(balance).lt(utils.toBigNumber(amount).plus(tmp))){
     		amount = utils.toBigNumber(balance).minus(utils.toBigNumber(tmp)).toNumber();
     	}
-        tx = new Transaction(testnetchainID, account, toaccount.getAddressString(), neb.nasToBasic(amount), parseInt(nonce), gasprice, gaslimit);
+        tx = new Transaction(testnetchainID, account, toaddress, neb.nasToBasic(amount), parseInt(state.nonce)+1, gasprice, gaslimit);
         tx.signTransaction();
         $("#raw").val(tx.toString());
         $("#signed").val(tx.toProtoString());
