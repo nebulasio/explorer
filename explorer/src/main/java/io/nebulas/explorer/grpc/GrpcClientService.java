@@ -149,6 +149,8 @@ public class GrpcClientService {
                                 }
                             } catch (UnsupportedEncodingException e) {
                                 log.error("no block yet", e);
+                            } catch (Throwable e) {
+                                log.error("sys error", e);
                             }
                         } else {
                             log.warn("block with hash {} already existed", hash);
