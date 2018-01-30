@@ -116,6 +116,10 @@ public class NebTransactionService {
         return nebPendingTransactionMapper.getByHash(hash);
     }
 
+    public int deleteNebPendingTransaction(String id) {
+        return nebPendingTransactionMapper.delete(id);
+    }
+
     public List<NebTransaction> findTxnByBlockHeight(Long blockHeight) {
         return nebTransactionMapper.findTxnByBlockHeight(blockHeight);
     }

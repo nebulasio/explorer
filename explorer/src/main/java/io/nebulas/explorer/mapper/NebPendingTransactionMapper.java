@@ -30,4 +30,6 @@ public interface NebPendingTransactionMapper {
 
     List<NebPendingTransaction> findPendingTxnByFromTo(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
 
+    int delete(String id);
+
 }
