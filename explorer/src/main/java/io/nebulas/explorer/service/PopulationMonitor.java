@@ -36,7 +36,7 @@ public class PopulationMonitor {
     }
 
     public void add(Zone zone, long cur) {
-        ops.put(key, getHashKey(zone), cur);
+        ops.put(key, getHashKey(zone), String.valueOf(cur));
     }
 
     public void delete(Zone zone) {
@@ -44,7 +44,11 @@ public class PopulationMonitor {
     }
 
     public Long get(Zone zone) {
-        return (Long) ops.get(key, getHashKey(zone));
+        Object o = ops.get(key, getHashKey(zone));
+        if (o == null) {
+            return null;
+        }
+        return Long.parseLong((String) o);
     }
 
     public Map<String, Long> getAll() {
@@ -54,7 +58,7 @@ public class PopulationMonitor {
         }
         Map<String, Long> ret = new HashMap<>(entries.size());
         for (Object hk : entries.keySet()) {
-            ret.put((String) hk, (Long) entries.get(hk));
+            ret.put((String) hk, Long.parseLong((String) entries.get(hk)));
         }
         return ret;
     }

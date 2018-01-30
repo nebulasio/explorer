@@ -252,7 +252,6 @@ public class SysService {
         List<Zone> fragments = new ArrayList<>(zk.size());
         for (String hk : zk.keySet()) {
             String[] parts = hk.split("_");
-            long from = Long.parseLong(parts[1]);
             long to = Long.parseLong(parts[2]);
             long cur = zk.get(hk);
             if (cur >= to) {
