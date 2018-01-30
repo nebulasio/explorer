@@ -220,7 +220,11 @@ public class SysService {
     private void addAddr(String hash, int type) {
         NebAddress addr = nebAddressService.getNebAddressByHash(hash);
         if (addr == null) {
-            nebAddressService.addNebAddress(hash, type);
+            try {
+                nebAddressService.addNebAddress(hash, type);
+            } catch (Throwable e) {
+                log.error("add address error", e);
+            }
         }
     }
 
