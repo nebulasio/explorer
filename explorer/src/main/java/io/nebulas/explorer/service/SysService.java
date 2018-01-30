@@ -5,7 +5,6 @@ import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
-import io.nebulas.explorer.grpc.Const;
 import io.nebulas.explorer.grpc.GrpcChannelService;
 import io.nebulas.explorer.grpc.GrpcClientService;
 import io.nebulas.explorer.model.Block;
@@ -19,10 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -47,6 +43,7 @@ public class SysService {
     private final NebBlockService nebBlockService;
     private final NebTransactionService nebTransactionService;
     private final NebAddressService nebAddressService;
+    private final PopulationMonitor populationMonitor;
     private final YAMLConfig yamlConfig;
 
     public void init() {
@@ -54,6 +51,14 @@ public class SysService {
         do {
             final long start = System.currentTimeMillis();
             try {
+                List<Zone> fragments = getFragments();
+                if (fragments.isEmpty()) {
+                    log.info("no fragments");
+                } else {
+                    log.info("fragments to tidy: {}", fragments.toString());
+                }
+                populateZones(fragments);
+
                 NebState nebState = grpcClientService.getNebState();
                 if (nebState == null) {
                     log.error("neb state not found");
@@ -72,22 +77,8 @@ public class SysService {
                 long lastHeight = lastHeightO == null ? 0L : lastHeightO;
 
                 List<Zone> zones = divideZones(lastHeight, goalHeight);
-
-                if (zones.size() > 0) {
-                    log.info("zones {}", zones);
-                    ExecutorService executor = Executors.newFixedThreadPool(zones.size());
-                    for (Zone zone : zones) {
-                        executor.execute(() -> {
-                            // spin loop until success
-                            try {
-                                populate(block, zone.getFrom(), zone.getTo());
-                            } catch (UnsupportedEncodingException e) {
-                                log.error("encoding error", e);
-                            }
-                        });
-                    }
-                }
-                grpcClientService.subscribe(Const.TopicLinkBlock);
+                populateZones(zones);
+                grpcClientService.subscribe();
 
                 long elapsed = System.currentTimeMillis() - start;
                 log.info("{} millis elapsed", elapsed);
@@ -107,13 +98,32 @@ public class SysService {
         } while (true);
     }
 
-    private void populate(Block block, long from, long to) throws UnsupportedEncodingException {
+    private void populateZones(List<Zone> zones) {
+        if (zones.size() > 0) {
+            log.info("zones {}", zones);
+            ExecutorService executor = Executors.newFixedThreadPool(zones.size());
+            for (Zone zone : zones) {
+                executor.execute(() -> {
+                    // spin loop until success
+                    try {
+                        populate(zone.getFrom(), zone.getTo());
+                    } catch (UnsupportedEncodingException e) {
+                        log.error("encoding error", e);
+                    }
+                });
+            }
+        }
+    }
+
+    private void populate(long from, long to) throws UnsupportedEncodingException {
         long threadId = Thread.currentThread().getId();
-        log.info("Thread {} starting populate", threadId);
+        log.info("Thread {} start populating", threadId);
         long start = System.currentTimeMillis();
-        for (long h = from; h <= to; ) {
+        long h;
+        for (h = from; h <= to; ) {
             NebBlock nebBlock = nebBlockService.getNebBlockByHeight(h);
             if (nebBlock != null) {
+                populationMonitor.add(new Zone(from, to), h);
                 h++;
                 continue;
             }
@@ -131,6 +141,7 @@ public class SysService {
 
             if (blk == null) {
                 log.error("block with height {} not found", h);
+                populationMonitor.add(new Zone(from, to), h);
                 h++;
                 continue;
             }
@@ -152,6 +163,7 @@ public class SysService {
                 nebBlockService.addNebBlock(nebBlk);
             } catch (Throwable e) {
                 log.error("add neb block error, ignoring....", e);
+                populationMonitor.add(new Zone(from, to), h);
                 h++;
                 continue;
             }
@@ -182,8 +194,8 @@ public class SysService {
                 NebTransaction nebTxs = NebTransaction.builder()
                         .id(IdGenerator.getId())
                         .hash(tx.getHash())
-                        .blockHeight(block.getHeight())
-                        .blockHash(block.getHash())
+                        .blockHeight(blk.getHeight())
+                        .blockHash(blk.getHash())
                         .from(tx.getFrom())
                         .to(tx.getTo())
                         .status(tx.getStatus())
@@ -200,7 +212,11 @@ public class SysService {
                 nebTransactionService.addNebTransaction(nebTxs);
                 tpos++;
             }
+            populationMonitor.add(new Zone(from, to), h);
             h++;
+        }
+        if (h > to) {
+            populationMonitor.delete(new Zone(from, to));
         }
         long elapsed = System.currentTimeMillis() - start;
         log.info("Thread {}: {} millis elapsed for populating", threadId, elapsed);
@@ -226,6 +242,26 @@ public class SysService {
                 log.error("add address error", e);
             }
         }
+    }
+
+    private List<Zone> getFragments() {
+        Map<String, Long> zk = populationMonitor.getAll();
+        if (zk.isEmpty()) {
+            return new ArrayList<>(0);
+        }
+        List<Zone> fragments = new ArrayList<>(zk.size());
+        for (String hk : zk.keySet()) {
+            String[] parts = hk.split("_");
+            long from = Long.parseLong(parts[1]);
+            long to = Long.parseLong(parts[2]);
+            long cur = zk.get(hk);
+            if (cur >= to) {
+                continue;
+            }
+            fragments.add(new Zone(cur + 1, to));
+        }
+
+        return fragments;
     }
 
     /**

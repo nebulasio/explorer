@@ -49,7 +49,7 @@ public class GrpcClientService {
     private NebTransactionService nebTransactionService;
     private final NebAddressService nebAddressService;
 
-    public void subscribe(String topic) {
+    public void subscribe() {
         Channel channel = grpcChannelService.getChannel();
         ApiServiceGrpc.ApiServiceStub asyncStub = ApiServiceGrpc.newStub(channel);
         final CountDownLatch finishLatch = new CountDownLatch(1);
@@ -207,7 +207,7 @@ public class GrpcClientService {
                     // sleep for 10 seconds to enter next retry
                     log.info("entering next retry after 10 seconds ....");
                     TimeUnit.SECONDS.sleep(10);
-                    subscribe(topic);
+                    subscribe();
                 } catch (InterruptedException e1) {
                     log.error("thread sleep interrupted, skipped reconnect", e1);
                     finishLatch.countDown();
@@ -220,7 +220,10 @@ public class GrpcClientService {
                 finishLatch.countDown();
             }
         };
-        asyncStub.subscribe(Rpc.SubscribeRequest.newBuilder().addTopics(topic).build()
+        asyncStub.subscribe(Rpc.SubscribeRequest.newBuilder()
+                        .addTopics(Const.TopicPendingTransaction)
+                        .addTopics(Const.TopicLinkBlock)
+                        .build()
                 , responseObserver);
     }
 
