@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.core.BaseController;
 import io.nebulas.explorer.domain.*;
+import io.nebulas.explorer.exception.NotFoundException;
 import io.nebulas.explorer.service.NebAddressService;
 import io.nebulas.explorer.service.NebBlockService;
 import io.nebulas.explorer.service.NebTransactionService;
@@ -61,11 +62,11 @@ public class AddressController extends BaseController {
     @RequestMapping("/address/{hash}")
     public String address(@PathVariable("hash") String hash,
                           @RequestParam(value = "part", required = false) String part,
-                          Model model) {
+                          Model model) throws NotFoundException {
         execute(model);
         NebAddress address = nebAddressService.getNebAddressByHash(hash);
         if (null == address) {
-            return "";
+            throw new NotFoundException("neb address not found");
         }
 
         model.addAttribute("address", address);
@@ -114,12 +115,12 @@ public class AddressController extends BaseController {
 
             model.addAttribute("part", "tx");
         }
-        
+
 
         model.addAttribute("titleAndBreadcrumb", JSONObject.parseObject("{" +
-            "title: '" + address.getHash() + "'," +
-            "lis    : ['Home', '<a href=accounts.html>Normal Accounts</a>', 'Address'] " +
-        "}"));
+                "title: '" + address.getHash() + "'," +
+                "lis    : ['Home', '<a href=accounts.html>Normal Accounts</a>', 'Address'] " +
+                "}"));
 
         return "address/address";
     }
@@ -155,9 +156,9 @@ public class AddressController extends BaseController {
         model.addAttribute("txCntMap", nebTransactionService.countTxnCntByFromTo(addressHashList));
 
         model.addAttribute("titleAndBreadcrumb", JSONObject.parseObject("{" +
-            "title  : 'All Accounts'  ," +
-            "lis    : ['Home', 'Accounts'] " +
-        "}"));
+                "title  : 'All Accounts'  ," +
+                "lis    : ['Home', 'Accounts'] " +
+                "}"));
 
         return "address/accounts";
     }
