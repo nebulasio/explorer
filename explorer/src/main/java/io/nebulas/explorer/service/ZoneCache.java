@@ -2,11 +2,11 @@ package io.nebulas.explorer.service;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.RemovalListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Title.
@@ -20,8 +20,8 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Service
 public class ZoneCache {
-    private static final long MAX_CURSORS = 100000L;
-    private static final long EXPIRE_DURATION = 1000L;
+    private static final long MAX_CURSORS = 1000L;
+    private static final long THRESHOLD = 100L;
 
     private final PopulationMonitor populationMonitor;
 
@@ -33,13 +33,31 @@ public class ZoneCache {
     private void init() {
         cursors = CacheBuilder.newBuilder()
                 .maximumSize(MAX_CURSORS)
-                .expireAfterWrite(EXPIRE_DURATION, TimeUnit.MILLISECONDS)
-                .removalListener((RemovalListener<String, Long>) notification -> addRedis(notification.getKey(), notification.getValue()))
                 .build();
+        counterLock = new ReentrantLock(true);
     }
 
     public void addCursor(long from, long to, long cursor) {
-        cursors.put(getHashKey(from, to), cursor);
+        final String hashKey = getHashKey(from, to);
+        if (cursor >= to) {
+            addRedis(hashKey, cursor);
+            cursors.invalidate(hashKey);
+            return;
+        }
+        counterLock.lock();
+        try {
+            Long count = cursors.get(hashKey, () -> 0L);
+            count++;
+            cursors.put(hashKey, count);
+            if (count > THRESHOLD) {
+                addRedis(hashKey, cursor);
+                cursors.invalidate(hashKey);
+            }
+        } catch (ExecutionException e) {
+            log.error("cursor get error", e);
+        } finally {
+            counterLock.unlock();
+        }
     }
 
     public void deleteAll() {
@@ -47,6 +65,7 @@ public class ZoneCache {
     }
 
     private Cache<String, Long> cursors;
+    private ReentrantLock counterLock;
 
     private String getHashKey(long from, long to) {
         return "zone_" + from + "_" + to;
