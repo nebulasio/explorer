@@ -74,19 +74,8 @@ public class NebTransactionService {
         return nebTransactionMapper.countTxnCnt();
     }
 
-    public long countPendingTxnCnt(){
-        return nebPendingTransactionMapper.countPendingTxnCnt();
-    }
-
     public long countTxnCntByBlockHeight(long blockHeight) {
         return nebTransactionMapper.countTxnCntByBlockHeight(blockHeight);
-    }
-
-    public long countPendingTxnCntByFromTo(String addressHash) {
-        if (StringUtils.isEmpty(addressHash)) {
-            return 0L;
-        }
-        return nebPendingTransactionMapper.countPendingTxnCntByFromTo(addressHash);
     }
 
     public long countTxnCntByFromTo(String addressHash) {
@@ -94,6 +83,17 @@ public class NebTransactionService {
             return 0L;
         }
         return nebTransactionMapper.countTxnCntByFromTo(addressHash);
+    }
+
+    public long countPendingTxnCnt() {
+        return nebPendingTransactionMapper.countPendingTxnCnt();
+    }
+
+    public long countPendingTxnCntByFromTo(String addressHash) {
+        if (StringUtils.isEmpty(addressHash)) {
+            return 0L;
+        }
+        return nebPendingTransactionMapper.countPendingTxnCntByFromTo(addressHash);
     }
 
     /**
@@ -142,11 +142,11 @@ public class NebTransactionService {
         }
         List<Map<String, String>> fromList = nebTransactionMapper.countTxnCntMapByFrom(addressHashes);
         Map<String, Long> fromCntMap = fromList.stream()
-                .collect(Collectors.toMap(k -> k.get("from"), v -> Long.valueOf(v.get("cnt"))));
+                .collect(Collectors.toMap(k -> k.get("from"), v -> Long.parseLong(String.valueOf(v.get("cnt")))));
 
         List<Map<String, String>> toList = nebTransactionMapper.countTxnCntMapByTo(addressHashes);
         Map<String, Long> toCntMap = toList.stream()
-                .collect(Collectors.toMap(k -> k.get("to"), v -> Long.valueOf(v.get("cnt"))));
+                .collect(Collectors.toMap(k -> k.get("to"), v -> Long.parseLong(String.valueOf(v.get("cnt")))));
 
         return addressHashes.stream().collect(Collectors.toMap(k -> k, v -> {
             Long fromCnt = fromCntMap.get(v);
@@ -154,6 +154,10 @@ public class NebTransactionService {
             return (fromCnt == null ? 0 : fromCnt) + (toCnt == null ? 0 : toCnt);
         }));
 
+    }
+
+    public List<NebPendingTransaction> findPendingTxnByFromTo(int page, int pageSize) {
+        return nebPendingTransactionMapper.findPendingTxnByFromTo(null, (page - 1) * pageSize, pageSize);
     }
 
     public List<NebPendingTransaction> findPendingTxnByFromTo(String addressHash, int page, int pageSize) {
@@ -170,8 +174,8 @@ public class NebTransactionService {
         return nebTransactionMapper.findTxnByFromTo(addressHash, (page - 1) * pageSize, pageSize);
     }
 
-    public List<NebTransaction> findTxnOrderByTimestamp(int page, int pageSize) {
-        return nebTransactionMapper.findTxnOrderByTimestamp((page - 1) * pageSize, pageSize);
+    public List<NebTransaction> findTxnOrderById(int page, int pageSize) {
+        return nebTransactionMapper.findTxnOrderById((page - 1) * pageSize, pageSize);
     }
 
     public List<Long> countTxCntGroupByTimestamp(Date from, Date to) {

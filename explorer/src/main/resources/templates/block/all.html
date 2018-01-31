@@ -1,140 +1,76 @@
 <!doctype html>
-<html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th-block data-th-replace=fragments::head></th-block>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" th:href="@{${baseUrl + '/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css'}}"/>
+    <link rel="stylesheet" href="/css/common.css" th:href="@{${baseUrl+'/css/common.css'}}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        .table tbody tr td {
-            border: 0;
-            vertical-align: middle;
-        }
-
-        td .pagination {
-            margin: 0;
-            vertical-align: top;
-        }
-
-        textarea {
-            width: 100%;
-        }
-
-        tr>td:first-child::after {
-            content: ":";
-        }
     </style>
-    <title>Block</title>
+    <title>Blocks</title>
 </head>
 <body>
-    <th-block data-th-replace=fragments::header></th-block>
-    <th-block data-th-replace=fragments::tab-buttons></th-block>
+<th:block th:replace="fragments::header(currentNav='bc')"></th:block>
 
-    <!--    tabs
-        ============================================================ -->
+<!--    title and breadcrumb
+    ============================================================ -->
+<div class="title-and-breadcrumb">
     <div class="container">
-        <div class="tab">
-            <table class="table">
-                <tr>
-                    <td>Height</td>
-                    <td>
-                        <nav aria-label="Page navigation " class="navgation-tab">
-                            <ul class="pagination">
-                                <li>
-                                    <a href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&lt; Prev</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">${block.height}</a>
-                                </li>
-                                <li>
-                                    <a href="#" aria-label="Next">
-                                        <span aria-hidden="true">Next &gt;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </td>
-                </tr>
-                <tr>
-                    <td>TimeStamp</td>
-                    <td>${block.timestamp}</td>
-                </tr>
-                <tr>
-                    <td>Transactions</td>
-                    <td>
-                        <a href="txs.html?block=%Block">274 transactions</a>
-                        and
-                        <a href="txsInternal.html?block=%Block"> 10 contract internal transactions</a>
-                        in this block
-                    </td>
-                </tr>
-                <tr>
-                    <td>Hash</td>
-                    <td>0x4edab5c4735f10e3a8aa2297848f483858b252560dfbfbe4c9d657d55345e762</td>
-                </tr>
-                <tr>
-                    <td>Parent Hash</td>
-                    <td>
-                        <a href="#">0x50780c99ac0b066b95340554c63045970e5b863776a2a0e4ab3e925c0e85d5a6</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Sha3Uncles</td>
-                    <td>
-                        0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347
-                    </td>
-                </tr>
-                <tr>
-                    <td>Mined By</td>
-                    <td>
-                        <a href="address.html?mined">0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5</a>
-                        (Nanopool) in 29 secs
-                    </td>
-                </tr>
-                <tr>
-                    <td>Difficulty</td>
-                    <td>2,381,548,271,824,879</td>
-                </tr>
-                <tr>
-                    <td>Total Difficulty</td>
-                    <td>2,174,949,865,886,041,068,523</td>
-                </tr>
-                <tr>
-                    <td>Size</td>
-                    <td>35779 bytes</td>
-                </tr>
-                <tr>
-                    <td>Gas Used</td>
-                    <td>7,984,916 (99.81%)</td>
-                </tr>
-                <tr>
-                    <td>Gas Limit</td>
-                    <td>8,000,029</td>
-                </tr>
-                <tr>
-                    <td>Nonce</td>
-                    <td>0x889303e4c001686f3e</td>
-                </tr>
-                <tr>
-                    <td>Block Reward</td>
-                    <td>
-                        3.27657259285203186 Ether (3 + 0.27657259285203186)
-                    </td>
-                </tr>
-                <tr>
-                    <td>Uncles Reward</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>Extra Data</td>
-                    <td>nanopool.org (Hex:0x6e616e6f706f6f6c2e6f7267)
-                    </td>
-                </tr>
+        <h4 class="pull-left">Blocks</h4>
+        <ol class="breadcrumb pull-right">
+            <li>Home</li>
+            <li class="active">Blocks</li>
+        </ol>
+    </div>
+</div>
 
-            </table>
-        </div>
+<!--    info and pagination
+    ============================================================ -->
+<div class="container info-and-pagination">
+    <div class="pull-left">
+        <div class=mt30 th:if="${blockPageIterator.data !=null && blockPageIterator.data.size() >0}">
+            Showing Block (<span th:text="${blockPageIterator.data.get(blockPageIterator.data.size()-1).height}"></span> to
+            <span th:text="${blockPageIterator.data.get(0).height}"></span>) out of <span th:text="${blockPageIterator.totalCount}"></span> total blocks</div>
     </div>
 
-    <th-block data-th-replace=fragments::footer></th-block>
-    <th-block data-th-replace=fragments::scripts></th-block>
+    <th:block th:replace="fragments::pagination(currentPage=${blockPageIterator.page},totalPage=${blockPageIterator.totalPage},baseUrl='/blocks')"/>
+</div>
+
+<div class="container mt20">
+    <table class="table">
+        <tr>
+            <th>Height</th>
+            <th>Age</th>
+            <th>txn</th>
+            <th>Miner</th>
+            <th>GasUsed</th>
+            <th>GasLimit</th>
+            <th>Avg.GasPrice</th>
+        </tr>
+
+        <tr th:each="blk,iterStat : ${blockPageIterator.data}">
+            <td>
+                <a th:href="@{/block/{height}(height=${blk.height})}" th:text="${blk.height}">%Height</a>
+            </td>
+            <td th:text="${#dates.format(blk.timestamp, 'yyyy-mm-dd hh:MM:ss')}">%Age</td>
+            <td>
+                <a th:href="@{/txs(block=${blk.height})}" th:text="${txCntMap !=null && txCntMap.get(blk.height) !=null?txCntMap.get(blk.height).txCnt:0}">%txn</a>
+            </td>
+            <td>
+                <a th:href="@{/address/{hash}(hash=${blk.miner})}" th:text="${blk.miner}">%Miner</a>
+            </td>
+            <td th:text="${txCntMap !=null && txCntMap.get(blk.height) !=null?txCntMap.get(blk.height).gasUsed:''}">%GasUsed</td>
+            <td th:text="${txCntMap !=null && txCntMap.get(blk.height) !=null?txCntMap.get(blk.height).gasLimit:''}">%GasLimit</td>
+            <td th:text="${txCntMap !=null && txCntMap.get(blk.height) !=null?txCntMap.get(blk.height).avgGasPrice:''}">%Avg.GasPrice</td>
+        </tr>
+
+    </table>
+</div>
+
+<div class="container">
+    <th:block th:replace="fragments::pagination(currentPage=${blockPageIterator.page},totalPage=${blockPageIterator.totalPage},baseUrl='/blocks')"/>
+</div>
+<th:block th:replace="fragments::footer"/>
 </body>
+<th:block th:replace="fragments::scripts"/>
 </html>

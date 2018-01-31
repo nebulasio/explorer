@@ -75,7 +75,9 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_pending_transaction`
+        <if test="addressHash != null">
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
+        </if>
         ORDER BY `timestamp` DESC
         LIMIT ${offset},${limit}
     </select>

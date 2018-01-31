@@ -24,7 +24,7 @@
     <title>Block</title>
 </head>
 <body>
-    <th-block data-th-replace=fragments::header></th-block>
+<th:block th:replace="fragments::header(currentNav='bc')"></th:block>
     <div class="container">
         <ul class="nav nav-tabs" id="myTab">
             <li class="active">
@@ -67,7 +67,7 @@
                 </tr>
                 <tr>
                     <td>TimeStamp</td>
-                    <td data-th-text=${block.timestamp}></td>
+                    <td th:text="${#dates.format(block.timestamp, 'yyyy-mm-dd hh:MM:ss')}"></td>
                 </tr>
                 <tr>
                     <td>Transactions</td>
