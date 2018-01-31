@@ -23,7 +23,9 @@
         .container {
             background-color: #f7f7f7;
         }
-
+        .top{
+            margin-top: 12px;
+        }
         .banner {
             margin-top: 20px;
         }
@@ -183,28 +185,38 @@
         }
         .chart_banner{
             background-color: #fff;
-            height: 300px;
+            height: 278px;
         }
-        .chart_banner div{
-            margin-left: 12px;
+        #chart{
+            max-width:800px;
+            height:278px;
         }
         .chart_banner .name,.value{
             color:black;
             border-bottom: 1px inset;
+            margin-left: 12px;
+            margin-right: 12px;
         }
         .chart_banner .name{
-            font-size: 40px;
+            font-size: 30px;
         }
         .chart_banner .value{
             font-size: 60px;
         }
         .chart_banner .msg{
             color: black;
-            font-size:18px; 
+            font-size:16px; 
             margin-top: 24px;
         }
         .chart_banner .msg div{
             margin-top: 10px;
+        }
+        .chart_banner .msg .msg_change_right{
+            float: right;
+            margin-right: 10px;
+        }
+        .chart_banner .msg .msg_change_left{
+            margin-left: 10px;
         }
         .red{
             color: red;
@@ -309,12 +321,12 @@
         <div class="top">
             <div class="row">
                 <div class="col-md-8">
-                    <div id="chart" style="max-width:800px;height:300px;"></div>
+                    <div id="chart"></div>
                 </div>
                 <div class="col-md-4">
                     <div class="chart_banner">
                         <div class="name">NAS</div>
-                        <div class="value">$66.66666</div>
+                        <div class="value">$66.66</div>
                         <div class="msg">
                             <div class="msg_change">
                                 <span class="msg_change_left">24h Change : </span>
@@ -322,7 +334,7 @@
                             </div>
                             <div class="msg_volume">
                                 <span class="msg_change_left">24h Volume :</span>
-                                <span class="msg_change_right">$1238553218.123546</span>
+                                <span class="msg_change_right">$12388.16</span>
                             </div>
                             <div class="msg_market">
                                 <span class="msg_change_left">Market Cap :</span>
