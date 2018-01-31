@@ -44,6 +44,7 @@ public class SysService {
     private final NebTransactionService nebTransactionService;
     private final NebAddressService nebAddressService;
     private final PopulationMonitor populationMonitor;
+    private final ZoneCache zoneCache;
     private final YAMLConfig yamlConfig;
 
     public void init() {
@@ -61,6 +62,7 @@ public class SysService {
                     }
                     populateZones(fragments);
                 } else {
+                    zoneCache.deleteAll();
                     populationMonitor.deleteAll();
                 }
 
@@ -128,7 +130,7 @@ public class SysService {
         for (h = from; h <= to; ) {
             NebBlock nebBlock = nebBlockService.getNebBlockByHeight(h);
             if (nebBlock != null) {
-                populationMonitor.add(new Zone(from, to), h);
+                zoneCache.addCursor(from, to, h);
                 h++;
                 continue;
             }
@@ -146,7 +148,7 @@ public class SysService {
 
             if (blk == null) {
                 log.error("block with height {} not found", h);
-                populationMonitor.add(new Zone(from, to), h);
+                zoneCache.addCursor(from, to, h);
                 h++;
                 continue;
             }
@@ -173,7 +175,7 @@ public class SysService {
                 }
             } catch (Throwable e) {
                 log.error("add neb block error, ignoring....", e);
-                populationMonitor.add(new Zone(from, to), h);
+                zoneCache.addCursor(from, to, h);
                 h++;
                 continue;
             }
@@ -222,11 +224,11 @@ public class SysService {
                 nebTransactionService.addNebTransaction(nebTxs);
                 tpos++;
             }
-            populationMonitor.add(new Zone(from, to), h);
+            zoneCache.addCursor(from, to, h);
             h++;
         }
         if (h > to) {
-            populationMonitor.delete(new Zone(from, to));
+            populationMonitor.delete(from, to);
         }
         long elapsed = System.currentTimeMillis() - start;
         log.info("Thread {}: {} millis elapsed for populating", threadId, elapsed);

@@ -2,7 +2,6 @@ package io.nebulas.explorer.service;
 
 import com.google.common.collect.Maps;
 import io.nebulas.explorer.config.YAMLConfig;
-import io.nebulas.explorer.model.Zone;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -37,20 +36,20 @@ public class PopulationMonitor {
         key = environment + KEY;
     }
 
-    public void add(Zone zone, long cur) {
-        ops.put(key, getHashKey(zone), String.valueOf(cur));
+    public void add(long from, long to, long cur) {
+        ops.put(key, getHashKey(from, to), String.valueOf(cur));
     }
 
-    public void delete(Zone zone) {
-        ops.delete(key, getHashKey(zone));
+    public void delete(long from, long to) {
+        ops.delete(key, getHashKey(from, to));
     }
 
     public void deleteAll() {
         redisTemplate.delete(key);
     }
 
-    public Long get(Zone zone) {
-        Object o = ops.get(key, getHashKey(zone));
+    public Long get(long from, long to) {
+        Object o = ops.get(key, getHashKey(from, to));
         if (o == null) {
             return null;
         }
@@ -69,8 +68,8 @@ public class PopulationMonitor {
         return ret;
     }
 
-    private String getHashKey(Zone zone) {
-        return "zone_" + zone.getFrom() + "_" + zone.getTo();
+    private String getHashKey(long from, long to) {
+        return "zone_" + from + "_" + to;
     }
 
 }
