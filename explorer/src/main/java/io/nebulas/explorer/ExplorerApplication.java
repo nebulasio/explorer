@@ -1,6 +1,8 @@
 package io.nebulas.explorer;
 
 import io.nebulas.explorer.config.YAMLConfig;
+import io.nebulas.explorer.core.DeadlockConsoleHandler;
+import io.nebulas.explorer.core.DeadlockDetector;
 import io.nebulas.explorer.service.LeaderWrapper;
 import io.nebulas.explorer.service.SysService;
 import io.nebulas.explorer.util.IdGenerator;
@@ -43,6 +45,9 @@ public class ExplorerApplication {
 
         return arg -> {
             log.info("using environment: {}", myConfig.getEnvironment());
+
+            DeadlockDetector deadlockDetector = new DeadlockDetector(new DeadlockConsoleHandler(), 5, TimeUnit.SECONDS);
+            deadlockDetector.start();
 
             if (leaderWrapper.tryToAcquireLock()) {
                 log.info("succeed to acquire lock");
