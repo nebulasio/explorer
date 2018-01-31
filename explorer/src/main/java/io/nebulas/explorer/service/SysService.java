@@ -245,7 +245,7 @@ public class SysService {
         }
     }
 
-    private void addAddr(String hash, int type) {
+    synchronized private void addAddr(String hash, int type) {
         NebAddress addr = nebAddressService.getNebAddressByHash(hash);
         if (addr == null) {
             try {
