@@ -247,7 +247,7 @@ function unlock(){
 }
 $("#keystore").click(function(){
 	var blob = new Blob([keyStr], {type: "application/json;charset=utf-8"});
- 	saveAs(blob, address);
+ 	saveAs(blob, account.getAddressString());
 });
 
 
