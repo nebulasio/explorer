@@ -1,0 +1,115 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Nebulas BlockChain Explorer and Search</title>
+    <meta name="description" content="Nebulas" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" th:href="@{${baseUrl + '/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css'}}" />
+    <link rel="stylesheet" href="/css/common.css" th:href="@{${baseUrl + '/css/common.css'}}" />
+    <style>
+        .wrapper {
+            width: 88%;
+            margin: 0 auto;
+        }
+
+        .contain {
+            height: 1600px;
+            background-color: #f7f7f7;
+            position: relative;
+        }
+
+        .top {
+            width: 100%;
+            height: 80px;
+            position: absolute;
+            top: 2%;
+            left: 4%;
+        }
+
+        .contain .navbar-form {
+            position: absolute;
+            right: 10%;
+            top: -14%;
+        }
+    </style>
+    <title>txsInternal</title>
+</head>
+<body>
+    <th:block th:replace="fragments::header(currentNav='bc')"/>
+
+    <!--    title and breadcrumb
+    ============================================================ -->
+    <div class="title-and-breadcrumb">
+        <div class="container">
+            <h4 class="pull-left">Pending Transactions</h4>
+            <ol class="breadcrumb pull-right">
+                <li>Home</li>
+                <li class="active">Pending</li>
+            </ol>
+        </div>
+    </div>
+
+    <!--    info and pagination
+    ============================================================ -->
+    <div class="container info-and-pagination">
+        <div class="pull-left">
+            <!--<div class="mt20" th:if="${address ==null}"> Search results for Txns related to 0xe48b2dad7ca0811e3096c6e1d1e8f2f2adc01277-->
+                <!--<a href="#" type="" style="color:blue;">Pending Transaction Pool - Time Series</a>-->
+            <!--</div>-->
+            <div class="mt20" th:if="${address !=null}"> >> Search results for Txns related to
+                <a href="#" type="" style="color:blue;" th:text="${address}" th:text="${address}">Pending Transaction Pool - Time Series</a>
+            </div>
+            <div class="mt20">
+                A total of <span th:text="${txnTotalCnt}"></span> Pending txns found
+            </div>
+        </div>
+
+    <th:block th:replace="fragments::pagination(currentPage=${currentPage},totalPage=${txnTotalPage},baseUrl='/txsPending'+${type=='address'?'?a='+addressHash:''})"/>
+    </div>
+
+    <div class="container mt20">
+        <table class="table">
+            <tr>
+                <th>TxHash</th>
+                <th>LastSeen</th>
+                <th>GasLimit</th>
+                <th>GasPrice</th>
+                <th>From</th>
+                <th></th>
+                <th>To</th>
+                <th>Value</th>
+            </tr>
+            <tr th:each="tx,iterStat :${pendingTxnList}">
+                <td class="ne">
+                    <a href="#" th:href="@{/tx/{hash}(hash=${tx.hash})}">%TxHash</a>
+                </td>
+                <td class="ne" th:text="${#dates.format(tx.timestamp, 'yyyy-mm-dd hh:MM:ss')}">%secs ago</td>
+                <td th:text="${tx.gasLimit}">
+
+                </td>
+                <td th:text="${tx.gasPrice}">52.5 Gwei</td>
+                <td>
+                    <a href="#" th:text="${pageStringUtil.replace(tx.from,20,'...')}" th:href="@{/address/{hash}(hash=${tx.from})}">%From</a>
+                </td>
+                <td>
+                    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                </td>
+                <td>
+                    <a href="#" th:text="${pageStringUtil.replace(tx.to,20,'...')}" th:href="@{/address/{hash}(hash=${tx.to})}">%To</a>
+                </td>
+                <td th:text="${tx.value}">%Value</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="container">
+        <th:block th:replace="fragments::pagination(currentPage=${currentPage},totalPage=${txnTotalPage},baseUrl='/txsPending'+${type=='address'?'?a='+addressHash:''})"/>
+    </div>
+
+    <th:block th:replace="fragments::footer"></th:block>
+</body>
+<th-block th:replace="fragments::scripts"></th-block>
+</html>

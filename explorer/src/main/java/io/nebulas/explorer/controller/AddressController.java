@@ -1,11 +1,11 @@
 package io.nebulas.explorer.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.core.BaseController;
 import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.exception.NotFoundException;
+import io.nebulas.explorer.model.vo.AddressVo;
 import io.nebulas.explorer.service.NebAddressService;
 import io.nebulas.explorer.service.NebBlockService;
 import io.nebulas.explorer.service.NebTransactionService;
@@ -92,7 +92,7 @@ public class AddressController extends BaseController {
                 List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingTxnByFromTo(address.getHash(), 1, PAGE_SIZE);
 
                 List<NebTransaction> txList = Lists.newLinkedList();
-                pendingTxnList.forEach(pTxn -> {
+                for (NebPendingTransaction pTxn : pendingTxnList) {
                     try {
                         NebTransaction tx = new NebTransaction();
                         PropertyUtils.copyProperties(tx, pTxn);
@@ -103,7 +103,7 @@ public class AddressController extends BaseController {
                     } catch (Exception e) {
                         log.error(e.getMessage(), e);
                     }
-                });
+                }
                 if (pendingTxnList.size() < PAGE_SIZE) {
                     txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE - pendingTxnList.size()));
                 }
@@ -115,13 +115,6 @@ public class AddressController extends BaseController {
 
             model.addAttribute("part", "tx");
         }
-
-
-        model.addAttribute("titleAndBreadcrumb", JSONObject.parseObject("{" +
-                "title: '" + address.getHash() + "'," +
-                "lis    : ['Home', '<a href=accounts.html>Normal Accounts</a>', 'Address'] " +
-                "}"));
-
         return "address/address";
     }
 
@@ -133,7 +126,7 @@ public class AddressController extends BaseController {
      * @return
      */
     @RequestMapping("/accounts")
-    public String all(@RequestParam(value = "page", required = false, defaultValue = "1") int page, Model model) {
+    public String all(@RequestParam(value = "p", required = false, defaultValue = "1") int page, Model model) {
         execute(model);
         if (page < 1) {
             page = 1;
@@ -147,19 +140,29 @@ public class AddressController extends BaseController {
         Map<String, BigDecimal> percentageMap = addressList.stream()
                 .collect(Collectors.toMap(NebAddress::getHash, a -> a.getCurrentBalance().divide(totalBalance, 8, BigDecimal.ROUND_DOWN)));
         List<String> addressHashList = addressList.stream().map(NebAddress::getHash).collect(Collectors.toList());
+        Map<String, Long> txCntMap = nebTransactionService.countTxnCntByFromTo(addressHashList);
 
-        model.addAttribute("totalAccountsCnt", nebAddressService.countTotalAddressCnt());
-        model.addAttribute("totalNas", totalBalance);
-        model.addAttribute("page", page);
-        model.addAttribute("addressList", addressList);
-        model.addAttribute("percentageMap", percentageMap);
-        model.addAttribute("txCntMap", nebTransactionService.countTxnCntByFromTo(addressHashList));
+        long totalCnt = nebAddressService.countTotalAddressCnt();
 
-        model.addAttribute("titleAndBreadcrumb", JSONObject.parseObject("{" +
-                "title  : 'All Accounts'  ," +
-                "lis    : ['Home', 'Accounts'] " +
-                "}"));
+        List<AddressVo> voList = Lists.newLinkedList();
+        int i = 1 + (page - 1) * PAGE_SIZE;
+        for (NebAddress address : addressList) {
+            AddressVo vo = new AddressVo();
+            vo.setRank(i);
+            vo.setHash(address.getHash());
+            vo.setAlias(address.getAlias());
+            vo.setBalance(address.getCurrentBalance());
+            vo.setPercentage(percentageMap.get(address.getHash()));
+            vo.setTxCnt(txCntMap.get(address.getHash()));
+            voList.add(vo);
+            i++;
+        }
 
+        model.addAttribute("totalAccountsCnt", totalCnt);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", totalCnt / PAGE_SIZE + 1);
+        model.addAttribute("totalBalance", totalBalance);
+        model.addAttribute("addressList", voList);
         return "address/accounts";
     }
 
