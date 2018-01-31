@@ -267,7 +267,7 @@ public class SysService {
             if (cur >= to) {
                 continue;
             }
-            fragments.add(new Zone(cur + 1, to));
+            fragments.add(new Zone(cur, to));
         }
 
         return fragments;

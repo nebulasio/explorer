@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class LeaderWrapper {
     private static final String LEADER_LOCK = "LEADER_LOCK";
-    private static final long EXPIRE_SECONDS = 10L;
+    private static final long EXPIRE_SECONDS = 6L;
 
     private final String environment;
     private final String applicationId;
@@ -43,9 +43,8 @@ public class LeaderWrapper {
         return applicationId.equals(appId);
     }
 
-    @Scheduled(fixedRate = 2000)
+    @Scheduled(fixedDelay = 2000)
     public void heartbeat() {
-        log.info("app heart beat - " + System.currentTimeMillis() / 1000);
         tryToAcquireLock();
     }
 
