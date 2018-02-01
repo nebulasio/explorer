@@ -11,60 +11,33 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * nebulas block related operation service
- * <p>
- * Description.
+ * Nebulas block related operation service
  *
  * @author nathan wang
  * @version 1.0
  * @since 2018-01-24
  */
-@Service
 @AllArgsConstructor
+@Service
 public class NebBlockService {
     private final NebBlockMapper nebBlockMapper;
 
     /**
-     * add nebulas block
+     * save block information
      *
-     * @param entity
-     * @return
+     * @param entity block bean
+     * @return saved result
      */
     public boolean addNebBlock(NebBlock entity) {
-        if (null == entity) {
-            return false;
-        }
-        return nebBlockMapper.add(entity) > 0;
-    }
-
-    public Long getMaxHeight() {
-        return nebBlockMapper.getMaxHeight();
-    }
-
-
-    /**
-     * Get nebulas block information by block height
-     *
-     * @param height block height
-     * @return block entity
-     */
-    public NebBlock getNebBlockByHeight(Long height) {
-        return nebBlockMapper.getByHeight(height);
+        return (null != entity) && nebBlockMapper.add(entity) > 0;
     }
 
     /**
-     * Get nebulas block information by block hash
+     * According to miner hash query block number
      *
-     * @param hash block hash
-     * @return block entity
+     * @param miner miner hash
+     * @return the number of blocks
      */
-    public NebBlock getNebBlockByHash(String hash) {
-        if (StringUtils.isEmpty(hash)) {
-            return null;
-        }
-        return nebBlockMapper.getByHash(hash);
-    }
-
     public Long countBlockCntByMiner(String miner) {
         if (StringUtils.isEmpty(miner)) {
             return 0L;
@@ -73,9 +46,43 @@ public class NebBlockService {
     }
 
     /**
-     * @param page
-     * @param pageSize
-     * @return
+     * Query the highest height value of the block
+     *
+     * @return the highest height value of the block
+     */
+    public Long getMaxHeight() {
+        return nebBlockMapper.getMaxHeight();
+    }
+
+    /**
+     * According to block height query block information
+     *
+     * @param height block height
+     * @return block information
+     */
+    public NebBlock getNebBlockByHeight(Long height) {
+        return nebBlockMapper.getByHeight(height);
+    }
+
+    /**
+     * According to block hash query block information
+     *
+     * @param hash block hash
+     * @return block information
+     */
+    public NebBlock getNebBlockByHash(String hash) {
+        if (StringUtils.isEmpty(hash)) {
+            return null;
+        }
+        return nebBlockMapper.getByHash(hash);
+    }
+
+    /**
+     * Query block information
+     *
+     * @param page     current page
+     * @param pageSize number of information per page
+     * @return block page iterator
      */
     public PageIterator<NebBlock> findNebBlockPageIterator(int page, int pageSize) {
         long cnt = nebBlockMapper.count();
@@ -88,15 +95,42 @@ public class NebBlockService {
     }
 
     /**
+     * Query block information by miner
      *
-     * @param page
-     * @param pageSize
-     * @return
+     * @param miner    block miner
+     * @param page     current page
+     * @param pageSize number of information per page
+     * @return block page iterator
      */
-    public List<NebBlock> findNebBlockOrderByTimestamp(int page, int pageSize) {
-        return nebBlockMapper.findOrderByTimestamp((page - 1) * pageSize, pageSize);
+    public PageIterator<NebBlock> findNebBlockPageIteratorByMiner(String miner, int page, int pageSize) {
+        long cnt = nebBlockMapper.countByMiner(miner);
+        PageIterator<NebBlock> pageIterator = PageIterator.create(page, pageSize, cnt);
+        if (cnt > 0) {
+            List<NebBlock> blkList = nebBlockMapper.findByMiner(miner, pageIterator.getOffset(), pageIterator.getPageSize());
+            pageIterator.setData(blkList);
+        }
+        return pageIterator;
     }
 
+    /**
+     * Query block information
+     *
+     * @param page     current page
+     * @param pageSize number of information per page
+     * @return block list
+     */
+    public List<NebBlock> findNebBlockOrderByHeight(int page, int pageSize) {
+        return nebBlockMapper.findOrderByHeightDesc((page - 1) * pageSize, pageSize);
+    }
+
+    /**
+     * Query block information by miner
+     *
+     * @param miner    block miner
+     * @param page     current page
+     * @param pageSize number of information per page
+     * @return block list
+     */
     public List<NebBlock> findNebBlockByMiner(String miner, int page, int pageSize) {
         if (StringUtils.isEmpty(miner)) {
             return Collections.emptyList();

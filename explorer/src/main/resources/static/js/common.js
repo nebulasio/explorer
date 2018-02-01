@@ -1,9 +1,9 @@
 $(document).ready(function () {
 
-    $("#search").click(function () {
+    $("#search").click(function (e) {
+        e.preventDefault();
         var result1 = $("#search_value").val();
-        // alert("url = " + "/search?q=" + result1);
-        window.location.href = "url = " + "/search?q=" + result1 ;
+        window.location.href = "/search?q=" + result1 ;
     });
 
 })

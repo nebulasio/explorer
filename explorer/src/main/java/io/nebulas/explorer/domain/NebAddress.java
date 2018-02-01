@@ -53,4 +53,8 @@ public class NebAddress implements Serializable {
     private Date updatedAt;
 
     private static final long serialVersionUID = 1L;
+
+    public NebAddress(String hash) {
+        this.hash = hash;
+    }
 }

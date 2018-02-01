@@ -34,17 +34,12 @@
 </head>
 <body>
 <th:block th:replace="fragments::header(currentNav='account')"/>
-
-<!--    title and breadcrumb
-    ============================================================ -->
 <div class="title-and-breadcrumb">
     <div class="container">
         <h4 class="pull-left" th:text="${'Address '+address.hash}">Address</h4>
         <ol class="breadcrumb pull-right">
             <li>Home</li>
-            <li>
-                <a href="accounts.html">Normal Accounts</a>
-            </li>
+            <li> Normal Accounts</li>
             <li class="active">Address</li>
         </ol>
     </div>
@@ -151,8 +146,8 @@
         <span class="c333 glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>
         Latest
         <span th:text="${minedBlkCnt > 25 ? 25 : minedBlkCnt}"></span> blocks (From a total of
-        <a href="blocks.html?m=%id-from-url" th:text="${minedBlkCnt +' blocks'}">%2</a>)
-        <a class="btn btn-default pull-right" href="blocks.html?id=%id-from-url" role="button">View All</a>
+        <a href="#" th:href="@{/blocks(m=${address.hash})}" th:text="${minedBlkCnt +' blocks'}">%2</a>)
+        <a class="btn btn-default pull-right" href="#" th:href="@{/blocks(m=${address.hash})}"  role="button">View All</a>
     </div>
 
     <table class="mt20 table">

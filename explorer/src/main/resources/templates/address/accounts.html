@@ -11,9 +11,7 @@
         <h4 class="pull-left">All Accounts</h4>
         <ol class="breadcrumb pull-right">
             <li>Home</li>
-            <li>
-                <a href="accounts.html">Account</a>
-            </li>
+            <li class="active">Account</li>
         </ol>
     </div>
 </div>
@@ -38,7 +36,9 @@
         </tr>
     </table>
 </div>
-<th:block th:replace="fragments::pagination(currentPage=${currentPage},totalPage=${totalPage},baseUrl='/accounts')"/>
+<div class="container">
+    <th:block th:replace="fragments::pagination(currentPage=${currentPage},totalPage=${totalPage},baseUrl='/accounts')"/>
+</div>
 <th:block th:replace="fragments::footer"/>
 </body>
 <th:block th:replace="fragments::scripts"/>

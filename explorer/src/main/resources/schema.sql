@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `neb_market_capitalization` (
   `market_cap` decimal(20,2) DEFAULT NULL,
   `volume_24h` decimal(20,2) DEFAULT NULL,
   `change_24h` decimal(5,2) DEFAULT NULL,
+  `trends` tinyint(2) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `price_unit` varchar(20) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

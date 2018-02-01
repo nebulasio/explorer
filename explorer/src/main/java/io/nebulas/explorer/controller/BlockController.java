@@ -6,6 +6,7 @@ import io.nebulas.explorer.domain.BlockSummary;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
+import io.nebulas.explorer.exception.NotFoundException;
 import io.nebulas.explorer.model.PageIterator;
 import io.nebulas.explorer.service.NebAddressService;
 import io.nebulas.explorer.service.NebBlockService;
@@ -59,7 +60,7 @@ public class BlockController extends BaseController {
      * @param blkKey block hash or block height
      */
     @RequestMapping("/block/{blkKey}")
-    public String detail(@PathVariable("blkKey") String blkKey, Model model) {
+    public String detail(@PathVariable("blkKey") String blkKey, Model model) throws Exception {
         execute(model);
 
         NebBlock block;
@@ -70,7 +71,7 @@ public class BlockController extends BaseController {
         }
 
         if (null == block) {
-            return "";
+            throw new NotFoundException("neb block not found");
         }
 
         model.addAttribute("block", block);
@@ -103,15 +104,23 @@ public class BlockController extends BaseController {
      * @return
      */
     @RequestMapping("/blocks")
-    public String blocks(@RequestParam(value = "p", required = false, defaultValue = "1") int page, Model model) {
+    public String blocks(@RequestParam(value = "m", required = false) String miner,
+                         @RequestParam(value = "p", required = false, defaultValue = "1") int page,
+                         Model model) {
         execute(model);
 
-        PageIterator<NebBlock> blockPageIterator = nebBlockService.findNebBlockPageIterator(page, PAGE_SIZE);
+        PageIterator<NebBlock> blockPageIterator;
+        if (StringUtils.isEmpty(miner)) {
+            blockPageIterator = nebBlockService.findNebBlockPageIterator(page, PAGE_SIZE);
+        } else {
+            blockPageIterator = nebBlockService.findNebBlockPageIteratorByMiner(miner, page, PAGE_SIZE);
+        }
         if (CollectionUtils.isNotEmpty(blockPageIterator.getData())) {
             List<Long> blkHeightList = blockPageIterator.getData().stream().map(NebBlock::getHeight).collect(Collectors.toList());
-            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlock(blkHeightList);
+            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlockGroupByBlockHeight(blkHeightList);
             model.addAttribute("txCntMap", txCntMap);
         }
+        model.addAttribute("miner", miner);
         model.addAttribute("blockPageIterator", blockPageIterator);
         return "block/all";
     }

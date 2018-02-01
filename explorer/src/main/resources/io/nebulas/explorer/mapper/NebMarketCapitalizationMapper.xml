@@ -6,12 +6,13 @@
         <result column="market_cap" property="marketCap" jdbcType="DECIMAL"/>
         <result column="volume_24h" property="volume24h" jdbcType="DECIMAL"/>
         <result column="change_24h" property="change24h" jdbcType="DECIMAL"/>
+        <result column="trends" property="trends" jdbcType="TINYINT"/>
         <result column="price" property="price" jdbcType="DECIMAL"/>
         <result column="price_unit" property="priceUnit" jdbcType="VARCHAR"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
     </resultMap>
     <sql id="Base_Column_List">
-        `id`, `market_cap`, `volume_24h`, `change_24h`, `price`, `price_unit`, `created_at`
+        `id`, `market_cap`, `volume_24h`, `change_24h`,`trends`, `price`, `price_unit`, `created_at`
     </sql>
 
     <select id="getLatest" resultMap="BaseResultMap">

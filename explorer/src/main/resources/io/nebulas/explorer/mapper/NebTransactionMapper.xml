@@ -39,37 +39,38 @@
     </sql>
 
     <insert id="addNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
-        INSERT INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,
-        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
+        INSERT INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,`nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
         VALUES
-        (
-        #{id}, #{hash}, #{blockHash}, #{blockHeight}, #{from}, #{to}, #{status}, #{value},
-        #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}
-        , #{gasLimit}, #{gasUsed}, #{createdAt}
-        )
+        (#{id}, #{hash}, #{blockHash}, #{blockHeight}, #{from}, #{to}, #{status}, #{value}, #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}, #{gasLimit}, #{gasUsed}, #{createdAt})
     </insert>
+
     <insert id="batchAddNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
-        INSERT INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,
-        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
+        INSERT INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
         VALUES
         <foreach collection="transactions" item="tx" separator=",">
-            (
-            #{tx.id}, #{tx.hash}, #{tx.blockHash}, #{tx.blockHeight}, #{tx.from}, #{tx.to}, #{tx.status}, #{tx.value},
-            #{tx.nonce}, #{tx.timestamp}, #{tx.type}, #{tx.data}, #{tx.gasPrice}
-            , #{tx.gasLimit}, #{tx.gasUsed}, #{tx.createdAt}
-            )
+            (#{tx.id}, #{tx.hash}, #{tx.blockHash}, #{tx.blockHeight}, #{tx.from}, #{tx.to}, #{tx.status}, #{tx.value},#{tx.nonce}, #{tx.timestamp}, #{tx.type}, #{tx.data}, #{tx.gasPrice}, #{tx.gasLimit}, #{tx.gasUsed}, #{tx.createdAt})
         </foreach>
     </insert>
 
-    <select id="countTxnCnt" resultType="java.lang.Long">
+    <select id="countTxnCntByCondition" parameterType="map" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_transaction`
+        <where>
+            <trim prefixOverrides="and">
+                <if test="blockHeight !=null">
+                    and block_height = #{blockHeight,jdbcType=BIGINT}
+                </if>
+                <if test="addressHash !=null">
+                    and (`from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR})
+                </if>
+            </trim>
+        </where>
     </select>
 
-    <select id="countTxnCntByBlockHeight" parameterType="java.lang.Long" resultType="java.lang.Long">
+    <select id="countTxnCntByFromTo" parameterType="java.lang.String" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_transaction`
-        WHERE block_height = #{blockHeight,jdbcType=BIGINT}
+        WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
     </select>
 
     <select id="getByHash" resultType="NebTransaction" parameterType="java.lang.String">
@@ -79,7 +80,6 @@
         WHERE `hash` = #{hash,jdbcType=VARCHAR}
     </select>
 
-
     <select id="findTxnByBlockHeight" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
@@ -88,12 +88,38 @@
         ORDER BY `id` desc
     </select>
 
-    <select id="findTxnByBlockHeightWithLimit" parameterType="map" resultMap="BaseResultMap">
+    <select id="findTxnByCondition" parameterType="map" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
-        WHERE block_height = #{blockHeight,jdbcType=BIGINT}
-        ORDER BY `id` desc
+        <where>
+            <trim prefixOverrides="and">
+                <if test="blockHeight !=null">
+                    and block_height = #{blockHeight,jdbcType=BIGINT}
+                </if>
+                <if test="addressHash !=null">
+                    and (`from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR})
+                </if>
+            </trim>
+        </where>
+        ORDER BY `block_height` DESC,`id` DESC
+        LIMIT ${offset},${limit}
+    </select>
+
+    <select id="findTxnByFromTo" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
+        ORDER BY `block_height` DESC,`id` DESC
+        LIMIT ${offset},${limit}
+    </select>
+
+    <select id="findTxnOrderById" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        ORDER BY `block_height` DESC,`id` DESC
         LIMIT ${offset},${limit}
     </select>
 
@@ -125,29 +151,6 @@
         WHERE `to` in
         <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
         GROUP BY `to`
-    </select>
-
-    <select id="countTxnCntByFromTo" parameterType="java.lang.String" resultType="java.lang.Long">
-        SELECT count(1)
-        FROM `neb_transaction`
-        WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
-    </select>
-
-    <select id="findTxnByFromTo" parameterType="map" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM `neb_transaction`
-        WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
-        ORDER BY `block_height` DESC,`id` DESC
-        LIMIT ${offset},${limit}
-    </select>
-
-    <select id="findTxnOrderById" parameterType="map" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM `neb_transaction`
-        ORDER BY `block_height` DESC,`id` DESC
-        LIMIT ${offset},${limit}
     </select>
 
     <select id="countTxCntGroupByTimestamp" parameterType="map"  resultType="java.util.Map">
