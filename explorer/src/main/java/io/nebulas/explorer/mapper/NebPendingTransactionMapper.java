@@ -22,7 +22,7 @@ public interface NebPendingTransactionMapper {
 
     Integer delete(String id);
 
-    long countPendingTxnCntByCondition(String addressHash);
+    long countPendingTxnCntByCondition(@Param("addressHash") String addressHash);
 
     NebPendingTransaction getByHash(String hash);
 
