@@ -12,72 +12,92 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * nebulas transaction related operation service
- * <p>
- * Description.
+ * Nebulas transaction related operation service
  *
  * @author nathan wang
  * @version 1.0
  * @since 2018-01-25
  */
-@Service
 @AllArgsConstructor
+@Service
 public class NebTransactionService {
     private final NebTransactionMapper nebTransactionMapper;
     private final NebPendingTransactionMapper nebPendingTransactionMapper;
 
     /**
-     * save single nebulas transaction entity
+     * save transaction information
      *
-     * @param transaction
-     * @return
+     * @param transaction transaction bean
+     * @return saved result
      */
-    public Integer addNebTransaction(NebTransaction transaction) {
-        return nebTransactionMapper.addNebTransaction(transaction);
+    public boolean addNebTransaction(NebTransaction transaction) {
+        return nebTransactionMapper.addNebTransaction(transaction) > 0;
     }
 
     /**
-     * batch add nebulas transaction entity
+     * batch save transaction information
      *
-     * @param transactions
-     * @return
+     * @param transactions transaction beans
+     * @return saved result
      */
     public Integer batchAddNebTransaction(List<NebTransaction> transactions) {
         return nebTransactionMapper.batchAddNebTransaction(transactions);
     }
 
     /**
-     * save single nebulas pending transaction entity
+     * save pending transaction information
      *
      * @param transaction pending transaction
-     * @return
+     * @return saved result
      */
-    public Integer addNebPendingTransaction(NebPendingTransaction transaction) {
-        return nebPendingTransactionMapper.add(transaction);
+    public boolean addNebPendingTransaction(NebPendingTransaction transaction) {
+        return nebPendingTransactionMapper.add(transaction) > 0;
     }
 
     /**
-     * batch add nebluas pending transaction entity
+     * batch save pending transaction information
      *
-     * @param transactions pending transaction
-     * @return
+     * @param transactions pending transactions
+     * @return saved result
      */
     public Integer batchAddNebPendingTransaction(List<NebPendingTransaction> transactions) {
         return nebPendingTransactionMapper.batchAdd(transactions);
     }
 
-    public long countTxnCnt() {
-        return nebTransactionMapper.countTxnCnt();
+    /**
+     * delete pending transaction
+     *
+     * @param id pending transaction id
+     * @return deleted result
+     */
+    public boolean deleteNebPendingTransaction(String id) {
+        return nebPendingTransactionMapper.delete(id) > 0;
     }
 
-    public long countTxnCntByBlockHeight(long blockHeight) {
-        return nebTransactionMapper.countTxnCntByBlockHeight(blockHeight);
+    /**
+     * query transaction total count
+     *
+     * @param blockHeight block height
+     * @param addressHash address hash
+     * @return the number of transaction
+     */
+    public long countTxnCnt(Long blockHeight, String addressHash) {
+        return nebTransactionMapper.countTxnCntByCondition(blockHeight, addressHash);
     }
 
+    /**
+     * according address hash to query transaction total count
+     *
+     * @param addressHash address hash
+     * @return the number of transaction
+     */
     public long countTxnCntByFromTo(String addressHash) {
         if (StringUtils.isEmpty(addressHash)) {
             return 0L;
@@ -85,22 +105,21 @@ public class NebTransactionService {
         return nebTransactionMapper.countTxnCntByFromTo(addressHash);
     }
 
-    public long countPendingTxnCnt() {
-        return nebPendingTransactionMapper.countPendingTxnCnt();
-    }
-
-    public long countPendingTxnCntByFromTo(String addressHash) {
-        if (StringUtils.isEmpty(addressHash)) {
-            return 0L;
-        }
-        return nebPendingTransactionMapper.countPendingTxnCntByFromTo(addressHash);
+    /**
+     * according address hash to query pending transaction total count
+     *
+     * @param addressHash address hash
+     * @return the number of transaction
+     */
+    public long countPendingTxnCnt(String addressHash) {
+        return nebPendingTransactionMapper.countPendingTxnCntByCondition(addressHash);
     }
 
     /**
-     * get nebulas transaction by hash
+     * According to transaction hash query transaction information
      *
-     * @param hash
-     * @return
+     * @param hash transaction hash
+     * @return transaction information
      */
     public NebTransaction getNebTransactionByHash(String hash) {
         if (StringUtils.isEmpty(hash)) {
@@ -109,6 +128,12 @@ public class NebTransactionService {
         return nebTransactionMapper.getByHash(hash);
     }
 
+    /**
+     * According to pending transaction hash query pending transaction information
+     *
+     * @param hash pending transaction hash
+     * @return pending transaction information
+     */
     public NebPendingTransaction getNebPendingTransactionByHash(String hash) {
         if (StringUtils.isEmpty(hash)) {
             return null;
@@ -116,57 +141,49 @@ public class NebTransactionService {
         return nebPendingTransactionMapper.getByHash(hash);
     }
 
-    public int deleteNebPendingTransaction(String id) {
-        return nebPendingTransactionMapper.delete(id);
-    }
-
+    /**
+     * According to block height query transaction information
+     *
+     * @param blockHeight block height
+     * @return transaction list
+     */
     public List<NebTransaction> findTxnByBlockHeight(Long blockHeight) {
         return nebTransactionMapper.findTxnByBlockHeight(blockHeight);
     }
 
-    public List<NebTransaction> findTxnByBlockHeight(Long blockHeight, int page, int pageSize) {
-        return nebTransactionMapper.findTxnByBlockHeightWithLimit(blockHeight, (page - 1) * pageSize, pageSize);
+    /**
+     * According to condition query transaction information
+     *
+     * @param blockHeight block height
+     * @param addressHash address hash
+     * @param page        current page
+     * @param pageSize    number of information per page
+     * @return transaction list
+     */
+    public List<NebTransaction> findTxnByCondition(Long blockHeight, String addressHash, int page, int pageSize) {
+        return nebTransactionMapper.findTxnByCondition(blockHeight, addressHash, (page - 1) * pageSize, pageSize);
     }
 
-    public Map<Long, BlockSummary> countTxnInBlock(List<Long> blockHeights) {
-        if (CollectionUtils.isEmpty(blockHeights)) {
-            return Collections.emptyMap();
-        }
-        List<BlockSummary> blockSummaryList = nebTransactionMapper.countTxnInBlock(blockHeights);
-        return blockSummaryList.stream().collect(Collectors.toMap(BlockSummary::getBlockHeight, summary -> summary));
+    /**
+     * According to condition query pending transaction information
+     *
+     * @param addressHash address hash
+     * @param page        current page
+     * @param pageSize    number of information per page
+     * @return pending transaction list
+     */
+    public List<NebPendingTransaction> findPendingTxnByCondition(String addressHash, int page, int pageSize) {
+        return nebPendingTransactionMapper.findPendingTxnByCondition(addressHash, (page - 1) * pageSize, pageSize);
     }
 
-    public Map<String, Long> countTxnCntByFromTo(List<String> addressHashes) {
-        if (CollectionUtils.isEmpty(addressHashes)) {
-            return Collections.emptyMap();
-        }
-        List<Map<String, String>> fromList = nebTransactionMapper.countTxnCntMapByFrom(addressHashes);
-        Map<String, Long> fromCntMap = fromList.stream()
-                .collect(Collectors.toMap(k -> k.get("from"), v -> Long.parseLong(String.valueOf(v.get("cnt")))));
-
-        List<Map<String, String>> toList = nebTransactionMapper.countTxnCntMapByTo(addressHashes);
-        Map<String, Long> toCntMap = toList.stream()
-                .collect(Collectors.toMap(k -> k.get("to"), v -> Long.parseLong(String.valueOf(v.get("cnt")))));
-
-        return addressHashes.stream().collect(Collectors.toMap(k -> k, v -> {
-            Long fromCnt = fromCntMap.get(v);
-            Long toCnt = toCntMap.get(v);
-            return (fromCnt == null ? 0 : fromCnt) + (toCnt == null ? 0 : toCnt);
-        }));
-
-    }
-
-    public List<NebPendingTransaction> findPendingTxnByFromTo(int page, int pageSize) {
-        return nebPendingTransactionMapper.findPendingTxnByFromTo(null, (page - 1) * pageSize, pageSize);
-    }
-
-    public List<NebPendingTransaction> findPendingTxnByFromTo(String addressHash, int page, int pageSize) {
-        if (StringUtils.isEmpty(addressHash)) {
-            return Collections.emptyList();
-        }
-        return nebPendingTransactionMapper.findPendingTxnByFromTo(addressHash, (page - 1) * pageSize, pageSize);
-    }
-
+    /**
+     * query transaction information list
+     *
+     * @param addressHash address hash
+     * @param page        current page
+     * @param pageSize    number of information per page
+     * @return transaction list
+     */
     public List<NebTransaction> findTxnByFromTo(String addressHash, int page, int pageSize) {
         if (StringUtils.isEmpty(addressHash)) {
             return Collections.emptyList();
@@ -174,30 +191,24 @@ public class NebTransactionService {
         return nebTransactionMapper.findTxnByFromTo(addressHash, (page - 1) * pageSize, pageSize);
     }
 
+    /**
+     * query transaction information list
+     *
+     * @param page     current page
+     * @param pageSize number of information per page
+     * @return transaction list
+     */
     public List<NebTransaction> findTxnOrderById(int page, int pageSize) {
         return nebTransactionMapper.findTxnOrderById((page - 1) * pageSize, pageSize);
     }
 
-    public List<Long> countTxCntGroupByTimestamp(Date from, Date to) {
-        List<Map<String, Object>> txCntResultList = nebTransactionMapper.countTxCntGroupByTimestamp(parseDate2Str(from), parseDate2Str(to));
-        if (CollectionUtils.isEmpty(txCntResultList)) {
-            return Collections.emptyList();
-        }
-        Map<String, Long> txCntMap = txCntResultList.stream()
-                .collect(Collectors.toMap(k -> k.get("ts").toString(), v -> Long.valueOf(v.get("cnt").toString())));
-
-        List<Long> txnCntList = new LinkedList<>();
-        LocalDate fromLocalDate = LocalDate.fromDateFields(from);
-        LocalDate toLocalDate = LocalDate.fromDateFields(to);
-        while (fromLocalDate.isBefore(toLocalDate)) {
-            String dateStr = fromLocalDate.toString("yyyy-MM-dd");
-            Long cnt = txCntMap.get(dateStr);
-            txnCntList.add(null != cnt ? cnt : 0);
-            fromLocalDate = fromLocalDate.plusDays(1);
-        }
-        return txnCntList;
-    }
-
+    /**
+     * calculate transaction count between date
+     *
+     * @param from begin date
+     * @param to   end date
+     * @return transaction count map
+     */
     public Map<String, Long> countTxCntGroupMapByTimestamp(Date from, Date to) {
         List<Map<String, Object>> txCntResultList = nebTransactionMapper.countTxCntGroupByTimestamp(parseDate2Str(from), parseDate2Str(to));
         if (CollectionUtils.isEmpty(txCntResultList)) {
@@ -216,6 +227,46 @@ public class NebTransactionService {
             fromLocalDate = fromLocalDate.plusDays(1);
         }
         return resultMap;
+    }
+
+    /**
+     * According to block height calculate transaction information
+     *
+     * @param blockHeights block height list
+     * @return summary map
+     */
+    public Map<Long, BlockSummary> countTxnInBlockGroupByBlockHeight(List<Long> blockHeights) {
+        if (CollectionUtils.isEmpty(blockHeights)) {
+            return Collections.emptyMap();
+        }
+        List<BlockSummary> blockSummaryList = nebTransactionMapper.countTxnInBlock(blockHeights);
+        return blockSummaryList.stream().collect(Collectors.toMap(BlockSummary::getBlockHeight, summary -> summary));
+    }
+
+    /**
+     * According to address hash calculate transaction count
+     *
+     * @param addressHashes address hash
+     * @return transaction count map
+     */
+    public Map<String, Long> countTxnCntByFromTo(List<String> addressHashes) {
+        if (CollectionUtils.isEmpty(addressHashes)) {
+            return Collections.emptyMap();
+        }
+        List<Map<String, String>> fromList = nebTransactionMapper.countTxnCntMapByFrom(addressHashes);
+        Map<String, Long> fromCntMap = fromList.stream()
+                .collect(Collectors.toMap(k -> k.get("from"), v -> Long.parseLong(String.valueOf(v.get("cnt")))));
+
+        List<Map<String, String>> toList = nebTransactionMapper.countTxnCntMapByTo(addressHashes);
+        Map<String, Long> toCntMap = toList.stream()
+                .collect(Collectors.toMap(k -> k.get("to"), v -> Long.parseLong(String.valueOf(v.get("cnt")))));
+
+        return addressHashes.stream().collect(Collectors.toMap(k -> k, v -> {
+            Long fromCnt = fromCntMap.get(v);
+            Long toCnt = toCntMap.get(v);
+            return (fromCnt == null ? 0 : fromCnt) + (toCnt == null ? 0 : toCnt);
+        }));
+
     }
 
     private String parseDate2Str(Date date) {

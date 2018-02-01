@@ -57,10 +57,10 @@ public class IndexController extends BaseController {
     public String index(Model model) {
         execute(model);
 
-        List<NebBlock> blkList = nebBlockService.findNebBlockOrderByTimestamp(1, 10);
+        List<NebBlock> blkList = nebBlockService.findNebBlockOrderByHeight(1, 10);
         if (CollectionUtils.isNotEmpty(blkList)) {
             List<Long> blkHeightList = blkList.stream().map(NebBlock::getHeight).collect(Collectors.toList());
-            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlock(blkHeightList);
+            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlockGroupByBlockHeight(blkHeightList);
             model.addAttribute("txCntMap", txCntMap);
         }
         model.addAttribute("blkList", blkList);

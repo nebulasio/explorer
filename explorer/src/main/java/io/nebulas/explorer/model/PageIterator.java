@@ -8,8 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * <p>
- * Description.
+ * Page Iterator
  *
  * @author nathan wang
  * @version 1.0
@@ -30,7 +29,7 @@ public class PageIterator<T> implements Serializable {
         if (page < 0) {
             page = 0;
         }
-        PageIterator instance = new PageIterator();
+        PageIterator<T> instance = new PageIterator<>();
         instance.setPage(page);
         instance.setPageSize(pageSize);
         instance.setTotalCount(totalCount);
@@ -43,11 +42,11 @@ public class PageIterator<T> implements Serializable {
         return page * pageSize;
     }
 
-    public void setPage(int page) {
+    private void setPage(int page) {
         this.page = page < 0 ? 0 : page;
     }
 
-    public void setPageSize(int pageSize) {
+    private void setPageSize(int pageSize) {
         if (pageSize < 1) {
             this.pageSize = 1;
         } else if (pageSize > MAX_PAGE_SIZE) {

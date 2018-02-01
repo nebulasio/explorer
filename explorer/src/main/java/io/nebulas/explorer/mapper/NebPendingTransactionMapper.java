@@ -7,9 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * Title.
- * <p>
- * Description.
+ * the mapper of table neb_pending_transaction
  *
  * @author nathan wang
  * @version 1.0
@@ -22,14 +20,11 @@ public interface NebPendingTransactionMapper {
 
     Integer batchAdd(@Param("transactions") List<NebPendingTransaction> transactions);
 
-    long countPendingTxnCnt();
+    Integer delete(String id);
 
-    long countPendingTxnCntByFromTo(String addressHash);
+    long countPendingTxnCntByCondition(String addressHash);
 
     NebPendingTransaction getByHash(String hash);
 
-    List<NebPendingTransaction> findPendingTxnByFromTo(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
-
-    int delete(String id);
-
+    List<NebPendingTransaction> findPendingTxnByCondition(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
 }

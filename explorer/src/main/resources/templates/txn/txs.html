@@ -31,12 +31,14 @@
     </style>
 </head>
 <body>
-<th:block th:replace="fragments::header(currentNav='bc')"></th:block>
+<th:block th:replace="fragments::header(currentNav='bc')"/>
 <div class="title-and-breadcrumb">
     <div class="container">
-        <h4 class="pull-left">Transactions</h4>
-        <h5 th:if="${type == 'block'}" th:text="${' ::For Block '+blkHeight}"></h5>
-        <h5 th:if="${type == 'address'}" th:text="${' ::For Address '+addressHash}"></h5>
+        <h4 class="pull-left">
+            Transactions
+            <span th:if="${type == 'block'}" th:text="${' ::For Block '+blkHeight}"></span>
+            <span th:if="${type == 'address'}" th:text="${' ::For Address '+addressHash}"></span>
+        </h4>
         <ol class="breadcrumb pull-right">
             <li>Home</li>
             <li class="active">Transactions</li>

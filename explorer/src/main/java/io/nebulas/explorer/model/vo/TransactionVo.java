@@ -1,8 +1,10 @@
 package io.nebulas.explorer.model.vo;
 
+import io.nebulas.explorer.domain.NebPendingTransaction;
 import io.nebulas.explorer.domain.NebTransaction;
 import lombok.Data;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -51,7 +53,23 @@ public class TransactionVo implements Serializable {
         return this;
     }
 
+    public TransactionVo build(NebPendingTransaction txn) {
+        this.hash = txn.getHash();
+        this.value = txn.getValue();
+        this.nonce = txn.getNonce();
+        this.timestamp = txn.getTimestamp();
+        this.type = txn.getType();
+        this.gasPrice = txn.getGasPrice();
+        this.gasLimit = txn.getGasLimit();
+        this.data = txn.getData();
+        this.createdAt = txn.getCreatedAt();
+        return this;
+    }
+
     public String getTxFee() {
+        if (StringUtils.isEmpty(gasUsed) || StringUtils.isEmpty(gasPrice)) {
+            return "";
+        }
         return new BigDecimal(gasUsed).multiply(new BigDecimal(gasPrice)).toPlainString();
     }
 

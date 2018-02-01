@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * nebulas market capitalization related operation service
- * <p>
- * Description.
  *
  * @author nathan wang
  * @version 1.0
@@ -19,6 +17,11 @@ import org.springframework.stereotype.Service;
 public class NebMarketCapitalizationService {
     private final NebMarketCapitalizationMapper marketCapitalizationMapper;
 
+    /**
+     * query the latest market capitalization
+     *
+     * @return nebulas market capitalization information
+     */
     public NebMarketCapitalization getLatest() {
         return marketCapitalizationMapper.getLatest();
     }

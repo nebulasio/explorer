@@ -10,13 +10,10 @@
     <title>Blocks</title>
 </head>
 <body>
-<th:block th:replace="fragments::header(currentNav='bc')"></th:block>
-
-<!--    title and breadcrumb
-    ============================================================ -->
+<th:block th:replace="fragments::header(currentNav='bc')"/>
 <div class="title-and-breadcrumb">
     <div class="container">
-        <h4 class="pull-left">Blocks</h4>
+        <h4 class="pull-left">Blocks <span th:if="${miner !=null}" th:text="${' ::Mined By '+miner}"></span></h4>
         <ol class="breadcrumb pull-right">
             <li>Home</li>
             <li class="active">Blocks</li>
@@ -24,16 +21,19 @@
     </div>
 </div>
 
-<!--    info and pagination
-    ============================================================ -->
 <div class="container info-and-pagination">
     <div class="pull-left">
         <div class=mt30 th:if="${blockPageIterator.data !=null && blockPageIterator.data.size() >0}">
+            <span th:if="${miner==null}">
             Showing Block (<span th:text="${blockPageIterator.data.get(blockPageIterator.data.size()-1).height}"></span> to
-            <span th:text="${blockPageIterator.data.get(0).height}"></span>) out of <span th:text="${blockPageIterator.totalCount}"></span> total blocks</div>
+            <span th:text="${blockPageIterator.data.get(0).height}"></span>) out of <span th:text="${blockPageIterator.totalCount}"></span> total blocks
+            </span>
+            <span th:if="${miner!=null}">
+                A total of <span th:text="${blockPageIterator.totalCount}"></span> blocks mined
+            </span>
+        </div>
     </div>
-
-    <th:block th:replace="fragments::pagination(currentPage=${blockPageIterator.page},totalPage=${blockPageIterator.totalPage},baseUrl='/blocks')"/>
+    <th:block th:replace="fragments::pagination(currentPage=${blockPageIterator.page},totalPage=${blockPageIterator.totalPage},baseUrl='/blocks'+${miner != null?'?m='+miner:''})"/>
 </div>
 
 <div class="container mt20">
@@ -68,7 +68,7 @@
 </div>
 
 <div class="container">
-    <th:block th:replace="fragments::pagination(currentPage=${blockPageIterator.page},totalPage=${blockPageIterator.totalPage},baseUrl='/blocks')"/>
+    <th:block th:replace="fragments::pagination(currentPage=${blockPageIterator.page},totalPage=${blockPageIterator.totalPage},baseUrl='/blocks'+${miner != null?'?m='+miner:''})"/>
 </div>
 <th:block th:replace="fragments::footer"/>
 </body>

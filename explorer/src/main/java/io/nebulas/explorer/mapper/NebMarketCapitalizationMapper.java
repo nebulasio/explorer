@@ -4,9 +4,7 @@ import io.nebulas.explorer.domain.NebMarketCapitalization;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * Title.
- * <p>
- * Description.
+ * the mapper of table neb_market_capitalization
  *
  * @author nathan wang
  * @version 1.0

@@ -37,6 +37,8 @@ public class NebMarketCapitalization implements Serializable {
     /**  */
     private String priceUnit;
 
+    private Integer trends;
+
     /**  */
     private Date createdAt;
 

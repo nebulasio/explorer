@@ -71,7 +71,7 @@ public class AddressController extends BaseController {
 
         model.addAttribute("address", address);
 
-        long pendingTxCnt = nebTransactionService.countPendingTxnCntByFromTo(address.getHash());
+        long pendingTxCnt = nebTransactionService.countPendingTxnCnt(address.getHash());
 
         model.addAttribute("pendingTxCnt", pendingTxCnt);
         model.addAttribute("txCnt", nebTransactionService.countTxnCntByFromTo(address.getHash()));
@@ -81,7 +81,7 @@ public class AddressController extends BaseController {
             List<NebBlock> blkList = nebBlockService.findNebBlockByMiner(address.getHash(), 1, PAGE_SIZE);
             if (CollectionUtils.isNotEmpty(blkList)) {
                 List<Long> blkHeightList = blkList.stream().map(NebBlock::getHeight).collect(Collectors.toList());
-                Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlock(blkHeightList);
+                Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlockGroupByBlockHeight(blkHeightList);
                 model.addAttribute("txCntMap", txCntMap);
             }
             model.addAttribute("minedBlkList", blkList);
@@ -89,7 +89,7 @@ public class AddressController extends BaseController {
         } else {
 
             if (pendingTxCnt > 0) {
-                List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingTxnByFromTo(address.getHash(), 1, PAGE_SIZE);
+                List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingTxnByCondition(address.getHash(), 1, PAGE_SIZE);
 
                 List<NebTransaction> txList = Lists.newLinkedList();
                 for (NebPendingTransaction pTxn : pendingTxnList) {
@@ -136,7 +136,7 @@ public class AddressController extends BaseController {
         }
 
         BigDecimal totalBalance = BigDecimal.ONE;//todo
-        List<NebAddress> addressList = nebAddressService.findAddressOrderByBalance((page - 1) * PAGE_SIZE, PAGE_SIZE);
+        List<NebAddress> addressList = nebAddressService.findAddressOrderByBalance(page, PAGE_SIZE);
         Map<String, BigDecimal> percentageMap = addressList.stream()
                 .collect(Collectors.toMap(NebAddress::getHash, a -> a.getCurrentBalance().divide(totalBalance, 8, BigDecimal.ROUND_DOWN)));
         List<String> addressHashList = addressList.stream().map(NebAddress::getHash).collect(Collectors.toList());

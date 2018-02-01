@@ -2,18 +2,20 @@ package io.nebulas.explorer.model;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.*;
 
 /**
- * Desc:
- * User: HaiNan.Wang
- * Date: 2018/1/29
+ * rpc interface result bean
+ *
+ * @author nathan wang
+ * @version 1.0
+ * @since 2018-01-29
  */
 public class JsonResult implements Serializable {
-
     private static final long serialVersionUID = -6267859767710893271L;
     private static final Object EMPTY = new Object();
 
@@ -21,7 +23,7 @@ public class JsonResult implements Serializable {
     private String msg = "";
     private Object data = EMPTY;
 
-    public JsonResult(StatCode statCode) {
+    private JsonResult(StatCode statCode) {
         this.code = statCode.getCode();
         this.msg = statCode.getMsg();
     }
@@ -83,13 +85,13 @@ public class JsonResult implements Serializable {
             if (EMPTY == data) {
                 data = bean;
             } else {
-                throw new IllegalStateException("不能将"
+                throw new IllegalStateException("incompatible operation, can not add "
                         + bean.getClass().getSimpleName()
-                        + "类型追加到"
+                        + " type data to "
                         + data.getClass().getSimpleName()
-                        + "类型");
+                        + "type data");
             }
-        } else {// 为了利用JSON注解，采用JSON接口来处理
+        } else {
             JSONObject o = (JSONObject) JSON.toJSON(bean);
             getDataAsMap().putAll(o);
         }
@@ -105,7 +107,7 @@ public class JsonResult implements Serializable {
         if (data instanceof Map) {
             return (Map<String, Object>) data;
         }
-        throw new IllegalStateException("数据类型不兼容，不能将" + data.getClass().getSimpleName() + "类型转成Map类型");
+        throw new IllegalStateException("can not cast " + data.getClass().getSimpleName() + " to list type");
     }
 
     @SuppressWarnings("unchecked")
@@ -117,7 +119,7 @@ public class JsonResult implements Serializable {
         if (data instanceof List) {
             return (List<Object>) data;
         }
-        throw new IllegalStateException("数据类型不兼容，不能将" + data.getClass().getSimpleName() + "类型转成List类型");
+        throw new IllegalStateException("can not cast " + data.getClass().getSimpleName() + " to list type");
     }
 
     public JsonResult put(String key, Object value) {
@@ -142,8 +144,14 @@ public class JsonResult implements Serializable {
         return data;
     }
 
+    public String toJsonString() {
+        return JSON.toJSONString(this);
+    }
+
+    @Getter
     enum StatCode {
-        SUCCESS(0, "操作成功！"), FAILED(1, "操作失败！");
+        SUCCESS(0, "success"), FAILED(1, "failed");
+
         private int code;
         private String msg;
 
@@ -151,19 +159,6 @@ public class JsonResult implements Serializable {
             this.code = code;
             this.msg = msg;
         }
-
-        public int getCode() {
-            return code;
-        }
-
-        public String getMsg() {
-            return msg;
-        }
-
-    }
-
-    public String toJsonString() {
-        return JSON.toJSONString(this);
     }
 }
 

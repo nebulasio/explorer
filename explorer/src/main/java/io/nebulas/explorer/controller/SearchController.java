@@ -3,6 +3,7 @@ package io.nebulas.explorer.controller;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
+import io.nebulas.explorer.exception.NotFoundException;
 import io.nebulas.explorer.service.NebAddressService;
 import io.nebulas.explorer.service.NebBlockService;
 import io.nebulas.explorer.service.NebTransactionService;
@@ -29,9 +30,9 @@ public class SearchController {
     private final NebAddressService nebAddressService;
 
     @RequestMapping("search")
-    public String search(@RequestParam(value = "q") String q) {
+    public String search(@RequestParam(value = "q") String q) throws Exception {
         if (StringUtils.isEmpty(q)) {
-            return "error/404";
+            throw new NotFoundException("neb address not found");
         }
         if (StringUtils.isNumeric(q)) {
             NebBlock block = nebBlockService.getNebBlockByHeight(Long.valueOf(q));
@@ -49,11 +50,11 @@ public class SearchController {
         }
 
         NebTransaction transaction = nebTransactionService.getNebTransactionByHash(q);
-        if(null != transaction){
+        if (null != transaction) {
             return "redirect:/tx/" + address.getHash();
         }
 
-        return "error/404";
+        throw new NotFoundException("neb address not found");
     }
 
 
