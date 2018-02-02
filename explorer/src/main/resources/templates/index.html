@@ -278,7 +278,7 @@
                         <div class=" list_banner_right">
                             Mined By
                             <a href="address/0xe" th:href="@{/address/{miner}(miner=${blk.miner})}"
-                               th:text="'%'+${pageStringUtil.replace(blk.miner,20,'...')}">%Name Tag</a>
+                               th:text="${pageStringUtil.replace(blk.miner,20,'...')}">%Name Tag</a>
                             <p class="mt16">
                                 <a href="txs?block=123" th:href="@{/txs?block={blkHeight}(blkHeight=${blk.height})}"
                                    th:text="${txCntMap !=null && txCntMap.get(blk.height) !=null ? txCntMap.get(blk.height) : 0}+' txn'">
