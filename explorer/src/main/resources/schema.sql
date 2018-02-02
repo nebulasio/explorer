@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS `neb_block`;
+# DROP TABLE IF EXISTS `neb_block`;
 
 CREATE TABLE IF NOT EXISTS `neb_block` (
   `id`          CHAR(24) PRIMARY KEY
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `neb_block` (
   DEFAULT CHARSET = utf8mb4
   COMMENT 'nebulas block';
 
-DROP TABLE IF EXISTS `neb_address`;
+# DROP TABLE IF EXISTS `neb_address`;
 
 CREATE TABLE IF NOT EXISTS `neb_address` (
   `id`         CHAR(24) PRIMARY KEY
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `neb_address` (
   DEFAULT CHARSET = utf8mb4
   COMMENT 'nebulas address';
 
-DROP TABLE IF EXISTS `neb_transaction`;
+# DROP TABLE IF EXISTS `neb_transaction`;
 
 CREATE TABLE IF NOT EXISTS `neb_transaction` (
   `id`           CHAR(24) PRIMARY KEY
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `neb_transaction` (
   DEFAULT CHARSET = utf8mb4
   COMMENT 'nebulas transaction';
 
-DROP TABLE IF EXISTS `neb_pending_transaction`;
+# DROP TABLE IF EXISTS `neb_pending_transaction`;
 
 CREATE TABLE IF NOT EXISTS `neb_pending_transaction` (
   `id`         CHAR(24)    NOT NULL
@@ -110,3 +110,20 @@ CREATE TABLE IF NOT EXISTS `neb_pending_transaction` (
   ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
   COMMENT ='nebulas pending transaction';
+
+# DROP TABLE IF EXISTS `neb_pending_transaction`;
+
+CREATE TABLE IF NOT EXISTS `neb_market_capitalization` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `market_cap` decimal(20,2) DEFAULT NULL,
+  `volume_24h` decimal(20,2) DEFAULT NULL,
+  `change_24h` decimal(5,2) DEFAULT NULL,
+  `trends` tinyint(2) DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `price_unit` varchar(20) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+)
+  ENGINE=MyISAM
+  DEFAULT CHARSET=utf8mb4
+  COMMENT='nebulas market capitalization';

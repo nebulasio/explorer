@@ -1,92 +1,45 @@
 <!doctype html>
-<html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th-block data-th-replace=fragments::head></th-block>
+    <th:block th:replace="fragments::head"/>
     <title>Accounts</title>
 </head>
 <body>
-    <th-block data-th-replace=fragments::header></th-block>
-    <th-block data-th-replace=fragments::title-and-breadcrumb></th-block>
-
-    <!--    info and pagination
-        ============================================================ -->
-    <div class="container info-and-pagination">
-        <div class=pull-left>
-            <div class=mt20>A total of %(more than > 1999999) accounts found (%1 Ether)</div>
-            <div>
-                <em>Displaying the last %2 records only</em>
-            </div>
-        </div>
-        <th-block data-th-replace=fragments::pagination></th-block>
+<th:block th:replace="fragments::header(currentNav='account')"/>
+<div class="title-and-breadcrumb">
+    <div class="container">
+        <h4 class="pull-left">All Accounts</h4>
+        <ol class="breadcrumb pull-right">
+            <li>Home</li>
+            <li class="active">Account</li>
+        </ol>
     </div>
-
-    <div class="container mt20">
-        <table class=table>
-            <tr>
-                <th>Rank</th>
-                <th>Address</th>
-                <th>Balance</th>
-                <th>Percentage</th>
-                <th>TxCount</th>
-            </tr>
-
-            <tr>
-                <td>%Rank</td>
-                <td>
-                    <a href=address.html?id=%Address>%Address</a>
-                </td>
-                <td>%Balance</td>
-                <td>%Percentage</td>
-                <td>%TxCount</td>
-            </tr>
-            <tr>
-                <td>%Rank</td>
-                <td>
-                    <a href=address.html?id=%Address>%Address</a>
-                    <span> | whatever</span>
-                </td>
-                <td>%Balance</td>
-                <td>%Percentage</td>
-                <td>%TxCount</td>
-            </tr>
-            <tr>
-                <td>%Rank</td>
-                <td>
-                    <a href=address.html?id=%Address>%Address</a>
-                    <span> | whatever</span>
-                </td>
-                <td>%Balance</td>
-                <td>%Percentage</td>
-                <td>%TxCount</td>
-            </tr>
-            <tr>
-                <td>%Rank</td>
-                <td>
-                    <a href=address.html?id=%Address>%Address</a>
-                </td>
-                <td>%Balance</td>
-                <td>%Percentage</td>
-                <td>%TxCount</td>
-            </tr>
-            <tr>
-                <td>%Rank</td>
-                <td>
-                    <a href=address.html?id=%Address>%Address</a>
-                </td>
-                <td>%Balance</td>
-                <td>%Percentage</td>
-                <td>%TxCount</td>
-            </tr>
-
-
-
-        </table>
-    </div>
-
-    <div class=container>
-        <th-block data-th-replace=fragments::pagination></th-block>
-    </div>
-    <th-block data-th-replace=fragments::footer></th-block>
-    <th-block data-th-replace=fragments::scripts></th-block>
+</div>
+<th:block th:replace="fragments::pagination(currentPage=${currentPage},totalPage=${totalPage},baseUrl='/accounts')"/>
+<div class="container mt20">
+    <table class=table>
+        <tr>
+            <th>Rank</th>
+            <th>Address</th>
+            <th>Balance</th>
+            <th>Percentage</th>
+            <th>TxCount</th>
+        </tr>
+        <tr th:each="address,iterStat : ${addressList}">
+            <td th:text="${address.rank}">%Rank</td>
+            <td>
+                <a th:href="@{/address/{hash}(hash=${address.hash})}" th:text="${address.hash}">%Address</a>
+            </td>
+            <td th:text="${address.balance.toPlainString()}">%Balance</td>
+            <td th:text="${address.percentage.toPlainString()}">%Percentage</td>
+            <td th:text="${address.txCnt}">%TxCount</td>
+        </tr>
+    </table>
+</div>
+<div class="container">
+    <th:block th:replace="fragments::pagination(currentPage=${currentPage},totalPage=${totalPage},baseUrl='/accounts')"/>
+</div>
+<th:block th:replace="fragments::footer"/>
 </body>
+<th:block th:replace="fragments::scripts"/>
 </html>

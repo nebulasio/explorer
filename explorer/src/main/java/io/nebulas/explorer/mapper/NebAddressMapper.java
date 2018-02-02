@@ -7,9 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * Title.
- * <p>
- * Description.
+ * the mapper of table neb_address
  *
  * @author nathan wang
  * @version 1.0
