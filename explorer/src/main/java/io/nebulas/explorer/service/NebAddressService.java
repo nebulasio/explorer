@@ -26,22 +26,53 @@ import java.util.stream.Collectors;
 public class NebAddressService {
     private final NebAddressMapper nebAddressMapper;
 
-    public int addNebAddress(String hash, int type) {
-        return nebAddressMapper.add(IdGenerator.getId(), hash, type);
+    /**
+     * save address information
+     *
+     * @param hash address hash
+     * @param type address type
+     * @return saved result
+     */
+    public boolean addNebAddress(String hash, int type) {
+        return nebAddressMapper.add(IdGenerator.getId(), hash, type) > 0;
     }
 
+    /**
+     * According to miner hash query address number
+     *
+     * @return the number of address
+     */
     public long countTotalAddressCnt() {
         return nebAddressMapper.countTotalAddressCnt();
     }
 
+    /**
+     * According to address hash query address information
+     *
+     * @param hash address hash
+     * @return address information
+     */
     public NebAddress getNebAddressByHash(String hash) {
         return nebAddressMapper.getByHash(hash);
     }
 
-    public List<NebAddress> findAddressOrderByBalance(int offset, int limit) {
-        return nebAddressMapper.findAddressOrderByBalance(offset, limit);
+    /**
+     * query address information
+     *
+     * @param page     current page
+     * @param pageSize number of information per page
+     * @return address list
+     */
+    public List<NebAddress> findAddressOrderByBalance(int page, int pageSize) {
+        return nebAddressMapper.findAddressOrderByBalance((page - 1) * pageSize, pageSize);
     }
 
+    /**
+     * batch query address information
+     *
+     * @param addressHashes address hash list
+     * @return address information
+     */
     public Map<String, NebAddress> findAddressMapByAddressHash(List<String> addressHashes) {
         if (CollectionUtils.isEmpty(addressHashes)) {
             return Collections.emptyMap();

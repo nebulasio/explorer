@@ -9,10 +9,14 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"
           th:href="@{${baseUrl + '/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css'}}"/>
-    <link rel="stylesheet" href="/css/common.css" th:href="@{${baseUrl + '/css/common.css'}}"/>
+    <link rel="stylesheet" href="/css/common.css" th:href="@{${baseUrl+'/css/common.css'}}"/>
     <style>
         .container {
             background-color: #f7f7f7;
+        }
+        
+        .top{
+            margin-top: 12px;
         }
 
         .banner {
@@ -175,11 +179,45 @@
 
         .chart_banner {
             background-color: #fff;
-            height: 300px;
+            height: 278px;
         }
 
-        .chart_banner div {
-            font-size: 50px;
+        #chart{
+            max-width:800px;
+            height:278px;
+        }
+        .chart_banner .name,.value{
+            color:black;
+            border-bottom: 1px inset;
+            margin-left: 12px;
+            margin-right: 12px;
+        }
+        .chart_banner .name{
+            font-size: 30px;
+        }
+        .chart_banner .value{
+            font-size: 60px;
+        }
+        .chart_banner .msg{
+            color: black;
+            font-size: 16px;
+            margin-top: 24px;
+        }
+        .chart_banner .msg div{
+            margin-top: 10px;
+        }
+        .chart_banner .msg .msg_change_right{
+            float: right;
+            margin-right: 10px;
+        }
+        .chart_banner .msg .msg_change_left{
+            margin-left: 10px;
+        }
+        .red{
+            color: red;
+        }
+        .green{
+            color: green;
         }
 
         text.highcharts-credits {
@@ -188,34 +226,33 @@
     </style>
 </head>
 <body>
-<th:block th:replace="fragments::header"></th:block>
+<th:block th:replace="fragments::header(currentNav='home')"/>
 <div class="container">
     <div class="top">
         <div class="row">
             <div class="col-md-8">
-                <div id="chart" style="max-width:800px;height:300px;"></div>
+                <div id="chart"></div>
             </div>
             <div class="col-md-4">
                 <div class="chart_banner">
-                    <div>NAS</div>
-                    <div>$66.66666</div>
-                    <span class="msg">
-                        <tr>
-                            <td>24h Change : </td>
-                            <td>0%</td>
-                        </tr>
-                        <br/>
-                        <tr>
-                            <td>24h Volume :</td>
-                            <td>$1238553218.123546</td>
-                        </tr>
-                        <br/>
-                        <tr>
-                            <td>Market Cap :</td>
-                            <td>$154542132</td>
-                        </tr>
-                    </span>
+                <div class="name">NAS</div>
+                <div class="value" th:text="${market.priceUnit+market.price}">$66.66666</div>
+                <div class="msg">
+                    <div class="msg_change">
+                        <span class="msg_change_left">24h Change : </span>
+                        <span class="msg_change_right green" th:text="${market.change24h+'%'}">0%</span>
+                    </div>
+                    <div class="msg_volume">
+                        <span class="msg_change_left">24h Volume :</span>
+                        <span class="msg_change_right" th:text="${market.priceUnit+market.volume24h.toPlainString()}">$1238553218.123546</span>
+                    </div>
+                    <div class="msg_market">
+                        <span class="msg_change_left">Market Cap :</span>
+                        <span class="msg_change_right" th:text="${market.priceUnit+market.marketCap.toPlainString()}">$154542132</span>
+                    </div>
                 </div>
+
+            </div>
             </div>
         </div>
     </div>
@@ -236,12 +273,12 @@
                                    th:href="@{/block/{blkHeight}(blkHeight=${blk.height})}"
                                    th:text="'Block '+${blk.height}">%Block</a>
                             </p>
-                            <!--<p class="list_banner_left_p1"> >%Age</p>-->
+                            <p class="list_banner_left_p1" th:text="${#dates.format(blk.timestamp, 'yyyy-mm-dd hh:MM:ss')}"> >%Age</p>
                         </div>
                         <div class=" list_banner_right">
                             Mined By
                             <a href="address/0xe" th:href="@{/address/{miner}(miner=${blk.miner})}"
-                               th:text="'%'+${pageStringUtil.replace(blk.miner,20,'...')}">%Name Tag</a>
+                               th:text="${pageStringUtil.replace(blk.miner,20,'...')}">%Name Tag</a>
                             <p class="mt16">
                                 <a href="txs?block=123" th:href="@{/txs?block={blkHeight}(blkHeight=${blk.height})}"
                                    th:text="${txCntMap !=null && txCntMap.get(blk.height) !=null ? txCntMap.get(blk.height) : 0}+' txn'">
@@ -286,12 +323,9 @@
         </div>
     </div>
 </div>
-<th:block th:replace="fragments::footer"></th:block>
+<th:block th:replace="fragments::footer"/>
 </body>
-<script src="/webjars/jquery/3.3.1/jquery.min.js"
-        th:src="@{${baseUrl + '/webjars/jquery/3.3.1/jquery.min.js'}}"></script>
-<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"
-        th:src="@{${baseUrl + '/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js'}}"></script>
+<th:block th:replace="fragments::scripts"/>
 <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
