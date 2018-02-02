@@ -236,7 +236,7 @@ public class RpcController {
     }
 
     @RequestMapping("/address/{hash}")
-    public JsonResult address(@PathVariable("hash") String hash, @RequestParam(value = "part", required = false) String part) {
+    public JsonResult address(@PathVariable("hash") String hash) {
         NebAddress address = nebAddressService.getNebAddressByHash(hash);
         if (null == address) {
             return JsonResult.failed();
@@ -249,33 +249,59 @@ public class RpcController {
         result.put("txCnt", nebTransactionService.countTxnCntByFromTo(address.getHash()));
         result.put("minedBlkCnt", nebBlockService.countBlockCntByMiner(address.getHash()));
 
-        if ("mine".equals(part)) {
-            List<NebBlock> blkList = nebBlockService.findNebBlockByMiner(address.getHash(), 1, PAGE_SIZE);
-            result.put("minedBlkList", convertBlock2BlockVo(blkList));
-        } else {
-            List<NebTransaction> txList = Lists.newLinkedList();
-            if (pendingTxCnt > 0) {
-                List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingTxnByCondition(address.getHash(), 1, PAGE_SIZE);
-                pendingTxnList.forEach(pTxn -> {
-                    try {
-                        NebTransaction tx = new NebTransaction();
-                        PropertyUtils.copyProperties(tx, pTxn);
-                        tx.setBlockHeight(0L);
-                        txList.add(tx);
-                    } catch (Exception e) {
-                        log.error(e.getMessage(), e);
-                    }
-                });
-                if (pendingTxnList.size() < PAGE_SIZE) {
-                    txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE - pendingTxnList.size()));
+        List<NebBlock> blkList = nebBlockService.findNebBlockByMiner(address.getHash(), 1, PAGE_SIZE);
+        result.put("minedBlkList", convertBlock2BlockVo(blkList));
+
+        List<NebTransaction> txList = Lists.newLinkedList();
+        if (pendingTxCnt > 0) {
+            List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingTxnByCondition(address.getHash(), 1, PAGE_SIZE);
+            pendingTxnList.forEach(pTxn -> {
+                try {
+                    NebTransaction tx = new NebTransaction();
+                    PropertyUtils.copyProperties(tx, pTxn);
+                    tx.setBlockHeight(0L);
+                    txList.add(tx);
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
                 }
-            } else {
-                txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE));
+            });
+            if (pendingTxnList.size() < PAGE_SIZE) {
+                txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE - pendingTxnList.size()));
             }
-            result.put("txList", txList);
+        } else {
+            txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE));
         }
+        result.put("txList", txList);
         return result;
     }
+
+    @RequestMapping("/search")
+    public JsonResult search(@RequestParam(value = "q") String q) {
+        if (StringUtils.isEmpty(q)) {
+            return JsonResult.success("type", "unknown").put("q", "");
+        }
+        if (StringUtils.isNumeric(q)) {
+            NebBlock block = nebBlockService.getNebBlockByHeight(Long.valueOf(q));
+            if (null != block) {
+                return JsonResult.success("type", "block").put("q", block.getHeight());
+            }
+        }
+        NebBlock block = nebBlockService.getNebBlockByHash(q);
+        if (null != block) {
+            return JsonResult.success("type", "block").put("q", block.getHeight());
+        }
+        NebAddress address = nebAddressService.getNebAddressByHash(q);
+        if (null != address) {
+            return JsonResult.success("type", "address").put("q", address.getHash());
+        }
+
+        NebTransaction transaction = nebTransactionService.getNebTransactionByHash(q);
+        if (null != transaction) {
+            return JsonResult.success("type", "tx").put("q", address.getHash());
+        }
+        return JsonResult.success("type", "unknown").put("q", q);
+    }
+
 
     private List<BlockVo> convertBlock2BlockVo(List<NebBlock> blks) {
         if (CollectionUtils.isEmpty(blks)) {
