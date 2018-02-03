@@ -7,9 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * Title.
- * <p>
- * Description.
+ * the mapper of table neb_block
  *
  * @author nathan wang
  * @version 1.0
@@ -31,8 +29,6 @@ public interface NebBlockMapper {
     NebBlock getByHash(String hash);
 
     List<NebBlock> findOrderByHeightDesc(@Param("offset") int offset, @Param("limit") int limit);
-
-    List<NebBlock> findOrderByTimestamp(@Param("offset") int offset, @Param("limit") int limit);
 
     List<NebBlock> findByMiner(@Param("miner") String miner, @Param("offset") int offset, @Param("limit") int limit);
 

@@ -24,7 +24,7 @@
     <title>Block</title>
 </head>
 <body>
-    <th-block data-th-replace=fragments::header></th-block>
+<th:block th:replace="fragments::header(currentNav='bc')"></th:block>
     <div class="container">
         <ul class="nav nav-tabs" id="myTab">
             <li class="active">
@@ -67,35 +67,35 @@
                 </tr>
                 <tr>
                     <td>TimeStamp</td>
-                    <td data-th-text=${block.timestamp}></td>
+                    <td th:text="${#dates.format(block.timestamp, 'yyyy-mm-dd hh:MM:ss')}"></td>
                 </tr>
                 <tr>
                     <td>Transactions</td>
                     <td>
-                        <a href="txs.html?block=%Block" data-th-text="${txCnt +' transactions'}">transactions</a> in this block
+                        <a href="txs.html?block=%Block" th:href="@{/txs(block=${block.height})}" data-th-text="${txCnt +' transactions'}">transactions</a> in this block
                     </td>
                 </tr>
                 <tr>
                     <td>Hash</td>
-                    <td data-th-text=${block.hash}></td>
+                    <td th:text="${block.hash}"></td>
                 </tr>
                 <tr>
                     <td>Parent Hash</td>
                     <td>
-                        <a href=# data-th-text=${block.parentHash}></a>
+                        <a href="#" th:href="@{/block/{hash}(hash=${block.parentHash})}" th:text="${block.parentHash}"></a>
                     </td>
                 </tr>
                 <tr th:if="${miner !=null}">
                     <td>Mined By</td>
                     <td>
-                        <a href="address.html?mined" data-th-text=${miner.hash}></a>
+                        <a href="address.html?mined" th:href="@{/address/{hash}(hash=${miner.hash})}" data-th-text=${miner.hash}></a>
                         <span th:if="${miner.alias !=null}" th:text="${miner.alias}"></span>
                     </td>
                 </tr>
-                <tr>
-                    <td>Size</td>
-                    <td>35779 bytes</td>
-                </tr>
+                <!--<tr>-->
+                    <!--<td>Size</td>-->
+                    <!--<td>35779 bytes</td>-->
+                <!--</tr>-->
                 <tr>
                     <td>Gas Used</td>
                     <td ><span th:text="${blkGasUsed}"> 7,984,916</span> <span th:if="${blkGasUsedRate !='0'}" th:text="'('+${blkGasUsedRate+'%)'}">(99.81%)</span></td>

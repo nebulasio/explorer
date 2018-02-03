@@ -1,18 +1,18 @@
 package io.nebulas.explorer.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.core.BaseController;
-import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebPendingTransaction;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.enums.NebTransactionStatusEnum;
+import io.nebulas.explorer.exception.NotFoundException;
 import io.nebulas.explorer.service.NebAddressService;
 import io.nebulas.explorer.service.NebTransactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -49,15 +48,9 @@ public class TxnController extends BaseController {
         this.nebAddressService = nebAddressService;
     }
 
-//    @RequestMapping("/txsInternal")
-//    public String txsInternal(@RequestParam(value = "block", required = false) Long block, Model model) {
-//        execute(model);
-//
-//        return "txsInternal";
-//    }
-
     @RequestMapping("/txs")
     public String txs(@RequestParam(value = "block", required = false) Long block,
+                      @RequestParam(value = "a", required = false) String address,
                       @RequestParam(value = "p", required = false, defaultValue = "1") int page,
                       Model model) {
         execute(model);
@@ -68,14 +61,19 @@ public class TxnController extends BaseController {
 
         List<NebTransaction> txnList;
         long txnCnt;
-
+        String type;
         if (null != block) {
-            txnCnt = nebTransactionService.countTxnCntByBlockHeight(block);
-            txnList = nebTransactionService.findTxnByBlockHeight(block, page, PAGE_SIZE);
+            type = "block";
+            model.addAttribute("blkHeight", block);
+        } else if (StringUtils.isNoneEmpty(address)) {
+            type = "address";
+            model.addAttribute("addressHash", address);
         } else {
-            txnCnt = nebTransactionService.countTxnCnt();
-            txnList = nebTransactionService.findTxnOrderByTimestamp(page, PAGE_SIZE);
+            type = "total";
         }
+
+        txnCnt = nebTransactionService.countTxnCnt(block, address);
+        txnList = nebTransactionService.findTxnByCondition(block, address, page, PAGE_SIZE);
 
         Set<String> addressHashSet = Sets.newHashSet();
         txnList.forEach(txn -> {
@@ -83,30 +81,18 @@ public class TxnController extends BaseController {
             addressHashSet.add(txn.getTo());
         });
 
-        model.addAttribute("type", null != block ? "block" : "total");
+
+        model.addAttribute("type", type);
         model.addAttribute("txnCnt", txnCnt);
         model.addAttribute("txnList", txnList);
         model.addAttribute("addressMap", nebAddressService.findAddressMapByAddressHash(Lists.newArrayList(addressHashSet)));
-
-        model.addAttribute("pagination", JSONObject.parseObject("{" +
-            "first  : '?page=1'             ," +
-            "prev   : '?page=x-1||first'    ," +
-            "next   : '?page=x-1||last'     ," +
-            "last   : '?page=last'          ," +
-            "current: 'x'                   ," +
-            "total  : 'total'               " +
-        "}"));
-
-        model.addAttribute("titleAndBreadcrumb", JSONObject.parseObject("{" +
-            "title  : 'Transactions'  ," +
-            "lis    : ['Home', 'Transactions'] " +
-        "}"));
-
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", txnCnt / PAGE_SIZE + 1);
         return "txn/txs";
     }
 
     @RequestMapping("/tx/{txHash}")
-    public String tx(@PathVariable("txHash") String txHash, Model model) {
+    public String tx(@PathVariable("txHash") String txHash, Model model) throws Exception {
         execute(model);
 
         NebTransaction txn = nebTransactionService.getNebTransactionByHash(txHash);
@@ -125,7 +111,7 @@ public class TxnController extends BaseController {
             }
         }
         if (null == txn) {
-            return "";
+            throw new NotFoundException("neb transaction not found");
         }
 
         model.addAttribute("txn", txn);
@@ -142,10 +128,25 @@ public class TxnController extends BaseController {
                              Model model) {
         execute(model);
 
-        nebTransactionService.countPendingTxnCnt();
+        String type;
 
+        if (StringUtils.isEmpty(address)) {
+            type = "total";
+        } else {
+            type = "address";
+            model.addAttribute("addressHash", address);
+        }
 
-        return "txsPending";
+        long pendingTxnCnt = nebTransactionService.countPendingTxnCnt(address);
+        List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingTxnByCondition(address, page, PAGE_SIZE);
+
+        model.addAttribute("type", type);
+        model.addAttribute("address", address);
+        model.addAttribute("txnTotalCnt", pendingTxnCnt);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("txnTotalPage", pendingTxnCnt / PAGE_SIZE + 1);
+        model.addAttribute("pendingTxnList", pendingTxnList);
+        return "txn/txsPending";
     }
 
 }

@@ -21,13 +21,13 @@
     </style>
 </head>
 <body>
-<th:block th:replace="fragments::header"></th:block>
+<th:block th:replace="fragments::header(currentNav='home')"/>
 
 <div class="container">
     <div class="banner-img"></div>
 </div>
 
-<th:block th:replace="fragments::footer"></th:block>
+<th:block th:replace="fragments::footer"/>
 </body>
 <script src="/webjars/jquery/3.3.1/jquery.min.js"
         th:src="@{${baseUrl + '/webjars/jquery/3.3.1/jquery.min.js'}}"></script>

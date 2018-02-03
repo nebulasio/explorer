@@ -52,7 +52,7 @@ page:
   hostUrl: http://localhost:8080
 sync:
   zone: 100000
-  cpu: 4
+  cpu: 1
 redis:
   host: 127.0.0.1
   port: 6379
