@@ -65,7 +65,7 @@
     </div>
 </th-block>
 
-<th-block data-th-fragment=header>
+<th-block data-th-fragment="header (currentNav)">
     <!--    header
         ============================================================ -->
     <nav class="header navbar navbar-default">
@@ -78,72 +78,73 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <h4>Explorer</h4>
+                <!--<h4>Explorer</h4>-->
+                <span><img src="../img/logo.png" alt=""></span>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <div class="navbar-right">
                     <form class="navbar-form text-right">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
+                            <input type="text" id="search_value" class="form-control" placeholder="Search">
                         </div>
-                        <button type="submit" class="btn btn-default">GO</button>
+                        <button type="submit" id="search" class="btn btn-default">GO</button>
                     </form>
                     <div style="clear: both"></div>
                     <nav>
                         <ul class="nav navbar-nav">
-                            <li class="active">
-                                <a href="#">Home
+                            <li data-th-class="${currentNav=='home'?'active':''}">
+                                <a href="/">HOME
                                     <span class="sr-only">(current)</span>
                                 </a>
                             </li>
-                            <li class="dropdown">
+                            <li data-th-class="${currentNav=='bc'?'dropdown active':'dropdown'}">
                                 <a href="#blockchain" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">BLOCKCHAIN
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#">View Txns</a>
+                                        <a href="/txs">View Txns</a>
                                     </li>
                                     <li>
-                                        <a href="#"> View Pending Txns</a>
+                                        <a href="/txsPending"> View Pending Txns</a>
                                     </li>
-                                    <li>
-                                        <a href="#"> View Contract Internal Txns</a>
-                                    </li>
+                                    <!--<li>-->
+                                    <!--<a href="#"> View Contract Internal Txns</a>-->
+                                    <!--</li>-->
                                     <li role="separator" class="divider"></li>
                                     <li>
-                                        <a href="#"> View Blocks</a>
+                                        <a href="/blocks"> View Blocks</a>
                                     </li>
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                        <a href="#"> View Uncles</a>
-                                    </li>
+                                    <!--<li role="separator" class="divider"></li>-->
+                                    <!--<li>-->
+                                    <!--<a href="#"> View Uncles</a>-->
+                                    <!--</li>-->
                                 </ul>
                             </li>
-                            <li class="dropdown">
+                            <li data-th-class="${currentNav=='account'?'dropdown active':'dropdown'}">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ACCOUNT
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#">ALL Accounts</a>
+                                        <a href="/accounts">ALL Accounts</a>
                                     </li>
-                                    <li>
-                                        <a href="#"> Verified Contracts</a>
-                                    </li>
+                                    <!--<li>-->
+                                        <!--<a href="#"> Verified Contracts</a>-->
+                                    <!--</li>-->
                                 </ul>
                             </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">TOKEN
-                                    <span class="caret"></span>
-                                </a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CHART
-                                    <span class="caret"></span>
-                                </a>
-                            </li>
+                            <!--<li class="dropdown">-->
+                                <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">TOKEN-->
+                                    <!--<span class="caret"></span>-->
+                                <!--</a>-->
+                            <!--</li>-->
+                            <!--<li class="dropdown">-->
+                                <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CHART-->
+                                    <!--<span class="caret"></span>-->
+                                <!--</a>-->
+                            <!--</li>-->
                         </ul>
                     </nav>
                 </div>
@@ -164,30 +165,33 @@
     <meta name=viewport content="width=device-width, initial-scale=1.0">
 </th-block>
 
-<th-block data-th-fragment=pagination>
-    <!--    pagination
-        ============================================================ -->
-
-    <!-- TODO: disable first, prev, ... where appropriate -->
+<th-block data-th-fragment="pagination(currentPage,totalPage,baseUrl)">
     <nav aria-label="Page navigation">
         <ul class="pagination pull-right">
-            <li>
-                <a data-th-href="${ pagination.first }" aria-label=First>First</a>
+            <li >
+                <a data-th-if="${currentPage == 1}" id="stop" disabled="true" href="javascript:void(0)">First</a>
+                <a data-th-if="${currentPage > 1 && !baseUrl.contains('?')}" data-th-href="${baseUrl}" aria-label=First>First</a>
+                <a data-th-if="${currentPage > 1 && baseUrl.contains('?')}" data-th-href="${baseUrl}" aria-label=First>First</a>
             </li>
             <li>
-                <a data-th-href="${ pagination.prev }" aria-label=Prev>Prev</a>
+                <a data-th-if="${currentPage == 1}" id="stop" disabled="true" href="javascript:void(0)">Prev</a>
+                <a data-th-if="${currentPage > 1 && !baseUrl.contains('?')}" data-th-href="${baseUrl+'?p='+(currentPage-1)}" aria-label=Prev>Prev</a>
+                <a data-th-if="${currentPage > 1 && baseUrl.contains('?')}" data-th-href="${baseUrl+'&p='+(currentPage-1)}" aria-label=Prev>Prev</a>
             </li>
             <li class="disabled">
                 <a>Page
-                    <b data-th-text="${ pagination.current }"></b> of
-                    <b data-th-text="${ pagination.total }"></b>
+                    <b data-th-text="${currentPage}"></b> of <b data-th-text="${totalPage}"></b>
                 </a>
             </li>
             <li>
-                <a data-th-href="${ pagination.next }" aria-label=Next>Next</a>
+                <a data-th-if="${currentPage == totalPage}" id="stop" disabled="true" href="javascript:void(0)">Next</a>
+                <a data-th-if="${currentPage < totalPage && !baseUrl.contains('?')}" data-th-href="${baseUrl+'?p='+(currentPage+1)}" aria-label=Next>Next</a>
+                <a data-th-if="${currentPage < totalPage && baseUrl.contains('?')}" data-th-href="${baseUrl+'&p='+(currentPage+1)}" aria-label=Next>Next</a>
             </li>
-            <li>
-                <a data-th-href="${ pagination.last }" aria-label=Last>Last</a>
+            <li >
+                <a data-th-if="${currentPage == totalPage}" id="stop" disabled="true" href="javascript:void(0)">Last</a>
+                <a data-th-if="${currentPage < totalPage && !baseUrl.contains('?')}" data-th-href="${baseUrl+'?p='+totalPage}" aria-label=Last>Last</a>
+                <a data-th-if="${currentPage < totalPage && baseUrl.contains('?')}" data-th-href="${baseUrl+'&p='+totalPage}" aria-label=Last>Last</a>
             </li>
         </ul>
     </nav>
@@ -198,6 +202,7 @@
         ============================================================ -->
     <script data-th-src="@{${ baseUrl + '/webjars/jquery/3.3.1/jquery.min.js' }}"></script>
     <script data-th-src="@{${ baseUrl + '/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js' }}"></script>
+    <script data-th-src="@{${baseUrl + '/js/common.js' }}"></script>
 </th-block>
 
 <th-block data-th-fragment=tab-buttons>

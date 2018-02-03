@@ -1,11 +1,11 @@
 package io.nebulas.explorer.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.core.BaseController;
 import io.nebulas.explorer.domain.BlockSummary;
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.service.NebBlockService;
+import io.nebulas.explorer.service.NebMarketCapitalizationService;
 import io.nebulas.explorer.service.NebTransactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -33,13 +33,17 @@ import java.util.stream.Collectors;
 public class IndexController extends BaseController {
     private final NebBlockService nebBlockService;
     private final NebTransactionService nebTransactionService;
+    private final NebMarketCapitalizationService nebMarketCapitalizationService;
+
 
     public IndexController(YAMLConfig config,
                            NebBlockService nebBlockService,
-                           NebTransactionService nebTransactionService) {
+                           NebTransactionService nebTransactionService,
+                           NebMarketCapitalizationService nebMarketCapitalizationService) {
         super(config);
         this.nebBlockService = nebBlockService;
         this.nebTransactionService = nebTransactionService;
+        this.nebMarketCapitalizationService = nebMarketCapitalizationService;
     }
 
 
@@ -53,14 +57,15 @@ public class IndexController extends BaseController {
     public String index(Model model) {
         execute(model);
 
-        List<NebBlock> blkList = nebBlockService.findNebBlockOrderByTimestamp(1, 10);
+        List<NebBlock> blkList = nebBlockService.findNebBlockOrderByHeight(1, 10);
         if (CollectionUtils.isNotEmpty(blkList)) {
             List<Long> blkHeightList = blkList.stream().map(NebBlock::getHeight).collect(Collectors.toList());
-            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlock(blkHeightList);
+            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlockGroupByBlockHeight(blkHeightList);
             model.addAttribute("txCntMap", txCntMap);
         }
         model.addAttribute("blkList", blkList);
-        model.addAttribute("txList", nebTransactionService.findTxnOrderByTimestamp(1, 10));
+        model.addAttribute("txList", nebTransactionService.findTxnOrderById(1, 10));
+        model.addAttribute("market", nebMarketCapitalizationService.getLatest());
 
         Map<String, Long> kvs = nebTransactionService.countTxCntGroupMapByTimestamp(LocalDate.now().plusDays(-8).toDate(), LocalDate.now().toDate());
         List<String> dateList = new ArrayList<>(kvs.size());

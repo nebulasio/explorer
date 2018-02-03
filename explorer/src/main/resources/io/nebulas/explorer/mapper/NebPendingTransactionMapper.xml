@@ -31,8 +31,7 @@
     </sql>
 
     <insert id="add" parameterType="NebPendingTransaction" useGeneratedKeys="false">
-        INSERT INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`,
-        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
+        INSERT INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
         VALUES
         (
         #{id}, #{hash}, #{from}, #{to}, #{value},
@@ -41,8 +40,7 @@
         )
     </insert>
     <insert id="batchAdd" parameterType="NebPendingTransaction" useGeneratedKeys="false">
-        INSERT INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`,
-        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
+        INSERT INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
         VALUES
         <foreach collection="transactions" item="tx" separator=",">
             (
@@ -53,15 +51,16 @@
         </foreach>
     </insert>
 
-    <select id="countPendingTxnCnt" resultType="java.lang.Long">
-        SELECT count(1)
-        FROM `neb_pending_transaction`
-    </select>
+    <delete id="delete" parameterType="java.lang.String">
+        DELETE FROM `neb_pending_transaction` WHERE `id` = #{id}
+    </delete>
 
-    <select id="countPendingTxnCntByFromTo" parameterType="java.lang.String" resultType="java.lang.Long">
+    <select id="countPendingTxnCntByCondition" parameterType="java.lang.String" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_pending_transaction`
-        WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
+        <if test="addressHash !=null">
+            WHERE `from` = #{addressHash,jdbcType=VARCHAR} OR `to` = #{addressHash,jdbcType=VARCHAR}
+        </if>
     </select>
 
     <select id="getByHash" resultType="NebPendingTransaction" parameterType="java.lang.String">
@@ -71,17 +70,15 @@
         WHERE `hash` = #{hash,jdbcType=VARCHAR}
     </select>
 
-    <select id="findPendingTxnByFromTo" parameterType="map" resultMap="BaseResultMap">
+    <select id="findPendingTxnByCondition" parameterType="map" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_pending_transaction`
+        <if test="addressHash != null">
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
+        </if>
         ORDER BY `timestamp` DESC
         LIMIT ${offset},${limit}
     </select>
-
-    <delete id="delete" parameterType="java.lang.String">
-        DELETE FROM `neb_pending_transaction` WHERE `id` = #{id}
-    </delete>
 
 </mapper>

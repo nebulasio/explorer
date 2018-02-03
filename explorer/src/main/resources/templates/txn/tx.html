@@ -1,7 +1,7 @@
 <!doctype html>
-<html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th-block data-th-replace=fragments::head></th-block>
+    <th-block th:replace="fragments::head"></th-block>
     <style>
         .table tbody tr td {
             border: 0;
@@ -17,29 +17,34 @@
     </style>
 </head>
 <body>
-    <th-block data-th-replace=fragments::header></th-block>
-    <th-block data-th-replace=fragments::tab-buttons></th-block>
+    <th:block th:replace="fragments::header(currentNav='bc')"/>
+    <div class="title-and-breadcrumb">
+        <div class="container">
+            <h4 class="pull-left">Transactions</h4>
+            <ol class="breadcrumb pull-right">
+                <li>Home</li>
+                <li class="active">Transactions</li>
+            </ol>
+        </div>
+    </div>
 
     <div class="container">
         <ul class="nav nav-tabs" id="myTab">
             <li class="active">
                 <a>Overview</a>
             </li>
-            <li>
-                <a href="?tab=txsInternal">Internal Transactions</a>
-            </li>
-            <li>
-                <a href="?tab=eventLog">Event Logs</a>
-            </li>
+            <!--<li>-->
+                <!--<a href="?tab=txsInternal">Internal Transactions</a>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<a href="?tab=eventLog">Event Logs</a>-->
+            <!--</li>-->
         </ul>
     </div>
 
     <div class="container">
-        <h3>Transation Information</h3>
+        <h3>Transaction Information</h3>
     </div>
-
-    <!--    tabs
-        ============================================================ -->
     <div class="container">
         <div class="tab">
             <table class="table">
@@ -63,7 +68,7 @@
                 </tr>
                 <tr>
                     <td>TimeStamp</td>
-                    <td>49 mins ago (Jan-23-2018 03:53:22 AM +UTC)</td>
+                    <td th:text="${#dates.format(txn.timestamp, 'yyyy-mm-dd hh:MM:ss')}">49 mins ago (Jan-23-2018 03:53:22 AM +UTC)</td>
                 </tr>
                 <tr>
                     <td>From</td>
@@ -116,8 +121,7 @@
             </table>
         </div>
     </div>
-
-    <th-block data-th-replace=fragments::footer></th-block>
-    <th-block data-th-replace=fragments::scripts></th-block>
+    <th-block th:replace="fragments::footer"></th-block>
 </body>
+<th-block th:replace="fragments::scripts"></th-block>
 </html>
