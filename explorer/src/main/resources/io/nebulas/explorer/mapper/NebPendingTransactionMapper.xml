@@ -33,13 +33,21 @@
     <insert id="add" parameterType="NebPendingTransaction" useGeneratedKeys="false">
         INSERT INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
         VALUES
-        (#{id}, #{hash}, #{from}, #{to}, #{value}, #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice} , #{gasLimit}, #{gasUsed}, #{createdAt})
+        (
+        #{id}, #{hash}, #{from}, #{to}, #{value},
+        #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}
+        , #{gasLimit}, #{createdAt}
+        )
     </insert>
     <insert id="batchAdd" parameterType="NebPendingTransaction" useGeneratedKeys="false">
         INSERT INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
         VALUES
         <foreach collection="transactions" item="tx" separator=",">
-            (#{tx.id}, #{tx.hash}, #{tx.from}, #{tx.to}, #{tx.value}, #{tx.nonce}, #{tx.timestamp}, #{tx.type}, #{tx.data}, #{tx.gasPrice}, #{tx.gasLimit}, #{tx.gasUsed}, #{tx.createdAt})
+            (
+            #{tx.id}, #{tx.hash}, #{tx.from}, #{tx.to}, #{tx.value},
+            #{tx.nonce}, #{tx.timestamp}, #{tx.type}, #{tx.data}, #{tx.gasPrice}
+            , #{tx.gasLimit}, #{tx.createdAt}
+            )
         </foreach>
     </insert>
 
@@ -72,7 +80,5 @@
         ORDER BY `timestamp` DESC
         LIMIT ${offset},${limit}
     </select>
-
-
 
 </mapper>

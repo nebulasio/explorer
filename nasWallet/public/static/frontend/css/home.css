@@ -21,9 +21,19 @@ border-bottom:2px solid #000;
 -o-transition:border-bottom .3s ease-in-out,color .3s ease-in-out;
 transition:border-bottom 0.3s ease-in-out,color 0.3s ease-in-out
 }
-.right{
-	margin-right:40px;
-	white-space: nowrap;
+
+.createresult{
+	text-decoration:none;
+	font-size:20px;
+	font-weight:bold;
+	border:1px solid red; 
+	display:block; 
+	text-align:center;
+	word-break:break-all;
+	} 
+	
+.left{
+	margin-left:40px;
 }
 
 .openfile{
