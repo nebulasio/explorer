@@ -1,0 +1,56 @@
+
+body {
+    color: #777;
+    font-size: 13px;
+}
+
+dl, ol, ul {
+    list-style: none;
+    padding: 0;
+}
+
+.c333   { color: #333; }
+.c777   { color: #777; }
+.mt20   { margin-top: 20px; }
+
+.tdxxxwddd > * {
+    display: inline-block;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}
+
+/*  font awesome
+    ============================================================ */
+
+.fa-arrow-right {
+    color: darkgreen;
+}
+
+.fa-btc {
+    color: goldenrod;
+}
+
+.fa-check {
+    color: green;
+}
+
+.fa-remove {
+    color: firebrick;
+}
+
+/*  overrides - bootstrap
+    ============================================================ */
+
+a, .btn-link, .page-link {
+    color: #3498db;
+}
+
+dl, ol, ul {
+    margin: 0;
+}
+
+label {
+    font-weight: normal;
+}
