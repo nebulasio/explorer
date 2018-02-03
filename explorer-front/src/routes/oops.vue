@@ -3,6 +3,10 @@
         height: 400px;
         background: url(/static/img/oops.jpg) center no-repeat;
     }
+    .vue-oops pre{
+        font-size: 44px;
+    }
+
 </style>
 <template>
     <div class="container vue-oops">
