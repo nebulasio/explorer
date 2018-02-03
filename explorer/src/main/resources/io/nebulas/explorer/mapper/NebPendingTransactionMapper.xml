@@ -37,7 +37,7 @@
         (
         #{id}, #{hash}, #{from}, #{to}, #{value},
         #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}
-        , #{gasLimit}, #{gasUsed}, #{createdAt}
+        , #{gasLimit}, #{createdAt}
         )
     </insert>
     <insert id="batchAdd" parameterType="NebPendingTransaction" useGeneratedKeys="false">
@@ -48,7 +48,7 @@
             (
             #{tx.id}, #{tx.hash}, #{tx.from}, #{tx.to}, #{tx.value},
             #{tx.nonce}, #{tx.timestamp}, #{tx.type}, #{tx.data}, #{tx.gasPrice}
-            , #{tx.gasLimit}, #{tx.gasUsed}, #{tx.createdAt}
+            , #{tx.gasLimit}, #{tx.createdAt}
             )
         </foreach>
     </insert>
