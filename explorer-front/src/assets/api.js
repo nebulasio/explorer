@@ -67,7 +67,7 @@ module.exports = {
 
             if (o.code == 0)
                 done(o.data);
-            else
+            else if (typeof fail == "function")
                 fail(xhr);
         }, fail);
     },
@@ -78,7 +78,7 @@ module.exports = {
 
             if (o.code == 0)
                 done(o.data);
-            else
+            else if (typeof fail == "function")
                 fail(xhr);
         }, fail);
     },
