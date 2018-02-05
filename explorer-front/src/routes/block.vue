@@ -12,6 +12,10 @@
     .vue-block tr>td:first-child::after {
         content: ":";
     }
+
+    .vue-block .dynasty a{
+        display: block;
+    }
 </style>
 <template>
     <!-- https://etherscan.io/block/4951841 -->
@@ -48,7 +52,7 @@
                 <tr>
                     <td>Transactions</td>
                     <td>
-                        <router-link v-bind:to='"/txs?block=" + block.height'>{{ block.hash }}</router-link>
+                        <router-link v-bind:to='"/txs?block=" + block.height'>{{ block.blkSummary.txCnt }}</router-link>
                         in this block
                     </td>
                 </tr>
@@ -70,10 +74,19 @@
                         (Nanopool)
                     </td>
                 </tr>
+
+                <tr>
+                    <td>Dynasty</td>
+                    <td class=dynasty>
+                        <router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='"/address/" + dynasty'>{{ dynasty }} </router-link>
+                    </td>
+                </tr>
+
                 <tr>
                     <td>Gas Reward</td>
-                    <td>{{ block.blkGasReward }} {{ block.blkGasRewardRate }}</td>
+                    <td>{{ block.blkSummary.gasReward }}</td>
                 </tr>
+                
             </table>
         </div>
     </div>
