@@ -62,7 +62,7 @@
                     <td>
                         <router-link v-bind:to='"/block/" + o.block.height'>{{ o.block.height }}</router-link>
                     </td>
-                    <td>{{ o.timestamp }}</td>
+                    <td>{{ timeConversion(o.timestamp) }} ago</td>
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/address/" + o.from.hash'>{{ o.from.hash }}</router-link>
                     </td>
@@ -72,8 +72,8 @@
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
                     </td>
-                    <td>{{ o.value }}</td>
-                    <td>{{ o.txFee }}</td>
+                    <td>{{ o.value }} Nas</td>
+                    <td>{{ numberAddComma(o.txFee) }}</td>
                 </tr>
             </table>
 
@@ -82,7 +82,8 @@
     </div>
 </template>
 <script>
-    var api = require("@/assets/api");
+    var api = require("@/assets/api"),
+        utility = require("@/assets/utility");
 
     module.exports = {
         components: {
@@ -146,6 +147,9 @@
                 this.changePage();
                 this.totalPage = 0;
             },
+            numberAddComma(n) {
+                return utility.numberAddComma(n);
+            },
             onFirst() {
                 this.ajaxParam.p = 1;
                 this.changePage();
@@ -161,6 +165,9 @@
             onPrev() {
                 this.ajaxParam.p = this.currentPage - 1;
                 this.changePage();
+            },
+            timeConversion(ms) {
+                return utility.timeConversion(ms / 1000);
             }
         },
         mounted() {
