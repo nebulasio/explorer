@@ -12,6 +12,26 @@
         border-top-color: #ddd;
     }
 
+    .vue-txs td.time {
+        position: relative;
+    }
+
+    .vue-txs td.time :nth-child(2) {
+        background-color: rgba(0, 0, 0, .8);
+        color: white;
+        display: none;
+        left: -80px;
+        padding: 10px;
+        pointer-events: none;
+        position: absolute;
+        white-space: nowrap;
+        z-index: 1;
+    }
+
+    .vue-txs td.time:hover :nth-child(2) {
+        display: block;
+    }
+
     .vue-txs .fa-arrow-right {
         color: darkgreen;
     }
@@ -62,7 +82,10 @@
                     <td>
                         <router-link v-bind:to='"/block/" + o.block.height'>{{ o.block.height }}</router-link>
                     </td>
-                    <td>{{ timeConversion(o.timestamp) }} ago</td>
+                    <td class=time>
+                        <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                        <div>{{ Date(o.timestamp) }}</div>
+                    </td>
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/address/" + o.from.hash'>{{ o.from.hash }}</router-link>
                     </td>
@@ -72,7 +95,7 @@
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
                     </td>
-                    <td>{{ o.value }} Nas</td>
+                    <td>{{ numberAddComma(o.value) }} Nas</td>
                     <td>{{ numberAddComma(o.txFee) }}</td>
                 </tr>
             </table>
