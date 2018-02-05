@@ -13,6 +13,26 @@ dl, ol, ul {
 .c777   { color: #777; }
 .mt20   { margin-top: 20px; }
 
+td.time {
+    position: relative;
+}
+
+td.time :nth-child(2) {
+    background-color: rgba(0, 0, 0, .8);
+    color: white;
+    display: none;
+    left: -80px;
+    padding: 10px;
+    pointer-events: none;
+    position: absolute;
+    white-space: nowrap;
+    z-index: 1;
+}
+
+td.time:hover :nth-child(2) {
+    display: block;
+}
+
 .tdxxxwddd > * {
     display: inline-block;
     max-width: 160px;

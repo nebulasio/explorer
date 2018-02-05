@@ -22,7 +22,10 @@
                     <td>
                         <router-link v-bind:to='"/block/" + o.height'>{{ o.height }}</router-link>
                     </td>
-                    <td>{{ o.timestamp }}</td>
+                    <td class=time>
+                        <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                        <div>{{ Date(o.timestamp) }}</div>
+                    </td>
                     <td>
                         <router-link v-bind:to='"/"'>{{ o.txnCnt }}</router-link>
                     </td>
@@ -39,7 +42,8 @@
     </div>
 </template>
 <script>
-    var api = require("@/assets/api");
+        var api = require("@/assets/api"),
+            utility = require("@/assets/utility");
 
     module.exports = {
         components: {
@@ -126,6 +130,9 @@
             onPrev() {
                 this.ajaxParam.p = this.currentPage - 1;
                 this.changePage();
+            },
+            timeConversion(ms) {
+                return utility.timeConversion(ms / 1000);
             }
         },
         mounted() {

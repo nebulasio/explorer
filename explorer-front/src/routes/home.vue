@@ -242,85 +242,84 @@
 </style>
 <template>
     <div class="container vue-home">
-        <div class="top">
-            <div class="row">
-                <div class="col-md-8">
-                    <div id="chart" style="max-width:800px;height:300px;"></div>
+        <div class=top>
+            <div class=row>
+                <div class=col-md-8>
+                    <div id=chart style="max-width:800px;height:300px;"></div>
                 </div>
-                <div class="col-md-4">
-                    <div class="chart_banner">
-                        <div class="name">NAS</div>
-                        <div class="value">$ {{ market.price }}</div>
-                        <div class="msg">
-                            <div class="msg_change">
+                <div class=col-md-4>
+                    <div class=chart_banner>
+                        <div class=name>NAS</div>
+                        <div class=value>$ {{ market.price }}</div>
+                        <div class=msg>
+                            <div class=msg_change>
                                 <span class="msg_change_left">24h Change : </span>
                                 <span class="msg_change_right red">{{ market.change24h }}%</span>
                             </div>
-                            <div class="msg_volume">
+                            <div class=msg_volume>
                                 <span class="msg_change_left">24h Volume :</span>
                                 <span class="msg_change_right">$ {{ market.volume24h }}</span>
                             </div>
-                            <div class="msg_market">
-                                <span class="msg_change_left">Market Cap :</span>
-                                <span class="msg_change_right">$ {{ market.marketCap }}</span>
+                            <div class=msg_market>
+                                <span class=msg_change_left>Market Cap :</span>
+                                <span class=msg_change_right>$ {{ market.marketCap }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="banner">
-            <div class="row">
-                <div class="col-md-6 banner_left">
-                    <div class="list_tab">
-                        <div class="img">
-                            <span class="fa fa-th-large" aria-hidden="true"></span>
+        <div class=banner>
+            <div class=row>
+                <div class="banner_left col-md-6">
+                    <div class=list_tab>
+                        <div class=img>
+                            <span class="fa fa-th-large" aria-hidden=true></span>
                             Blocks
                         </div>
-                        <router-link class="btn btn-default pull-right" to="/blocks" role="button">View All</router-link>
+                        <router-link class="btn btn-default pull-right" to=/blocks role=button>View All</router-link>
                     </div>
-                    <ul class="list_left">
+                    <ul class=list_left>
                         <li v-for="o in blocks">
                             <div class=list_banner_left>
                                 <p>
-                                    <router-link v-bind:to="/block/ + o.height"> block {{ o.height }}</router-link>
+                                    <router-link v-bind:to="/block/ + o.height">block {{ o.height }}</router-link>
                                 </p>
-                                <p class="list_banner_left_p1">{{ o.timestamp }}</p>
+                                <p class=list_banner_left_p1>{{ timeConversion(o.timeDiff) }} ago</p>
                             </div>
-                            <div class=" list_banner_right">
-                                Mined By
-                                <router-link v-bind:to="/address/ +  o.miner.hash"> {{ o.miner.hash }} </router-link>
-                                <p class="mt16">
-                                    <a href="txs.html?id=%Block">
-                                        <b>{{ o.txnCnt }}</b>
-                                    </a>
-                                    transations</p>
+                            <div class=list_banner_right>
+                                Minted By
+                                <router-link v-bind:to="/address/ + o.miner.hash">{{ o.miner.hash }}</router-link>
+                                <div class=mt16>
+                                    <router-link v-bind:to='"/txs?block=" + o.height'>
+                                        <b>{{ o.txnCnt }}</b> transations</router-link>
+                                </div>
                             </div>
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-6 banner_right ">
-                    <div class="list_tab ">
-                        <div class="img ">
-                            <span class="fa fa-list" aria-hidden="true"></span>
+                <div class="col-md-6 banner_right">
+                    <div class=list_tab>
+                        <div class=img>
+                            <span class="fa fa-list" aria-hidden=true></span>
                             Transation
                         </div>
-                        <router-link class="btn btn-default pull-right" to="/txs" role="button">View All</router-link>
+                        <router-link class="btn btn-default pull-right" to=/txs role=button>View All</router-link>
                     </div>
-                    <ul class="list_right ">
+                    <ul class=list_right>
                         <li v-for="o in txs">
-                            <div class="list_right_banner_left ">
-                                <img src="/static/img/icon.png " height="43" width="43" alt=" ">
+                            <div class=list_right_banner_left>
+                                <img src=/static/img/icon.png height=43 width=43 alt=" ">
                             </div>
-                            <div class="list_right_banner_right ">
+                            <div class=list_right_banner_right>
                                 <p>
                                     <router-link v-bind:to="/tx/ + o.hash">TX#&nbsp;&nbsp;&nbsp;{{ o.hash }}</router-link>
                                 </p>
                                 <p>
-                                    <router-link  v-bind:to="/address/ + o.from.hash">From&nbsp;{{ o.from.hash }}</router-link>
+                                    <router-link v-bind:to="/address/ + o.from.hash">From&nbsp;{{ o.from.hash }}</router-link>
                                 </p>
                                 <p>
-                                    <router-link  v-bind:to="/block/ + o.to.hash">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ o.to.hash }} </router-link>
+                                    <router-link v-bind:to="/address/ + o.to.hash">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ o.to.hash }} </router-link>
                                 </p>
                             </div>
                         </li>
@@ -331,7 +330,8 @@
     </div>
 </template>
 <script>
-    var api = require("@/assets/api");
+    var api = require("@/assets/api"),
+        utility = require("@/assets/utility");
 
     module.exports = {
         data() {
@@ -397,28 +397,24 @@
                 txs: []
             };
         },
+        methods: {
+            timeConversion(ms) {
+                return utility.timeConversion(ms / 1000);
+            }
+        },
         mounted() {
             var vm = this;
 
             api.getBlock({ type: "latest" }, o => {
                 this.blocks = o;
-            }, xhr => {
-                console.log(xhr);
-
             });
 
             api.getTx({ type: "latest" }, o => {
                 this.txs = o;
-            }, xhr => {
-                console.log(xhr);
-
             });
 
             api.getMarketCap(o => {
                 this.market = o;
-            }, xhr => {
-                console.log(xhr);
-
             });
 
             api.getTx("cnt_static", function (o) {
@@ -432,9 +428,6 @@
 
                 vm.chartConfig.series[0].data = arr;
                 require("highcharts").chart("chart", vm.chartConfig);
-            }, xhr => {
-                console.log(xhr);
-
             });
         }
 

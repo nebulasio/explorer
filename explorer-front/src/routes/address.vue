@@ -53,8 +53,8 @@
                     <td>{{ obj.address.currentBalance }}</td>
                 </tr>
                 <tr>
-                    <td>Mined:</td>
-                    <td>{{ obj.minedBlkCnt }}</td>
+                    <td>Minted:</td>
+                    <td>{{ obj.mintedBlkCnt }}</td>
                 </tr>
                 <tr>
                     <td>No Of Transactions:</td>
@@ -96,32 +96,39 @@
                             <router-link v-bind:to='"/tx/" + $route.params.id'>{{ o.hash }}</router-link>
                         </td>
                         <td>
-                            <router-link v-bind:to='"/block/" + o.blockHeight'>{{ o.blockHeight }}</router-link>
+                            <router-link v-if=o.block.height v-bind:to='"/block/" + o.block.height'>{{ o.block.height }}</router-link>
+                            <i v-else>(pending)</i>
                         </td>
-                        <td>{{ o.timestamp }}</td>
+                        <td class=time>
+                            <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                            <div>{{ Date(o.timestamp) }}</div>
+                        </td>
                         <td class=tdxxxwddd>
-                            <span v-if="o.from == $route.params.id">{{ o.from }}</span>
-                            <router-link v-else v-bind:to='"/address/" + o.from'>{{ o.from }}</router-link>
+                            <span v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
+                            <router-link v-else v-bind:to='"/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
                         </td>
                         <td class=text-uppercase v-bind:class=inOutClass(o)></td>
                         <td class=tdxxxwddd>
-                            <span v-if="o.to == $route.params.id">{{ o.to }}</span>
-                            <router-link v-else v-bind:to='"/address/" + o.to'>{{ o.to }}</router-link>
+                            <span v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
+                            <router-link v-else v-bind:to='"/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                         </td>
-                        <td>{{ o.value }}</td>
-                        <td class=txfee>{{ o.txFee }}</td>
+                        <td>{{ o.value }} Nas</td>
+                        <td class=txfee>
+                            <span v-if=o.block.height>{{ numberAddComma(o.txFee) }}</span>
+                            <i v-else>(pending)</i>
+                        </td>
                     </tr>
                 </table>
             </div>
 
-            <!--    Mined Blocks
+            <!--    Minted Blocks
                 ============================================================ -->
             <div class=tab v-show="tab == 2">
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
-                        Latest {{ mined.length }} blocks (From a total of
-                        <a href="blocks.html?m=%id-from-url">%2</a> with %3 mined)
+                        Latest {{ minted.length }} blocks (From a total of
+                        <router-link v-bind:to='"/blocks?m=" + $route.params.id'>{{ obj.mintedBlkCnt}}</router-link>)
                     </div>
                     <div class=col-auto>
                         <router-link class="btn btn-link" v-bind:to='"/blocks?m=" + $route.params.id'>View All</router-link>
@@ -135,25 +142,28 @@
                         <th>txn</th>
                         <th>Reward</th>
                     </tr>
-                    <tr v-for="o in mined">
+                    <tr v-for="o in minted">
                         <td>
                             <router-link v-bind:to='"/block/" + o.height'>{{ o.height }}</router-link>
                         </td>
-                        <td>{{ o.timestamp }}</td>
+                        <td class=time>
+                            <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                            <div>{{ Date(o.timestamp) }}</div>
+                        </td>
                         <td>{{ o.txnCnt }}</td>
                         <td>{{ o.gasReward }}</td>
                     </tr>
                 </table>
             </div>
 
-            <!--    Mined Uncles
+            <!--    Minted Uncles
                 ============================================================ -->
             <!-- <div class=tab v-show="tab == 3">
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
                         Latest %1 uncles (From a total of
-                        <a href="uncles.html?id=%id-from-url">%2</a> with %3 mined)
+                        <a href="uncles.html?id=%id-from-url">%2</a> with %3 minted)
                     </div>
                     <div class=col-auto>
                         <router-link class="btn btn-link" v-bind:to='"/uncles?m=" + $route.params.id'>View All</router-link>
@@ -189,7 +199,8 @@
     </div>
 </template>
 <script>
-    var api = require("@/assets/api");
+    var api = require("@/assets/api"),
+        utility = require("@/assets/utility");
 
     module.exports = {
         components: {
@@ -200,7 +211,7 @@
         computed: {
             urlChange() {
                 api.getAddress(this.$route.params.id, o => {
-                    this.mined = o.minedBlkList;
+                    this.minted = o.mintedBlkList;
                     this.obj = o;
                     this.txs = o.txList;
                 }, xhr => {
@@ -215,21 +226,27 @@
                     { text: "Normal Accounts", to: "/accounts" },
                     { text: "Address", to: "" }
                 ],
-                mined: [],
+                minted: [],
                 obj: null,
                 tab: 0,
-                tabButtons: ["Transactions", "Mined Blocks"],
+                tabButtons: ["Transactions", "Minted Blocks"],
                 txs: []
             };
         },
         methods: {
             inOutClass(o) {
-                if (o.from == this.$route.params.id)
+                if (o.from.hash == this.$route.params.id)
                     return "out";
-                else if (o.to == this.$route.params.id)
+                else if (o.to.hash == this.$route.params.id)
                     return "in";
                 else
                     return "";
+            },
+            numberAddComma(n) {
+                return utility.numberAddComma(n);
+            },
+            timeConversion(ms) {
+                return utility.timeConversion(ms / 1000);
             }
         }
     };

@@ -12,7 +12,7 @@
                 <a href=#>Pending Transaction Pool - Time Series</a>
             </div>
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class=col>A total of {{ totalBlocks }} Pending txns found</div>
+                <div class=col>A total of {{ totalTxs }} Pending txns found</div>
                 <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
             </div>
             <table class="mt20 table">
@@ -30,19 +30,22 @@
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>
-                    <td>{{ o.timestamp }}</td>
+                    <td class=time>
+                        <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                        <div>{{ Date(o.timestamp) }}</div>
+                    </td>
                     <td>{{ o.gasLimit }}</td>
-                    <td>{{ o.avgGasPrice }}</td>
+                    <td>{{ o.gasPrice }} Nas</td>
                     <td class=tdxxxwddd>
-                        ???
+                        <router-link v-bind:to='"/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
                     </td>
                     <td>
-                        <span class="fa fa-arrow-right" aria-hidden="true"></span>
+                        <span class="fa fa-arrow-right" aria-hidden=true></span>
                     </td>
                     <td class=tdxxxwddd>
-                        ???
+                        <router-link v-bind:to='"/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                     </td>
-                    <td>???</td>
+                    <td>{{ o.value }} Nas</td>
                 </tr>
             </table>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
@@ -50,7 +53,8 @@
     </div>
 </template>
 <script>
-    var api = require("@/assets/api");
+    var api = require("@/assets/api"),
+        utility = require("@/assets/utility");
 
     module.exports = {
         components: {
@@ -66,8 +70,8 @@
                     { text: "Pending Transactions", to: "" }
                 ],
                 currentPage: 0,
-                totalBlocks: 0,
-                totalPage: 1 // 为了允许 mounted 调用 nthPage
+                totalPage: 1, // 为了允许 mounted 调用 nthPage
+                totalTxs: 0
             };
         },
         methods: {
@@ -81,14 +85,12 @@
                         else {
                             this.ajaxing = true;
 
-                            api.getBlock({ isPending: 1, p }, o => {
-                                console.log(o);
-
+                            api.getTx({ isPending: true, p }, o => {
                                 this.ajaxing = false;
-                                this.arr = o.data;
-                                this.currentPage = o.page;
+                                this.arr = o.txnList;
+                                this.currentPage = o.currentPage;
                                 this.totalPage = o.totalPage;
-                                this.totalBlocks = o.totalCount;
+                                this.totalTxs = o.txnCnt;
 
                                 if (this.arr.length) {
                                     this.heightFrom = this.arr[0].height;
@@ -119,6 +121,9 @@
             },
             onPrev() {
                 this.nthPage(this.currentPage - 1);
+            },
+            timeConversion(ms) {
+                return utility.timeConversion(ms / 1000);
             }
         },
         mounted() {
