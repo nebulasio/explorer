@@ -11,22 +11,6 @@
     .vue-txs th {
         border-top-color: #ddd;
     }
-
-    .vue-txs .fa-arrow-right {
-        color: darkgreen;
-    }
-
-    .vue-txs .fa-btc {
-        color: goldenrod;
-    }
-
-    .vue-txs .fa-ok {
-        color: green;
-    }
-
-    .vue-txs .fa-remove {
-        color: firebrick;
-    }
 </style>
 <template>
     <!-- https://etherscan.io/txs -->

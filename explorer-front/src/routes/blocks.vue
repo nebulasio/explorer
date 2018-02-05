@@ -42,8 +42,8 @@
     </div>
 </template>
 <script>
-        var api = require("@/assets/api"),
-            utility = require("@/assets/utility");
+    var api = require("@/assets/api"),
+        utility = require("@/assets/utility");
 
     module.exports = {
         components: {
