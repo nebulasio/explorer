@@ -45,6 +45,7 @@
 
     .vue-footer .footer_right {
         height: 300px;
+        text-align: center;
     }
 
     .vue-footer .footer_link-list {
@@ -69,50 +70,22 @@
                     </div>
                 </div>
 
-                <div class="footer_middle col-md-6 ">
-                    <div class="footer_banner_tab ">
-                        <h4>Latest Discussions</h4>
-                    </div>
-                    <div class="footer_list ">
-                        <div class="footer_list_banner ">
-                            <img src="/static/img/msg.png " alt=" ">
-                            <a href="">Please, Please send the 1 ether back to my address 0x5b...</a>
-                        </div>
-                        <div class="footer_list_banner ">
-                            <img src="/static/img/msg.png " alt=" ">
-                            <a href="">Please, Please send the 1 ether back to my address 0x5b...</a>
-                        </div>
-                        <div class="footer_list_banner ">
-                            <img src="/static/img/msg.png " alt=" ">
-                            <a href="">Please, Please send the 1 ether back to my address 0x5b...</a>
-                        </div>
-                        <div class="footer_list_banner ">
-                            <img src="/static/img/msg.png " alt=" ">
-                            <a href="">Please, Please send the 1 ether back to my address 0x5b...</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer_right col-md-3 ">
+                <div class="footer_right col-md-9 ">
                     <div class="footer_banner_tab ">
                         <h4>Links</h4>
                     </div>
                     <div class="footer_link-list ">
                         <div class="footer_link-list_banner ">
-                            <img src="/static/img/email_icon.png " alt=" ">
-                            <a href="# ">Contact Us</a>
+                            <a href="https://nebulas.io "> Nebulas.io </a>
                         </div>
                         <div class="footer_link-list_banner ">
-                            <img src="/static/img/icon_2.png " alt=" ">
-                            <a href="# ">Forum</a>
+                            <a href="https://github.com/nebulasio">github</a>
                         </div>
                         <div class="footer_link-list_banner ">
-                            <img src="/static/img/icon_3.png " alt=" ">
-                            <a href="# ">Twitter</a>
+                            <a href="https://testnet.nebulas.io/   ">testnet</a>
                         </div>
                         <div class="footer_link-list_banner ">
-                            <img src="/static/img/email_icon.png " alt=" ">
-                            <a href="# ">Contact Us</a>
+                            <a href="# ">mainnet</a>
                         </div>
                     </div>
                 </div>
