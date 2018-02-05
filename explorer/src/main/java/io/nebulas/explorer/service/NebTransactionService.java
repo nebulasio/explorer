@@ -6,12 +6,14 @@ import io.nebulas.explorer.domain.NebPendingTransaction;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.mapper.NebPendingTransactionMapper;
 import io.nebulas.explorer.mapper.NebTransactionMapper;
+import io.nebulas.explorer.util.NasUnitUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -141,6 +143,10 @@ public class NebTransactionService {
         return nebPendingTransactionMapper.getByHash(hash);
     }
 
+    public BlockSummary getBlockSummaryByBlockHeight(long blockHeight) {
+        return covertBlockSummary(blockHeight, nebTransactionMapper.findTxnByBlockHeight(blockHeight));
+    }
+
     /**
      * According to block height query transaction information
      *
@@ -235,12 +241,46 @@ public class NebTransactionService {
      * @param blockHeights block height list
      * @return summary map
      */
-    public Map<Long, BlockSummary> countTxnInBlockGroupByBlockHeight(List<Long> blockHeights) {
+    public Map<Long, BlockSummary> calculateTxnSummaryInBlock(List<Long> blockHeights, boolean isWithGas) {
         if (CollectionUtils.isEmpty(blockHeights)) {
             return Collections.emptyMap();
         }
-        List<BlockSummary> blockSummaryList = nebTransactionMapper.countTxnInBlock(blockHeights);
-        return blockSummaryList.stream().collect(Collectors.toMap(BlockSummary::getBlockHeight, summary -> summary));
+
+        List<NebTransaction> txnList = nebTransactionMapper.findByBlockHeights(blockHeights);
+        Map<Long, List<NebTransaction>> txnMap = txnList.stream().collect(Collectors.groupingBy(NebTransaction::getBlockHeight));
+
+        Map<Long, BlockSummary> summaryMap = Maps.newHashMap();
+        if (isWithGas) {
+            blockHeights.forEach(height -> summaryMap.put(height, covertBlockSummary(height, txnMap.get(height))));
+        } else {
+            txnMap.forEach((k, v) -> summaryMap.put(k, new BlockSummary(k, v.size())));
+            blockHeights.forEach(height -> {
+                List<NebTransaction> txList = txnMap.get(height);
+                summaryMap.put(height, new BlockSummary(height, CollectionUtils.isNotEmpty(txList) ? txList.size() : 0L));
+            });
+        }
+        return summaryMap;
+    }
+
+    private BlockSummary covertBlockSummary(long blockHeight, List<NebTransaction> txs) {
+        if (CollectionUtils.isEmpty(txs)) {
+            return new BlockSummary(blockHeight, 0, null, 0L, null);
+        } else {
+            BigDecimal blkGasRewardBd = BigDecimal.ZERO;
+            BigDecimal blkTotalGasPriceBd = BigDecimal.ZERO;
+            BigDecimal blkTotalGasLimitBd = BigDecimal.ZERO;
+
+            for (NebTransaction tx : txs) {
+                blkGasRewardBd = blkGasRewardBd.add(tx.getGasUsedBd().multiply(tx.getGasPriceBd()));
+                blkTotalGasPriceBd = blkTotalGasPriceBd.add(tx.getGasPriceBd());
+                blkTotalGasLimitBd = blkTotalGasLimitBd.add(tx.getGasLimitBd());
+            }
+
+            String gasReward = NasUnitUtil.convert2Nas(blkGasRewardBd.toPlainString());
+            long gasLimit = blkTotalGasLimitBd.longValue();
+            String avgGasPrice = NasUnitUtil.convert2Nas(blkTotalGasPriceBd.divide(new BigDecimal(txs.size()), 2, BigDecimal.ROUND_DOWN).toPlainString());
+            return new BlockSummary(blockHeight, txs.size(), gasReward, gasLimit, avgGasPrice);
+        }
     }
 
     /**

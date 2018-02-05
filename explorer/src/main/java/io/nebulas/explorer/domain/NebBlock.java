@@ -58,6 +58,11 @@ public class NebBlock implements Serializable {
      */
     private Long nonce;
 
+    /**
+     * block is irreversible
+     */
+    private Boolean finality;
+
     private Date createdAt;
 
     private static final long serialVersionUID = 1L;

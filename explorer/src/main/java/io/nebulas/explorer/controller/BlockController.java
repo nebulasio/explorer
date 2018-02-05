@@ -117,7 +117,7 @@ public class BlockController extends BaseController {
         }
         if (CollectionUtils.isNotEmpty(blockPageIterator.getData())) {
             List<Long> blkHeightList = blockPageIterator.getData().stream().map(NebBlock::getHeight).collect(Collectors.toList());
-            Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlockGroupByBlockHeight(blkHeightList);
+            Map<Long, BlockSummary> txCntMap = nebTransactionService.calculateTxnSummaryInBlock(blkHeightList,true);
             model.addAttribute("txCntMap", txCntMap);
         }
         model.addAttribute("miner", miner);

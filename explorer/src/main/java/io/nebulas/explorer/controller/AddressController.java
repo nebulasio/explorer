@@ -81,7 +81,7 @@ public class AddressController extends BaseController {
             List<NebBlock> blkList = nebBlockService.findNebBlockByMiner(address.getHash(), 1, PAGE_SIZE);
             if (CollectionUtils.isNotEmpty(blkList)) {
                 List<Long> blkHeightList = blkList.stream().map(NebBlock::getHeight).collect(Collectors.toList());
-                Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlockGroupByBlockHeight(blkHeightList);
+                Map<Long, BlockSummary> txCntMap = nebTransactionService.calculateTxnSummaryInBlock(blkHeightList, true);
                 model.addAttribute("txCntMap", txCntMap);
             }
             model.addAttribute("minedBlkList", blkList);
