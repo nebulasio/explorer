@@ -23,7 +23,7 @@
             </div>
 
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info">{{ totalTxs }} transactions found</div>
+                <div class="col info">{{ totalTxs }} transactions found (showing the last {{ arr.length * totalPage }} records)</div>
                 <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
             </div>
 
