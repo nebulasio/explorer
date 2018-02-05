@@ -70,7 +70,6 @@
                             this.ajaxing = true;
 
                             api.getAccount(p, o => {
-                                console.log(o);
                                 this.ajaxing = false;
                                 this.arr = o.addressList;
                                 this.currentPage = o.page;
