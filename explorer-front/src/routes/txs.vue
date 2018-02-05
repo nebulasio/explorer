@@ -12,26 +12,6 @@
         border-top-color: #ddd;
     }
 
-    .vue-txs td.time {
-        position: relative;
-    }
-
-    .vue-txs td.time :nth-child(2) {
-        background-color: rgba(0, 0, 0, .8);
-        color: white;
-        display: none;
-        left: -80px;
-        padding: 10px;
-        pointer-events: none;
-        position: absolute;
-        white-space: nowrap;
-        z-index: 1;
-    }
-
-    .vue-txs td.time:hover :nth-child(2) {
-        display: block;
-    }
-
     .vue-txs .fa-arrow-right {
         color: darkgreen;
     }
