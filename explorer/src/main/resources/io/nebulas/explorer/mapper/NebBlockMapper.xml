@@ -10,18 +10,19 @@
         <result column="miner" property="miner" jdbcType="VARCHAR"/>
         <result column="coinbase" property="coinbase" jdbcType="VARCHAR"/>
         <result column="nonce" property="nonce" jdbcType="BIGINT"/>
+        <result column="finality" property="finality" jdbcType="TINYINT"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-      `id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`, `created_at`
+      `id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`,`finality`, `created_at`
     </sql>
 
     <insert id="add" parameterType="NebBlock">
-        INSERT INTO `neb_block` (`id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`)
+        INSERT INTO `neb_block` (`id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`, `finality`)
         VALUES (#{id,jdbcType=VARCHAR}, #{height,jdbcType=BIGINT}, #{hash,jdbcType=VARCHAR},
         #{parentHash,jdbcType=VARCHAR}, #{timestamp,jdbcType=TIMESTAMP}, #{miner,jdbcType=VARCHAR},
-        #{coinbase,jdbcType=VARCHAR}, #{nonce,jdbcType=BIGINT})
+        #{coinbase,jdbcType=VARCHAR}, #{nonce,jdbcType=BIGINT}, #{finality,jdbcType=TINYINT})
     </insert>
 
     <select id="count" resultType="java.lang.Long">

@@ -4,6 +4,7 @@ import io.grpc.StatusRuntimeException;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
+import io.nebulas.explorer.domain.NebDynasty;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.grpc.GrpcChannelService;
 import io.nebulas.explorer.grpc.GrpcClientService;
@@ -14,6 +15,7 @@ import io.nebulas.explorer.model.Zone;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +45,7 @@ public class SysService {
     private final NebBlockService nebBlockService;
     private final NebTransactionService nebTransactionService;
     private final NebAddressService nebAddressService;
+    private final NebDynastyService nebDynastyService;
     private final PopulationMonitor populationMonitor;
     private final ZoneCache zoneCache;
     private final YAMLConfig yamlConfig;
@@ -126,6 +129,17 @@ public class SysService {
         long threadId = Thread.currentThread().getId();
         log.info("Thread {} start populating", threadId);
         long start = System.currentTimeMillis();
+
+        Block latestIrreversibleBlk = null;
+        try {
+            latestIrreversibleBlk = grpcClientService.getLatestIrreversibleBlock();
+        } catch (StatusRuntimeException e) {
+            log.error("get block by height error", e);
+            String errorMessage = e.getMessage();
+            log.error(errorMessage);
+            reConnect();
+        }
+
         long h;
         for (h = from; h <= to; ) {
             NebBlock nebBlock = nebBlockService.getNebBlockByHeight(h);
@@ -162,6 +176,7 @@ public class SysService {
                     .miner(blk.getMiner())
                     .coinbase(blk.getCoinbase())
                     .nonce(blk.getNonce())
+                    .finality(latestIrreversibleBlk != null && blk.getHeight() <= latestIrreversibleBlk.getHeight())
                     .build();
 
             try {
@@ -178,6 +193,15 @@ public class SysService {
                 zoneCache.addCursor(from, to, h);
                 h++;
                 continue;
+            }
+
+            List<String> dynastyDelegateList = nebDynastyService.findDynastyDelegateByBlockHeight(blk.getHeight());
+            if (CollectionUtils.isNotEmpty(dynastyDelegateList)) {
+                List<NebDynasty> dynastyList = new ArrayList<>(dynastyDelegateList.size());
+                dynastyDelegateList.forEach(d -> {
+                    dynastyList.add(new NebDynasty(blk.getHeight(), d));
+                });
+                nebDynastyService.batchAddNebDynasty(dynastyList);
             }
 
             List<Transaction> txs = blk.getTransactions();

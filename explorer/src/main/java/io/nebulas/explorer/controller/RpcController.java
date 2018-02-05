@@ -9,10 +9,7 @@ import io.nebulas.explorer.model.PageIterator;
 import io.nebulas.explorer.model.vo.AddressVo;
 import io.nebulas.explorer.model.vo.BlockVo;
 import io.nebulas.explorer.model.vo.TransactionVo;
-import io.nebulas.explorer.service.NebAddressService;
-import io.nebulas.explorer.service.NebBlockService;
-import io.nebulas.explorer.service.NebMarketCapitalizationService;
-import io.nebulas.explorer.service.NebTransactionService;
+import io.nebulas.explorer.service.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -44,6 +41,7 @@ public class RpcController {
     private final NebBlockService nebBlockService;
     private final NebTransactionService nebTransactionService;
     private final NebMarketCapitalizationService nebMarketCapitalizationService;
+    private final NebDynastyService nebDynastyService;
 
     @RequestMapping(value = "/market_cap", method = RequestMethod.GET)
     public JsonResult marketCap() {
@@ -53,7 +51,7 @@ public class RpcController {
     @RequestMapping(value = "/block", method = RequestMethod.GET, params = "type=latest")
     public JsonResult latestBlock() {
         List<NebBlock> blkList = nebBlockService.findNebBlockOrderByHeight(1, 10);
-        return JsonResult.success(convertBlock2BlockVo(blkList));
+        return JsonResult.success(convertBlock2BlockVo(blkList, false));
     }
 
     @RequestMapping(value = "/block")
@@ -68,7 +66,7 @@ public class RpcController {
         }
 
         PageIterator<BlockVo> blockVoPageIterator = PageIterator.create(blockPageIterator.getPage(), blockPageIterator.getPageSize(), blockPageIterator.getTotalCount());
-        blockVoPageIterator.setData(convertBlock2BlockVo(blockPageIterator.getData()));
+        blockVoPageIterator.setData(convertBlock2BlockVo(blockPageIterator.getData(), true));
 
         return JsonResult.success(blockVoPageIterator);
     }
@@ -88,18 +86,8 @@ public class RpcController {
 
         JsonResult result = JsonResult.success(block);
         result.put("blkMaxHeight", nebBlockService.getMaxHeight());
-
-        List<NebTransaction> txnList = nebTransactionService.findTxnByBlockHeight(block.getHeight());
-        BigDecimal blkGasUsed = BigDecimal.ZERO;
-        BigDecimal blkGasLimit = BigDecimal.ZERO;
-        for (NebTransaction txn : txnList) {
-            blkGasUsed = blkGasUsed.add(StringUtils.isEmpty(txn.getGasUsed()) ? BigDecimal.ZERO : new BigDecimal(txn.getGasUsed()));
-            blkGasLimit = blkGasLimit.add(StringUtils.isEmpty(txn.getGasLimit()) ? BigDecimal.ZERO : new BigDecimal(txn.getGasLimit()));
-        }
-        result.put("txCnt", txnList.size());
-        result.put("blkGasUsed", blkGasUsed.toPlainString());
-        result.put("blkGasLimit", blkGasLimit.toPlainString());
-        result.put("blkGasUsedRate", BigDecimal.ZERO.compareTo(blkGasLimit) < 0 ? blkGasUsed.divide(blkGasLimit, 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).toPlainString() : "0");
+        result.put("dynasty", nebDynastyService.findDynastyDelegateByBlockHeight(block.getHeight()));
+        result.put("blkSummary", nebTransactionService.getBlockSummaryByBlockHeight(block.getHeight()));
 
         NebAddress nebAddress = nebAddressService.getNebAddressByHash(block.getMiner());
         result.put("miner", null != nebAddress ? nebAddress : new NebAddress(block.getMiner()));
@@ -109,7 +97,7 @@ public class RpcController {
     @RequestMapping(value = "/tx", method = RequestMethod.GET, params = "type=latest")
     public JsonResult latestTransaction() {
         List<NebTransaction> txnList = nebTransactionService.findTxnOrderById(1, 10);
-        return JsonResult.success(convertTxn2TxnVo(txnList));
+        return JsonResult.success(convertTxn2TxnVoWithAddress(txnList));
     }
 
     @RequestMapping(value = "/tx", method = RequestMethod.GET)
@@ -134,7 +122,8 @@ public class RpcController {
             }
             txnCnt = nebTransactionService.countTxnCnt(block, address);
             List<NebTransaction> txnList = nebTransactionService.findTxnByCondition(block, address, page, PAGE_SIZE);
-            result.put("txnList", convertTxn2TxnVo(txnList));
+            result.put("txnList", convertTxn2TxnVoWithAddress(txnList));
+
         } else {
             txnCnt = nebTransactionService.countPendingTxnCnt(address);
             List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingTxnByCondition(address, page, PAGE_SIZE);
@@ -144,7 +133,9 @@ public class RpcController {
         result.put("type", type);
         result.put("txnCnt", txnCnt);
         result.put("currentPage", page);
-        result.put("totalPage", txnCnt / PAGE_SIZE + 1);
+
+        long totalPage = txnCnt / PAGE_SIZE + 1;
+        result.put("totalPage", !isPending && totalPage > 20 ? 20 : totalPage);
         return result;
     }
 
@@ -202,7 +193,7 @@ public class RpcController {
             page = 1;
         }
         if (page > MAX_PAGE) {
-            return JsonResult.failed();
+            page = MAX_PAGE;
         }
 
         BigDecimal totalBalance = BigDecimal.ONE;//todo
@@ -247,10 +238,10 @@ public class RpcController {
         result.put("address", address);
         result.put("pendingTxCnt", pendingTxCnt);
         result.put("txCnt", nebTransactionService.countTxnCntByFromTo(address.getHash()));
-        result.put("minedBlkCnt", nebBlockService.countBlockCntByMiner(address.getHash()));
+        result.put("mintedBlkCnt", nebBlockService.countBlockCntByMiner(address.getHash()));
 
         List<NebBlock> blkList = nebBlockService.findNebBlockByMiner(address.getHash(), 1, PAGE_SIZE);
-        result.put("minedBlkList", convertBlock2BlockVo(blkList));
+        result.put("mintedBlkList", convertBlock2BlockVo(blkList, true));
 
         List<NebTransaction> txList = Lists.newLinkedList();
         if (pendingTxCnt > 0) {
@@ -271,7 +262,7 @@ public class RpcController {
         } else {
             txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE));
         }
-        result.put("txList", txList);
+        result.put("txList", convertTxn2TxnVoWithAddress(txList));
         return result;
     }
 
@@ -302,37 +293,28 @@ public class RpcController {
         return JsonResult.success("type", "unknown").put("q", q);
     }
 
-
-    private List<BlockVo> convertBlock2BlockVo(List<NebBlock> blks) {
+    private List<BlockVo> convertBlock2BlockVo(List<NebBlock> blks, boolean isWithGas) {
         if (CollectionUtils.isEmpty(blks)) {
             return Collections.emptyList();
         }
         List<Long> blkHeightList = blks.stream().map(NebBlock::getHeight).collect(Collectors.toList());
         List<String> minerHashList = blks.stream().map(NebBlock::getMiner).collect(Collectors.toList());
 
-        Map<Long, BlockSummary> txCntMap = nebTransactionService.countTxnInBlockGroupByBlockHeight(blkHeightList);
+        Map<Long, BlockSummary> txCntMap = nebTransactionService.calculateTxnSummaryInBlock(blkHeightList, isWithGas);
         Map<String, NebAddress> addressMap = nebAddressService.findAddressMapByAddressHash(minerHashList);
 
         List<BlockVo> resultList = new LinkedList<>();
         for (NebBlock blk : blks) {
-            BlockVo vo = new BlockVo().build(blk);
-
-            NebAddress nebAddress = addressMap.get(blk.getMiner());
-            vo.setMiner(null == nebAddress ? new NebAddress(blk.getMiner()) : nebAddress); //in order to ensure consistent miner structure
-
-            BlockSummary summary = txCntMap.get(blk.getHeight());
-            vo.setTxnCnt(null != summary ? summary.getTxCnt() : 0L);
-            if (null != summary) {
-                vo.setGasLimit(summary.getGasLimit());
-                vo.setGasUsed(summary.getGasUsed());
-                vo.setAvgGasPrice(summary.getAvgGasPrice());
-            }
+            BlockVo vo = new BlockVo()
+                    .build(blk)
+                    .setMiner(blk.getMiner(), addressMap.get(blk.getMiner()))
+                    .setSummary(txCntMap.get(blk.getHeight()));
             resultList.add(vo);
         }
         return resultList;
     }
 
-    private List<TransactionVo> convertTxn2TxnVo(List<NebTransaction> txns) {
+    private List<TransactionVo> convertTxn2TxnVoWithAddress(List<NebTransaction> txns) {
         if (CollectionUtils.isEmpty(txns)) {
             return Collections.emptyList();
         }
@@ -346,15 +328,11 @@ public class RpcController {
 
         List<TransactionVo> txnVoList = new LinkedList<>();
         for (NebTransaction txn : txns) {
-            TransactionVo vo = new TransactionVo().build(txn);
-            vo.setBlock(new BlockVo(txn.getBlockHash(), txn.getBlockHeight()));
-
-            NebAddress fromAddress = nebAddressMap.get(txn.getFrom());
-            vo.setFrom(fromAddress != null ? (new AddressVo().build(fromAddress)) : new AddressVo(txn.getFrom()));
-
-            NebAddress toAddress = nebAddressMap.get(txn.getTo());
-            vo.setTo(toAddress != null ? (new AddressVo().build(toAddress)) : new AddressVo(txn.getTo()));
-
+            TransactionVo vo = new TransactionVo()
+                    .build(txn)
+                    .setBlockVo(txn.getBlockHash(), txn.getBlockHeight())
+                    .setFromVo(txn.getFrom(), nebAddressMap.get(txn.getFrom()))
+                    .setToVo(txn.getTo(), nebAddressMap.get(txn.getTo()));
             txnVoList.add(vo);
         }
         return txnVoList;
@@ -374,13 +352,10 @@ public class RpcController {
 
         List<TransactionVo> txnVoList = new LinkedList<>();
         for (NebPendingTransaction txn : pendingTxns) {
-            TransactionVo vo = new TransactionVo().build(txn);
-            NebAddress fromAddress = nebAddressMap.get(txn.getFrom());
-            vo.setFrom(fromAddress != null ? (new AddressVo().build(fromAddress)) : new AddressVo(txn.getFrom()));
-
-            NebAddress toAddress = nebAddressMap.get(txn.getTo());
-            vo.setTo(toAddress != null ? (new AddressVo().build(toAddress)) : new AddressVo(txn.getTo()));
-
+            TransactionVo vo = new TransactionVo()
+                    .build(txn)
+                    .setFromVo(txn.getFrom(), nebAddressMap.get(txn.getFrom()))
+                    .setToVo(txn.getTo(), nebAddressMap.get(txn.getTo()));
             txnVoList.add(vo);
         }
         return txnVoList;

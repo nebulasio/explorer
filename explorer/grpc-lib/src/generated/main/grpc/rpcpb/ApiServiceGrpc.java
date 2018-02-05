@@ -574,6 +574,38 @@ public final class ApiServiceGrpc {
      }
      return getGetEventsByHashMethod;
   }
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  @java.lang.Deprecated // Use {@link #getGetDynastyMethod()} instead. 
+  public static final io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
+      rpcpb.Rpc.GetDynastyResponse> METHOD_GET_DYNASTY = getGetDynastyMethod();
+
+  private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
+      rpcpb.Rpc.GetDynastyResponse> getGetDynastyMethod;
+
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
+      rpcpb.Rpc.GetDynastyResponse> getGetDynastyMethod() {
+    io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest, rpcpb.Rpc.GetDynastyResponse> getGetDynastyMethod;
+    if ((getGetDynastyMethod = ApiServiceGrpc.getGetDynastyMethod) == null) {
+      synchronized (ApiServiceGrpc.class) {
+        if ((getGetDynastyMethod = ApiServiceGrpc.getGetDynastyMethod) == null) {
+          ApiServiceGrpc.getGetDynastyMethod = getGetDynastyMethod = 
+              io.grpc.MethodDescriptor.<rpcpb.Rpc.ByBlockHeightRequest, rpcpb.Rpc.GetDynastyResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "rpcpb.ApiService", "GetDynasty"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  rpcpb.Rpc.ByBlockHeightRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  rpcpb.Rpc.GetDynastyResponse.getDefaultInstance()))
+                  .setSchemaDescriptor(new ApiServiceMethodDescriptorSupplier("GetDynasty"))
+                  .build();
+          }
+        }
+     }
+     return getGetDynastyMethod;
+  }
 
   /**
    * Creates a new async stub that supports all call types for the service
@@ -772,6 +804,13 @@ public final class ApiServiceGrpc {
       asyncUnimplementedUnaryCall(getGetEventsByHashMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getDynasty(rpcpb.Rpc.ByBlockHeightRequest request,
+        io.grpc.stub.StreamObserver<rpcpb.Rpc.GetDynastyResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getGetDynastyMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -893,6 +932,13 @@ public final class ApiServiceGrpc {
                 rpcpb.Rpc.HashRequest,
                 rpcpb.Rpc.EventsResponse>(
                   this, METHODID_GET_EVENTS_BY_HASH)))
+          .addMethod(
+            getGetDynastyMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                rpcpb.Rpc.ByBlockHeightRequest,
+                rpcpb.Rpc.GetDynastyResponse>(
+                  this, METHODID_GET_DYNASTY)))
           .build();
     }
   }
@@ -1101,6 +1147,14 @@ public final class ApiServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(getGetEventsByHashMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getDynasty(rpcpb.Rpc.ByBlockHeightRequest request,
+        io.grpc.stub.StreamObserver<rpcpb.Rpc.GetDynastyResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getGetDynastyMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -1290,6 +1344,13 @@ public final class ApiServiceGrpc {
     public rpcpb.Rpc.EventsResponse getEventsByHash(rpcpb.Rpc.HashRequest request) {
       return blockingUnaryCall(
           getChannel(), getGetEventsByHashMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public rpcpb.Rpc.GetDynastyResponse getDynasty(rpcpb.Rpc.ByBlockHeightRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getGetDynastyMethod(), getCallOptions(), request);
     }
   }
 
@@ -1486,6 +1547,14 @@ public final class ApiServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(getGetEventsByHashMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.GetDynastyResponse> getDynasty(
+        rpcpb.Rpc.ByBlockHeightRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getGetDynastyMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_GET_NEB_STATE = 0;
@@ -1505,6 +1574,7 @@ public final class ApiServiceGrpc {
   private static final int METHODID_ESTIMATE_GAS = 14;
   private static final int METHODID_GET_GAS_USED = 15;
   private static final int METHODID_GET_EVENTS_BY_HASH = 16;
+  private static final int METHODID_GET_DYNASTY = 17;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -1591,6 +1661,10 @@ public final class ApiServiceGrpc {
           serviceImpl.getEventsByHash((rpcpb.Rpc.HashRequest) request,
               (io.grpc.stub.StreamObserver<rpcpb.Rpc.EventsResponse>) responseObserver);
           break;
+        case METHODID_GET_DYNASTY:
+          serviceImpl.getDynasty((rpcpb.Rpc.ByBlockHeightRequest) request,
+              (io.grpc.stub.StreamObserver<rpcpb.Rpc.GetDynastyResponse>) responseObserver);
+          break;
         default:
           throw new AssertionError();
       }
@@ -1669,6 +1743,7 @@ public final class ApiServiceGrpc {
               .addMethod(getEstimateGasMethod())
               .addMethod(getGetGasUsedMethod())
               .addMethod(getGetEventsByHashMethod())
+              .addMethod(getGetDynastyMethod())
               .build();
         }
       }
