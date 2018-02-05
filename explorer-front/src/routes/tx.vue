@@ -101,15 +101,10 @@
         },
         computed: {
             urlChange() {
-                console.log("在这里下载 block 信息, 目前的 block id 是", this.$route.params.id);
-
-
                 api.getTx(this.$route.params.id, o => {
                     this.tx = o;
-                    console.log(o);
                 }, xhr => {
-                    console.log(xhr);
-
+                    this.$router.replace("/404");
                 });
             }
         },
