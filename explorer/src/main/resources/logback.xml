@@ -23,10 +23,10 @@
         </encoder>
     </appender>
 
-    <logger name="io.nebulas.explorer" level="INFO"></logger>
-    <logger name="io.nebulas.explorer.repository" level="debug"></logger>
-    <logger name="org.mybatis.spring" level="debug"></logger>
-    <logger name="org.springframework" level="INFO"></logger>
+    <logger name="io.nebulas.explorer" level="INFO"/>
+    <logger name="io.nebulas.explorer.repository" level="INFO"/>
+    <logger name="org.mybatis.spring" level="ERROR"/>
+    <logger name="org.springframework" level="ERROR"/>
 
     <root level="INFO">
         <appender-ref ref="explorer_console_log"/>

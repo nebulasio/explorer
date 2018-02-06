@@ -18,6 +18,8 @@ public interface NebBlockMapper {
 
     Integer add(NebBlock block);
 
+    Integer updateBlockIrreversible(Long height);
+
     long count();
 
     long countByMiner(String miner);
