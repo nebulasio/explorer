@@ -195,14 +195,8 @@ public class SysService {
                 continue;
             }
 
-            List<String> dynastyDelegateList = nebDynastyService.findDynastyDelegateByBlockHeight(blk.getHeight());
-            if (CollectionUtils.isNotEmpty(dynastyDelegateList)) {
-                List<NebDynasty> dynastyList = new ArrayList<>(dynastyDelegateList.size());
-                dynastyDelegateList.forEach(d -> {
-                    dynastyList.add(new NebDynasty(blk.getHeight(), d));
-                });
-                nebDynastyService.batchAddNebDynasty(dynastyList);
-            }
+            List<String> dynastyDelegateList = grpcClientService.getDynasty(blk.getHeight());
+            nebDynastyService.batchAddNebDynasty(blk.getHeight(), dynastyDelegateList);
 
             List<Transaction> txs = blk.getTransactions();
             for (int tpos = 0; tpos < txs.size(); ) {

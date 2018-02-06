@@ -32,6 +32,14 @@ public class NebBlockService {
         return (null != entity) && nebBlockMapper.add(entity) > 0;
     }
 
+    public Integer updateBlockIrreversible(Long maxIrreversibleBlockHeight) {
+        return nebBlockMapper.updateBlockIrreversible(maxIrreversibleBlockHeight);
+    }
+
+    public long count() {
+        return nebBlockMapper.count();
+    }
+
     /**
      * According to miner hash query block number
      *
@@ -92,10 +100,6 @@ public class NebBlockService {
             pageIterator.setData(blkList);
         }
         return pageIterator;
-    }
-
-    public long count() {
-        return nebBlockMapper.count();
     }
 
     /**

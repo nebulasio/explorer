@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +33,22 @@ public class NebDynastyService {
             return 0;
         }
         return nebDynastyMapper.batchAdd(dynasties);
+    }
+
+    /**
+     * batch save dynasty information
+     *
+     * @param height    block height
+     * @param delegates delegate address
+     * @return effect rows number
+     */
+    public Integer batchAddNebDynasty(long height, List<String> delegates) {
+        if (CollectionUtils.isEmpty(delegates)) {
+            return 0;
+        }
+        List<NebDynasty> dynastyList = new ArrayList<>(delegates.size());
+        delegates.forEach(d -> dynastyList.add(new NebDynasty(height, d)));
+        return nebDynastyMapper.batchAdd(dynastyList);
     }
 
     /**

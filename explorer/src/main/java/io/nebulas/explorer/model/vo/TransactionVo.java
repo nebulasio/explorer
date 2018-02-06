@@ -45,10 +45,10 @@ public class TransactionVo implements Serializable {
     public TransactionVo build(NebTransaction txn) {
         this.hash = txn.getHash();
         this.status = txn.getStatus();
-        this.value = NasUnitUtil.convert2Nas(txn.getValue());
+        this.value = txn.getValue();
         this.nonce = txn.getNonce();
         this.type = txn.getType();
-        this.gasPrice = NasUnitUtil.convert2Nas(txn.getGasPrice());
+        this.gasPrice = txn.getGasPrice();
         this.gasLimit = txn.getGasLimit();
         this.gasUsed = txn.getGasUsed();
         this.data = txn.getData();
@@ -61,10 +61,10 @@ public class TransactionVo implements Serializable {
 
     public TransactionVo build(NebPendingTransaction txn) {
         this.hash = txn.getHash();
-        this.value = NasUnitUtil.convert2Nas(txn.getValue());
+        this.value = txn.getValue();
         this.nonce = txn.getNonce();
         this.type = txn.getType();
-        this.gasPrice = NasUnitUtil.convert2Nas(txn.getGasPrice());
+        this.gasPrice = txn.getGasPrice();
         this.gasLimit = txn.getGasLimit();
         this.data = txn.getData();
         this.timestamp = txn.getTimestamp();
