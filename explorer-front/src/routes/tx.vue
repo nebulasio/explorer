@@ -36,7 +36,7 @@
                 </tr>
                 <tr>
                     <td>TimeStamp</td>
-                    <td>{{ tx.timestamp }}</td>
+                    <td>{{ timeConversion(tx.timeDiff) }} ago</td>
                 </tr>
                 <tr>
                     <td>From</td>
@@ -77,7 +77,7 @@
                 <tr>
                     <td>Input Data</td>
                     <td>
-                        <textarea disabled rows="7"></textarea>
+                        <textarea disabled rows="7">{{ tx.data   }}</textarea>
                     </td>
                 </tr>
             </table>
@@ -93,11 +93,17 @@
     </div>
 </template>
 <script>
-    var api = require("@/assets/api");
+    var api = require("@/assets/api"),
+        utility = require("@/assets/utility");
 
     module.exports = {
         components: {
             "vue-tab-buttons": require("@/components/vue-tab-buttons").default
+        },
+        methods: {
+            timeConversion(ms) {
+                return utility.timeConversion(ms / 1000);
+            }
         },
         computed: {
             urlChange() {
