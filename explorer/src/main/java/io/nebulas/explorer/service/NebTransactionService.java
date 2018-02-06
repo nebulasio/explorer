@@ -217,9 +217,6 @@ public class NebTransactionService {
      */
     public Map<String, Long> countTxCntGroupMapByTimestamp(Date from, Date to) {
         List<Map<String, Object>> txCntResultList = nebTransactionMapper.countTxCntGroupByTimestamp(parseDate2Str(from), parseDate2Str(to));
-        if (CollectionUtils.isEmpty(txCntResultList)) {
-            return Collections.emptyMap();
-        }
         Map<String, Long> txCntMap = txCntResultList.stream()
                 .collect(Collectors.toMap(k -> k.get("ts").toString(), v -> Long.valueOf(v.get("cnt").toString())));
 
