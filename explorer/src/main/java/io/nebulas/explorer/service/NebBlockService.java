@@ -32,11 +32,22 @@ public class NebBlockService {
         return (null != entity) && nebBlockMapper.add(entity) > 0;
     }
 
+    /**
+     * update block finality property
+     *
+     * @param maxIrreversibleBlockHeight the max irreversible block height
+     * @return effect rows number
+     */
     public Integer updateBlockIrreversible(Long maxIrreversibleBlockHeight) {
         return nebBlockMapper.updateBlockIrreversible(maxIrreversibleBlockHeight);
     }
 
-    public long count() {
+    /**
+     * calculate block total number
+     *
+     * @return block total number
+     */
+    public long countBlockCnt() {
         return nebBlockMapper.count();
     }
 

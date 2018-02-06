@@ -196,7 +196,8 @@ public class RpcController {
             page = MAX_PAGE;
         }
 
-        BigDecimal totalBalance = BigDecimal.ONE;//todo
+        long maxBlockHeight = nebBlockService.getMaxHeight();
+        BigDecimal totalBalance = new BigDecimal(20000000 + 0.48 * maxBlockHeight).setScale(8,BigDecimal.ROUND_DOWN).stripTrailingZeros();
         List<NebAddress> addressList = nebAddressService.findAddressOrderByBalance(page, PAGE_SIZE);
         Map<String, BigDecimal> percentageMap = addressList.stream()
                 .collect(Collectors.toMap(NebAddress::getHash, a -> a.getCurrentBalance().divide(totalBalance, 8, BigDecimal.ROUND_DOWN)));
@@ -219,7 +220,7 @@ public class RpcController {
         long totalAccountsCnt = nebAddressService.countTotalAddressCnt();
         long totalPage = totalAccountsCnt / PAGE_SIZE + 1;
         result.put("totalAccountsCnt", totalAccountsCnt);
-        result.put("totalBalance", totalBalance);
+        result.put("totalBalance", totalBalance.toPlainString());
         result.put("page", page);
         result.put("addressList", voList);
         result.put("totalPage", totalPage > MAX_PAGE ? MAX_PAGE : totalPage);

@@ -4,7 +4,6 @@ import io.grpc.StatusRuntimeException;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
-import io.nebulas.explorer.domain.NebDynasty;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.grpc.GrpcChannelService;
 import io.nebulas.explorer.grpc.GrpcClientService;
@@ -15,7 +14,6 @@ import io.nebulas.explorer.model.Zone;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +53,7 @@ public class SysService {
         do {
             final long start = System.currentTimeMillis();
             try {
-                long blockCount = nebBlockService.count();
+                long blockCount = nebBlockService.countBlockCnt();
                 if (blockCount > 0) {
                     List<Zone> fragments = getFragments();
                     if (fragments.isEmpty()) {
@@ -114,7 +112,7 @@ public class SysService {
             ExecutorService executor = Executors.newFixedThreadPool(zones.size());
             for (Zone zone : zones) {
                 executor.execute(() -> {
-                    // spin loop until success
+//                     spin loop until success
                     try {
                         populate(zone.getFrom(), zone.getTo());
                     } catch (UnsupportedEncodingException e) {
