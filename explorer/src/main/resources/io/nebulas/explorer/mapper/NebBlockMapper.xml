@@ -24,6 +24,13 @@
         #{parentHash,jdbcType=VARCHAR}, #{timestamp,jdbcType=TIMESTAMP}, #{miner,jdbcType=VARCHAR},
         #{coinbase,jdbcType=VARCHAR}, #{nonce,jdbcType=BIGINT}, #{finality,jdbcType=TINYINT})
     </insert>
+    <update id="updateBlockIrreversible" parameterType="java.lang.Long">
+        <![CDATA[
+        UPDATE `neb_block`
+        SET `finality` = 1
+        WHERE `height` <= #{height,jdbcType=BIGINT} and `finality` = 0
+        ]]>
+    </update>
 
     <select id="count" resultType="java.lang.Long">
         select count(1)

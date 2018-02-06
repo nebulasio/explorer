@@ -37,6 +37,9 @@ public class Const {
     // TopicLinkBlock the topic of link a block.
     public static final String TopicLinkBlock = "chain.linkBlock";
 
+    // TopicLibBlock the topic of latest irreversible block.
+    public static final String TopicLibBlock = "chain.latestIrreversibleBlock";
+
     // above block
 
 
