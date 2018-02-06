@@ -70,8 +70,8 @@
                 <tr>
                     <td>Minted</td>
                     <td>
-                        <router-link v-bind:to='"/address/" + block.miner.hash'>{{ block.miner.alias || block.miner.hash }}</router-link>
-                        (Nanopool)
+                        <router-link v-bind:to='"/address/" + block.miner.hash'>{{ block.miner.hash }}</router-link>
+                        <span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
                     </td>
                 </tr>
 

@@ -209,6 +209,9 @@
             "vue-tab-buttons": require("@/components/vue-tab-buttons").default
         },
         computed: {
+            tabButtons() {
+                return this.obj && this.obj.mintedBlkCnt ? ["Transactions", "Minted Blocks"] : ["Transactions"];
+            },
             urlChange() {
                 api.getAddress(this.$route.params.id, o => {
                     this.minted = o.mintedBlkList;
@@ -229,7 +232,6 @@
                 minted: [],
                 obj: null,
                 tab: 0,
-                tabButtons: ["Transactions", "Minted Blocks"],
                 txs: []
             };
         },
