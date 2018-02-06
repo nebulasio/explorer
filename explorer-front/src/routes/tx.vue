@@ -56,15 +56,15 @@
                 </tr>
                 <tr>
                     <td>Gas Limit</td>
-                    <td>{{ tx.gasLimit }}</td>
+                    <td>{{ tx.gasLimit }} NAS</td>
                 </tr>
                 <tr>
                     <td>Gas Used By Txn</td>
-                    <td>{{ tx.gasReward }}</td>
+                    <td>{{ tx.gasReward }} NAS</td>
                 </tr>
                 <tr>
                     <td>Gas Price</td>
-                    <td>{{ tx.gasPrice }}</td>
+                    <td>{{ tx.gasPrice }} NAS</td>
                 </tr>
                 <tr>
                     <td>Actual Tx Cost/Fee</td>
@@ -77,7 +77,7 @@
                 <tr>
                     <td>Input Data</td>
                     <td>
-                        <textarea rows="7"></textarea>
+                        <textarea disabled rows="7"></textarea>
                     </td>
                 </tr>
             </table>
