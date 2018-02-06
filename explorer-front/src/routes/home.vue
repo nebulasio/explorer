@@ -240,7 +240,7 @@
     }
 </style>
 <template>
-    <div class="container vue-home boxShadow">
+    <div class="container vue-home">
         <div class=top>
             <div class=row>
                 <div class=col-md-8>
