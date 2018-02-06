@@ -146,7 +146,9 @@ function timeConversion(millisec) {
     else
         return years + " Years";
 }
-
+function timeConversionSec(millisec) {
+    return (millisec / 1000).toFixed(1) + " Sec";
+}
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
 function ua() {
     // Opera 8.0+
