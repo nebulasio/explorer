@@ -1,6 +1,7 @@
 package io.nebulas.explorer.domain;
 
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -98,7 +99,22 @@ public class NebTransaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public String getTxFee(){
+    public String getTxFee() {
+        if (StringUtils.isEmpty(gasUsed) || StringUtils.isEmpty(gasPrice)) {
+            return "";
+        }
         return new BigDecimal(gasUsed).multiply(new BigDecimal(gasPrice)).toPlainString();
+    }
+
+    public BigDecimal getGasUsedBd() {
+        return StringUtils.isEmpty(this.gasUsed) ? BigDecimal.ZERO : new BigDecimal(this.gasUsed);
+    }
+
+    public BigDecimal getGasPriceBd() {
+        return StringUtils.isEmpty(this.gasPrice) ? BigDecimal.ZERO : new BigDecimal(this.gasPrice);
+    }
+
+    public BigDecimal getGasLimitBd() {
+        return StringUtils.isEmpty(this.gasLimit) ? BigDecimal.ZERO : new BigDecimal(this.gasLimit);
     }
 }

@@ -45,10 +45,13 @@
     </insert>
 
     <insert id="batchAddNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
-        INSERT INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
+        INSERT INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,
+        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
         VALUES
         <foreach collection="transactions" item="tx" separator=",">
-            (#{tx.id}, #{tx.hash}, #{tx.blockHash}, #{tx.blockHeight}, #{tx.from}, #{tx.to}, #{tx.status}, #{tx.value},#{tx.nonce}, #{tx.timestamp}, #{tx.type}, #{tx.data}, #{tx.gasPrice}, #{tx.gasLimit}, #{tx.gasUsed}, #{tx.createdAt})
+            (#{tx.id}, #{tx.hash}, #{tx.blockHash}, #{tx.blockHeight}, #{tx.from}, #{tx.to}, #{tx.status},
+            #{tx.value},#{tx.nonce}, #{tx.timestamp}, #{tx.type}, #{tx.data}, #{tx.gasPrice}, #{tx.gasLimit},
+            #{tx.gasUsed}, #{tx.createdAt})
         </foreach>
     </insert>
 
@@ -123,6 +126,16 @@
         LIMIT ${offset},${limit}
     </select>
 
+    <select id="findByBlockHeights" resultType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE block_height IN
+        <foreach collection="blockHeights" item="item" open="(" close=")" separator=",">
+            #{item,jdbcType=BIGINT}
+        </foreach>
+    </select>
+
     <select id="countTxnInBlock" parameterType="map" resultType="io.nebulas.explorer.domain.BlockSummary">
         select
         block_height as blockHeight,
@@ -153,7 +166,7 @@
         GROUP BY `to`
     </select>
 
-    <select id="countTxCntGroupByTimestamp" parameterType="map"  resultType="java.util.Map">
+    <select id="countTxCntGroupByTimestamp" parameterType="map" resultType="java.util.Map">
         SELECT
           LEFT(`timestamp`,10) AS `ts`,
           COUNT(1) AS `cnt`

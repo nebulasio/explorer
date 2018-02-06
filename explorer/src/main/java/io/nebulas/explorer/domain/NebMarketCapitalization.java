@@ -20,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class NebMarketCapitalization implements Serializable {
     /**  */
-    private Integer id;
+    private Long id;
 
     /**  */
     private BigDecimal marketCap;
