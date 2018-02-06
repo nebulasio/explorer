@@ -3,12 +3,8 @@
         border: 0;
     }
 
-    .vue-tx textarea {
-        width: 100%;
-    }
-
-    .vue-tx tr>td:first-child::after {
-        content: ":";
+    .vue-tx td.code {
+        background-color: #f8f9fa;
     }
 </style>
 <template>
@@ -20,65 +16,69 @@
             <h3>Transation Information</h3>
             <table class=table v-if=tx>
                 <tr>
-                    <td>TxHash</td>
-                    <td>{{ tx.hash }}</td>
+                    <td>TxHash:</td>
+                    <td class=monospace>{{ tx.hash }}</td>
                 </tr>
                 <tr>
-                    <td>TxReceipt Status</td>
+                    <td>TxReceipt Status:</td>
                     <td>Success</td>
                 </tr>
                 <tr>
-                    <td>Block Height</td>
+                    <td>Block Height:</td>
                     <td>
-                        <router-link v-bind:to="/block/ +  tx.block.height">{{ tx.block.height }}</router-link>
+                        <router-link v-bind:to='"/block/" + tx.block.height'>{{ tx.block.height }}</router-link>
                         (210 block confirmations)
                     </td>
                 </tr>
                 <tr>
-                    <td>TimeStamp</td>
+                    <td>TimeStamp:</td>
                     <td>{{ timeConversion(tx.timeDiff) }} ago</td>
                 </tr>
                 <tr>
-                    <td>From</td>
-                    <td>
-                        <router-link v-bind:to="/address/ +  tx.from.hash">{{ tx.from.hash }}</router-link>
+                    <td>From:</td>
+                    <td class=monospace>
+                        <router-link v-bind:to='"/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link>
                     </td>
                 </tr>
                 <tr>
-                    <td>To</td>
-                    <td>
-                        <router-link v-bind:to="/address/ +  tx.to.hash">{{ tx.to.hash }}</router-link>
+                    <td>To:</td>
+                    <td class=monospace>
+                        <router-link v-bind:to='"/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
                     </td>
                 </tr>
                 <tr>
-                    <td>Value</td>
+                    <td>Value:</td>
                     <td>{{ tx.value }}</td>
                 </tr>
                 <tr>
-                    <td>Gas Limit</td>
-                    <td>{{ tx.gasLimit }} NAS</td>
+                    <td>Gas Limit:</td>
+                    <td>{{ tx.gasLimit }}</td>
                 </tr>
                 <tr>
-                    <td>Gas Used By Txn</td>
+                    <td>Gas Used By Txn:</td>
                     <td>{{ tx.gasReward }} NAS</td>
                 </tr>
                 <tr>
-                    <td>Gas Price</td>
+                    <td>Gas Price:</td>
                     <td>{{ tx.gasPrice }} NAS</td>
                 </tr>
                 <tr>
-                    <td>Actual Tx Cost/Fee</td>
+                    <td>Actual Tx Cost/Fee:</td>
                     <td>{{ tx.txFee }}</td>
                 </tr>
                 <tr>
-                    <td>Nonce</td>
+                    <td>Nonce:</td>
                     <td>{{ tx.nonce }}</td>
                 </tr>
                 <tr>
-                    <td>Input Data</td>
-                    <td>
-                        <textarea disabled rows="7">{{ tx.data   }}</textarea>
+                    <td>Input Data:</td>
+                    <td class=code>
+                        <pre><code class=language-javascript v-html=formatCode></code></pre>
                     </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
                 </tr>
             </table>
         </div>
@@ -93,19 +93,49 @@
     </div>
 </template>
 <script>
-    var api = require("@/assets/api"),
+    var jsBeautify = require("js-beautify").js_beautify,
+        prism = require("prismjs"),
+        api = require("@/assets/api"),
         utility = require("@/assets/utility");
+
+    require("prismjs/themes/prism.css");
 
     module.exports = {
         components: {
             "vue-tab-buttons": require("@/components/vue-tab-buttons").default
         },
-        methods: {
-            timeConversion(ms) {
-                return utility.timeConversion(ms / 1000);
-            }
-        },
         computed: {
+            formatCode() {
+                var o, lang, code;
+
+                if (this.tx) switch (this.tx.type) {
+                    // 1 type=binary    【前端显示：Normal】
+                    // 2 type=deploy    【前端显示：deploy contract】
+                    // 3 type=call      【前端显示：call contract】
+                    // 4 type=candidate 【前端显示：dpos candidate】
+                    // 5 type=delegate  【前端显示：dpos delegate】
+
+                    case "binary": break;
+                    case "call": break;
+                    case "candidate": break;
+                    case "delegate": break;
+                    case "deploy": break;
+                }
+
+                if (s) {
+                    o = JSON.parse(s),
+                        lang = o.SourceType,
+                        code = o.Source;
+
+                    // if (lang == "js")
+                    lang = prism.languages.javascript;
+
+                    code = jsBeautify(code);
+                    return code;
+                    // return prism.highlight(code, lang);
+                } else
+                    return "";
+            },
             urlChange() {
                 api.getTx(this.$route.params.id, o => {
                     this.tx = o;
@@ -120,6 +150,11 @@
                 tabButtons: ["Overview"],
                 tx: null
             };
+        },
+        methods: {
+            timeConversion(ms) {
+                return utility.timeConversion(ms / 1000);
+            }
         }
     };
 </script>
