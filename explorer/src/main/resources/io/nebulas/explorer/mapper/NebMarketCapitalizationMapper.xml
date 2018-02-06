@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.nebulas.explorer.mapper.NebMarketCapitalizationMapper">
     <resultMap id="BaseResultMap" type="io.nebulas.explorer.domain.NebMarketCapitalization">
-        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="market_cap" property="marketCap" jdbcType="DECIMAL"/>
         <result column="volume_24h" property="volume24h" jdbcType="DECIMAL"/>
         <result column="change_24h" property="change24h" jdbcType="DECIMAL"/>

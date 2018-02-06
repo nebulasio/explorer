@@ -3,12 +3,13 @@ package io.nebulas.explorer.util;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Desc:
- * User: HaiNan.Wang
- * Date: 2018/1/27
+ * Page string util
+ *
+ * @author nathan wang
+ * @version 1.0
+ * @since 2018-01-25
  */
 public class PageStringUtil {
-
 
     public static String replace(String str, int length, String append) {
         if (StringUtils.isEmpty(str)) {
@@ -18,10 +19,5 @@ public class PageStringUtil {
             return str;
         }
         return str.substring(0, length) + append;
-    }
-
-    public static void main(String[] args) {
-        String s = "abcdef";
-        System.out.println(PageStringUtil.replace(s, 2, "..."));
     }
 }

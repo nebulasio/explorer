@@ -25,9 +25,7 @@ import rpcpb.ApiServiceGrpc;
 import rpcpb.Rpc;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -274,6 +272,21 @@ public class GrpcClientService {
         return populateBlock(block);
     }
 
+    public Block getLatestIrreversibleBlock() throws UnsupportedEncodingException {
+        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
+        Rpc.BlockResponse block;
+        try {
+            block = stub.latestIrreversibleBlock(Rpc.NonParamsRequest.newBuilder().build());
+        } catch (StatusRuntimeException e) {
+            String errMessage = e.getMessage();
+            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
+                return null;
+            }
+            throw e;
+        }
+        return populateBlock(block);
+    }
+
     public NebState getNebState() {
         ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
         Rpc.GetNebStateResponse nebState;
@@ -287,6 +300,33 @@ public class GrpcClientService {
             throw e;
         }
         return populateNebState(nebState);
+    }
+
+    public List<String> getDynasty(Long height) {
+        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
+        Rpc.GetDynastyResponse dynasty;
+        try {
+            dynasty = stub.getDynasty(Rpc.ByBlockHeightRequest.newBuilder().setHeight(height).build());
+
+        } catch (StatusRuntimeException e) {
+            String errMessage = e.getMessage();
+            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
+                return null;
+            }
+            throw e;
+        }
+        return populateDynasty(dynasty);
+    }
+
+    private List<String> populateDynasty(Rpc.GetDynastyResponse dynasty) {
+        if (null == dynasty) {
+            return Collections.emptyList();
+        }
+        List<String> delegateList = new ArrayList<>();
+        for (Iterator i = dynasty.getDelegateesList().iterator(); i.hasNext(); ) {
+            delegateList.add((String) i.next());
+        }
+        return delegateList;
     }
 
     @Deprecated

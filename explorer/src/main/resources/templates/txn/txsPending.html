@@ -84,7 +84,7 @@
             </tr>
             <tr th:each="tx,iterStat :${pendingTxnList}">
                 <td class="ne">
-                    <a href="#" th:text="${tx.hash}" th:href="@{/tx/{hash}(hash=${tx.hash})}">%TxHash</a>
+                    <a href="#" th:text="${pageStringUtil.replace(tx.hash,20,'...'}" th:href="@{/tx/{hash}(hash=${tx.hash})}">%TxHash</a>
                 </td>
                 <td class="ne" th:text="${#dates.format(tx.timestamp, 'yyyy-mm-dd hh:MM:ss')}">%secs ago</td>
                 <td th:text="${tx.gasLimit}">

@@ -36,6 +36,8 @@ public interface NebTransactionMapper {
 
     List<NebTransaction> findTxnOrderById(@Param("offset") int offset, @Param("limit") int limit);
 
+    List<NebTransaction> findByBlockHeights(@Param("blockHeights") List<Long> blockHeights);
+
     List<BlockSummary> countTxnInBlock(@Param("blockHeights") List<Long> blockHeights);
 
     List<Map<String, String>> countTxnCntMapByFrom(List<String> addressHashes);
