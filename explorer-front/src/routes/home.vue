@@ -312,8 +312,7 @@
                             </div>
                             <div class=list_right_banner_right>
                                 <p>
-                                    TX#&nbsp;&nbsp;&nbsp;
-                                    <router-link v-bind:to="/tx/ + o.hash">{{ o.hash }}</router-link>
+                                    TX#&nbsp;&nbsp;&nbsp;<router-link v-bind:to="/tx/ + o.hash">{{ o.hash }}</router-link>
                                 </p>
                                 <p>
                                     From
