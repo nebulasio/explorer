@@ -115,6 +115,11 @@ module.exports = {
 
 // 网址加前缀 http://192.168.1.168:8080/api/
 function ajax1(action, args, done, fail) {
+    var
+        prefix = "http://192.168.1.168:8080/api/"
+        prefix = "http://52.53.225.118/api/"
+        ;
+
     var a = ajaxSplitAction(action);
-    return ajax(a[0] + " " + "http://52.53.225.118/api/" + a[1], args, done, fail);
+    return ajax(a[0] + " " + prefix + a[1], args, done, fail);
 }

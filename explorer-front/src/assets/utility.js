@@ -9,6 +9,7 @@ module.exports = {
     randomInt: randomInt,
     shuffle: shuffle,
     timeConversion: timeConversion,
+    timeConversionSec: timeConversionSec,
     ua: ua,
     yyyymmdd: yyyymmdd
 };
@@ -146,6 +147,7 @@ function timeConversion(millisec) {
     else
         return years + " Years";
 }
+
 function timeConversionSec(millisec) {
     return (millisec / 1000).toFixed(1) + " Sec";
 }
