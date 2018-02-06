@@ -284,7 +284,7 @@
                                 <p>
                                     <router-link v-bind:to="/block/ + o.height">block {{ o.height }}</router-link>
                                 </p>
-                                <p class=list_banner_left_p1>{{ timeConversion(o.timeDiff) }} ago</p>
+                                <p class=list_banner_left_p1>{{ timeConversionSec(o.timeDiff) }} ago</p>
                             </div>
                             <div class=list_banner_right>
                                 Minted By
@@ -312,13 +312,16 @@
                             </div>
                             <div class=list_right_banner_right>
                                 <p>
-                                    TX#&nbsp;&nbsp;&nbsp;<router-link v-bind:to="/tx/ + o.hash">{{ o.hash }}</router-link>
+                                    TX#&nbsp;&nbsp;&nbsp;
+                                    <router-link v-bind:to="/tx/ + o.hash">{{ o.hash }}</router-link>
                                 </p>
                                 <p>
-                                    From<router-link v-bind:to="/address/ + o.from.hash">{{ o.from.hash }}</router-link>
+                                    From
+                                    <router-link v-bind:to="/address/ + o.from.hash">{{ o.from.hash }}</router-link>
                                 </p>
                                 <p>
-                                    To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<router-link v-bind:to="/address/ + o.to.hash">{{ o.to.hash }} </router-link>
+                                    To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <router-link v-bind:to="/address/ + o.to.hash">{{ o.to.hash }} </router-link>
                                 </p>
                             </div>
                         </li>
@@ -399,7 +402,11 @@
         methods: {
             timeConversion(ms) {
                 return utility.timeConversion(ms / 1000);
+            },
+            timeConversionSec(ms) {
+                return utility.timeConversionSec(ms / 1000);
             }
+
         },
         mounted() {
             var vm = this;
