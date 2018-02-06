@@ -27,7 +27,6 @@
                     <td>Block Height:</td>
                     <td>
                         <router-link v-bind:to='"/block/" + tx.block.height'>{{ tx.block.height }}</router-link>
-                        (210 block confirmations)
                     </td>
                 </tr>
                 <tr>
@@ -71,6 +70,10 @@
                     <td>{{ tx.nonce }}</td>
                 </tr>
                 <tr>
+                    <td>Transation Type:</td>
+                    <td>{{ tx.type }}</td>
+                </tr>
+                <tr>
                     <td>Input Data:</td>
                     <td class=code>
                         <pre><code class=language-javascript v-html=formatCode></code></pre>
@@ -108,22 +111,16 @@
             formatCode() {
                 var o, lang, code;
 
-                if (this.tx) switch (this.tx.type) {
-                    // 1 type=binary    【前端显示：Normal】
-                    // 2 type=deploy    【前端显示：deploy contract】
-                    // 3 type=call      【前端显示：call contract】
-                    // 4 type=candidate 【前端显示：dpos candidate】
-                    // 5 type=delegate  【前端显示：dpos delegate】
 
-                    case "binary": break;
-                    case "call": break;
-                    case "candidate": break;
-                    case "delegate": break;
-                    case "deploy": break;
-                }
+                // 192.168.1.168:8080/api/tx/77f8e4da2dcedb406d59739368077d41cdfb988df3d30050cd7082913cb06955
 
-                if (s) {
-                    o = JSON.parse(s),
+                // type=binary      【前端显示：Normal】
+                // type=deploy      【前端显示：deploy contract】
+                // type=call        【前端显示：call contract】
+                // type=candidate   【前端显示：dpos candidate】
+                // type=delegate    【前端显示：dpos delegate】
+                if (this.tx && this.tx.type == binary) {
+                    o = JSON.parse(this.tx.data),
                         lang = o.SourceType,
                         code = o.Source;
 
@@ -134,7 +131,7 @@
                     return code;
                     // return prism.highlight(code, lang);
                 } else
-                    return "";
+                    return "0x0";
             },
             urlChange() {
                 api.getTx(this.$route.params.id, o => {
