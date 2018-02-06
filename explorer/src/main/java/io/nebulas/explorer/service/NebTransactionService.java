@@ -276,9 +276,9 @@ public class NebTransactionService {
                 blkTotalGasLimitBd = blkTotalGasLimitBd.add(tx.getGasLimitBd());
             }
 
-            String gasReward = NasUnitUtil.convert2Nas(blkGasRewardBd.toPlainString());
+            String gasReward = blkGasRewardBd.toPlainString();
             long gasLimit = blkTotalGasLimitBd.longValue();
-            String avgGasPrice = NasUnitUtil.convert2Nas(blkTotalGasPriceBd.divide(new BigDecimal(txs.size()), 2, BigDecimal.ROUND_DOWN).toPlainString());
+            String avgGasPrice = blkTotalGasPriceBd.divide(new BigDecimal(txs.size()), 2, BigDecimal.ROUND_DOWN).toPlainString();
             return new BlockSummary(blockHeight, txs.size(), gasReward, gasLimit, avgGasPrice);
         }
     }

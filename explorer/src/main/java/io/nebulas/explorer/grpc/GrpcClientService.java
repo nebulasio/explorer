@@ -5,20 +5,19 @@ import io.grpc.Channel;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
-import io.nebulas.explorer.domain.NebAddress;
-import io.nebulas.explorer.domain.NebBlock;
-import io.nebulas.explorer.domain.NebPendingTransaction;
-import io.nebulas.explorer.domain.NebTransaction;
+import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.DposContext;
 import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Transaction;
 import io.nebulas.explorer.service.NebAddressService;
 import io.nebulas.explorer.service.NebBlockService;
+import io.nebulas.explorer.service.NebDynastyService;
 import io.nebulas.explorer.service.NebTransactionService;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import rpcpb.ApiServiceGrpc;
@@ -45,7 +44,8 @@ public class GrpcClientService {
     private GrpcChannelService grpcChannelService;
     private NebBlockService nebBlockService;
     private NebTransactionService nebTransactionService;
-    private final NebAddressService nebAddressService;
+    private NebAddressService nebAddressService;
+    private NebDynastyService nebDynastyService;
 
     public void subscribe() {
         Channel channel = grpcChannelService.getChannel();
@@ -67,134 +67,15 @@ public class GrpcClientService {
                     log.error(String.format("data string %s can NOT parse into json", dataStr), e);
                     return;
                 }
-                if (Const.TopicLinkBlock.equals(sr.getTopic())) {
-                    String hash = data.getString("hash");
-                    if (StringUtils.isBlank(hash)) {
-                        log.error("empty hash");
-                    } else {
-                        NebBlock nebBlock = nebBlockService.getNebBlockByHash(hash);
-                        if (nebBlock == null) {
-                            try {
-                                Block block;
-                                try {
-                                    block = getBlockByHash(hash, true);
-                                } catch (StatusRuntimeException e) {
-                                    log.error("get block by hash error, skipped block hash " + hash, e);
-                                    return;
-                                }
-                                if (block == null) {
-                                    log.warn("block with hash {} not ready", hash);
-                                } else {
-                                    log.info("get block by hash {}", block.toString());
-                                    Integer trx = data.getInteger("tx");
-                                    if (trx != null && trx > 0) {
-                                        log.info("guess the block has transaction");
-                                        if (block.getTransactions() == null || block.getTransactions().isEmpty()) {
-                                            log.info("but can not get block transactions by full transaction");
-                                        }
-                                    }
-                                    addAddr(block.getMiner(), 0);
-                                    addAddr(block.getCoinbase(), 0);
-                                    NebBlock newBlock = NebBlock.builder()
-                                            .id(IdGenerator.getId())
-                                            .height(block.getHeight())
-                                            .hash(block.getHash())
-                                            .parentHash(block.getParentHash())
-                                            .timestamp(new Date(block.getTimestamp() * 1000))
-                                            .miner(block.getMiner())
-                                            .coinbase(block.getCoinbase())
-                                            .nonce(block.getNonce())
-                                            .createdAt(new Date(System.currentTimeMillis())).build();
-                                    nebBlockService.addNebBlock(newBlock);
-                                    List<Transaction> txs = block.getTransactions();
 
-                                    for (Transaction tx : txs) {
-                                        String gasUsed;
-                                        try {
-                                            gasUsed = getGasUsed(tx.getHash());
-                                        } catch (StatusRuntimeException e) {
-                                            log.error("get gas used error, set gas used to null for tx hash " + tx.getHash(), e);
-                                            gasUsed = null;
-                                        }
-                                        if (gasUsed != null) {
-                                            log.info("gas used: {}", gasUsed);
-                                        }
-                                        NebPendingTransaction nebPendingTransaction
-                                                = nebTransactionService.getNebPendingTransactionByHash(tx.getHash());
-                                        if (nebPendingTransaction != null) {
-                                            nebTransactionService.deleteNebPendingTransaction(nebPendingTransaction.getId());
-                                        }
-                                        NebTransaction nebTxs = NebTransaction.builder()
-                                                .id(IdGenerator.getId())
-                                                .hash(tx.getHash())
-                                                .blockHeight(block.getHeight())
-                                                .blockHash(block.getHash())
-                                                .from(tx.getFrom())
-                                                .to(tx.getTo())
-                                                .status(tx.getStatus())
-                                                .value(tx.getValue())
-                                                .nonce(tx.getNonce())
-                                                .timestamp(new Date(tx.getTimestamp() * 1000))
-                                                .type(tx.getType())
-                                                .data(tx.getData())
-                                                .gasPrice(tx.getGasPrice())
-                                                .gasLimit(tx.getGasLimit())
-                                                .gasUsed(gasUsed)
-                                                .createdAt(new Date())
-                                                .build();
-                                        nebTransactionService.addNebTransaction(nebTxs);
-                                    }
-                                }
-                            } catch (UnsupportedEncodingException e) {
-                                log.error("no block yet", e);
-                            } catch (Throwable e) {
-                                log.error("sys error", e);
-                            }
-                        } else {
-                            log.warn("block with hash {} already existed", hash);
-                        }
-                    }
-                } else if (Const.TopicPendingTransaction.equals(sr.getTopic())) {
-                    String hash = data.getString("hash");
-                    if (StringUtils.isBlank(hash)) {
-                        log.error("empty hash");
-                    } else {
-                        NebPendingTransaction pendingNebTransaction
-                                = nebTransactionService.getNebPendingTransactionByHash(hash);
-
-                        if (pendingNebTransaction == null) {
-                            Transaction txSource;
-                            try {
-                                txSource = getTransactionByHash(hash);
-                            } catch (UnsupportedEncodingException e) {
-                                log.error("get tx by hash error, skipped pending tx hash " + hash, e);
-                                return;
-                            }
-                            if (txSource == null) {
-                                log.warn("pending tx with hash {} not ready", hash);
-                            } else {
-                                log.info("get pending tx by hash {}", hash);
-                                NebPendingTransaction pendingTxToSave = NebPendingTransaction.builder()
-                                        .id(IdGenerator.getId())
-                                        .hash(hash)
-                                        .from(txSource.getFrom())
-                                        .to(txSource.getTo())
-                                        .value(txSource.getValue())
-                                        .nonce(txSource.getNonce())
-                                        .timestamp(new Date(txSource.getTimestamp() * 1000))
-                                        .type(txSource.getType())
-                                        .gasPrice(txSource.getGasPrice())
-                                        .gasLimit(txSource.getGasLimit())
-                                        .createdAt(new Date())
-                                        .data(txSource.getData())
-                                        .build();
-
-                                nebTransactionService.addNebPendingTransaction(pendingTxToSave);
-                            }
-                        } else {
-                            log.warn("duplicate pending neb transaction {}", pendingNebTransaction.getHash());
-                        }
-                    }
+                String topic = sr.getTopic();
+                String hash = data.getString("hash");
+                if (Const.TopicLinkBlock.equals(topic)) {
+                    processTopicLinkBlock(hash);
+                } else if (Const.TopicPendingTransaction.equals(topic)) {
+                    processTopicPendingTransaction(hash);
+                } else if (Const.TopicLibBlock.equals(topic)) {
+                    processTopicLibBlock(hash);
                 }
             }
 
@@ -221,10 +102,160 @@ public class GrpcClientService {
             }
         };
         asyncStub.subscribe(Rpc.SubscribeRequest.newBuilder()
-                        .addTopics(Const.TopicPendingTransaction)
-                        .addTopics(Const.TopicLinkBlock)
-                        .build()
-                , responseObserver);
+                .addTopics(Const.TopicPendingTransaction)
+                .addTopics(Const.TopicLinkBlock)
+                .addTopics(Const.TopicLibBlock)
+                .build(), responseObserver);
+    }
+
+    private void processTopicLinkBlock(String hash) {
+        if (StringUtils.isBlank(hash)) {
+            log.error("empty hash");
+            return;
+        }
+        NebBlock nebBlock = nebBlockService.getNebBlockByHash(hash);
+        if (null != nebBlock) {
+            log.warn("block with hash {} already existed", hash);
+            return;
+        }
+        try {
+            Block block;
+            try {
+                block = getBlockByHash(hash, true);
+            } catch (StatusRuntimeException e) {
+                log.error("get block by hash error, skipped block hash " + hash, e);
+                return;
+            }
+
+            if (block == null) {
+                log.warn("block with hash {} not ready", hash);
+                return;
+            }
+
+            log.info("get block by hash {}", block.toString());
+//            Integer trx = data.getInteger("tx");
+//            if (trx != null && trx > 0) {
+//                log.info("guess the block has transaction");
+//                if (block.getTransactions() == null || block.getTransactions().isEmpty()) {
+//                    log.info("but can not get block transactions by full transaction");
+//                }
+//            }
+            addAddr(block.getMiner(), 0);
+            addAddr(block.getCoinbase(), 0);
+
+            Block latestIrreversibleBlk = null;
+            try {
+                latestIrreversibleBlk = getLatestIrreversibleBlock();
+            } catch (StatusRuntimeException e) {
+                log.error("get block by height error", e);
+            }
+
+            NebBlock newBlock = NebBlock.builder()
+                    .id(IdGenerator.getId())
+                    .height(block.getHeight())
+                    .hash(block.getHash())
+                    .parentHash(block.getParentHash())
+                    .timestamp(new Date(block.getTimestamp() * 1000))
+                    .miner(block.getMiner())
+                    .coinbase(block.getCoinbase())
+                    .nonce(block.getNonce())
+                    .finality(latestIrreversibleBlk != null && block.getHeight() <= latestIrreversibleBlk.getHeight())
+                    .createdAt(new Date(System.currentTimeMillis())).build();
+            nebBlockService.addNebBlock(newBlock);
+
+            List<Transaction> txs = block.getTransactions();
+            for (Transaction tx : txs) {
+                String gasUsed;
+                try {
+                    gasUsed = getGasUsed(tx.getHash());
+                } catch (StatusRuntimeException e) {
+                    log.error("get gas used error, set gas used to null for tx hash " + tx.getHash(), e);
+                    gasUsed = null;
+                }
+                if (gasUsed != null) {
+                    log.info("gas used: {}", gasUsed);
+                }
+                NebPendingTransaction nebPendingTransaction = nebTransactionService.getNebPendingTransactionByHash(tx.getHash());
+                if (nebPendingTransaction != null) {
+                    nebTransactionService.deleteNebPendingTransaction(nebPendingTransaction.getId());
+                }
+                NebTransaction nebTxs = NebTransaction.builder()
+                        .id(IdGenerator.getId())
+                        .hash(tx.getHash())
+                        .blockHeight(block.getHeight())
+                        .blockHash(block.getHash())
+                        .from(tx.getFrom())
+                        .to(tx.getTo())
+                        .status(tx.getStatus())
+                        .value(tx.getValue())
+                        .nonce(tx.getNonce())
+                        .timestamp(new Date(tx.getTimestamp() * 1000))
+                        .type(tx.getType())
+                        .data(tx.getData())
+                        .gasPrice(tx.getGasPrice())
+                        .gasLimit(tx.getGasLimit())
+                        .gasUsed(gasUsed)
+                        .createdAt(new Date())
+                        .build();
+                nebTransactionService.addNebTransaction(nebTxs);
+            }
+
+            List<String> delegateList = getDynasty(block.getHeight());
+            nebDynastyService.batchAddNebDynasty(block.getHeight(), delegateList);
+
+        } catch (UnsupportedEncodingException e) {
+            log.error("no block yet", e);
+        } catch (Throwable e) {
+            log.error("sys error", e);
+        }
+    }
+
+    private void processTopicPendingTransaction(String hash) {
+        if (StringUtils.isBlank(hash)) {
+            log.error("empty hash");
+            return;
+        }
+
+        NebPendingTransaction pendingNebTransaction = nebTransactionService.getNebPendingTransactionByHash(hash);
+        if (pendingNebTransaction == null) {
+            Transaction txSource;
+            try {
+                txSource = getTransactionByHash(hash);
+            } catch (UnsupportedEncodingException e) {
+                log.error("get tx by hash error, skipped pending tx hash " + hash, e);
+                return;
+            }
+            if (txSource == null) {
+                log.warn("pending tx with hash {} not ready", hash);
+            } else {
+                log.info("get pending tx by hash {}", hash);
+                NebPendingTransaction pendingTxToSave = NebPendingTransaction.builder()
+                        .id(IdGenerator.getId())
+                        .hash(hash)
+                        .from(txSource.getFrom())
+                        .to(txSource.getTo())
+                        .value(txSource.getValue())
+                        .nonce(txSource.getNonce())
+                        .timestamp(new Date(txSource.getTimestamp() * 1000))
+                        .type(txSource.getType())
+                        .gasPrice(txSource.getGasPrice())
+                        .gasLimit(txSource.getGasLimit())
+                        .createdAt(new Date())
+                        .data(txSource.getData())
+                        .build();
+                nebTransactionService.addNebPendingTransaction(pendingTxToSave);
+            }
+        } else {
+            log.warn("duplicate pending neb transaction {}", pendingNebTransaction.getHash());
+        }
+    }
+
+    private void processTopicLibBlock(String hash) {
+        NebBlock block = nebBlockService.getNebBlockByHash(hash);
+        if (null != block) {
+            nebBlockService.updateBlockIrreversible(block.getHeight());
+        }
+        log.warn("block with hash {} has not been synced", hash);
     }
 
     private void addAddr(String hash, int type) {
