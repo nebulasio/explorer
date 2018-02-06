@@ -14,8 +14,8 @@
     <insert id="batchAdd" parameterType="io.nebulas.explorer.domain.NebDynasty">
         insert into `neb_dynasty` (`block_height`, `delegate`)
         values
-        <foreach collection="dynasties" separator=",">(#{item.blockHeight,jdbcType=BIGINT},
-            #{item.delegate,jdbcType=VARCHAR})
+        <foreach collection="dynasties" item="item" separator=",">
+            (#{item.blockHeight,jdbcType=BIGINT}, #{item.delegate,jdbcType=VARCHAR})
         </foreach>
     </insert>
 
