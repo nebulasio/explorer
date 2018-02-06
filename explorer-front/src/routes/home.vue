@@ -190,7 +190,6 @@
     }
 
     .vue-home .list_right_banner_right p a {
-        display: inline-block;
         width: 366px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -241,7 +240,7 @@
     }
 </style>
 <template>
-    <div class="container vue-home">
+    <div class="container vue-home boxShadow">
         <div class=top>
             <div class=row>
                 <div class=col-md-8>
@@ -313,13 +312,13 @@
                             </div>
                             <div class=list_right_banner_right>
                                 <p>
-                                    <router-link v-bind:to="/tx/ + o.hash">TX#&nbsp;&nbsp;&nbsp;{{ o.hash }}</router-link>
+                                    TX#&nbsp;&nbsp;&nbsp;<router-link v-bind:to="/tx/ + o.hash">{{ o.hash }}</router-link>
                                 </p>
                                 <p>
-                                    <router-link v-bind:to="/address/ + o.from.hash">From&nbsp;{{ o.from.hash }}</router-link>
+                                    From<router-link v-bind:to="/address/ + o.from.hash">{{ o.from.hash }}</router-link>
                                 </p>
                                 <p>
-                                    <router-link v-bind:to="/address/ + o.to.hash">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ o.to.hash }} </router-link>
+                                    To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<router-link v-bind:to="/address/ + o.to.hash">{{ o.to.hash }} </router-link>
                                 </p>
                             </div>
                         </li>
