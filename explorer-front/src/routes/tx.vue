@@ -55,11 +55,11 @@
                 </tr>
                 <tr>
                     <td>Gas Used By Txn:</td>
-                    <td>{{ tx.gasReward }} NAS</td>
+                    <td>{{ tx.gasReward }} Nas</td>
                 </tr>
                 <tr>
                     <td>Gas Price:</td>
-                    <td>{{ tx.gasPrice }} NAS</td>
+                    <td>{{ tx.gasPrice }} Nas</td>
                 </tr>
                 <tr>
                     <td>Actual Tx Cost/Fee:</td>
