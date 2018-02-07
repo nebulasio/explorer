@@ -7,20 +7,9 @@
         margin-top: 16px;
     }
 
-    .vue-home .banner {
-        margin-top: 20px;
-    }
-
-    .vue-home .banner_left {
-        height: 800px;
-        /* background-color: gray; */
-    }
-
-    .vue-home .banner_left .list_left {
-        width: 100%;
+    .vue-home .list {
         height: 725px;
         overflow: auto;
-        /* border:2px solid black; */
     }
 
     .vue-home .banner_left .list_tab {
@@ -44,156 +33,96 @@
         top: 20%;
     }
 
-    .vue-home .list_left li {
-        width: 100%;
-        height: 120px;
-        border-bottom: 4px solid #f7f7f7;
+    .vue-home .li {
+        align-items: center;
         background-color: #fff;
-        position: relative;
+        border-bottom: 4px solid #f7f7f7;
+        display: flex;
+        height: 120px;
     }
 
-    .vue-home .banner_right {
-        height: 800px;
-        /* background-color: blue; */
+    .vue-home li .monospace {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    .vue-home .banner_right .list_right {
-        width: 100%;
-        height: 725px;
-        overflow: auto;
-        /* border:2px solid black; */
+    .vue-home .blocks li .monospace {
+        width: 350px;
     }
 
-    .vue-home .banner_right .list_tab {
-        width: 100%;
+    .vue-home .txs li .monospace {
+        width: 400px;
+    }
+
+    .vue-home .blocks li>.img {
+        background: url(/static/img/block_bg.jpg) center no-repeat;
+        flex-shrink: 0;
+        margin-right: 20px;
+        height: 90px;
+        width: 160px;
+    }
+
+    .vue-home .blocks li>.img>* {
+        color: white;
+        display: block;
+        text-align: center;
+    }
+
+    .vue-home .tab-right {
         height: 60px;
         border-bottom: 3px solid #f7f7f7;
         background-color: #fff;
         position: relative;
     }
 
-    .vue-home .banner_right .list_tab .img {
+    .vue-home .tab-right .img {
         position: absolute;
         top: 33%;
         left: 2%;
         font-size: 16px;
     }
 
-    .vue-home .banner_right .list_tab .btn {
+    .vue-home .tab-right .btn {
         position: absolute;
         right: 2%;
         top: 20%;
     }
 
-    .vue-home .list_right li {
-        width: 100%;
-        height: 120px;
-        border-bottom: 4px solid #f7f7f7;
-        background-color: #fff;
+    .vue-home .txs li {
+        /* 右侧列表 状态不同 左边框有不同的状态颜色, 目前不知道啥状态所以是按顺序给颜色 */
         border-left: 2px solid;
-        position: relative;
     }
 
-    /* 右侧列表 状态不同 左边框有不同的状态颜色, 目前不知道啥状态所以是按顺序给颜色 */
+    .vue-home .txs li>img {
+        flex-shrink: 0;
+        margin: 0 20px;
+    }
 
-    .vue-home .list_right li:nth-of-type(4n + 1) {
+    .vue-home .txs li tr>td:first-child {
+        height: 28px;
+        width: 40px;
+    }
+
+    .vue-home .txs li:nth-of-type(4n + 1) {
         border-left-color: #3cba54;
     }
 
-    .vue-home .list_right li:nth-of-type(4n + 2) {
+    .vue-home .txs li:nth-of-type(4n + 2) {
         border-left-color: #f4c20d;
     }
 
-    .vue-home .list_right li:nth-of-type(4n + 3) {
+    .vue-home .txs li:nth-of-type(4n + 3) {
         border-left-color: #db3236;
     }
 
-    .vue-home .list_right li:nth-of-type(4n + 4) {
+    .vue-home .txs li:nth-of-type(4n + 4) {
         border-left-color: #4885ed;
     }
 
-    .vue-home .list_right .list_2_2 {
-        width: 100%;
-        height: 120px;
-        border-bottom: 4px solid #f7f7f7;
-        background-color: #fff;
-        border-left: 2px solid gray;
-        position: relative;
-    }
-
-    .vue-home .list_right .list_2_3 {
-        width: 100%;
-        height: 120px;
-        border-bottom: 4px solid #f7f7f7;
-        background-color: #fff;
-        border-left: 2px solid red;
-        position: relative;
-    }
-
-    .vue-home .list_banner_left {
-        background: url(/static/img/block_bg.jpg) center no-repeat;
-        width: 30%;
-        height: 90px;
-        position: absolute;
-        left: 2%;
-        top: 12%;
-        color: #fff;
-    }
-
-    .vue-home .list_banner_left p {
-        margin-left: 38px;
-        margin-top: 18px;
-    }
-
-    .vue-home .list_banner_left_p1 {
-        margin-left: 40px;
-    }
-
-    .vue-home .list_banner_left a {
-        color: #fff;
-    }
-
-    .vue-home .list_banner_right {
-        width: 60%;
-        height: 90px;
-        position: absolute;
-        left: 34%;
-        top: 12%;
-        padding-top: 3%;
-        text-overflow: ellipsis;
-        overflow: hidden;
-
-    }
-
-    .vue-home .list_right_banner_left {
-        width: 10%;
-        height: 86px;
-        position: absolute;
-        top: 28%;
-        left: 2%;
-    }
-
-    .vue-home .list_right_banner_right {
-        width: 80%;
-        height: 90px;
-        position: absolute;
-        left: 14%;
-        top: 12%;
-    }
-
-    .vue-home .list_right_banner_right p {
-        width: 89%;
-        height: 28px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        margin: 0;
-    }
-
-    .vue-home .list_right_banner_right p a {
-        width: 366px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+    /*
+        chart
+        */
 
     .vue-home #chart {
         max-width: 800px;
@@ -268,7 +197,7 @@
                 </div>
             </div>
         </div>
-        <div class=banner>
+        <div class=mt20>
             <div class=row>
                 <div class="banner_left col-md-6">
                     <div class=list_tab>
@@ -278,17 +207,15 @@
                         </div>
                         <router-link class="btn btn-default pull-right" to=/blocks role=button>View All</router-link>
                     </div>
-                    <ul class=list_left>
-                        <li v-for="o in blocks">
-                            <div class=list_banner_left>
-                                <p>
-                                    <router-link v-bind:to="/block/ + o.height">block {{ o.height }}</router-link>
-                                </p>
-                                <p class=list_banner_left_p1>{{ timeConversionSec(o.timeDiff) }} ago</p>
+                    <ul class="blocks list">
+                        <li class=li v-for="o in blocks">
+                            <div class=img>
+                                <router-link class=mt20 v-bind:to="/block/ + o.height">block {{ o.height }}</router-link>
+                                <div class=mt20>{{ timeConversionSec(o.timeDiff) }} ago</div>
                             </div>
-                            <div class=list_banner_right>
+                            <div class=right>
                                 Minted By
-                                <router-link v-bind:to="/address/ + o.miner.hash">{{ o.miner.hash }}</router-link>
+                                <router-link class=monospace v-bind:to="/address/ + o.miner.hash">{{ o.miner.hash }}</router-link>
                                 <div class=mt16>
                                     <router-link v-bind:to='"/txs?block=" + o.height'>
                                         <b>{{ o.txnCnt }}</b> transations</router-link>
@@ -297,31 +224,38 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-6 banner_right">
-                    <div class=list_tab>
+                <div class=col-md-6>
+                    <div class=tab-right>
                         <div class=img>
                             <span class="fa fa-list" aria-hidden=true></span>
                             Transation
                         </div>
                         <router-link class="btn btn-default pull-right" to=/txs role=button>View All</router-link>
                     </div>
-                    <ul class=list_right>
-                        <li v-for="o in txs">
-                            <div class=list_right_banner_left>
-                                <img src=/static/img/icon.png height=43 width=43 alt=" ">
-                            </div>
-                            <div class=list_right_banner_right>
-                                <p>
-                                    TX#&nbsp;&nbsp;&nbsp;<router-link v-bind:to="/tx/ + o.hash">{{ o.hash }}</router-link>
-                                </p>
-                                <p>
-                                    From
-                                    <router-link v-bind:to="/address/ + o.from.hash">{{ o.from.hash }}</router-link>
-                                </p>
-                                <p>
-                                    To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <router-link v-bind:to="/address/ + o.to.hash">{{ o.to.hash }} </router-link>
-                                </p>
+                    <ul class="list txs">
+                        <li class=li v-for="o in txs">
+                            <img src=/static/img/icon.png height=43 width=43 alt="">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td>TX#</td>
+                                        <td>
+                                            <router-link class=monospace v-bind:to='"/tx/ "+ o.hash'>{{ o.hash }}</router-link>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>From</td>
+                                        <td>
+                                            <router-link class=monospace v-bind:to='"/address/" + o.from.hash'>{{ o.from.hash }}</router-link>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>To</td>
+                                        <td>
+                                            <router-link class=monospace v-bind:to='"/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                         </li>
                     </ul>
