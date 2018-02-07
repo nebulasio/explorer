@@ -12,10 +12,6 @@
     .vue-block tr>td:first-child::after {
         content: ":";
     }
-
-    .vue-block .dynasty a {
-        display: block;
-    }
 </style>
 <template>
     <!-- https://etherscan.io/block/4951841 -->
@@ -78,7 +74,10 @@
                 <tr>
                     <td>Dynasty</td>
                     <td class=dynasty>
-                        <router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='"/address/" + dynasty'>{{ dynasty }} </router-link>
+                        <template v-for="dynasty in block.dynasty">
+                            <router-link v-bind:key=dynasty v-bind:to='"/address/" + dynasty'>{{ dynasty }} </router-link>
+                            <br>
+                        </template>
                     </td>
                 </tr>
 
