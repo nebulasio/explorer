@@ -34,8 +34,8 @@
                         <div>{{ timeConversion(o.timeDiff) }} ago</div>
                         <div>{{ Date(o.timestamp) }}</div>
                     </td>
-                    <td>{{ o.gasLimit }}</td>
-                    <td>{{ o.gasPrice }} Nas</td>
+                    <td>{{ numberAddComma(o.gasLimit) }}</td>
+                    <td>{{ numberAddComma(o.gasPrice) }} Nas</td>
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
                     </td>
@@ -124,6 +124,9 @@
             },
             timeConversion(ms) {
                 return utility.timeConversion(ms / 1000);
+            },
+            numberAddComma(n) {
+                return utility.numberAddComma(n);
             }
         },
         mounted() {
