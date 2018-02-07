@@ -57,7 +57,7 @@
                         <router-link v-bind:to='"/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
                     </td>
                     <td>{{ numberAddComma(o.value) }} Nas</td>
-                    <td>{{ numberAddComma(o.txFee) }}</td>
+                    <td>{{ toWei(o.txFee) }}</td>
                 </tr>
             </table>
 
@@ -152,6 +152,9 @@
             },
             timeConversion(ms) {
                 return utility.timeConversion(ms / 1000);
+            },
+            toWei(n) {
+                return utility.toWei(n);
             }
         },
         mounted() {

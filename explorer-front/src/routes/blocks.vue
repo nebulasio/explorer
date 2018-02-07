@@ -32,7 +32,7 @@
                     <td>
                         <router-link v-bind:to='"/address/" + o.miner.hash'>{{ o.miner.alias || o.miner.hash }}</router-link>
                     </td>
-                    <td>{{ o.gasReward }}</td>
+                    <td>{{ toWei(o.gasReward) }}</td>
                     <td>{{ o.gasLimit }}</td>
                     <td>{{ o.avgGasPrice }}</td>
                 </tr>
@@ -133,6 +133,9 @@
             },
             timeConversion(ms) {
                 return utility.timeConversion(ms / 1000);
+            },
+            toWei(n) {
+                return utility.toWei(n);
             }
         },
         mounted() {

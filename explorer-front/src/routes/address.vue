@@ -114,7 +114,7 @@
                         </td>
                         <td>{{ o.value }} Nas</td>
                         <td class=txfee>
-                            <span v-if=o.block.height>{{ numberAddComma(o.txFee) }}</span>
+                            <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
                             <i v-else>(pending)</i>
                         </td>
                     </tr>
@@ -151,7 +151,7 @@
                             <div>{{ Date(o.timestamp) }}</div>
                         </td>
                         <td>{{ o.txnCnt }}</td>
-                        <td>{{ o.gasReward }}</td>
+                        <td>{{ toWei(o.gasReward) }}</td>
                     </tr>
                 </table>
             </div>
@@ -249,6 +249,9 @@
             },
             timeConversion(ms) {
                 return utility.timeConversion(ms / 1000);
+            },
+            toWei(n) {
+                return utility.toWei(n);
             }
         }
     };

@@ -13,7 +13,7 @@
         content: ":";
     }
 
-    .vue-block .dynasty a{
+    .vue-block .dynasty a {
         display: block;
     }
 </style>
@@ -84,9 +84,9 @@
 
                 <tr>
                     <td>Gas Reward</td>
-                    <td>{{ block.blkSummary.gasReward }}</td>
+                    <td>{{ toWei(block.blkSummary.gasReward) }}</td>
                 </tr>
-                
+
             </table>
         </div>
     </div>
@@ -111,6 +111,9 @@
         methods: {
             timeConversion(ms) {
                 return utility.timeConversion(ms / 1000);
+            },
+            toWei(n) {
+                return utility.toWei(n);
             }
         },
         data() {
