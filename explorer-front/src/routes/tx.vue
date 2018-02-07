@@ -51,7 +51,7 @@
                 </tr>
                 <tr>
                     <td>Gas Limit:</td>
-                    <td>{{ tx.gasLimit }}</td>
+                    <td>{{ numberAddComma(tx.gasLimit) }}</td>
                 </tr>
                 <tr>
                     <td>Gas Used By Txn:</td>
@@ -151,7 +151,10 @@
         methods: {
             timeConversion(ms) {
                 return utility.timeConversion(ms / 1000);
-            }
+            },
+            numberAddComma(n) {
+                return utility.numberAddComma(n);
+            },
         }
     };
 </script>
