@@ -18,9 +18,8 @@
         <vue-bread v-bind:arr=breadcrumb title=Transactions></vue-bread>
 
         <div class="container mt20">
-
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info">{{ totalTxs }} transactions found (showing the last {{ arr.length * totalPage }} records)</div>
+                <div class="col info">{{ totalTxs }} transactions found (showing the last {{ maxDisplayCnt }} records)</div>
                 <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
             </div>
 
@@ -76,76 +75,58 @@
         },
         data() {
             return {
-                ajaxParam: {},
                 arr: [],
                 breadcrumb: [
                     { text: "Home", to: "/" },
                     { text: "Transactions", to: "" }
                 ],
                 currentPage: 0,
+                maxDisplayCnt: 0,
                 totalPage: 0,
                 totalTxs: 0
             };
         },
         methods: {
-            changePage() {
-                var p = this.ajaxParam.p;
+            nav(n) {
+                var query = JSON.parse(window.JSON.stringify(this.$route.query));
 
-                if (p)
-                    if (0 < p && p < this.totalPage + 1)
-                        if (p == this.currentPage)
-                            console.log("changePage - 请求的第", p, "页正是当前页, 忽略此次调用");
-                        else {
-                            this.$root.showModalLoading = true;
-
-                            api.getTx(this.ajaxParam, o => {
-                                this.$root.showModalLoading = false;
-                                this.arr = o.txnList;
-                                this.currentPage = o.currentPage;
-                                this.totalPage = o.totalPage;
-                                this.totalTxs = o.txnCnt;
-                            }, xhr => {
-                                console.log(xhr);
-                                this.$root.showModalLoading = false;
-                                this.$router.replace("/404!" + this.$route.fullPath);
-                            });
-                        }
-                    else
-                        console.log("changePage - 请求的第", p, "页不在 [ 1,", this.totalPage, "] 内, 忽略此次调用");
-                else
-                    console.log("changePage - 无效的 p", p, ", 忽略此次调用");
+                query.p = n;
+                this.$router.push({ path: this.$route.path, query });
             },
-            initByRoute() {
-                this.ajaxParam = {
+            nthPage() {
+                this.$root.showModalLoading = true;
+
+                api.getTx({
                     a: this.$route.query.a,
                     block: this.$route.query.block,
-                    p: 1
-                };
-
-                this.currentPage = 0;
-                this.totalPage = 1;
-
-                this.changePage();
-                this.totalPage = 0;
+                    p: this.$route.query.p || 1
+                }, o => {
+                    this.$root.showModalLoading = false;
+                    this.arr = o.txnList;
+                    this.currentPage = o.currentPage;
+                    this.maxDisplayCnt = o.maxDisplayCnt;
+                    this.totalPage = o.totalPage;
+                    this.totalTxs = o.txnCnt;
+                }, xhr => {
+                    console.log(xhr);
+                    this.$root.showModalLoading = false;
+                    this.$router.replace("/404!" + this.$route.fullPath);
+                });
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
             },
             onFirst() {
-                this.ajaxParam.p = 1;
-                this.changePage();
+                this.nav(1);
             },
             onLast() {
-                this.ajaxParam.p = this.totalPage;
-                this.changePage();
+                this.nav(this.totalPage);
             },
             onNext() {
-                this.ajaxParam.p = this.currentPage + 1;
-                this.changePage();
+                this.nav(this.currentPage + 1);
             },
             onPrev() {
-                this.ajaxParam.p = this.currentPage - 1;
-                this.changePage();
+                this.nav(this.currentPage - 1);
             },
             timeConversion(ms) {
                 return utility.timeConversion(ms / 1000);
@@ -155,11 +136,11 @@
             }
         },
         mounted() {
-            this.initByRoute();
+            this.nthPage();
         },
         watch: {
             $route() {
-                this.initByRoute();
+                this.nthPage();
             }
         }
     };

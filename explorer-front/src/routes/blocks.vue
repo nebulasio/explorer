@@ -52,7 +52,6 @@
         },
         data() {
             return {
-                ajaxParam: {},
                 arr: [],
                 breadcrumb: [
                     { text: "Home", to: "/" },
@@ -66,67 +65,61 @@
             };
         },
         methods: {
-            changePage() {
-                var p = this.ajaxParam.p;
+            nthPage() {
+                var p = this.$route.query.p || 1;
 
-                if (p)
-                    if (0 < p && p < this.totalPage + 1)
-                        if (p == this.currentPage)
-                            console.log("changePage - 请求的第", p, "页正是当前页, 忽略此次调用");
-                        else {
-                            this.$root.showModalLoading = true;
+                if (p == this.currentPage)
+                    console.log("nthPage - 请求的第", p, "页正是当前页, 忽略此次调用");
+                else {
+                    this.$root.showModalLoading = true;
 
-                            api.getBlock(this.ajaxParam, o => {
-                                this.$root.showModalLoading = false;
-                                this.arr = o.data;
-                                this.currentPage = o.page;
-                                this.totalPage = o.totalPage;
-                                this.totalBlocks = o.totalCount;
+                    api.getBlock({ p }, o => {
+                        this.$root.showModalLoading = false;
+                        this.arr = o.data;
+                        this.currentPage = o.page;
+                        this.totalPage = o.totalPage;
+                        this.totalBlocks = o.totalCount;
 
-                                if (this.arr.length) {
-                                    this.heightFrom = this.arr[0].height;
-                                    this.heightTo = this.arr[this.arr.length - 1].height;
-                                } else {
-                                    this.heightFrom = 0;
-                                    this.heightTo = 0;
-                                }
-                            }, xhr => {
-                                console.log(xhr);
-                                this.$root.showModalLoading = false;
-                                this.$router.replace("/404!" + this.$route.fullPath);
-                            });
+                        if (this.arr.length) {
+                            this.heightFrom = this.arr[0].height;
+                            this.heightTo = this.arr[this.arr.length - 1].height;
+                        } else {
+                            this.heightFrom = 0;
+                            this.heightTo = 0;
                         }
-                    else
-                        console.log("changePage - 请求的第", p, "页不在 [ 1,", this.totalPage, "] 内, 忽略此次调用");
-                else
-                    console.log("changePage - 无效的 p", p, ", 忽略此次调用");
+                    }, xhr => {
+                        console.log(xhr);
+                        this.$root.showModalLoading = false;
+                        this.$router.replace("/404!" + this.$route.fullPath);
+                    });
+                }
             },
-            initByRoute() {
-                this.ajaxParam = {
-                    p: 1
-                };
-
-                this.currentPage = 0;
-                this.totalPage = 1;
-
-                this.changePage();
-                this.totalPage = 0;
+            numberAddComma(n) {
+                return utility.numberAddComma(n);
             },
             onFirst() {
-                this.ajaxParam.p = 1;
-                this.changePage();
+                this.$router.push({
+                    path: this.$route.path,
+                    query: { p: 1 }
+                });
             },
             onLast() {
-                this.ajaxParam.p = this.totalPage;
-                this.changePage();
+                this.$router.push({
+                    path: this.$route.path,
+                    query: { p: this.totalPage }
+                });
             },
             onNext() {
-                this.ajaxParam.p = this.currentPage + 1;
-                this.changePage();
+                this.$router.push({
+                    path: this.$route.path,
+                    query: { p: this.currentPage + 1 }
+                });
             },
             onPrev() {
-                this.ajaxParam.p = this.currentPage - 1;
-                this.changePage();
+                this.$router.push({
+                    path: this.$route.path,
+                    query: { p: this.currentPage - 1 }
+                });
             },
             timeConversion(ms) {
                 return utility.timeConversion(ms / 1000);
@@ -136,11 +129,11 @@
             }
         },
         mounted() {
-            this.initByRoute();
+            this.nthPage();
         },
         watch: {
             $route() {
-                this.initByRoute();
+                this.nthPage();
             }
         }
     };

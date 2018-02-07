@@ -74,6 +74,8 @@ function millisecondsToMinutesAndSeconds(ms) {
 }
 // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
 function numberAddComma(n) {
+    n = +n || 0;
+
     var parts = n.toString().split(".");
 
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -154,8 +156,7 @@ function timeConversionSec(millisec) {
 }
 
 function toWei(n) {
-    n = +n;
-    n || (n = 0);
+    n = +n || 0;
 
     var wei = n.toFixed(),
         k = (n / 1000).toFixed(),
