@@ -83,11 +83,22 @@
 
                 <tr>
                     <td>Dynasty</td>
-                    <td class=dynasty>
-                        <template v-for="dynasty in block.dynasty">
-                            <router-link v-bind:key=dynasty v-bind:to='"/address/" + dynasty'>{{ dynasty }} </router-link>
-                            <br>
-                        </template>
+                    <td class= "dynasty monospace">
+
+                        <p>
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                Show Dynasty
+                            </button>
+                        </p>
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body">
+                                <template v-for="dynasty in block.dynasty">
+                                    <router-link v-bind:key=dynasty v-bind:to='"/address/" + dynasty'>{{ dynasty }} </router-link>
+                                    <br>
+                                </template>
+                            </div>
+                        </div>
+
                     </td>
                 </tr>
 
