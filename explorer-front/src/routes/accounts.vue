@@ -87,7 +87,7 @@
                             }, xhr => {
                                 console.log(xhr);
                                 // this.ajaxing = false; // 由于跳转了所以不需要修改 ajaxing
-                                this.$router.replace("/404");
+                                this.$router.replace("/404!" + this.$route.fullPath);
                             });
                         }
                     else
