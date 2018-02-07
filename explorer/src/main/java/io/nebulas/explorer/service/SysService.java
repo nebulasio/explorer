@@ -123,7 +123,7 @@ public class SysService {
         }
     }
 
-    private void populate(long from, long to) throws UnsupportedEncodingException {
+    public void populate(long from, long to) throws UnsupportedEncodingException {
         long threadId = Thread.currentThread().getId();
         log.info("Thread {} start populating", threadId);
         long start = System.currentTimeMillis();

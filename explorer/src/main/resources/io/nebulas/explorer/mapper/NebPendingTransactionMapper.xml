@@ -40,7 +40,7 @@
         )
     </insert>
     <insert id="batchAdd" parameterType="NebPendingTransaction" useGeneratedKeys="false">
-        INSERT INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
+        INSERT IGNORE INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
         VALUES
         <foreach collection="transactions" item="tx" separator=",">
             (
