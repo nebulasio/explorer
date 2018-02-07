@@ -4,6 +4,7 @@ import io.nebulas.explorer.domain.NebAddress;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -17,6 +18,8 @@ import java.util.List;
 public interface NebAddressMapper {
 
     Integer add(@Param("id") String id, @Param("hash") String hash, @Param("type") Integer type);
+
+    Integer update(@Param("hash") String hash, @Param("balance") BigDecimal balance);
 
     long countTotalAddressCnt();
 

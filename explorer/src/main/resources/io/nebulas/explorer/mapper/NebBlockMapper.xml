@@ -19,7 +19,7 @@
     </sql>
 
     <insert id="add" parameterType="NebBlock">
-        INSERT INTO `neb_block` (`id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`, `finality`)
+        INSERT IGNORE INTO `neb_block` (`id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`, `finality`)
         VALUES (#{id,jdbcType=VARCHAR}, #{height,jdbcType=BIGINT}, #{hash,jdbcType=VARCHAR},
         #{parentHash,jdbcType=VARCHAR}, #{timestamp,jdbcType=TIMESTAMP}, #{miner,jdbcType=VARCHAR},
         #{coinbase,jdbcType=VARCHAR}, #{nonce,jdbcType=BIGINT}, #{finality,jdbcType=TINYINT})
@@ -77,5 +77,11 @@
         WHERE miner = #{miner,jdbcType=VARCHAR}
         ORDER BY `height` DESC
         LIMIT ${offset}, ${limit}
+    </select>
+
+    <select id="findNebBlockBetweenHeight" parameterType="map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM `neb_block`
+        WHERE `height` BETWEEN #{fromHeight,jdbcType=BIGINT} and #{toHeight,jdbcType=BIGINT}
     </select>
 </mapper>
