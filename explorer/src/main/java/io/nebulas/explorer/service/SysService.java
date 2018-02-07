@@ -109,7 +109,7 @@ public class SysService {
     private void populateZones(List<Zone> zones) {
         if (zones.size() > 0) {
             log.info("zones {}", zones);
-            ExecutorService executor = Executors.newFixedThreadPool(zones.size());
+            ExecutorService executor = Executors.newFixedThreadPool(20);
             for (Zone zone : zones) {
                 executor.execute(() -> {
 //                     spin loop until success
