@@ -10,6 +10,7 @@ module.exports = {
     shuffle: shuffle,
     timeConversion: timeConversion,
     timeConversionSec: timeConversionSec,
+    toWei: toWei,
     ua: ua,
     yyyymmdd: yyyymmdd
 };
@@ -151,6 +152,30 @@ function timeConversion(millisec) {
 function timeConversionSec(millisec) {
     return (millisec / 1000).toFixed(1) + " Sec";
 }
+
+function toWei(n) {
+    n || (n = 0);
+
+    var wei = n.toFixed(),
+        k = (n / 1000).toFixed(),
+        M = (k / 1000).toFixed(),
+        G = (M / 1000).toFixed(),
+        T = (G / 1000).toFixed(),
+        P = (T / 1000).toFixed(),
+        E = (P / 1000).toFixed(),
+        Z = (E / 1000).toFixed(),
+        Y = (Z / 1000).toFixed();
+
+    if (wei < 1000) return wei + " Wei";
+    else if (k < 1000) return k + " kWei";
+    else if (M < 1000) return M + " MWei";
+    else if (G < 1000) return G + " GWei";
+    else if (T < 1000) return T + " TWei";
+    else if (P < 1000) return P + " PWei";
+    else if (E < 1000) return E + " EWei";
+    else return Z + " ZWei";
+}
+
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
 function ua() {
     // Opera 8.0+

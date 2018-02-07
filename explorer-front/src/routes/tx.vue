@@ -51,7 +51,7 @@
                 </tr>
                 <tr>
                     <td>Gas Limit:</td>
-                    <td>{{ numberAddComma(tx.gasLimit) }}</td>
+                    <td>{{ toWei(tx.gasLimit) }}</td>
                 </tr>
                 <tr>
                     <td>Gas Used By Txn:</td>
@@ -63,7 +63,7 @@
                 </tr>
                 <tr>
                     <td>Actual Tx Cost/Fee:</td>
-                    <td>{{ tx.txFee }}</td>
+                    <td>{{ toWei(tx.txFee) }}</td>
                 </tr>
                 <tr>
                     <td>Nonce:</td>
@@ -162,6 +162,9 @@
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
+            },
+            toWei(n) {
+                return utility.toWei(n);
             }
         }
     };
