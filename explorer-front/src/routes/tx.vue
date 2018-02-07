@@ -162,7 +162,7 @@
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
-            },
+            }
         }
     };
 </script>
