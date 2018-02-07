@@ -12,11 +12,13 @@ Vue.use(VueRouter);
 
 new Vue({
     components: {
-        vueFooter: require("@/components/vue-footer").default,
-        vueHeader: require("@/components/vue-header").default
+        "vue-footer": require("@/components/vue-footer").default,
+        "vue-header": require("@/components/vue-header").default,
+        "vue-modal": require("@/components/vue-modal").default
     },
     data: {
-        search: ""
+        search: "",
+        showModalLoading: false
     },
     el: ".vue",
     router: new VueRouter({ routes: require("@/assets/routes") })

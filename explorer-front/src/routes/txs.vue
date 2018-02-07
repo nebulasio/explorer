@@ -76,7 +76,6 @@
         },
         data() {
             return {
-                ajaxing: false,
                 ajaxParam: {},
                 arr: [],
                 breadcrumb: [
@@ -96,20 +95,18 @@
                     if (0 < p && p < this.totalPage + 1)
                         if (p == this.currentPage)
                             console.log("changePage - 请求的第", p, "页正是当前页, 忽略此次调用");
-                        else if (this.ajaxing)
-                            console.log("changePage - 上一个 ajax 还未返回, 忽略此次调用");
                         else {
-                            this.ajaxing = true;
+                            this.$root.showModalLoading = true;
 
                             api.getTx(this.ajaxParam, o => {
-                                this.ajaxing = false;
+                                this.$root.showModalLoading = false;
                                 this.arr = o.txnList;
                                 this.currentPage = o.currentPage;
                                 this.totalPage = o.totalPage;
                                 this.totalTxs = o.txnCnt;
                             }, xhr => {
                                 console.log(xhr);
-                                // this.ajaxing = false; // 由于跳转了所以不需要修改 ajaxing
+                                this.$root.showModalLoading = false;
                                 this.$router.replace("/404!" + this.$route.fullPath);
                             });
                         }

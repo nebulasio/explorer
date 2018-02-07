@@ -45,6 +45,22 @@ td.time:hover :nth-child(2) {
     vertical-align: top;
 }
 
+/*  .modal
+    ============================================================ */
+
+.vue-modal.loading .outer {
+    border-radius: 3px;
+}
+
+.vue-modal.loading .progress {
+    margin: 20px 30px;
+    width: 300px;
+}
+
+.vue-modal.loading .progress-bar {
+    width: 100%;
+}
+
 /*  font awesome
     ============================================================ */
 

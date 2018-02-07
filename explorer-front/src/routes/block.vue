@@ -83,10 +83,11 @@
 
                 <tr>
                     <td>Dynasty</td>
-                    <td>
-                        <div class=dynasty>
-                            <router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='"/address/" + dynasty'>{{ dynasty }} </router-link>
-                        </div>
+                    <td class=dynasty>
+                        <template v-for="dynasty in block.dynasty">
+                            <router-link v-bind:key=dynasty v-bind:to='"/address/" + dynasty'>{{ dynasty }} </router-link>
+                            <br>
+                        </template>
                     </td>
                 </tr>
 
