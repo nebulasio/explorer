@@ -71,7 +71,7 @@
                 </tr>
                 <tr>
                     <td>Transation Type:</td>
-                    <td>{{ tx.type }}</td>
+                    <td>{{ txType }}</td>
                 </tr>
                 <tr>
                     <td>Input Data:</td>
@@ -111,15 +111,7 @@
             formatCode() {
                 var o, lang, code;
 
-
-                // 192.168.1.168:8080/api/tx/77f8e4da2dcedb406d59739368077d41cdfb988df3d30050cd7082913cb06955
-
-                // type=binary      【前端显示：Normal】
-                // type=deploy      【前端显示：deploy contract】
-                // type=call        【前端显示：call contract】
-                // type=candidate   【前端显示：dpos candidate】
-                // type=delegate    【前端显示：dpos delegate】
-                if (this.tx && this.tx.type == binary) {
+                if (this.txType == "normal" && this.tx.data) {
                     o = JSON.parse(this.tx.data),
                         lang = o.SourceType,
                         code = o.Source;
@@ -128,10 +120,26 @@
                     lang = prism.languages.javascript;
 
                     code = jsBeautify(code);
-                    return code;
-                    // return prism.highlight(code, lang);
+                    // return code;
+                    return prism.highlight(code, lang);
                 } else
                     return "0x0";
+            },
+            txType() {
+                // type=binary      【前端显示：Normal】
+                // type=deploy      【前端显示：deploy contract】
+                // type=call        【前端显示：call contract】
+                // type=candidate   【前端显示：dpos candidate】
+                // type=delegate    【前端显示：dpos delegate】
+                if (this.tx) switch (this.tx.type) {
+                    default:
+                    case "binary": return "normal";
+                    case "deploy": return "deploy contract";
+                    case "call": return "call contract";
+                    case "candidate": return "dpos candidate";
+                    case "delegate": return "dpos delegate";
+                } else
+                    return "";
             },
             urlChange() {
                 api.getTx(this.$route.params.id, o => {
