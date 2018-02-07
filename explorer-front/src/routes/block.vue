@@ -47,7 +47,7 @@
                 </tr>
                 <tr>
                     <td>TimeStamp</td>
-                    <td>{{ block.timestamp }}</td>
+                    <td>{{ timeConversion( block.timestamp) }}</td>
                 </tr>
                 <tr>
                     <td>Transactions</td>
@@ -92,7 +92,8 @@
     </div>
 </template>
 <script>
-    var api = require("@/assets/api");
+    var api = require("@/assets/api"),
+        utility = require("@/assets/utility");
 
     module.exports = {
         components: {
@@ -105,6 +106,11 @@
                 }, xhr => {
                     this.$router.replace("/404");
                 });
+            }
+        },
+        methods: {
+            timeConversion(ms) {
+                return utility.timeConversion(ms / 1000);
             }
         },
         data() {
