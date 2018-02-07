@@ -33,8 +33,8 @@
                         <router-link v-bind:to='"/address/" + o.miner.hash'>{{ o.miner.alias || o.miner.hash }}</router-link>
                     </td>
                     <td>{{ toWei(o.gasReward) }}</td>
-                    <td>{{ o.gasLimit }}</td>
-                    <td>{{ o.avgGasPrice }}</td>
+                    <td>{{ numberAddComma(o.gasLimit) }}</td>
+                    <td>{{ numberAddComma(o.avgGasPrice) }}</td>
                 </tr>
             </table>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
