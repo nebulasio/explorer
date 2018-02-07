@@ -167,6 +167,9 @@
     .vue-home text.highcharts-credits {
         display: none;
     }
+    .vue-home .updataTime{
+        float: right;
+    }
 </style>
 <template>
     <div class="container vue-home">
@@ -193,6 +196,7 @@
                                 <span class=msg_change_right>$ {{ market.marketCap }}</span>
                             </div>
                         </div>
+                        <div class="updataTime mt16">updata time : {{ timeConversion(market.createdAt) }} ago</div>
                     </div>
                 </div>
             </div>

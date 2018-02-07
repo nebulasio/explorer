@@ -119,7 +119,7 @@
                 // type=call        【前端显示：call contract】
                 // type=candidate   【前端显示：dpos candidate】
                 // type=delegate    【前端显示：dpos delegate】
-                if (this.tx && this.tx.type == binary) {
+                if (this.tx && this.tx.type == "binary") {
                     o = JSON.parse(this.tx.data),
                         lang = o.SourceType,
                         code = o.Source;
@@ -154,7 +154,7 @@
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
-            },
+            }
         }
     };
 </script>
