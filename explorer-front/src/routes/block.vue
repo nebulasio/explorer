@@ -13,8 +13,14 @@
         content: ":";
     }
 
+    .vue-block .dynasty {
+        height: 78px;
+        overflow: hidden;
+    }
+
     .vue-block .dynasty a {
         display: block;
+
     }
 </style>
 <template>
@@ -77,8 +83,10 @@
 
                 <tr>
                     <td>Dynasty</td>
-                    <td class=dynasty>
-                        <router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='"/address/" + dynasty'>{{ dynasty }} </router-link>
+                    <td>
+                        <div class=dynasty>
+                            <router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='"/address/" + dynasty'>{{ dynasty }} </router-link>
+                        </div>
                     </td>
                 </tr>
 
