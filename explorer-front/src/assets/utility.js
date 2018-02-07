@@ -154,6 +154,7 @@ function timeConversionSec(millisec) {
 }
 
 function toWei(n) {
+    n = +n;
     n || (n = 0);
 
     var wei = n.toFixed(),
