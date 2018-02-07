@@ -22,8 +22,8 @@ public class AddressVo implements Serializable {
     private Integer rank;
     private String hash;
     private String alias;
-    private BigDecimal balance;
-    private BigDecimal percentage;
+    private String balance;
+    private String percentage;
     private Long txCnt;
 
     public AddressVo() {
@@ -35,7 +35,7 @@ public class AddressVo implements Serializable {
     public AddressVo build(NebAddress address) {
         this.hash = address.getHash();
         this.alias = address.getAlias();
-        this.balance = address.getCurrentBalance();
+        this.balance = address.getCurrentBalance().toPlainString();
         return this;
     }
 }

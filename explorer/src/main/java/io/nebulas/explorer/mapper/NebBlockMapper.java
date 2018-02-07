@@ -34,4 +34,5 @@ public interface NebBlockMapper {
 
     List<NebBlock> findByMiner(@Param("miner") String miner, @Param("offset") int offset, @Param("limit") int limit);
 
+    List<NebBlock> findNebBlockBetweenHeight(@Param("fromHeight") Long fromHeight, @Param("toHeight") Long toHeight);
 }

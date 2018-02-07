@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.enums.NebTransactionStatusEnum;
+import io.nebulas.explorer.grpc.GrpcClientService;
 import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.model.PageIterator;
 import io.nebulas.explorer.model.vo.AddressVo;
@@ -16,10 +17,13 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +46,10 @@ public class RpcController {
     private final NebTransactionService nebTransactionService;
     private final NebMarketCapitalizationService nebMarketCapitalizationService;
     private final NebDynastyService nebDynastyService;
+    private final GrpcClientService grpcClientService;
+
+    private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(5);
+
 
     @RequestMapping(value = "/market_cap", method = RequestMethod.GET)
     public JsonResult marketCap() {
@@ -136,6 +144,7 @@ public class RpcController {
 
         long totalPage = txnCnt / PAGE_SIZE + 1;
         result.put("totalPage", !isPending && totalPage > 20 ? 20 : totalPage);
+        result.put("maxDisplayCnt", txnCnt > 500 ? 500 : txnCnt);
         return result;
     }
 
@@ -197,10 +206,12 @@ public class RpcController {
         }
 
         long maxBlockHeight = nebBlockService.getMaxHeight();
-        BigDecimal totalBalance = new BigDecimal(20000000 + 0.48 * maxBlockHeight).setScale(8,BigDecimal.ROUND_DOWN).stripTrailingZeros();
+        BigDecimal totalBalance = new BigDecimal(20000000 + 0.48 * maxBlockHeight).setScale(8, BigDecimal.ROUND_DOWN).stripTrailingZeros();
+
         List<NebAddress> addressList = nebAddressService.findAddressOrderByBalance(page, PAGE_SIZE);
+
         Map<String, BigDecimal> percentageMap = addressList.stream()
-                .collect(Collectors.toMap(NebAddress::getHash, a -> a.getCurrentBalance().divide(totalBalance, 8, BigDecimal.ROUND_DOWN)));
+                .collect(Collectors.toMap(NebAddress::getHash, a -> a.getCurrentBalance().divide(totalBalance, 8, BigDecimal.ROUND_DOWN).stripTrailingZeros()));
 
         List<String> addressHashList = addressList.stream().map(NebAddress::getHash).collect(Collectors.toList());
         Map<String, Long> txCntMap = nebTransactionService.countTxnCntByFromTo(addressHashList);
@@ -210,8 +221,8 @@ public class RpcController {
         for (NebAddress address : addressList) {
             AddressVo vo = new AddressVo().build(address);
             vo.setRank(i);
-            vo.setPercentage(percentageMap.get(address.getHash()));
             vo.setTxCnt(txCntMap.get(address.getHash()));
+            vo.setPercentage(percentageMap.get(address.getHash()).toPlainString());
             voList.add(vo);
             i++;
         }
@@ -264,6 +275,15 @@ public class RpcController {
             txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE));
         }
         result.put("txList", convertTxn2TxnVoWithAddress(txList));
+
+        if (address.getUpdatedAt().before(LocalDateTime.now().plusMinutes(-30).toDate())) {
+            EXECUTOR.execute(() -> {
+                String balance = grpcClientService.getAccountState(hash);
+                if (StringUtils.isNotEmpty(balance)) {
+                    nebAddressService.updateAddressBalance(hash, balance);
+                }
+            });
+        }
         return result;
     }
 

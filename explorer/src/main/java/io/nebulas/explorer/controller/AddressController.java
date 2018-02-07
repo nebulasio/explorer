@@ -151,8 +151,8 @@ public class AddressController extends BaseController {
             vo.setRank(i);
             vo.setHash(address.getHash());
             vo.setAlias(address.getAlias());
-            vo.setBalance(address.getCurrentBalance());
-            vo.setPercentage(percentageMap.get(address.getHash()));
+//            vo.setBalance(address.getCurrentBalance());
+//            vo.setPercentage(percentageMap.get(address.getHash()));
             vo.setTxCnt(txCntMap.get(address.getHash()));
             voList.add(vo);
             i++;

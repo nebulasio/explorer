@@ -1,11 +1,15 @@
 package io.nebulas.explorer.grpc;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import io.grpc.Channel;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
-import io.nebulas.explorer.domain.*;
+import io.nebulas.explorer.domain.NebAddress;
+import io.nebulas.explorer.domain.NebBlock;
+import io.nebulas.explorer.domain.NebPendingTransaction;
+import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.DposContext;
 import io.nebulas.explorer.model.NebState;
@@ -331,6 +335,30 @@ public class GrpcClientService {
             throw e;
         }
         return populateNebState(nebState);
+    }
+
+    public Map<String, String> findAccountStateMap(List<String> hashes) {
+        if (CollectionUtils.isEmpty(hashes)) {
+            return Collections.emptyMap();
+        }
+        Map<String, String> balanceMap = Maps.newHashMap();
+        hashes.forEach(a -> balanceMap.put(a, getAccountState(a)));
+        return balanceMap;
+    }
+
+    public String getAccountState(String addressHash) {
+        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
+        Rpc.GetAccountStateResponse accountState;
+        try {
+            accountState = stub.getAccountState(Rpc.GetAccountStateRequest.newBuilder().setAddress(addressHash).build());
+        } catch (StatusRuntimeException e) {
+            String errMessage = e.getMessage();
+            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
+                return null;
+            }
+            throw e;
+        }
+        return accountState == null ? null : accountState.getBalance();
     }
 
     public List<String> getDynasty(Long height) {
