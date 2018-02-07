@@ -157,4 +157,15 @@ public class NebBlockService {
         return nebBlockMapper.findByMiner(miner, (page - 1) * pageSize, pageSize);
     }
 
+    /**
+     * Query block with block height between fromHeight and toHeight
+     *
+     * @param fromHeight the begin height
+     * @param toHeight   the end height
+     * @return block list
+     */
+    public List<NebBlock> findNebBlockBetweenHeight(long fromHeight, long toHeight) {
+        return nebBlockMapper.findNebBlockBetweenHeight(fromHeight, toHeight);
+    }
+
 }

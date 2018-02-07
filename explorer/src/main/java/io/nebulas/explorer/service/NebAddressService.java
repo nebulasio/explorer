@@ -5,8 +5,10 @@ import io.nebulas.explorer.mapper.NebAddressMapper;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,20 @@ public class NebAddressService {
      */
     public boolean addNebAddress(String hash, int type) {
         return nebAddressMapper.add(IdGenerator.getId(), hash, type) > 0;
+    }
+
+    /**
+     * update address current_balance property
+     *
+     * @param hash    address hash
+     * @param balance current balance
+     * @return saved result
+     */
+    public boolean updateAddressBalance(String hash, String balance) {
+        if (StringUtils.isEmpty(hash) || StringUtils.isEmpty(balance)) {
+            return false;
+        }
+        return nebAddressMapper.update(hash, new BigDecimal(balance)) > 0;
     }
 
     /**
