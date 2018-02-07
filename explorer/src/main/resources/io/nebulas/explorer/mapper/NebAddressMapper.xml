@@ -18,6 +18,12 @@
         INSERT INTO `neb_address` (`id`, `hash`, `type`) VALUES (#{id}, #{hash}, #{type})
     </insert>
 
+    <update id="update" parameterType="map">
+        UPDATE `neb_address`
+        SET `current_balance` = #{balance,jdbcType=DECIMAL}
+        WHERE `hash` = #{hash,jdbcType=VARCHAR}
+    </update>
+
     <select id="countTotalAddressCnt" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_address`
@@ -42,7 +48,8 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_address`
-        WHERE `hash` in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+        WHERE `hash` in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
     </select>
 
 
