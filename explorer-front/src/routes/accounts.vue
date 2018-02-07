@@ -58,52 +58,68 @@
             };
         },
         methods: {
-            nthPage(p) {
-                if (p)
-                    if (p == this.currentPage)
-                        console.log("nthPage - 请求的第", p, "页正是当前页, 忽略此次调用");
-                    else {
-                        this.$root.showModalLoading = true;
+            nthPage() {
+                var p = this.$route.query.p || 1;
 
-                        api.getAccount(p, o => {
-                            this.$root.showModalLoading = false;
-                            this.arr = o.addressList;
-                            this.currentPage = o.page;
-                            this.totalAccounts = o.totalAccountsCnt;
-                            this.totalBalance = o.totalBalance;
-                            this.totalPage = o.totalPage;
+                if (p == this.currentPage)
+                    console.log("nthPage - 请求的第", p, "页正是当前页, 忽略此次调用");
+                else {
+                    this.$root.showModalLoading = true;
 
-                            if (this.arr.length) {
-                                this.heightFrom = this.arr[0].height;
-                                this.heightTo = this.arr[this.arr.length - 1].height;
-                            } else {
-                                this.heightFrom = 0;
-                                this.heightTo = 0;
-                            }
-                        }, xhr => {
-                            console.log(xhr);
-                            this.$root.showModalLoading = false;
-                            this.$router.replace("/404!" + this.$route.fullPath);
-                        });
-                    }
-                else
-                    console.log("nthPage - 无效的 p", p, ", 忽略此次调用");
+                    api.getAccount(p, o => {
+                        this.$root.showModalLoading = false;
+                        this.arr = o.addressList;
+                        this.currentPage = o.page;
+                        this.totalAccounts = o.totalAccountsCnt;
+                        this.totalBalance = o.totalBalance;
+                        this.totalPage = o.totalPage;
+
+                        if (this.arr.length) {
+                            this.heightFrom = this.arr[0].height;
+                            this.heightTo = this.arr[this.arr.length - 1].height;
+                        } else {
+                            this.heightFrom = 0;
+                            this.heightTo = 0;
+                        }
+                    }, xhr => {
+                        console.log(xhr);
+                        this.$root.showModalLoading = false;
+                        this.$router.replace("/404!" + this.$route.fullPath);
+                    });
+                }
             },
             onFirst() {
-                this.nthPage(1);
+                this.$router.push({
+                    path: this.$route.path,
+                    query: { p: 1 }
+                });
             },
             onLast() {
-                this.nthPage(this.totalPage);
+                this.$router.push({
+                    path: this.$route.path,
+                    query: { p: this.totalPage }
+                });
             },
             onNext() {
-                this.nthPage(this.currentPage + 1);
+                this.$router.push({
+                    path: this.$route.path,
+                    query: { p: this.currentPage + 1 }
+                });
             },
             onPrev() {
-                this.nthPage(this.currentPage - 1);
+                this.$router.push({
+                    path: this.$route.path,
+                    query: { p: this.currentPage - 1 }
+                });
             }
         },
         mounted() {
-            this.nthPage(1);
+            this.nthPage();
+        },
+        watch: {
+            $route() {
+                this.nthPage();
+            }
         }
     };
 </script>
