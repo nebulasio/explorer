@@ -59,7 +59,7 @@
                 </tr>
                 <tr>
                     <td>Gas Price:</td>
-                    <td>{{ tx.gasPrice }} Nas</td>
+                    <td>{{ numberAddComma(tx.gasPrice) }} Nas</td>
                 </tr>
                 <tr>
                     <td>Actual Tx Cost/Fee:</td>
