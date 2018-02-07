@@ -104,7 +104,7 @@
                 api.getBlock(this.$route.params.id, o => {
                     this.block = o;
                 }, xhr => {
-                    this.$router.replace("/404");
+                    this.$router.replace("/404!" + this.$route.fullPath);
                 });
             }
         },
