@@ -240,7 +240,7 @@
                                     <tr>
                                         <td>TX#</td>
                                         <td>
-                                            <router-link class=monospace v-bind:to='"/tx/ "+ o.hash'>{{ o.hash }}</router-link>
+                                            <router-link class=monospace v-bind:to='"/tx/"+ o.hash'>{{ o.hash }}</router-link>
                                         </td>
                                     </tr>
                                     <tr>
