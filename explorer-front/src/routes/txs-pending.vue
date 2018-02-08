@@ -27,7 +27,7 @@
                     <th>Value</th>
                 </tr>
                 <tr v-for="o in arr">
-                    <td class=tdxxxwddd>
+                    <td class="tdxxxwddd monospace">
                         <router-link v-bind:to='"/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>
                     <td class=time>
