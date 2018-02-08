@@ -53,7 +53,7 @@
                 </tr>
                 <tr>
                     <td>TimeStamp</td>
-                    <td>{{ timeConversion( block.timestamp) }}</td>
+                    <td>{{ timeConversion(block.timeDiff) }} ago ({{ new Date(block.timestamp).toString() }} | {{ block.timestamp }})</td>
                 </tr>
                 <tr>
                     <td>Transactions</td>
@@ -83,7 +83,7 @@
 
                 <tr>
                     <td>Dynasty</td>
-                    <td class= "dynasty monospace">
+                    <td class="dynasty monospace">
 
                         <p>
                             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">

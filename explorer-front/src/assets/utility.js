@@ -158,24 +158,37 @@ function timeConversionSec(millisec) {
 function toWei(n) {
     n = +n || 0;
 
-    var wei = n.toFixed(),
-        k = (n / 1000).toFixed(),
-        M = (k / 1000).toFixed(),
-        G = (M / 1000).toFixed(),
-        T = (G / 1000).toFixed(),
-        P = (T / 1000).toFixed(),
-        E = (P / 1000).toFixed(),
-        Z = (E / 1000).toFixed(),
-        Y = (Z / 1000).toFixed();
+    var Wei = n.toFixed(),
+        kWei = (Wei / 1000).toFixed(),  // 3
+        MWei = (kWei / 1000).toFixed(), // 6
+        GWei = (MWei / 1000).toFixed(), // 9
+        TWei = (GWei / 1000).toFixed(), // 12
+        PWei = (TWei / 1000).toFixed(), // 15
+        Nas = (PWei / 1000).toFixed(),  // 18
+        kNas = (Nas / 1000).toFixed(),
+        MNas = (kNas / 1000).toFixed(),
+        GNas = (MNas / 1000).toFixed(),
+        TNas = (GNas / 1000).toFixed(),
+        PNas = (TNas / 1000).toFixed(),
+        ENas = (PNas / 1000).toFixed(),
+        ZNas = (ENas / 1000).toFixed(),
+        YNas = (ZNas / 1000).toFixed();
 
-    if (wei < 1000) return wei + " Wei";
-    else if (k < 1000) return k + " kWei";
-    else if (M < 1000) return M + " MWei";
-    else if (G < 1000) return G + " GWei";
-    else if (T < 1000) return T + " TWei";
-    else if (P < 1000) return P + " PWei";
-    else if (E < 1000) return E + " EWei";
-    else return Z + " ZWei";
+    if (Wei < 1000) return Wei + " Wei";
+    else if (kWei < 1000) return kWei + " kWei";
+    else if (MWei < 1000) return MWei + " MWei";
+    else if (GWei < 1000) return GWei + " GWei";
+    else if (TWei < 1000) return TWei + " TWei";
+    else if (PWei < 1000) return PWei + " PWei";
+    else if (Nas < 1000) return Nas + " Nas";
+    else if (kNas < 1000) return kNas + " kNas";
+    else if (MNas < 1000) return MNas + " MNas";
+    else if (GNas < 1000) return GNas + " GNas";
+    else if (TNas < 1000) return TNas + " TNas";
+    else if (PNas < 1000) return PNas + " PNas";
+    else if (ENas < 1000) return ENas + " ENas";
+    else if (ZNas < 1000) return ZNas + " ZNas";
+    else return YNas + " YNas";
 }
 
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser

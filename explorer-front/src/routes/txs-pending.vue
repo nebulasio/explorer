@@ -32,7 +32,7 @@
                     </td>
                     <td class=time>
                         <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                        <div>{{ Date(o.timestamp) }}</div>
+                        <div>{{ Date(o.timestamp) }} | {{ o.timestamp }}</div>
                     </td>
                     <td>{{ numberAddComma(o.gasLimit) }}</td>
                     <td>{{ numberAddComma(o.gasPrice) }} Nas</td>
@@ -45,7 +45,7 @@
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                     </td>
-                    <td>{{ o.value }} Nas</td>
+                    <td>{{ toWei(o.value) }}</td>
                 </tr>
             </table>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
@@ -132,6 +132,9 @@
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
+            },
+            toWei(n) {
+                return utility.toWei(n);
             }
         },
         mounted() {

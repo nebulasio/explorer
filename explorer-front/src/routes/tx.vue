@@ -47,7 +47,7 @@
                 </tr>
                 <tr>
                     <td>Value:</td>
-                    <td>{{ tx.value }}</td>
+                    <td>{{ toWei(tx.value) }}</td>
                 </tr>
                 <tr>
                     <td>Gas Limit:</td>

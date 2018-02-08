@@ -101,7 +101,7 @@
                         </td>
                         <td class=time>
                             <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                            <div>{{ Date(o.timestamp) }}</div>
+                            <div>{{ Date(o.timestamp) }} | {{ o.timestamp }}</div>
                         </td>
                         <td class=tdxxxwddd>
                             <span v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
@@ -112,7 +112,7 @@
                             <span v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
                             <router-link v-else v-bind:to='"/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                         </td>
-                        <td>{{ o.value }} Nas</td>
+                        <td>{{ toWei(o.value) }}</td>
                         <td class=txfee>
                             <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
                             <i v-else>(pending)</i>
@@ -148,7 +148,7 @@
                         </td>
                         <td class=time>
                             <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                            <div>{{ Date(o.timestamp) }}</div>
+                            <div>{{ Date(o.timestamp) }} | {{ o.timestamp }}</div>
                         </td>
                         <td>{{ o.txnCnt }}</td>
                         <td>{{ toWei(o.gasReward) }}</td>
