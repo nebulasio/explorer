@@ -28,8 +28,8 @@
                     </td>
                     <td>
                         <router-link v-bind:to='"/"'>{{ o.txnCnt }}</router-link>
-                    </td>
-                    <td>
+                    </td >
+                    <td class=monospace>
                         <router-link v-bind:to='"/address/" + o.miner.hash'>{{ o.miner.alias || o.miner.hash }}</router-link>
                     </td>
                     <td>{{ toWei(o.gasReward) }}</td>

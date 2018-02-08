@@ -20,7 +20,15 @@
 
     .vue-block .dynasty a {
         display: block;
+    }
 
+    .vue-block .dynasty button {
+        background-color: darkgray;
+        border-color: none;
+    }
+
+    .vue-block .card {
+        border: 0;
     }
 </style>
 <template>
@@ -64,18 +72,18 @@
                 </tr>
                 <tr>
                     <td>Hash</td>
-                    <td>{{ block.hash }}</td>
+                    <td class=monospace>{{ block.hash }}</td>
                 </tr>
                 <tr>
                     <td>Parent Hash</td>
-                    <td>
+                    <td class=monospace>
                         <router-link v-bind:to='"/block/" + block.parentHash'>{{ block.parentHash }}</router-link>
                     </td>
                 </tr>
 
                 <tr>
                     <td>Minted</td>
-                    <td>
+                    <td class=monospace>
                         <router-link v-bind:to='"/address/" + block.miner.hash'>{{ block.miner.hash }}</router-link>
                         <span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
                     </td>
@@ -83,7 +91,7 @@
 
                 <tr>
                     <td>Dynasty</td>
-                    <td class= "dynasty monospace">
+                    <td class="dynasty monospace">
 
                         <p>
                             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
