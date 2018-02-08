@@ -61,7 +61,7 @@
                 </tr>
                 <tr>
                     <td>TimeStamp</td>
-                    <td>{{ timeConversion( block.timestamp) }}</td>
+                    <td>{{ timeConversion(block.timeDiff) }} ago ({{ new Date(block.timestamp).toString() }} | {{ block.timestamp }})</td>
                 </tr>
                 <tr>
                     <td>Transactions</td>
