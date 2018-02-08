@@ -167,7 +167,8 @@
     .vue-home text.highcharts-credits {
         display: none;
     }
-    .vue-home .updataTime{
+
+    .vue-home .updataTime {
         float: right;
     }
 </style>
@@ -343,24 +344,13 @@
             timeConversionSec(ms) {
                 return utility.timeConversionSec(ms / 1000);
             }
-
         },
         mounted() {
-            var vm = this;
+            api.getBlock({ type: "latest" }, o => this.blocks = o);
+            api.getTx({ type: "latest" }, o => this.txs = o);
+            api.getMarketCap(o => this.market = o);
 
-            api.getBlock({ type: "latest" }, o => {
-                this.blocks = o;
-            });
-
-            api.getTx({ type: "latest" }, o => {
-                this.txs = o;
-            });
-
-            api.getMarketCap(o => {
-                this.market = o;
-            });
-
-            api.getTx("cnt_static", function (o) {
+            api.getTx("cnt_static", o => {
                 var i, arr = [];
 
                 for (i in o) arr.push([Date.parse(i), o[i]]);
@@ -369,10 +359,12 @@
                     return a[0] - b[0];
                 });
 
-                vm.chartConfig.series[0].data = arr;
-                require("highcharts").chart("chart", vm.chartConfig);
+                // series 全部是 0 时没法计算纵坐标, highcharts 会把一条线居中显示. 如果想让线靠下就需要给 max 一个非零的值比如 1
+                // this.chartConfig.yAxis.max = 1;
+
+                this.chartConfig.series[0].data = arr;
+                require("highcharts").chart("chart", this.chartConfig);
             });
         }
-
     };
 </script>
