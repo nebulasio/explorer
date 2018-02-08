@@ -26,7 +26,7 @@
                 <tr>
                     <td>Block Height:</td>
                     <td>
-                        <router-link v-bind:to='"/block/" + tx.block.height'>{{ tx.block.height }}</router-link>
+                        <router-link v-if=tx.block v-bind:to='"/block/" + tx.block.height'>{{ tx.block.height }}</router-link>
                     </td>
                 </tr>
                 <tr>
@@ -36,13 +36,13 @@
                 <tr>
                     <td>From:</td>
                     <td class=monospace>
-                        <router-link v-bind:to='"/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link>
+                        <router-link v-if=tx.from v-bind:to='"/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link>
                     </td>
                 </tr>
                 <tr>
                     <td>To:</td>
                     <td class=monospace>
-                        <router-link v-bind:to='"/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
+                        <router-link v-if=tx.to v-bind:to='"/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
                     </td>
                 </tr>
                 <tr>
