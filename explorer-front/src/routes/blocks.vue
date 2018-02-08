@@ -24,7 +24,7 @@
                     </td>
                     <td class=time>
                         <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                        <div>{{ Date(o.timestamp) }}</div>
+                        <div>{{ Date(o.timestamp) }} | {{ o.timestamp }}</div>
                     </td>
                     <td>
                         <router-link v-bind:to='"/"'>{{ o.txnCnt }}</router-link>
