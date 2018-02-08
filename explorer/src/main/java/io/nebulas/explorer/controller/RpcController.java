@@ -93,6 +93,8 @@ public class RpcController {
         }
 
         JsonResult result = JsonResult.success(block);
+        result.put("currentTimestamp", new Date());
+        result.put("timeDiff", System.currentTimeMillis() - block.getTimestamp().getTime());
         result.put("blkMaxHeight", nebBlockService.getMaxHeight());
         result.put("dynasty", nebDynastyService.findDynastyDelegateByBlockHeight(block.getHeight()));
         result.put("blkSummary", nebTransactionService.getBlockSummaryByBlockHeight(block.getHeight()));
