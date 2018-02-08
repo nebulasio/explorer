@@ -44,7 +44,7 @@
                     </td>
                     <td class=time>
                         <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                        <div>{{ Date(o.timestamp) }}</div>
+                        <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/address/" + o.from.hash'>{{ o.from.hash }}</router-link>
@@ -55,7 +55,7 @@
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
                     </td>
-                    <td>{{ numberAddComma(o.value) }} Nas</td>
+                    <td>{{ toWei(o.value) }}</td>
                     <td>{{ toWei(o.txFee) }}</td>
                 </tr>
             </table>

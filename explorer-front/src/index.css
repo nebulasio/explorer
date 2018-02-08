@@ -25,10 +25,11 @@ td.time :nth-child(2) {
     background-color: rgba(0, 0, 0, .8);
     color: white;
     display: none;
-    left: -80px;
+    left: 50%;
     padding: 10px;
     pointer-events: none;
     position: absolute;
+    transform: translateX(-50%);
     white-space: nowrap;
     z-index: 1;
 }
