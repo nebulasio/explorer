@@ -15,7 +15,10 @@ CREATE TABLE IF NOT EXISTS `neb_block` (
   COMMENT 'hex string of miner address',
   `coinbase`    VARCHAR(64)         NOT NULL
   COMMENT 'hex string of coinbase address',
-  `nonce`       BIGINT(16) UNSIGNED COMMENT 'block nonce',
+  `nonce`       BIGINT(16) UNSIGNED
+  COMMENT 'block nonce',
+  `finality`    BOOL                NOT NULL
+  COMMENT 'block is irreversible or not',
   `created_at`  TIMESTAMP           NOT NULL  DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY `uniq_neb_block_hash` (`hash`),
   UNIQUE KEY `uniq_neb_block_height` (`height`),
@@ -127,3 +130,16 @@ CREATE TABLE IF NOT EXISTS `neb_market_capitalization` (
   ENGINE=MyISAM
   DEFAULT CHARSET=utf8mb4
   COMMENT='nebulas market capitalization';
+
+CREATE TABLE IF NOT EXISTS `neb_dynasty` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `block_height`      BIGINT(16) UNSIGNED NOT NULL
+  COMMENT 'block height',
+  `delegate`       VARCHAR(64)         NOT NULL
+  COMMENT 'hex string of delegate address',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+)
+  ENGINE=MyISAM
+  DEFAULT CHARSET=utf8mb4
+  COMMENT='nebulas dynasty';
