@@ -58,7 +58,7 @@ public class NebAddress implements Serializable {
         this.hash = hash;
     }
 
-    private String balance() {
+    private String getBalance() {
         if (null == currentBalance) {
             return "0";
         }
