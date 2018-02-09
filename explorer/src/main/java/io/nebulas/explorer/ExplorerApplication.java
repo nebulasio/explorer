@@ -52,7 +52,7 @@ public class ExplorerApplication {
             if (leaderWrapper.tryToAcquireLock()) {
                 log.info("succeed to acquire lock");
                 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-                scheduler.schedule(() -> sysService.init(), 1500L, TimeUnit.MILLISECONDS);
+                scheduler.schedule(() -> sysService.init(myConfig.getSync().isOpen(), myConfig.getSync().isSubscribe()), 1500L, TimeUnit.MILLISECONDS);
             } else {
                 log.info("failed to acquire lock");
             }

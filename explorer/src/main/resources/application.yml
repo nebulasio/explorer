@@ -53,6 +53,8 @@ page:
 sync:
   zone: 100000
   cpu: 1
+  open: true
+  subscribe : true
 redis:
   host: 127.0.0.1
   port: 6379
