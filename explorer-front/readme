@@ -91,3 +91,22 @@ HostName 52.53.225.118
 IdentityFile ~/.ssh/id_rsa
 User app
 
+
+
+=========================2.9修改
+--> block  time ago   block 相关时间显示问题 {每隔五秒一个快} -----> 换成浏览器时间 浏览器时间减去后边标准时间
+--> timestamp 
+--> block information
+    -->  gas reward
+    --> 缺少第几个朝代相关信息
+--> address
+    --> rank排序方式   按照谁的钱多 的规则
+    --> blance 换成transation数量
+--> tx详情页
+    --> transation hash url链接
+    --> gaslimit  无单位
+    --> gasprice  
+--> oops 错误信息展示
+
+
+--> charts 数据更新 + 数据显示 数字百分位显示好看一些
