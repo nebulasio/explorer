@@ -48,12 +48,13 @@ public class SysService {
     private final ZoneCache zoneCache;
     private final YAMLConfig yamlConfig;
 
-    public void init() {
+    public void init(boolean isSync, boolean isSubscribe) {
         log.info("sys init starting...");
         do {
             final long start = System.currentTimeMillis();
             try {
-                //todo
+                if (isSync) {
+                    //todo
 //                long blockCount = nebBlockService.countBlockCnt();
 //                if (blockCount > 0) {
 //                    List<Zone> fragments = getFragments();
@@ -68,28 +69,30 @@ public class SysService {
                     populationMonitor.deleteAll();
 //                }
 
-                NebState nebState = grpcClientService.getNebState();
-                if (nebState == null) {
-                    log.error("neb state not found");
-                    return;
-                }
-                log.info("neb state: {}", toJSONString(nebState));
-                Block block = grpcClientService.getBlockByHash(nebState.getTail(), true);
-                if (block == null) {
-                    log.error("block by hash {} not found", nebState.getTail());
-                    return;
-                }
-                log.info("top block: {}", toJSONString(block));
+                    NebState nebState = grpcClientService.getNebState();
+                    if (nebState == null) {
+                        log.error("neb state not found");
+                        return;
+                    }
+                    log.info("neb state: {}", toJSONString(nebState));
+                    Block block = grpcClientService.getBlockByHash(nebState.getTail(), true);
+                    if (block == null) {
+                        log.error("block by hash {} not found", nebState.getTail());
+                        return;
+                    }
+                    log.info("top block: {}", toJSONString(block));
 
-                final Long goalHeight = block.getHeight();
+                    final Long goalHeight = block.getHeight();
 //                final Long lastHeightO = nebBlockService.getMaxHeight();
-                final Long lastHeightO = 119900L;
-                long lastHeight = lastHeightO == null ? 0L : lastHeightO;
+                    final Long lastHeightO = 220500L;
+                    long lastHeight = lastHeightO == null ? 0L : lastHeightO;
 
-                List<Zone> zones = divideZones(lastHeight, goalHeight);
-                populateZones(zones);
-                grpcClientService.subscribe();
-
+                    List<Zone> zones = divideZones(lastHeight, goalHeight);
+                    populateZones(zones);
+                }
+                if (isSubscribe) {
+                    grpcClientService.subscribe();
+                }
                 long elapsed = System.currentTimeMillis() - start;
                 log.info("{} millis elapsed", elapsed);
                 log.info("sys init end");

@@ -17,4 +17,6 @@ import lombok.ToString;
 public class SyncConfig {
     private Long zone;
     private Integer cpu;
+    private boolean open;
+    private boolean subscribe;
 }
