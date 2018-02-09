@@ -190,11 +190,11 @@
                             </div>
                             <div class=msg_volume>
                                 <span class="msg_change_left">24h Volume :</span>
-                                <span class="msg_change_right">$ {{ market.volume24h }}</span>
+                                <span class="msg_change_right">$ {{ numberAddComma(market.volume24h) }}</span>
                             </div>
                             <div class=msg_market>
                                 <span class=msg_change_left>Market Cap :</span>
-                                <span class=msg_change_right>$ {{ market.marketCap }}</span>
+                                <span class=msg_change_right>$ {{ numberAddComma(market.marketCap) }}</span>
                             </div>
                         </div>
                         <div class="updataTime mt16">updata time : {{ timeConversion(market.createdAt) }} ago</div>
@@ -216,7 +216,7 @@
                         <li class=li v-for="o in blocks">
                             <div class=img>
                                 <router-link class=mt20 v-bind:to="/block/ + o.height">block {{ o.height }}</router-link>
-                                <div class=mt20>{{ timeConversionSec(o.timeDiff) }} ago</div>
+                                <div class=mt20>{{ timeConversionSec(Date.now() - o.timestamp) }} ago</div>
                             </div>
                             <div class=right>
                                 Minted By
@@ -343,6 +343,9 @@
             },
             timeConversionSec(ms) {
                 return utility.timeConversionSec(ms / 1000);
+            },
+            numberAddComma(n) {
+                return utility.numberAddComma(n);
             }
         },
         mounted() {
