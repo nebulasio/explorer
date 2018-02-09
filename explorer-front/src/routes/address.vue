@@ -100,7 +100,7 @@
                             <i v-else>(pending)</i>
                         </td>
                         <td class=time>
-                            <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                            <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
                             <div>{{ Date(o.timestamp) }} | {{ o.timestamp }}</div>
                         </td>
                         <td class=tdxxxwddd>
@@ -147,7 +147,7 @@
                             <router-link v-bind:to='"/block/" + o.height'>{{ o.height }}</router-link>
                         </td>
                         <td class=time>
-                            <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                            <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
                             <div>{{ Date(o.timestamp) }} | {{ o.timestamp }}</div>
                         </td>
                         <td>{{ o.txnCnt }}</td>
