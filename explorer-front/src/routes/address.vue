@@ -250,6 +250,9 @@
             timeConversion(ms) {
                 return utility.timeConversion(ms / 1000);
             },
+            timeConversionSec(ms) {
+                return utility.timeConversionSec(ms);
+            },
             toWei(n) {
                 return utility.toWei(n);
             }
