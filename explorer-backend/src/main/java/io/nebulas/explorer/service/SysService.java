@@ -84,7 +84,7 @@ public class SysService {
 
                     final Long goalHeight = block.getHeight();
 //                final Long lastHeightO = nebBlockService.getMaxHeight();
-                    final Long lastHeightO = 220500L;
+                    final Long lastHeightO = 233600L;
                     long lastHeight = lastHeightO == null ? 0L : lastHeightO;
 
                     List<Zone> zones = divideZones(lastHeight, goalHeight);
