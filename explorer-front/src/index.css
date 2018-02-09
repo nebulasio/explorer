@@ -77,6 +77,10 @@ td.time:hover :nth-child(2) {
     color: green;
 }
 
+.fa-flask {
+    color: greenyellow;
+}
+
 .fa-remove {
     color: firebrick;
 }
