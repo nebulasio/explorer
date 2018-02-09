@@ -1,3 +1,0 @@
-rootProject.name = 'explorer'
-
-include "grpc-lib"
