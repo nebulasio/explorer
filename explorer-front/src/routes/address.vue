@@ -44,20 +44,20 @@
                         <span class=c777 v-show=obj.address.alias> | {{ obj.address.alias }}</span>
                     </th>
                     <th class=text-right>
-                        * uncomment this img tag
+                        <!-- * uncomment this img tag -->
                         <!-- <img src=%qrcode> -->
                     </th>
                 </tr>
                 <tr>
                     <td>NAS Balance:</td>
-                    <td>{{ obj.address.currentBalance }}</td>
+                    <td>{{ toWei(obj.address.balance) }}</td>
                 </tr>
                 <tr>
                     <td>Minted:</td>
                     <td>{{ obj.mintedBlkCnt }}</td>
                 </tr>
                 <tr>
-                    <td>No Of Transactions:</td>
+                    <td>Number Of Transactions:</td>
                     <td>{{ obj.pendingTxCnt }}</td>
                 </tr>
             </table>
