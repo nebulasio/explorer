@@ -29,8 +29,6 @@ public class BlockVo implements Serializable {
     private Long gasLimit;
     private String avgGasPrice; //sum(tx.gasPrice)/count(tx)
     private String gasReward; //sum(tx.gasUsed * tx.gasPrice)
-    private Date currentTimestamp;
-    private Long timeDiff;
 
     public BlockVo() {
     }
@@ -44,8 +42,6 @@ public class BlockVo implements Serializable {
         this.hash = nebBlock.getHash();
         this.height = nebBlock.getHeight();
         this.timestamp = nebBlock.getTimestamp();
-        this.currentTimestamp = new Date();
-        this.timeDiff = System.currentTimeMillis() - nebBlock.getTimestamp().getTime();
         this.parentHash = nebBlock.getParentHash();
         return this;
     }
@@ -63,10 +59,6 @@ public class BlockVo implements Serializable {
             this.gasReward = summary.getGasReward();
         }
         return this;
-    }
-
-    public String gasRewardFormat() {
-        return new DecimalFormat(",###").format(gasReward);
     }
 
 }
