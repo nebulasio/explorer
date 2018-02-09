@@ -31,7 +31,7 @@
                 </tr>
                 <tr>
                     <td>TimeStamp:</td>
-                    <td>{{ timeConversion(tx.timeDiff) }} ago</td>
+                    <td>{{ timeConversion(tx.timeDiff) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})</td>
                 </tr>
                 <tr>
                     <td>From:</td>
