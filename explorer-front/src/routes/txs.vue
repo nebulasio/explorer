@@ -43,7 +43,7 @@
                         <router-link v-bind:to='"/block/" + o.block.height'>{{ o.block.height }}</router-link>
                     </td>
                     <td class=time>
-                        <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                        <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td class=tdxxxwddd>

@@ -31,7 +31,7 @@
                         <router-link v-bind:to='"/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>
                     <td class=time>
-                        <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                        <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
                         <div>{{ Date(o.timestamp) }} | {{ o.timestamp }}</div>
                     </td>
                     <td>{{ numberAddComma(o.gasLimit) }}</td>
