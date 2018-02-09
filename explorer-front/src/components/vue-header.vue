@@ -117,7 +117,7 @@
                         this.$router.push("/oops");
                     }
                 }, () => {
-                    this.$root.search = o.q;
+                    this.$root.search = this.search;
                     this.$router.push("/oops");
                 });
             }
