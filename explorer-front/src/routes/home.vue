@@ -216,7 +216,7 @@
                         <li class=li v-for="o in blocks">
                             <div class=img>
                                 <router-link class=mt20 v-bind:to="/block/ + o.height">block {{ o.height }}</router-link>
-                                <div class=mt20>{{ timeConversionSec(msVmReady - o.timestamp) }} ago</div>
+                                <div class=mt20>{{ timeConversion(msVmReady - o.timestamp) }} ago</div>
                             </div>
                             <div class=right>
                                 Minted By
