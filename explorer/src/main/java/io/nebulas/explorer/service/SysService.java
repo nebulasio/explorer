@@ -53,19 +53,20 @@ public class SysService {
         do {
             final long start = System.currentTimeMillis();
             try {
-                long blockCount = nebBlockService.countBlockCnt();
-                if (blockCount > 0) {
-                    List<Zone> fragments = getFragments();
-                    if (fragments.isEmpty()) {
-                        log.info("no fragments");
-                    } else {
-                        log.info("fragments to tidy: {}", fragments.toString());
-                    }
-                    populateZones(fragments);
-                } else {
+                //todo
+//                long blockCount = nebBlockService.countBlockCnt();
+//                if (blockCount > 0) {
+//                    List<Zone> fragments = getFragments();
+//                    if (fragments.isEmpty()) {
+//                        log.info("no fragments");
+//                    } else {
+//                        log.info("fragments to tidy: {}", fragments.toString());
+//                    }
+//                    populateZones(fragments);
+//                } else {
                     zoneCache.deleteAll();
                     populationMonitor.deleteAll();
-                }
+//                }
 
                 NebState nebState = grpcClientService.getNebState();
                 if (nebState == null) {
@@ -81,7 +82,8 @@ public class SysService {
                 log.info("top block: {}", toJSONString(block));
 
                 final Long goalHeight = block.getHeight();
-                final Long lastHeightO = nebBlockService.getMaxHeight();
+//                final Long lastHeightO = nebBlockService.getMaxHeight();
+                final Long lastHeightO = 119900L;
                 long lastHeight = lastHeightO == null ? 0L : lastHeightO;
 
                 List<Zone> zones = divideZones(lastHeight, goalHeight);
@@ -112,7 +114,7 @@ public class SysService {
             ExecutorService executor = Executors.newFixedThreadPool(20);
             for (Zone zone : zones) {
                 executor.execute(() -> {
-//                     spin loop until success
+                    // spin loop until success
                     try {
                         populate(zone.getFrom(), zone.getTo());
                     } catch (UnsupportedEncodingException e) {
@@ -183,6 +185,7 @@ public class SysService {
                 NebBlock nblk = nebBlockService.getNebBlockByHash(nebBlk.getHash());
                 if (nblk == null) {
                     nebBlockService.addNebBlock(nebBlk);
+                    log.info("save block, height={}", nebBlk.getHeight());
                 } else {
                     log.warn("duplicate block hash {}", nebBlk.getHash());
                 }
