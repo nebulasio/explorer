@@ -42,14 +42,16 @@
 <template>
     <nav class="bg-light navbar navbar-expand-lg navbar-light vue-header">
         <div class=container>
-            <router-link to=/ class=navbar-brand>
-                <img src=/static/img/logo.png width=150 alt="">
-            </router-link>
-            <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
-                <span class="fa fa-flask" aria-hidden=true></span>
-                <span class=c777>This website is under heavy construction</span><br>
-                <div>Feel free to open new github issue by click this link 👍</div>
-            '>alpha</a>
+            <div>
+                <router-link to=/ class=navbar-brand>
+                    <img src=/static/img/logo.png width=150 alt="">
+                </router-link>
+                <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
+<span class="fa fa-flask" aria-hidden=true></span>
+<span class=c777>This website is under heavy construction</span><br>
+<div>Feel free to open new github issue by click this link 👍</div>
+                '>alpha</a>
+            </div>
 
             <button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
                 <span class=navbar-toggler-icon></span>

@@ -99,3 +99,7 @@ dl, ol, ul {
 label {
     font-weight: normal;
 }
+
+.tooltip-inner {
+    max-width: 300px;
+}
