@@ -51,7 +51,7 @@
                 </tr>
                 <tr>
                     <td>Gas Limit:</td>
-                    <td>{{ toWei(tx.gasLimit) }}</td>
+                    <td>{{ numberAddComma(tx.gasLimit) }}</td>
                 </tr>
                 <tr>
                     <td>Gas Used By Txn:</td>
@@ -59,7 +59,7 @@
                 </tr>
                 <tr>
                     <td>Gas Price:</td>
-                    <td>{{ numberAddComma(tx.gasPrice) }} Nas</td>
+                    <td>{{ toWei(tx.gasPrice) }}</td>
                 </tr>
                 <tr>
                     <td>Actual Tx Cost/Fee:</td>
