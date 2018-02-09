@@ -3,6 +3,14 @@
         color: inherit;
     }
 
+    .vue-header .dev-version {
+        color: #2a88ff;
+        left: -15px;
+        padding: 5px;
+        position: relative;
+        top: 10px;
+    }
+
     @media (min-width: 992px) {
         .vue-header .navbar-nav>li>a {
             border-bottom: 2px solid transparent;
@@ -35,8 +43,14 @@
     <nav class="bg-light navbar navbar-expand-lg navbar-light vue-header">
         <div class=container>
             <router-link to=/ class=navbar-brand>
-                <img src="/static/img/logo.png" width=150 alt="">
+                <img src=/static/img/logo.png width=150 alt="">
             </router-link>
+            <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
+                <span class="fa fa-flask" aria-hidden=true></span>
+                <span class=c777>This website is under heavy construction</span><br>
+                <div>Feel free to open new github issue by click this link 👍</div>
+            '>alpha</a>
+
             <button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
                 <span class=navbar-toggler-icon></span>
             </button>
@@ -55,11 +69,8 @@
                             <router-link class=dropdown-item to=/blocks>View Blocks</router-link>
                         </div>
                     </li>
-                    <li class="nav-item dropdown" v-bind:class="{ active: $route.meta.headerActive == 3 }">
-                        <a class="nav-link dropdown-toggle" href=# id=navbarDropdown2 role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>ACCOUNT</a>
-                        <div class=dropdown-menu aria-labelledby=navbarDropdown2>
-                            <router-link class=dropdown-item to=/accounts>ALL Accounts</router-link>
-                        </div>
+                    <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
+                        <router-link class=nav-link to=/accounts>ACCOUNT</router-link>
                     </li>
                     <!-- <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 4 }">
                         <a class=nav-link href=#>TOKEN
@@ -110,6 +121,9 @@
                     this.$router.push("/oops");
                 });
             }
+        },
+        mounted() {
+            require("jquery")("[data-toggle=tooltip]").tooltip();
         }
     };
 </script>
