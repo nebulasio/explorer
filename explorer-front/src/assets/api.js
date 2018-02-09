@@ -117,7 +117,7 @@ module.exports = {
 function ajax1(action, args, done, fail) {
     var
         prefix = "http://192.168.1.168:8080/api/"
-        prefix = "http://52.53.225.118/api/"
+        prefix = "https://explorer.nebulas.io/api/"
         ;
 
     var a = ajaxSplitAction(action);
