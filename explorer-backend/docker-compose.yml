@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  docker-mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=explorer
+      - MYSQL_USER=explorer
+      - MYSQL_PASSWORD=123456
+  explorer:
+    image: io.nebulas/explorer:0.0.1-SNAPSHOT
+    depends_on:
+      - docker-mysql
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_HOST=docker-mysql
+      - DATABASE_USER=explorer
+      - DATABASE_PASSWORD=123456
+      - DATABASE_NAME=explorer
+      - DATABASE_PORT=3306

@@ -1,0 +1,13 @@
+${AnsiColor.BRIGHT_YELLOW}
+
+888b      88            88                      88
+8888b     88            88                      88
+88 `8b    88            88                      88
+88  `8b   88  ,adPPYba, 88,dPPYba,  88       88 88 ,adPPYYba, ,adPPYba,
+88   `8b  88 a8P_____88 88P'    "8a 88       88 88 ""     `Y8 I8[    ""
+88    `8b 88 8PP""""""" 88       d8 88       88 88 ,adPPPPP88  `"Y8ba,
+88     `8888 "8b,   ,aa 88b,   ,a8" "8a,   ,a88 88 88,    ,88 aa    ]8I
+88      `888  `"Ybbd8"' 8Y"Ybbd8"'   `"YbbdP'Y8 88 `"8bbdP"Y8 `"YbbdP"'
+
+${AnsiColor.BRIGHT_BLUE}
+::: Explorer (version:0.0.1-SNAPSHOT) :::             ＼(^O^)／    Spring-Boot ${spring-boot.version}

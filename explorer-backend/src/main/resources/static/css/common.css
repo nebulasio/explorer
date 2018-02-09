@@ -1,0 +1,167 @@
+
+body {
+    color: #777;
+    font-size: 13px;
+}
+
+label {
+    font-weight: normal;
+}
+
+
+.c333   { color: #333; }
+.c777   { color: #777; }
+.mt16   { margin-top: 16px; }
+.mt20   { margin-top: 20px; }
+.mt30   { margin-top: 30px; }
+.t8     { top: 8%; }
+.t18    { top: 18%; }
+
+/*  footer
+    ============================================================ */
+
+.footer {
+    background-color: #272727;
+    margin-top: 30px;
+}
+
+.footer .container {
+    background-color: transparent;
+}
+
+.footer_left {
+    height: 300px;
+}
+
+.footer_left_up {
+    height: 100px;
+    text-align: center;
+    margin-top: 6%;
+}
+
+.footer_left_down {
+    color: #fff;
+}
+
+.footer_middle {
+    height: 300px;
+}
+
+.footer_banner_tab {
+    border-bottom: 1px dashed #fff;
+    color: #fff;
+    height: 40px;
+    margin-top: 24px;
+}
+
+.footer_list {
+    height: 200px;
+    margin-top: 30px;
+}
+
+.footer_list_banner {
+    color: #fff;
+    height: 30px;
+}
+
+.footer_right {
+    height: 300px;
+}
+
+.footer_link-list {
+    height: 200px;
+    margin-top: 20px;
+}
+
+.footer_link-list_banner {
+    height: 30px;
+}
+
+/*  header
+    ============================================================ */
+
+.header a {
+    color: inherit;
+}
+
+/* 不能这样实现 hover 时展开菜单, 因为菜单展开时有 active 类但这种方式加不上 .active
+.header .dropdown:hover .dropdown-menu {
+    display: block;
+} */
+
+@media (min-width: 768px) {
+    .header .navbar-nav > li        > a:hover,
+    .header .navbar-nav > li.active > a,
+    .header .navbar-nav > li.open   > a {
+        border-bottom: 2px solid #3498db;
+    }
+
+    .header.navbar.navbar-default .navbar-nav > li > a {
+        background-color: initial;
+    }
+}
+
+@media (max-width: 767px) {
+    .header .navbar-form {
+        align-items: center;
+        display: flex;
+    }
+
+    .header .navbar-form .form-group {
+        flex: 1;
+        margin: 0 10px 0;
+    }
+}
+
+/*  overrides - bootstrap
+    ============================================================ */
+
+.glyphicon-arrow-right {
+    color: darkgreen;
+}
+
+.glyphicon-btc {
+    color: goldenrod;
+}
+
+.glyphicon-ok {
+    color: green;
+}
+
+.glyphicon-remove {
+    color: firebrick;
+}
+
+/*  pagination
+    ============================================================ */
+
+.pagination li a {
+    line-height: 19px;
+}
+
+/*  title and breadcrumb
+    ============================================================ */
+
+.title-and-breadcrumb {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.title-and-breadcrumb a {
+    color: inherit;
+}
+
+.title-and-breadcrumb .breadcrumb {
+    background-color: initial;
+    margin: 0;
+}
+
+.title-and-breadcrumb .breadcrumb > li:last-child {
+    color: #3498db;
+}
+
+#stop{
+    background-color: gray;
+    color: #ffffff;
+}

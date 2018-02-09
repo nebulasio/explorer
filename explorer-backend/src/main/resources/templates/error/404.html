@@ -1,0 +1,36 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>404</title>
+    <meta name="description" content="Nebulas"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"
+          th:href="@{${baseUrl + '/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css'}}"/>
+    <link rel="stylesheet" href="/css/common.css" th:href="@{${baseUrl + '/css/common.css'}}"/>
+    <style>
+        .container .banner-img {
+            width: 100%;
+            text-align: center;
+            height: 600px;
+            background: url(../img/error.jpg) center no-repeat;
+        }
+
+    </style>
+</head>
+<body>
+<th:block th:replace="fragments::header(currentNav='home')"/>
+
+<div class="container">
+    <div class="banner-img"></div>
+</div>
+
+<th:block th:replace="fragments::footer"/>
+</body>
+<script src="/webjars/jquery/3.3.1/jquery.min.js"
+        th:src="@{${baseUrl + '/webjars/jquery/3.3.1/jquery.min.js'}}"></script>
+<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"
+        th:src="@{${baseUrl + '/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js'}}"></script>
+</html>
