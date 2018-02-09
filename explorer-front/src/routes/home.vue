@@ -125,8 +125,8 @@
         */
 
     .vue-home #chart {
+        height: 300px;
         max-width: 800px;
-        height: 278px;
     }
 
     .vue-home .chart_banner .name,
@@ -177,10 +177,10 @@
         <div class=top>
             <div class=row>
                 <div class=col-md-8>
-                    <div id=chart style="max-width:800px;height:300px;"></div>
+                    <div id=chart></div>
                 </div>
                 <div class=col-md-4>
-                    <div class=chart_banner>
+                    <div class=chart_banner v-if=market>
                         <div class=name>NAS</div>
                         <div class=value>$ {{ market.price }}</div>
                         <div class=msg>
@@ -333,18 +333,21 @@
                         }
                     }
                 },
-                market: [],
+                market: null,
                 msVmReady: Date.now(),
                 txs: []
             };
         },
         methods: {
-            timeConversion(ms) {
-                console.log(ms/1000);
-                return utility.timeConversion(ms);
-            },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
+            },
+            timeConversion(ms) {
+                // if a vue directive uses a vue method, this method will get called on any vue data's any change
+                //
+                // https://github.com/vuejs/vue/issues/5682
+                // "In 2.x a component's entire render function is called when it is updated."
+                return utility.timeConversion(ms);
             }
         },
         mounted() {
