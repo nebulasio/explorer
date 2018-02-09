@@ -340,10 +340,8 @@
         },
         methods: {
             timeConversion(ms) {
-                return utility.timeConversion(ms / 1000);
-            },
-            timeConversionSec(ms) {
-                return utility.timeConversionSec(ms);
+                console.log(ms/1000);
+                return utility.timeConversion(ms);
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
