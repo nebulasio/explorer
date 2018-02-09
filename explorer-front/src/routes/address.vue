@@ -93,7 +93,7 @@
 
                     <tr v-for="o in txs">
                         <td class=tdxxxwddd>
-                            <router-link v-bind:to='"/tx/" + $route.params.id'>{{ o.hash }}</router-link>
+                            <router-link v-bind:to='"/tx/" + o.hash'>{{ o.hash }}</router-link>
                         </td>
                         <td>
                             <router-link v-if=o.block.height v-bind:to='"/block/" + o.block.height'>{{ o.block.height }}</router-link>
