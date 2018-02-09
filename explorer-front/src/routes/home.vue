@@ -216,7 +216,7 @@
                         <li class=li v-for="o in blocks">
                             <div class=img>
                                 <router-link class=mt20 v-bind:to="/block/ + o.height">block {{ o.height }}</router-link>
-                                <div class=mt20>{{ timeConversionSec(Date.now() - o.timestamp) }} ago</div>
+                                <div class=mt20>{{ timeConversionSec(msVmReady - o.timestamp) }} ago</div>
                             </div>
                             <div class=right>
                                 Minted By
@@ -279,9 +279,9 @@
                 blocks: [],
                 chartConfig: {
                     legend: {
-                        align: 'right',
-                        layout: 'vertical',
-                        verticalAlign: 'middle'
+                        align: "right",
+                        layout: "vertical",
+                        verticalAlign: "middle"
                     },
                     // plotOptions: {
                     //     area: {
@@ -311,29 +311,30 @@
                     // },
                     series: [{
                         data: null,
-                        name: 'transation'
+                        name: "transation"
                         // , type: "area"
                     }],
                     subtitle: {
-                        text: '数据来源：Nebulas'
+                        text: "数据来源：Nebulas"
                     },
                     title: {
-                        text: 'transations'
+                        text: "transations"
                     },
                     xAxis: {
                         labels: {
-                            format: '{value:%m-%d}',
+                            format: "{value:%m-%d}",
                             rotation: -30
                         },
-                        type: 'datetime'
+                        type: "datetime"
                     },
                     yAxis: {
                         title: {
-                            text: '数量'
+                            text: "数量"
                         }
                     }
                 },
                 market: [],
+                msVmReady: Date.now(),
                 txs: []
             };
         },
@@ -342,7 +343,7 @@
                 return utility.timeConversion(ms / 1000);
             },
             timeConversionSec(ms) {
-                return utility.timeConversionSec(ms / 1000);
+                return utility.timeConversionSec(ms);
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
