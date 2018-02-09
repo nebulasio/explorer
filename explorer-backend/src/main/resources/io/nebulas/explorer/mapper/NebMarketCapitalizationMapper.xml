@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.nebulas.explorer.mapper.NebMarketCapitalizationMapper">
+    <resultMap id="BaseResultMap" type="io.nebulas.explorer.domain.NebMarketCapitalization">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="market_cap" property="marketCap" jdbcType="DECIMAL"/>
+        <result column="volume_24h" property="volume24h" jdbcType="DECIMAL"/>
+        <result column="change_24h" property="change24h" jdbcType="DECIMAL"/>
+        <result column="trends" property="trends" jdbcType="TINYINT"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="price_unit" property="priceUnit" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        `id`, `market_cap`, `volume_24h`, `change_24h`,`trends`, `price`, `price_unit`, `created_at`
+    </sql>
+
+    <select id="getLatest" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM neb_market_capitalization
+        ORDER BY `id` DESC
+        LIMIT 1
+    </select>
+</mapper>

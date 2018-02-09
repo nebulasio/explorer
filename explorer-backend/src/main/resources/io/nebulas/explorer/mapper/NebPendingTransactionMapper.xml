@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.nebulas.explorer.mapper.NebPendingTransactionMapper">
+    <resultMap id="BaseResultMap" type="NebPendingTransaction">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="hash" property="hash" jdbcType="VARCHAR"/>
+        <result column="from" property="from" jdbcType="VARCHAR"/>
+        <result column="to" property="to" jdbcType="VARCHAR"/>
+        <result column="value" property="value" jdbcType="VARCHAR"/>
+        <result column="nonce" property="nonce" jdbcType="BIGINT"/>
+        <result column="timestamp" property="timestamp" jdbcType="TIMESTAMP"/>
+        <result column="type" property="type" jdbcType="TINYINT"/>
+        <result column="data" property="data" jdbcType="VARCHAR"/>
+        <result column="gas_price" property="gasPrice" jdbcType="VARCHAR"/>
+        <result column="gas_limit" property="gasLimit" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+      `id`,
+      `hash`,
+      `from`,
+      `to`,
+      `value`,
+      `nonce`,
+      `timestamp`,
+      `type`,
+      `data`,
+      `gas_price`,
+      `gas_limit`,
+      `created_at`
+    </sql>
+
+    <insert id="add" parameterType="NebPendingTransaction" useGeneratedKeys="false">
+        INSERT INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
+        VALUES
+        (
+        #{id}, #{hash}, #{from}, #{to}, #{value},
+        #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}
+        , #{gasLimit}, #{createdAt}
+        )
+    </insert>
+    <insert id="batchAdd" parameterType="NebPendingTransaction" useGeneratedKeys="false">
+        INSERT IGNORE INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
+        VALUES
+        <foreach collection="transactions" item="tx" separator=",">
+            (
+            #{tx.id}, #{tx.hash}, #{tx.from}, #{tx.to}, #{tx.value},
+            #{tx.nonce}, #{tx.timestamp}, #{tx.type}, #{tx.data}, #{tx.gasPrice}
+            , #{tx.gasLimit}, #{tx.createdAt}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.String">
+        DELETE FROM `neb_pending_transaction` WHERE `id` = #{id}
+    </delete>
+
+    <select id="countPendingTxnCntByCondition" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_pending_transaction`
+        <if test="addressHash !=null">
+            WHERE `from` = #{addressHash,jdbcType=VARCHAR} OR `to` = #{addressHash,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="getByHash" resultType="NebPendingTransaction" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_pending_transaction`
+        WHERE `hash` = #{hash,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findPendingTxnByCondition" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_pending_transaction`
+        <if test="addressHash != null">
+        WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
+        </if>
+        ORDER BY `timestamp` DESC
+        LIMIT ${offset},${limit}
+    </select>
+
+</mapper>

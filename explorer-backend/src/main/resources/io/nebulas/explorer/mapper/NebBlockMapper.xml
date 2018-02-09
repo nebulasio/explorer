@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.nebulas.explorer.mapper.NebBlockMapper">
+    <resultMap id="BaseResultMap" type="NebBlock">
+        <id column="id" property="id" jdbcType="CHAR"/>
+        <result column="hash" property="hash" jdbcType="VARCHAR"/>
+        <result column="height" property="height" jdbcType="BIGINT"/>
+        <result column="timestamp" property="timestamp" jdbcType="TIMESTAMP"/>
+        <result column="parent_hash" property="parentHash" jdbcType="VARCHAR"/>
+        <result column="miner" property="miner" jdbcType="VARCHAR"/>
+        <result column="coinbase" property="coinbase" jdbcType="VARCHAR"/>
+        <result column="nonce" property="nonce" jdbcType="BIGINT"/>
+        <result column="finality" property="finality" jdbcType="TINYINT"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      `id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`,`finality`, `created_at`
+    </sql>
+
+    <insert id="add" parameterType="NebBlock">
+        INSERT IGNORE INTO `neb_block` (`id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`, `finality`)
+        VALUES (#{id,jdbcType=VARCHAR}, #{height,jdbcType=BIGINT}, #{hash,jdbcType=VARCHAR},
+        #{parentHash,jdbcType=VARCHAR}, #{timestamp,jdbcType=TIMESTAMP}, #{miner,jdbcType=VARCHAR},
+        #{coinbase,jdbcType=VARCHAR}, #{nonce,jdbcType=BIGINT}, #{finality,jdbcType=TINYINT})
+    </insert>
+    <update id="updateBlockIrreversible" parameterType="java.lang.Long">
+        <![CDATA[
+        UPDATE `neb_block`
+        SET `finality` = 1
+        WHERE `height` <= #{height,jdbcType=BIGINT} and `finality` = 0
+        ]]>
+    </update>
+
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from neb_block
+    </select>
+
+    <select id="countByMiner" resultType="java.lang.Long" parameterType="java.lang.String">
+        select count(1)
+        from `neb_block`
+        where miner = #{miner,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getMaxHeight" resultType="java.lang.Long">
+        SELECT MAX(`height`)
+        FROM `neb_block`
+    </select>
+
+    <select id="getByHeight" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_block`
+        WHERE `height` = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="getByHash" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_block`
+        WHERE `hash` = #{hash,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findOrderByHeightDesc" parameterType="map" resultType="NebBlock">
+        select
+        <include refid="Base_Column_List"/>
+        from neb_block
+        order by height DESC
+        limit ${offset},${limit}
+    </select>
+
+    <select id="findByMiner" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_block`
+        WHERE miner = #{miner,jdbcType=VARCHAR}
+        ORDER BY `height` DESC
+        LIMIT ${offset}, ${limit}
+    </select>
+
+    <select id="findNebBlockBetweenHeight" parameterType="map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM `neb_block`
+        WHERE `height` BETWEEN #{fromHeight,jdbcType=BIGINT} and #{toHeight,jdbcType=BIGINT}
+    </select>
+</mapper>
