@@ -103,10 +103,10 @@
                 </form>
 
                 <div class="btn-group btn-group-toggle" data-toggle=buttons>
-                    <label class="btn btn-sm" v-bind:class="labelClass('main')" v-on:click="clickLabel('main')">
+                    <label class="btn btn-outline-primary btn-sm" v-bind:class="labelClass('main')" v-on:click="clickLabel('main')">
                         <input type=radio>main net
                     </label>
-                    <label class="btn btn-sm" v-bind:class="labelClass('test')" v-on:click="clickLabel('test')">
+                    <label class="btn btn-outline-primary btn-sm" v-bind:class="labelClass('test')" v-on:click="clickLabel('test')">
                         <input type=radio>test net
                     </label>
                 </div>
@@ -129,7 +129,7 @@
                 location.reload();
             },
             labelClass(apiType) {
-                return sessionStorage.apiType == apiType ? ["btn-outline-primary", "active"] : ["btn-outline-secondary"];
+                return sessionStorage.apiType == apiType ? ["active"] : null;
             },
             onSubmit() {
                 api.getSearch(this.search, o => {
