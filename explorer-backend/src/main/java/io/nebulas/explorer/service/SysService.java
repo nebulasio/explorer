@@ -54,20 +54,19 @@ public class SysService {
             final long start = System.currentTimeMillis();
             try {
                 if (isSync) {
-                    //todo
-//                long blockCount = nebBlockService.countBlockCnt();
-//                if (blockCount > 0) {
-//                    List<Zone> fragments = getFragments();
-//                    if (fragments.isEmpty()) {
-//                        log.info("no fragments");
-//                    } else {
-//                        log.info("fragments to tidy: {}", fragments.toString());
-//                    }
-//                    populateZones(fragments);
-//                } else {
-                    zoneCache.deleteAll();
-                    populationMonitor.deleteAll();
-//                }
+                    long blockCount = nebBlockService.countBlockCnt();
+                    if (blockCount > 0) {
+                        List<Zone> fragments = getFragments();
+                        if (fragments.isEmpty()) {
+                            log.info("no fragments");
+                        } else {
+                            log.info("fragments to tidy: {}", fragments.toString());
+                        }
+                        populateZones(fragments);
+                    } else {
+                        zoneCache.deleteAll();
+                        populationMonitor.deleteAll();
+                    }
 
                     NebState nebState = grpcClientService.getNebState();
                     if (nebState == null) {
@@ -83,8 +82,7 @@ public class SysService {
                     log.info("top block: {}", toJSONString(block));
 
                     final Long goalHeight = block.getHeight();
-//                final Long lastHeightO = nebBlockService.getMaxHeight();
-                    final Long lastHeightO = 233600L;
+                    final Long lastHeightO = nebBlockService.getMaxHeight();
                     long lastHeight = lastHeightO == null ? 0L : lastHeightO;
 
                     List<Zone> zones = divideZones(lastHeight, goalHeight);
