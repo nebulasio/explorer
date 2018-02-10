@@ -11,6 +11,14 @@
         top: 10px;
     }
 
+    .vue-header .btn-group-toggle {
+        margin-left: 20px;
+    }
+
+    .vue-header .btn-group-toggle label {
+        padding: 0 10px;
+    }
+
     @media (min-width: 992px) {
         .vue-header .navbar-nav>li>a {
             border-bottom: 2px solid transparent;
@@ -88,10 +96,20 @@
                         <a class="nav-link disabled" href="#">Disabled</a>
                     </li> -->
                 </ul>
+
                 <form class=form-inline v-on:submit.prevent=onSubmit>
                     <input class="form-control mr-sm-2" v-model=search type=search placeholder=Search>
                     <button class="btn btn-outline-success" type=submit>GO</button>
                 </form>
+
+                <div class="btn-group btn-group-toggle" data-toggle=buttons>
+                    <label class="btn btn-sm" v-bind:class="labelClass('main')" v-on:click="clickLabel('main')">
+                        <input type=radio>main net
+                    </label>
+                    <label class="btn btn-sm" v-bind:class="labelClass('test')" v-on:click="clickLabel('test')">
+                        <input type=radio>test net
+                    </label>
+                </div>
             </div>
         </div>
     </nav>
@@ -106,6 +124,13 @@
             };
         },
         methods: {
+            clickLabel(apiType) {
+                sessionStorage.apiType = apiType;
+                location.reload();
+            },
+            labelClass(apiType) {
+                return sessionStorage.apiType == apiType ? ["btn-outline-primary", "active"] : ["btn-outline-secondary"];
+            },
             onSubmit() {
                 api.getSearch(this.search, o => {
                     if (o.type == "block")
@@ -126,6 +151,9 @@
         },
         mounted() {
             require("jquery")("[data-toggle=tooltip]").tooltip();
+
+            if (sessionStorage.apiType != "main" && sessionStorage.apiType != "test")
+                sessionStorage.apiType = "test";
         }
     };
 </script>
