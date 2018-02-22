@@ -47,7 +47,10 @@
     <div class=vue-footer>
         <div class=container>
             <div class=row>
-                <div class="footer_right col-md-12">
+                <div class="footer_left col-md-6 mt50">
+                    <a href=https://github.com/nebulasio/explorer/commits/d12a3a6 target=_blank>Commit : d12a3a6</a>
+                </div>
+                <div class="footer_right col-md-6">
                     <div class=footer_banner_tab>
                         <h4>Links</h4>
                     </div>
