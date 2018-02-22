@@ -12,6 +12,8 @@ dl, ol, ul {
 .c333   { color: #333; }
 .c777   { color: #777; }
 .mt20   { margin-top: 20px; }
+.mt50   { margin-top: 50px; }
+
 
 .monospace {
     font-family: consolas, menlo, monaco, lucida console, liberation mono, dejavu sans mono, bitstream vera sans mono, courier new, monospace;
