@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,4 +37,8 @@ public class Block implements Serializable {
     private String eventsRoot;
     private DposContext dposContext;
     private List<Transaction> transactions;
+
+    public List<Transaction> getTransactions() {
+        return CollectionUtils.isEmpty(transactions) ? Collections.EMPTY_LIST : transactions;
+    }
 }
