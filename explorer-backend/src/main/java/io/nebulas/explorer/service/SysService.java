@@ -45,7 +45,7 @@ public class SysService {
     private final NebAddressService nebAddressService;
     private final NebDynastyService nebDynastyService;
     private final PopulationMonitor populationMonitor;
-    private final ZoneCache zoneCache;
+    //    private final ZoneCache zoneCache;
     private final YAMLConfig yamlConfig;
 
     public void init(boolean isSync, boolean isSubscribe) {
@@ -54,19 +54,19 @@ public class SysService {
             final long start = System.currentTimeMillis();
             try {
                 if (isSync) {
-                    long blockCount = nebBlockService.countBlockCnt();
-                    if (blockCount > 0) {
-                        List<Zone> fragments = getFragments();
-                        if (fragments.isEmpty()) {
-                            log.info("no fragments");
-                        } else {
-                            log.info("fragments to tidy: {}", fragments.toString());
-                        }
-                        populateZones(fragments);
-                    } else {
-                        zoneCache.deleteAll();
-                        populationMonitor.deleteAll();
-                    }
+//                    long blockCount = nebBlockService.countBlockCnt();
+//                    if (blockCount > 0) {
+//                        List<Zone> fragments = getFragments();
+//                        if (fragments.isEmpty()) {
+//                            log.info("no fragments");
+//                        } else {
+//                            log.info("fragments to tidy: {}", fragments.toString());
+//                        }
+//                        populateZones(fragments);
+//                    } else {
+//                    zoneCache.deleteAll();
+                    populationMonitor.deleteAll();
+//                    }
 
                     NebState nebState = grpcClientService.getNebState();
                     if (nebState == null) {
@@ -83,7 +83,8 @@ public class SysService {
 
                     final Long goalHeight = block.getHeight();
                     final Long lastHeightO = nebBlockService.getMaxHeight();
-                    long lastHeight = lastHeightO == null ? 0L : lastHeightO;
+//                    long lastHeight = lastHeightO == null ? 0L : lastHeightO;
+                    long lastHeight = 460730L;
 
                     List<Zone> zones = divideZones(lastHeight, goalHeight);
                     populateZones(zones);
@@ -112,7 +113,7 @@ public class SysService {
     private void populateZones(List<Zone> zones) {
         if (zones.size() > 0) {
             log.info("zones {}", zones);
-            ExecutorService executor = Executors.newFixedThreadPool(20);
+            ExecutorService executor = Executors.newFixedThreadPool(1);
             for (Zone zone : zones) {
                 executor.execute(() -> {
                     // spin loop until success
@@ -134,6 +135,7 @@ public class SysService {
         Block latestIrreversibleBlk = null;
         try {
             latestIrreversibleBlk = grpcClientService.getLatestIrreversibleBlock();
+            log.info("get latestIrreversibleBlk height={}", latestIrreversibleBlk.getHeight());
         } catch (StatusRuntimeException e) {
             log.error("get block by height error", e);
             String errorMessage = e.getMessage();
@@ -145,8 +147,9 @@ public class SysService {
         for (h = from; h <= to; ) {
             NebBlock nebBlock = nebBlockService.getNebBlockByHeight(h);
             if (nebBlock != null) {
-                zoneCache.addCursor(from, to, h);
+//                zoneCache.addCursor(from, to, h);
                 h++;
+                log.info("block exist, height={}", nebBlock.getHeight());
                 continue;
             }
             Block blk;
@@ -163,7 +166,7 @@ public class SysService {
 
             if (blk == null) {
                 log.error("block with height {} not found", h);
-                zoneCache.addCursor(from, to, h);
+//                zoneCache.addCursor(from, to, h);
                 h++;
                 continue;
             }
@@ -192,7 +195,7 @@ public class SysService {
                 }
             } catch (Throwable e) {
                 log.error("add neb block error, ignoring....", e);
-                zoneCache.addCursor(from, to, h);
+//                zoneCache.addCursor(from, to, h);
                 h++;
                 continue;
             }
@@ -201,6 +204,7 @@ public class SysService {
             nebDynastyService.batchAddNebDynasty(blk.getHeight(), dynastyDelegateList);
 
             List<Transaction> txs = blk.getTransactions();
+            log.info("get txs {}", txs.size());
             for (int tpos = 0; tpos < txs.size(); ) {
                 Transaction tx = txs.get(tpos);
                 final int type = StringUtils.isBlank(tx.getContractAddress()) ? 0 : 1;
@@ -218,7 +222,7 @@ public class SysService {
                     continue;
                 }
                 if (gasUsed != null) {
-                    log.info("gas used: {}", gasUsed);
+                    log.info("tx hash {} gas used: {} ", tx.getHash(), gasUsed);
                 } else {
                     log.warn("gas used not found for tx hash {}", tx.getHash());
                 }
@@ -242,10 +246,18 @@ public class SysService {
                         .createdAt(new Date())
                         .build();
                 nebTransactionService.addNebTransaction(nebTxs);
+                log.info("save tx={} tpos={}",tx.getHash(),tpos);
                 tpos++;
             }
-            zoneCache.addCursor(from, to, h);
+//            zoneCache.addCursor(from, to, h);
             h++;
+
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+
         }
         if (h > to) {
             populationMonitor.delete(from, to);
