@@ -32,7 +32,7 @@
                     </td>
                     <td class=time>
                         <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
-                        <div>{{ Date(o.timestamp) }} | {{ o.timestamp }}</div>
+                        <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td>{{ numberAddComma(o.gasLimit) }}</td>
                     <td>{{ numberAddComma(o.gasPrice) }} Nas</td>
