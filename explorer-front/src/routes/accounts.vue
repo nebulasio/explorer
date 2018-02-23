@@ -6,7 +6,7 @@
         <div class="container mt20">
             <div class="align-items-center info-and-pagination row">
                 <div class=col>
-                    A total of {{ totalAccounts }} accounts found ( {{ totalBalance }} )
+                    A total of {{ totalAccounts }} accounts found ( {{ numberAddComma(totalBalance) }} Nas )
                     <br>
                     <!-- <em>Displaying the last %2 records only</em> -->
                 </div>
@@ -37,7 +37,8 @@
     </div>
 </template>
 <script>
-    var api = require("@/assets/api");
+    var api = require("@/assets/api"),
+        utility = require("@/assets/utility");
 
     module.exports = {
         components: {
@@ -87,6 +88,9 @@
                         this.$router.replace("/404!" + this.$route.fullPath);
                     });
                 }
+            },
+            numberAddComma(n) {
+                return utility.numberAddComma(n);
             },
             onFirst() {
                 this.$router.push({
