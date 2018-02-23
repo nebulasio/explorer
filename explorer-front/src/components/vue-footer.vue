@@ -42,7 +42,8 @@
     .vue-footer .footer_link-list_banner a {
         color: #fff;
     }
-    .vue-footer .footer_left a{
+
+    .vue-footer .footer_left a {
         color: #fff;
     }
 </style>
@@ -51,7 +52,9 @@
         <div class=container>
             <div class=row>
                 <div class="footer_left col-md-6 mt50">
-                    <a href=https://github.com/nebulasio/explorer/commits/2bed941 target=_blank>Commit : 2bed941</a>
+                    <a href=https://github.com/nebulasio/explorer/commits/2bed941ff228b722a1136aca9f41d92bdcf19519 target=_blank>Commit : 2bed941</a>
+                    <br>
+                    <a href=https://github.com/nebulasio/explorer/issues target=_blank>issue</a>
                 </div>
                 <div class="footer_right col-md-6">
                     <div class=footer_banner_tab>
