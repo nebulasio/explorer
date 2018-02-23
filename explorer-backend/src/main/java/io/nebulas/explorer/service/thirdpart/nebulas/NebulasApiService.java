@@ -19,10 +19,10 @@ public interface NebulasApiService {
     Observable<NebState> getNebState();
 
     @POST("/v1/user/getBlockByHash")
-    Observable<Block> getBlockByHash(@Body BlockRequest request);
+    Observable<Block> getBlockByHash(@Body GetBlockByHashRequest request);
 
     @POST("/v1/user/getBlockByHeight")
-    Observable<Block> getBlockByHeight(@Body BlockRequest request);
+    Observable<Block> getBlockByHeight(@Body GetBlockByHeightRequest request);
 
     @POST("/v1/usr/dynasty")
     Observable<GetDynastyResponse> getDynasty(@Body GetDynastyRequest request);
