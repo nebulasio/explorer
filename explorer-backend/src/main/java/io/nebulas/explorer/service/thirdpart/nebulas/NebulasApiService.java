@@ -4,6 +4,7 @@ import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -14,7 +15,7 @@ import rx.Observable;
  */
 public interface NebulasApiService {
 
-    @POST("/v1/user/nebstate")
+    @GET("/v1/user/nebstate")
     Observable<NebState> getNebState();
 
     @POST("/v1/user/getBlockByHash")
