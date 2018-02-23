@@ -79,7 +79,7 @@ public class SysHttpService {
                         return;
                     }
                     log.info("neb state: {}", toJSONString(nebState));
-                    Block block = nebulasApiService.getBlockByHash(new BlockRequest(Long.valueOf(nebState.getTail()), true)).toBlocking().first();
+                    Block block = nebulasApiService.getBlockByHash(new GetBlockByHashRequest(nebState.getTail(), true)).toBlocking().first();
                     if (block == null) {
                         log.error("block by hash {} not found", nebState.getTail());
                         return;
@@ -157,7 +157,7 @@ public class SysHttpService {
             }
             Block blk;
             try {
-                blk = nebulasApiService.getBlockByHeight(new BlockRequest(h, true)).toBlocking().first();
+                blk = nebulasApiService.getBlockByHeight(new GetBlockByHeightRequest(h, true)).toBlocking().first();
             } catch (Exception e) {
                 log.error("get block by height error", e);
                 String errorMessage = e.getMessage();
