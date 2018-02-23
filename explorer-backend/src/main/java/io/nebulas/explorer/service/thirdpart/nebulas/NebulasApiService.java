@@ -24,7 +24,7 @@ public interface NebulasApiService {
     @POST("/v1/user/getBlockByHeight")
     Observable<Block> getBlockByHeight(@Body GetBlockByHeightRequest request);
 
-    @POST("/v1/usr/dynasty")
+    @POST("/v1/user/dynasty")
     Observable<GetDynastyResponse> getDynasty(@Body GetDynastyRequest request);
 
     @POST("/v1/user/getGasUsed")
