@@ -118,6 +118,7 @@
     module.exports = {
         data() {
             return {
+                apiType: "",
                 search: ""
             };
         },
@@ -127,7 +128,7 @@
                 location.reload();
             },
             labelClass(apiType) {
-                return sessionStorage.apiType == apiType ? ["active"] : null;
+                return this.apiType == apiType ? ["active"] : null;
             },
             onSubmit() {
                 api.getSearch(this.search, o => {
@@ -151,7 +152,7 @@
             require("jquery")("[data-toggle=tooltip]").tooltip();
 
             if (sessionStorage.apiType != "main" && sessionStorage.apiType != "test")
-                sessionStorage.apiType = "test";
+                sessionStorage.apiType = this.apiType = "test";
         }
     };
 </script>

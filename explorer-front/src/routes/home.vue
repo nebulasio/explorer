@@ -197,7 +197,7 @@
                                 <span class=msg_change_right>$ {{ numberAddComma(market.marketCap) }}</span>
                             </div>
                         </div>
-                        <div class="updataTime mt16">updata time : {{ timeConversion(market.createdAt) }} ago</div>
+                        <div class="mt16 updataTime">updata time : {{ timeConversion(Date.now() - market.createdAt) }} ago</div>
                     </div>
                 </div>
             </div>

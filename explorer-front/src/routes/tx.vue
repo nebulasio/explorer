@@ -157,11 +157,11 @@
             };
         },
         methods: {
-            timeConversion(ms) {
-                return utility.timeConversion(ms / 1000);
-            },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
+            },
+            timeConversion(ms) {
+                return utility.timeConversion(ms);
             },
             toWei(n) {
                 return utility.toWei(n);

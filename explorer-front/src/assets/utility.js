@@ -72,6 +72,7 @@ function millisecondsToMinutesAndSeconds(ms) {
 
     return min + "'" + sec + '"';
 }
+
 // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
 function numberAddComma(n) {
     n = +n || 0;
@@ -133,11 +134,11 @@ function shuffle(array) {
 // https://stackoverflow.com/questions/19700283/how-to-convert-time-milliseconds-to-hours-min-sec-format-in-javascript
 // Nofi
 function timeConversion(millisec) {
-    var seconds = (millisec / 1000).toFixed(1),
-        minutes = (millisec / (1000 * 60)).toFixed(1),
-        hours = (millisec / (1000 * 60 * 60)).toFixed(1),
-        days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1),
-        years = (millisec / (1000 * 60 * 60 * 24 * 365)).toFixed(1);
+    var seconds = (millisec / 1000).toFixed(0),
+        minutes = (millisec / (1000 * 60)).toFixed(0),
+        hours = (millisec / (1000 * 60 * 60)).toFixed(0),
+        days = (millisec / (1000 * 60 * 60 * 24)).toFixed(0),
+        years = (millisec / (1000 * 60 * 60 * 24 * 365)).toFixed(0);
 
     if (seconds < 60)
         return seconds + " Sec";
@@ -156,12 +157,14 @@ function timeConversionSec(millisec) {
 }
 
 function toWei(n) {
-    var arr = ["Wei", "kWei", "MWei", "GWei", "TWei", "PWei", "Nas", "kNas", "MNas", "GNas", "TNas", "PNas", "ENas", "ZNas", "YNas"],
+    // "kNas", "MNas", "GNas", "TNas", "PNas", "ENas", "ZNas", "YNas"
+    var arr = ["Wei", "kWei", "MWei", "GWei", "TWei", "PWei", "Nas"],
         i, len = arr.length - 1;
 
     for (i = 0, n = +n || 0; i < len && n >= 1000; ++i, n /= 1000);
 
-    return n.toFixed() + " " + arr[i];
+    n = n.toFixed();
+    return (i == len ? numberAddComma(n) : n) + " " + arr[i];
 }
 
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
