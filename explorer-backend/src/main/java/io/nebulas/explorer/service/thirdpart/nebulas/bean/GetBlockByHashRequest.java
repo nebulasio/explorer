@@ -4,17 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 /**
  * Desc:
  * User: nathan
  * Date: 2018-02-23
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class BlockRequest implements Serializable {
-    private Long height;
+@NoArgsConstructor
+public class GetBlockByHashRequest {
+    private String hash;
     private boolean fullTransaction;
 }
