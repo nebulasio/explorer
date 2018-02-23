@@ -46,7 +46,7 @@ grpc:
   port: 8684
   enableKeepAlive: true
   keepAliveWithoutCalls: true
-  keepAliveTimeout: 200
+  keepAliveTimeout: 2
 page:
   baseUrl: http://localhost:8080
   hostUrl: http://localhost:8080
@@ -55,6 +55,9 @@ sync:
   cpu: 1
   open: true
   subscribe : true
+apiHost:
+  coinmarketcap: https://api.coinmarketcap.com
+  nebulas: http://35.182.48.19:8685
 redis:
   host: 127.0.0.1
   port: 6379
