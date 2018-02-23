@@ -4,6 +4,7 @@ import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.core.DeadlockConsoleHandler;
 import io.nebulas.explorer.core.DeadlockDetector;
 import io.nebulas.explorer.service.LeaderWrapper;
+import io.nebulas.explorer.service.SysHttpService;
 import io.nebulas.explorer.service.SysService;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,7 @@ public class ExplorerApplication {
     }
 
     @Bean
-    CommandLineRunner init(final YAMLConfig myConfig, final SysService sysService, final LeaderWrapper leaderWrapper) {
+    CommandLineRunner init(final YAMLConfig myConfig, final SysHttpService sysService, final LeaderWrapper leaderWrapper) {
 
         return arg -> {
             log.info("using environment: {}", myConfig.getEnvironment());
