@@ -214,7 +214,10 @@ public class RpcController {
         List<NebAddress> addressList = nebAddressService.findAddressOrderByBalance(page, PAGE_SIZE);
 
         Map<String, BigDecimal> percentageMap = addressList.stream()
-                .collect(Collectors.toMap(NebAddress::getHash, a -> a.getCurrentBalance().divide(BigDecimal.valueOf(Math.pow(10, 18)), 18, BigDecimal.ROUND_DOWN).divide(totalBalance, 8, BigDecimal.ROUND_DOWN).stripTrailingZeros()));
+                .collect(Collectors.toMap(NebAddress::getHash, a -> {
+                    BigDecimal balanceBD = a.getCurrentBalance().divide(BigDecimal.valueOf(Math.pow(10, 18)), 18, BigDecimal.ROUND_DOWN);
+                    return balanceBD.divide(totalBalance, 8, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).stripTrailingZeros();
+                }));
 
         List<String> addressHashList = addressList.stream().map(NebAddress::getHash).collect(Collectors.toList());
         Map<String, Long> txCntMap = nebTransactionService.countTxnCntByFromTo(addressHashList);
