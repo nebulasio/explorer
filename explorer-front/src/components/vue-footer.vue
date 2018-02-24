@@ -60,19 +60,17 @@
                     <div class=footer_banner_tab>
                         <h4>Links</h4>
                     </div>
-                    <div class=footer_link-list>
-                        <div class=footer_link-list_banner>
+                    <div class="footer_link-list row">
+                        <div class="footer_link-list_banner col-md-3">
                             <a href=https://nebulas.io target=_blank>Nebulas.io</a>
                         </div>
-                        <div class="row justify-content-center">
-                            <div class="col-md-3 footer_link-list_banner">
-                                <a href="https://github.com/nebulasio" target=_blank>github</a>
-                            </div>
-                            <div class="col-md-3 footer_link-list_banner">
-                                <a href=https://testnet.nebulas.io target=_blank>testnet</a>
-                            </div>
+                        <div class="col-md-3 footer_link-list_banner">
+                            <a href="https://github.com/nebulasio" target=_blank>github</a>
                         </div>
-                        <div class=footer_link-list_banner>
+                        <div class="col-md-3 footer_link-list_banner">
+                            <a href=https://testnet.nebulas.io target=_blank>testnet</a>
+                        </div>
+                        <div class="footer_link-list_banner col-md-3">
                             <a href=#>mainnet</a>
                         </div>
                     </div>
