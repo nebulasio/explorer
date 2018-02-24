@@ -4,13 +4,15 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.enums.NebTransactionStatusEnum;
-import io.nebulas.explorer.grpc.GrpcClientService;
 import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.model.PageIterator;
 import io.nebulas.explorer.model.vo.AddressVo;
 import io.nebulas.explorer.model.vo.BlockVo;
 import io.nebulas.explorer.model.vo.TransactionVo;
 import io.nebulas.explorer.service.*;
+import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetAccountStateRequest;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetAccountStateResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -46,9 +48,9 @@ public class RpcController {
     private final NebTransactionService nebTransactionService;
     private final NebMarketCapitalizationService nebMarketCapitalizationService;
     private final NebDynastyService nebDynastyService;
-    private final GrpcClientService grpcClientService;
+    private final NebulasApiService nebulasApiService;
 
-    private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(5);
+    private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(20);
 
     @RequestMapping(value = "/market_cap", method = RequestMethod.GET)
     public JsonResult marketCap() {
@@ -92,8 +94,8 @@ public class RpcController {
         }
 
         JsonResult result = JsonResult.success(block);
-        result.put("currentTimestamp",new Date());
-        result.put("timeDiff",System.currentTimeMillis() - block.getTimestamp().getTime());
+        result.put("currentTimestamp", new Date());
+        result.put("timeDiff", System.currentTimeMillis() - block.getTimestamp().getTime());
         result.put("blkMaxHeight", nebBlockService.getMaxHeight());
         result.put("dynasty", nebDynastyService.findDynastyDelegateByBlockHeight(block.getHeight()));
         result.put("blkSummary", nebTransactionService.getBlockSummaryByBlockHeight(block.getHeight()));
@@ -236,6 +238,18 @@ public class RpcController {
         result.put("page", page);
         result.put("addressList", voList);
         result.put("totalPage", totalPage > MAX_PAGE ? MAX_PAGE : totalPage);
+
+        EXECUTOR.execute(() -> {
+            for (NebAddress address : addressList) {
+                if (address.getUpdatedAt().before(LocalDateTime.now().plusMinutes(-30).toDate())) {
+                    GetAccountStateResponse accountState = nebulasApiService.getAccountState(new GetAccountStateRequest(address.getHash())).toBlocking().first();
+                    String balance = accountState.getBalance();
+                    if (StringUtils.isNotEmpty(balance)) {
+                        nebAddressService.updateAddressBalance(address.getHash(), balance);
+                    }
+                }
+            }
+        });
         return result;
     }
 
@@ -279,7 +293,8 @@ public class RpcController {
 
         if (address.getUpdatedAt().before(LocalDateTime.now().plusMinutes(-30).toDate())) {
             EXECUTOR.execute(() -> {
-                String balance = grpcClientService.getAccountState(hash);
+                GetAccountStateResponse accountState = nebulasApiService.getAccountState(new GetAccountStateRequest(hash)).toBlocking().first();
+                String balance = accountState.getBalance();
                 if (StringUtils.isNotEmpty(balance)) {
                     nebAddressService.updateAddressBalance(hash, balance);
                 }

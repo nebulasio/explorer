@@ -29,4 +29,8 @@ public interface NebulasApiService {
 
     @POST("/v1/user/getGasUsed")
     Observable<GetGasUsedResponse> getGasUsed(@Body GetGasUsedRequest request);
+
+    @POST("/v1/user/accountstate")
+    Observable<GetAccountStateResponse> getAccountState(@Body GetAccountStateRequest request);
+
 }

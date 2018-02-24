@@ -7,9 +7,9 @@ import java.io.Serializable;
 /**
  * Desc:
  * User: nathan
- * Date: 2018-02-23
+ * Date: 2018-02-24
  */
 @Data
-public class GetGasUsedResponse implements Serializable {
-    private String gas;
+public class GetAccountStateResponse implements Serializable {
+    private String balance;
 }
