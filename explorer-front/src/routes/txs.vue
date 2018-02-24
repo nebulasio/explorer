@@ -129,7 +129,7 @@
                 this.nav(this.currentPage - 1);
             },
             timeConversion(ms) {
-                return utility.timeConversion(ms / 1000);
+                return utility.timeConversion(ms);
             },
             toWei(n) {
                 return utility.toWei(n);
