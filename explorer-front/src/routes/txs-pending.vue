@@ -35,7 +35,7 @@
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td>{{ numberAddComma(o.gasLimit) }}</td>
-                    <td>{{ numberAddComma(o.gasPrice) }} Nas</td>
+                    <td>{{ toWei(o.gasPrice) }}</td>
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
                     </td>
