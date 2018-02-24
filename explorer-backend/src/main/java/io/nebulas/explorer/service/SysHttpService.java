@@ -57,6 +57,10 @@ public class SysHttpService {
         do {
             final long start = System.currentTimeMillis();
             try {
+                if (isSubscribe) {
+                    grpcClientService.subscribe();
+                }
+                
                 if (isSync) {
 //                    long blockCount = nebBlockService.countBlockCnt();
 //                    if (blockCount > 0) {
@@ -89,14 +93,12 @@ public class SysHttpService {
                     final Long goalHeight = block.getHeight();
                     final Long lastHeightO = nebBlockService.getMaxHeight();
 //                    long lastHeight = lastHeightO == null ? 0L : lastHeightO;
-                    long lastHeight = 460730L;
+                    long lastHeight = 474372L;
 
                     List<Zone> zones = divideZones(lastHeight, goalHeight);
                     populateZones(zones);
                 }
-                if (isSubscribe) {
-                    grpcClientService.subscribe();
-                }
+
                 long elapsed = System.currentTimeMillis() - start;
                 log.info("{} millis elapsed", elapsed);
                 log.info("sys init end");
