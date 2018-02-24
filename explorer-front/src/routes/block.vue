@@ -67,7 +67,7 @@
                     <td>Transactions</td>
                     <td>
                         <router-link v-bind:to='"/txs?block=" + block.height'>{{ block.blkSummary.txCnt }}</router-link>
-                        in this block
+                         tx in this block
                     </td>
                 </tr>
                 <tr>
