@@ -28,7 +28,7 @@
                         <span v-show=o.alias> | {{ o.alias }}</span>
                     </td>
                     <td>{{ toWei(o.balance) }}</td>
-                    <td>{{ o.percentage }} %</td>
+                    <td>{{ o.percentage }}%</td>
                     <td>{{ o.txCnt }}</td>
                 </tr>
             </table>
