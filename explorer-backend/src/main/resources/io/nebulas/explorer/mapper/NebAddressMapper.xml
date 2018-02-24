@@ -40,7 +40,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_address`
-        ORDER BY `current_balance`
+        ORDER BY `current_balance` DESC
         LIMIT ${offset},${limit}
     </select>
 
