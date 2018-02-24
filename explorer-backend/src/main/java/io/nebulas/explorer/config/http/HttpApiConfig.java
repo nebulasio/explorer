@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializeConfig;
-import io.nebulas.explorer.config.HttpApiHostConfig;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.service.thirdpart.coinmarketcap.CoinMarketCapApiService;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
@@ -92,13 +91,17 @@ public class HttpApiConfig {
 
         @Override
         public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
-            return new ResponseConverter(type);
+            if (type instanceof BaseResponse) {
+                return new BaseResponseConverter(type);
+            } else {
+                return new ResponseBodyConverter<>(type);
+            }
         }
 
-        public class ResponseConverter implements Converter<ResponseBody, BaseResponse> {
+        public class BaseResponseConverter implements Converter<ResponseBody, BaseResponse> {
             Type ty;
 
-            ResponseConverter(Type type) {
+            BaseResponseConverter(Type type) {
                 ty = type;
             }
 
@@ -108,6 +111,21 @@ public class HttpApiConfig {
                 ParserConfig config = new ParserConfig();
                 config.setAsmEnable(false);
                 return JSON.parseObject(msg, ty, config);
+            }
+        }
+
+        public class ResponseBodyConverter<T> implements Converter<ResponseBody, T> {
+
+            private final Type type;
+
+            public ResponseBodyConverter(Type type) {
+                this.type = type;
+            }
+
+            @Override
+            public T convert(ResponseBody responseBody) throws IOException {
+                String responseJson = responseBody.string();
+                return JSONObject.parseObject(responseJson, type);
             }
         }
     }
