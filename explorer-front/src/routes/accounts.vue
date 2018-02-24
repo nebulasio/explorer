@@ -27,8 +27,8 @@
                         <router-link v-bind:to='"/address/" + o.hash'>{{ o.hash }}</router-link>
                         <span v-show=o.alias> | {{ o.alias }}</span>
                     </td>
-                    <td>{{ o.balance }}</td>
-                    <td>{{ o.percentage }}</td>
+                    <td>{{ toWei(o.balance) }}</td>
+                    <td>{{ o.percentage }} %</td>
                     <td>{{ o.txCnt }}</td>
                 </tr>
             </table>
@@ -91,6 +91,9 @@
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
+            },
+            toWei(n) {
+                return utility.toWei(n);
             },
             onFirst() {
                 this.$router.push({
