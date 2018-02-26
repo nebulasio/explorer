@@ -146,7 +146,6 @@
     }
 
     .vue-home .chart_banner .msg {
-        color: black;
         font-size: 16px;
         margin-top: 24px;
     }
@@ -158,10 +157,21 @@
     .vue-home .chart_banner .msg .msg_change_right {
         float: right;
         margin-right: 10px;
+        color: black;
+    }
+
+    .vue-home .chart_banner .msg .red {
+        color: red;
+    }
+
+    .vue-home .chart_banner .msg .green {
+        color: green;
     }
 
     .vue-home .chart_banner .msg .msg_change_left {
         margin-left: 10px;
+        color: black;
+
     }
 
     .vue-home text.highcharts-credits {
