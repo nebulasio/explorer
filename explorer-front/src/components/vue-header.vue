@@ -125,8 +125,10 @@
         },
         methods: {
             clickLabel(apiType) {
-                sessionStorage.apiType = apiType;
-                location.reload();
+                if (sessionStorage.apiType != apiType) {
+                    sessionStorage.apiType = apiType;
+                    location.reload();
+                }
             },
             labelClass(apiType) {
                 return this.apiType == apiType ? ["active"] : null;
