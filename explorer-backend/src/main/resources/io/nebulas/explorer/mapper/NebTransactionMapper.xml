@@ -76,7 +76,7 @@
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
     </select>
 
-    <select id="countTxnCntByBlockHeight" parameterType="java.lang.Long" resultMap="java.lang.Long">
+    <select id="countTxnCntByBlockHeight" parameterType="java.lang.Long" resultType="java.lang.Long">
          SELECT count(1)
         FROM `neb_transaction`
         WHERE block_height = #{blockHeight,jdbcType=BIGINT}
