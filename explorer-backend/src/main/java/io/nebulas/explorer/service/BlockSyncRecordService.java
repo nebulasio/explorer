@@ -26,7 +26,7 @@ public class BlockSyncRecordService {
     public Long getMaxConfirmedBlockHeight() {
         BlockSyncRecord record = getMaxConfirmedBlock();
         if (null == record) {
-            return 0L;
+            return 1L;
         }
         return record.getBlockHeight();
     }

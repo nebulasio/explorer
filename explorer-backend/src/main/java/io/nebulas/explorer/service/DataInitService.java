@@ -132,7 +132,6 @@ public class DataInitService {
                 }
 
 
-
                 GetDynastyResponse dynastyResponse = nebulasApiService.getDynasty(new GetDynastyRequest(blk.getHeight())).toBlocking().first();
                 nebDynastyService.batchAddNebDynasty(blk.getHeight(), dynastyResponse.getDelegatees());
 
@@ -215,7 +214,8 @@ public class DataInitService {
         long zoneSize = total / zoneThreshold + 1;
         List<Zone> zoneList = new ArrayList<>((int) zoneSize);
         for (int i = 1; i <= zoneSize; i++) {
-            long end = from + i * zoneThreshold;
+            from = (i - 1) * zoneThreshold + 1;
+            long end = from + zoneThreshold;
             if (end > to) {
                 end = to;
             }
