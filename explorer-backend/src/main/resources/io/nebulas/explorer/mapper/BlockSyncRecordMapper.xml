@@ -13,19 +13,10 @@
     `id`, `block_height`, `tx_cnt`, `confirm`, `created_at`, `updated_at`
     </sql>
 
-    <select id="getMaxConfirmedBlock" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from block_sync_record
-        where confirm > 0
-        order by block_height DESC
-        limit 1
-    </select>
-
     <insert id="add" parameterType="io.nebulas.explorer.domain.BlockSyncRecord">
     insert ignore into block_sync_record (block_height, tx_cnt,  confirm)
     values (#{blockHeight,jdbcType=BIGINT}, #{txCnt,jdbcType=BIGINT}, #{confirm,jdbcType=BIGINT})
-  </insert>
+    </insert>
 
     <update id="updateById" parameterType="io.nebulas.explorer.domain.BlockSyncRecord">
     update block_sync_record
@@ -43,4 +34,21 @@
       confirm = #{blockHeight,jdbcType=BIGINT}
     where block_height = #{blockHeight,jdbcType=BIGINT}
     </update>
+
+    <select id="getMaxConfirmedBlock" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from block_sync_record
+        where confirm > 0
+        order by block_height DESC
+        limit 1
+    </select>
+
+    <select id="getMaxBlock" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from block_sync_record
+        order by block_height DESC
+        limit 1
+    </select>
 </mapper>

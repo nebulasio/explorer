@@ -19,12 +19,16 @@ public class BlockSyncRecordService {
         return blockSyncRecordMapper.add(record) > 0;
     }
 
-    public BlockSyncRecord getMaxConfirmedBlock() {
-        return blockSyncRecordMapper.getMaxConfirmedBlock();
+    public Long getMaxConfirmedBlockHeight() {
+        BlockSyncRecord record = blockSyncRecordMapper.getMaxConfirmedBlock();
+        if (null == record) {
+            return 1L;
+        }
+        return record.getBlockHeight();
     }
 
-    public Long getMaxConfirmedBlockHeight() {
-        BlockSyncRecord record = getMaxConfirmedBlock();
+    public Long getMaxBlockHeight(){
+        BlockSyncRecord record = blockSyncRecordMapper.getMaxBlock();
         if (null == record) {
             return 1L;
         }

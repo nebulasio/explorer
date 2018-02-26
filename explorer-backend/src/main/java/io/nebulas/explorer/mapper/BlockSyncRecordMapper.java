@@ -10,9 +10,13 @@ public interface BlockSyncRecordMapper {
 
     int add(BlockSyncRecord record);
 
-    BlockSyncRecord getMaxConfirmedBlock();
-
     int updateById(BlockSyncRecord record);
 
     int updateByBlockHeight(@Param("blockHeight") Long blockHeight, @Param("txCnt") Long txCnt);
+
+    BlockSyncRecord getMaxConfirmedBlock();
+
+    BlockSyncRecord getMaxBlock();
+
+
 }

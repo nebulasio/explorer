@@ -38,7 +38,7 @@ public class DataConsensusJob {
     private final NebTransactionService nebTransactionService;
     private final NebulasApiService nebulasApiService;
 
-    @Scheduled(cron = "0 0 3 ? * * ")
+    @Scheduled(cron = "0 0 3 * * ?")
     public void check() {
         NebState nebState = nebulasApiService.getNebState().toBlocking().first();
         if (nebState == null) {
