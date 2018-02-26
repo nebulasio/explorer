@@ -52,7 +52,7 @@
         <div class=container>
             <div class=row>
                 <div class="footer_left col-md-6 mt50">
-                    <a href=https://github.com/nebulasio/explorer/commits/2bed941ff228b722a1136aca9f41d92bdcf19519 target=_blank>Commit : 2bed941</a>
+                    <a href=https://github.com/nebulasio/explorer/commits/3a6cfadd6d75f9159a98c72dfaa26d413ee914ce target=_blank>Commit : 3a6cfad</a>
                     <br>
                     <a href=https://github.com/nebulasio/explorer/issues target=_blank>issue</a>
                 </div>
