@@ -37,7 +37,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-    <update id="updateByBlockHeight" parameterMap="map">
+    <update id="updateByBlockHeight" parameterType="map">
       update block_sync_record
       set tx_cnt = #{txCnt,jdbcType=BIGINT},
       confirm = #{blockHeight,jdbcType=BIGINT}
