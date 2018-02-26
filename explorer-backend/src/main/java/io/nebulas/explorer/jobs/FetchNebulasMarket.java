@@ -25,7 +25,7 @@ public class FetchNebulasMarket {
     private CoinMarketCapApiService coinMarketCapApiService;
 
 
-    @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(cron = "0 0/15 * * * ?")
     public void fetch() {
         JSONArray jsonArray = coinMarketCapApiService.getMarket().toBlocking().first();
 

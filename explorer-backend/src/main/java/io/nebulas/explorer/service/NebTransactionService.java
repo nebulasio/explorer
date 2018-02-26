@@ -117,6 +117,10 @@ public class NebTransactionService {
         return nebPendingTransactionMapper.countPendingTxnCntByCondition(addressHash);
     }
 
+    public long countTxnCntByBlockHeight(Long blockHeight){
+        return nebTransactionMapper.countTxnCntByBlockHeight(blockHeight);
+    }
+
     /**
      * According to transaction hash query transaction information
      *

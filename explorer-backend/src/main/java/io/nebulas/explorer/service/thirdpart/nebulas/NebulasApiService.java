@@ -18,6 +18,9 @@ public interface NebulasApiService {
     @GET("/v1/user/nebstate")
     Observable<NebState> getNebState();
 
+    @GET("/v1/user/lib")
+    Observable<Block> getLatestIrreversibleBlock();
+
     @POST("/v1/user/getBlockByHash")
     Observable<Block> getBlockByHash(@Body GetBlockByHashRequest request);
 
