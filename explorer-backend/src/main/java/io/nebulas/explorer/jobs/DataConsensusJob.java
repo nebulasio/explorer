@@ -31,7 +31,6 @@ import static com.alibaba.fastjson.JSON.toJSONString;
 @AllArgsConstructor
 @Component
 public class DataConsensusJob {
-    private static final int QUERY_SIZE = 2000;
     private final NebBlockService nebBlockService;
     private final NebAddressService nebAddressService;
     private final BlockSyncRecordService blockSyncRecordService;
