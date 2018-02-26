@@ -1,19 +1,24 @@
 package io.nebulas.explorer.jobs;
 
+import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
-import io.nebulas.explorer.service.NebBlockService;
-import io.nebulas.explorer.service.SysService;
+import io.nebulas.explorer.domain.NebTransaction;
+import io.nebulas.explorer.model.Block;
+import io.nebulas.explorer.model.NebState;
+import io.nebulas.explorer.model.Transaction;
+import io.nebulas.explorer.service.*;
+import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
+import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Date;
+
+import static com.alibaba.fastjson.JSON.toJSONString;
 
 /**
  * Data check Job
@@ -27,56 +32,133 @@ import java.util.stream.Collectors;
 @Component
 public class DataConsensusJob {
     private static final int QUERY_SIZE = 2000;
-    private final StringRedisTemplate redisTemplate;
     private final NebBlockService nebBlockService;
-    private final SysService sysService;
+    private final NebAddressService nebAddressService;
+    private final BlockSyncRecordService blockSyncRecordService;
+    private final NebDynastyService nebDynastyService;
+    private final NebTransactionService nebTransactionService;
+    private final NebulasApiService nebulasApiService;
 
     @Scheduled(cron = "0 0 3 ? * * ")
     public void check() {
-        Long maxBlkHeight = nebBlockService.getMaxHeight();
-        Long checkedBlkHeight = getCheckedBlockMaxHeight();
-
-        if (checkedBlkHeight.equals(maxBlkHeight)) {
+        NebState nebState = nebulasApiService.getNebState().toBlocking().first();
+        if (nebState == null) {
+            log.error("neb state not found");
             return;
         }
-        boolean isMissing = false;
-        for (long begin = checkedBlkHeight; begin <= maxBlkHeight; ) {
-            long end = begin + QUERY_SIZE;
-            end = end < maxBlkHeight ? end : maxBlkHeight;
+        log.info("neb state: {}", toJSONString(nebState));
 
-            List<NebBlock> blkList = nebBlockService.findNebBlockBetweenHeight(begin, end);
-            if (blkList.size() == end - begin + 1) {
-                begin = end;
-                if (!isMissing) {
-                    saveCheckedBlockMaxHeight(end);
-                }
-            } else {
-                Map<Long, NebBlock> blkMap = blkList.stream().collect(Collectors.toMap(NebBlock::getHeight, e -> e));
-                for (long i = begin; i <= end; i++) {
-                    if (!blkMap.containsKey(i)) {
-                        isMissing = true;
-                        try {
-                            sysService.populate(i, i + 1);
-                        } catch (UnsupportedEncodingException e) {
-                            log.error("encoding error", e);
+        Block block = nebulasApiService.getBlockByHash(new GetBlockByHashRequest(nebState.getTail(), false)).toBlocking().first();
+        if (block == null) {
+            log.error("block by hash {} not found", nebState.getTail());
+            return;
+        }
+        log.info("top block: {}", toJSONString(block));
+
+        Long lastConfirmHeight = blockSyncRecordService.getMaxConfirmedBlockHeight();
+        if (lastConfirmHeight < block.getHeight()) {
+            Block latestIrreversibleBlk = nebulasApiService.getLatestIrreversibleBlock().toBlocking().first();
+
+            for (long i = lastConfirmHeight + 1; i <= block.getHeight(); i++) {
+                Block blk = nebulasApiService.getBlockByHeight(new GetBlockByHeightRequest(i, true)).toBlocking().first();
+                if (blk != null) {
+                    boolean isOk = true;
+                    NebBlock nebBlock = nebBlockService.getNebBlockByHeight(blk.getHeight());
+                    if (null == nebBlock) {
+                        saveBlock(blk, latestIrreversibleBlk.getHeight());
+                        isOk = false;
+                    }
+
+                    long txCnt = nebTransactionService.countTxnCntByBlockHeight(blk.getHeight());
+                    if (txCnt < blk.getTransactions().size()) {
+                        for (Transaction tx : blk.getTransactions()) {
+                            final int type = StringUtils.isBlank(tx.getContractAddress()) ? 0 : 1;
+                            addAddr(tx.getFrom(), type);
+                            addAddr(tx.getTo(), type);
+                            String gasUsed;
+                            try {
+                                GetGasUsedResponse gasUsedResponse = nebulasApiService.getGasUsed(new GetGasUsedRequest(tx.getHash())).toBlocking().first();
+                                gasUsed = gasUsedResponse.getGas();
+                            } catch (Exception e) {
+                                log.error("get gas used by tx hash error", e);
+                                continue;
+                            }
+                            if (gasUsed != null) {
+                                log.info("tx hash {} gas used: {} ", tx.getHash(), gasUsed);
+                            } else {
+                                log.warn("gas used not found for tx hash {}", tx.getHash());
+                            }
+
+                            NebTransaction nebTxs = NebTransaction.builder()
+                                    .id(IdGenerator.getId())
+                                    .hash(tx.getHash())
+                                    .blockHeight(blk.getHeight())
+                                    .blockHash(blk.getHash())
+                                    .from(tx.getFrom())
+                                    .to(tx.getTo())
+                                    .status(tx.getStatus())
+                                    .value(tx.getValue())
+                                    .nonce(tx.getNonce())
+                                    .timestamp(new Date(tx.getTimestamp() * 1000))
+                                    .type(tx.getType())
+                                    .data(tx.getData())
+                                    .gasPrice(tx.getGasPrice())
+                                    .gasLimit(tx.getGasLimit())
+                                    .gasUsed(gasUsed)
+                                    .createdAt(new Date())
+                                    .build();
+                            nebTransactionService.addNebTransaction(nebTxs);
+                            log.info("save tx={}", tx.getHash());
                         }
+
+                        isOk = false;
+                    }
+
+                    if (isOk) {
+                        blockSyncRecordService.setConfirmed(blk.getHeight(), (long) blk.getTransactions().size());
                     }
                 }
             }
         }
     }
 
-    private Long getCheckedBlockMaxHeight() {
-        String height = redisTemplate.opsForValue().get(getCheckedBlockRedisKey());
-        return StringUtils.isEmpty(height) ? 1L : Long.valueOf(height);
+    private void saveBlock(Block blk, Long libBlkHeight) {
+        NebBlock nebBlk = NebBlock.builder()
+                .id(IdGenerator.getId())
+                .height(blk.getHeight())
+                .hash(blk.getHash())
+                .parentHash(blk.getParentHash())
+                .timestamp(new Date(blk.getTimestamp() * 1000))
+                .miner(blk.getMiner())
+                .coinbase(blk.getCoinbase())
+                .nonce(blk.getNonce())
+                .finality(blk.getHeight() <= libBlkHeight)
+                .build();
+
+        addAddr(blk.getMiner(), 0);
+        addAddr(blk.getCoinbase(), 0);
+
+        NebBlock nblk = nebBlockService.getNebBlockByHash(nebBlk.getHash());
+        if (nblk == null) {
+            nebBlockService.addNebBlock(nebBlk);
+            log.info("save block, height={}", nebBlk.getHeight());
+        } else {
+            log.warn("duplicate block hash {}", nebBlk.getHash());
+        }
+
+        GetDynastyResponse dynastyResponse = nebulasApiService.getDynasty(new GetDynastyRequest(blk.getHeight())).toBlocking().first();
+        nebDynastyService.batchAddNebDynasty(blk.getHeight(), dynastyResponse.getDelegatees());
     }
 
-    private void saveCheckedBlockMaxHeight(Long height) {
-        redisTemplate.opsForValue().set(getCheckedBlockRedisKey(), height.toString());
-    }
-
-    private String getCheckedBlockRedisKey() {
-        return "DataConsensus.blockHeight";
+    private void addAddr(String hash, int type) {
+        NebAddress addr = nebAddressService.getNebAddressByHash(hash);
+        if (addr == null) {
+            try {
+                nebAddressService.addNebAddress(hash, type);
+            } catch (Throwable e) {
+                log.error("add address error", e);
+            }
+        }
     }
 
 }
