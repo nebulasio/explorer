@@ -214,12 +214,12 @@ public class DataInitService {
         long zoneSize = total / zoneThreshold + 1;
         List<Zone> zoneList = new ArrayList<>((int) zoneSize);
         for (int i = 1; i <= zoneSize; i++) {
-            from = (i - 1) * zoneThreshold + 1;
             long end = from + zoneThreshold;
             if (end > to) {
                 end = to;
             }
             zoneList.add(new Zone(from, end));
+            from = end;
         }
         return zoneList;
     }
