@@ -61,7 +61,7 @@ public class DataInitService {
         log.info("top block: {}", toJSONString(block));
 
         final Long goalHeight = block.getHeight();
-        final Long lastConfirmHeight = blockSyncRecordService.getMaxConfirmedBlockHeight();
+        final Long lastConfirmHeight = blockSyncRecordService.getMaxBlockHeight();
         List<Zone> zoneList = divideZones(lastConfirmHeight, goalHeight);
         populateZones(zoneList);
     }
