@@ -9,6 +9,7 @@ import io.nebulas.explorer.model.Transaction;
 import io.nebulas.explorer.service.blockchain.*;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
+import io.nebulas.explorer.util.BlockHelper;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -100,28 +101,9 @@ public class DataConsensusJob {
                                     log.warn("gas used not found for tx hash {}", tx.getHash());
                                 }
 
-                                NebTransaction nebTxs = NebTransaction.builder()
-                                        .id(IdGenerator.getId())
-                                        .hash(tx.getHash())
-                                        .blockHeight(blk.getHeight())
-                                        .blockHash(blk.getHash())
-                                        .from(tx.getFrom())
-                                        .to(tx.getTo())
-                                        .status(tx.getStatus())
-                                        .value(tx.getValue())
-                                        .nonce(tx.getNonce())
-                                        .timestamp(new Date(tx.getTimestamp() * 1000))
-                                        .type(tx.getType())
-                                        .data(tx.getData())
-                                        .gasPrice(tx.getGasPrice())
-                                        .gasLimit(tx.getGasLimit())
-                                        .gasUsed(gasUsed)
-                                        .createdAt(new Date())
-                                        .build();
-                                nebTransactionService.addNebTransaction(nebTxs);
+                                nebTransactionService.addNebTransaction(BlockHelper.buildNebTransaction(tx, blk, gasUsed));
                                 log.info("save tx={}", tx.getHash());
                             }
-
                             isOk = false;
                         }
 
