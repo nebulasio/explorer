@@ -3,7 +3,7 @@ package io.nebulas.explorer.jobs;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.nebulas.explorer.domain.NebMarketCapitalization;
-import io.nebulas.explorer.service.NebMarketCapitalizationService;
+import io.nebulas.explorer.service.blockchain.NebMarketCapitalizationService;
 import io.nebulas.explorer.service.thirdpart.coinmarketcap.CoinMarketCapApiService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
