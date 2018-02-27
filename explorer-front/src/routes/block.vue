@@ -80,7 +80,6 @@
                         <router-link v-bind:to='"/block/" + block.parentHash'>{{ block.parentHash }}</router-link>
                     </td>
                 </tr>
-
                 <tr>
                     <td>Minted</td>
                     <td class=monospace>
@@ -88,7 +87,6 @@
                         <span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
                     </td>
                 </tr>
-
                 <tr>
                     <td>Dynasty</td>
                     <td class="dynasty monospace">
@@ -109,12 +107,10 @@
 
                     </td>
                 </tr>
-
                 <tr>
                     <td>Gas Reward</td>
                     <td>{{ toWei(block.blkSummary.gasReward) }}</td>
                 </tr>
-
             </table>
         </div>
     </div>

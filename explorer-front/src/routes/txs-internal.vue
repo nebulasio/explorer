@@ -72,7 +72,7 @@
                     </td>
                     <td class=ne>%Age</td>
                     <td>
-                        <span class="fa fa-check" aria-hidden="true"></span>
+                        <span class="fa fa-check" aria-hidden=true></span>
                         <a href="tx.html?id=%ParentTxHash">%ParentTxHash</a>
                     </td>
                     <td>%Type</td>
@@ -80,7 +80,7 @@
                         <a href="address.html?id=%From">%From</a>
                     </td>
                     <td>
-                        <span class="fa fa-arrow-right" aria-hidden="true"></span>
+                        <span class="fa fa-arrow-right" aria-hidden=true></span>
                     </td>
                     <td>
                         <a href="address.html?id=%To">%To</a>
@@ -91,7 +91,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <span class="fa fa-btc" aria-hidden="true"></span>
+                        <span class="fa fa-btc" aria-hidden=true></span>
                         <a href="tx.html?id=%ParentTxHash">%ParentTxHash</a>
                     </td>
                     <td>%Type</td>
@@ -99,7 +99,7 @@
                         <a href="address.html?id=%From">%From</a>
                     </td>
                     <td>
-                        <span class="fa fa-arrow-right" aria-hidden="true"></span>
+                        <span class="fa fa-arrow-right" aria-hidden=true></span>
                     </td>
                     <td>
                         <a href="address.html?id=%To">%To</a>
@@ -110,7 +110,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <span class="fa fa-check" aria-hidden="true"></span>
+                        <span class="fa fa-check" aria-hidden=true></span>
                         <a href="tx.html?id=%ParentTxHash">%ParentTxHash</a>
                     </td>
                     <td>%Type</td>
@@ -118,7 +118,7 @@
                         <a href="address.html?id=%From">%From</a>
                     </td>
                     <td>
-                        <span class="fa fa-arrow-right" aria-hidden="true"></span>
+                        <span class="fa fa-arrow-right" aria-hidden=true></span>
                     </td>
                     <td>
                         <a href="address.html?id=%To">%To</a>
@@ -129,7 +129,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <span class="fa fa-check" aria-hidden="true"></span>
+                        <span class="fa fa-check" aria-hidden=true></span>
                         <a href="tx.html?id=%ParentTxHash">%ParentTxHash</a>
                     </td>
                     <td>%Type</td>
@@ -137,29 +137,7 @@
                         <a href="address.html?id=%From">%From</a>
                     </td>
                     <td>
-                        <span class="fa fa-arrow-right" aria-hidden="true"></span>
-                    </td>
-                    <td>
-                        <a href="address.html?id=%To">%To</a>
-                    </td>
-                    <td>%Value</td>
-                </tr>
-
-                <tr>
-                    <td class=ne>
-                        <a href="block.html?b=123456">%Block</a>
-                    </td>
-                    <td class=ne>%Age</td>
-                    <td>
-                        <span class="fa fa-remove" aria-hidden="true"></span>
-                        <a href="tx.html?id=%ParentTxHash">%ParentTxHash</a>
-                    </td>
-                    <td>%Type</td>
-                    <td>
-                        <a href="address.html?id=%From">%From</a>
-                    </td>
-                    <td>
-                        <span class="fa fa-arrow-right" aria-hidden="true"></span>
+                        <span class="fa fa-arrow-right" aria-hidden=true></span>
                     </td>
                     <td>
                         <a href="address.html?id=%To">%To</a>
@@ -173,7 +151,7 @@
                     </td>
                     <td class=ne>%Age</td>
                     <td>
-                        <span class="fa fa-check" aria-hidden="true"></span>
+                        <span class="fa fa-remove" aria-hidden=true></span>
                         <a href="tx.html?id=%ParentTxHash">%ParentTxHash</a>
                     </td>
                     <td>%Type</td>
@@ -181,7 +159,29 @@
                         <a href="address.html?id=%From">%From</a>
                     </td>
                     <td>
-                        <span class="fa fa-arrow-right" aria-hidden="true"></span>
+                        <span class="fa fa-arrow-right" aria-hidden=true></span>
+                    </td>
+                    <td>
+                        <a href="address.html?id=%To">%To</a>
+                    </td>
+                    <td>%Value</td>
+                </tr>
+
+                <tr>
+                    <td class=ne>
+                        <a href="block.html?b=123456">%Block</a>
+                    </td>
+                    <td class=ne>%Age</td>
+                    <td>
+                        <span class="fa fa-check" aria-hidden=true></span>
+                        <a href="tx.html?id=%ParentTxHash">%ParentTxHash</a>
+                    </td>
+                    <td>%Type</td>
+                    <td>
+                        <a href="address.html?id=%From">%From</a>
+                    </td>
+                    <td>
+                        <span class="fa fa-arrow-right" aria-hidden=true></span>
                     </td>
                     <td>
                         <a href="address.html?id=%To">%To</a>
@@ -192,7 +192,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <span class="fa fa-check" aria-hidden="true"></span>
+                        <span class="fa fa-check" aria-hidden=true></span>
                         <a href="tx.html?id=%ParentTxHash">%ParentTxHash</a>
                     </td>
                     <td>%Type</td>
@@ -200,7 +200,7 @@
                         <a href="address.html?id=%From">%From</a>
                     </td>
                     <td>
-                        <span class="fa fa-arrow-right" aria-hidden="true"></span>
+                        <span class="fa fa-arrow-right" aria-hidden=true></span>
                     </td>
                     <td>
                         <a href="address.html?id=%To">%To</a>

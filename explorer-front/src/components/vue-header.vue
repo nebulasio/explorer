@@ -71,9 +71,9 @@
                             <span class=sr-only>(current)</span>
                         </router-link>
                     </li>
-                    <li class="nav-item dropdown" v-bind:class="{ active: $route.meta.headerActive == 2 }">
-                        <a class="nav-link dropdown-toggle" href=# id=navbarDropdown1 role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>BLOCKCHAIN</a>
-                        <div class=dropdown-menu aria-labelledby="navbarDropdown1">
+                    <li class="dropdown nav-item" v-bind:class="{ active: $route.meta.headerActive == 2 }">
+                        <a class="nav-link dropdown-toggle" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>BLOCKCHAIN</a>
+                        <div class=dropdown-menu aria-labelledby=header-dropdown-blockchain>
                             <router-link class=dropdown-item to=/txs>View Txns</router-link>
                             <router-link class=dropdown-item to=/txs/pending>View Pending Txns</router-link>
                             <router-link class=dropdown-item to=/blocks>View Blocks</router-link>
@@ -82,11 +82,20 @@
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
                         <router-link class=nav-link to=/accounts>ACCOUNT</router-link>
                     </li>
-                    <!-- <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 4 }">
-                        <a class=nav-link href=#>TOKEN
-                            <span class=sr-only>(current)</span>
-                        </a>
-                    <li class=nav-item>
+                    <li class="dropdown nav-item">
+                        <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>MISC</a>
+                        <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
+                            <!-- 先不显示这一条 <a class="nav-link" href=# v-on:click="apiSwitch('main')">
+                                <span class="fa fa-check" v-bind:style="{ visibility: apiType == 'main' ? '' : 'hidden' }" aria-hidden=true></span>
+                                Mainnet
+                            </a> -->
+                            <a class=nav-link href=# v-on:click="apiSwitch('test')">
+                                <span class="fa fa-check" v-bind:style="{ visibility: apiType == 'test' ? '' : 'hidden' }" aria-hidden=true></span>
+                                Testnet
+                            </a>
+                        </div>
+                    </li>
+                    <!-- <li class=nav-item>
                         <a class=nav-link href=#>CHART
                             <span class=sr-only>(current)</span>
                         </a>
@@ -95,19 +104,9 @@
                         <a class="nav-link disabled" href="#">Disabled</a>
                     </li> -->
                 </ul>
-
                 <form class=form-inline v-on:submit.prevent=onSubmit>
                     <input class="form-control mr-sm-2" v-model=search type=search placeholder=Search>
                     <button class="btn btn-outline-success" type=submit>GO</button>
-                    <div class="btn-group btn-group-toggle">
-                        <!-- 先禁用此按钮 <label class="btn btn-outline-primary btn-sm" v-bind:class="labelClass('main')" v-on:click="clickLabel('main')">
-                            <input type=radio>main net
-                        </label> -->
-                        <label class="btn btn-outline-primary btn-sm disabled">main net</label>
-                        <label class="btn btn-outline-primary btn-sm" v-bind:class="labelClass('test')" v-on:click="clickLabel('test')">
-                            <input type=radio>test net
-                        </label>
-                    </div>
                 </form>
             </div>
         </div>
@@ -124,17 +123,19 @@
             };
         },
         methods: {
-            clickLabel(apiType) {
+            apiSwitch(apiType) {
                 if (sessionStorage.apiType != apiType) {
                     sessionStorage.apiType = apiType;
                     location.reload();
                 }
             },
-            labelClass(apiType) {
-                return this.apiType == apiType ? ["active"] : null;
-            },
             onSubmit() {
+                this.$root.showModalLoading = true;
+
                 api.getSearch(this.search, o => {
+                    this.$root.showModalLoading = false;
+                    this.search = "";
+
                     if (o.type == "block")
                         this.$router.push("/block/" + o.q);
                     else if (o.type == "address")
@@ -147,6 +148,8 @@
                     }
                 }, () => {
                     this.$root.search = this.search;
+                    this.$root.showModalLoading = false;
+                    this.search = "";
                     this.$router.push("/oops");
                 });
             }

@@ -17,19 +17,19 @@
                 <tr>
                     <th>Rank</th>
                     <th>Address</th>
-                    <th>Balance</th>
-                    <th>Percentage</th>
-                    <th>TxCount</th>
+                    <th class=text-right>Balance</th>
+                    <th class=text-right>Percentage</th>
+                    <th class=text-right>TxCount</th>
                 </tr>
                 <tr v-for="o in arr">
                     <td>{{ o.rank }}</td>
-                    <td>
+                    <td class=monospace>
                         <router-link v-bind:to='"/address/" + o.hash'>{{ o.hash }}</router-link>
                         <span v-show=o.alias> | {{ o.alias }}</span>
                     </td>
-                    <td>{{ toWei(o.balance) }}</td>
-                    <td>{{ o.percentage }}%</td>
-                    <td>{{ o.txCnt }}</td>
+                    <td class=text-right>{{ toWei(o.balance) }}</td>
+                    <td class=text-right>{{ o.percentage }}%</td>
+                    <td class=text-right>{{ o.txCnt }}</td>
                 </tr>
             </table>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>

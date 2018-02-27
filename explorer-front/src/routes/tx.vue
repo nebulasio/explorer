@@ -74,7 +74,7 @@
                     <td>{{ txType }}</td>
                 </tr>
                 <tr>
-                    <td>Input Data:</td>
+                    <td>Payload Data:</td>
                     <td class=code>
                         <pre><code class=language-javascript v-html=formatCode></code></pre>
                     </td>
