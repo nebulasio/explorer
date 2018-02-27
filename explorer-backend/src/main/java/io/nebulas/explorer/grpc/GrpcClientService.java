@@ -160,6 +160,9 @@ public class GrpcClientService {
 
             List<Transaction> txs = block.getTransactions();
             for (Transaction tx : txs) {
+                int type = StringUtils.isBlank(tx.getContractAddress()) ? 0 : 1;
+                addAddr(tx.getFrom(), type);
+                addAddr(tx.getTo(), type);
                 String gasUsed;
                 try {
                     GetGasUsedResponse gasUsedResponse = nebulasApiService.getGasUsed(new GetGasUsedRequest(tx.getHash())).toBlocking().first();
@@ -224,6 +227,9 @@ public class GrpcClientService {
             if (txSource == null) {
                 log.warn("pending tx with hash {} not ready", hash);
             } else {
+                int type = StringUtils.isBlank(txSource.getContractAddress()) ? 0 : 1;
+                addAddr(txSource.getFrom(), type);
+                addAddr(txSource.getTo(), type);
                 log.info("get pending tx by hash {}", hash);
                 NebPendingTransaction pendingTxToSave = NebPendingTransaction.builder()
                         .id(IdGenerator.getId())
