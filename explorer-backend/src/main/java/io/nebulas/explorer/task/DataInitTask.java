@@ -3,7 +3,6 @@ package io.nebulas.explorer.task;
 import io.nebulas.explorer.domain.BlockSyncRecord;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
-import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Transaction;
@@ -11,9 +10,9 @@ import io.nebulas.explorer.model.Zone;
 import io.nebulas.explorer.service.blockchain.*;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
-import io.nebulas.explorer.util.IdGenerator;
+import io.nebulas.explorer.util.BlockHelper;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -109,50 +107,33 @@ public class DataInitTask {
                     h++;
                     continue;
                 }
+                batchSaveAddress(Arrays.asList(blk.getMiner(), blk.getCoinbase()), 0);
 
-                NebBlock nebBlk = NebBlock.builder()
-                        .id(IdGenerator.getId())
-                        .height(blk.getHeight())
-                        .hash(blk.getHash())
-                        .parentHash(blk.getParentHash())
-                        .timestamp(new Date(blk.getTimestamp() * 1000))
-                        .miner(blk.getMiner())
-                        .coinbase(blk.getCoinbase())
-                        .nonce(blk.getNonce())
-                        .finality(blk.getHeight() <= latestIrreversibleBlk.getHeight())
-                        .build();
-
-                addAddr(blk.getMiner(), 0);
-                addAddr(blk.getCoinbase(), 0);
-
-                NebBlock nblk = nebBlockService.getNebBlockByHash(nebBlk.getHash());
+                NebBlock nblk = nebBlockService.getNebBlockByHash(blk.getHash());
                 if (nblk == null) {
-                    nebBlockService.addNebBlock(nebBlk);
-                    LOGGER.info("save block, height={}", nebBlk.getHeight());
+                    nebBlockService.addNebBlock(BlockHelper.buildNebBlock(blk, latestIrreversibleBlk.getHeight()));
+                    LOGGER.info("save block, height={}", blk.getHeight());
                 } else {
-                    LOGGER.warn("duplicate block hash {}", nebBlk.getHash());
+                    LOGGER.warn("duplicate block hash {}", blk.getHash());
                 }
-
 
                 GetDynastyResponse dynastyResponse = nebulasApiService.getDynasty(new GetDynastyRequest(blk.getHeight())).toBlocking().first();
                 nebDynastyService.batchAddNebDynasty(blk.getHeight(), dynastyResponse.getDelegatees());
 
-                //todo add address
+                batchSaveAddress(dynastyResponse.getDelegatees(), 0);
 
                 List<Transaction> txs = blk.getTransactions();
                 LOGGER.info("get txs {}", txs.size());
-                for (int tpos = 0; tpos < txs.size(); ) {
-                    Transaction tx = txs.get(tpos);
+                for (Transaction tx : txs) {
                     final int type = StringUtils.isBlank(tx.getContractAddress()) ? 0 : 1;
                     addAddr(tx.getFrom(), type);
                     addAddr(tx.getTo(), type);
-                    String gasUsed;
+                    String gasUsed = null;
                     try {
                         GetGasUsedResponse gasUsedResponse = nebulasApiService.getGasUsed(new GetGasUsedRequest(tx.getHash())).toBlocking().first();
                         gasUsed = gasUsedResponse.getGas();
                     } catch (Exception e) {
                         LOGGER.error("get gas used by tx hash error", e);
-                        continue;
                     }
                     if (gasUsed != null) {
                         LOGGER.info("tx hash {} gas used: {} ", tx.getHash(), gasUsed);
@@ -160,27 +141,8 @@ public class DataInitTask {
                         LOGGER.warn("gas used not found for tx hash {}", tx.getHash());
                     }
 
-                    NebTransaction nebTxs = NebTransaction.builder()
-                            .id(IdGenerator.getId())
-                            .hash(tx.getHash())
-                            .blockHeight(blk.getHeight())
-                            .blockHash(blk.getHash())
-                            .from(tx.getFrom())
-                            .to(tx.getTo())
-                            .status(tx.getStatus())
-                            .value(tx.getValue())
-                            .nonce(tx.getNonce())
-                            .timestamp(new Date(tx.getTimestamp() * 1000))
-                            .type(tx.getType())
-                            .data(tx.getData())
-                            .gasPrice(tx.getGasPrice())
-                            .gasLimit(tx.getGasLimit())
-                            .gasUsed(gasUsed)
-                            .createdAt(new Date())
-                            .build();
-                    nebTransactionService.addNebTransaction(nebTxs);
-                    LOGGER.info("save tx={} tpos={}", tx.getHash(), tpos);
-                    tpos++;
+                    nebTransactionService.addNebTransaction(BlockHelper.buildNebTransaction(tx, blk, gasUsed));
+                    LOGGER.info("save tx={}", tx.getHash());
                 }
             } catch (Exception e) {
                 LOGGER.error(e.getMessage(), e);
@@ -193,11 +155,16 @@ public class DataInitTask {
     private void addAddr(String hash, int type) {
         NebAddress addr = nebAddressService.getNebAddressByHash(hash);
         if (addr == null) {
-            try {
-                nebAddressService.addNebAddress(hash, type);
-            } catch (Throwable e) {
-                LOGGER.error("add address error", e);
-            }
+            nebAddressService.addNebAddress(hash, type);
+        }
+    }
+
+    private void batchSaveAddress(List<String> addressHash, int type) {
+        if (CollectionUtils.isEmpty(addressHash)) {
+            return;
+        }
+        for (String hash : addressHash) {
+            addAddr(hash, type);
         }
     }
 
