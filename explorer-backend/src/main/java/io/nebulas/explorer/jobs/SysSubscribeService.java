@@ -1,4 +1,4 @@
-package io.nebulas.explorer.service;
+package io.nebulas.explorer.jobs;
 
 import io.grpc.StatusRuntimeException;
 import io.nebulas.explorer.config.YAMLConfig;

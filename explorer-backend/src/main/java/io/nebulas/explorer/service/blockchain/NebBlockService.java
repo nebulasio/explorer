@@ -1,4 +1,4 @@
-package io.nebulas.explorer.service;
+package io.nebulas.explorer.service.blockchain;
 
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.mapper.NebBlockMapper;

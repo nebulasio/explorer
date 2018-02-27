@@ -1,4 +1,4 @@
-package io.nebulas.explorer.service;
+package io.nebulas.explorer.task;
 
 import io.nebulas.explorer.domain.BlockSyncRecord;
 import io.nebulas.explorer.domain.NebAddress;
@@ -8,12 +8,15 @@ import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Transaction;
 import io.nebulas.explorer.model.Zone;
+import io.nebulas.explorer.service.blockchain.*;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,10 +33,10 @@ import static com.alibaba.fastjson.JSON.toJSONString;
  * User: nathan
  * Date: 2018-02-26
  */
-@Slf4j
 @AllArgsConstructor
 @Service
-public class DataInitService {
+public class DataInitTask {
+    private static final Logger LOGGER = LoggerFactory.getLogger("data_init");
     private final NebBlockService nebBlockService;
     private final NebTransactionService nebTransactionService;
     private final NebAddressService nebAddressService;
@@ -41,24 +44,23 @@ public class DataInitService {
     private final BlockSyncRecordService blockSyncRecordService;
     private final NebulasApiService nebulasApiService;
 
-
     public void init(boolean isSync) {
         if (!isSync) {
             return;
         }
         NebState nebState = nebulasApiService.getNebState().toBlocking().first();
         if (nebState == null) {
-            log.error("neb state not found");
+            LOGGER.error("neb state not found");
             return;
         }
-        log.info("neb state: {}", toJSONString(nebState));
+        LOGGER.info("neb state: {}", toJSONString(nebState));
 
         Block block = nebulasApiService.getBlockByHash(new GetBlockByHashRequest(nebState.getTail(), false)).toBlocking().first();
         if (block == null) {
-            log.error("block by hash {} not found", nebState.getTail());
+            LOGGER.error("block by hash {} not found", nebState.getTail());
             return;
         }
-        log.info("top block: {}", toJSONString(block));
+        LOGGER.info("top block: {}", toJSONString(block));
 
         final Long goalHeight = block.getHeight();
         final Long lastConfirmHeight = blockSyncRecordService.getMaxConfirmedBlockHeight();
@@ -68,7 +70,7 @@ public class DataInitService {
 
     private void populateZones(List<Zone> zones) {
         if (zones.size() > 0) {
-            log.info("zones {}", zones);
+            LOGGER.info("zones {}", zones);
             ExecutorService executor = Executors.newFixedThreadPool(1);
             for (Zone zone : zones) {
                 executor.execute(() -> {
@@ -80,11 +82,11 @@ public class DataInitService {
 
     private void populate(long from, long to) {
         long threadId = Thread.currentThread().getId();
-        log.info("Thread {} start populating", threadId);
+        LOGGER.info("Thread {} start populating", threadId);
 
         long start = System.currentTimeMillis();
         Block latestIrreversibleBlk = nebulasApiService.getLatestIrreversibleBlock().toBlocking().first();
-        log.info("get latestIrreversibleBlk height={}", latestIrreversibleBlk.getHeight());
+        LOGGER.info("get latestIrreversibleBlk height={}", latestIrreversibleBlk.getHeight());
 
         for (long h = from; h <= to; ) {
             BlockSyncRecord record = new BlockSyncRecord();
@@ -96,14 +98,14 @@ public class DataInitService {
             NebBlock nebBlock = nebBlockService.getNebBlockByHeight(h);
             if (nebBlock != null) {
                 h++;
-                log.info("block exist, height={}", nebBlock.getHeight());
+                LOGGER.info("block exist, height={}", nebBlock.getHeight());
                 continue;
             }
 
             try {
                 Block blk = nebulasApiService.getBlockByHeight(new GetBlockByHeightRequest(h, true)).toBlocking().first();
                 if (blk == null) {
-                    log.error("block with height {} not found", h);
+                    LOGGER.error("block with height {} not found", h);
                     h++;
                     continue;
                 }
@@ -126,9 +128,9 @@ public class DataInitService {
                 NebBlock nblk = nebBlockService.getNebBlockByHash(nebBlk.getHash());
                 if (nblk == null) {
                     nebBlockService.addNebBlock(nebBlk);
-                    log.info("save block, height={}", nebBlk.getHeight());
+                    LOGGER.info("save block, height={}", nebBlk.getHeight());
                 } else {
-                    log.warn("duplicate block hash {}", nebBlk.getHash());
+                    LOGGER.warn("duplicate block hash {}", nebBlk.getHash());
                 }
 
 
@@ -138,7 +140,7 @@ public class DataInitService {
                 //todo add address
 
                 List<Transaction> txs = blk.getTransactions();
-                log.info("get txs {}", txs.size());
+                LOGGER.info("get txs {}", txs.size());
                 for (int tpos = 0; tpos < txs.size(); ) {
                     Transaction tx = txs.get(tpos);
                     final int type = StringUtils.isBlank(tx.getContractAddress()) ? 0 : 1;
@@ -149,13 +151,13 @@ public class DataInitService {
                         GetGasUsedResponse gasUsedResponse = nebulasApiService.getGasUsed(new GetGasUsedRequest(tx.getHash())).toBlocking().first();
                         gasUsed = gasUsedResponse.getGas();
                     } catch (Exception e) {
-                        log.error("get gas used by tx hash error", e);
+                        LOGGER.error("get gas used by tx hash error", e);
                         continue;
                     }
                     if (gasUsed != null) {
-                        log.info("tx hash {} gas used: {} ", tx.getHash(), gasUsed);
+                        LOGGER.info("tx hash {} gas used: {} ", tx.getHash(), gasUsed);
                     } else {
-                        log.warn("gas used not found for tx hash {}", tx.getHash());
+                        LOGGER.warn("gas used not found for tx hash {}", tx.getHash());
                     }
 
                     NebTransaction nebTxs = NebTransaction.builder()
@@ -177,15 +179,15 @@ public class DataInitService {
                             .createdAt(new Date())
                             .build();
                     nebTransactionService.addNebTransaction(nebTxs);
-                    log.info("save tx={} tpos={}", tx.getHash(), tpos);
+                    LOGGER.info("save tx={} tpos={}", tx.getHash(), tpos);
                     tpos++;
                 }
             } catch (Exception e) {
-                log.error(e.getMessage(), e);
+                LOGGER.error(e.getMessage(), e);
             }
             h++;
         }
-        log.info("Thread {}: {} millis elapsed for populating", threadId, System.currentTimeMillis() - start);
+        LOGGER.info("Thread {}: {} millis elapsed for populating", threadId, System.currentTimeMillis() - start);
     }
 
     private void addAddr(String hash, int type) {
@@ -194,7 +196,7 @@ public class DataInitService {
             try {
                 nebAddressService.addNebAddress(hash, type);
             } catch (Throwable e) {
-                log.error("add address error", e);
+                LOGGER.error("add address error", e);
             }
         }
     }

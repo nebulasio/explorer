@@ -11,6 +11,11 @@ import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Transaction;
 import io.nebulas.explorer.model.Zone;
+import io.nebulas.explorer.service.PopulationMonitor;
+import io.nebulas.explorer.service.blockchain.NebAddressService;
+import io.nebulas.explorer.service.blockchain.NebBlockService;
+import io.nebulas.explorer.service.blockchain.NebDynastyService;
+import io.nebulas.explorer.service.blockchain.NebTransactionService;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +39,7 @@ import static com.alibaba.fastjson.JSON.toJSONString;
  * @version 1.0
  * @since 2018-01-24
  */
+@Deprecated
 @Slf4j
 @AllArgsConstructor
 @Service

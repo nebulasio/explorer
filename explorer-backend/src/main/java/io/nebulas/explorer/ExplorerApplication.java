@@ -3,9 +3,9 @@ package io.nebulas.explorer;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.core.DeadlockConsoleHandler;
 import io.nebulas.explorer.core.DeadlockDetector;
-import io.nebulas.explorer.service.DataInitService;
+import io.nebulas.explorer.task.DataInitTask;
 import io.nebulas.explorer.service.LeaderWrapper;
-import io.nebulas.explorer.service.SysSubscribeService;
+import io.nebulas.explorer.jobs.SysSubscribeService;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class ExplorerApplication {
     }
 
     @Bean
-    CommandLineRunner init(final YAMLConfig myConfig, final SysSubscribeService sysService, final LeaderWrapper leaderWrapper, final DataInitService dataInitService) {
+    CommandLineRunner init(final YAMLConfig myConfig, final SysSubscribeService sysService, final LeaderWrapper leaderWrapper, final DataInitTask dataInitTask) {
 
         return arg -> {
             log.info("using environment: {}", myConfig.getEnvironment());
@@ -55,7 +55,7 @@ public class ExplorerApplication {
                 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
                 scheduler.schedule(() -> {
                     sysService.init(myConfig.getSync().isSubscribe());
-                    dataInitService.init(myConfig.getSync().isOpen());
+                    dataInitTask.init(myConfig.getSync().isOpen());
                 }, 1500L, TimeUnit.MILLISECONDS);
             } else {
                 log.info("failed to acquire lock");

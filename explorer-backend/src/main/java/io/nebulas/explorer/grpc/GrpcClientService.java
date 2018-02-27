@@ -14,10 +14,12 @@ import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.DposContext;
 import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Transaction;
-import io.nebulas.explorer.service.NebAddressService;
-import io.nebulas.explorer.service.NebBlockService;
-import io.nebulas.explorer.service.NebDynastyService;
-import io.nebulas.explorer.service.NebTransactionService;
+import io.nebulas.explorer.service.blockchain.NebAddressService;
+import io.nebulas.explorer.service.blockchain.NebBlockService;
+import io.nebulas.explorer.service.blockchain.NebDynastyService;
+import io.nebulas.explorer.service.blockchain.NebTransactionService;
+import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +52,7 @@ public class GrpcClientService {
     private NebTransactionService nebTransactionService;
     private NebAddressService nebAddressService;
     private NebDynastyService nebDynastyService;
+    private NebulasApiService nebulasApiService;
 
     public void subscribe() {
         Channel channel = grpcChannelService.getChannel();
@@ -123,13 +126,7 @@ public class GrpcClientService {
             return;
         }
         try {
-            Block block;
-            try {
-                block = getBlockByHash(hash, true);
-            } catch (StatusRuntimeException e) {
-                log.error("get block by hash error, skipped block hash " + hash, e);
-                return;
-            }
+            Block block = nebulasApiService.getBlockByHash(new GetBlockByHashRequest(hash, true)).toBlocking().first();
 
             if (block == null) {
                 log.warn("block with hash {} not ready", hash);
@@ -137,13 +134,7 @@ public class GrpcClientService {
             }
 
             log.info("get block by hash {}", block.toString());
-//            Integer trx = data.getInteger("tx");
-//            if (trx != null && trx > 0) {
-//                log.info("guess the block has transaction");
-//                if (block.getTransactions() == null || block.getTransactions().isEmpty()) {
-//                    log.info("but can not get block transactions by full transaction");
-//                }
-//            }
+
             addAddr(block.getMiner(), 0);
             addAddr(block.getCoinbase(), 0);
 
@@ -171,8 +162,9 @@ public class GrpcClientService {
             for (Transaction tx : txs) {
                 String gasUsed;
                 try {
-                    gasUsed = getGasUsed(tx.getHash());
-                } catch (StatusRuntimeException e) {
+                    GetGasUsedResponse gasUsedResponse = nebulasApiService.getGasUsed(new GetGasUsedRequest(tx.getHash())).toBlocking().first();
+                    gasUsed = gasUsedResponse.getGas();
+                } catch (Exception e) {
                     log.error("get gas used error, set gas used to null for tx hash " + tx.getHash(), e);
                     gasUsed = null;
                 }
@@ -204,8 +196,8 @@ public class GrpcClientService {
                 nebTransactionService.addNebTransaction(nebTxs);
             }
 
-            List<String> delegateList = getDynasty(block.getHeight());
-            nebDynastyService.batchAddNebDynasty(block.getHeight(), delegateList);
+            GetDynastyResponse dynastyResponse = nebulasApiService.getDynasty(new GetDynastyRequest(block.getHeight())).toBlocking().first();
+            nebDynastyService.batchAddNebDynasty(block.getHeight(), dynastyResponse.getDelegatees());
 
         } catch (UnsupportedEncodingException e) {
             log.error("no block yet", e);
