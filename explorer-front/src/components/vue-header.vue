@@ -99,11 +99,11 @@
                 <form class=form-inline v-on:submit.prevent=onSubmit>
                     <input class="form-control mr-sm-2" v-model=search type=search placeholder=Search>
                     <button class="btn btn-outline-success" type=submit>GO</button>
-                    <div class="btn-group btn-group-toggle" data-toggle=buttons>
+                    <div class="btn-group btn-group-toggle">
                         <!-- 先禁用此按钮 <label class="btn btn-outline-primary btn-sm" v-bind:class="labelClass('main')" v-on:click="clickLabel('main')">
                             <input type=radio>main net
                         </label> -->
-                        <div class="btn btn-outline-primary btn-sm disabled">main net</div>
+                        <label class="btn btn-outline-primary btn-sm disabled">main net</label>
                         <label class="btn btn-outline-primary btn-sm" v-bind:class="labelClass('test')" v-on:click="clickLabel('test')">
                             <input type=radio>test net
                         </label>
