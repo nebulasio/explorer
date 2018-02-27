@@ -366,19 +366,19 @@
             api.getMarketCap(o => this.market = o);
 
             api.getTx("cnt_static", o => {
-                var i, arr = [];
+                var i, arr = [], div = document.querySelector("#chart");
 
-                for (i in o) arr.push([Date.parse(i), o[i]]);
+                if (div) {
+                    for (i in o) arr.push([Date.parse(i), o[i]]);
 
-                arr.sort(function (a, b) {
-                    return a[0] - b[0];
-                });
+                    arr.sort(function (a, b) { return a[0] - b[0]; });
 
-                // series 全部是 0 时没法计算纵坐标, highcharts 会把一条线居中显示. 如果想让线靠下就需要给 max 一个非零的值比如 1
-                // this.chartConfig.yAxis.max = 1;
+                    // series 全部是 0 时没法计算纵坐标, highcharts 会把一条线居中显示. 如果想让线靠下就需要给 max 一个非零的值比如 1
+                    // this.chartConfig.yAxis.max = 1;
 
-                this.chartConfig.series[0].data = arr;
-                require("highcharts").chart("chart", this.chartConfig);
+                    this.chartConfig.series[0].data = arr;
+                    require("highcharts").chart(div, this.chartConfig);
+                }
             });
         }
     };
