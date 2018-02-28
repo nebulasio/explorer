@@ -9,7 +9,6 @@
     }
 
     .vue-footer .footer_banner_tab {
-        border-bottom: 1px dashed #fff;
         color: #fff;
         height: 40px;
         margin-top: 24px;

@@ -21,12 +21,12 @@
                 </tr>
                 <tr>
                     <td>TxReceipt Status:</td>
-                    <td>Success</td>
+                    <td>{{ isPending == true ? 'pending' : 'Success' }}</td>
                 </tr>
                 <tr>
                     <td>Block Height:</td>
                     <td>
-                        <router-link v-if=tx.block v-bind:to='"/block/" + tx.block.height'>{{ tx.block.height }}</router-link>
+                        <router-link v-if=tx.block v-bind:to='"/block/" + tx.block.height'>{{ isPending == true ? 'pending' : tx.block.height  }}</router-link>
                     </td>
                 </tr>
                 <tr>
@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td>Gas Used By Txn:</td>
-                    <td>{{ tx.gasReward }} Nas</td>
+                    <td>{{  isPending == true ? 'pending' : tx.gasReward }} Nas</td>
                 </tr>
                 <tr>
                     <td>Gas Price:</td>
