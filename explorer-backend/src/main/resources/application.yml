@@ -53,7 +53,7 @@ page:
 sync:
   zone: 100000
   cpu: 1
-  open: true
+  open: false
   subscribe : true
 apiHost:
   coinmarketcap: https://api.coinmarketcap.com

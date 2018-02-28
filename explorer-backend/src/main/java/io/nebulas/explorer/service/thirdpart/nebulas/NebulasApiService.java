@@ -1,8 +1,11 @@
 package io.nebulas.explorer.service.thirdpart.nebulas;
 
+import com.google.gson.JsonObject;
 import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.NebState;
+import io.nebulas.explorer.model.Transaction;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -36,4 +39,6 @@ public interface NebulasApiService {
     @POST("/v1/user/accountstate")
     Observable<GetAccountStateResponse> getAccountState(@Body GetAccountStateRequest request);
 
+    @POST("/v1/user/getTransactionReceipt")
+    Call<Transaction> getTransactionReceipt(@Body GetTransactionReceiptRequest request);
 }
