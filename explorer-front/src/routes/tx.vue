@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td>Gas Used By Txn:</td>
-                    <td>{{  isPending == true ? 'pending' : tx.gasReward }} Nas</td>
+                    <td>{{  isPending == true ? 'pending' : toWei(tx.gasUsed) }}</td>
                 </tr>
                 <tr>
                     <td>Gas Price:</td>
