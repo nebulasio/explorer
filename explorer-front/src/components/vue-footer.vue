@@ -49,7 +49,7 @@
                         <a target=_blank href=https://github.com/nebulasio/explorer/issues>Issue</a>
                     </div>
                     <div>Commit:
-                        <a target=_blank href=https://github.com/nebulasio/explorer/commits/2125072eb48e954c73fd84ae34a263ddf37f117d>2125072</a>
+                        <a target=_blank href=https://github.com/nebulasio/explorer/commit/cf54099633db072aef15cec338a0ddaf21bb182a>cf54099</a>
                     </div>
                 </div>
             </div>
