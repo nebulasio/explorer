@@ -2,7 +2,6 @@ package io.nebulas.explorer.jobs;
 
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
-import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Transaction;
@@ -19,6 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
 
@@ -69,9 +69,13 @@ public class DataConsensusJob {
         if (lastConfirmHeight < block.getHeight()) {
             try {
                 redisTemplate.opsForValue().set(key, "running");
+                redisTemplate.opsForValue().getOperations().expire(key, 5, TimeUnit.MINUTES);
+
                 Block latestIrreversibleBlk = nebulasApiService.getLatestIrreversibleBlock().toBlocking().first();
 
-                for (long i = lastConfirmHeight + 1; i <= block.getHeight(); i++) {
+                long end = block.getHeight() - lastConfirmHeight > 2000 ? lastConfirmHeight + 2000 : block.getHeight();
+
+                for (long i = lastConfirmHeight + 1; i <= end; i++) {
                     Block blk = nebulasApiService.getBlockByHeight(new GetBlockByHeightRequest(i, true)).toBlocking().first();
                     if (blk != null) {
                         boolean isOk = true;

@@ -48,6 +48,7 @@
 
     <root level="INFO">
         <appender-ref ref="explorer_log"/>
+        <appender-ref ref="explorer_console_log"/>
     </root>
 
 </configuration>

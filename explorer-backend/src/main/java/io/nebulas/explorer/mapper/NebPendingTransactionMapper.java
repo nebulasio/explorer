@@ -4,6 +4,7 @@ import io.nebulas.explorer.domain.NebPendingTransaction;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,4 +28,6 @@ public interface NebPendingTransactionMapper {
     NebPendingTransaction getByHash(String hash);
 
     List<NebPendingTransaction> findPendingTxnByCondition(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
+
+    List<NebPendingTransaction> findLessThanTimestamp(@Param("timestamp") Date timestamp, @Param("limit") int limit);
 }
