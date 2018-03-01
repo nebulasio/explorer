@@ -108,6 +108,7 @@ public class GrpcClientService {
                 finishLatch.countDown();
             }
         };
+        
         asyncStub.subscribe(Rpc.SubscribeRequest.newBuilder()
                 .addTopics(Const.TopicPendingTransaction)
                 .addTopics(Const.TopicLinkBlock)
@@ -183,7 +184,7 @@ public class GrpcClientService {
 
             Block latestIrreversibleBlk = null;
             try {
-                latestIrreversibleBlk = getLatestIrreversibleBlock();
+                latestIrreversibleBlk = nebulasApiService.getLatestIrreversibleBlock().toBlocking().first();
             } catch (StatusRuntimeException e) {
                 log.error("get block by height error", e);
             }
@@ -284,37 +285,6 @@ public class GrpcClientService {
             throw e;
         }
         return populateBlock(block);
-    }
-
-    public Block getLatestIrreversibleBlock() throws UnsupportedEncodingException {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
-        Rpc.BlockResponse block;
-        try {
-            block = stub.latestIrreversibleBlock(Rpc.NonParamsRequest.newBuilder().build());
-        } catch (StatusRuntimeException e) {
-            String errMessage = e.getMessage();
-            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
-                return null;
-            }
-            throw e;
-        }
-        return populateBlock(block);
-    }
-
-    @Deprecated
-    public String getDumpData(int count) {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
-        Rpc.BlockDumpResponse response;
-        try {
-            response = stub.blockDump(Rpc.BlockDumpRequest.newBuilder().setCount(count).build());
-        } catch (StatusRuntimeException e) {
-            String errMessage = e.getMessage();
-            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
-                return null;
-            }
-            throw e;
-        }
-        return response.getData();
     }
 
     public Block getBlockByHeight(long height, boolean fullTransaction) throws UnsupportedEncodingException {
