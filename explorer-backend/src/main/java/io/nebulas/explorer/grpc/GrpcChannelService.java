@@ -42,7 +42,7 @@ public class GrpcChannelService {
 
     public synchronized Channel getChannel() {
         if (channel == null) {
-            return newChannel();
+            channel = newChannel();
         }
         return channel;
     }
