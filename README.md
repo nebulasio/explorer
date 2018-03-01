@@ -13,8 +13,11 @@ More details at https://github.com/nebulasio/explorer/blob/develop/explorer-fron
 
 ### Explorer Backend
 1. Data access REST APIs
+
 Exposes the REST APIs for frontend to get blockchain data.
+
 2. Data Loader
+
 Loads the blockchain data from Nebulas Node and transform and store the data in a way the frontend can consume.
 
 ### Redis
