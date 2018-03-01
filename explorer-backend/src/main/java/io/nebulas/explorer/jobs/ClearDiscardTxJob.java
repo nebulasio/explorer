@@ -31,6 +31,7 @@ public class ClearDiscardTxJob {
     @Scheduled(cron = "0 0/3 * * * ?")
     public void clear() {
         Date now = new Date();
+        log.info("begin check pending transaction date={}", now);
         List<NebPendingTransaction> pendingTxList = nebTransactionService.findLessThanTimestamp(now, 200);
         if (CollectionUtils.isNotEmpty(pendingTxList)) {
             for (NebPendingTransaction ptx : pendingTxList) {
