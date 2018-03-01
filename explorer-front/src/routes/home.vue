@@ -196,7 +196,7 @@
                         <div class=msg>
                             <div class=msg_change>
                                 <span class="msg_change_left">24h Change : </span>
-                                <span class="msg_change_right red">{{ trends=1 ? '+' : '-' }} {{ market.change24h }}%</span>
+                                <span class="msg_change_right" v-bind:class="[ market.trends == 1 ? 'red' : 'green']" >{{ market.trends == 1 ? '+' : '-' }} {{ market.change24h }}%</span>
                             </div>
                             <div class=msg_volume>
                                 <span class="msg_change_left">24h Volume :</span>
