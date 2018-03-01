@@ -4,7 +4,7 @@ A Java web app for users to explore and analyze the nebulas blockchain.
 Its frontend is a single page application using vuejs and its backend uses Spring.
 
 ## Design Overview
-![Nebulas Explorer Design Overview](https://i.imgur.com/zdGo9Kb.jpg?1)
+![Nebulas Explorer Design Overview](https://i.imgur.com/vEdztR4.jpg)
 
 ### Explorer Frontend
 It's a web app using [vuejs](https://vuejs.org/) serves as the presentation layer for the nebulas blockchain explorer.
@@ -19,9 +19,6 @@ Exposes the REST APIs for frontend to get blockchain data.
 2. Data Loader
 
 Loads the blockchain data from Nebulas Node and transform and store the data in a way the frontend can consume.
-
-### Redis
-Cache Layer for data access to MySQL
 
 ### MySQL
 Data Storage for the loaded and transformed data.
