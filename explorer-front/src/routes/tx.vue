@@ -26,7 +26,12 @@
                 <tr>
                     <td>Block Height:</td>
                     <td>
-                        <router-link v-if=tx.block v-bind:to='"/block/" + tx.block.height'>{{ tx.isPending == true ? 'pending' : tx.block.height  }}</router-link>
+                        <template v-if=tx.isPending>
+                            <span> pending </span>
+                        </template>
+                        <template v-else>
+                            <router-link v-if=tx.block v-bind:to='"/block/" + tx.block.height'>{{tx.block.height}}</router-link>
+                        </template>
                     </td>
                 </tr>
                 <tr>
@@ -55,7 +60,7 @@
                 </tr>
                 <tr>
                     <td>Gas Used By Txn:</td>
-                    <td>{{  tx.isPending == true ? 'pending' : toWei(tx.gasUsed) }}</td>
+                    <td>{{ tx.isPending == true ? 'pending' : toWei(tx.gasUsed) }}</td>
                 </tr>
                 <tr>
                     <td>Gas Price:</td>
