@@ -29,7 +29,7 @@ import static com.alibaba.fastjson.JSON.toJSONString;
  * @version 1.0
  * @since 2018-01-24
  */
-@Slf4j
+@Slf4j(topic = "data_init_log")
 @AllArgsConstructor
 @Component
 public class DataConsensusJob {

@@ -37,6 +37,20 @@
         </encoder>
     </appender>
 
+    <appender name="subscribe_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>subscribe.log</file>
+        <Prudent>true</Prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>subscribe.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level [%logger] - %msg%n</pattern>
+            <immediateFlush>true</immediateFlush>
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
+        </encoder>
+    </appender>
+
     <logger name="io.nebulas.explorer" level="INFO"/>
     <logger name="io.nebulas.explorer.repository" level="INFO"/>
     <logger name="org.mybatis.spring" level="ERROR"/>
@@ -44,6 +58,9 @@
 
     <logger name="data_init" additivity="false" level="info">
         <appender-ref ref="data_init_log"/>
+    </logger>
+    <logger name="subscribe" additivity="false" level="info">
+        <appender-ref ref="subscribe_log"/>
     </logger>
 
     <root level="INFO">
