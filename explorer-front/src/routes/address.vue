@@ -72,7 +72,8 @@
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
                         Latest {{ txs.length }} txns from a total Of
-                        <router-link v-bind:to='"/txs?a=" + $route.params.id'>{{ obj.txCnt }}</router-link>
+                        <router-link v-bind:to='"/txs?a=" + $route.params.id'>{{ obj.txCnt }} transations </router-link>
+                        <router-link v-bind:to='"/txs?a=" + $route.params.id'>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
                     </div>
                     <div class=col-auto>
                         <router-link class="btn btn-link" v-bind:to='"/txs?a=" + $route.params.id'>View All</router-link>
