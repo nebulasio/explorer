@@ -85,6 +85,7 @@ Redis ：https://redis.io/
 ```
 cd explorer/explorer-backend
 source build-expl.sh
+source start-expl.sh
 source stop-expl.sh
 ```
 
