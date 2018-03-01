@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0
  * @since 2018-01-24
  */
-@Slf4j
+@Slf4j(topic = "subscribe")
 @AllArgsConstructor
 @Service
 public class SysSubscribeService {
