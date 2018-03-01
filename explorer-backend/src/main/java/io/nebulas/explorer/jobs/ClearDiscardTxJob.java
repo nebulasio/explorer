@@ -2,6 +2,7 @@ package io.nebulas.explorer.jobs;
 
 import com.alibaba.fastjson.JSONObject;
 import io.nebulas.explorer.domain.NebPendingTransaction;
+import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.model.Transaction;
 import io.nebulas.explorer.service.blockchain.NebTransactionService;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
@@ -42,6 +43,11 @@ public class ClearDiscardTxJob {
                         if (null != jsonObject && "transaction not found".equals(jsonObject.getString("error"))) {
                             nebTransactionService.deleteNebPendingTransaction(ptx.getId());
                             log.info("delete pending tx, hash={}", ptx.getHash());
+                        }
+                    } else if (response.code() == 200) {
+                        NebTransaction tx = nebTransactionService.getNebTransactionByHash(ptx.getHash());
+                        if (null != tx) {
+                            nebTransactionService.deleteNebPendingTransaction(ptx.getId());
                         }
                     }
                 } catch (Exception e) {
