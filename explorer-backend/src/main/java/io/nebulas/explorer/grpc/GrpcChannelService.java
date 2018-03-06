@@ -52,7 +52,7 @@ public class GrpcChannelService {
         try {
             ManagedChannelBuilder<?> managedChannelBuilder = ManagedChannelBuilder.forAddress(grpcCfg.getHost(), grpcCfg.getPort());
             if (grpcCfg.getEnableKeepAlive()) {
-                managedChannelBuilder.keepAliveWithoutCalls(grpcCfg.getEnableKeepAlive());
+                managedChannelBuilder.keepAliveWithoutCalls(grpcCfg.getKeepAliveWithoutCalls());
                 managedChannelBuilder.keepAliveTimeout(grpcCfg.getKeepAliveTimeout(), TimeUnit.SECONDS);
             }
             managedChannelBuilder.usePlaintext(true);
