@@ -28,7 +28,7 @@ public class BlockHelper {
                 .build();
     }
 
-    public static NebTransaction buildNebTransaction(Transaction tx, Block blk, String gasUsed) {
+    public static NebTransaction buildNebTransaction(Transaction tx, Block blk) {
         return NebTransaction.builder()
                 .id(IdGenerator.getId())
                 .hash(tx.getHash())
@@ -44,7 +44,7 @@ public class BlockHelper {
                 .data(tx.getData())
                 .gasPrice(tx.getGasPrice())
                 .gasLimit(tx.getGasLimit())
-                .gasUsed(gasUsed)
+                .gasUsed(tx.getGasUsed())
                 .createdAt(new Date())
                 .build();
     }

@@ -1,7 +1,12 @@
 package io.nebulas.explorer.jobs;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
+import io.nebulas.explorer.domain.NebTransaction;
+import io.nebulas.explorer.enums.NebAddressTypeEnum;
+import io.nebulas.explorer.enums.NebTransactionTypeEnum;
 import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Transaction;
@@ -17,6 +22,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -41,6 +47,7 @@ public class DataConsensusJob {
     private final NebulasApiService nebulasApiService;
     private final StringRedisTemplate redisTemplate;
 
+    private static final Base64.Decoder DECODER = Base64.getDecoder();
 
     @Scheduled(cron = "0 0/2 * * * ?")
     public void check() {
@@ -88,24 +95,37 @@ public class DataConsensusJob {
                         long txCnt = nebTransactionService.countTxnCntByBlockHeight(blk.getHeight());
                         if (txCnt < blk.getTransactions().size()) {
                             for (Transaction tx : blk.getTransactions()) {
-                                final int type = StringUtils.isBlank(tx.getContractAddress()) ? 0 : 1;
-                                addAddr(tx.getFrom(), type);
-                                addAddr(tx.getTo(), type);
-                                String gasUsed;
-                                try {
-                                    GetGasUsedResponse gasUsedResponse = nebulasApiService.getGasUsed(new GetGasUsedRequest(tx.getHash())).toBlocking().first();
-                                    gasUsed = gasUsedResponse.getGas();
-                                } catch (Exception e) {
-                                    log.error("get gas used by tx hash error", e);
-                                    continue;
-                                }
-                                if (gasUsed != null) {
-                                    log.info("tx hash {} gas used: {} ", tx.getHash(), gasUsed);
-                                } else {
-                                    log.warn("gas used not found for tx hash {}", tx.getHash());
+                                addAddr(tx.getFrom(), NebAddressTypeEnum.NORMAL);
+
+                                if (NebTransactionTypeEnum.BINARY.getDesc().equals(tx.getType())) {
+                                    addAddr(tx.getTo(), NebAddressTypeEnum.NORMAL);
+                                } else if (NebTransactionTypeEnum.CALL.getDesc().equals(tx.getType())) {
+                                    addAddr(tx.getTo(), NebAddressTypeEnum.CONTRACT);
+                                    String realReceiver = extractReceiverAddress(tx.getData());
+                                    addAddr(realReceiver, NebAddressTypeEnum.NORMAL);
+                                } else if (NebTransactionTypeEnum.DEPLOY.getDesc().equals(tx.getType())) {
+                                    addAddr(tx.getContractAddress(), NebAddressTypeEnum.NORMAL);
                                 }
 
-                                nebTransactionService.addNebTransaction(BlockHelper.buildNebTransaction(tx, blk, gasUsed));
+                                NebTransaction nebTx = BlockHelper.buildNebTransaction(tx, blk);
+                                if (StringUtils.isEmpty(nebTx.getGasUsed())) {
+                                    String gasUsed = null;
+                                    try {
+                                        GetGasUsedResponse gasUsedResponse = nebulasApiService.getGasUsed(new GetGasUsedRequest(tx.getHash())).toBlocking().first();
+                                        gasUsed = gasUsedResponse.getGas();
+                                    } catch (Exception e) {
+                                        log.error("get gas used by tx hash error", e);
+                                        continue;
+                                    }
+                                    if (gasUsed != null) {
+                                        nebTx.setGasUsed(gasUsed);
+                                        log.info("tx hash {} gas used: {} ", tx.getHash(), gasUsed);
+                                    } else {
+                                        nebTx.setGasUsed("");
+                                        log.warn("gas used not found for tx hash {}", tx.getHash());
+                                    }
+                                }
+                                nebTransactionService.addNebTransaction(nebTx);
                                 log.info("save tx={}", tx.getHash());
                             }
                             isOk = false;
@@ -137,8 +157,8 @@ public class DataConsensusJob {
                 .finality(blk.getHeight() <= libBlkHeight)
                 .build();
 
-        addAddr(blk.getMiner(), 0);
-        addAddr(blk.getCoinbase(), 0);
+        addAddr(blk.getMiner(), NebAddressTypeEnum.NORMAL);
+        addAddr(blk.getCoinbase(), NebAddressTypeEnum.NORMAL);
 
         NebBlock nblk = nebBlockService.getNebBlockByHash(nebBlk.getHash());
         if (nblk == null) {
@@ -152,15 +172,31 @@ public class DataConsensusJob {
         nebDynastyService.batchAddNebDynasty(blk.getHeight(), dynastyResponse.getDelegatees());
     }
 
-    private void addAddr(String hash, int type) {
+    private void addAddr(String hash, NebAddressTypeEnum type) {
         NebAddress addr = nebAddressService.getNebAddressByHash(hash);
         if (addr == null) {
             try {
-                nebAddressService.addNebAddress(hash, type);
+                nebAddressService.addNebAddress(hash, type.getValue());
             } catch (Throwable e) {
                 log.error("add address error", e);
             }
         }
+    }
+
+    private String extractReceiverAddress(String data) {
+        try {
+            String dataStr = new String(DECODER.decode(data), "UTF-8");
+            JSONObject jsonObject = JSONObject.parseObject(dataStr);
+            String func = jsonObject.getString("Function");
+
+            if ("transfer".equals(func)) {
+                JSONArray array = jsonObject.getJSONArray("Args");
+                return array.getString(0);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return "";
     }
 
     private String getHashKey() {
