@@ -114,21 +114,15 @@
         },
         computed: {
             formatCode() {
-                var o, lang, code;
+                var lang = prism.languages.javascript;
 
-                if (this.txType == "normal" && this.tx.data) {
-                    o = JSON.parse(this.tx.data),
-                        lang = o.SourceType,
-                        code = o.Source;
+                if (this.tx.data)
+                    if (this.tx.type == "deploy")
+                        return prism.highlight(jsBeautify(JSON.parse(this.tx.data).Source), lang);
+                    else if (this.tx.type == "binary" || this.tx.type == "call")
+                        return prism.highlight(jsBeautify(this.tx.data), lang);
 
-                    // if (lang == "js")
-                    lang = prism.languages.javascript;
-
-                    code = jsBeautify(code);
-                    // return code;
-                    return prism.highlight(code, lang);
-                } else
-                    return "0x0";
+                return "0x0";
             },
             txType() {
                 // type=binary      【前端显示：Normal】
