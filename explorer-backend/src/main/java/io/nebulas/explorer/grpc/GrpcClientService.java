@@ -1,7 +1,6 @@
 package io.nebulas.explorer.grpc;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Maps;
 import io.grpc.Channel;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
@@ -12,7 +11,6 @@ import io.nebulas.explorer.domain.NebPendingTransaction;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.DposContext;
-import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Transaction;
 import io.nebulas.explorer.service.blockchain.NebAddressService;
 import io.nebulas.explorer.service.blockchain.NebBlockService;
@@ -23,14 +21,15 @@ import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import rpcpb.ApiServiceGrpc;
 import rpcpb.Rpc;
 
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -108,7 +107,7 @@ public class GrpcClientService {
                 finishLatch.countDown();
             }
         };
-        
+
         asyncStub.subscribe(Rpc.SubscribeRequest.newBuilder()
                 .addTopics(Const.TopicPendingTransaction)
                 .addTopics(Const.TopicLinkBlock)
@@ -347,7 +346,7 @@ public class GrpcClientService {
                 , transactionResponse.getFrom(), transactionResponse.getTo(), transactionResponse.getValue()
                 , transactionResponse.getNonce(), transactionResponse.getTimestamp(), transactionResponse.getType()
                 , transactionResponse.getData() == null ? null : transactionResponse.getData().toString("UTF-8")
-                , transactionResponse.getGasPrice(), transactionResponse.getGasLimit(), transactionResponse.getContractAddress()
+                , transactionResponse.getGasPrice(), transactionResponse.getGasUsed(), transactionResponse.getGasLimit(), transactionResponse.getContractAddress()
                 , transactionResponse.getStatus());
     }
 
