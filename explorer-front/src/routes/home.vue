@@ -243,7 +243,7 @@
                     <div class=tab-right>
                         <div class=img>
                             <span class="fa fa-list" aria-hidden=true></span>
-                            transaction
+                            Transaction
                         </div>
                         <router-link class="btn btn-default pull-right" to=/txs role=button>View All</router-link>
                     </div>
