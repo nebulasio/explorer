@@ -6,7 +6,7 @@
         <div class="container mt20">
             <div class="align-items-center info-and-pagination row">
                 <div class=col>
-                    A total of {{ totalAccounts }} accounts found ( {{ numberAddComma(totalBalance) }} Nas )
+                    A total of {{ totalAccounts }} accounts found ( {{ numberAddComma(totalBalance) }} NAS )
                     <br>
                     <!-- <em>Displaying the last %2 records only</em> -->
                 </div>

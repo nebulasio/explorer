@@ -13,7 +13,7 @@
         <div class=mt20></div>
 
         <div class=tab v-show="tab == 1">
-            <h3>Transation Information</h3>
+            <h3>Transaction Information</h3>
             <table class=table v-if=tx>
                 <tr>
                     <td>TxHash:</td>
@@ -75,7 +75,7 @@
                     <td>{{ tx.nonce }}</td>
                 </tr>
                 <tr>
-                    <td>Transation Type:</td>
+                    <td>Transaction Type:</td>
                     <td>{{ txType }}</td>
                 </tr>
                 <tr>
