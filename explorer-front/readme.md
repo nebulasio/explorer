@@ -2,10 +2,6 @@
 # Table of Contents
 1. [build](#build)
 1. [参考](#参考)
-1. [git](#git)
-1. [目标](#目标)
-1. [上传](#上传)
-1. [todo](#todo)
 
 ## build
 
@@ -48,15 +44,10 @@ https://github.com/beautify-web/js-beautify
 
 https://stackoverflow.com/questions/7101464/how-to-get-highcharts-dates-in-the-x-axis
 
-## git
-
-https://github.com/nebulasio/explorer.git  
-    目前分支是 develop, 目录是  
-    explorer/explorer/src/main/resources/static
-
+刚创建项目时提交到哲琛的 github, 已经不使用
 https://github.com/15010159959/nas-explorer.git
 
-## 目标
+==================== 目标
 
 1. 组件, 包括 header, footer, table row, 每页都写出来, 后台负责抽出
     公用样式放 common.css
@@ -65,9 +56,9 @@ https://github.com/15010159959/nas-explorer.git
 2. 静态页面, 后端下载 https://github.com/15010159959/nas-explorer
 3. 联调
 4. 两周后, todo list
+
 已有的 php 代码不用管
 
-```
 home
 kurry       0
     https://etherscan.io/
@@ -111,26 +102,13 @@ wangzimei   0
 // 先不做
 
 block 下的 Contract Internal Transactions 列表页
- https://etherscan.io/txsInternal?block=4951841
+    https://etherscan.io/txsInternal?block=4951841
 
 contract address
- https://etherscan.io/address/0x1234567461d3f8db7496581774bd869c83d51c93
-```
+    https://etherscan  io/address/0x1234567461d3f8db7496581774bd869c83d51c93
 
-## 上传
+===== 2.9 修改
 
-Host neb-cal-explorer  
-HostName 52.53.225.118  
-IdentityFile ~/.ssh/id_rsa  
-User app
-
-## todo
-
-block infomation 里面 详情 朝代信息 - 是否达到 lib - 最后的一个不可改变的区块，达到 lib 此链不可改  
-address 前生成图标, 参考 eserscan 算法
-
-```
-===== 2.9修改
 --> block  time ago   block 相关时间显示问题 {每隔五秒一个快} -----> 换成浏览器时间 浏览器时间减去后边标准时间
 --> timestamp 
 --> block information
@@ -146,4 +124,15 @@ address 前生成图标, 参考 eserscan 算法
 --> oops 错误信息展示
 
 --> charts 数据更新 + 数据显示 数字百分位显示好看一些
-```
+
+===== todo
+
+block infomation 里面 详情 朝代信息 - 是否达到 lib - 最后的一个不可改变的区块，达到 lib 此链不可改  
+address 前生成图标, 参考 eserscan 算法
+
+==================== 上传 - 没用到这个
+
+Host neb-cal-explorer  
+HostName 52.53.225.118  
+IdentityFile ~/.ssh/id_rsa  
+User app
