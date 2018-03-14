@@ -321,7 +321,7 @@
                     // },
                     series: [{
                         data: null,
-                        name: "transaction"
+                        name: "transactions"
                         // , type: "area"
                     }],
                     subtitle: {
