@@ -11,30 +11,30 @@
             <table class="mt20 table">
                 <tr>
                     <th>Height</th>
-                    <th>Age</th>
+                    <th class=text-right>Age</th>
                     <th>txn</th>
                     <th>Minted</th>
-                    <th>Gas Reward</th>
-                    <th>GasLimit</th>
-                    <th>Avg.GasPrice</th>
+                    <th class=text-right>Gas Reward</th>
+                    <th class=text-right>GasLimit</th>
+                    <th class=text-right>Avg.GasPrice</th>
                 </tr>
                 <tr v-for="o in arr">
                     <td>
                         <router-link v-bind:to='"/block/" + o.height'>{{ o.height }}</router-link>
                     </td>
                     <td class=time>
-                        <div>{{ timeConversion( Date.now() - o.timestamp) }} ago</div>
-                        <div>{{ Date(o.timestamp) }} | {{ o.timestamp }}</div>
+                        <div class=text-right>{{ timeConversion( Date.now() - o.timestamp) }} ago</div>
+                        <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td>
                         <router-link v-bind:to='"/"'>{{ o.txnCnt }}</router-link>
-                    </td >
+                    </td>
                     <td class=monospace>
                         <router-link v-bind:to='"/address/" + o.miner.hash'>{{ o.miner.alias || o.miner.hash }}</router-link>
                     </td>
-                    <td>{{ toWei(o.gasReward) }}</td>
-                    <td>{{ numberAddComma(o.gasLimit) }}</td>
-                    <td>{{ numberAddComma(o.avgGasPrice) }}</td>
+                    <td class=text-right>{{ toWei(o.gasReward) }}</td>
+                    <td class=text-right>{{ numberAddComma(o.gasLimit) }}</td>
+                    <td class=text-right>{{ toWei(o.avgGasPrice) }}</td>
                 </tr>
             </table>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
@@ -122,7 +122,7 @@
                 });
             },
             timeConversion(ms) {
-                return utility.timeConversion(ms / 1000);
+                return utility.timeConversion(ms);
             },
             toWei(n) {
                 return utility.toWei(n);

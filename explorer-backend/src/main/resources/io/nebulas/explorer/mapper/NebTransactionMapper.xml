@@ -39,7 +39,7 @@
     </sql>
 
     <insert id="addNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
-        INSERT INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,`nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
+        INSERT IGNORE INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,`nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
         VALUES
         (#{id}, #{hash}, #{blockHash}, #{blockHeight}, #{from}, #{to}, #{status}, #{value}, #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}, #{gasLimit}, #{gasUsed}, #{createdAt})
     </insert>
@@ -74,6 +74,12 @@
         SELECT count(1)
         FROM `neb_transaction`
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
+    </select>
+
+    <select id="countTxnCntByBlockHeight" parameterType="java.lang.Long" resultType="java.lang.Long">
+         SELECT count(1)
+        FROM `neb_transaction`
+        WHERE block_height = #{blockHeight,jdbcType=BIGINT}
     </select>
 
     <select id="getByHash" resultType="NebTransaction" parameterType="java.lang.String">

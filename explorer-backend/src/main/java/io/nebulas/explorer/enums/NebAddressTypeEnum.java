@@ -2,16 +2,26 @@ package io.nebulas.explorer.enums;
 
 /**
  * Desc:
- * User: HaiNan.Wang
- * Date: 2018/1/30
+ * User: nathan
+ * Date: 2018-03-09
  */
 public enum NebAddressTypeEnum {
-    NORMAL(0),
-    CONTRACT(1);
+    NORMAL(0, "normal"),
+    CONTRACT(1, "contract");
+
+    NebAddressTypeEnum(int value, String desc) {
+        this.value = value;
+        this.desc = desc;
+    }
 
     private int value;
+    private String desc;
 
-    NebAddressTypeEnum(int value) {
-        this.value = value;
+    public int getValue() {
+        return value;
+    }
+
+    public String getDesc() {
+        return desc;
     }
 }

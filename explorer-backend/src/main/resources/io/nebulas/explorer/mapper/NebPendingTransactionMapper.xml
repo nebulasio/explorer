@@ -81,4 +81,15 @@
         LIMIT ${offset},${limit}
     </select>
 
+    <select id="findLessThanTimestamp" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_pending_transaction`
+        <![CDATA[
+        WHERE `timestamp` < #{timestamp,jdbcType=TIMESTAMP}
+        ]]>
+        ORDER BY `timestamp` ASC
+        LIMIT ${limit}
+    </select>
+
 </mapper>

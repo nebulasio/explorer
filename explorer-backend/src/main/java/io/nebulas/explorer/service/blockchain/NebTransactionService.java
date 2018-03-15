@@ -1,4 +1,4 @@
-package io.nebulas.explorer.service;
+package io.nebulas.explorer.service.blockchain;
 
 import com.google.common.collect.Maps;
 import io.nebulas.explorer.domain.BlockSummary;
@@ -6,7 +6,6 @@ import io.nebulas.explorer.domain.NebPendingTransaction;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.mapper.NebPendingTransactionMapper;
 import io.nebulas.explorer.mapper.NebTransactionMapper;
-import io.nebulas.explorer.util.NasUnitUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -117,6 +116,10 @@ public class NebTransactionService {
         return nebPendingTransactionMapper.countPendingTxnCntByCondition(addressHash);
     }
 
+    public long countTxnCntByBlockHeight(Long blockHeight) {
+        return nebTransactionMapper.countTxnCntByBlockHeight(blockHeight);
+    }
+
     /**
      * According to transaction hash query transaction information
      *
@@ -180,6 +183,10 @@ public class NebTransactionService {
      */
     public List<NebPendingTransaction> findPendingTxnByCondition(String addressHash, int page, int pageSize) {
         return nebPendingTransactionMapper.findPendingTxnByCondition(addressHash, (page - 1) * pageSize, pageSize);
+    }
+
+    public List<NebPendingTransaction> findLessThanTimestamp(Date timestamp, int limit) {
+        return nebPendingTransactionMapper.findLessThanTimestamp(timestamp, limit);
     }
 
     /**

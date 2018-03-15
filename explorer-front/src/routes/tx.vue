@@ -13,7 +13,7 @@
         <div class=mt20></div>
 
         <div class=tab v-show="tab == 1">
-            <h3>Transation Information</h3>
+            <h3>Transaction Information</h3>
             <table class=table v-if=tx>
                 <tr>
                     <td>TxHash:</td>
@@ -21,12 +21,17 @@
                 </tr>
                 <tr>
                     <td>TxReceipt Status:</td>
-                    <td>Success</td>
+                    <td>{{ tx.isPending == true ? 'pending' : 'Success' }}</td>
                 </tr>
                 <tr>
                     <td>Block Height:</td>
                     <td>
-                        <router-link v-if=tx.block v-bind:to='"/block/" + tx.block.height'>{{ tx.block.height }}</router-link>
+                        <template v-if=tx.isPending>
+                            <span> pending </span>
+                        </template>
+                        <template v-else>
+                            <router-link v-if=tx.block v-bind:to='"/block/" + tx.block.height'>{{tx.block.height}}</router-link>
+                        </template>
                     </td>
                 </tr>
                 <tr>
@@ -55,7 +60,7 @@
                 </tr>
                 <tr>
                     <td>Gas Used By Txn:</td>
-                    <td>{{ tx.gasReward }} Nas</td>
+                    <td>{{ tx.isPending == true ? 'pending' : toWei(tx.gasUsed) }}</td>
                 </tr>
                 <tr>
                     <td>Gas Price:</td>
@@ -70,11 +75,11 @@
                     <td>{{ tx.nonce }}</td>
                 </tr>
                 <tr>
-                    <td>Transation Type:</td>
+                    <td>Transaction Type:</td>
                     <td>{{ txType }}</td>
                 </tr>
                 <tr>
-                    <td>Input Data:</td>
+                    <td>Payload Data:</td>
                     <td class=code>
                         <pre><code class=language-javascript v-html=formatCode></code></pre>
                     </td>
@@ -109,21 +114,15 @@
         },
         computed: {
             formatCode() {
-                var o, lang, code;
+                var lang = prism.languages.javascript;
 
-                if (this.txType == "normal" && this.tx.data) {
-                    o = JSON.parse(this.tx.data),
-                        lang = o.SourceType,
-                        code = o.Source;
+                if (this.tx.data)
+                    if (this.tx.type == "deploy")
+                        return prism.highlight(jsBeautify(JSON.parse(this.tx.data).Source), lang);
+                    else if (this.tx.type == "binary" || this.tx.type == "call")
+                        return prism.highlight(jsBeautify(this.tx.data), lang);
 
-                    // if (lang == "js")
-                    lang = prism.languages.javascript;
-
-                    code = jsBeautify(code);
-                    // return code;
-                    return prism.highlight(code, lang);
-                } else
-                    return "0x0";
+                return "0x0";
             },
             txType() {
                 // type=binary      【前端显示：Normal】
@@ -157,11 +156,11 @@
             };
         },
         methods: {
-            timeConversion(ms) {
-                return utility.timeConversion(ms / 1000);
-            },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
+            },
+            timeConversion(ms) {
+                return utility.timeConversion(ms);
             },
             toWei(n) {
                 return utility.toWei(n);

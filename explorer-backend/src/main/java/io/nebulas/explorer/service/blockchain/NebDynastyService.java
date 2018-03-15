@@ -1,4 +1,4 @@
-package io.nebulas.explorer.service;
+package io.nebulas.explorer.service.blockchain;
 
 import com.google.common.collect.Lists;
 import io.nebulas.explorer.domain.NebDynasty;

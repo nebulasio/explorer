@@ -24718,6 +24718,24 @@ public final class Rpc {
      * <code>uint32 status = 13;</code>
      */
     int getStatus();
+
+    /**
+     * <pre>
+     * transaction gas used
+     * </pre>
+     *
+     * <code>string gas_used = 14;</code>
+     */
+    java.lang.String getGasUsed();
+    /**
+     * <pre>
+     * transaction gas used
+     * </pre>
+     *
+     * <code>string gas_used = 14;</code>
+     */
+    com.google.protobuf.ByteString
+        getGasUsedBytes();
   }
   /**
    * <pre>
@@ -24749,6 +24767,7 @@ public final class Rpc {
       gasLimit_ = "";
       contractAddress_ = "";
       status_ = 0;
+      gasUsed_ = "";
     }
 
     @java.lang.Override
@@ -24853,6 +24872,12 @@ public final class Rpc {
             case 104: {
 
               status_ = input.readUInt32();
+              break;
+            }
+            case 114: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              gasUsed_ = s;
               break;
             }
           }
@@ -25228,6 +25253,48 @@ public final class Rpc {
       return status_;
     }
 
+    public static final int GAS_USED_FIELD_NUMBER = 14;
+    private volatile java.lang.Object gasUsed_;
+    /**
+     * <pre>
+     * transaction gas used
+     * </pre>
+     *
+     * <code>string gas_used = 14;</code>
+     */
+    public java.lang.String getGasUsed() {
+      java.lang.Object ref = gasUsed_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gasUsed_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * transaction gas used
+     * </pre>
+     *
+     * <code>string gas_used = 14;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGasUsedBytes() {
+      java.lang.Object ref = gasUsed_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gasUsed_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -25278,6 +25345,9 @@ public final class Rpc {
       }
       if (status_ != 0) {
         output.writeUInt32(13, status_);
+      }
+      if (!getGasUsedBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 14, gasUsed_);
       }
       unknownFields.writeTo(output);
     }
@@ -25331,6 +25401,9 @@ public final class Rpc {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(13, status_);
       }
+      if (!getGasUsedBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(14, gasUsed_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -25373,6 +25446,8 @@ public final class Rpc {
           .equals(other.getContractAddress());
       result = result && (getStatus()
           == other.getStatus());
+      result = result && getGasUsed()
+          .equals(other.getGasUsed());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -25412,6 +25487,8 @@ public final class Rpc {
       hash = (53 * hash) + getContractAddress().hashCode();
       hash = (37 * hash) + STATUS_FIELD_NUMBER;
       hash = (53 * hash) + getStatus();
+      hash = (37 * hash) + GAS_USED_FIELD_NUMBER;
+      hash = (53 * hash) + getGasUsed().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -25571,6 +25648,8 @@ public final class Rpc {
 
         status_ = 0;
 
+        gasUsed_ = "";
+
         return this;
       }
 
@@ -25606,6 +25685,7 @@ public final class Rpc {
         result.gasLimit_ = gasLimit_;
         result.contractAddress_ = contractAddress_;
         result.status_ = status_;
+        result.gasUsed_ = gasUsed_;
         onBuilt();
         return result;
       }
@@ -25693,6 +25773,10 @@ public final class Rpc {
         }
         if (other.getStatus() != 0) {
           setStatus(other.getStatus());
+        }
+        if (!other.getGasUsed().isEmpty()) {
+          gasUsed_ = other.gasUsed_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -26486,6 +26570,95 @@ public final class Rpc {
       public Builder clearStatus() {
         
         status_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object gasUsed_ = "";
+      /**
+       * <pre>
+       * transaction gas used
+       * </pre>
+       *
+       * <code>string gas_used = 14;</code>
+       */
+      public java.lang.String getGasUsed() {
+        java.lang.Object ref = gasUsed_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          gasUsed_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * transaction gas used
+       * </pre>
+       *
+       * <code>string gas_used = 14;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGasUsedBytes() {
+        java.lang.Object ref = gasUsed_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gasUsed_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * transaction gas used
+       * </pre>
+       *
+       * <code>string gas_used = 14;</code>
+       */
+      public Builder setGasUsed(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gasUsed_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * transaction gas used
+       * </pre>
+       *
+       * <code>string gas_used = 14;</code>
+       */
+      public Builder clearGasUsed() {
+        
+        gasUsed_ = getDefaultInstance().getGasUsed();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * transaction gas used
+       * </pre>
+       *
+       * <code>string gas_used = 14;</code>
+       */
+      public Builder setGasUsedBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        gasUsed_ = value;
         onChanged();
         return this;
       }
@@ -37840,117 +38013,118 @@ public final class Rpc {
       "ynasty_root\030\001 \001(\t\022\031\n\021next_dynasty_root\030\002" +
       " \001(\t\022\025\n\rdelegate_root\030\003 \001(\t\022\026\n\016candidate" +
       "_root\030\004 \001(\t\022\021\n\tvote_root\030\005 \001(\t\022\025\n\rmint_c" +
-      "nt_root\030\006 \001(\t\"\353\001\n\023TransactionResponse\022\014\n" +
+      "nt_root\030\006 \001(\t\"\375\001\n\023TransactionResponse\022\014\n" +
       "\004hash\030\001 \001(\t\022\017\n\007chainId\030\002 \001(\r\022\014\n\004from\030\003 \001" +
       "(\t\022\n\n\002to\030\004 \001(\t\022\r\n\005value\030\005 \001(\t\022\r\n\005nonce\030\006" +
       " \001(\004\022\021\n\ttimestamp\030\007 \001(\003\022\014\n\004type\030\010 \001(\t\022\014\n" +
       "\004data\030\t \001(\014\022\021\n\tgas_price\030\n \001(\t\022\021\n\tgas_li" +
       "mit\030\013 \001(\t\022\030\n\020contract_address\030\014 \001(\t\022\016\n\006s" +
-      "tatus\030\r \001(\r\"\'\n\021NewAccountRequest\022\022\n\npass" +
-      "phrase\030\001 \001(\t\"%\n\022NewAccountResponse\022\017\n\007ad" +
-      "dress\030\001 \001(\t\"M\n\024UnlockAccountRequest\022\017\n\007a" +
-      "ddress\030\001 \001(\t\022\022\n\npassphrase\030\002 \001(\t\022\020\n\010dura" +
-      "tion\030\003 \001(\004\"\'\n\025UnlockAccountResponse\022\016\n\006r" +
-      "esult\030\001 \001(\010\"%\n\022LockAccountRequest\022\017\n\007add" +
-      "ress\030\001 \001(\t\"%\n\023LockAccountResponse\022\016\n\006res" +
-      "ult\030\001 \001(\010\"\'\n\027SignTransactionResponse\022\014\n\004" +
-      "data\030\001 \001(\014\"f\n SendTransactionPassphraseR" +
-      "equest\022.\n\013transaction\030\001 \001(\0132\031.rpcpb.Tran" +
-      "sactionRequest\022\022\n\npassphrase\030\002 \001(\t\"1\n!Se" +
-      "ndTransactionPassphraseResponse\022\014\n\004hash\030" +
-      "\001 \001(\t\"%\n\020GasPriceResponse\022\021\n\tgas_price\030\001" +
-      " \001(\t\"\033\n\013HashRequest\022\014\n\004hash\030\001 \001(\t\"\032\n\013Gas" +
-      "Response\022\013\n\003gas\030\001 \001(\t\".\n\016EventsResponse\022" +
-      "\034\n\006events\030\001 \003(\0132\014.rpcpb.Event\"$\n\005Event\022\r" +
-      "\n\005topic\030\001 \001(\t\022\014\n\004data\030\002 \001(\t\",\n\026ChangeNet" +
-      "workIDRequest\022\022\n\nnetwork_id\030\001 \001(\r\")\n\027Cha" +
-      "ngeNetworkIDResponse\022\016\n\006result\030\001 \001(\010\"(\n\022" +
-      "StartMiningRequest\022\022\n\npassphrase\030\001 \001(\t\" " +
-      "\n\016MiningResponse\022\016\n\006result\030\001 \001(\010\"\036\n\014Ppro" +
-      "fRequest\022\016\n\006listen\030\001 \001(\t\"\037\n\rPprofRespons" +
-      "e\022\016\n\006result\030\001 \001(\0102\247\016\n\nApiService\022]\n\013GetN" +
-      "ebState\022\027.rpcpb.NonParamsRequest\032\032.rpcpb" +
-      ".GetNebStateResponse\"\031\202\323\344\223\002\023\022\021/v1/user/n" +
-      "ebstate\022W\n\010NodeInfo\022\027.rpcpb.NonParamsReq" +
-      "uest\032\027.rpcpb.NodeInfoResponse\"\031\202\323\344\223\002\023\022\021/" +
-      "v1/user/nodeinfo\022]\n\tBlockDump\022\027.rpcpb.Bl" +
-      "ockDumpRequest\032\030.rpcpb.BlockDumpResponse" +
-      "\"\035\202\323\344\223\002\027\"\022/v1/user/blockdump:\001*\022^\n\027Lates" +
-      "tIrreversibleBlock\022\027.rpcpb.NonParamsRequ" +
-      "est\032\024.rpcpb.BlockResponse\"\024\202\323\344\223\002\016\022\014/v1/u" +
-      "ser/lib\022W\n\010Accounts\022\027.rpcpb.NonParamsReq" +
-      "uest\032\027.rpcpb.AccountsResponse\"\031\202\323\344\223\002\023\022\021/" +
-      "v1/user/accounts\022r\n\017GetAccountState\022\035.rp" +
-      "cpb.GetAccountStateRequest\032\036.rpcpb.GetAc" +
-      "countStateResponse\" \202\323\344\223\002\032\"\025/v1/user/acc" +
-      "ountstate:\001*\022m\n\017SendTransaction\022\031.rpcpb." +
-      "TransactionRequest\032\036.rpcpb.SendTransacti" +
-      "onResponse\"\037\202\323\344\223\002\031\"\024/v1/user/transaction" +
-      ":\001*\022P\n\004Call\022\031.rpcpb.TransactionRequest\032\023" +
-      ".rpcpb.CallResponse\"\030\202\323\344\223\002\022\"\r/v1/user/ca" +
-      "ll:\001*\022z\n\022SendRawTransaction\022 .rpcpb.Send" +
-      "RawTransactionRequest\032\036.rpcpb.SendTransa" +
-      "ctionResponse\"\"\202\323\344\223\002\034\"\027/v1/user/rawtrans" +
-      "action:\001*\022h\n\016GetBlockByHash\022\034.rpcpb.GetB" +
-      "lockByHashRequest\032\024.rpcpb.BlockResponse\"" +
-      "\"\202\323\344\223\002\034\"\027/v1/user/getBlockByHash:\001*\022n\n\020G" +
-      "etBlockByHeight\022\036.rpcpb.GetBlockByHeight" +
-      "Request\032\024.rpcpb.BlockResponse\"$\202\323\344\223\002\036\"\031/" +
-      "v1/user/getBlockByHeight:\001*\022\202\001\n\025GetTrans" +
-      "actionReceipt\022\".rpcpb.GetTransactionByHa" +
-      "shRequest\032\032.rpcpb.TransactionResponse\")\202" +
-      "\323\344\223\002#\"\036/v1/user/getTransactionReceipt:\001*" +
-      "\022_\n\tSubscribe\022\027.rpcpb.SubscribeRequest\032\030" +
-      ".rpcpb.SubscribeResponse\"\035\202\323\344\223\002\027\"\022/v1/us" +
-      "er/subscribe:\001*0\001\022]\n\013GetGasPrice\022\027.rpcpb" +
-      ".NonParamsRequest\032\027.rpcpb.GasPriceRespon" +
-      "se\"\034\202\323\344\223\002\026\022\024/v1/user/getGasPrice\022]\n\013Esti" +
-      "mateGas\022\031.rpcpb.TransactionRequest\032\022.rpc" +
-      "pb.GasResponse\"\037\202\323\344\223\002\031\"\024/v1/user/estimat" +
-      "eGas:\001*\022T\n\nGetGasUsed\022\022.rpcpb.HashReques" +
-      "t\032\022.rpcpb.GasResponse\"\036\202\323\344\223\002\030\"\023/v1/user/" +
-      "getGasUsed:\001*\022a\n\017GetEventsByHash\022\022.rpcpb" +
-      ".HashRequest\032\025.rpcpb.EventsResponse\"#\202\323\344" +
-      "\223\002\035\"\030/v1/user/getEventsByHash:\001*\022a\n\nGetD" +
-      "ynasty\022\033.rpcpb.ByBlockHeightRequest\032\031.rp" +
-      "cpb.GetDynastyResponse\"\033\202\323\344\223\002\025\"\020/v1/user" +
-      "/dynasty:\001*2\256\013\n\014AdminService\022c\n\nNewAccou" +
-      "nt\022\030.rpcpb.NewAccountRequest\032\031.rpcpb.New" +
-      "AccountResponse\" \202\323\344\223\002\032\"\025/v1/admin/accou" +
-      "nt/new:\001*\022o\n\rUnlockAccount\022\033.rpcpb.Unloc" +
-      "kAccountRequest\032\034.rpcpb.UnlockAccountRes" +
-      "ponse\"#\202\323\344\223\002\035\"\030/v1/admin/account/unlock:" +
-      "\001*\022g\n\013LockAccount\022\031.rpcpb.LockAccountReq" +
-      "uest\032\032.rpcpb.LockAccountResponse\"!\202\323\344\223\002\033" +
-      "\"\026/v1/admin/account/lock:\001*\022g\n\017SignTrans" +
-      "action\022\031.rpcpb.TransactionRequest\032\036.rpcp" +
-      "b.SignTransactionResponse\"\031\202\323\344\223\002\023\"\016/v1/a" +
-      "dmin/sign:\001*\022\242\001\n\035SendTransactionWithPass" +
-      "phrase\022\'.rpcpb.SendTransactionPassphrase" +
-      "Request\032(.rpcpb.SendTransactionPassphras" +
-      "eResponse\".\202\323\344\223\002(\"#/v1/admin/transaction" +
-      "WithPassphrase:\001*\022w\n\022StatisticsNodeInfo\022" +
-      "\027.rpcpb.NonParamsRequest\032!.rpcpb.Statist" +
-      "icsNodeInfoResponse\"%\202\323\344\223\002\037\022\035/v1/admin/s" +
-      "tatistics/nodeInfo\022b\n\nGetDynasty\022\033.rpcpb" +
-      ".ByBlockHeightRequest\032\031.rpcpb.GetDynasty" +
-      "Response\"\034\202\323\344\223\002\026\"\021/v1/admin/dynasty:\001*\022k" +
-      "\n\rGetCandidates\022\033.rpcpb.ByBlockHeightReq" +
-      "uest\032\034.rpcpb.GetCandidatesResponse\"\037\202\323\344\223" +
-      "\002\031\"\024/v1/admin/candidates:\001*\022{\n\021GetDelega" +
-      "teVoters\022\037.rpcpb.GetDelegateVotersReques" +
-      "t\032 .rpcpb.GetDelegateVotersResponse\"#\202\323\344" +
-      "\223\002\035\"\030/v1/admin/delegateVoters:\001*\022v\n\017Chan" +
-      "geNetworkID\022\035.rpcpb.ChangeNetworkIDReque" +
-      "st\032\036.rpcpb.ChangeNetworkIDResponse\"$\202\323\344\223" +
-      "\002\036\"\031/v1/admin/changeNetworkID:\001*\022a\n\013Star" +
-      "tMining\022\031.rpcpb.StartMiningRequest\032\025.rpc" +
-      "pb.MiningResponse\" \202\323\344\223\002\032\"\025/v1/admin/sta" +
-      "rtMining:\001*\022Z\n\nStopMining\022\027.rpcpb.NonPar" +
-      "amsRequest\032\025.rpcpb.MiningResponse\"\034\202\323\344\223\002" +
-      "\026\022\024/v1/admin/stopMining\022S\n\nStartPprof\022\023." +
-      "rpcpb.PprofRequest\032\024.rpcpb.PprofResponse" +
-      "\"\032\202\323\344\223\002\024\"\017/v1/admin/pprof:\001*b\006proto3"
+      "tatus\030\r \001(\r\022\020\n\010gas_used\030\016 \001(\t\"\'\n\021NewAcco" +
+      "untRequest\022\022\n\npassphrase\030\001 \001(\t\"%\n\022NewAcc" +
+      "ountResponse\022\017\n\007address\030\001 \001(\t\"M\n\024UnlockA" +
+      "ccountRequest\022\017\n\007address\030\001 \001(\t\022\022\n\npassph" +
+      "rase\030\002 \001(\t\022\020\n\010duration\030\003 \001(\004\"\'\n\025UnlockAc" +
+      "countResponse\022\016\n\006result\030\001 \001(\010\"%\n\022LockAcc" +
+      "ountRequest\022\017\n\007address\030\001 \001(\t\"%\n\023LockAcco" +
+      "untResponse\022\016\n\006result\030\001 \001(\010\"\'\n\027SignTrans" +
+      "actionResponse\022\014\n\004data\030\001 \001(\014\"f\n SendTran" +
+      "sactionPassphraseRequest\022.\n\013transaction\030" +
+      "\001 \001(\0132\031.rpcpb.TransactionRequest\022\022\n\npass" +
+      "phrase\030\002 \001(\t\"1\n!SendTransactionPassphras" +
+      "eResponse\022\014\n\004hash\030\001 \001(\t\"%\n\020GasPriceRespo" +
+      "nse\022\021\n\tgas_price\030\001 \001(\t\"\033\n\013HashRequest\022\014\n" +
+      "\004hash\030\001 \001(\t\"\032\n\013GasResponse\022\013\n\003gas\030\001 \001(\t\"" +
+      ".\n\016EventsResponse\022\034\n\006events\030\001 \003(\0132\014.rpcp" +
+      "b.Event\"$\n\005Event\022\r\n\005topic\030\001 \001(\t\022\014\n\004data\030" +
+      "\002 \001(\t\",\n\026ChangeNetworkIDRequest\022\022\n\nnetwo" +
+      "rk_id\030\001 \001(\r\")\n\027ChangeNetworkIDResponse\022\016" +
+      "\n\006result\030\001 \001(\010\"(\n\022StartMiningRequest\022\022\n\n" +
+      "passphrase\030\001 \001(\t\" \n\016MiningResponse\022\016\n\006re" +
+      "sult\030\001 \001(\010\"\036\n\014PprofRequest\022\016\n\006listen\030\001 \001" +
+      "(\t\"\037\n\rPprofResponse\022\016\n\006result\030\001 \001(\0102\247\016\n\n" +
+      "ApiService\022]\n\013GetNebState\022\027.rpcpb.NonPar" +
+      "amsRequest\032\032.rpcpb.GetNebStateResponse\"\031" +
+      "\202\323\344\223\002\023\022\021/v1/user/nebstate\022W\n\010NodeInfo\022\027." +
+      "rpcpb.NonParamsRequest\032\027.rpcpb.NodeInfoR" +
+      "esponse\"\031\202\323\344\223\002\023\022\021/v1/user/nodeinfo\022]\n\tBl" +
+      "ockDump\022\027.rpcpb.BlockDumpRequest\032\030.rpcpb" +
+      ".BlockDumpResponse\"\035\202\323\344\223\002\027\"\022/v1/user/blo" +
+      "ckdump:\001*\022^\n\027LatestIrreversibleBlock\022\027.r" +
+      "pcpb.NonParamsRequest\032\024.rpcpb.BlockRespo" +
+      "nse\"\024\202\323\344\223\002\016\022\014/v1/user/lib\022W\n\010Accounts\022\027." +
+      "rpcpb.NonParamsRequest\032\027.rpcpb.AccountsR" +
+      "esponse\"\031\202\323\344\223\002\023\022\021/v1/user/accounts\022r\n\017Ge" +
+      "tAccountState\022\035.rpcpb.GetAccountStateReq" +
+      "uest\032\036.rpcpb.GetAccountStateResponse\" \202\323" +
+      "\344\223\002\032\"\025/v1/user/accountstate:\001*\022m\n\017SendTr" +
+      "ansaction\022\031.rpcpb.TransactionRequest\032\036.r" +
+      "pcpb.SendTransactionResponse\"\037\202\323\344\223\002\031\"\024/v" +
+      "1/user/transaction:\001*\022P\n\004Call\022\031.rpcpb.Tr" +
+      "ansactionRequest\032\023.rpcpb.CallResponse\"\030\202" +
+      "\323\344\223\002\022\"\r/v1/user/call:\001*\022z\n\022SendRawTransa" +
+      "ction\022 .rpcpb.SendRawTransactionRequest\032" +
+      "\036.rpcpb.SendTransactionResponse\"\"\202\323\344\223\002\034\"" +
+      "\027/v1/user/rawtransaction:\001*\022h\n\016GetBlockB" +
+      "yHash\022\034.rpcpb.GetBlockByHashRequest\032\024.rp" +
+      "cpb.BlockResponse\"\"\202\323\344\223\002\034\"\027/v1/user/getB" +
+      "lockByHash:\001*\022n\n\020GetBlockByHeight\022\036.rpcp" +
+      "b.GetBlockByHeightRequest\032\024.rpcpb.BlockR" +
+      "esponse\"$\202\323\344\223\002\036\"\031/v1/user/getBlockByHeig" +
+      "ht:\001*\022\202\001\n\025GetTransactionReceipt\022\".rpcpb." +
+      "GetTransactionByHashRequest\032\032.rpcpb.Tran" +
+      "sactionResponse\")\202\323\344\223\002#\"\036/v1/user/getTra" +
+      "nsactionReceipt:\001*\022_\n\tSubscribe\022\027.rpcpb." +
+      "SubscribeRequest\032\030.rpcpb.SubscribeRespon" +
+      "se\"\035\202\323\344\223\002\027\"\022/v1/user/subscribe:\001*0\001\022]\n\013G" +
+      "etGasPrice\022\027.rpcpb.NonParamsRequest\032\027.rp" +
+      "cpb.GasPriceResponse\"\034\202\323\344\223\002\026\022\024/v1/user/g" +
+      "etGasPrice\022]\n\013EstimateGas\022\031.rpcpb.Transa" +
+      "ctionRequest\032\022.rpcpb.GasResponse\"\037\202\323\344\223\002\031" +
+      "\"\024/v1/user/estimateGas:\001*\022T\n\nGetGasUsed\022" +
+      "\022.rpcpb.HashRequest\032\022.rpcpb.GasResponse\"" +
+      "\036\202\323\344\223\002\030\"\023/v1/user/getGasUsed:\001*\022a\n\017GetEv" +
+      "entsByHash\022\022.rpcpb.HashRequest\032\025.rpcpb.E" +
+      "ventsResponse\"#\202\323\344\223\002\035\"\030/v1/user/getEvent" +
+      "sByHash:\001*\022a\n\nGetDynasty\022\033.rpcpb.ByBlock" +
+      "HeightRequest\032\031.rpcpb.GetDynastyResponse" +
+      "\"\033\202\323\344\223\002\025\"\020/v1/user/dynasty:\001*2\256\013\n\014AdminS" +
+      "ervice\022c\n\nNewAccount\022\030.rpcpb.NewAccountR" +
+      "equest\032\031.rpcpb.NewAccountResponse\" \202\323\344\223\002" +
+      "\032\"\025/v1/admin/account/new:\001*\022o\n\rUnlockAcc" +
+      "ount\022\033.rpcpb.UnlockAccountRequest\032\034.rpcp" +
+      "b.UnlockAccountResponse\"#\202\323\344\223\002\035\"\030/v1/adm" +
+      "in/account/unlock:\001*\022g\n\013LockAccount\022\031.rp" +
+      "cpb.LockAccountRequest\032\032.rpcpb.LockAccou" +
+      "ntResponse\"!\202\323\344\223\002\033\"\026/v1/admin/account/lo" +
+      "ck:\001*\022g\n\017SignTransaction\022\031.rpcpb.Transac" +
+      "tionRequest\032\036.rpcpb.SignTransactionRespo" +
+      "nse\"\031\202\323\344\223\002\023\"\016/v1/admin/sign:\001*\022\242\001\n\035SendT" +
+      "ransactionWithPassphrase\022\'.rpcpb.SendTra" +
+      "nsactionPassphraseRequest\032(.rpcpb.SendTr" +
+      "ansactionPassphraseResponse\".\202\323\344\223\002(\"#/v1" +
+      "/admin/transactionWithPassphrase:\001*\022w\n\022S" +
+      "tatisticsNodeInfo\022\027.rpcpb.NonParamsReque" +
+      "st\032!.rpcpb.StatisticsNodeInfoResponse\"%\202" +
+      "\323\344\223\002\037\022\035/v1/admin/statistics/nodeInfo\022b\n\n" +
+      "GetDynasty\022\033.rpcpb.ByBlockHeightRequest\032" +
+      "\031.rpcpb.GetDynastyResponse\"\034\202\323\344\223\002\026\"\021/v1/" +
+      "admin/dynasty:\001*\022k\n\rGetCandidates\022\033.rpcp" +
+      "b.ByBlockHeightRequest\032\034.rpcpb.GetCandid" +
+      "atesResponse\"\037\202\323\344\223\002\031\"\024/v1/admin/candidat" +
+      "es:\001*\022{\n\021GetDelegateVoters\022\037.rpcpb.GetDe" +
+      "legateVotersRequest\032 .rpcpb.GetDelegateV" +
+      "otersResponse\"#\202\323\344\223\002\035\"\030/v1/admin/delegat" +
+      "eVoters:\001*\022v\n\017ChangeNetworkID\022\035.rpcpb.Ch" +
+      "angeNetworkIDRequest\032\036.rpcpb.ChangeNetwo" +
+      "rkIDResponse\"$\202\323\344\223\002\036\"\031/v1/admin/changeNe" +
+      "tworkID:\001*\022a\n\013StartMining\022\031.rpcpb.StartM" +
+      "iningRequest\032\025.rpcpb.MiningResponse\" \202\323\344" +
+      "\223\002\032\"\025/v1/admin/startMining:\001*\022Z\n\nStopMin" +
+      "ing\022\027.rpcpb.NonParamsRequest\032\025.rpcpb.Min" +
+      "ingResponse\"\034\202\323\344\223\002\026\022\024/v1/admin/stopMinin" +
+      "g\022S\n\nStartPprof\022\023.rpcpb.PprofRequest\032\024.r" +
+      "pcpb.PprofResponse\"\032\202\323\344\223\002\024\"\017/v1/admin/pp" +
+      "rof:\001*b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -38144,7 +38318,7 @@ public final class Rpc {
     internal_static_rpcpb_TransactionResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcpb_TransactionResponse_descriptor,
-        new java.lang.String[] { "Hash", "ChainId", "From", "To", "Value", "Nonce", "Timestamp", "Type", "Data", "GasPrice", "GasLimit", "ContractAddress", "Status", });
+        new java.lang.String[] { "Hash", "ChainId", "From", "To", "Value", "Nonce", "Timestamp", "Type", "Data", "GasPrice", "GasLimit", "ContractAddress", "Status", "GasUsed", });
     internal_static_rpcpb_NewAccountRequest_descriptor =
       getDescriptor().getMessageTypes().get(30);
     internal_static_rpcpb_NewAccountRequest_fieldAccessorTable = new

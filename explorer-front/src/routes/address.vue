@@ -72,7 +72,8 @@
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
                         Latest {{ txs.length }} txns from a total Of
-                        <router-link v-bind:to='"/txs?a=" + $route.params.id'>{{ obj.txCnt }}</router-link>
+                        <router-link v-bind:to='"/txs?a=" + $route.params.id'>{{ obj.txCnt }} transactions </router-link>
+                        <router-link v-bind:to='"/txs?a=" + $route.params.id'>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
                     </div>
                     <div class=col-auto>
                         <router-link class="btn btn-link" v-bind:to='"/txs?a=" + $route.params.id'>View All</router-link>
@@ -101,7 +102,7 @@
                         </td>
                         <td class=time>
                             <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
-                            <div>{{ Date(o.timestamp) }} | {{ o.timestamp }}</div>
+                            <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                         </td>
                         <td class=tdxxxwddd>
                             <span v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
@@ -148,7 +149,7 @@
                         </td>
                         <td class=time>
                             <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
-                            <div>{{ Date(o.timestamp) }} | {{ o.timestamp }}</div>
+                            <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                         </td>
                         <td>{{ o.txnCnt }}</td>
                         <td>{{ toWei(o.gasReward) }}</td>
@@ -248,7 +249,7 @@
                 return utility.numberAddComma(n);
             },
             timeConversion(ms) {
-                return utility.timeConversion(ms / 1000);
+                return utility.timeConversion(ms);
             },
             timeConversionSec(ms) {
                 return utility.timeConversionSec(ms);

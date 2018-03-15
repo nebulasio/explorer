@@ -27,12 +27,12 @@
                 <tr>
                     <th>TxHash</th>
                     <th>Block</th>
-                    <th>Age</th>
+                    <th class=text-right>Age</th>
                     <th>From</th>
                     <th></th>
                     <th>To</th>
-                    <th>Value</th>
-                    <th>[TxFee]</th>
+                    <th class=text-right>Value</th>
+                    <th class=text-right>TxFee</th>
                 </tr>
 
                 <tr v-for="o in arr">
@@ -43,7 +43,7 @@
                         <router-link v-bind:to='"/block/" + o.block.height'>{{ o.block.height }}</router-link>
                     </td>
                     <td class=time>
-                        <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
+                        <div class=text-right>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td class=tdxxxwddd>
@@ -55,8 +55,8 @@
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
                     </td>
-                    <td>{{ toWei(o.value) }}</td>
-                    <td>{{ toWei(o.txFee) }}</td>
+                    <td class=text-right>{{ toWei(o.value) }}</td>
+                    <td class=text-right>{{ toWei(o.txFee) }}</td>
                 </tr>
             </table>
 
@@ -129,7 +129,7 @@
                 this.nav(this.currentPage - 1);
             },
             timeConversion(ms) {
-                return utility.timeConversion(ms / 1000);
+                return utility.timeConversion(ms);
             },
             toWei(n) {
                 return utility.toWei(n);

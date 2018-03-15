@@ -23,4 +23,5 @@ public class YAMLConfig {
     private GrpcConfig grpc;
     private PageConfig page;
     private SyncConfig sync;
+    private HttpApiHostConfig apiHost;
 }

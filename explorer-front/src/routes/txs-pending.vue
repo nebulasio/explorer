@@ -1,16 +1,8 @@
-<style>
-    .vue-txs-pending .tip a {
-        color: #3498db;
-    }
-</style>
 <template>
     <!-- https://etherscan.io/txsPending -->
     <div class=vue-txs-pending>
         <vue-bread v-bind:arr=breadcrumb title="Pending Transactions"></vue-bread>
         <div class="container mt20">
-            <div class=tip>Tip: Check out the
-                <a href=#>Pending Transaction Pool - Time Series</a>
-            </div>
             <div class="align-items-center info-and-pagination mt20 row">
                 <div class=col>A total of {{ totalTxs }} Pending txns found</div>
                 <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
@@ -18,24 +10,24 @@
             <table class="mt20 table">
                 <tr>
                     <th>TxHash</th>
-                    <th>LastSeen</th>
-                    <th>GasLimit</th>
-                    <th>GasPrice</th>
+                    <th class=text-right>LastSeen</th>
+                    <th class=text-right>GasLimit</th>
+                    <th class=text-right>GasPrice</th>
                     <th>From</th>
                     <th></th>
                     <th>To</th>
-                    <th>Value</th>
+                    <th class=text-right>Value</th>
                 </tr>
                 <tr v-for="o in arr">
                     <td class="tdxxxwddd monospace">
                         <router-link v-bind:to='"/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>
                     <td class=time>
-                        <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
-                        <div>{{ Date(o.timestamp) }} | {{ o.timestamp }}</div>
+                        <div class=text-right>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
+                        <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
-                    <td>{{ numberAddComma(o.gasLimit) }}</td>
-                    <td>{{ numberAddComma(o.gasPrice) }} Nas</td>
+                    <td class=text-right>{{ numberAddComma(o.gasLimit) }}</td>
+                    <td class=text-right>{{ toWei(o.gasPrice) }}</td>
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
                     </td>
@@ -45,7 +37,7 @@
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='"/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                     </td>
-                    <td>{{ toWei(o.value) }}</td>
+                    <td class=text-right>{{ toWei(o.value) }}</td>
                 </tr>
             </table>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>

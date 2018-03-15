@@ -1,7 +1,6 @@
 package io.nebulas.explorer.grpc;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Maps;
 import io.grpc.Channel;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
@@ -12,23 +11,25 @@ import io.nebulas.explorer.domain.NebPendingTransaction;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.DposContext;
-import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Transaction;
-import io.nebulas.explorer.service.NebAddressService;
-import io.nebulas.explorer.service.NebBlockService;
-import io.nebulas.explorer.service.NebDynastyService;
-import io.nebulas.explorer.service.NebTransactionService;
+import io.nebulas.explorer.service.blockchain.NebAddressService;
+import io.nebulas.explorer.service.blockchain.NebBlockService;
+import io.nebulas.explorer.service.blockchain.NebDynastyService;
+import io.nebulas.explorer.service.blockchain.NebTransactionService;
+import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
 import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import rpcpb.ApiServiceGrpc;
 import rpcpb.Rpc;
 
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -41,7 +42,7 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0
  * @since 2018-01-23
  */
-@Slf4j
+@Slf4j(topic = "subscribe")
 @AllArgsConstructor
 @Service
 public class GrpcClientService {
@@ -50,6 +51,7 @@ public class GrpcClientService {
     private NebTransactionService nebTransactionService;
     private NebAddressService nebAddressService;
     private NebDynastyService nebDynastyService;
+    private NebulasApiService nebulasApiService;
 
     public void subscribe() {
         Channel channel = grpcChannelService.getChannel();
@@ -105,6 +107,7 @@ public class GrpcClientService {
                 finishLatch.countDown();
             }
         };
+
         asyncStub.subscribe(Rpc.SubscribeRequest.newBuilder()
                 .addTopics(Const.TopicPendingTransaction)
                 .addTopics(Const.TopicLinkBlock)
@@ -112,44 +115,75 @@ public class GrpcClientService {
                 .build(), responseObserver);
     }
 
+    private void processTopicPendingTransaction(String hash) {
+        if (StringUtils.isBlank(hash)) {
+            log.error("empty hash");
+            return;
+        }
+
+        NebPendingTransaction pendingNebTransaction = nebTransactionService.getNebPendingTransactionByHash(hash);
+        if (pendingNebTransaction == null) {
+            Transaction txSource;
+            try {
+                txSource = nebulasApiService.getTransactionReceipt(new GetTransactionReceiptRequest(hash)).execute().body();
+            } catch (Exception e) {
+                log.error("get tx by hash error, skipped pending tx hash " + hash, e);
+                return;
+            }
+            if (txSource == null) {
+                log.warn("pending tx with hash {} not ready", hash);
+            } else {
+                int type = StringUtils.isBlank(txSource.getContractAddress()) ? 0 : 1;
+                addAddr(txSource.getFrom(), type);
+                addAddr(txSource.getTo(), type);
+                log.info("get pending tx by hash {}", hash);
+                NebPendingTransaction pendingTxToSave = NebPendingTransaction.builder()
+                        .id(IdGenerator.getId())
+                        .hash(hash)
+                        .from(txSource.getFrom())
+                        .to(txSource.getTo())
+                        .value(txSource.getValue())
+                        .nonce(txSource.getNonce())
+                        .timestamp(new Date(txSource.getTimestamp() * 1000))
+                        .type(txSource.getType())
+                        .gasPrice(txSource.getGasPrice())
+                        .gasLimit(txSource.getGasLimit())
+                        .createdAt(new Date())
+                        .data(txSource.getData())
+                        .build();
+                nebTransactionService.addNebPendingTransaction(pendingTxToSave);
+            }
+        } else {
+            log.warn("duplicate pending neb transaction {}", pendingNebTransaction.getHash());
+        }
+    }
+
     private void processTopicLinkBlock(String hash) {
         if (StringUtils.isBlank(hash)) {
             log.error("empty hash");
             return;
         }
+
         NebBlock nebBlock = nebBlockService.getNebBlockByHash(hash);
         if (null != nebBlock) {
             log.warn("block with hash {} already existed", hash);
             return;
         }
         try {
-            Block block;
-            try {
-                block = getBlockByHash(hash, true);
-            } catch (StatusRuntimeException e) {
-                log.error("get block by hash error, skipped block hash " + hash, e);
-                return;
-            }
-
+            Block block = nebulasApiService.getBlockByHash(new GetBlockByHashRequest(hash, true)).toBlocking().first();
             if (block == null) {
                 log.warn("block with hash {} not ready", hash);
                 return;
             }
 
-            log.info("get block by hash {}", block.toString());
-//            Integer trx = data.getInteger("tx");
-//            if (trx != null && trx > 0) {
-//                log.info("guess the block has transaction");
-//                if (block.getTransactions() == null || block.getTransactions().isEmpty()) {
-//                    log.info("but can not get block transactions by full transaction");
-//                }
-//            }
+            log.info("get block by height {}", block.getHeight());
+
             addAddr(block.getMiner(), 0);
             addAddr(block.getCoinbase(), 0);
 
             Block latestIrreversibleBlk = null;
             try {
-                latestIrreversibleBlk = getLatestIrreversibleBlock();
+                latestIrreversibleBlk = nebulasApiService.getLatestIrreversibleBlock().toBlocking().first();
             } catch (StatusRuntimeException e) {
                 log.error("get block by height error", e);
             }
@@ -169,10 +203,14 @@ public class GrpcClientService {
 
             List<Transaction> txs = block.getTransactions();
             for (Transaction tx : txs) {
+                int type = StringUtils.isBlank(tx.getContractAddress()) ? 0 : 1;
+                addAddr(tx.getFrom(), type);
+                addAddr(tx.getTo(), type);
                 String gasUsed;
                 try {
-                    gasUsed = getGasUsed(tx.getHash());
-                } catch (StatusRuntimeException e) {
+                    GetGasUsedResponse gasUsedResponse = nebulasApiService.getGasUsed(new GetGasUsedRequest(tx.getHash())).toBlocking().first();
+                    gasUsed = gasUsedResponse.getGas();
+                } catch (Exception e) {
                     log.error("get gas used error, set gas used to null for tx hash " + tx.getHash(), e);
                     gasUsed = null;
                 }
@@ -204,53 +242,13 @@ public class GrpcClientService {
                 nebTransactionService.addNebTransaction(nebTxs);
             }
 
-            List<String> delegateList = getDynasty(block.getHeight());
-            nebDynastyService.batchAddNebDynasty(block.getHeight(), delegateList);
+            GetDynastyResponse dynastyResponse = nebulasApiService.getDynasty(new GetDynastyRequest(block.getHeight())).toBlocking().first();
+            nebDynastyService.batchAddNebDynasty(block.getHeight(), dynastyResponse.getDelegatees());
 
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             log.error("no block yet", e);
         } catch (Throwable e) {
             log.error("sys error", e);
-        }
-    }
-
-    private void processTopicPendingTransaction(String hash) {
-        if (StringUtils.isBlank(hash)) {
-            log.error("empty hash");
-            return;
-        }
-
-        NebPendingTransaction pendingNebTransaction = nebTransactionService.getNebPendingTransactionByHash(hash);
-        if (pendingNebTransaction == null) {
-            Transaction txSource;
-            try {
-                txSource = getTransactionByHash(hash);
-            } catch (UnsupportedEncodingException e) {
-                log.error("get tx by hash error, skipped pending tx hash " + hash, e);
-                return;
-            }
-            if (txSource == null) {
-                log.warn("pending tx with hash {} not ready", hash);
-            } else {
-                log.info("get pending tx by hash {}", hash);
-                NebPendingTransaction pendingTxToSave = NebPendingTransaction.builder()
-                        .id(IdGenerator.getId())
-                        .hash(hash)
-                        .from(txSource.getFrom())
-                        .to(txSource.getTo())
-                        .value(txSource.getValue())
-                        .nonce(txSource.getNonce())
-                        .timestamp(new Date(txSource.getTimestamp() * 1000))
-                        .type(txSource.getType())
-                        .gasPrice(txSource.getGasPrice())
-                        .gasLimit(txSource.getGasLimit())
-                        .createdAt(new Date())
-                        .data(txSource.getData())
-                        .build();
-                nebTransactionService.addNebPendingTransaction(pendingTxToSave);
-            }
-        } else {
-            log.warn("duplicate pending neb transaction {}", pendingNebTransaction.getHash());
         }
     }
 
@@ -273,25 +271,6 @@ public class GrpcClientService {
         }
     }
 
-    public String getGasUsed(String hash) {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
-        Rpc.GasResponse gasUsed;
-        try {
-            gasUsed = stub.getGasUsed(Rpc.HashRequest.newBuilder().setHash(hash).build());
-        } catch (StatusRuntimeException e) {
-            String errMessage = e.getMessage();
-            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
-                return null;
-            }
-            throw e;
-        }
-        return populateGas(gasUsed);
-    }
-
-    public Block getBlockByHash(String hash) throws UnsupportedEncodingException {
-        return getBlockByHash(hash, false);
-    }
-
     public Block getBlockByHash(String hash, Boolean fullTransaction) throws UnsupportedEncodingException {
         ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
         Rpc.BlockResponse block;
@@ -305,140 +284,6 @@ public class GrpcClientService {
             throw e;
         }
         return populateBlock(block);
-    }
-
-    public Block getLatestIrreversibleBlock() throws UnsupportedEncodingException {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
-        Rpc.BlockResponse block;
-        try {
-            block = stub.latestIrreversibleBlock(Rpc.NonParamsRequest.newBuilder().build());
-        } catch (StatusRuntimeException e) {
-            String errMessage = e.getMessage();
-            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
-                return null;
-            }
-            throw e;
-        }
-        return populateBlock(block);
-    }
-
-    public NebState getNebState() {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
-        Rpc.GetNebStateResponse nebState;
-        try {
-            nebState = stub.getNebState(Rpc.NonParamsRequest.newBuilder().build());
-        } catch (StatusRuntimeException e) {
-            String errMessage = e.getMessage();
-            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
-                return null;
-            }
-            throw e;
-        }
-        return populateNebState(nebState);
-    }
-
-    public Map<String, String> findAccountStateMap(List<String> hashes) {
-        if (CollectionUtils.isEmpty(hashes)) {
-            return Collections.emptyMap();
-        }
-        Map<String, String> balanceMap = Maps.newHashMap();
-        hashes.forEach(a -> balanceMap.put(a, getAccountState(a)));
-        return balanceMap;
-    }
-
-    public String getAccountState(String addressHash) {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
-        Rpc.GetAccountStateResponse accountState;
-        try {
-            accountState = stub.getAccountState(Rpc.GetAccountStateRequest.newBuilder().setAddress(addressHash).build());
-        } catch (StatusRuntimeException e) {
-            String errMessage = e.getMessage();
-            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
-                return null;
-            }
-            throw e;
-        }
-        return accountState == null ? null : accountState.getBalance();
-    }
-
-    public List<String> getDynasty(Long height) {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
-        Rpc.GetDynastyResponse dynasty;
-        try {
-            dynasty = stub.getDynasty(Rpc.ByBlockHeightRequest.newBuilder().setHeight(height).build());
-
-        } catch (StatusRuntimeException e) {
-            String errMessage = e.getMessage();
-            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
-                return null;
-            }
-            throw e;
-        }
-        return populateDynasty(dynasty);
-    }
-
-    private List<String> populateDynasty(Rpc.GetDynastyResponse dynasty) {
-        if (null == dynasty) {
-            return Collections.emptyList();
-        }
-        List<String> delegateList = new ArrayList<>();
-        for (Iterator i = dynasty.getDelegateesList().iterator(); i.hasNext(); ) {
-            delegateList.add((String) i.next());
-        }
-        return delegateList;
-    }
-
-    @Deprecated
-    public String getDumpData(int count) {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
-        Rpc.BlockDumpResponse response;
-        try {
-            response = stub.blockDump(Rpc.BlockDumpRequest.newBuilder().setCount(count).build());
-        } catch (StatusRuntimeException e) {
-            String errMessage = e.getMessage();
-            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
-                return null;
-            }
-            throw e;
-        }
-        return response.getData();
-    }
-
-    public Transaction getTransactionByHash(String hash) throws UnsupportedEncodingException {
-        ApiServiceGrpc.ApiServiceBlockingStub stub = ApiServiceGrpc.newBlockingStub(grpcChannelService.getChannel());
-        Rpc.TransactionResponse transactionReceipt;
-        try {
-            transactionReceipt = stub.getTransactionReceipt(Rpc
-                    .GetTransactionByHashRequest.newBuilder()
-                    .setHash(hash).build());
-        } catch (StatusRuntimeException e) {
-            String errMessage = e.getMessage();
-            if (errMessage.contains("not found") || errMessage.contains("invalid byte")) {
-                return null;
-            }
-            throw e;
-        }
-        return populateTransaction(transactionReceipt);
-    }
-
-    public Block getBlockByHeight(long height) throws UnsupportedEncodingException {
-        return getBlockByHeight(height, false);
-    }
-
-    private String populateGas(Rpc.GasResponse gasResponse) {
-        if (gasResponse == null) {
-            return null;
-        }
-        return gasResponse.getGas();
-    }
-
-    private NebState populateNebState(Rpc.GetNebStateResponse nebState) {
-        if (nebState == null) {
-            return null;
-        }
-        return new NebState(nebState.getChainId(), nebState.getTail(), nebState.getCoinbase()
-                , nebState.getPeerCount(), nebState.getIsMining(), nebState.getProtocolVersion()
-                , nebState.getSynchronized(), nebState.getVersion());
     }
 
     public Block getBlockByHeight(long height, boolean fullTransaction) throws UnsupportedEncodingException {
@@ -501,7 +346,7 @@ public class GrpcClientService {
                 , transactionResponse.getFrom(), transactionResponse.getTo(), transactionResponse.getValue()
                 , transactionResponse.getNonce(), transactionResponse.getTimestamp(), transactionResponse.getType()
                 , transactionResponse.getData() == null ? null : transactionResponse.getData().toString("UTF-8")
-                , transactionResponse.getGasPrice(), transactionResponse.getGasLimit(), transactionResponse.getContractAddress()
+                , transactionResponse.getGasPrice(), transactionResponse.getGasUsed(), transactionResponse.getGasLimit(), transactionResponse.getContractAddress()
                 , transactionResponse.getStatus());
     }
 
