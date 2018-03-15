@@ -10,7 +10,7 @@ spring:
   datasource:
     sql-script-encoding: UTF-8
     platform: mysql
-    initialize: false
+    initialize: true
     schema: classpath:schema.sql
     url: jdbc:mysql://127.0.0.1:3306/explorer?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
     username: explorer
@@ -46,15 +46,16 @@ grpc:
   port: 8684
   enableKeepAlive: true
   keepAliveWithoutCalls: true
-  keepAliveTimeout: 200
+  keepAliveTimeout: 2
 page:
   baseUrl: http://localhost:8080
   hostUrl: http://localhost:8080
 sync:
-  zone: 100000
-  cpu: 1
   open: true
   subscribe : true
+apiHost:
+  coinmarketcap: https://api.coinmarketcap.com
+  nebulas: http://35.182.48.19:8685
 redis:
   host: 127.0.0.1
   port: 6379

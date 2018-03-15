@@ -13,6 +13,8 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface NebMarketCapitalizationMapper {
 
+    Integer add(NebMarketCapitalization nebMarketCapitalization);
+
     NebMarketCapitalization getLatest();
 
 }

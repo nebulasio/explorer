@@ -146,7 +146,6 @@
     }
 
     .vue-home .chart_banner .msg {
-        color: black;
         font-size: 16px;
         margin-top: 24px;
     }
@@ -158,10 +157,21 @@
     .vue-home .chart_banner .msg .msg_change_right {
         float: right;
         margin-right: 10px;
+        color: black;
+    }
+
+    .vue-home .chart_banner .msg .red {
+        color: red;
+    }
+
+    .vue-home .chart_banner .msg .green {
+        color: green;
     }
 
     .vue-home .chart_banner .msg .msg_change_left {
         margin-left: 10px;
+        color: black;
+
     }
 
     .vue-home text.highcharts-credits {
@@ -186,7 +196,7 @@
                         <div class=msg>
                             <div class=msg_change>
                                 <span class="msg_change_left">24h Change : </span>
-                                <span class="msg_change_right red">{{ market.change24h }}%</span>
+                                <span class="msg_change_right" v-bind:class="[ market.trends == 1 ? 'green' : 'red']" >{{ market.trends == 1 ? '+' : '-' }} {{ market.change24h }}%</span>
                             </div>
                             <div class=msg_volume>
                                 <span class="msg_change_left">24h Volume :</span>
@@ -197,7 +207,7 @@
                                 <span class=msg_change_right>$ {{ numberAddComma(market.marketCap) }}</span>
                             </div>
                         </div>
-                        <div class="updataTime mt16">updata time : {{ timeConversion(market.createdAt) }} ago</div>
+                        <div class="mt16 updataTime">updata time : {{ timeConversion(Date.now() - market.createdAt) }} ago</div>
                     </div>
                 </div>
             </div>
@@ -223,7 +233,7 @@
                                 <router-link class=monospace v-bind:to="/address/ + o.miner.hash">{{ o.miner.hash }}</router-link>
                                 <div class=mt16>
                                     <router-link v-bind:to='"/txs?block=" + o.height'>
-                                        <b>{{ o.txnCnt }}</b> transations</router-link>
+                                        <b>{{ o.txnCnt }}</b> transactions</router-link>
                                 </div>
                             </div>
                         </li>
@@ -233,7 +243,7 @@
                     <div class=tab-right>
                         <div class=img>
                             <span class="fa fa-list" aria-hidden=true></span>
-                            Transation
+                            Transaction
                         </div>
                         <router-link class="btn btn-default pull-right" to=/txs role=button>View All</router-link>
                     </div>
@@ -311,14 +321,14 @@
                     // },
                     series: [{
                         data: null,
-                        name: "transation"
+                        name: "transactions"
                         // , type: "area"
                     }],
                     subtitle: {
                         text: "数据来源：Nebulas"
                     },
                     title: {
-                        text: "transations"
+                        text: "transactions"
                     },
                     xAxis: {
                         labels: {
@@ -356,19 +366,19 @@
             api.getMarketCap(o => this.market = o);
 
             api.getTx("cnt_static", o => {
-                var i, arr = [];
+                var i, arr = [], div = document.querySelector("#chart");
 
-                for (i in o) arr.push([Date.parse(i), o[i]]);
+                if (div) {
+                    for (i in o) arr.push([Date.parse(i), o[i]]);
 
-                arr.sort(function (a, b) {
-                    return a[0] - b[0];
-                });
+                    arr.sort(function (a, b) { return a[0] - b[0]; });
 
-                // series 全部是 0 时没法计算纵坐标, highcharts 会把一条线居中显示. 如果想让线靠下就需要给 max 一个非零的值比如 1
-                // this.chartConfig.yAxis.max = 1;
+                    // series 全部是 0 时没法计算纵坐标, highcharts 会把一条线居中显示. 如果想让线靠下就需要给 max 一个非零的值比如 1
+                    // this.chartConfig.yAxis.max = 1;
 
-                this.chartConfig.series[0].data = arr;
-                require("highcharts").chart("chart", this.chartConfig);
+                    this.chartConfig.series[0].data = arr;
+                    require("highcharts").chart(div, this.chartConfig);
+                }
             });
         }
     };

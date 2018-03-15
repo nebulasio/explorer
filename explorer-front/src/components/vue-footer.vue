@@ -1,71 +1,66 @@
 <style>
     .vue-footer {
-        background-color: #272727;
+        background-color: #222;
         margin-top: 30px;
+        overflow: auto;
     }
 
-    .vue-footer .container {
-        background-color: transparent;
+    .vue-footer a {
+        color: inherit;
     }
 
-    .vue-footer .footer_banner_tab {
-        border-bottom: 1px dashed #fff;
-        color: #fff;
-        height: 40px;
-        margin-top: 24px;
-    }
-
-    .vue-footer .footer_list {
-        height: 200px;
-        margin-top: 30px;
-    }
-
-    .vue-footer .footer_list_banner {
-        color: #fff;
-        height: 30px;
-    }
-
-    .vue-footer .footer_right {
-        height: 300px;
+    .vue-footer h4 {
+        margin-bottom: 20px;
+        padding: 20px 0 10px;
         text-align: center;
     }
 
-    .vue-footer .footer_link-list {
-        height: 200px;
-        margin-top: 20px;
+    .vue-footer .container {
+        margin-bottom: 30px;
     }
 
-    .vue-footer .footer_link-list_banner {
-        height: 30px;
-    }
-
-    .vue-footer .footer_link-list_banner a {
-        color: #fff;
+    .vue-footer .fa {
+        text-align: center;
+        width: 14px;
     }
 </style>
 <template>
     <div class=vue-footer>
         <div class=container>
-            <div class=row>
-                <div class="footer_right col-md-12">
-                    <div class=footer_banner_tab>
-                        <h4>Links</h4>
+            <h4>About</h4>
+            <div class="justify-content-center row">
+                <div class=col-1></div>
+                <div class=col-2>
+                    <div>
+                        <!-- <span class="fa fa-(nebulas?)" aria-hidden=true></span> -->
+                        <a target=_blank href=https://nebulas.io>Nebulas.io</a>
                     </div>
-                    <div class=footer_link-list>
-                        <div class=footer_link-list_banner>
-                            <a href=https://nebulas.io target=_blank>Nebulas.io</a>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-md-3 footer_link-list_banner">
-                                <a href="https://github.com/nebulasio" target=_blank>github</a>
-                            </div>
-                            <div class="col-md-3 footer_link-list_banner">
-                                <a href=https://testnet.nebulas.io target=_blank>testnet</a>
-                            </div>
-                        </div>
-                        <div class=footer_link-list_banner>
-                            <a href=#>mainnet</a>
-                        </div>
+                    <div>
+                        <span class="fa fa-facebook-f" aria-hidden=true></span>
+                        <a target=_blank href=https://www.facebook.com/nebulasproject>Facebook</a>
+                    </div>
+                    <div>
+                        <span class="fa fa-slack" aria-hidden=true></span>
+                        <a target=_blank href=https://nebulasio.herokuapp.com>Slack</a>
+                    </div>
+                    <div>
+                        <span class="fa fa-twitter" aria-hidden=true></span>
+                        <a target=_blank href=https://twitter.com/nebulasio>Twitter</a>
+                    </div>
+                </div>
+                <div class=col-1></div>
+                <div class=col-3>
+                    <div>
+                        <span class="fa fa-github" aria-hidden=true></span>
+                        <a target=_blank href=https://github.com/nebulasio>Github.com/nebulasio</a>
+                    </div>
+                    <div>
+                        <span class="fa fa-github" aria-hidden=true></span>
+                        <a target=_blank href=https://github.com/nebulasio/explorer/issues>Issue</a>
+                    </div>
+                    <div>
+                        <span class="fa fa-github" aria-hidden=true></span>
+                        <a target=_blank href=https://github.com/nebulasio/explorer/commit/cf54099633db072aef15cec338a0ddaf21bb182a>Commit: cf54099</a>
                     </div>
                 </div>
             </div>

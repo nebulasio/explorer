@@ -15,7 +15,7 @@
     </sql>
 
     <insert id="add" parameterType="map" useGeneratedKeys="false">
-        INSERT INTO `neb_address` (`id`, `hash`, `type`) VALUES (#{id}, #{hash}, #{type})
+        INSERT ignore INTO `neb_address` (`id`, `hash`, `type`) VALUES (#{id}, #{hash}, #{type})
     </insert>
 
     <update id="update" parameterType="map">
@@ -40,7 +40,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_address`
-        ORDER BY `current_balance`
+        ORDER BY `current_balance` DESC
         LIMIT ${offset},${limit}
     </select>
 

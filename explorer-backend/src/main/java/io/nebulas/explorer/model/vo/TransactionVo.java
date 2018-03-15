@@ -3,13 +3,13 @@ package io.nebulas.explorer.model.vo;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebPendingTransaction;
 import io.nebulas.explorer.domain.NebTransaction;
-import io.nebulas.explorer.util.NasUnitUtil;
 import lombok.Data;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Base64;
 import java.util.Date;
 
 /**
@@ -41,6 +41,7 @@ public class TransactionVo implements Serializable {
     private Long timeDiff;
 
     private static final long serialVersionUID = 1L;
+    private static final Base64.Decoder DECODER = Base64.getDecoder();
 
     public TransactionVo build(NebTransaction txn) {
         this.hash = txn.getHash();
@@ -51,7 +52,11 @@ public class TransactionVo implements Serializable {
         this.gasPrice = txn.getGasPrice();
         this.gasLimit = txn.getGasLimit();
         this.gasUsed = txn.getGasUsed();
-        this.data = txn.getData();
+        try {
+            this.data = StringUtils.isNotEmpty(txn.getData()) ? new String(DECODER.decode(txn.getData()), "UTF-8") : "";
+        } catch (Exception e) {
+            this.data = txn.getData();
+        }
         this.timestamp = txn.getTimestamp();
         this.currentTimestamp = new Date();
         this.timeDiff = System.currentTimeMillis() - txn.getTimestamp().getTime();
@@ -66,7 +71,11 @@ public class TransactionVo implements Serializable {
         this.type = txn.getType();
         this.gasPrice = txn.getGasPrice();
         this.gasLimit = txn.getGasLimit();
-        this.data = txn.getData();
+        try {
+            this.data = StringUtils.isNotEmpty(txn.getData()) ? new String(DECODER.decode(txn.getData()), "UTF-8") : "";
+        } catch (Exception e) {
+            this.data = txn.getData();
+        }
         this.timestamp = txn.getTimestamp();
         this.currentTimestamp = new Date();
         this.timeDiff = System.currentTimeMillis() - txn.getTimestamp().getTime();

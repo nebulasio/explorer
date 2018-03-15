@@ -1,4 +1,4 @@
-package io.nebulas.explorer.service;
+package io.nebulas.explorer.service.blockchain;
 
 import io.nebulas.explorer.domain.NebMarketCapitalization;
 import io.nebulas.explorer.mapper.NebMarketCapitalizationMapper;
@@ -16,6 +16,19 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class NebMarketCapitalizationService {
     private final NebMarketCapitalizationMapper marketCapitalizationMapper;
+
+    /**
+     * save NebMarketCapitalization information
+     *
+     * @param record NebMarketCapitalization bean
+     * @return saved result
+     */
+    public boolean addMarket(NebMarketCapitalization record) {
+        if (null == record) {
+            return false;
+        }
+        return marketCapitalizationMapper.add(record) > 0;
+    }
 
     /**
      * query the latest market capitalization
