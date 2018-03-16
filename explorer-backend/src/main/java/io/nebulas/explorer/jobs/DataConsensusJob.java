@@ -2,6 +2,7 @@ package io.nebulas.explorer.jobs;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import io.nebulas.explorer.domain.BlockSyncRecord;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
@@ -83,6 +84,12 @@ public class DataConsensusJob {
                 long end = block.getHeight() - lastConfirmHeight > 2000 ? lastConfirmHeight + 2000 : block.getHeight();
 
                 for (long i = lastConfirmHeight + 1; i <= end; i++) {
+                    BlockSyncRecord record = new BlockSyncRecord();
+                    record.setBlockHeight(i);
+                    record.setTxCnt(0L);
+                    record.setConfirm(0L);
+                    blockSyncRecordService.add(record);
+
                     Block blk = nebulasApiService.getBlockByHeight(new GetBlockByHeightRequest(i, true)).toBlocking().first();
                     if (blk != null) {
                         boolean isOk = true;
