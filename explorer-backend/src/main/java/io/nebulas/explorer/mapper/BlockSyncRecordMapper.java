@@ -5,6 +5,8 @@ import io.nebulas.explorer.domain.BlockSyncRecord;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface BlockSyncRecordMapper {
 
@@ -18,5 +20,5 @@ public interface BlockSyncRecordMapper {
 
     BlockSyncRecord getMaxBlock();
 
-
+    List<BlockSyncRecord> findUnConfirmed(@Param("blockHeight") Long blockHeight);
 }

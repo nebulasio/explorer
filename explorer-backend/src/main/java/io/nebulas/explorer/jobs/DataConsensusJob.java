@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
@@ -90,63 +91,75 @@ public class DataConsensusJob {
                     record.setConfirm(0L);
                     blockSyncRecordService.add(record);
 
-                    Block blk = nebulasApiService.getBlockByHeight(new GetBlockByHeightRequest(i, true)).toBlocking().first();
-                    if (blk != null) {
-                        boolean isOk = true;
-                        NebBlock nebBlock = nebBlockService.getNebBlockByHeight(blk.getHeight());
-                        if (null == nebBlock) {
-                            saveBlock(blk, latestIrreversibleBlk.getHeight());
-                            isOk = false;
-                        }
-
-                        long txCnt = nebTransactionService.countTxnCntByBlockHeight(blk.getHeight());
-                        if (txCnt < blk.getTransactions().size()) {
-                            for (Transaction tx : blk.getTransactions()) {
-                                addAddr(tx.getFrom(), NebAddressTypeEnum.NORMAL);
-
-                                if (NebTransactionTypeEnum.BINARY.getDesc().equals(tx.getType())) {
-                                    addAddr(tx.getTo(), NebAddressTypeEnum.NORMAL);
-                                } else if (NebTransactionTypeEnum.CALL.getDesc().equals(tx.getType())) {
-                                    addAddr(tx.getTo(), NebAddressTypeEnum.CONTRACT);
-                                    String realReceiver = extractReceiverAddress(tx.getData());
-                                    addAddr(realReceiver, NebAddressTypeEnum.NORMAL);
-                                } else if (NebTransactionTypeEnum.DEPLOY.getDesc().equals(tx.getType())) {
-                                    addAddr(tx.getContractAddress(), NebAddressTypeEnum.NORMAL);
-                                }
-
-                                NebTransaction nebTx = BlockHelper.buildNebTransaction(tx, blk);
-                                if (StringUtils.isEmpty(nebTx.getGasUsed())) {
-                                    String gasUsed = null;
-                                    try {
-                                        GetGasUsedResponse gasUsedResponse = nebulasApiService.getGasUsed(new GetGasUsedRequest(tx.getHash())).toBlocking().first();
-                                        gasUsed = gasUsedResponse.getGas();
-                                    } catch (Exception e) {
-                                        log.error("get gas used by tx hash error", e);
-                                        continue;
-                                    }
-                                    if (gasUsed != null) {
-                                        nebTx.setGasUsed(gasUsed);
-                                        log.info("tx hash {} gas used: {} ", tx.getHash(), gasUsed);
-                                    } else {
-                                        nebTx.setGasUsed("");
-                                        log.warn("gas used not found for tx hash {}", tx.getHash());
-                                    }
-                                }
-                                nebTransactionService.addNebTransaction(nebTx);
-                                log.info("save tx={}", tx.getHash());
-                            }
-                            isOk = false;
-                        }
-
-                        if (isOk) {
-                            blockSyncRecordService.setConfirmed(blk.getHeight(), (long) blk.getTransactions().size());
-                        }
-                    }
+                    syncBlock(i, latestIrreversibleBlk);
                 }
                 redisTemplate.opsForValue().getOperations().delete(key);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
                 redisTemplate.opsForValue().getOperations().delete(key);
+            }
+        }
+
+        List<BlockSyncRecord> recordList = blockSyncRecordService.findUnConfirmed(lastConfirmHeight);
+        if (recordList.size() > 0) {
+            Block latestIrreversibleBlk = nebulasApiService.getLatestIrreversibleBlock().toBlocking().first();
+            recordList.forEach(r -> {
+                syncBlock(r.getBlockHeight(), latestIrreversibleBlk);
+            });
+        }
+    }
+
+    private void syncBlock(long i, Block latestIrreversibleBlk) {
+        Block blk = nebulasApiService.getBlockByHeight(new GetBlockByHeightRequest(i, true)).toBlocking().first();
+        if (blk != null) {
+            boolean isOk = true;
+            NebBlock nebBlock = nebBlockService.getNebBlockByHeight(blk.getHeight());
+            if (null == nebBlock) {
+                saveBlock(blk, latestIrreversibleBlk.getHeight());
+                isOk = false;
+            }
+
+            long txCnt = nebTransactionService.countTxnCntByBlockHeight(blk.getHeight());
+            if (txCnt < blk.getTransactions().size()) {
+                for (Transaction tx : blk.getTransactions()) {
+                    addAddr(tx.getFrom(), NebAddressTypeEnum.NORMAL);
+
+                    if (NebTransactionTypeEnum.BINARY.getDesc().equals(tx.getType())) {
+                        addAddr(tx.getTo(), NebAddressTypeEnum.NORMAL);
+                    } else if (NebTransactionTypeEnum.CALL.getDesc().equals(tx.getType())) {
+                        addAddr(tx.getTo(), NebAddressTypeEnum.CONTRACT);
+                        String realReceiver = extractReceiverAddress(tx.getData());
+                        addAddr(realReceiver, NebAddressTypeEnum.NORMAL);
+                    } else if (NebTransactionTypeEnum.DEPLOY.getDesc().equals(tx.getType())) {
+                        addAddr(tx.getContractAddress(), NebAddressTypeEnum.NORMAL);
+                    }
+
+                    NebTransaction nebTx = BlockHelper.buildNebTransaction(tx, blk);
+                    if (StringUtils.isEmpty(nebTx.getGasUsed())) {
+                        String gasUsed = null;
+                        try {
+                            GetGasUsedResponse gasUsedResponse = nebulasApiService.getGasUsed(new GetGasUsedRequest(tx.getHash())).toBlocking().first();
+                            gasUsed = gasUsedResponse.getGas();
+                        } catch (Exception e) {
+                            log.error("get gas used by tx hash error", e);
+                            continue;
+                        }
+                        if (gasUsed != null) {
+                            nebTx.setGasUsed(gasUsed);
+                            log.info("tx hash {} gas used: {} ", tx.getHash(), gasUsed);
+                        } else {
+                            nebTx.setGasUsed("");
+                            log.warn("gas used not found for tx hash {}", tx.getHash());
+                        }
+                    }
+                    nebTransactionService.addNebTransaction(nebTx);
+                    log.info("save tx={}", tx.getHash());
+                }
+                isOk = false;
+            }
+
+            if (isOk) {
+                blockSyncRecordService.setConfirmed(blk.getHeight(), (long) blk.getTransactions().size());
             }
         }
     }

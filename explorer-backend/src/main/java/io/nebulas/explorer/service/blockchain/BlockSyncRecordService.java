@@ -5,6 +5,8 @@ import io.nebulas.explorer.mapper.BlockSyncRecordMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Desc:
  * User: nathan
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class BlockSyncRecordService {
     private BlockSyncRecordMapper blockSyncRecordMapper;
+
 
     public boolean add(BlockSyncRecord record) {
         return blockSyncRecordMapper.add(record) > 0;
@@ -27,7 +30,7 @@ public class BlockSyncRecordService {
         return record.getBlockHeight();
     }
 
-    public Long getMaxBlockHeight(){
+    public Long getMaxBlockHeight() {
         BlockSyncRecord record = blockSyncRecordMapper.getMaxBlock();
         if (null == record) {
             return 1L;
@@ -41,6 +44,10 @@ public class BlockSyncRecordService {
 
     public boolean setConfirmed(Long blkHeight, Long txCnt) {
         return blockSyncRecordMapper.updateByBlockHeight(blkHeight, txCnt) > 0;
+    }
+
+    public List<BlockSyncRecord> findUnConfirmed(long blkHeight) {
+        return blockSyncRecordMapper.findUnConfirmed(blkHeight);
     }
 
 }
