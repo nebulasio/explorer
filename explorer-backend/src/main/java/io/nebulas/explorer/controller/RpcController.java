@@ -294,15 +294,13 @@ public class RpcController {
         }
         result.put("txList", convertTxn2TxnVoWithAddress(txList));
 
-        if (address.getUpdatedAt().before(LocalDateTime.now().plusMinutes(-5).toDate())) {
-//            EXECUTOR.execute(() -> {
+        if (address.getUpdatedAt().before(LocalDateTime.now().plusSeconds(-5).toDate())) {
             GetAccountStateResponse accountState = nebulasApiService.getAccountState(new GetAccountStateRequest(hash)).toBlocking().first();
             String balance = accountState.getBalance();
             if (StringUtils.isNotEmpty(balance)) {
                 address.setCurrentBalance(new BigDecimal(balance));
                 nebAddressService.updateAddressBalance(hash, balance);
             }
-//            });
         }
         return result;
     }

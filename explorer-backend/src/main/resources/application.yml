@@ -42,7 +42,7 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 300
 grpc:
-  host: 35.182.48.19
+  host: 18.219.28.97
   port: 8684
   enableKeepAlive: true
   keepAliveWithoutCalls: true
@@ -55,7 +55,7 @@ sync:
   subscribe : true
 apiHost:
   coinmarketcap: https://api.coinmarketcap.com
-  nebulas: http://35.182.48.19:8685
+  nebulas: http://18.219.28.97:8685
 redis:
   host: 127.0.0.1
   port: 6379

@@ -37,6 +37,7 @@ public class ClearDiscardTxJob {
         if (CollectionUtils.isNotEmpty(pendingTxList)) {
             for (NebPendingTransaction ptx : pendingTxList) {
                 try {
+                    log.info("check pending tx hash={}", ptx.getHash());
                     Response<Transaction> response = nebulasApiService.getTransactionReceipt(new GetTransactionReceiptRequest(ptx.getHash())).execute();
                     if (response.code() == 500) {
                         JSONObject jsonObject = JSONObject.parseObject(response.errorBody().string());
