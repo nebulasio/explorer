@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -52,6 +54,8 @@ public class GrpcClientService {
     private NebAddressService nebAddressService;
     private NebDynastyService nebDynastyService;
     private NebulasApiService nebulasApiService;
+
+    private static ExecutorService executor = Executors.newScheduledThreadPool(5);
 
     public void subscribe() {
         Channel channel = grpcChannelService.getChannel();
@@ -77,7 +81,12 @@ public class GrpcClientService {
                 String topic = sr.getTopic();
                 String hash = data.getString("hash");
                 if (Const.TopicLinkBlock.equals(topic)) {
-                    processTopicLinkBlock(hash);
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            processTopicLinkBlock(hash);
+                        }
+                    });
                 } else if (Const.TopicPendingTransaction.equals(topic)) {
                     processTopicPendingTransaction(hash);
                 } else if (Const.TopicLibBlock.equals(topic)) {
