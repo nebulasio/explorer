@@ -57,7 +57,7 @@
                 <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
 <span class="fa fa-flask" aria-hidden=true></span>
 <span class=c777>This website is under heavy construction</span><br>
-<div>Feel free to subimt issue by click this link 👍</div>
+<div>Feel free to submit issues by clicking this link 👍</div>
                 '>alpha</a>
             </div>
 
