@@ -327,7 +327,7 @@ public class RpcController {
 
         NebTransaction transaction = nebTransactionService.getNebTransactionByHash(q);
         if (null != transaction) {
-            return JsonResult.success("type", "tx").put("q", address.getHash());
+            return JsonResult.success("type", "tx").put("q", transaction.getHash());
         }
         return JsonResult.success("type", "unknown").put("q", q);
     }
