@@ -6,7 +6,7 @@
         <div class="container mt20">
             <div class="align-items-center info-and-pagination row">
                 <div class=col>Showing Block (#{{ heightFrom }} to #{{ heightTo }}) out of {{ totalBlocks }} total blocks</div>
-                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
+                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
             </div>
             <table class="mt20 table">
                 <tr>
@@ -37,7 +37,7 @@
                     <td class=text-right>{{ toWei(o.avgGasPrice) }}</td>
                 </tr>
             </table>
-            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
+            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
         </div>
     </div>
 </template>
@@ -119,6 +119,12 @@
                 this.$router.push({
                     path: this.$route.path,
                     query: { p: this.currentPage - 1 }
+                });
+            },
+            onTo(n) {
+                this.$router.push({
+                    path: this.$route.path,
+                    query: { p: n }
                 });
             },
             timeConversion(ms) {
