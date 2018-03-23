@@ -1,6 +1,5 @@
 package io.nebulas.explorer.service.thirdpart.nebulas;
 
-import com.google.gson.JsonObject;
 import io.nebulas.explorer.model.Block;
 import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Transaction;

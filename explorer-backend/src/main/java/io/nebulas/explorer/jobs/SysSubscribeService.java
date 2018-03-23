@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 public class SysSubscribeService {
     private final GrpcChannelService grpcChannelService;
     private final GrpcClientService grpcClientService;
-    private final YAMLConfig yamlConfig;
 
     public void init(boolean isSubscribe) {
         log.info("sys init starting...");
