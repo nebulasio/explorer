@@ -52,6 +52,10 @@ public class NebTransactionService {
         return nebTransactionMapper.batchAddNebTransaction(transactions);
     }
 
+    public Integer deleteNebTransactionByBlkHeight(long blkHeight) {
+        return nebTransactionMapper.deleteByBlkHeight(blkHeight);
+    }
+
     /**
      * save pending transaction information
      *
@@ -80,6 +84,15 @@ public class NebTransactionService {
      */
     public boolean deleteNebPendingTransaction(String id) {
         return nebPendingTransactionMapper.delete(id) > 0;
+    }
+
+    /**
+     * delete pending transaction
+     *
+     * @return deleted result
+     */
+    public boolean deleteNebPendingTransactionByTimestamp(Date ts) {
+        return nebPendingTransactionMapper.deleteByTimestamp(ts) > 0;
     }
 
     /**

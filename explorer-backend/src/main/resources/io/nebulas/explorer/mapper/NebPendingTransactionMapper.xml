@@ -55,6 +55,13 @@
         DELETE FROM `neb_pending_transaction` WHERE `id` = #{id}
     </delete>
 
+    <delete id="deleteByTimestamp" parameterType="map">
+        DELETE FROM `neb_pending_transaction`
+        <![CDATA[
+        WHERE `timestamp` < #{timestamp,jdbcType=TIMESTAMP}
+        ]]>
+    </delete>
+
     <select id="countPendingTxnCntByCondition" parameterType="java.lang.String" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_pending_transaction`
