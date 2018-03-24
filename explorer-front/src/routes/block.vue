@@ -88,6 +88,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Coinbase</td>
+                    <td class=monospace>
+                        <router-link v-bind:to='"/address/" + block.miner.hash'>{{ block.coinbase }}</router-link>
+                    </td>
+                </tr>
+                <tr>
                     <td>Dynasty</td>
                     <td class="dynasty monospace">
 
