@@ -23,6 +23,8 @@ public interface NebPendingTransactionMapper {
 
     Integer delete(String id);
 
+    Integer deleteByTimestamp(@Param("timestamp") Date timestamp);
+
     long countPendingTxnCntByCondition(@Param("addressHash") String addressHash);
 
     NebPendingTransaction getByHash(String hash);

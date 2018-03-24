@@ -20,7 +20,7 @@
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
                 <div class="col info">{{ totalTxs }} transactions found (showing the last {{ maxDisplayCnt }} records)</div>
-                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
+                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
             </div>
 
             <table class="mt20 table">
@@ -60,7 +60,7 @@
                 </tr>
             </table>
 
-            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
+            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
         </div>
     </div>
 </template>
@@ -127,6 +127,9 @@
             },
             onPrev() {
                 this.nav(this.currentPage - 1);
+            },
+            onTo(n) {
+                this.nav(n);
             },
             timeConversion(ms) {
                 return utility.timeConversion(ms);
