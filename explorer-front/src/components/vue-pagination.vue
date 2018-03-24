@@ -9,6 +9,22 @@
             v-on:last
         ></tag>
         */
+
+    .vue-pagination .current {
+        color: inherit;
+        position: relative;
+    }
+
+    .vue-pagination .current>span {
+        margin-right: 4.5em;
+    }
+
+    .vue-pagination .current>input {
+        left: 3.6em;
+        position: absolute;
+        top: .4em;
+        width: 4em;
+    }
 </style>
 <template>
     <nav class=vue-pagination aria-label="Page navigation">
@@ -39,12 +55,12 @@
                 </a>
             </li>
 
-            <li class="page-item disabled">
-                <a class=page-link href=# tabindex=-1>
-                    Page
-                    <b>{{ current }}</b> of
+            <li class=page-item>
+                <div class="current page-link">
+                    <span>Page</span>
+                    <input v-bind:value=current v-on:keyup.enter="$emit('to', $event.target.value)"> of
                     <b>{{ total }}</b>
-                </a>
+                </div>
             </li>
 
             <li v-if="current == total" class="disabled page-item">

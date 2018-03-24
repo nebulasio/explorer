@@ -19,7 +19,13 @@
     </sql>
 
     <insert id="add" parameterType="NebBlock">
-        INSERT IGNORE INTO `neb_block` (`id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`, `finality`)
+        insert ignore INTO `neb_block` (`id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`, `finality`)
+        VALUES (#{id,jdbcType=VARCHAR}, #{height,jdbcType=BIGINT}, #{hash,jdbcType=VARCHAR},
+        #{parentHash,jdbcType=VARCHAR}, #{timestamp,jdbcType=TIMESTAMP}, #{miner,jdbcType=VARCHAR},
+        #{coinbase,jdbcType=VARCHAR}, #{nonce,jdbcType=BIGINT}, #{finality,jdbcType=TINYINT})
+    </insert>
+    <insert id="repalce" parameterType="NebBlock">
+        replace INTO `neb_block` (`id`, `height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `nonce`, `finality`)
         VALUES (#{id,jdbcType=VARCHAR}, #{height,jdbcType=BIGINT}, #{hash,jdbcType=VARCHAR},
         #{parentHash,jdbcType=VARCHAR}, #{timestamp,jdbcType=TIMESTAMP}, #{miner,jdbcType=VARCHAR},
         #{coinbase,jdbcType=VARCHAR}, #{nonce,jdbcType=BIGINT}, #{finality,jdbcType=TINYINT})
@@ -83,5 +89,15 @@
         SELECT <include refid="Base_Column_List"/>
         FROM `neb_block`
         WHERE `height` BETWEEN #{fromHeight,jdbcType=BIGINT} and #{toHeight,jdbcType=BIGINT}
+    </select>
+
+    <select id="findUnLibBlockLessThanHeight" parameterType="map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM `neb_block`
+        <![CDATA[
+        WHERE height <= #{height,jdbcType=BIGINT} and finality = 0
+        ]]>
+        ORDER BY height DESC
+        LIMIT ${limit}
     </select>
 </mapper>
