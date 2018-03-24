@@ -140,7 +140,7 @@
                         this.$router.push("/block/" + o.q);
                     else if (o.type == "address")
                         this.$router.push("/address/" + o.q);
-                    else if (o.type == "transaction")
+                    else if (o.type == "tx")
                         this.$router.push("/tx/" + o.q);
                     else {
                         this.$root.search = o.q;
