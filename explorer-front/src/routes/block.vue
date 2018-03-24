@@ -90,7 +90,7 @@
                 <tr>
                     <td>Coinbase</td>
                     <td class=monospace>
-                        <router-link v-bind:to='"/address/" + block.miner.hash'>{{ block.coinbase }}</router-link>
+                        <router-link v-bind:to='"/address/" + block.coinbase'>{{ block.coinbase }}</router-link>
                     </td>
                 </tr>
                 <tr>
