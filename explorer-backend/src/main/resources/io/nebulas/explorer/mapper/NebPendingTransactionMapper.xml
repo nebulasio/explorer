@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.nebulas.explorer.mapper.NebPendingTransactionMapper">
     <resultMap id="BaseResultMap" type="NebPendingTransaction">
-        <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="hash" property="hash" jdbcType="VARCHAR"/>
         <result column="from" property="from" jdbcType="VARCHAR"/>
         <result column="to" property="to" jdbcType="VARCHAR"/>
@@ -16,7 +15,6 @@
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-      `id`,
       `hash`,
       `from`,
       `to`,
@@ -31,28 +29,13 @@
     </sql>
 
     <insert id="add" parameterType="NebPendingTransaction" useGeneratedKeys="false">
-        INSERT INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
+        INSERT INTO `neb_pending_transaction` (`hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
         VALUES
-        (
-        #{id}, #{hash}, #{from}, #{to}, #{value},
-        #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}
-        , #{gasLimit}, #{createdAt}
-        )
-    </insert>
-    <insert id="batchAdd" parameterType="NebPendingTransaction" useGeneratedKeys="false">
-        INSERT IGNORE INTO `neb_pending_transaction` (`id`, `hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
-        VALUES
-        <foreach collection="transactions" item="tx" separator=",">
-            (
-            #{tx.id}, #{tx.hash}, #{tx.from}, #{tx.to}, #{tx.value},
-            #{tx.nonce}, #{tx.timestamp}, #{tx.type}, #{tx.data}, #{tx.gasPrice}
-            , #{tx.gasLimit}, #{tx.createdAt}
-            )
-        </foreach>
+        (#{hash}, #{from}, #{to}, #{value}, #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}, #{gasLimit}, #{createdAt})
     </insert>
 
     <delete id="delete" parameterType="java.lang.String">
-        DELETE FROM `neb_pending_transaction` WHERE `id` = #{id}
+        DELETE FROM `neb_pending_transaction` WHERE `hash` = #{hash}
     </delete>
 
     <delete id="deleteByTimestamp" parameterType="map">

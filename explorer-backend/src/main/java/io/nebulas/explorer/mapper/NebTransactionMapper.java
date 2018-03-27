@@ -22,8 +22,6 @@ public interface NebTransactionMapper {
 
     Integer deleteByBlkHeight(@Param("blockHeight") long blockHeight);
 
-    Integer batchAddNebTransaction(@Param("transactions") List<NebTransaction> transactions);
-
     long countTxnCntByCondition(@Param("blockHeight") Long blockHeight, @Param("addressHash") String addressHash);
 
     long countTxnCntByFromTo(String addressHash);

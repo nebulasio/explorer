@@ -1,4 +1,4 @@
-package io.nebulas.explorer.model;
+package io.nebulas.explorer.service.thirdpart.nebulas.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.Serializable;
+
 import java.util.Collections;
 import java.util.List;
 
