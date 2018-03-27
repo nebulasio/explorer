@@ -2,8 +2,8 @@ package io.nebulas.explorer.util;
 
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
-import io.nebulas.explorer.model.Block;
-import io.nebulas.explorer.model.Transaction;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
 
 import java.util.Date;
 
@@ -16,21 +16,18 @@ public class BlockHelper {
 
     public static NebBlock buildNebBlock(Block blk, long libBlkHeight) {
         return NebBlock.builder()
-                .id(IdGenerator.getId())
                 .height(blk.getHeight())
                 .hash(blk.getHash())
                 .parentHash(blk.getParentHash())
                 .timestamp(new Date(blk.getTimestamp() * 1000))
                 .miner(blk.getMiner())
                 .coinbase(blk.getCoinbase())
-                .nonce(blk.getNonce())
                 .finality(blk.getHeight() <= libBlkHeight)
                 .build();
     }
 
     public static NebTransaction buildNebTransaction(Transaction tx, Block blk) {
         return NebTransaction.builder()
-                .id(IdGenerator.getId())
                 .hash(tx.getHash())
                 .blockHeight(blk.getHeight())
                 .blockHash(blk.getHash())

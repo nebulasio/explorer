@@ -8,14 +8,12 @@ import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionTypeEnum;
-import io.nebulas.explorer.model.Block;
-import io.nebulas.explorer.model.NebState;
-import io.nebulas.explorer.model.Transaction;
 import io.nebulas.explorer.service.blockchain.*;
-import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
+import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.NebState;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
 import io.nebulas.explorer.util.BlockHelper;
-import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +44,7 @@ public class DataConsensusJob {
     private final BlockSyncRecordService blockSyncRecordService;
     private final NebDynastyService nebDynastyService;
     private final NebTransactionService nebTransactionService;
-    private final NebulasApiService nebulasApiService;
+    private final NebApiServiceWrapper nebApiServiceWrapper;
     private final StringRedisTemplate redisTemplate;
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
@@ -60,14 +58,14 @@ public class DataConsensusJob {
             return;
         }
 
-        NebState nebState = nebulasApiService.getNebState().toBlocking().first();
+        NebState nebState = nebApiServiceWrapper.getNebState();
         if (nebState == null) {
             log.error("neb state not found");
             return;
         }
         log.info("neb state: {}", toJSONString(nebState));
 
-        Block block = nebulasApiService.getBlockByHash(new GetBlockByHashRequest(nebState.getTail(), false)).toBlocking().first();
+        Block block = nebApiServiceWrapper.getBlockByHash(nebState.getTail(), false);
         if (block == null) {
             log.error("block by hash {} not found", nebState.getTail());
             return;
@@ -80,7 +78,7 @@ public class DataConsensusJob {
                 redisTemplate.opsForValue().set(key, "running");
                 redisTemplate.opsForValue().getOperations().expire(key, 5, TimeUnit.MINUTES);
 
-                Block latestIrreversibleBlk = nebulasApiService.getLatestIrreversibleBlock().toBlocking().first();
+                Block latestLibBlk = nebApiServiceWrapper.getLatestLibBlock();
 
                 long end = block.getHeight() - lastConfirmHeight > 2000 ? lastConfirmHeight + 2000 : block.getHeight();
 
@@ -91,7 +89,7 @@ public class DataConsensusJob {
                     record.setConfirm(0L);
                     blockSyncRecordService.add(record);
 
-                    syncBlock(i, latestIrreversibleBlk);
+                    syncBlock(i, latestLibBlk);
                 }
                 redisTemplate.opsForValue().getOperations().delete(key);
             } catch (Exception e) {
@@ -102,15 +100,15 @@ public class DataConsensusJob {
 
         List<BlockSyncRecord> recordList = blockSyncRecordService.findUnConfirmed(lastConfirmHeight);
         if (recordList.size() > 0) {
-            Block latestIrreversibleBlk = nebulasApiService.getLatestIrreversibleBlock().toBlocking().first();
+            Block latestLibBlk = nebApiServiceWrapper.getLatestLibBlock();
             recordList.forEach(r -> {
-                syncBlock(r.getBlockHeight(), latestIrreversibleBlk);
+                syncBlock(r.getBlockHeight(), latestLibBlk);
             });
         }
     }
 
     private void syncBlock(long i, Block latestIrreversibleBlk) {
-        Block blk = nebulasApiService.getBlockByHeight(new GetBlockByHeightRequest(i, true)).toBlocking().first();
+        Block blk = nebApiServiceWrapper.getBlockByHeight(i);
         if (blk != null) {
             boolean isOk = true;
             NebBlock nebBlock = nebBlockService.getNebBlockByHeight(blk.getHeight());
@@ -136,21 +134,8 @@ public class DataConsensusJob {
 
                     NebTransaction nebTx = BlockHelper.buildNebTransaction(tx, blk);
                     if (StringUtils.isEmpty(nebTx.getGasUsed())) {
-                        String gasUsed = null;
-                        try {
-                            GetGasUsedResponse gasUsedResponse = nebulasApiService.getGasUsed(new GetGasUsedRequest(tx.getHash())).toBlocking().first();
-                            gasUsed = gasUsedResponse.getGas();
-                        } catch (Exception e) {
-                            log.error("get gas used by tx hash error", e);
-                            continue;
-                        }
-                        if (gasUsed != null) {
-                            nebTx.setGasUsed(gasUsed);
-                            log.info("tx hash {} gas used: {} ", tx.getHash(), gasUsed);
-                        } else {
-                            nebTx.setGasUsed("");
-                            log.warn("gas used not found for tx hash {}", tx.getHash());
-                        }
+                        nebTx.setGasUsed("");
+                        log.warn("gas used not found for tx hash {}", tx.getHash());
                     }
                     nebTransactionService.addNebTransaction(nebTx);
                     log.info("save tx={}", tx.getHash());
@@ -166,14 +151,12 @@ public class DataConsensusJob {
 
     private void saveBlock(Block blk, Long libBlkHeight) {
         NebBlock nebBlk = NebBlock.builder()
-                .id(IdGenerator.getId())
                 .height(blk.getHeight())
                 .hash(blk.getHash())
                 .parentHash(blk.getParentHash())
                 .timestamp(new Date(blk.getTimestamp() * 1000))
                 .miner(blk.getMiner())
                 .coinbase(blk.getCoinbase())
-                .nonce(blk.getNonce())
                 .finality(blk.getHeight() <= libBlkHeight)
                 .build();
 
@@ -188,8 +171,8 @@ public class DataConsensusJob {
             log.warn("duplicate block hash {}", nebBlk.getHash());
         }
 
-        GetDynastyResponse dynastyResponse = nebulasApiService.getDynasty(new GetDynastyRequest(blk.getHeight())).toBlocking().first();
-        nebDynastyService.batchAddNebDynasty(blk.getHeight(), dynastyResponse.getDelegatees());
+        List<String> dynastyList = nebApiServiceWrapper.getDynasty(blk.getHeight());
+        nebDynastyService.batchAddNebDynasty(blk.getHeight(), dynastyList);
     }
 
     private void addAddr(String hash, NebAddressTypeEnum type) {

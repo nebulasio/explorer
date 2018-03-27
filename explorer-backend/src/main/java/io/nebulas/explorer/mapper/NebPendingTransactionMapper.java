@@ -19,9 +19,7 @@ public interface NebPendingTransactionMapper {
 
     Integer add(NebPendingTransaction transaction);
 
-    Integer batchAdd(@Param("transactions") List<NebPendingTransaction> transactions);
-
-    Integer delete(String id);
+    Integer delete(String hash);
 
     Integer deleteByTimestamp(@Param("timestamp") Date timestamp);
 

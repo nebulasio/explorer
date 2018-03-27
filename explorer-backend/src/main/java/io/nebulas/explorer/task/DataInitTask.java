@@ -2,14 +2,13 @@ package io.nebulas.explorer.task;
 
 import io.nebulas.explorer.domain.BlockSyncRecord;
 import io.nebulas.explorer.domain.NebBlock;
-import io.nebulas.explorer.model.Block;
-import io.nebulas.explorer.model.NebState;
 import io.nebulas.explorer.model.Zone;
 import io.nebulas.explorer.service.blockchain.BlockSyncRecordService;
 import io.nebulas.explorer.service.blockchain.NebBlockService;
 import io.nebulas.explorer.service.blockchain.NebSyncService;
-import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetBlockByHashRequest;
+import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.NebState;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,21 +32,21 @@ import static com.alibaba.fastjson.JSON.toJSONString;
 public class DataInitTask {
     private final NebBlockService nebBlockService;
     private final BlockSyncRecordService blockSyncRecordService;
-    private final NebulasApiService nebulasApiService;
+    private final NebApiServiceWrapper nebApiServiceWrapper;
     private final NebSyncService nebSyncService;
 
     public void init(boolean isSync) {
         if (!isSync) {
             return;
         }
-        NebState nebState = nebulasApiService.getNebState().toBlocking().first();
+        NebState nebState = nebApiServiceWrapper.getNebState();
         if (nebState == null) {
             log.error("neb state not found");
             return;
         }
         log.info("neb state: {}", toJSONString(nebState));
 
-        Block block = nebulasApiService.getBlockByHash(new GetBlockByHashRequest(nebState.getTail(), false)).toBlocking().first();
+        Block block = nebApiServiceWrapper.getBlockByHash(nebState.getTail(), false);
         if (block == null) {
             log.error("block by hash {} not found", nebState.getTail());
             return;
@@ -77,7 +76,7 @@ public class DataInitTask {
         log.info("Thread {} start populating", threadId);
 
         long start = System.currentTimeMillis();
-        Block latestLibBlk = nebulasApiService.getLatestIrreversibleBlock().toBlocking().first();
+        Block latestLibBlk = nebApiServiceWrapper.getLatestLibBlock();
         log.info("get latestIrreversibleBlk height={}", latestLibBlk.getHeight());
 
         for (long h = from; h <= to; ) {

@@ -12,5 +12,5 @@ import java.util.List;
  */
 @Data
 public class GetDynastyResponse implements Serializable {
-    private List<String> delegatees;
+    private List<String> miners;
 }

@@ -42,16 +42,6 @@ public class NebTransactionService {
         return nebTransactionMapper.addNebTransaction(transaction) > 0;
     }
 
-    /**
-     * batch save transaction information
-     *
-     * @param transactions transaction beans
-     * @return saved result
-     */
-    public Integer batchAddNebTransaction(List<NebTransaction> transactions) {
-        return nebTransactionMapper.batchAddNebTransaction(transactions);
-    }
-
     public Integer deleteNebTransactionByBlkHeight(long blkHeight) {
         return nebTransactionMapper.deleteByBlkHeight(blkHeight);
     }
@@ -67,23 +57,13 @@ public class NebTransactionService {
     }
 
     /**
-     * batch save pending transaction information
-     *
-     * @param transactions pending transactions
-     * @return saved result
-     */
-    public Integer batchAddNebPendingTransaction(List<NebPendingTransaction> transactions) {
-        return nebPendingTransactionMapper.batchAdd(transactions);
-    }
-
-    /**
      * delete pending transaction
      *
-     * @param id pending transaction id
+     * @param hash pending transaction hash
      * @return deleted result
      */
-    public boolean deleteNebPendingTransaction(String id) {
-        return nebPendingTransactionMapper.delete(id) > 0;
+    public boolean deleteNebPendingTransaction(String hash) {
+        return nebPendingTransactionMapper.delete(hash) > 0;
     }
 
     /**

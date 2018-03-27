@@ -9,11 +9,9 @@ import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionTypeEnum;
 import io.nebulas.explorer.grpc.GrpcChannelService;
-import io.nebulas.explorer.model.Block;
-import io.nebulas.explorer.model.Transaction;
-import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
-import io.nebulas.explorer.util.IdGenerator;
+import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,13 +43,13 @@ public class NebSyncService {
     @Autowired
     private NebDynastyService nebDynastyService;
     @Autowired
-    private NebulasApiService nebulasApiService;
+    private NebApiServiceWrapper nebApiServiceWrapper;
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
 
     public void syncBlockByHash(String hash, boolean isLib) {
         try {
-            Block block = nebulasApiService.getBlockByHash(new GetBlockByHashRequest(hash, true)).toBlocking().first();
+            Block block = nebApiServiceWrapper.getBlockByHash(hash, true);
             if (block == null) {
                 log.error("block with hash {} not found", hash);
                 return;
@@ -66,7 +64,7 @@ public class NebSyncService {
 
     public void syncBlockByHeight(long height, boolean isLib) {
         try {
-            Block block = nebulasApiService.getBlockByHeight(new GetBlockByHeightRequest(height, true)).toBlocking().first();
+            Block block = nebApiServiceWrapper.getBlockByHeight(height);
             if (block == null) {
                 log.error("block with height {} not found", height);
                 return;
@@ -85,14 +83,12 @@ public class NebSyncService {
         syncAddresses(Arrays.asList(block.getMiner(), block.getCoinbase()));
 
         NebBlock newBlock = NebBlock.builder()
-                .id(IdGenerator.getId())
                 .height(block.getHeight())
                 .hash(block.getHash())
                 .parentHash(block.getParentHash())
                 .timestamp(new Date(block.getTimestamp() * 1000))
                 .miner(block.getMiner())
                 .coinbase(block.getCoinbase())
-                .nonce(block.getNonce())
                 .finality(isLib)
                 .createdAt(new Date(System.currentTimeMillis())).build();
         if (isLib) {
@@ -106,20 +102,22 @@ public class NebSyncService {
         if (isLib) {
             nebTransactionService.deleteNebTransactionByBlkHeight(block.getHeight());
         }
+        int i = 0;
         for (Transaction tx : txs) {
+            i++;
             try {
-                syncTx(tx, block.getHeight(), block.getHash());
+                syncTx(tx, block.getHeight(), block.getHash(), i);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
         }
 
         //sync dynasty
-        GetDynastyResponse dynastyResponse = nebulasApiService.getDynasty(new GetDynastyRequest(block.getHeight())).toBlocking().first();
-        nebDynastyService.batchAddNebDynasty(block.getHeight(), dynastyResponse.getDelegatees());
+        List<String> dynastyList = nebApiServiceWrapper.getDynasty(block.getHeight());
+        nebDynastyService.batchAddNebDynasty(block.getHeight(), dynastyList);
     }
 
-    private void syncTx(Transaction tx, long blkHeight, String blkHash) {
+    private void syncTx(Transaction tx, long blkHeight, String blkHash, int seq) {
         //sync address
         syncAddress(tx.getFrom(), NebAddressTypeEnum.NORMAL);
 
@@ -135,14 +133,14 @@ public class NebSyncService {
 
         NebPendingTransaction nebPendingTransaction = nebTransactionService.getNebPendingTransactionByHash(tx.getHash());
         if (nebPendingTransaction != null) {
-            nebTransactionService.deleteNebPendingTransaction(nebPendingTransaction.getId());
+            nebTransactionService.deleteNebPendingTransaction(tx.getHash());
         }
 
         NebTransaction nebTxs = NebTransaction.builder()
-                .id(IdGenerator.getId())
                 .hash(tx.getHash())
                 .blockHeight(blkHeight)
                 .blockHash(blkHash)
+                .txSeq(seq)
                 .from(tx.getFrom())
                 .to(tx.getTo())
                 .status(tx.getStatus())
@@ -166,13 +164,7 @@ public class NebSyncService {
 
         NebPendingTransaction pendingNebTransaction = nebTransactionService.getNebPendingTransactionByHash(hash);
         if (pendingNebTransaction == null) {
-            Transaction txSource;
-            try {
-                txSource = nebulasApiService.getTransactionReceipt(new GetTransactionReceiptRequest(hash)).execute().body();
-            } catch (Exception e) {
-                log.error("get tx by hash error, skipped pending tx hash " + hash, e);
-                return;
-            }
+            Transaction txSource = nebApiServiceWrapper.getTransactionReceipt(hash);
 
             if (txSource == null) {
                 log.warn("pending tx with hash {} not ready", hash);
@@ -190,7 +182,6 @@ public class NebSyncService {
 
                 log.info("get pending tx by hash {}", hash);
                 NebPendingTransaction pendingTxToSave = NebPendingTransaction.builder()
-                        .id(IdGenerator.getId())
                         .hash(hash)
                         .from(txSource.getFrom())
                         .to(txSource.getTo())
@@ -211,6 +202,9 @@ public class NebSyncService {
     }
 
     private void syncAddress(String hash, NebAddressTypeEnum type) {
+        if (StringUtils.isEmpty(hash)) {
+            return;
+        }
         NebAddress addr = nebAddressService.getNebAddressByHash(hash);
         if (addr == null) {
             try {

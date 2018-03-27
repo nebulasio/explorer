@@ -17,7 +17,7 @@ import java.util.List;
 @Mapper
 public interface NebAddressMapper {
 
-    Integer add(@Param("id") String id, @Param("hash") String hash, @Param("type") Integer type);
+    Integer add(@Param("hash") String hash, @Param("type") Integer type);
 
     Integer update(@Param("hash") String hash, @Param("balance") BigDecimal balance);
 
