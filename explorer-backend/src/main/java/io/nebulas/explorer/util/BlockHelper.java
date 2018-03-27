@@ -26,11 +26,12 @@ public class BlockHelper {
                 .build();
     }
 
-    public static NebTransaction buildNebTransaction(Transaction tx, Block blk) {
+    public static NebTransaction buildNebTransaction(Transaction tx, Block blk,int seq) {
         return NebTransaction.builder()
                 .hash(tx.getHash())
                 .blockHeight(blk.getHeight())
                 .blockHash(blk.getHash())
+                .txSeq(seq)
                 .from(tx.getFrom())
                 .to(tx.getTo())
                 .status(tx.getStatus())

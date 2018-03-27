@@ -119,7 +119,10 @@ public class DataConsensusJob {
 
             long txCnt = nebTransactionService.countTxnCntByBlockHeight(blk.getHeight());
             if (txCnt < blk.getTransactions().size()) {
+                nebTransactionService.deleteNebTransactionByBlkHeight(blk.getHeight());
+                int seq = 0;
                 for (Transaction tx : blk.getTransactions()) {
+                    seq++;
                     addAddr(tx.getFrom(), NebAddressTypeEnum.NORMAL);
 
                     if (NebTransactionTypeEnum.BINARY.getDesc().equals(tx.getType())) {
@@ -132,7 +135,7 @@ public class DataConsensusJob {
                         addAddr(tx.getContractAddress(), NebAddressTypeEnum.NORMAL);
                     }
 
-                    NebTransaction nebTx = BlockHelper.buildNebTransaction(tx, blk);
+                    NebTransaction nebTx = BlockHelper.buildNebTransaction(tx, blk, seq);
                     if (StringUtils.isEmpty(nebTx.getGasUsed())) {
                         nebTx.setGasUsed("");
                         log.warn("gas used not found for tx hash {}", tx.getHash());
