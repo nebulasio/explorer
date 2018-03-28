@@ -22,7 +22,7 @@
         #{parentHash,jdbcType=VARCHAR}, #{timestamp,jdbcType=TIMESTAMP}, #{miner,jdbcType=VARCHAR},
         #{coinbase,jdbcType=VARCHAR}, #{finality,jdbcType=TINYINT})
     </insert>
-    <insert id="repalce" parameterType="NebBlock">
+    <insert id="replace" parameterType="NebBlock">
         replace INTO `neb_block` (`height`, `hash`, `parent_hash`, `timestamp`, `miner`, `coinbase`, `finality`)
         VALUES (#{height,jdbcType=BIGINT}, #{hash,jdbcType=VARCHAR},
         #{parentHash,jdbcType=VARCHAR}, #{timestamp,jdbcType=TIMESTAMP}, #{miner,jdbcType=VARCHAR},

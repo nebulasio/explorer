@@ -39,7 +39,7 @@ public class NebBlockService {
      * @return saved result
      */
     public boolean replaceNebBlock(NebBlock entity) {
-        return (null != entity) && nebBlockMapper.add(entity) > 0;
+        return (null != entity) && nebBlockMapper.replace(entity) > 0;
     }
 
     /**
