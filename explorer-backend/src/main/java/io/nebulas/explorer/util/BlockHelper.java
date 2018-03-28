@@ -26,7 +26,7 @@ public class BlockHelper {
                 .build();
     }
 
-    public static NebTransaction buildNebTransaction(Transaction tx, Block blk,int seq) {
+    public static NebTransaction buildNebTransaction(Transaction tx, Block blk,int seq,String data) {
         return NebTransaction.builder()
                 .hash(tx.getHash())
                 .blockHeight(blk.getHeight())
@@ -39,7 +39,7 @@ public class BlockHelper {
                 .nonce(tx.getNonce())
                 .timestamp(new Date(tx.getTimestamp() * 1000))
                 .type(tx.getType())
-                .data(tx.getData())
+                .data(data)
                 .gasPrice(tx.getGasPrice())
                 .gasLimit(tx.getGasLimit())
                 .gasUsed(tx.getGasUsed())

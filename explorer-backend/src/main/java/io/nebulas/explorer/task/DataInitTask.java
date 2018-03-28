@@ -102,7 +102,7 @@ public class DataInitTask {
     }
 
     private List<Zone> divideZones(long from, long to) {
-        if (from >= to) {
+        if (from > to) {
             return new ArrayList<>(0);
         }
         final long total = to - from + 1;

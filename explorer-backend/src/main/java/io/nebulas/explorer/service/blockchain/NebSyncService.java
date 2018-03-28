@@ -121,13 +121,15 @@ public class NebSyncService {
         //sync address
         syncAddress(tx.getFrom(), NebAddressTypeEnum.NORMAL);
 
-        if (NebTransactionTypeEnum.BINARY.getDesc().equals(tx.getType())) {
+        NebTransactionTypeEnum typeEnum = NebTransactionTypeEnum.parse(tx.getType());
+
+        if (NebTransactionTypeEnum.BINARY.equals(typeEnum)) {
             syncAddress(tx.getTo(), NebAddressTypeEnum.NORMAL);
-        } else if (NebTransactionTypeEnum.CALL.getDesc().equals(tx.getType())) {
+        } else if (NebTransactionTypeEnum.CALL.equals(typeEnum)) {
             syncAddress(tx.getTo(), NebAddressTypeEnum.CONTRACT);
             String realReceiver = extractReceiverAddress(tx.getData());
             syncAddress(realReceiver, NebAddressTypeEnum.NORMAL);
-        } else if (NebTransactionTypeEnum.DEPLOY.getDesc().equals(tx.getType())) {
+        } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
             syncAddress(tx.getContractAddress(), NebAddressTypeEnum.NORMAL);
         }
 
@@ -148,7 +150,7 @@ public class NebSyncService {
                 .nonce(tx.getNonce())
                 .timestamp(new Date(tx.getTimestamp() * 1000))
                 .type(tx.getType())
-                .data(tx.getData())
+                .data(convertData(typeEnum, tx.getData()))
                 .gasPrice(tx.getGasPrice())
                 .gasLimit(tx.getGasLimit())
                 .gasUsed(tx.getGasUsed())
@@ -169,14 +171,17 @@ public class NebSyncService {
             if (txSource == null) {
                 log.warn("pending tx with hash {} not ready", hash);
             } else {
+                NebTransactionTypeEnum typeEnum = NebTransactionTypeEnum.parse(txSource.getType());
+
                 syncAddress(txSource.getFrom(), NebAddressTypeEnum.NORMAL);
-                if (NebTransactionTypeEnum.BINARY.getDesc().equals(txSource.getType())) {
+
+                if (NebTransactionTypeEnum.BINARY.equals(typeEnum)) {
                     syncAddress(txSource.getTo(), NebAddressTypeEnum.NORMAL);
-                } else if (NebTransactionTypeEnum.CALL.getDesc().equals(txSource.getType())) {
+                } else if (NebTransactionTypeEnum.CALL.equals(typeEnum)) {
                     syncAddress(txSource.getTo(), NebAddressTypeEnum.CONTRACT);
                     String realReceiver = extractReceiverAddress(txSource.getData());
                     syncAddress(realReceiver, NebAddressTypeEnum.NORMAL);
-                } else if (NebTransactionTypeEnum.DEPLOY.getDesc().equals(txSource.getType())) {
+                } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
                     syncAddress(txSource.getContractAddress(), NebAddressTypeEnum.NORMAL);
                 }
 
@@ -192,7 +197,7 @@ public class NebSyncService {
                         .gasPrice(txSource.getGasPrice())
                         .gasLimit(txSource.getGasLimit())
                         .createdAt(new Date())
-                        .data(txSource.getData())
+                        .data(convertData(typeEnum, txSource.getData()))
                         .build();
                 nebTransactionService.addNebPendingTransaction(pendingTxToSave);
             }
@@ -221,6 +226,17 @@ public class NebSyncService {
                 syncAddress(s, NebAddressTypeEnum.NORMAL);
             }
         }
+    }
+
+    private String convertData(NebTransactionTypeEnum type, String data) {
+        if (NebTransactionTypeEnum.BINARY.equals(type)) {
+            try {
+                return new String(DECODER.decode(data), "UTF-8");
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+        return data;
     }
 
     private String extractReceiverAddress(String data) {
