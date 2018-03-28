@@ -229,6 +229,9 @@ public class NebSyncService {
     }
 
     private String convertData(NebTransactionTypeEnum type, String data) {
+        if (StringUtils.isEmpty(data)) {
+            return "";
+        }
         if (NebTransactionTypeEnum.BINARY.equals(type)) {
             try {
                 return new String(DECODER.decode(data), "UTF-8");
