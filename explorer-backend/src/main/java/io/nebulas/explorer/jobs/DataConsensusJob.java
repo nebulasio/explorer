@@ -2,6 +2,7 @@ package io.nebulas.explorer.jobs;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.domain.BlockSyncRecord;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
@@ -46,6 +47,7 @@ public class DataConsensusJob {
     private final NebTransactionService nebTransactionService;
     private final NebApiServiceWrapper nebApiServiceWrapper;
     private final StringRedisTemplate redisTemplate;
+    private final YAMLConfig myConfig;
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
 
@@ -125,17 +127,19 @@ public class DataConsensusJob {
                     seq++;
                     addAddr(tx.getFrom(), NebAddressTypeEnum.NORMAL);
 
-                    if (NebTransactionTypeEnum.BINARY.getDesc().equals(tx.getType())) {
+                    NebTransactionTypeEnum typeEnum = NebTransactionTypeEnum.parse(tx.getType());
+
+                    if (NebTransactionTypeEnum.BINARY.equals(typeEnum)) {
                         addAddr(tx.getTo(), NebAddressTypeEnum.NORMAL);
-                    } else if (NebTransactionTypeEnum.CALL.getDesc().equals(tx.getType())) {
+                    } else if (NebTransactionTypeEnum.CALL.equals(typeEnum)) {
                         addAddr(tx.getTo(), NebAddressTypeEnum.CONTRACT);
                         String realReceiver = extractReceiverAddress(tx.getData());
                         addAddr(realReceiver, NebAddressTypeEnum.NORMAL);
-                    } else if (NebTransactionTypeEnum.DEPLOY.getDesc().equals(tx.getType())) {
+                    } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
                         addAddr(tx.getContractAddress(), NebAddressTypeEnum.NORMAL);
                     }
 
-                    NebTransaction nebTx = BlockHelper.buildNebTransaction(tx, blk, seq);
+                    NebTransaction nebTx = BlockHelper.buildNebTransaction(tx, blk, seq, convertData(typeEnum, tx.getData()));
                     if (StringUtils.isEmpty(nebTx.getGasUsed())) {
                         nebTx.setGasUsed("");
                         log.warn("gas used not found for tx hash {}", tx.getHash());
@@ -189,6 +193,17 @@ public class DataConsensusJob {
         }
     }
 
+    private String convertData(NebTransactionTypeEnum type, String data) {
+        if (NebTransactionTypeEnum.BINARY.equals(type)) {
+            try {
+                return new String(DECODER.decode(data), "UTF-8");
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+        return data;
+    }
+
     private String extractReceiverAddress(String data) {
         try {
             String dataStr = new String(DECODER.decode(data), "UTF-8");
@@ -206,7 +221,7 @@ public class DataConsensusJob {
     }
 
     private String getHashKey() {
-        return "explorer:data_consensus_job:running";
+        return String.format("explorer:%s:data_consensus_job:running", myConfig.getEnvironment());
     }
 
 }

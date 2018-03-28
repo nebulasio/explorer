@@ -19,4 +19,13 @@ public enum NebTransactionTypeEnum {
     public String getDesc() {
         return desc;
     }
+
+    public static NebTransactionTypeEnum parse(String desc) {
+        for (NebTransactionTypeEnum typeEnum : NebTransactionTypeEnum.values()) {
+            if (typeEnum.getDesc().equals(desc)) {
+                return typeEnum;
+            }
+        }
+        return null;
+    }
 }
