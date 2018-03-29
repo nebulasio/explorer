@@ -10,9 +10,9 @@ spring:
   datasource:
     sql-script-encoding: UTF-8
     platform: mysql
-    initialize: true
+    initialize: false
     schema: classpath:schema.sql
-    url: jdbc:mysql://127.0.0.1:3306/explorer?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/explorer?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
     username: explorer
     password: 123456
     separator: ;
@@ -83,7 +83,7 @@ spring:
     platform: mysql
     initialize: false
     schema: classpath:schema.sql
-    url: jdbc:mysql://nebulas.cvajxeo2mhiu.us-west-1.rds.amazonaws.com:3306/explorer_test?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://nebulas.cvajxeo2mhiu.us-west-1.rds.amazonaws.com:3306/explorer_test?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
     username: explorer
     password: NbVgE6bQ8iM,(Aty5HBs
     separator: ;
