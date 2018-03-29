@@ -233,8 +233,11 @@ public class NebSyncService {
             return "";
         }
         if (NebTransactionTypeEnum.BINARY.equals(type)) {
+            log.info("test data origin {}", data);
             try {
-                return new String(DECODER.decode(data), "UTF-8");
+                String s = new String(DECODER.decode(data), "UTF-8");
+                log.info("test data decode {}", s);
+                return s;
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
