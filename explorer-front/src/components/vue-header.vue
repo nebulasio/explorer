@@ -158,7 +158,7 @@
             require("jquery")("[data-toggle=tooltip]").tooltip();
 
             if (sessionStorage.apiType != "main" && sessionStorage.apiType != "test")
-                sessionStorage.apiType = this.apiType = "test";
+                sessionStorage.apiType = this.apiType = "main";
             else
                 this.apiType = sessionStorage.apiType;
         }
