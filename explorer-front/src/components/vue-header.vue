@@ -85,10 +85,10 @@
                     <li class="dropdown nav-item">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>MISC</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
-                            <!-- 先不显示这一条 <a class="nav-link" href=# v-on:click="apiSwitch('main')">
+                            <a class="nav-link" href=# v-on:click="apiSwitch('main')">
                                 <span class="fa fa-check" v-bind:style="{ visibility: apiType == 'main' ? '' : 'hidden' }" aria-hidden=true></span>
                                 Mainnet
-                            </a> -->
+                            </a>
                             <a class=nav-link href=# v-on:click="apiSwitch('test')">
                                 <span class="fa fa-check" v-bind:style="{ visibility: apiType == 'test' ? '' : 'hidden' }" aria-hidden=true></span>
                                 Testnet
