@@ -6,6 +6,10 @@
     .vue-tx td.code {
         background-color: #f8f9fa;
     }
+
+    .vue-tx td.text {
+        white-space: pre-line;
+    }
 </style>
 <template>
     <div class="container vue-tx" v-bind:triggerComputed=urlChange>
@@ -36,7 +40,9 @@
                 </tr>
                 <tr>
                     <td>TimeStamp:</td>
-                    <td>{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})</td>
+                    <td>{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp
+                        }})
+                    </td>
                 </tr>
                 <tr>
                     <td>From:</td>
@@ -80,7 +86,10 @@
                 </tr>
                 <tr>
                     <td>Payload Data:</td>
-                    <td class=code>
+                    <td v-if="tx.type == 'binary'" class=text>
+                        {{ tx.data }}
+                    </td>
+                    <td v-else class=code>
                         <pre><code class=language-javascript v-html=formatCode></code></pre>
                     </td>
                 </tr>
@@ -119,7 +128,7 @@
                 if (this.tx.data)
                     if (this.tx.type == "deploy")
                         return prism.highlight(jsBeautify(JSON.parse(this.tx.data).Source), lang);
-                    else if (this.tx.type == "binary" || this.tx.type == "call")
+                    else if (this.tx.type == "call")
                         return prism.highlight(jsBeautify(this.tx.data), lang);
 
                 return "0x0";
