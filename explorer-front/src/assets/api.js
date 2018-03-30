@@ -121,8 +121,8 @@ function ajax1(action, args, done, fail) {
 
     // main, test
     switch (sessionStorage.apiType) {
-        case "main": prefix = "https://explorer.nebulas.io/main/api/";
-        default: prefix = "https://explorer.nebulas.io/test/api/";
+        case "main": prefix = "https://explorer.nebulas.io/main/api/"; break;
+        default: prefix = "https://explorer.nebulas.io/test/api/"; break;
     }
 
     return ajax(a[0] + " " + prefix + a[1], args, done, fail);

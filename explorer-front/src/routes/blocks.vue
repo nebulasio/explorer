@@ -74,6 +74,7 @@
                     this.$root.showModalLoading = true;
 
                     api.getBlock({ p }, o => {
+                        
                         this.$root.showModalLoading = false;
                         this.arr = o.data;
                         this.currentPage = o.page;
