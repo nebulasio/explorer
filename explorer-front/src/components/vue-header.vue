@@ -19,6 +19,10 @@
         padding: 0 10px;
     }
 
+    .vue-header .visibility-hidden {
+        visibility: hidden;
+    }
+
     @media (min-width: 992px) {
         .vue-header .navbar-nav>li>a {
             border-bottom: 2px solid transparent;
@@ -85,24 +89,12 @@
                     <li class="dropdown nav-item">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>MISC</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
-                            <a class="nav-link" href=# v-on:click="apiSwitch('main')">
-                                <span class="fa fa-check" v-bind:style="{ visibility: apiType == 'main' ? '' : 'hidden' }" aria-hidden=true></span>
-                                Mainnet
-                            </a>
-                            <a class=nav-link href=# v-on:click="apiSwitch('test')">
-                                <span class="fa fa-check" v-bind:style="{ visibility: apiType == 'test' ? '' : 'hidden' }" aria-hidden=true></span>
-                                Testnet
+                            <a v-for="(o, i) in apiPrefixes" class=nav-link href=# v-on:click=apiSwitch(i)>
+                                <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': apiPrefix != i }" aria-hidden=true></span>
+                                {{ o }}
                             </a>
                         </div>
                     </li>
-                    <!-- <li class=nav-item>
-                        <a class=nav-link href=#>CHART
-                            <span class=sr-only>(current)</span>
-                        </a>
-                    </li>
-                    <li class=nav-item>
-                        <a class="nav-link disabled" href="#">Disabled</a>
-                    </li> -->
                 </ul>
                 <form class=form-inline v-on:submit.prevent=onSubmit>
                     <input class="form-control mr-sm-2" v-model=search type=search placeholder=Search>
@@ -113,19 +105,21 @@
     </nav>
 </template>
 <script>
-    var api = require("@/assets/api");
+    var api = require("@/assets/api"),
+        appConfig = require("@/assets/app-config");
 
     module.exports = {
         data() {
             return {
-                apiType: "",
+                apiPrefixes: null,
+                apiPrefix: "",
                 search: ""
             };
         },
         methods: {
-            apiSwitch(apiType) {
-                if (sessionStorage.apiType != apiType) {
-                    sessionStorage.apiType = apiType;
+            apiSwitch(url) {
+                if (sessionStorage.apiPrefix != url) {
+                    sessionStorage.apiPrefix = url;
                     location.reload();
                 }
             },
@@ -156,11 +150,8 @@
         },
         mounted() {
             require("jquery")("[data-toggle=tooltip]").tooltip();
-
-            if (sessionStorage.apiType != "main" && sessionStorage.apiType != "test")
-                sessionStorage.apiType = this.apiType = "main";
-            else
-                this.apiType = sessionStorage.apiType;
+            this.apiPrefixes = appConfig.apiPrefixes;
+            this.apiPrefix = sessionStorage.apiPrefix;
         }
     };
 </script>
