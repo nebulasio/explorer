@@ -130,7 +130,7 @@ public class NebSyncService {
             String realReceiver = extractReceiverAddress(tx.getData());
             syncAddress(realReceiver, NebAddressTypeEnum.NORMAL);
         } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
-            syncAddress(tx.getContractAddress(), NebAddressTypeEnum.NORMAL);
+            syncAddress(tx.getContractAddress(), NebAddressTypeEnum.CONTRACT);
         }
 
         NebPendingTransaction nebPendingTransaction = nebTransactionService.getNebPendingTransactionByHash(tx.getHash());
