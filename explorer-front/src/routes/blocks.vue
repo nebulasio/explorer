@@ -27,7 +27,7 @@
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td>
-                        <router-link v-bind:to='"/"'>{{ o.txnCnt }}</router-link>
+                        <router-link v-bind:to='"/txs?block=" + o.height'>{{ o.txnCnt }}</router-link>
                     </td>
                     <td class=monospace>
                         <router-link v-bind:to='"/address/" + o.miner.hash'>{{ o.miner.alias || o.miner.hash }}</router-link>
