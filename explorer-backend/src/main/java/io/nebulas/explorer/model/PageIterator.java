@@ -39,7 +39,7 @@ public class PageIterator<T> implements Serializable {
 
     @JSONField(serialize = false)
     public int getOffset() {
-        return page * pageSize;
+        return (page - 1) * pageSize;
     }
 
     private void setPage(int page) {
