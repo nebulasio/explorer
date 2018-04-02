@@ -1,5 +1,6 @@
 
-var Vue = require("vue").default,
+var appConfig = require("@/assets/app-config"),
+    Vue = require("vue").default,
     VueRouter = require("vue-router").default;
 
 require("bootstrap");
@@ -9,6 +10,7 @@ require("./index.css");
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
+applyConfig();
 
 new Vue({
     components: {
@@ -23,3 +25,12 @@ new Vue({
     el: ".vue",
     router: new VueRouter({ routes: require("@/assets/routes") })
 });
+
+function applyConfig() {
+    var apiPrefix = sessionStorage.apiPrefix;
+
+    if (!(apiPrefix in appConfig.apiPrefixes)) {
+        for (apiPrefix in appConfig.apiPrefixes) break;
+        sessionStorage.apiPrefix = apiPrefix;
+    }
+}

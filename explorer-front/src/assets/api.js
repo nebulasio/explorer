@@ -113,17 +113,8 @@ module.exports = {
 
 };
 
-// http://192.168.1.168:8080/api/
-// https://52.53.225.118/api/
-// https://explorer.nebulas.io/api/
 function ajax1(action, args, done, fail) {
-    var prefix, a = ajaxSplitAction(action);
+    var a = ajaxSplitAction(action);
 
-    // main, test
-    switch (sessionStorage.apiType) {
-        case "main": prefix = "https://explorer.nebulas.io/main/api/"; break;
-        default: prefix = "https://explorer.nebulas.io/test/api/"; break;
-    }
-
-    return ajax(a[0] + " " + prefix + a[1], args, done, fail);
+    return ajax(a[0] + " " + sessionStorage.apiPrefix + a[1], args, done, fail);
 }
