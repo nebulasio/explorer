@@ -34,26 +34,25 @@
                             <span> pending </span>
                         </template>
                         <template v-else>
-                            <router-link v-if=tx.block v-bind:to='"/" + $route.params.api + "/block/" + tx.block.height'>{{tx.block.height}}</router-link>
+                            <router-link v-if=tx.block v-bind:to='fragApi + "/block/" + tx.block.height'>{{tx.block.height}}</router-link>
                         </template>
                     </td>
                 </tr>
                 <tr>
                     <td>TimeStamp:</td>
-                    <td>{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp
-                        }})
+                    <td>{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})
                     </td>
                 </tr>
                 <tr>
                     <td>From:</td>
                     <td class=monospace>
-                        <router-link v-if=tx.from v-bind:to='"/" + $route.params.api + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link>
+                        <router-link v-if=tx.from v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link>
                     </td>
                 </tr>
                 <tr>
                     <td>To:</td>
                     <td class=monospace>
-                        <router-link v-if=tx.to v-bind:to='"/" + $route.params.api + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
+                        <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
                     </td>
                 </tr>
                 <tr>
@@ -159,6 +158,7 @@
         },
         data() {
             return {
+                fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 tab: 0,
                 tabButtons: ["Overview"],
                 tx: null

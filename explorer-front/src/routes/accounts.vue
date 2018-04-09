@@ -24,7 +24,7 @@
                 <tr v-for="o in arr">
                     <td>{{ o.rank }}</td>
                     <td class=monospace>
-                        <router-link v-bind:to='"/" + $route.params.api + "/address/" + o.hash'>{{ o.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/address/" + o.hash'>{{ o.hash }}</router-link>
                         <span v-show=o.alias> | {{ o.alias }}</span>
                     </td>
                     <td class=text-right>{{ toWei(o.balance) }}</td>
@@ -49,10 +49,11 @@
             return {
                 arr: [],
                 breadcrumb: [
-                    { text: "Home", to: "/home" },
+                    { text: "Home", to: "/" },
                     { text: "Accounts", to: "" }
                 ],
                 currentPage: 0,
+                fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 totalAccounts: 0,
                 totalBalance: 0,
                 totalPage: 0

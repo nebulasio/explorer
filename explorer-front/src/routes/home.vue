@@ -220,19 +220,19 @@
                             <span class="fa fa-th-large" aria-hidden=true></span>
                             Blocks
                         </div>
-                        <router-link class="btn btn-default pull-right" v-bind:to='"/" + $route.params.api + "/blocks"' role=button>View All</router-link>
+                        <router-link class="btn btn-default pull-right" v-bind:to='fragApi + "/blocks"' role=button>View All</router-link>
                     </div>
                     <ul class="blocks list">
                         <li class=li v-for="o in blocks">
                             <div class=img>
-                                <router-link class=mt20 v-bind:to='"/" + $route.params.api + "/block/" + o.height'>block {{ o.height }}</router-link>
+                                <router-link class=mt20 v-bind:to='fragApi + "/block/" + o.height'>block {{ o.height }}</router-link>
                                 <div class=mt20>{{ timeConversion(msVmReady - o.timestamp) }} ago</div>
                             </div>
                             <div class=right>
                                 Minted By
-                                <router-link class=monospace v-bind:to='"/" + $route.params.api + "/address/" + o.miner.hash'>{{ o.miner.hash }}</router-link>
+                                <router-link class=monospace v-bind:to='fragApi + "/address/" + o.miner.hash'>{{ o.miner.hash }}</router-link>
                                 <div class=mt16>
-                                    <router-link v-bind:to='"/" + $route.params.api + "/txs?block=" + o.height'>
+                                    <router-link v-bind:to='fragApi + "/txs?block=" + o.height'>
                                         <b>{{ o.txnCnt }}</b> transactions</router-link>
                                 </div>
                             </div>
@@ -245,7 +245,7 @@
                             <span class="fa fa-list" aria-hidden=true></span>
                             Transaction
                         </div>
-                        <router-link class="btn btn-default pull-right" v-bind:to='"/" + $route.params.api + "/txs"' role=button>View All</router-link>
+                        <router-link class="btn btn-default pull-right" v-bind:to='fragApi + "/txs"' role=button>View All</router-link>
                     </div>
                     <ul class="list txs">
                         <li class=li v-for="o in txs">
@@ -255,19 +255,19 @@
                                     <tr>
                                         <td>TX#</td>
                                         <td>
-                                            <router-link class=monospace v-bind:to='"/" + $route.params.api + "/tx/"+ o.hash'>{{ o.hash }}</router-link>
+                                            <router-link class=monospace v-bind:to='fragApi + "/tx/"+ o.hash'>{{ o.hash }}</router-link>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>From</td>
                                         <td>
-                                            <router-link class=monospace v-bind:to='"/" + $route.params.api + "/address/" + o.from.hash'>{{ o.from.hash }}</router-link>
+                                            <router-link class=monospace v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.hash }}</router-link>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>To</td>
                                         <td>
-                                            <router-link class=monospace v-bind:to='"/" + $route.params.api + "/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
+                                            <router-link class=monospace v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
                                         </td>
                                     </tr>
                                 </table>
@@ -343,6 +343,7 @@
                         }
                     }
                 },
+                fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 market: null,
                 msVmReady: Date.now(),
                 txs: []

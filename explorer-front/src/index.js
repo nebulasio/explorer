@@ -1,9 +1,9 @@
 
 var Vue = require("vue").default,
     VueRouter = require("vue-router").default,
+    vApp = {},
     vAppConfig = require("@/assets/app-config"),
-    // temporary - use history for now
-    vRouter = new VueRouter({ mode: "history", routes: require("@/assets/routes") });
+    vRouter = new VueRouter({ routes: require("@/assets/routes") });
 
 require("bootstrap");
 require("bootstrap/dist/css/bootstrap.min.css");
@@ -14,7 +14,7 @@ Vue.config.productionTip = false;
 Vue.use(VueRouter);
 vRouter.beforeEach(onBeforeEach);
 
-new Vue({
+vApp = new Vue({
     components: {
         "vue-footer": require("@/components/vue-footer").default,
         "vue-header": require("@/components/vue-header").default,
@@ -22,7 +22,8 @@ new Vue({
     },
     data: {
         search: "",
-        showModalLoading: false
+        showModalLoading: false,
+        urlBefore404: ""
     },
     el: ".vue",
     router: vRouter
@@ -33,20 +34,30 @@ new Vue({
 // api prefix
 
 function onBeforeEach(to, from, next) {
-    var path, i;
+    var apiPrefix, first, params, path;
 
-    if (to.name == 404) {
-        if (to.path == "/")
-            for (i in vAppConfig.apiPrefixes) {
-                path = "/" + i + "/home";
-                break;
-            }
-    } else {
+    for (first in vAppConfig.apiPrefixes) break;
+
+    if (to.name == "*") {
+        vApp.urlBefore404 = to.fullPath;
+        path = "/404";
+    } else if (to.name == "/404")
+        apiPrefix = vAppConfig.apiPrefixes[first].url;
+    else if (to.params.api)
         if (to.params.api in vAppConfig.apiPrefixes)
-            sessionStorage.apiPrefix = vAppConfig.apiPrefixes[to.params.api].url;
-        else
+            if (to.params.api == first) {
+                // mainnet/xxx -> /xxx
+                to.params.api = undefined;
+                path = vRouter.resolve({ params: to.params }, to).resolved.fullPath;
+            } else
+                apiPrefix = vAppConfig.apiPrefixes[to.params.api].url;
+        else {
+            vApp.urlBefore404 = to.fullPath;
             path = "/404";
-    }
+        }
+    else
+        apiPrefix = vAppConfig.apiPrefixes[first].url;
 
+    sessionStorage.apiPrefix = apiPrefix;
     next(path);
 }

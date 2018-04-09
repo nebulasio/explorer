@@ -37,23 +37,23 @@
 
                 <tr v-for="o in arr">
                     <td class=tdxxxwddd>
-                        <router-link v-bind:to='"/" + $route.params.api + "/tx/" + o.hash'>{{ o.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>
                     <td>
-                        <router-link v-bind:to='"/" + $route.params.api + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
+                        <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
                     </td>
                     <td class=time>
                         <div class=text-right>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td class=tdxxxwddd>
-                        <router-link v-bind:to='"/" + $route.params.api + "/address/" + o.from.hash'>{{ o.from.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.hash }}</router-link>
                     </td>
                     <td>
                         <span class="fa fa-arrow-right" aria-hidden=true></span>
                     </td>
                     <td class=tdxxxwddd>
-                        <router-link v-bind:to='"/" + $route.params.api + "/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
                     </td>
                     <td class=text-right>{{ toWei(o.value) }}</td>
                     <td class=text-right>{{ toWei(o.txFee) }}</td>
@@ -77,10 +77,11 @@
             return {
                 arr: [],
                 breadcrumb: [
-                    { text: "Home", to: "/home" },
+                    { text: "Home", to: "/" },
                     { text: "Transactions", to: "" }
                 ],
                 currentPage: 0,
+                fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 maxDisplayCnt: 0,
                 totalPage: 0,
                 totalTxs: 0

@@ -20,17 +20,17 @@
                 </tr>
                 <tr v-for="o in arr">
                     <td>
-                        <router-link v-bind:to='"/" + $route.params.api + "/block/" + o.height'>{{ o.height }}</router-link>
+                        <router-link v-bind:to='fragApi + "/block/" + o.height'>{{ o.height }}</router-link>
                     </td>
                     <td class=time>
                         <div class=text-right>{{ timeConversion( Date.now() - o.timestamp) }} ago</div>
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td>
-                        <router-link v-bind:to='"/" + $route.params.api + "/txs?block=" + o.height'>{{ o.txnCnt }}</router-link>
+                        <router-link v-bind:to='fragApi + "/txs?block=" + o.height'>{{ o.txnCnt }}</router-link>
                     </td>
                     <td class=monospace>
-                        <router-link v-bind:to='"/" + $route.params.api + "/address/" + o.miner.hash'>{{ o.miner.alias || o.miner.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/address/" + o.miner.hash'>{{ o.miner.alias || o.miner.hash }}</router-link>
                     </td>
                     <td class=text-right>{{ toWei(o.gasReward) }}</td>
                     <td class=text-right>{{ numberAddComma(o.gasLimit) }}</td>
@@ -54,10 +54,11 @@
             return {
                 arr: [],
                 breadcrumb: [
-                    { text: "Home", to: "/home" },
+                    { text: "Home", to: "/" },
                     { text: "Blocks", to: "" }
                 ],
                 currentPage: 0,
+                fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 heightFrom: 0,
                 heightTo: 0,
                 totalBlocks: 0,
@@ -74,7 +75,7 @@
                     this.$root.showModalLoading = true;
 
                     api.getBlock({ p }, o => {
-                        
+
                         this.$root.showModalLoading = false;
                         this.arr = o.data;
                         this.currentPage = o.page;
