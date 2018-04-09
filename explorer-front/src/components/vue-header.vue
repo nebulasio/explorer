@@ -71,27 +71,27 @@
             <div class="collapse navbar-collapse" id=navbarSupportedContent>
                 <ul class="navbar-nav mr-auto">
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
-                        <router-link to=/ class=nav-link>HOME
+                        <router-link v-bind:to="'/' + $route.params.api + '/'" class=nav-link>HOME
                             <span class=sr-only>(current)</span>
                         </router-link>
                     </li>
                     <li class="dropdown nav-item" v-bind:class="{ active: $route.meta.headerActive == 2 }">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>BLOCKCHAIN</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-blockchain>
-                            <router-link class=dropdown-item to=/txs>View Txns</router-link>
-                            <router-link class=dropdown-item to=/txs/pending>View Pending Txns</router-link>
-                            <router-link class=dropdown-item to=/blocks>View Blocks</router-link>
+                            <router-link class=dropdown-item v-bind:to="'/' + $route.params.api + '/txs'">View Txns</router-link>
+                            <router-link class=dropdown-item v-bind:to="'/' + $route.params.api + '/txs/pending'">View Pending Txns</router-link>
+                            <router-link class=dropdown-item v-bind:to="'/' + $route.params.api + '/blocks'">View Blocks</router-link>
                         </div>
                     </li>
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
-                        <router-link class=nav-link to=/accounts>ACCOUNT</router-link>
+                        <router-link class=nav-link v-bind:to="'/' + $route.params.api + '/accounts'">ACCOUNT</router-link>
                     </li>
                     <li class="dropdown nav-item">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>MISC</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
-                            <a v-for="(o, i) in apiPrefixes" class=nav-link href=# v-on:click=apiSwitch(i)>
-                                <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': apiPrefix != i }" aria-hidden=true></span>
-                                {{ o }}
+                            <a v-for="(o, i) in apiPrefixes" class=nav-link href=# v-on:click.prevent=apiSwitch(i)>
+                                <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': $route.params.api != i }" aria-hidden=true></span>
+                                {{ o.name }}
                             </a>
                         </div>
                     </li>
@@ -112,14 +112,16 @@
         data() {
             return {
                 apiPrefixes: null,
-                apiPrefix: "",
                 search: ""
             };
         },
         methods: {
-            apiSwitch(url) {
-                if (sessionStorage.apiPrefix != url) {
-                    sessionStorage.apiPrefix = url;
+            apiSwitch(s) {
+                var t = this.$route.params;
+
+                if (t.api != s) {
+                    t.api = s;
+                    this.$router.replace({ params: t });
                     location.reload();
                 }
             },
@@ -151,7 +153,6 @@
         mounted() {
             require("jquery")("[data-toggle=tooltip]").tooltip();
             this.apiPrefixes = appConfig.apiPrefixes;
-            this.apiPrefix = sessionStorage.apiPrefix;
         }
     };
 </script>

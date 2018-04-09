@@ -15,7 +15,7 @@
     "highcharts": "^6.0.7",
     "jquery": "^3.3.1",
     "js-beautify": "^1.7.5",
-    "popper.js": "^1.14.1",
+    "popper.js": "^1.14.3",
     "prismjs": "^1.13.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1"
@@ -35,7 +35,7 @@
     "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.11",
-    "friendly-errors-webpack-plugin": "^1.6.1",
+    "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^2.30.1",
     "node-notifier": "^5.2.1",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
