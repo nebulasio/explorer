@@ -2,7 +2,8 @@
 var Vue = require("vue").default,
     VueRouter = require("vue-router").default,
     vAppConfig = require("@/assets/app-config"),
-    vRouter = new VueRouter({ routes: require("@/assets/routes") });
+    // temporary - use history for now
+    vRouter = new VueRouter({ mode: "history", routes: require("@/assets/routes") });
 
 require("bootstrap");
 require("bootstrap/dist/css/bootstrap.min.css");
