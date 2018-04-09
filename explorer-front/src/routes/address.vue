@@ -72,11 +72,11 @@
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
                         Latest {{ txs.length }} txns from a total Of
-                        <router-link v-bind:to='"/" + $route.params.api + "/txs?a=" + $route.params.id'>{{ obj.txCnt }} transactions </router-link>
-                        <router-link v-bind:to='"/" + $route.params.api + "/txs?a=" + $route.params.id'>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
+                        <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id'>{{ obj.txCnt }} transactions </router-link>
+                        <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id'>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
                     </div>
                     <div class=col-auto>
-                        <router-link class="btn btn-link" v-bind:to='"/" + $route.params.api + "/txs?a=" + $route.params.id'>View All</router-link>
+                        <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All</router-link>
                     </div>
                 </div>
 
@@ -94,10 +94,10 @@
 
                     <tr v-for="o in txs">
                         <td class=tdxxxwddd>
-                            <router-link v-bind:to='"/" + $route.params.api + "/tx/" + o.hash'>{{ o.hash }}</router-link>
+                            <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                         </td>
                         <td>
-                            <router-link v-if=o.block.height v-bind:to='"/" + $route.params.api + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
+                            <router-link v-if=o.block.height v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
                             <i v-else>(pending)</i>
                         </td>
                         <td class=time>
@@ -106,12 +106,12 @@
                         </td>
                         <td class=tdxxxwddd>
                             <span v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
-                            <router-link v-else v-bind:to='"/" + $route.params.api + "/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
+                            <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
                         </td>
                         <td class=text-uppercase v-bind:class=inOutClass(o)></td>
                         <td class=tdxxxwddd>
                             <span v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
-                            <router-link v-else v-bind:to='"/" + $route.params.api + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
+                            <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                         </td>
                         <td>{{ toWei(o.value) }}</td>
                         <td class=txfee>
@@ -129,10 +129,10 @@
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
                         Latest {{ minted.length }} blocks (From a total of
-                        <router-link v-bind:to='"/" + $route.params.api + "/blocks?m=" + $route.params.id'>{{ obj.mintedBlkCnt}}</router-link>)
+                        <router-link v-bind:to='fragApi + "/blocks?m=" + $route.params.id'>{{ obj.mintedBlkCnt}}</router-link>)
                     </div>
                     <div class=col-auto>
-                        <router-link class="btn btn-link" v-bind:to='"/" + $route.params.api + "/blocks?m=" + $route.params.id'>View All</router-link>
+                        <router-link class="btn btn-link" v-bind:to='fragApi + "/blocks?m=" + $route.params.id'>View All</router-link>
                     </div>
                 </div>
 
@@ -145,7 +145,7 @@
                     </tr>
                     <tr v-for="o in minted">
                         <td>
-                            <router-link v-bind:to='"/" + $route.params.api + "/block/" + o.height'>{{ o.height }}</router-link>
+                            <router-link v-bind:to='fragApi + "/block/" + o.height'>{{ o.height }}</router-link>
                         </td>
                         <td class=time>
                             <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
@@ -167,7 +167,7 @@
                         <a href="uncles.html?id=%id-from-url">%2</a> with %3 minted)
                     </div>
                     <div class=col-auto>
-                        <router-link class="btn btn-link" v-bind:to='"/" + $route.params.api + "/uncles?m=" + $route.params.id'>View All</router-link>
+                        <router-link class="btn btn-link" v-bind:to='fragApi + "/uncles?m=" + $route.params.id'>View All</router-link>
                     </div>
                 </div>
 
@@ -226,10 +226,11 @@
         data() {
             return {
                 breadcrumb: [
-                    { text: "Home", to: "/home" },
+                    { text: "Home", to: "/" },
                     { text: "Normal Accounts", to: "/accounts" },
                     { text: "Address", to: "" }
                 ],
+                fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 minted: [],
                 obj: null,
                 tab: 0,
