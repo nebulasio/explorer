@@ -45,13 +45,13 @@
                         <nav aria-label="Page navigation" class=navgation-tab>
                             <ul class=pagination>
                                 <li>
-                                    <router-link v-bind:to='"/block/" + (+$route.params.id - 1)' aria-label=Previous>
+                                    <router-link v-bind:to='"/" + $route.params.api + "/block/" + (+$route.params.id - 1)' aria-label=Previous>
                                         <span aria-hidden=true>&lt; Prev</span>
                                     </router-link>
                                 </li>
                                 <li>&nbsp; {{ block.height }} &nbsp;</li>
                                 <li>
-                                    <router-link v-bind:to='"/block/" + (+$route.params.id + 1)' aria-label=Next>
+                                    <router-link v-bind:to='"/" + $route.params.api + "/block/" + (+$route.params.id + 1)' aria-label=Next>
                                         <span aria-hidden=true>Next &gt;</span>
                                     </router-link>
                                 </li>
@@ -66,7 +66,7 @@
                 <tr>
                     <td>Transactions</td>
                     <td>
-                        <router-link v-bind:to='"/txs?block=" + block.height'>{{ block.blkSummary.txCnt }}</router-link>
+                        <router-link v-bind:to='"/" + $route.params.api + "/txs?block=" + block.height'>{{ block.blkSummary.txCnt }}</router-link>
                          tx in this block
                     </td>
                 </tr>
@@ -77,20 +77,20 @@
                 <tr>
                     <td>Parent Hash</td>
                     <td class=monospace>
-                        <router-link v-bind:to='"/block/" + block.parentHash'>{{ block.parentHash }}</router-link>
+                        <router-link v-bind:to='"/" + $route.params.api + "/block/" + block.parentHash'>{{ block.parentHash }}</router-link>
                     </td>
                 </tr>
                 <tr>
                     <td>Minted</td>
                     <td class=monospace>
-                        <router-link v-bind:to='"/address/" + block.miner.hash'>{{ block.miner.hash }}</router-link>
+                        <router-link v-bind:to='"/" + $route.params.api + "/address/" + block.miner.hash'>{{ block.miner.hash }}</router-link>
                         <span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
                     </td>
                 </tr>
                 <tr>
                     <td>Coinbase</td>
                     <td class=monospace>
-                        <router-link v-bind:to='"/address/" + block.coinbase'>{{ block.coinbase }}</router-link>
+                        <router-link v-bind:to='"/" + $route.params.api + "/address/" + block.coinbase'>{{ block.coinbase }}</router-link>
                     </td>
                 </tr>
                 <tr>
@@ -105,12 +105,11 @@
                         <div class="collapse" id="collapseExample">
                             <div class="card card-body">
                                 <template v-for="dynasty in block.dynasty">
-                                    <router-link v-bind:key=dynasty v-bind:to='"/address/" + dynasty'>{{ dynasty }} </router-link>
+                                    <router-link v-bind:key=dynasty v-bind:to='"/" + $route.params.api + "/address/" + dynasty'>{{ dynasty }} </router-link>
                                     <br>
                                 </template>
                             </div>
                         </div>
-
                     </td>
                 </tr>
                 <tr>

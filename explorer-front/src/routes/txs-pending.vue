@@ -20,7 +20,7 @@
                 </tr>
                 <tr v-for="o in arr">
                     <td class="tdxxxwddd monospace">
-                        <router-link v-bind:to='"/tx/" + o.hash'>{{ o.hash }}</router-link>
+                        <router-link v-bind:to='"/" + $route.params.api + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>
                     <td class=time>
                         <div class=text-right>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
@@ -29,13 +29,13 @@
                     <td class=text-right>{{ numberAddComma(o.gasLimit) }}</td>
                     <td class=text-right>{{ toWei(o.gasPrice) }}</td>
                     <td class=tdxxxwddd>
-                        <router-link v-bind:to='"/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
+                        <router-link v-bind:to='"/" + $route.params.api + "/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
                     </td>
                     <td>
                         <span class="fa fa-arrow-right" aria-hidden=true></span>
                     </td>
                     <td class=tdxxxwddd>
-                        <router-link v-bind:to='"/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
+                        <router-link v-bind:to='"/" + $route.params.api + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                     </td>
                     <td class=text-right>{{ toWei(o.value) }}</td>
                 </tr>

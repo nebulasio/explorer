@@ -20,17 +20,17 @@
                 </tr>
                 <tr v-for="o in arr">
                     <td>
-                        <router-link v-bind:to='"/block/" + o.height'>{{ o.height }}</router-link>
+                        <router-link v-bind:to='"/" + $route.params.api + "/block/" + o.height'>{{ o.height }}</router-link>
                     </td>
                     <td class=time>
                         <div class=text-right>{{ timeConversion( Date.now() - o.timestamp) }} ago</div>
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td>
-                        <router-link v-bind:to='"/txs?block=" + o.height'>{{ o.txnCnt }}</router-link>
+                        <router-link v-bind:to='"/" + $route.params.api + "/txs?block=" + o.height'>{{ o.txnCnt }}</router-link>
                     </td>
                     <td class=monospace>
-                        <router-link v-bind:to='"/address/" + o.miner.hash'>{{ o.miner.alias || o.miner.hash }}</router-link>
+                        <router-link v-bind:to='"/" + $route.params.api + "/address/" + o.miner.hash'>{{ o.miner.alias || o.miner.hash }}</router-link>
                     </td>
                     <td class=text-right>{{ toWei(o.gasReward) }}</td>
                     <td class=text-right>{{ numberAddComma(o.gasLimit) }}</td>
