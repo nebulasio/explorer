@@ -77,7 +77,7 @@
             return {
                 arr: [],
                 breadcrumb: [
-                    { text: "Home", to: "/" },
+                    { text: "Home", to: "/home" },
                     { text: "Transactions", to: "" }
                 ],
                 currentPage: 0,

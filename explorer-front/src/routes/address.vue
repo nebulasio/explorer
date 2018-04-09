@@ -226,7 +226,7 @@
         data() {
             return {
                 breadcrumb: [
-                    { text: "Home", to: "/" },
+                    { text: "Home", to: "/home" },
                     { text: "Normal Accounts", to: "/accounts" },
                     { text: "Address", to: "" }
                 ],

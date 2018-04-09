@@ -54,7 +54,7 @@
             return {
                 arr: [],
                 breadcrumb: [
-                    { text: "Home", to: "/" },
+                    { text: "Home", to: "/home" },
                     { text: "Blocks", to: "" }
                 ],
                 currentPage: 0,

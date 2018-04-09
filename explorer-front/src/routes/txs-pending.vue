@@ -57,7 +57,7 @@
             return {
                 arr: [],
                 breadcrumb: [
-                    { text: "Home", to: "/" },
+                    { text: "Home", to: "/home" },
                     { text: "Pending Transactions", to: "" }
                 ],
                 currentPage: 0,
