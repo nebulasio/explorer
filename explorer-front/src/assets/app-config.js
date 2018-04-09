@@ -5,7 +5,13 @@ module.exports = {
         // https://52.53.225.118/api/
         // https://explorer.nebulas.io/api/
         // first item is default
-        "https://explorer.nebulas.io/main/api/": "Mainnet",
-        "https://explorer.nebulas.io/test/api/": "Testnet"
+        mainnet: {
+            name: "Mainnet",
+            url: "https://explorer.nebulas.io/main/api/"
+        },
+        testnet: {
+            name: "Testnet",
+            url: "https://explorer.nebulas.io/test/api/"
+        }
     }
 };

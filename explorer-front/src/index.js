@@ -1,7 +1,8 @@
 
-var appConfig = require("@/assets/app-config"),
-    Vue = require("vue").default,
-    VueRouter = require("vue-router").default;
+var Vue = require("vue").default,
+    VueRouter = require("vue-router").default,
+    vAppConfig = require("@/assets/app-config"),
+    vRouter = new VueRouter({ routes: require("@/assets/routes") });
 
 require("bootstrap");
 require("bootstrap/dist/css/bootstrap.min.css");
@@ -10,7 +11,7 @@ require("./index.css");
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
-applyConfig();
+vRouter.beforeEach(onBeforeEach);
 
 new Vue({
     components: {
@@ -23,14 +24,28 @@ new Vue({
         showModalLoading: false
     },
     el: ".vue",
-    router: new VueRouter({ routes: require("@/assets/routes") })
+    router: vRouter
 });
 
-function applyConfig() {
-    var apiPrefix = sessionStorage.apiPrefix;
+////////////////////////////////////////////////////////////
+//
+// api prefix
 
-    if (!(apiPrefix in appConfig.apiPrefixes)) {
-        for (apiPrefix in appConfig.apiPrefixes) break;
-        sessionStorage.apiPrefix = apiPrefix;
+function onBeforeEach(to, from, next) {
+    var path, i;
+
+    if (to.name == 404) {
+        if (to.path == "/")
+            for (i in vAppConfig.apiPrefixes) {
+                path = "/" + i + "/home";
+                break;
+            }
+    } else {
+        if (to.params.api in vAppConfig.apiPrefixes)
+            sessionStorage.apiPrefix = vAppConfig.apiPrefixes[to.params.api].url;
+        else
+            path = "/404";
     }
+
+    next(path);
 }
