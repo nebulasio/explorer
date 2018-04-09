@@ -28,7 +28,7 @@
                     <ol class=breadcrumb>
                         <li class=breadcrumb-item v-bind:class="{ active: i == arr.length - 1 }" v-for="(o, i) in arr">
                             <template v-if="i == arr.length - 1">{{ o.text }}</template>
-                            <router-link v-else v-bind:to=o.to>{{ o.text }}</router-link>
+                            <router-link v-else v-bind:to='"/" + $route.params.api + o.to'>{{ o.text }}</router-link>
                         </li>
                     </ol>
                 </nav>

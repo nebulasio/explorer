@@ -234,7 +234,7 @@
         data() {
             return {
                 breadcrumb: [
-                    { text: "Home", to: "/" },
+                    { text: "Home", to: "/home" },
                     { text: "Internal Transactions", to: "" }
                 ],
                 type: "all" // all, ok, error
