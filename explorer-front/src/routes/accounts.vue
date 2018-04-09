@@ -24,7 +24,7 @@
                 <tr v-for="o in arr">
                     <td>{{ o.rank }}</td>
                     <td class=monospace>
-                        <router-link v-bind:to='"/address/" + o.hash'>{{ o.hash }}</router-link>
+                        <router-link v-bind:to='"/" + $route.params.api + "/address/" + o.hash'>{{ o.hash }}</router-link>
                         <span v-show=o.alias> | {{ o.alias }}</span>
                     </td>
                     <td class=text-right>{{ toWei(o.balance) }}</td>

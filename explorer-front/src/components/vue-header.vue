@@ -55,7 +55,7 @@
     <nav class="bg-light navbar navbar-expand-lg navbar-light vue-header">
         <div class=container>
             <div>
-                <router-link to=/ class=navbar-brand>
+                <router-link v-bind:to="'/' + pApi + '/home'" class=navbar-brand>
                     <img src=/static/img/logo.png width=150 alt="">
                 </router-link>
                 <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
@@ -71,26 +71,26 @@
             <div class="collapse navbar-collapse" id=navbarSupportedContent>
                 <ul class="navbar-nav mr-auto">
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
-                        <router-link v-bind:to="'/' + $route.params.api + '/'" class=nav-link>HOME
+                        <router-link v-bind:to="'/' + pApi + '/home'" class=nav-link>HOME
                             <span class=sr-only>(current)</span>
                         </router-link>
                     </li>
                     <li class="dropdown nav-item" v-bind:class="{ active: $route.meta.headerActive == 2 }">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>BLOCKCHAIN</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-blockchain>
-                            <router-link class=dropdown-item v-bind:to="'/' + $route.params.api + '/txs'">View Txns</router-link>
-                            <router-link class=dropdown-item v-bind:to="'/' + $route.params.api + '/txs/pending'">View Pending Txns</router-link>
-                            <router-link class=dropdown-item v-bind:to="'/' + $route.params.api + '/blocks'">View Blocks</router-link>
+                            <router-link class=dropdown-item v-bind:to="'/' + pApi + '/txs'">View Txns</router-link>
+                            <router-link class=dropdown-item v-bind:to="'/' + pApi + '/txs/pending'">View Pending Txns</router-link>
+                            <router-link class=dropdown-item v-bind:to="'/' + pApi + '/blocks'">View Blocks</router-link>
                         </div>
                     </li>
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
-                        <router-link class=nav-link v-bind:to="'/' + $route.params.api + '/accounts'">ACCOUNT</router-link>
+                        <router-link class=nav-link v-bind:to="'/' + pApi + '/accounts'">ACCOUNT</router-link>
                     </li>
                     <li class="dropdown nav-item">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>MISC</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
                             <a v-for="(o, i) in apiPrefixes" class=nav-link href=# v-on:click.prevent=apiSwitch(i)>
-                                <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': $route.params.api != i }" aria-hidden=true></span>
+                                <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': pApi != i }" aria-hidden=true></span>
                                 {{ o.name }}
                             </a>
                         </div>
@@ -112,16 +112,17 @@
         data() {
             return {
                 apiPrefixes: null,
+                pApi: "",
                 search: ""
             };
         },
         methods: {
             apiSwitch(s) {
-                var t = this.$route.params;
+                var params = this.$route.params;
 
-                if (t.api != s) {
-                    t.api = s;
-                    this.$router.replace({ params: t });
+                if (params.api != s) {
+                    params.api = s;
+                    this.$router.replace({ params, query: this.$route.query });
                     location.reload();
                 }
             },
@@ -151,6 +152,16 @@
             }
         },
         mounted() {
+            var pApi = this.$route.params.api;
+
+            if (!(pApi in appConfig.apiPrefixes))
+                for (i in appConfig.apiPrefixes) {
+                    pApi = i;
+                    break;
+                }
+
+            this.pApi = pApi;
+
             require("jquery")("[data-toggle=tooltip]").tooltip();
             this.apiPrefixes = appConfig.apiPrefixes;
         }
