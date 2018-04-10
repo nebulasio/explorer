@@ -119,11 +119,10 @@
         },
         methods: {
             apiSwitch(s) {
-                var params = this.$route.params, api = params.api || "";
+                var api = this.$route.params.api || "";
 
                 if (api != s) {
-                    params.api = s;
-                    this.$router.replace({ params, query: this.$route.query });
+                    this.$router.replace("/" + s);
                     location.reload();
                 }
             },
