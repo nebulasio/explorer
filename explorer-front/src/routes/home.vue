@@ -270,6 +270,10 @@
                                             <router-link class=monospace v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>Ts</td>
+                                        <td> > {{timeConversion(msVmReady - o.timestamp)}} ago</td>
+                                    </tr>
                                 </table>
                             </div>
                         </li>
