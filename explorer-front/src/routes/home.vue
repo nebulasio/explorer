@@ -271,8 +271,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Ts</td>
-                                        <td> > {{timeConversion(msVmReady - o.timestamp)}} ago</td>
+                                        <td colspan=2> > {{timeConversion(msVmReady - o.timestamp)}} ago</td>
                                     </tr>
                                 </table>
                             </div>
