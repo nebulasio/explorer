@@ -40,10 +40,8 @@ function onBeforeEach(to, from, next) {
 
     if (to.name == "*") {
         vApp.urlBefore404 = to.fullPath;
-        path = "/404";
-    } else if (to.name == "/404")
-        apiPrefix = vAppConfig.apiPrefixes[first].url;
-    else if (to.params.api)
+        path = (from.params.api ? "/" + from.params.api : "") + "/404";
+    } else if (to.params.api)
         if (to.params.api in vAppConfig.apiPrefixes)
             if (to.params.api == first) {
                 // mainnet/xxx -> /xxx
@@ -53,7 +51,7 @@ function onBeforeEach(to, from, next) {
                 apiPrefix = vAppConfig.apiPrefixes[to.params.api].url;
         else {
             vApp.urlBefore404 = to.fullPath;
-            path = "/404";
+            path = (from.params.api ? "/" + from.params.api : "") + "/404";
         }
     else
         apiPrefix = vAppConfig.apiPrefixes[first].url;

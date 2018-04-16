@@ -152,7 +152,7 @@
                 api.getTx(this.$route.params.id, o => {
                     this.tx = o;
                 }, xhr => {
-                    this.$router.replace("/404!" + this.$route.fullPath);
+                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                 });
             }
         },

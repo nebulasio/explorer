@@ -38,8 +38,7 @@ module.exports = [{
     path: "/:api?/txs/pending"
 }, {
     component: require("@/routes/404").default,
-    name: "/404",
-    path: "/404"
+    path: "/:api?/404"
 }, {
     component: require("@/routes/home").default,
     meta: { headerActive: 1 },
