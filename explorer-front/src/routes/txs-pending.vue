@@ -92,7 +92,7 @@
                     }, xhr => {
                         console.log(xhr);
                         this.$root.showModalLoading = false;
-                        this.$router.replace("/404!" + this.$route.fullPath);
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                     });
                 }
             },

@@ -141,13 +141,13 @@
                         this.$router.push("/tx/" + o.q);
                     else {
                         this.$root.search = o.q;
-                        this.$router.push("/oops");
+                        this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/oops");
                     }
                 }, () => {
                     this.$root.search = this.search;
                     this.$root.showModalLoading = false;
                     this.search = "";
-                    this.$router.push("/oops");
+                    this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/oops");
                 });
             }
         },
