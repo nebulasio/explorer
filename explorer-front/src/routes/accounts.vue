@@ -10,7 +10,7 @@
                     <br>
                     <!-- <em>Displaying the last %2 records only</em> -->
                 </div>
-                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
+                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
             </div>
 
             <table class="mt20 table">
@@ -24,7 +24,7 @@
                 <tr v-for="o in arr">
                     <td>{{ o.rank }}</td>
                     <td class=monospace>
-                        <router-link v-bind:to='"/address/" + o.hash'>{{ o.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/address/" + o.hash'>{{ o.hash }}</router-link>
                         <span v-show=o.alias> | {{ o.alias }}</span>
                     </td>
                     <td class=text-right>{{ toWei(o.balance) }}</td>
@@ -32,7 +32,7 @@
                     <td class=text-right>{{ o.txCnt }}</td>
                 </tr>
             </table>
-            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
+            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
         </div>
     </div>
 </template>
@@ -53,6 +53,7 @@
                     { text: "Accounts", to: "" }
                 ],
                 currentPage: 0,
+                fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 totalAccounts: 0,
                 totalBalance: 0,
                 totalPage: 0
@@ -85,7 +86,7 @@
                     }, xhr => {
                         console.log(xhr);
                         this.$root.showModalLoading = false;
-                        this.$router.replace("/404!" + this.$route.fullPath);
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                     });
                 }
             },
@@ -117,6 +118,12 @@
                 this.$router.push({
                     path: this.$route.path,
                     query: { p: this.currentPage - 1 }
+                });
+            },
+            onTo(n) {
+                this.$router.push({
+                    path: this.$route.path,
+                    query: { p: n }
                 });
             }
         },

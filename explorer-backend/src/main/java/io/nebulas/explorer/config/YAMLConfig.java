@@ -24,4 +24,5 @@ public class YAMLConfig {
     private PageConfig page;
     private SyncConfig sync;
     private HttpApiHostConfig apiHost;
+    private Integer pendingTxExpiredTime;
 }

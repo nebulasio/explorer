@@ -51,4 +51,13 @@
         order by block_height DESC
         limit 1
     </select>
+
+    <select id="findUnConfirmed" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from block_sync_record
+        <![CDATA[
+        where confirm = 0 and block_height < #{blockHeight,jdbcType=BIGINT}
+        ]]>
+    </select>
 </mapper>

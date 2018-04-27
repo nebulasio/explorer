@@ -19,9 +19,9 @@ public interface NebPendingTransactionMapper {
 
     Integer add(NebPendingTransaction transaction);
 
-    Integer batchAdd(@Param("transactions") List<NebPendingTransaction> transactions);
+    Integer delete(String hash);
 
-    Integer delete(String id);
+    Integer deleteByTimestamp(@Param("timestamp") Date timestamp);
 
     long countPendingTxnCntByCondition(@Param("addressHash") String addressHash);
 

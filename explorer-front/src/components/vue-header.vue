@@ -19,6 +19,10 @@
         padding: 0 10px;
     }
 
+    .vue-header .visibility-hidden {
+        visibility: hidden;
+    }
+
     @media (min-width: 992px) {
         .vue-header .navbar-nav>li>a {
             border-bottom: 2px solid transparent;
@@ -51,13 +55,13 @@
     <nav class="bg-light navbar navbar-expand-lg navbar-light vue-header">
         <div class=container>
             <div>
-                <router-link to=/ class=navbar-brand>
+                <router-link v-bind:to="fragApi + '/'" class=navbar-brand>
                     <img src=/static/img/logo.png width=150 alt="">
                 </router-link>
                 <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
 <span class="fa fa-flask" aria-hidden=true></span>
 <span class=c777>This website is under heavy construction</span><br>
-<div>Feel free to subimt issue by click this link 👍</div>
+<div>Feel free to submit issues by clicking this link 👍</div>
                 '>alpha</a>
             </div>
 
@@ -67,42 +71,30 @@
             <div class="collapse navbar-collapse" id=navbarSupportedContent>
                 <ul class="navbar-nav mr-auto">
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
-                        <router-link to=/ class=nav-link>HOME
+                        <router-link v-bind:to="fragApi + '/'" class=nav-link>HOME
                             <span class=sr-only>(current)</span>
                         </router-link>
                     </li>
                     <li class="dropdown nav-item" v-bind:class="{ active: $route.meta.headerActive == 2 }">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>BLOCKCHAIN</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-blockchain>
-                            <router-link class=dropdown-item to=/txs>View Txns</router-link>
-                            <router-link class=dropdown-item to=/txs/pending>View Pending Txns</router-link>
-                            <router-link class=dropdown-item to=/blocks>View Blocks</router-link>
+                            <router-link class=dropdown-item v-bind:to="fragApi + '/txs'">View Txns</router-link>
+                            <router-link class=dropdown-item v-bind:to="fragApi + '/txs/pending'">View Pending Txns</router-link>
+                            <router-link class=dropdown-item v-bind:to="fragApi + '/blocks'">View Blocks</router-link>
                         </div>
                     </li>
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
-                        <router-link class=nav-link to=/accounts>ACCOUNT</router-link>
+                        <router-link class=nav-link v-bind:to="fragApi + '/accounts'">ACCOUNT</router-link>
                     </li>
                     <li class="dropdown nav-item">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>MISC</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
-                            <!-- 先不显示这一条 <a class="nav-link" href=# v-on:click="apiSwitch('main')">
-                                <span class="fa fa-check" v-bind:style="{ visibility: apiType == 'main' ? '' : 'hidden' }" aria-hidden=true></span>
-                                Mainnet
-                            </a> -->
-                            <a class=nav-link href=# v-on:click="apiSwitch('test')">
-                                <span class="fa fa-check" v-bind:style="{ visibility: apiType == 'test' ? '' : 'hidden' }" aria-hidden=true></span>
-                                Testnet
+                            <a v-for="(o, i) in apiPrefixes" class=nav-link href=# v-on:click.prevent=apiSwitch(i)>
+                                <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': paramsApi != i }" aria-hidden=true></span>
+                                {{ o.name }}
                             </a>
                         </div>
                     </li>
-                    <!-- <li class=nav-item>
-                        <a class=nav-link href=#>CHART
-                            <span class=sr-only>(current)</span>
-                        </a>
-                    </li>
-                    <li class=nav-item>
-                        <a class="nav-link disabled" href="#">Disabled</a>
-                    </li> -->
                 </ul>
                 <form class=form-inline v-on:submit.prevent=onSubmit>
                     <input class="form-control mr-sm-2" v-model=search type=search placeholder=Search>
@@ -113,19 +105,24 @@
     </nav>
 </template>
 <script>
-    var api = require("@/assets/api");
+    var api = require("@/assets/api"),
+        appConfig = require("@/assets/app-config");
 
     module.exports = {
         data() {
             return {
-                apiType: "",
+                apiPrefixes: null,
+                fragApi: "",
+                paramsApi: "",
                 search: ""
             };
         },
         methods: {
-            apiSwitch(apiType) {
-                if (sessionStorage.apiType != apiType) {
-                    sessionStorage.apiType = apiType;
+            apiSwitch(s) {
+                var api = this.$route.params.api || "";
+
+                if (api != s) {
+                    this.$router.replace("/" + s);
                     location.reload();
                 }
             },
@@ -140,27 +137,38 @@
                         this.$router.push("/block/" + o.q);
                     else if (o.type == "address")
                         this.$router.push("/address/" + o.q);
-                    else if (o.type == "transaction")
+                    else if (o.type == "tx")
                         this.$router.push("/tx/" + o.q);
                     else {
                         this.$root.search = o.q;
-                        this.$router.push("/oops");
+                        this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/oops");
                     }
                 }, () => {
                     this.$root.search = this.search;
                     this.$root.showModalLoading = false;
                     this.search = "";
-                    this.$router.push("/oops");
+                    this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/oops");
                 });
             }
         },
         mounted() {
-            require("jquery")("[data-toggle=tooltip]").tooltip();
+            var paramsApi = this.$route.params.api, apiPrefixes = {}, i, first = true;
 
-            if (sessionStorage.apiType != "main" && sessionStorage.apiType != "test")
-                sessionStorage.apiType = this.apiType = "test";
-            else
-                this.apiType = sessionStorage.apiType;
+            for (i in appConfig.apiPrefixes)
+                if (first) {
+                    apiPrefixes[""] = appConfig.apiPrefixes[i];
+                    first = false;
+                } else
+                    apiPrefixes[i] = appConfig.apiPrefixes[i];
+
+            if (!(paramsApi in apiPrefixes))
+                paramsApi = "";
+
+            this.apiPrefixes = apiPrefixes;
+            this.fragApi = paramsApi ? "/" + paramsApi : "";
+            this.paramsApi = paramsApi;
+
+            require("jquery")("[data-toggle=tooltip]").tooltip();
         }
     };
 </script>

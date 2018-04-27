@@ -33,6 +33,16 @@ public class NebBlockService {
     }
 
     /**
+     * save block information
+     *
+     * @param entity block bean
+     * @return saved result
+     */
+    public boolean replaceNebBlock(NebBlock entity) {
+        return (null != entity) && nebBlockMapper.replace(entity) > 0;
+    }
+
+    /**
      * update block finality property
      *
      * @param maxIrreversibleBlockHeight the max irreversible block height
@@ -166,6 +176,10 @@ public class NebBlockService {
      */
     public List<NebBlock> findNebBlockBetweenHeight(long fromHeight, long toHeight) {
         return nebBlockMapper.findNebBlockBetweenHeight(fromHeight, toHeight);
+    }
+
+    public List<NebBlock> findUnLibBlockLessThanHeight(long height, int limit) {
+        return nebBlockMapper.findUnLibBlockLessThanHeight(height, limit);
     }
 
 }

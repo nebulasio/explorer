@@ -10,8 +10,7 @@ import io.nebulas.explorer.model.vo.AddressVo;
 import io.nebulas.explorer.model.vo.BlockVo;
 import io.nebulas.explorer.model.vo.TransactionVo;
 import io.nebulas.explorer.service.blockchain.*;
-import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetAccountStateRequest;
+import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetAccountStateResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +47,7 @@ public class RpcController {
     private final NebTransactionService nebTransactionService;
     private final NebMarketCapitalizationService nebMarketCapitalizationService;
     private final NebDynastyService nebDynastyService;
-    private final NebulasApiService nebulasApiService;
+    private final NebApiServiceWrapper nebApiServiceWrapper;
 
     private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(20);
 
@@ -244,11 +243,10 @@ public class RpcController {
 
         EXECUTOR.execute(() -> {
             for (NebAddress address : addressList) {
-                if (address.getUpdatedAt().before(LocalDateTime.now().plusMinutes(-30).toDate())) {
-                    GetAccountStateResponse accountState = nebulasApiService.getAccountState(new GetAccountStateRequest(address.getHash())).toBlocking().first();
-                    String balance = accountState.getBalance();
-                    if (StringUtils.isNotEmpty(balance)) {
-                        nebAddressService.updateAddressBalance(address.getHash(), balance);
+                if (address.getUpdatedAt().before(LocalDateTime.now().plusSeconds(-5).toDate())) {
+                    GetAccountStateResponse accountState = nebApiServiceWrapper.getAccountState(address.getHash());
+                    if (null != accountState && StringUtils.isNotEmpty(accountState.getBalance())) {
+                        nebAddressService.updateAddressBalance(address.getHash(), accountState.getBalance());
                     }
                 }
             }
@@ -294,14 +292,13 @@ public class RpcController {
         }
         result.put("txList", convertTxn2TxnVoWithAddress(txList));
 
-        if (address.getUpdatedAt().before(LocalDateTime.now().plusMinutes(-30).toDate())) {
-            EXECUTOR.execute(() -> {
-                GetAccountStateResponse accountState = nebulasApiService.getAccountState(new GetAccountStateRequest(hash)).toBlocking().first();
+        if (address.getUpdatedAt().before(LocalDateTime.now().plusSeconds(-5).toDate())) {
+            GetAccountStateResponse accountState = nebApiServiceWrapper.getAccountState(address.getHash());
+            if (null != accountState && StringUtils.isNotEmpty(accountState.getBalance())) {
                 String balance = accountState.getBalance();
-                if (StringUtils.isNotEmpty(balance)) {
-                    nebAddressService.updateAddressBalance(hash, balance);
-                }
-            });
+                address.setCurrentBalance(new BigDecimal(balance));
+                nebAddressService.updateAddressBalance(hash, balance);
+            }
         }
         return result;
     }
@@ -328,7 +325,7 @@ public class RpcController {
 
         NebTransaction transaction = nebTransactionService.getNebTransactionByHash(q);
         if (null != transaction) {
-            return JsonResult.success("type", "tx").put("q", address.getHash());
+            return JsonResult.success("type", "tx").put("q", transaction.getHash());
         }
         return JsonResult.success("type", "unknown").put("q", q);
     }

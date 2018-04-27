@@ -2,30 +2,30 @@
 module.exports = [{
     component: require("@/routes/address").default,
     meta: { headerActive: 3 },
-    path: "/address/:id"
+    path: "/:api?/address/:id"
 }, {
     component: require("@/routes/accounts").default,
     meta: { headerActive: 3 },
-    path: "/accounts"
+    path: "/:api?/accounts"
 }, {
     component: require("@/routes/block").default,
     meta: { headerActive: 2 },
-    path: "/block/:id"
+    path: "/:api?/block/:id"
 }, {
     component: require("@/routes/blocks").default,
     meta: { headerActive: 2 },
-    path: "/blocks"
+    path: "/:api?/blocks"
 }, {
     component: require("@/routes/oops").default,
-    path: "/oops"
+    path: "/:api?/oops"
 }, {
     component: require("@/routes/tx").default,
     meta: { headerActive: 2 },
-    path: "/tx/:id"
+    path: "/:api?/tx/:id"
 }, {
     component: require("@/routes/txs").default,
     meta: { headerActive: 2 },
-    path: "/txs"
+    path: "/:api?/txs"
 },
 // {
 //     component: require("@/routes/txs-internal").default,
@@ -35,12 +35,16 @@ module.exports = [{
 {
     component: require("@/routes/txs-pending").default,
     meta: { headerActive: 2 },
-    path: "/txs/pending"
+    path: "/:api?/txs/pending"
+}, {
+    component: require("@/routes/404").default,
+    path: "/:api?/404"
 }, {
     component: require("@/routes/home").default,
     meta: { headerActive: 1 },
-    path: ""
+    path: "/:api?"
 }, {
     component: require("@/routes/404").default,
-    path: "*",
+    name: "*",
+    path: "*"
 }];

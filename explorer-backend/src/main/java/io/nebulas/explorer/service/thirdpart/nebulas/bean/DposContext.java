@@ -1,4 +1,4 @@
-package io.nebulas.explorer.model;
+package io.nebulas.explorer.service.thirdpart.nebulas.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

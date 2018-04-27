@@ -16,5 +16,5 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class GetBlockByHeightRequest implements Serializable {
     private Long height;
-    private boolean fullTransaction;
+    private boolean full_fill_transaction;
 }

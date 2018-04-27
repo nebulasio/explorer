@@ -2,7 +2,6 @@ package io.nebulas.explorer.service.blockchain;
 
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.mapper.NebAddressMapper;
-import io.nebulas.explorer.util.IdGenerator;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,7 +35,7 @@ public class NebAddressService {
      * @return saved result
      */
     public boolean addNebAddress(String hash, int type) {
-        return nebAddressMapper.add(IdGenerator.getId(), hash, type) > 0;
+        return nebAddressMapper.add(hash, type) > 0;
     }
 
     /**

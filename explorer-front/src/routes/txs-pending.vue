@@ -5,7 +5,7 @@
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
                 <div class=col>A total of {{ totalTxs }} Pending txns found</div>
-                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
+                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
             </div>
             <table class="mt20 table">
                 <tr>
@@ -20,7 +20,7 @@
                 </tr>
                 <tr v-for="o in arr">
                     <td class="tdxxxwddd monospace">
-                        <router-link v-bind:to='"/tx/" + o.hash'>{{ o.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>
                     <td class=time>
                         <div class=text-right>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
@@ -29,18 +29,18 @@
                     <td class=text-right>{{ numberAddComma(o.gasLimit) }}</td>
                     <td class=text-right>{{ toWei(o.gasPrice) }}</td>
                     <td class=tdxxxwddd>
-                        <router-link v-bind:to='"/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
                     </td>
                     <td>
                         <span class="fa fa-arrow-right" aria-hidden=true></span>
                     </td>
                     <td class=tdxxxwddd>
-                        <router-link v-bind:to='"/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                     </td>
                     <td class=text-right>{{ toWei(o.value) }}</td>
                 </tr>
             </table>
-            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
+            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
         </div>
     </div>
 </template>
@@ -61,6 +61,7 @@
                     { text: "Pending Transactions", to: "" }
                 ],
                 currentPage: 0,
+                fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 totalPage: 0,
                 totalTxs: 0
             };
@@ -91,7 +92,7 @@
                     }, xhr => {
                         console.log(xhr);
                         this.$root.showModalLoading = false;
-                        this.$router.replace("/404!" + this.$route.fullPath);
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                     });
                 }
             },
@@ -117,6 +118,12 @@
                 this.$router.push({
                     path: this.$route.path,
                     query: { p: this.currentPage - 1 }
+                });
+            },
+            onTo(n) {
+                this.$router.push({
+                    path: this.$route.path,
+                    query: { p: n }
                 });
             },
             timeConversion(ms) {

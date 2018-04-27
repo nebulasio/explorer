@@ -10,9 +10,9 @@ spring:
   datasource:
     sql-script-encoding: UTF-8
     platform: mysql
-    initialize: true
+    initialize: false
     schema: classpath:schema.sql
-    url: jdbc:mysql://127.0.0.1:3306/explorer?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/explorer?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
     username: explorer
     password: 123456
     separator: ;
@@ -42,7 +42,7 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 300
 grpc:
-  host: 35.182.48.19
+  host: 13.57.96.40
   port: 8684
   enableKeepAlive: true
   keepAliveWithoutCalls: true
@@ -52,14 +52,16 @@ page:
   hostUrl: http://localhost:8080
 sync:
   open: true
-  subscribe : true
+  subscribe : false
 apiHost:
   coinmarketcap: https://api.coinmarketcap.com
-  nebulas: http://35.182.48.19:8685
+  nebulas: https://testnet.nebulas.io
 redis:
   host: 127.0.0.1
   port: 6379
   password:
+environment: dev
+pendingTxExpiredTime : 1
 
 ---
 spring:
@@ -68,6 +70,7 @@ spring:
     cache: false
     mode: LEGACYHTML5
 environment: dev
+pendingTxExpiredTime : 1
 
 ---
 spring:
@@ -80,7 +83,7 @@ spring:
     platform: mysql
     initialize: false
     schema: classpath:schema.sql
-    url: jdbc:mysql://nebulas.cvajxeo2mhiu.us-west-1.rds.amazonaws.com:3306/explorer_test?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=utf8&amp;connectionCollation=utf8_general_ci&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://nebulas.cvajxeo2mhiu.us-west-1.rds.amazonaws.com:3306/explorer_test?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
     username: explorer
     password: NbVgE6bQ8iM,(Aty5HBs
     separator: ;
@@ -107,6 +110,7 @@ environment: test
 page:
   baseUrl: http://52.53.225.118
   hostUrl: http://52.53.225.118
+pendingTxExpiredTime : 1
 
 ---
 spring:
@@ -115,3 +119,4 @@ spring:
     cache: true
     mode: LEGACYHTML5
 environment: production
+pendingTxExpiredTime : 48
