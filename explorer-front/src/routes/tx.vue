@@ -6,6 +6,10 @@
     .vue-tx td.code {
         background-color: #f8f9fa;
     }
+
+    .vue-tx td.text {
+        white-space: pre-line;
+    }
 </style>
 <template>
     <div class="container vue-tx" v-bind:triggerComputed=urlChange>
@@ -30,24 +34,25 @@
                             <span> pending </span>
                         </template>
                         <template v-else>
-                            <router-link v-if=tx.block v-bind:to='"/block/" + tx.block.height'>{{tx.block.height}}</router-link>
+                            <router-link v-if=tx.block v-bind:to='fragApi + "/block/" + tx.block.height'>{{tx.block.height}}</router-link>
                         </template>
                     </td>
                 </tr>
                 <tr>
                     <td>TimeStamp:</td>
-                    <td>{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})</td>
+                    <td>{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})
+                    </td>
                 </tr>
                 <tr>
                     <td>From:</td>
                     <td class=monospace>
-                        <router-link v-if=tx.from v-bind:to='"/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link>
+                        <router-link v-if=tx.from v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link>
                     </td>
                 </tr>
                 <tr>
                     <td>To:</td>
                     <td class=monospace>
-                        <router-link v-if=tx.to v-bind:to='"/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
+                        <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
                     </td>
                 </tr>
                 <tr>
@@ -80,7 +85,10 @@
                 </tr>
                 <tr>
                     <td>Payload Data:</td>
-                    <td class=code>
+                    <td v-if="tx.type == 'binary'" class=text>
+                        {{ tx.data }}
+                    </td>
+                    <td v-else class=code>
                         <pre><code class=language-javascript v-html=formatCode></code></pre>
                     </td>
                 </tr>
@@ -119,7 +127,7 @@
                 if (this.tx.data)
                     if (this.tx.type == "deploy")
                         return prism.highlight(jsBeautify(JSON.parse(this.tx.data).Source), lang);
-                    else if (this.tx.type == "binary" || this.tx.type == "call")
+                    else if (this.tx.type == "call")
                         return prism.highlight(jsBeautify(this.tx.data), lang);
 
                 return "0x0";
@@ -144,12 +152,13 @@
                 api.getTx(this.$route.params.id, o => {
                     this.tx = o;
                 }, xhr => {
-                    this.$router.replace("/404!" + this.$route.fullPath);
+                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                 });
             }
         },
         data() {
             return {
+                fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 tab: 0,
                 tabButtons: ["Overview"],
                 tx: null

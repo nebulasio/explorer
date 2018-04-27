@@ -9,6 +9,10 @@ dl, ol, ul {
     padding: 0;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 .c333   { color: #333; }
 .c777   { color: #777; }
 .mt20   { margin-top: 20px; }

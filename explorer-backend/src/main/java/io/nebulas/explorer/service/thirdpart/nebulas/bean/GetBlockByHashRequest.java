@@ -16,5 +16,5 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class GetBlockByHashRequest implements Serializable {
     private String hash;
-    private boolean fullTransaction;
+    private boolean full_fill_transaction;
 }

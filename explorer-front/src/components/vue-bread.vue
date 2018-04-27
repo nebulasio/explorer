@@ -28,7 +28,7 @@
                     <ol class=breadcrumb>
                         <li class=breadcrumb-item v-bind:class="{ active: i == arr.length - 1 }" v-for="(o, i) in arr">
                             <template v-if="i == arr.length - 1">{{ o.text }}</template>
-                            <router-link v-else v-bind:to=o.to>{{ o.text }}</router-link>
+                            <router-link v-else v-bind:to='fragApi + o.to'>{{ o.text }}</router-link>
                         </li>
                     </ol>
                 </nav>
@@ -38,6 +38,11 @@
 </template>
 <script>
     module.exports = {
+        data() {
+            return {
+                fragApi: this.$route.params.api ? "/" + this.$route.params.api : ""
+            };
+        },
         props: ["arr", "title"]
     };
 </script>

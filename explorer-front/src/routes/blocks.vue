@@ -6,7 +6,7 @@
         <div class="container mt20">
             <div class="align-items-center info-and-pagination row">
                 <div class=col>Showing Block (#{{ heightFrom }} to #{{ heightTo }}) out of {{ totalBlocks }} total blocks</div>
-                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
+                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
             </div>
             <table class="mt20 table">
                 <tr>
@@ -20,24 +20,24 @@
                 </tr>
                 <tr v-for="o in arr">
                     <td>
-                        <router-link v-bind:to='"/block/" + o.height'>{{ o.height }}</router-link>
+                        <router-link v-bind:to='fragApi + "/block/" + o.height'>{{ o.height }}</router-link>
                     </td>
                     <td class=time>
                         <div class=text-right>{{ timeConversion( Date.now() - o.timestamp) }} ago</div>
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td>
-                        <router-link v-bind:to='"/"'>{{ o.txnCnt }}</router-link>
+                        <router-link v-bind:to='fragApi + "/txs?block=" + o.height'>{{ o.txnCnt }}</router-link>
                     </td>
                     <td class=monospace>
-                        <router-link v-bind:to='"/address/" + o.miner.hash'>{{ o.miner.alias || o.miner.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/address/" + o.miner.hash'>{{ o.miner.alias || o.miner.hash }}</router-link>
                     </td>
                     <td class=text-right>{{ toWei(o.gasReward) }}</td>
                     <td class=text-right>{{ numberAddComma(o.gasLimit) }}</td>
                     <td class=text-right>{{ toWei(o.avgGasPrice) }}</td>
                 </tr>
             </table>
-            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev></vue-pagination>
+            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
         </div>
     </div>
 </template>
@@ -58,6 +58,7 @@
                     { text: "Blocks", to: "" }
                 ],
                 currentPage: 0,
+                fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 heightFrom: 0,
                 heightTo: 0,
                 totalBlocks: 0,
@@ -74,6 +75,7 @@
                     this.$root.showModalLoading = true;
 
                     api.getBlock({ p }, o => {
+
                         this.$root.showModalLoading = false;
                         this.arr = o.data;
                         this.currentPage = o.page;
@@ -90,7 +92,7 @@
                     }, xhr => {
                         console.log(xhr);
                         this.$root.showModalLoading = false;
-                        this.$router.replace("/404!" + this.$route.fullPath);
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                     });
                 }
             },
@@ -119,6 +121,12 @@
                 this.$router.push({
                     path: this.$route.path,
                     query: { p: this.currentPage - 1 }
+                });
+            },
+            onTo(n) {
+                this.$router.push({
+                    path: this.$route.path,
+                    query: { p: n }
                 });
             },
             timeConversion(ms) {

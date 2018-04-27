@@ -35,7 +35,7 @@ public class HttpApiConfig {
     @Bean
     @Scope
     public OkHttpClient createDefaultHttpClient() {
-        return httpClient(50, 5, false);
+        return httpClient(50, 5, true);
     }
 
     @Scope

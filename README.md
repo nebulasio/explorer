@@ -3,7 +3,7 @@ A Java web app for users to explore and analyze the nebulas blockchain.
 
 Its frontend is a single page application using vuejs and its backend uses Spring.
 
-you can see: https://explorer.nebulas.io
+Please visit https://explorer.nebulas.io/ to view all data in Nebulas.
 
 ## Design Overview
 ![Nebulas Explorer Design Overview](https://i.imgur.com/vEdztR4.jpg)

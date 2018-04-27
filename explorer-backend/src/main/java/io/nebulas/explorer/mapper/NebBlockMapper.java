@@ -18,6 +18,8 @@ public interface NebBlockMapper {
 
     Integer add(NebBlock block);
 
+    Integer replace(NebBlock block);
+
     Integer updateBlockIrreversible(Long height);
 
     long count();
@@ -35,4 +37,6 @@ public interface NebBlockMapper {
     List<NebBlock> findByMiner(@Param("miner") String miner, @Param("offset") int offset, @Param("limit") int limit);
 
     List<NebBlock> findNebBlockBetweenHeight(@Param("fromHeight") Long fromHeight, @Param("toHeight") Long toHeight);
+
+    List<NebBlock> findUnLibBlockLessThanHeight(@Param("height") long height, @Param("limit") int limit);
 }

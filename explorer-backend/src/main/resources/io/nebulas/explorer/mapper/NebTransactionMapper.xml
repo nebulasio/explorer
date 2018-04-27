@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.nebulas.explorer.mapper.NebTransactionMapper">
     <resultMap id="BaseResultMap" type="NebTransaction">
-        <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="hash" property="hash" jdbcType="VARCHAR"/>
         <result column="block_height" property="blockHeight" jdbcType="BIGINT"/>
         <result column="block_hash" property="blockHash" jdbcType="VARCHAR"/>
+        <result column="tx_seq" property="txSeq" jdbcType="INTEGER"/>
         <result column="from" property="from" jdbcType="VARCHAR"/>
         <result column="to" property="to" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
@@ -20,10 +20,10 @@
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-      `id`,
       `hash`,
       `block_hash`,
       `block_height`,
+      `tx_seq`,
       `from`,
       `to`,
       `status`,
@@ -39,21 +39,14 @@
     </sql>
 
     <insert id="addNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
-        INSERT IGNORE INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,`nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
+        replace INTO `neb_transaction` (`hash`, `block_hash`, `block_height`, `tx_seq`, `from`, `to`, `status`, `value`,`nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
         VALUES
-        (#{id}, #{hash}, #{blockHash}, #{blockHeight}, #{from}, #{to}, #{status}, #{value}, #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}, #{gasLimit}, #{gasUsed}, #{createdAt})
+        (#{hash}, #{blockHash}, #{blockHeight}, #{txSeq}, #{from}, #{to}, #{status}, #{value}, #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}, #{gasLimit}, #{gasUsed}, #{createdAt})
     </insert>
 
-    <insert id="batchAddNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
-        INSERT IGNORE INTO `neb_transaction` (`id`, `hash`, `block_hash`, `block_height`, `from`, `to`, `status`, `value`,
-        `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
-        VALUES
-        <foreach collection="transactions" item="tx" separator=",">
-            (#{tx.id}, #{tx.hash}, #{tx.blockHash}, #{tx.blockHeight}, #{tx.from}, #{tx.to}, #{tx.status},
-            #{tx.value},#{tx.nonce}, #{tx.timestamp}, #{tx.type}, #{tx.data}, #{tx.gasPrice}, #{tx.gasLimit},
-            #{tx.gasUsed}, #{tx.createdAt})
-        </foreach>
-    </insert>
+    <delete id="deleteByBlkHeight" parameterType="map">
+        DELETE FROM `neb_transaction` WHERE block_height = #{blockHeight,jdbcType=BIGINT}
+    </delete>
 
     <select id="countTxnCntByCondition" parameterType="map" resultType="java.lang.Long">
         SELECT count(1)
@@ -94,7 +87,7 @@
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
         WHERE block_height = #{blockHeight,jdbcType=BIGINT}
-        ORDER BY `id` desc
+        ORDER BY `tx_seq` ASC
     </select>
 
     <select id="findTxnByCondition" parameterType="map" resultMap="BaseResultMap">
@@ -111,7 +104,7 @@
                 </if>
             </trim>
         </where>
-        ORDER BY `block_height` DESC,`id` DESC
+        ORDER BY `block_height` DESC,`tx_seq` ASC
         LIMIT ${offset},${limit}
     </select>
 
@@ -120,7 +113,7 @@
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
-        ORDER BY `block_height` DESC,`id` DESC
+        ORDER BY `block_height` DESC,`tx_seq` ASC
         LIMIT ${offset},${limit}
     </select>
 
@@ -128,7 +121,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
-        ORDER BY `block_height` DESC,`id` DESC
+        ORDER BY `block_height` DESC,`tx_seq` ASC
         LIMIT ${offset},${limit}
     </select>
 

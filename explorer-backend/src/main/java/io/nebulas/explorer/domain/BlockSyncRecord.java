@@ -34,4 +34,13 @@ public class BlockSyncRecord implements Serializable {
     private Date updatedAt;
 
     private static final long serialVersionUID = 1L;
+
+    public BlockSyncRecord() {
+    }
+
+    public BlockSyncRecord(Long blockHeight) {
+        this.blockHeight = blockHeight;
+        this.txCnt = 0L;
+        this.confirm = 0L;
+    }
 }
