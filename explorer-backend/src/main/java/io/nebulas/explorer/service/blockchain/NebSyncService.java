@@ -150,7 +150,7 @@ public class NebSyncService {
                 .nonce(tx.getNonce())
                 .timestamp(new Date(tx.getTimestamp() * 1000))
                 .type(tx.getType())
-                .data(convertData(typeEnum, tx.getData()))
+                .data(blkHeight == 1 ? convertData(typeEnum, tx.getData()) : tx.getData())
                 .gasPrice(tx.getGasPrice())
                 .gasLimit(tx.getGasLimit())
                 .gasUsed(tx.getGasUsed())
@@ -197,7 +197,7 @@ public class NebSyncService {
                         .gasPrice(txSource.getGasPrice())
                         .gasLimit(txSource.getGasLimit())
                         .createdAt(new Date())
-                        .data(convertData(typeEnum, txSource.getData()))
+                        .data(txSource.getData())
                         .build();
                 nebTransactionService.addNebPendingTransaction(pendingTxToSave);
             }
