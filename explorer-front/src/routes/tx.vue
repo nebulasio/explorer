@@ -25,7 +25,7 @@
                 </tr>
                 <tr>
                     <td>TxReceipt Status:</td>
-                    <td>{{ tx.isPending == true ? 'pending' : 'Success' }}</td>
+                    <td>{{ tx.status == 0 ? 'fail' : tx.status == 1 ? 'Success' : 'pending' }}</td>
                 </tr>
                 <tr>
                     <td>Block Height:</td>
