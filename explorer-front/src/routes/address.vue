@@ -50,7 +50,7 @@
                 </tr>
                 <tr>
                     <td>NAS Balance:</td>
-                    <td>{{ obj.address.balance/1000000000000000000 }}NAS </td>
+                    <td>{{ obj.address.balance/1000000000000000000 }} NAS </td>
                 </tr>
                 <tr>
                     <td>Minted:</td>
@@ -73,7 +73,7 @@
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
                         Latest {{ txs.length }} txns from a total Of
                         <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id'>{{ obj.txCnt }} transactions </router-link>
-                        <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id'>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
+                        <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
                     </div>
                     <div class=col-auto>
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All</router-link>
