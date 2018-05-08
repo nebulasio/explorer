@@ -19,6 +19,8 @@ public interface NebAddressMapper {
 
     Integer add(@Param("hash") String hash, @Param("type") Integer type);
 
+    Integer addAddress(@Param("hash") String hash, @Param("type") Integer type, @Param("balance") BigDecimal balance);
+
     Integer update(@Param("hash") String hash, @Param("balance") BigDecimal balance);
 
     long countTotalAddressCnt();

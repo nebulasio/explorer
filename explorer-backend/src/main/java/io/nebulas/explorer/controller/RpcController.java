@@ -313,19 +313,27 @@ public class RpcController {
             if (null != block) {
                 return JsonResult.success("type", "block").put("q", block.getHeight());
             }
+            return JsonResult.success("type", "unknown").put("q", q);
         }
-        NebBlock block = nebBlockService.getNebBlockByHash(q);
-        if (null != block) {
-            return JsonResult.success("type", "block").put("q", block.getHeight());
-        }
-        NebAddress address = nebAddressService.getNebAddressByHash(q);
-        if (null != address) {
-            return JsonResult.success("type", "address").put("q", address.getHash());
-        }
-
-        NebTransaction transaction = nebTransactionService.getNebTransactionByHash(q);
-        if (null != transaction) {
-            return JsonResult.success("type", "tx").put("q", transaction.getHash());
+        if (q.length() < 64) {
+            NebAddress address = nebAddressService.getNebAddressByHash(q);
+            if (null != address) {
+                return JsonResult.success("type", "address").put("q", address.getHash());
+            }
+            address = nebAddressService.getNebAddressByHashRpc(q);
+            if (null != address) {
+                nebAddressService.addNebAddress(address.getHash(), address.getType(), address.getCurrentBalance());
+                return JsonResult.success("type", "address").put("q", address.getHash());
+            }
+        } else {
+            NebBlock block = nebBlockService.getNebBlockByHash(q);
+            if (null != block) {
+                return JsonResult.success("type", "block").put("q", block.getHeight());
+            }
+            NebTransaction transaction = nebTransactionService.getNebTransactionByHash(q);
+            if (null != transaction) {
+                return JsonResult.success("type", "tx").put("q", transaction.getHash());
+            }
         }
         return JsonResult.success("type", "unknown").put("q", q);
     }

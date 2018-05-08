@@ -12,4 +12,6 @@ import java.io.Serializable;
 @Data
 public class GetAccountStateResponse implements Serializable {
     private String balance;
+    private String nonce;
+    private Integer type;
 }

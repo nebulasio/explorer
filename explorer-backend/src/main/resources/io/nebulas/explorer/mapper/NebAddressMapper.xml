@@ -18,6 +18,10 @@
         INSERT ignore INTO `neb_address` (`hash`, `type`) VALUES (#{hash}, #{type})
     </insert>
 
+    <insert id="addAddress" parameterType="map" useGeneratedKeys="false">
+        INSERT ignore INTO `neb_address` (`hash`, `type`, `current_balance`) VALUES (#{hash}, #{type}, #{balance})
+    </insert>
+
     <update id="update" parameterType="map">
         UPDATE `neb_address`
         SET `current_balance` = #{balance,jdbcType=DECIMAL}
