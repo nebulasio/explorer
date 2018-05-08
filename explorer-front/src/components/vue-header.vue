@@ -128,17 +128,16 @@
             },
             onSubmit() {
                 this.$root.showModalLoading = true;
-
                 api.getSearch(this.search, o => {
                     this.$root.showModalLoading = false;
                     this.search = "";
 
                     if (o.type == "block")
-                        this.$router.push("/block/" + o.q);
+                        this.$router.push(this.fragApi + "/block/" + o.q);
                     else if (o.type == "address")
-                        this.$router.push("/address/" + o.q);
+                        this.$router.push(this.fragApi + "/address/" + o.q);
                     else if (o.type == "tx")
-                        this.$router.push("/tx/" + o.q);
+                        this.$router.push(this.fragApi + "/tx/" + o.q);
                     else {
                         this.$root.search = o.q;
                         this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/oops");
