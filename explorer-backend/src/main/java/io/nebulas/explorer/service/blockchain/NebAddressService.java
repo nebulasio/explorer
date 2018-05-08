@@ -1,7 +1,10 @@
 package io.nebulas.explorer.service.blockchain;
 
 import io.nebulas.explorer.domain.NebAddress;
+import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.mapper.NebAddressMapper;
+import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetAccountStateResponse;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class NebAddressService {
     private final NebAddressMapper nebAddressMapper;
+    private final NebApiServiceWrapper nebApiServiceWrapper;
 
     /**
      * save address information
@@ -36,6 +40,18 @@ public class NebAddressService {
      */
     public boolean addNebAddress(String hash, int type) {
         return nebAddressMapper.add(hash, type) > 0;
+    }
+
+    /**
+     * save address information
+     *
+     * @param hash    address hash
+     * @param type    address type
+     * @param balance address current_balance
+     * @return saved result
+     */
+    public boolean addNebAddress(String hash, int type, BigDecimal balance) {
+        return nebAddressMapper.addAddress(hash, type, balance) > 0;
     }
 
     /**
@@ -69,6 +85,27 @@ public class NebAddressService {
      */
     public NebAddress getNebAddressByHash(String hash) {
         return nebAddressMapper.getByHash(hash);
+    }
+
+    /**
+     * According to address hash query address information, but through go-nebulas rpc interface
+     *
+     * @param hash address hash
+     * @return address information
+     */
+    public NebAddress getNebAddressByHashRpc(String hash) {
+        if (StringUtils.isEmpty(hash)) {
+            return null;
+        }
+        GetAccountStateResponse response = nebApiServiceWrapper.getAccountState(hash);
+        if (null == response) {
+            return null;
+        }
+        NebAddress nebAddress = new NebAddress();
+        nebAddress.setHash(hash);
+        nebAddress.setCurrentBalance(new BigDecimal(response.getBalance()));
+        nebAddress.setType(87 == response.getType() ? NebAddressTypeEnum.NORMAL.getValue() : NebAddressTypeEnum.CONTRACT.getValue());
+        return nebAddress;
     }
 
     /**
