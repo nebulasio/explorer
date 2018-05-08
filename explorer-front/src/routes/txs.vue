@@ -100,7 +100,8 @@
                 api.getTx({
                     a: this.$route.query.a,
                     block: this.$route.query.block,
-                    p: this.$route.query.p || 1
+                    p: this.$route.query.p || 1,
+                    isPending:this.$route.query.isPending
                 }, o => {
                     this.$root.showModalLoading = false;
                     this.arr = o.txnList;
