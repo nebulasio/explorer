@@ -50,7 +50,7 @@
                 </tr>
                 <tr>
                     <td>NAS Balance:</td>
-                    <td>{{ toWei(obj.address.balance) }} </td>
+                    <td>{{ obj.address.balance/1000000000000000000 }}NAS </td>
                 </tr>
                 <tr>
                     <td>Minted:</td>
