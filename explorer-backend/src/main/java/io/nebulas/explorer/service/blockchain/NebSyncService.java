@@ -206,6 +206,13 @@ public class NebSyncService {
         }
     }
 
+    public void deletePendingTx(String hash){
+        if (StringUtils.isEmpty(hash)) {
+            return;
+        }
+        nebTransactionService.deleteNebPendingTransaction(hash);
+    }
+
     private void syncAddress(String hash, NebAddressTypeEnum type) {
         if (StringUtils.isEmpty(hash)) {
             return;
