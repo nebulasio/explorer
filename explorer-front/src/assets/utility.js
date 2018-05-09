@@ -11,6 +11,7 @@ module.exports = {
     timeConversion: timeConversion,
     timeConversionSec: timeConversionSec,
     toWei: toWei,
+    easyNumber:easyNumber,
     ua: ua,
     yyyymmdd: yyyymmdd
 };
@@ -165,6 +166,14 @@ function toWei(n) {
 
     n = n.toFixed();
     return (i == len ? numberAddComma(n) : n) + " " + arr[i];
+}
+
+function easyNumber(num) {
+    return num && num
+        .toString()
+        .replace(/(\d)(?=(\d{3})+\.)/g, function($0, $1) {
+            return $1 + ",";
+        });
 }
 
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
