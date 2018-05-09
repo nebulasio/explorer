@@ -75,6 +75,8 @@ public class GrpcClientService {
                     PENDING_TX_EXECUTOR.execute(() -> processTopicPendingTransaction(hash));
                 } else if (Const.TopicLibBlock.equals(topic)) {
                     LIB_BLOCK_EXECUTOR.execute(() -> processTopicLibBlock(hash));
+                } else if (Const.TopicDropTransaction.equals(topic)) {
+                    processTopicDropTransaction(hash);
                 }
             }
 
@@ -155,4 +157,11 @@ public class GrpcClientService {
         }
     }
 
+    private void processTopicDropTransaction(String hash) {
+        try {
+            nebSyncService.deletePendingTx(hash);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
 }
