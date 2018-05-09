@@ -87,7 +87,7 @@
                         <router-link class=nav-link v-bind:to="fragApi + '/accounts'">ACCOUNT</router-link>
                     </li>
                     <li class="dropdown nav-item">
-                        <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>MISC</a>
+                        <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{ MenuMisc }}</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
                             <a v-for="(o, i) in apiPrefixes" class=nav-link href=# v-on:click.prevent=apiSwitch(i)>
                                 <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': paramsApi != i }" aria-hidden=true></span>
@@ -114,13 +114,13 @@
                 apiPrefixes: null,
                 fragApi: "",
                 paramsApi: "",
-                search: ""
+                search: "",
+                MenuMisc:"MISC"
             };
         },
         methods: {
             apiSwitch(s) {
                 var api = this.$route.params.api || "";
-
                 if (api != s) {
                     this.$router.replace("/" + s);
                     location.reload();
@@ -163,6 +163,7 @@
             if (!(paramsApi in apiPrefixes))
                 paramsApi = "";
 
+            paramsApi == 'testnet' ? this.MenuMisc = 'TESTNET' : this.MenuMisc = 'MAINNET';
             this.apiPrefixes = apiPrefixes;
             this.fragApi = paramsApi ? "/" + paramsApi : "";
             this.paramsApi = paramsApi;
