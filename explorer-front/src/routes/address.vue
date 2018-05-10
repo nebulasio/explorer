@@ -31,6 +31,10 @@
     .vue-address .txfee {
         color: silver;
     }
+
+    .vue-address .tab a{
+        font-size: 13px;
+    }
 </style>
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
@@ -76,7 +80,8 @@
                         <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
                     </div>
                     <div class=col-auto>
-                        <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All</router-link>
+                        <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All {{ obj.txCnt }} Txn</router-link>
+                        |<router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" ' >View All {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn</router-link>
                     </div>
                 </div>
 
