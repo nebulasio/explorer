@@ -57,7 +57,7 @@
                 </tr>
                 <tr>
                     <td>Value:</td>
-                    <td>{{ toWei(tx.value) }}</td>
+                    <td>{{ numberAddComma(tx.value/1000000000000000000) }} NAS</td>
                 </tr>
                 <tr>
                     <td>Gas Limit:</td>
