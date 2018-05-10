@@ -41,17 +41,19 @@
                         <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>
                     <td>
-                        <span>pending</span>
+                        <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
                     </td>
-                    <!-- <td>
+                    <!-- 
+                    <td>
                         <template v-if=txs.isPending>
                             <span> pending </span>
                         </template>
                         <template v-else>
                             <router-link v-if=o.block v-bind:to='fragApi + "/block/" + o.block.height'>{{o.block.height}}</router-link>
                         </template>
-                        <!-- <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link> -->
-                    <!-- </td> -->
+                         <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link> 
+                    </td>
+                    -->
                     <td class=time>
                         <div class=text-right>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
