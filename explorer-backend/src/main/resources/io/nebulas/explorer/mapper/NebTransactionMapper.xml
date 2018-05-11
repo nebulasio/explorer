@@ -87,7 +87,7 @@
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
         WHERE block_height = #{blockHeight,jdbcType=BIGINT}
-        ORDER BY `tx_seq` ASC
+        ORDER BY `tx_seq` DESC
     </select>
 
     <select id="findTxnByCondition" parameterType="map" resultMap="BaseResultMap">
@@ -104,7 +104,7 @@
                 </if>
             </trim>
         </where>
-        ORDER BY `block_height` DESC,`tx_seq` ASC
+        ORDER BY `block_height` DESC,`tx_seq` DESC
         LIMIT ${offset},${limit}
     </select>
 
@@ -113,7 +113,7 @@
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
-        ORDER BY `block_height` DESC,`tx_seq` ASC
+        ORDER BY `block_height` DESC,`tx_seq` DESC
         LIMIT ${offset},${limit}
     </select>
 
@@ -121,7 +121,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
-        ORDER BY `block_height` DESC,`tx_seq` ASC
+        ORDER BY `block_height` DESC,`tx_seq` DESC
         LIMIT ${offset},${limit}
     </select>
 
