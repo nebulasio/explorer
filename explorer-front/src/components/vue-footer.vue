@@ -29,7 +29,10 @@
         <div class=container>
             <h4>About</h4>
             <div class="justify-content-center row">
-                <div class=col-1></div>
+                <div class=col-1>
+                <a v-on:click="$lang.setLang('en')">EN</a>
+                <a v-on:click="$lang.setLang('nl')">NL</a>
+                </div>
                 <div class=col-2>
                     <div>
                         <!-- <span class="fa fa-(nebulas?)" aria-hidden=true></span> -->

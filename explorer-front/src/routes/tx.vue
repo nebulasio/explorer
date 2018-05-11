@@ -17,18 +17,18 @@
         <div class=mt20></div>
 
         <div class=tab v-show="tab == 1">
-            <h3>Transaction Information</h3>
+            <h3>{{$lang.messages.transaction_information}}</h3>
             <table class=table v-if=tx>
                 <tr>
-                    <td>TxHash:</td>
+                    <td>{{$lang.messages.transaction_list_txhash}}:</td>
                     <td class=monospace>{{ tx.hash }}</td>
                 </tr>
                 <tr>
-                    <td>TxReceipt Status:</td>
+                    <td>{{$lang.messages.transaction_list_txreceipt_status}}:</td>
                     <td>{{ tx.status == 0 ? 'fail' : tx.status == 1 ? 'Success' : 'pending' }}</td>
                 </tr>
                 <tr>
-                    <td>Block Height:</td>
+                    <td>{{$lang.messages.transaction_list_blockheight}}:</td>
                     <td>
                         <template v-if=tx.isPending>
                             <span> pending </span>
@@ -39,52 +39,52 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>TimeStamp:</td>
+                    <td>{{$lang.messages.transaction_list_timestamp}}:</td>
                     <td>{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})
                     </td>
                 </tr>
                 <tr>
-                    <td>From:</td>
+                    <td>{{$lang.messages.transaction_list_from}}:</td>
                     <td class=monospace>
                         <router-link v-if=tx.from v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link>
                     </td>
                 </tr>
                 <tr>
-                    <td>To:</td>
+                    <td>{{$lang.messages.transaction_list_to}}:</td>
                     <td class=monospace>
                         <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
                     </td>
                 </tr>
                 <tr>
-                    <td>Value:</td>
+                    <td>{{$lang.messages.transaction_list_value}}:</td>
                     <td>{{ numberAddComma(tx.value/1000000000000000000) }} NAS</td>
                 </tr>
                 <tr>
-                    <td>Gas Limit:</td>
+                    <td>{{$lang.messages.transaction_list_gaslimit}}:</td>
                     <td>{{ numberAddComma(tx.gasLimit) }}</td>
                 </tr>
                 <tr>
-                    <td>Gas Used By Txn:</td>
+                    <td>{{$lang.messages.transaction_list_gas_used_by_transaction}}:</td>
                     <td>{{ tx.isPending == true ? 'pending' : toWei(tx.gasUsed) }}</td>
                 </tr>
                 <tr>
-                    <td>Gas Price:</td>
+                    <td>{{$lang.messages.transaction_list_gas_price}}:</td>
                     <td>{{ toWei(tx.gasPrice) }}</td>
                 </tr>
                 <tr>
-                    <td>Actual Tx Cost/Fee:</td>
+                    <td>{{$lang.messages.transaction_list_actual_tx_cost}}:</td>
                     <td>{{ toWei(tx.txFee) }}</td>
                 </tr>
                 <tr>
-                    <td>Nonce:</td>
+                    <td>{{$lang.messages.transaction_list_nonce}}:</td>
                     <td>{{ tx.nonce }}</td>
                 </tr>
                 <tr>
-                    <td>Transaction Type:</td>
+                    <td>{{$lang.messages.transaction_list_transaction_type}}:</td>
                     <td>{{ txType }}</td>
                 </tr>
                 <tr>
-                    <td>Payload Data:</td>
+                    <td>{{$lang.messages.transaction_list_payload_data}}:</td>
                     <td v-if="tx.type == 'binary'" class=text>
                         {{ tx.data }}
                     </td>
@@ -160,7 +160,7 @@
             return {
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 tab: 0,
-                tabButtons: ["Overview"],
+                tabButtons: [this.$lang.messages.transaction_tab_overview],
                 tx: null
             };
         },

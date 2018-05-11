@@ -195,19 +195,19 @@
                         <div class=value>$ {{ market.price }}</div>
                         <div class=msg>
                             <div class=msg_change>
-                                <span class="msg_change_left">24h Change : </span>
+                                <span class="msg_change_left">{{$lang.messages.home_24hchange}}: </span>
                                 <span class="msg_change_right" v-bind:class="[ market.trends == 1 ? 'green' : 'red']">{{ market.trends == 1 ? '+' : '-' }} {{ market.change24h }}%</span>
                             </div>
                             <div class=msg_volume>
-                                <span class="msg_change_left">24h Volume :</span>
+                                <span class="msg_change_left">{{$lang.messages.home_24hvolume}} :</span>
                                 <span class="msg_change_right">$ {{ numberAddComma(market.volume24h) }}</span>
                             </div>
                             <div class=msg_market>
-                                <span class=msg_change_left>Market Cap :</span>
+                                <span class=msg_change_left>{{$lang.messages.home_marketcap}} :</span>
                                 <span class=msg_change_right>$ {{ numberAddComma(market.marketCap) }}</span>
                             </div>
                         </div>
-                        <div class="mt16 updataTime">update time : {{ timeConversion(Date.now() - market.createdAt) }} ago</div>
+                        <div class="mt16 updataTime">{{$lang.messages.home_updatetime.replace('{0}', timeConversion(Date.now() - market.createdAt) )}}</div>
                     </div>
                 </div>
             </div>
@@ -218,9 +218,9 @@
                     <div class=list_tab>
                         <div class=img>
                             <span class="fa fa-th-large" aria-hidden=true></span>
-                            Blocks
+                            {{$lang.messages.home_blocks_list}}
                         </div>
-                        <router-link class="btn btn-default pull-right" v-bind:to='fragApi + "/blocks"' role=button>View All</router-link>
+                        <router-link class="btn btn-default pull-right" v-bind:to='fragApi + "/blocks"' role=button>{{$lang.messages.home_viewall}}</router-link>
                     </div>
                     <ul class="blocks list">
                         <li class=li v-for="o in blocks">
@@ -229,11 +229,11 @@
                                 <div class=mt20>{{ timeConversion(msVmReady - o.timestamp) }} ago</div>
                             </div>
                             <div class=right>
-                                Minted By
+                                {{$lang.messages.home_blocks_listitem_mintedby}}
                                 <router-link class=monospace v-bind:to='fragApi + "/address/" + o.miner.hash'>{{ o.miner.hash }}</router-link>
                                 <div class=mt16>
                                     <router-link v-bind:to='fragApi + "/txs?block=" + o.height'>
-                                        <b>{{ o.txnCnt }}</b> transactions</router-link>
+                                        <b>{{ o.txnCnt }}</b> {{$lang.messages.home_blocks_listitem_transactions}}</router-link>
                                 </div>
                             </div>
                         </li>
@@ -243,9 +243,9 @@
                     <div class=tab-right>
                         <div class=img>
                             <span class="fa fa-list" aria-hidden=true></span>
-                            Transaction
-                        </div>
-                        <router-link class="btn btn-default pull-right" v-bind:to='fragApi + "/txs"' role=button>View All</router-link>
+                            {{$lang.messages.home_transactions_list}}
+                        </div>  
+                        <router-link class="btn btn-default pull-right" v-bind:to='fragApi + "/txs"' role=button>{{$lang.messages.home_viewall}}</router-link>
                     </div>
                     <ul class="list txs">
                         <li class=li v-for="o in txs">
@@ -328,10 +328,10 @@
                         // , type: "area"
                     }],
                     subtitle: {
-                        text: "数据来源：Nebulas"
+                        text: this.$lang.messages.home_transactions_graph_subtitle
                     },
                     title: {
-                        text: "transactions"
+                        text: this.$lang.messages.home_transactions_graph_title
                     },
                     xAxis: {
                         labels: {
@@ -342,7 +342,7 @@
                     },
                     yAxis: {
                         title: {
-                            text: "数量"
+                            text: this.$lang.messages.home_transactions_graph_yaxis
                         }
                     }
                 },

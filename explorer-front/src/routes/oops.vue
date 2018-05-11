@@ -12,10 +12,10 @@
 <template>
     <div class="container vue-oops">
         <div class=text-center>
-            <h1>Oops!</h1>
-            <h3>The search string you entered was:</h3>
+            <h1>{{$lang.messages.oops_header}}</h1>
+            <h3>{{$lang.messages.oops_search_string_entered}}</h3>
             <div class=keyword>{{ $root.search }}</div>
-            <h4>Sorry! This is an invalid search string.</h4>
+            <h4>{{$lang.messages.oops_search_string_invalid}}</h4>
         </div>
         <div class=image></div>
     </div>

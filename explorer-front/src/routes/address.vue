@@ -39,7 +39,7 @@
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
     <div class=vue-address v-bind:triggerComputed=urlChange>
-        <vue-bread v-bind:arr=breadcrumb v-bind:title='"Address " + $route.params.id'></vue-bread>
+        <vue-bread v-bind:arr=breadcrumb v-bind:title='$lang.messages.address_title + " " + $route.params.id'></vue-bread>
         <div class=container v-if=obj>
             <table class="c333 table">
                 <tr>
@@ -53,15 +53,15 @@
                     </th>
                 </tr>
                 <tr>
-                    <td>NAS Balance:</td>
+                    <td>{{$lang.messages.address_balance}}</td>
                     <td>{{ easyNumber(obj.address.balance/1000000000000000000) }} NAS </td>
                 </tr>
                 <tr>
-                    <td>Minted:</td>
+                    <td>{{$lang.messages.address_minted}}</td>
                     <td>{{ obj.mintedBlkCnt }}</td>
                 </tr>
                 <tr>
-                    <td>Number Of Transactions:</td>
+                    <td>{{$lang.messages.address_numtransactions}}</td>
                     <td>{{ obj.pendingTxCnt }}</td>
                 </tr>
             </table>
@@ -75,26 +75,26 @@
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
-                        Latest {{ txs.length }} txns from a total Of
-                        <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id'>{{ obj.txCnt }} transactions </router-link>
-                        <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
+                        {{$lang.messages.address_latest_trans_of_total.replace("{0}", txs.length)}}
+                        <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id'>{{$lang.messages.address_latest_trans_of_total2.replace("{0}", obj.txCnt)}} </router-link>
+                        <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} {{$lang.messages.address_latest_trans_of_total_pending}} )</router-link>
                     </div>
                     <div class=col-auto>
-                        <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All {{ obj.txCnt }} Txn</router-link>
-                        |<router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" ' >View All {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn</router-link>
+                        <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>{{$lang.messages.address_view_all_transactions.replace("{0}", obj.txCnt)}}</router-link>
+                        |<router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" ' >{{$lang.messages.address_view_all_transactions_pending.replace("{0}", obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt)}} </router-link>
                     </div>
                 </div>
 
                 <table class="mt20 table">
                     <tr>
-                        <th>TxHash</th>
-                        <th>Block</th>
-                        <th>Age</th>
-                        <th>From</th>
+                        <th>{{$lang.messages.address_table_txhash}}</th>
+                        <th>{{$lang.messages.address_table_block}}</th>
+                        <th>{{$lang.messages.address_table_age}}</th>
+                        <th>{{$lang.messages.address_table_from}}</th>
                         <th></th>
-                        <th>To</th>
-                        <th>Value</th>
-                        <th class=txfee>[TxFee]</th>
+                        <th>{{$lang.messages.address_table_to}}</th>
+                        <th>{{$lang.messages.address_table_value}}</th>
+                        <th class=txfee>{{$lang.messages.address_table_txfee}}</th>
                     </tr>
 
                     <tr v-for="o in txs">
@@ -103,7 +103,7 @@
                         </td>
                         <td>
                             <router-link v-if=o.block.height v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
-                            <i v-else>(pending)</i>
+                            <i v-else>{{$lang.messages.address_pending}}</i>
                         </td>
                         <td class=time>
                             <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
@@ -121,7 +121,7 @@
                         <td>{{ easyNumber(o.value/1000000000000000000) }} NAS</td>
                         <td class=txfee>
                             <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
-                            <i v-else>(pending)</i>
+                            <i v-else>{{$lang.messages.address_pending}}</i>
                         </td>
                     </tr>
                 </table>
@@ -137,16 +137,16 @@
                         <router-link v-bind:to='fragApi + "/blocks?m=" + $route.params.id'>{{ obj.mintedBlkCnt}}</router-link>)
                     </div>
                     <div class=col-auto>
-                        <router-link class="btn btn-link" v-bind:to='fragApi + "/blocks?m=" + $route.params.id'>View All</router-link>
+                        <router-link class="btn btn-link" v-bind:to='fragApi + "/blocks?m=" + $route.params.id'>{{$lang.messages.address_view_all}}</router-link>
                     </div>
                 </div>
 
                 <table class="mt20 table">
                     <tr>
-                        <th>Block</th>
-                        <th>Age</th>
-                        <th>txn</th>
-                        <th>Reward</th>
+                        <th>{{$lang.messages.address_table_block}}</th>
+                        <th>{{$lang.messages.address_table_age}}</th>
+                        <th>{{$lang.messages.address_table_txn}}</th>
+                        <th>{{$lang.messages.address_table_reward}}</th>
                     </tr>
                     <tr v-for="o in minted">
                         <td>
@@ -178,12 +178,12 @@
 
                 <table class="mt20 table">
                     <tr>
-                        <th>Block</th>
-                        <th>Age</th>
-                        <th>UncleNumber</th>
-                        <th>Difficulty</th>
-                        <th>GasReward</th>
-                        <th>Reward</th>
+                        <th>{{$lang.messages.address_table_block}}</th>
+                        <th>{{$lang.messages.address_table_age}}</th>
+                        <th>{{$lang.messages.address_table_unclenumber}}</th>
+                        <th>{{$lang.messages.address_table_difficulty}}</th>
+                        <th>{{$lang.messages.address_table_gasreward}}</th>
+                        <th>{{$lang.messages.address_table_reward}}</th>
                     </tr>
 
                     <tr>
@@ -216,7 +216,7 @@
         },
         computed: {
             tabButtons() {
-                return this.obj && this.obj.mintedBlkCnt ? ["Transactions", "Minted Blocks"] : ["Transactions"];
+                return this.obj && this.obj.mintedBlkCnt ? [this.$lang.messages.address_tab_transactions, this.$lang.messages.address_tab_mintedblocks] : [this.$lang.messages.address_tab_transactions];
             },
             urlChange() {
                 api.getAddress(this.$route.params.id, o => {
@@ -231,9 +231,9 @@
         data() {
             return {
                 breadcrumb: [
-                    { text: "Home", to: "/" },
-                    { text: "Normal Accounts", to: "/accounts" },
-                    { text: "Address", to: "" }
+                    { text: this.$lang.messages.breadcrumb_home, to: "/" },
+                    { text: this.$lang.messages.breadcrumb_normal_accounts, to: "/accounts" },
+                    { text: this.$lang.messages.breadcrumb_address, to: "" }
                 ],
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 minted: [],

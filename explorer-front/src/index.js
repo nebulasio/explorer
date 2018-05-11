@@ -5,6 +5,10 @@ var Vue = require("vue").default,
     vAppConfig = require("@/assets/app-config"),
     vRouter = new VueRouter({ routes: require("@/assets/routes") });
 
+var Lang = require('vuejs-localization');
+Lang.requireAll(require.context('../static/lang', true, /\.js$/));
+Vue.use(Lang);
+
 require("bootstrap");
 require("bootstrap/dist/css/bootstrap.min.css");
 require("font-awesome/css/font-awesome.min.css");
@@ -28,6 +32,8 @@ vApp = new Vue({
     el: ".vue",
     router: vRouter
 });
+
+vApp.$lang.setLang('en');
 
 ////////////////////////////////////////////////////////////
 //

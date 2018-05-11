@@ -1,22 +1,22 @@
 <template>
     <!-- https://etherscan.io/blocks -->
     <div class=vue-blocks>
-        <vue-bread v-bind:arr=breadcrumb title="Blocks"></vue-bread>
+        <vue-bread v-bind:arr=breadcrumb :title="$lang.messages.blocks_title"></vue-bread>
 
         <div class="container mt20">
             <div class="align-items-center info-and-pagination row">
-                <div class=col>Showing Block (#{{ heightFrom }} to #{{ heightTo }}) out of {{ totalBlocks }} total blocks</div>
+                <div class=col>{{$lang.messages.blocks_top_information.replace('{0}', heightFrom).replace('{1}', heightTo).replace('{2}', totalBlocks)}}</div>
                 <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
             </div>
             <table class="mt20 table">
                 <tr>
-                    <th>Height</th>
-                    <th class=text-right>Age</th>
-                    <th>txn</th>
-                    <th>Minted</th>
-                    <th class=text-right>Gas Reward</th>
-                    <th class=text-right>GasLimit</th>
-                    <th class=text-right>Avg.GasPrice</th>
+                    <th>{{$lang.messages.blocks_table_height}}</th>
+                    <th class=text-right>{{$lang.messages.blocks_table_age}}</th>
+                    <th>{{$lang.messages.blocks_table_txn}}</th>
+                    <th>{{$lang.messages.blocks_table_minted}}</th>
+                    <th class=text-right>{{$lang.messages.blocks_table_gasreward}}</th>
+                    <th class=text-right>{{$lang.messages.blocks_table_gaslimit}}</th>
+                    <th class=text-right>{{$lang.messages.blocks_table_gaslimit}}</th>
                 </tr>
                 <tr v-for="o in arr">
                     <td>
@@ -54,8 +54,8 @@
             return {
                 arr: [],
                 breadcrumb: [
-                    { text: "Home", to: "/" },
-                    { text: "Blocks", to: "" }
+                    { text: this.$lang.messages.breadcrumb_home, to: "/" },
+                    { text: this.$lang.messages.breadcrumb_blocks, to: "" }
                 ],
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",

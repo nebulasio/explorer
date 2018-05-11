@@ -58,11 +58,7 @@
                 <router-link v-bind:to="fragApi + '/'" class=navbar-brand>
                     <img src=/static/img/logo.png width=150 alt="">
                 </router-link>
-                <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
-<span class="fa fa-flask" aria-hidden=true></span>
-<span class=c777>This website is under heavy construction</span><br>
-<div>Feel free to submit issues by clicking this link 👍</div>
-                '>alpha</a>
+                <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true v-bind:title="'<span aria-hidden=true class=' + 'fa fa-flask' +'></span><span class=c777>' + this.$lang.messages.under_construction + '</span><br><div>' + this.$lang.messages.submit_issues + '</div>'">{{$lang.messages.alpha}}</a>
             </div>
 
             <button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
@@ -71,20 +67,20 @@
             <div class="collapse navbar-collapse" id=navbarSupportedContent>
                 <ul class="navbar-nav mr-auto">
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
-                        <router-link v-bind:to="fragApi + '/'" class=nav-link>HOME
+                        <router-link v-bind:to="fragApi + '/'" class=nav-link>{{$lang.messages.navigation_home}}
                             <span class=sr-only>(current)</span>
                         </router-link>
                     </li>
                     <li class="dropdown nav-item" v-bind:class="{ active: $route.meta.headerActive == 2 }">
-                        <a class="nav-link dropdown-toggle" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>BLOCKCHAIN</a>
+                        <a class="nav-link dropdown-toggle" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{$lang.messages.navigation_blockchain}}</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-blockchain>
-                            <router-link class=dropdown-item v-bind:to="fragApi + '/txs'">View Txns</router-link>
-                            <router-link class=dropdown-item v-bind:to="fragApi + '/txs/pending'">View Pending Txns</router-link>
-                            <router-link class=dropdown-item v-bind:to="fragApi + '/blocks'">View Blocks</router-link>
+                            <router-link class=dropdown-item v-bind:to="fragApi + '/txs'">{{$lang.messages.navigation_viewtxs}}</router-link>
+                            <router-link class=dropdown-item v-bind:to="fragApi + '/txs/pending'">{{$lang.messages.navigation_viewpendingtxs}}</router-link>
+                            <router-link class=dropdown-item v-bind:to="fragApi + '/blocks'">{{$lang.messages.navigation_viewblocks}}</router-link>
                         </div>
                     </li>
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
-                        <router-link class=nav-link v-bind:to="fragApi + '/accounts'">ACCOUNT</router-link>
+                        <router-link class=nav-link v-bind:to="fragApi + '/accounts'">{{$lang.messages.navigation_account}}</router-link>
                     </li>
                     <li class="dropdown nav-item">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{ MenuMisc }}</a>

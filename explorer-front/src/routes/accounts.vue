@@ -1,12 +1,12 @@
 <template>
     <!-- https://etherscan.io/accounts  -->
     <div class=vue-accounts>
-        <vue-bread v-bind:arr=breadcrumb title="All Accounts"></vue-bread>
+        <vue-bread v-bind:arr=breadcrumb :title="this.$lang.messages.accounts_all_accounts"></vue-bread>
 
         <div class="container mt20">
             <div class="align-items-center info-and-pagination row">
                 <div class=col>
-                    A total of {{ totalAccounts }} accounts found
+                   {{$lang.messages.accounts_totalfound.replace("{0}", totalAccounts)}}
                     <br>
                     <!-- <em>Displaying the last %2 records only</em> -->
                 </div>
@@ -15,11 +15,11 @@
 
             <table class="mt20 table">
                 <tr>
-                    <th>Rank</th>
-                    <th>Address</th>
-                    <th class=text-right>Balance</th>
-                    <th class=text-right>Percentage</th>
-                    <th class=text-right>TxCount</th>
+                    <th>{{$lang.messages.accounts_rank}}</th>
+                    <th>{{$lang.messages.accounts_address}}</th>
+                    <th class=text-right>{{$lang.messages.accounts_balance}}</th>
+                    <th class=text-right>{{$lang.messages.accounts_percentage}}</th>
+                    <th class=text-right>{{$lang.messages.accounts_txcount}}</th>
                 </tr>
                 <tr v-for="o in arr">
                     <td>{{ o.rank }}</td>
@@ -49,8 +49,8 @@
             return {
                 arr: [],
                 breadcrumb: [
-                    { text: "Home", to: "/" },
-                    { text: "Accounts", to: "" }
+                    { text: this.$lang.messages.breadcrumb_home, to: "/" },
+                    { text: this.$lang.messages.breadcrumb_accounts, to: "" }
                 ],
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",

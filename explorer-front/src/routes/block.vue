@@ -37,22 +37,22 @@
         <vue-tab-buttons class=mt20 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
         <div class=mt20></div>
         <div class=tab v-show="tab == 1">
-            <h4>Block Information</h4>
+            <h4>{{$lang.messages.block_information}}</h4>
             <table class=table v-if=block>
                 <tr>
-                    <td>Height</td>
+                    <td>{{$lang.messages.block_height}}</td>
                     <td>
                         <nav aria-label="Page navigation" class=navgation-tab>
                             <ul class=pagination>
                                 <li>
                                     <router-link v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label=Previous>
-                                        <span aria-hidden=true>&lt; Prev</span>
+                                        <span aria-hidden=true>&lt; {{$lang.messages.block_information_prev}}</span>
                                     </router-link>
                                 </li>
                                 <li>&nbsp; {{ block.height }} &nbsp;</li>
                                 <li>
                                     <router-link v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label=Next>
-                                        <span aria-hidden=true>Next &gt;</span>
+                                        <span aria-hidden=true>{{$lang.messages.block_information_next}} &gt;</span>
                                     </router-link>
                                 </li>
                             </ul>
@@ -60,46 +60,46 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>TimeStamp</td>
+                    <td>{{$lang.messages.block_timestamp}}</td>
                     <td>{{ timeConversion(Date.now() - block.timestamp ) }} ago ({{ new Date(block.timestamp).toString() }} | {{ block.timestamp }})</td>
                 </tr>
                 <tr>
-                    <td>Transactions</td>
+                    <td>{{$lang.messages.block_transactions}}</td>
                     <td>
                         <router-link v-bind:to='fragApi + "/txs?block=" + block.height'>{{ block.blkSummary.txCnt }}</router-link>
-                        tx in this block
+                        {{$lang.messages.block_transactions_inthisblock}}
                     </td>
                 </tr>
                 <tr>
-                    <td>Hash</td>
+                    <td>{{$lang.messages.block_hash}}</td>
                     <td class=monospace>{{ block.hash }}</td>
                 </tr>
                 <tr>
-                    <td>Parent Hash</td>
+                    <td>{{$lang.messages.block_parenthash}}</td>
                     <td class=monospace>
                         <router-link v-bind:to='fragApi + "/block/" + block.parentHash'>{{ block.parentHash }}</router-link>
                     </td>
                 </tr>
                 <tr>
-                    <td>Minted</td>
+                    <td>{{$lang.messages.block_minted}}</td>
                     <td class=monospace>
                         <router-link v-bind:to='fragApi + "/address/" + block.miner.hash'>{{ block.miner.hash }}</router-link>
                         <span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td>Coinbase</td>
+                    <td>{{$lang.messages.block_coinbase}}</td>
                     <td class=monospace>
                         <router-link v-bind:to='fragApi + "/address/" + block.coinbase'>{{ block.coinbase }}</router-link>
                     </td>
                 </tr>
                 <tr>
-                    <td>Dynasty</td>
+                    <td>{{$lang.messages.block_dynasty}}</td>
                     <td class="dynasty monospace">
 
                         <p>
                             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                Show Dynasty
+                                {{$lang.messages.block_show_dynasty_button}}
                             </button>
                         </p>
                         <div class="collapse" id="collapseExample">
@@ -113,7 +113,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Gas Reward</td>
+                    <td>{{$lang.messages.block_gas_reward}}</td>
                     <td>{{ toWei(block.blkSummary.gasReward) }}</td>
                 </tr>
             </table>
@@ -153,7 +153,7 @@
                 block: null,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 tab: 0,
-                tabButtons: ["Overview"]
+                tabButtons: [this.$lang.messages.block_tab_overview]
             };
         }
     };
