@@ -52,7 +52,7 @@ page:
   hostUrl: http://localhost:8080
 sync:
   open: true
-  subscribe : false
+  subscribe : true
 apiHost:
   coinmarketcap: https://api.coinmarketcap.com
   nebulas: https://testnet.nebulas.io
