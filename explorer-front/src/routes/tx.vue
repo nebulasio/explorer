@@ -10,6 +10,13 @@
     .vue-tx td.text {
         white-space: pre-line;
     }
+    .vue-tx .fail {
+        color:red;
+    }
+    .vue-tx .success {
+        color:green;
+    }
+
 </style>
 <template>
     <div class="container vue-tx" v-bind:triggerComputed=urlChange>
@@ -25,7 +32,15 @@
                 </tr>
                 <tr>
                     <td>TxReceipt Status:</td>
-                    <td>{{ tx.status == 0 ? 'fail' : tx.status == 1 ? 'Success' : 'pending' }}</td>
+                    <td v-if="tx.status == 0">
+                        <span class="fail">fail</span>
+                    </td>
+                    <td v-else-if="tx.status == 1">
+                        <span class="success">Success</span>
+                    </td>
+                    <td v-else>
+                        padding
+                    </td>
                 </tr>
                 <tr>
                     <td>Block Height:</td>
