@@ -43,7 +43,7 @@
 
     .vue-address .fail a {
         display: inline-block;
-        max-width: 160px;
+        max-width: 142px;
         overflow: hidden;
         text-overflow: ellipsis;
     }
