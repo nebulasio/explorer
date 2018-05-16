@@ -36,10 +36,10 @@
                         <span class="fail">fail</span>
                     </td>
                     <td v-else-if="tx.status == 1">
-                        <span class="success">Success</span>
+                        <span class="success">success</span>
                     </td>
                     <td v-else>
-                        padding
+                        pending
                     </td>
                 </tr>
                 <tr>
