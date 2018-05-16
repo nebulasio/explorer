@@ -32,8 +32,20 @@
         color: silver;
     }
 
-    .vue-address .tab a{
+    .vue-address .tab a {
         font-size: 13px;
+    }
+
+    .vue-address .fail {
+        background: url(../../static/img/warning_icon.png)no-repeat 0 10px;
+        padding-left: 28px;
+    }
+
+    .vue-address .fail a {
+        display: inline-block;
+        max-width: 160px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>
 <template>
@@ -81,7 +93,8 @@
                     </div>
                     <div class=col-auto>
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All {{ obj.txCnt }} Txn</router-link>
-                        |<router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" ' >View All {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn</router-link>
+                        |
+                        <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>View All {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn</router-link>
                     </div>
                 </div>
 
@@ -98,7 +111,10 @@
                     </tr>
 
                     <tr v-for="o in txs">
-                        <td class=tdxxxwddd>
+                        <td v-if="o.status == 0" class=fail>
+                            <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
+                        </td>
+                        <td class=tdxxxwddd v-if="o.status != 0">
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                         </td>
                         <td>
@@ -251,6 +267,12 @@
                 else
                     return "";
             },
+            failClass(o) {
+                if (o.status == 0)
+                    return "!";
+                else
+                    return " ";
+            },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
             },
@@ -263,7 +285,7 @@
             toWei(n) {
                 return utility.toWei(n);
             },
-            easyNumber(n){
+            easyNumber(n) {
                 return utility.easyNumber(n);
             }
         }
