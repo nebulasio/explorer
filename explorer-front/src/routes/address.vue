@@ -1,10 +1,11 @@
 <style>
     .vue-address td.out {
-        width: 50px;
+        width: 60px;
     }
 
     .vue-address td.in::before,
-    .vue-address td.out::before {
+    .vue-address td.out::before,
+    .vue-address td.contract::before {
         border-radius: 4px;
         color: white;
         padding: 3px 5px;
@@ -18,6 +19,11 @@
     .vue-address td.out::before {
         background-color: var(--orange);
         content: "out";
+    }
+
+    .vue-address td.contract::before {
+        background-color: var(--blue);
+        content: "contract creation";
     }
 
     .vue-address .container .table th {
@@ -92,6 +98,7 @@
                         <th>Age</th>
                         <th>From</th>
                         <th></th>
+                        <th></th>
                         <th>To</th>
                         <th>Value</th>
                         <th class=txfee>[TxFee]</th>
@@ -114,6 +121,7 @@
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
                         </td>
                         <td class=text-uppercase v-bind:class=inOutClass(o)></td>
+                        <td class=text-uppercase v-bind:class=contractClass(o)></td>
                         <td class=tdxxxwddd>
                             <span v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
@@ -250,6 +258,10 @@
                     return "in";
                 else
                     return "";
+            },
+            contractClass (o) {
+                if (o.type == "deploy")
+                    return "contract";
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);

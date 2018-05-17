@@ -16,7 +16,7 @@
             <table class="mt20 table">
                 <tr>
                     <th>Address</th>
-                    <th>ContractName</th>
+                    <th>Programming Language</th>
                     <th class=text-right>Balance</th>
                     <th class=text-right>TxCount</th>
                     <th class=text-right>DateCreated</th>
@@ -26,7 +26,7 @@
                         <router-link v-bind:to='fragApi + "/address/" + o.hash'>{{ o.hash }}</router-link>
                         <span v-show=o.alias> | {{ o.alias }}</span>
                     </td>
-                    <td class="monospace">{{ o.contractName }}</td>
+                    <td class=monospace>{{ o }}</td>
                     <td class=text-right>{{ toWei(o.balance) }}</td>
                     <td class=text-right>{{ o.percentage }}%</td>
                     <td class=text-right>{{ o.txCnt }}</td>
@@ -48,16 +48,17 @@
         data() {
             return {
                 arr: [],
+                prr: [],
                 breadcrumb: [
                     { text: "Home", to: "/" },
-                    { text: "Accounts", to: "" }
                     { text: "Contracts", to: "" }
                 ],
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
-                totalAccounts: 0,
+                totalContracts: 0,
                 totalBalance: 0,
-                totalPage: 0
+                totalPage: 0,
+                tx: null
             };
         },
         methods: {
@@ -73,7 +74,7 @@
                         this.$root.showModalLoading = false;
                         this.arr = o.addressList;
                         this.currentPage = o.page;
-                        this.totalAccounts = o.totalAccountsCnt;
+                        this.totalContracts = o.totalContractsCnt;
                         this.totalBalance = o.totalBalance;
                         this.totalPage = o.totalPage;
 
@@ -88,6 +89,12 @@
                         console.log(xhr);
                         this.$root.showModalLoading = false;
                         this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                    });
+
+                    api.getAddress(this.$route.params.id, e => {
+                        this.minted = e.mintedBlkList;
+                        this.obj = e;
+                        this.txs = e.txList;
                     });
                 }
             },
