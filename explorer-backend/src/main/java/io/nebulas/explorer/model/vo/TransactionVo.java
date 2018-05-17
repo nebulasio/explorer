@@ -60,6 +60,9 @@ public class TransactionVo implements Serializable {
         this.timestamp = txn.getTimestamp();
         this.currentTimestamp = new Date();
         this.timeDiff = System.currentTimeMillis() - txn.getTimestamp().getTime();
+        if (this.timeDiff < 0) {
+            this.timeDiff = 0L;
+        }
         this.createdAt = txn.getCreatedAt();
         return this;
     }
@@ -79,6 +82,9 @@ public class TransactionVo implements Serializable {
         this.timestamp = txn.getTimestamp();
         this.currentTimestamp = new Date();
         this.timeDiff = System.currentTimeMillis() - txn.getTimestamp().getTime();
+        if (this.timeDiff < 0) {
+            this.timeDiff = 0L;
+        }
         this.createdAt = txn.getCreatedAt();
         return this;
     }
