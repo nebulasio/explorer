@@ -127,7 +127,7 @@
                 });
             },
             timeConversion(ms) {
-                return utility.timeConversion(ms / 1000);
+                return utility.timeConversion(ms);
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
