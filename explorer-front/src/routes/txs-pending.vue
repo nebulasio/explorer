@@ -23,7 +23,7 @@
                         <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>
                     <td class=time>
-                        <div class=text-right>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
+                        <div class=text-right>{{ timeConversion(o.timeDiff) }} ago</div>
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td class=text-right>{{ numberAddComma(o.gasLimit) }}</td>
