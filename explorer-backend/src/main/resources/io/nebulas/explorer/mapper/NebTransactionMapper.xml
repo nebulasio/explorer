@@ -18,6 +18,8 @@
         <result column="gas_limit" property="gasLimit" jdbcType="VARCHAR"/>
         <result column="gas_used" property="gasUsed" jdbcType="VARCHAR"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="contract_address" property="contractAddress" jdbcType="VARCHAR"/>
+        <result column="execute_error" property="executeError" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
       `hash`,
@@ -32,16 +34,18 @@
       `timestamp`,
       `type`,
       `data`,
+      `contract_address`,
       `gas_price`,
       `gas_limit`,
       `gas_used`,
-      `created_at`
+      `created_at`,
+      `execute_error`
     </sql>
 
     <insert id="addNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
-        replace INTO `neb_transaction` (`hash`, `block_hash`, `block_height`, `tx_seq`, `from`, `to`, `status`, `value`,`nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
+        replace INTO `neb_transaction` (`hash`, `block_hash`, `block_height`, `tx_seq`, `from`, `to`, `status`, `value`,`nonce`, `timestamp`, `type`, `data`, `contract_address`, `gas_price`, `gas_limit`, `gas_used`, `created_at`, `execute_error`)
         VALUES
-        (#{hash}, #{blockHash}, #{blockHeight}, #{txSeq}, #{from}, #{to}, #{status}, #{value}, #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}, #{gasLimit}, #{gasUsed}, #{createdAt})
+        (#{hash}, #{blockHash}, #{blockHeight}, #{txSeq}, #{from}, #{to}, #{status}, #{value}, #{nonce}, #{timestamp}, #{type}, #{data}, #{contractAddress}, #{gasPrice}, #{gasLimit}, #{gasUsed}, #{createdAt}, #{executeError})
     </insert>
 
     <delete id="deleteByBlkHeight" parameterType="map">

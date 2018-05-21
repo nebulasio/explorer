@@ -72,5 +72,10 @@ public class NebPendingTransaction implements Serializable {
      */
     private String data;
 
+    /**
+     * contract address. it is not null, when the type of transaction is deploy.
+     */
+    private String contractAddress;
+
     private static final long serialVersionUID = 1L;
 }

@@ -150,11 +150,13 @@ public class NebSyncService {
                 .nonce(tx.getNonce())
                 .timestamp(new Date(tx.getTimestamp() * 1000))
                 .type(tx.getType())
+                .contractAddress(StringUtils.isEmpty(tx.getContractAddress()) ? "" : tx.getContractAddress())
                 .data(blkHeight == 1 ? convertData(typeEnum, tx.getData()) : tx.getData())
                 .gasPrice(tx.getGasPrice())
                 .gasLimit(tx.getGasLimit())
                 .gasUsed(tx.getGasUsed())
                 .createdAt(new Date())
+                .executeError(StringUtils.isEmpty(tx.getExecuteError()) ? "" : tx.getExecuteError())
                 .build();
         nebTransactionService.addNebTransaction(nebTxs);
     }
@@ -194,6 +196,7 @@ public class NebSyncService {
                         .nonce(txSource.getNonce())
                         .timestamp(new Date(txSource.getTimestamp() * 1000))
                         .type(txSource.getType())
+                        .contractAddress(StringUtils.isEmpty(txSource.getContractAddress()) ? "" : txSource.getContractAddress())
                         .gasPrice(txSource.getGasPrice())
                         .gasLimit(txSource.getGasLimit())
                         .createdAt(new Date())
