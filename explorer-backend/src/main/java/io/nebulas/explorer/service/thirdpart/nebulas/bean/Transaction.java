@@ -35,4 +35,6 @@ public class Transaction implements Serializable {
     private String gasLimit;
     private String contractAddress;
     private Integer status;
+    private String executeError;
+    private String executeResult;
 }

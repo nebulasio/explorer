@@ -4,6 +4,7 @@ import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
@@ -40,10 +41,12 @@ public class BlockHelper {
                 .timestamp(new Date(tx.getTimestamp() * 1000))
                 .type(tx.getType())
                 .data(data)
+                .contractAddress(StringUtils.isEmpty(tx.getContractAddress()) ? "" : tx.getContractAddress())
                 .gasPrice(tx.getGasPrice())
                 .gasLimit(tx.getGasLimit())
                 .gasUsed(tx.getGasUsed())
                 .createdAt(new Date())
+                .executeError(StringUtils.isEmpty(tx.getExecuteError()) ? "" : tx.getExecuteError())
                 .build();
     }
 }
