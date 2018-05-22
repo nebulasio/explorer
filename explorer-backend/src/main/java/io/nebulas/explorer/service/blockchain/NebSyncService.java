@@ -184,7 +184,7 @@ public class NebSyncService {
                     String realReceiver = extractReceiverAddress(txSource.getData());
                     syncAddress(realReceiver, NebAddressTypeEnum.NORMAL);
                 } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
-                    syncAddress(txSource.getContractAddress(), NebAddressTypeEnum.NORMAL);
+                    syncAddress(txSource.getContractAddress(), NebAddressTypeEnum.CONTRACT);
                 }
 
                 log.info("get pending tx by hash {}", hash);
