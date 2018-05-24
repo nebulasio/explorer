@@ -55,7 +55,7 @@ sync:
   subscribe : true
 apiHost:
   coinmarketcap: https://api.coinmarketcap.com
-  nebulas: http://13.57.96.40:8685
+  nebulas: https://testnet.nebulas.io
 redis:
   host: 127.0.0.1
   port: 6379
