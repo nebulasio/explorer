@@ -13,7 +13,8 @@ module.exports = {
     toWei: toWei,
     easyNumber:easyNumber,
     ua: ua,
-    yyyymmdd: yyyymmdd
+    yyyymmdd: yyyymmdd,
+    getNebulasNetHost: getNebulasNetHost
 };
 
 ////////////////////////////////////////////////////////////
@@ -215,4 +216,18 @@ function ua() {
 function yyyymmdd(dateNow) {
     var d = new Date(dateNow);
     return 10000 * d.getFullYear() + 100 * d.getMonth() + 100 + d.getDate();
+}
+
+function getNebulasNetHost(net){
+    var mainnet = 'https://mainnet.nebulas.io/v1'
+    
+    if(!net){
+        return mainnet
+    }
+
+    if (net.toLowerCase() == 'testnet') {
+        return 'https://testnet.nebulas.io/v1'
+    }
+
+    return mainnet
 }
