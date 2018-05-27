@@ -92,6 +92,8 @@
                         <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
                     </div>
                     <div class=col-auto>
+                        <span v-if="contractHash"><router-link class="btn btn-link" v-bind:to='fragApi + "/tx/"+contractHash'>View Smart Contract</router-link>
+                        |</span>
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All {{ obj.txCnt }} Txn</router-link>
                         |
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>View All {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn</router-link>
@@ -235,9 +237,16 @@
                 return this.obj && this.obj.mintedBlkCnt ? ["Transactions", "Minted Blocks"] : ["Transactions"];
             },
             urlChange() {
+                this.contractHash = ""
                 api.getAddress(this.$route.params.id, o => {
                     this.minted = o.mintedBlkList;
                     this.obj = o;
+                    if(o.address.type == 1){// this is a smart contract address
+                        api.getTransactionByContract({address:o.address.hash}, this.$route.params.api, (transaction) =>{
+                            var transaction = JSON.parse(transaction)
+                            this.contractHash = transaction.result.hash
+                        })
+                    }
                     this.txs = o.txList;
                 }, xhr => {
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
@@ -246,6 +255,7 @@
         },
         data() {
             return {
+                contractHash:"",
                 breadcrumb: [
                     { text: "Home", to: "/" },
                     { text: "Normal Accounts", to: "/accounts" },
