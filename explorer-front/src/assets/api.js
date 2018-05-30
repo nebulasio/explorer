@@ -1,5 +1,5 @@
 
-var { ajax, ajaxSplitAction } = require("@/assets/utility");
+var { ajax, ajaxSplitAction, getNebulasNetHost } = require("@/assets/utility");
 
 module.exports = {
     // get api/account?
@@ -14,6 +14,7 @@ module.exports = {
                 fail(xhr);
         }, fail);
     },
+
 
     // get api/address?
     // - p      - 页码, 默认 1
@@ -35,6 +36,10 @@ module.exports = {
             else if (typeof fail == "function")
                 fail(xhr);
         }
+    },
+    getTransactionByContract(t, netname, done, fail) {
+        var host =  getNebulasNetHost(netname)
+        ajax('POST ' + host + '/user/getTransactionByContract', t, done, fail)
     },
 
     // get api/block?
