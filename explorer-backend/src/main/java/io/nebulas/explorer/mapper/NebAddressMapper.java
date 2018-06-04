@@ -17,11 +17,11 @@ import java.util.List;
 @Mapper
 public interface NebAddressMapper {
 
-    Integer add(@Param("hash") String hash, @Param("type") Integer type);
+//    Integer add(@Param("hash") String hash, @Param("type") Integer type);
 
-    Integer addAddress(@Param("hash") String hash, @Param("type") Integer type, @Param("balance") BigDecimal balance);
+    Integer addAddress(@Param("hash") String hash, @Param("nonce") String nonce, @Param("type") Integer type, @Param("balance") BigDecimal balance);
 
-    Integer update(@Param("hash") String hash, @Param("balance") BigDecimal balance);
+    Integer update(@Param("hash") String hash, @Param("balance") BigDecimal balance, @Param("nonce") String nonce);
 
     long countTotalAddressCnt();
 
