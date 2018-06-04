@@ -21,7 +21,7 @@ import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
  * </pre>
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.9.0)",
+    value = "by gRPC proto compiler (version 1.12.0)",
     comments = "Source: rpc.proto")
 public final class ApiServiceGrpc {
 
@@ -33,7 +33,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getGetNebStateMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
-      rpcpb.Rpc.GetNebStateResponse> METHOD_GET_NEB_STATE = getGetNebStateMethod();
+      rpcpb.Rpc.GetNebStateResponse> METHOD_GET_NEB_STATE = getGetNebStateMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.GetNebStateResponse> getGetNebStateMethod;
@@ -41,6 +41,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.GetNebStateResponse> getGetNebStateMethod() {
+    return getGetNebStateMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
+      rpcpb.Rpc.GetNebStateResponse> getGetNebStateMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest, rpcpb.Rpc.GetNebStateResponse> getGetNebStateMethod;
     if ((getGetNebStateMethod = ApiServiceGrpc.getGetNebStateMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -65,7 +70,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getNodeInfoMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
-      rpcpb.Rpc.NodeInfoResponse> METHOD_NODE_INFO = getNodeInfoMethod();
+      rpcpb.Rpc.NodeInfoResponse> METHOD_NODE_INFO = getNodeInfoMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.NodeInfoResponse> getNodeInfoMethod;
@@ -73,6 +78,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.NodeInfoResponse> getNodeInfoMethod() {
+    return getNodeInfoMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
+      rpcpb.Rpc.NodeInfoResponse> getNodeInfoMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest, rpcpb.Rpc.NodeInfoResponse> getNodeInfoMethod;
     if ((getNodeInfoMethod = ApiServiceGrpc.getNodeInfoMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -97,7 +107,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getBlockDumpMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.BlockDumpRequest,
-      rpcpb.Rpc.BlockDumpResponse> METHOD_BLOCK_DUMP = getBlockDumpMethod();
+      rpcpb.Rpc.BlockDumpResponse> METHOD_BLOCK_DUMP = getBlockDumpMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.BlockDumpRequest,
       rpcpb.Rpc.BlockDumpResponse> getBlockDumpMethod;
@@ -105,6 +115,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.BlockDumpRequest,
       rpcpb.Rpc.BlockDumpResponse> getBlockDumpMethod() {
+    return getBlockDumpMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.BlockDumpRequest,
+      rpcpb.Rpc.BlockDumpResponse> getBlockDumpMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.BlockDumpRequest, rpcpb.Rpc.BlockDumpResponse> getBlockDumpMethod;
     if ((getBlockDumpMethod = ApiServiceGrpc.getBlockDumpMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -129,7 +144,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getLatestIrreversibleBlockMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
-      rpcpb.Rpc.BlockResponse> METHOD_LATEST_IRREVERSIBLE_BLOCK = getLatestIrreversibleBlockMethod();
+      rpcpb.Rpc.BlockResponse> METHOD_LATEST_IRREVERSIBLE_BLOCK = getLatestIrreversibleBlockMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.BlockResponse> getLatestIrreversibleBlockMethod;
@@ -137,6 +152,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.BlockResponse> getLatestIrreversibleBlockMethod() {
+    return getLatestIrreversibleBlockMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
+      rpcpb.Rpc.BlockResponse> getLatestIrreversibleBlockMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest, rpcpb.Rpc.BlockResponse> getLatestIrreversibleBlockMethod;
     if ((getLatestIrreversibleBlockMethod = ApiServiceGrpc.getLatestIrreversibleBlockMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -161,7 +181,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getAccountsMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
-      rpcpb.Rpc.AccountsResponse> METHOD_ACCOUNTS = getAccountsMethod();
+      rpcpb.Rpc.AccountsResponse> METHOD_ACCOUNTS = getAccountsMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.AccountsResponse> getAccountsMethod;
@@ -169,6 +189,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.AccountsResponse> getAccountsMethod() {
+    return getAccountsMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
+      rpcpb.Rpc.AccountsResponse> getAccountsMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest, rpcpb.Rpc.AccountsResponse> getAccountsMethod;
     if ((getAccountsMethod = ApiServiceGrpc.getAccountsMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -193,7 +218,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getGetAccountStateMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.GetAccountStateRequest,
-      rpcpb.Rpc.GetAccountStateResponse> METHOD_GET_ACCOUNT_STATE = getGetAccountStateMethod();
+      rpcpb.Rpc.GetAccountStateResponse> METHOD_GET_ACCOUNT_STATE = getGetAccountStateMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.GetAccountStateRequest,
       rpcpb.Rpc.GetAccountStateResponse> getGetAccountStateMethod;
@@ -201,6 +226,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.GetAccountStateRequest,
       rpcpb.Rpc.GetAccountStateResponse> getGetAccountStateMethod() {
+    return getGetAccountStateMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.GetAccountStateRequest,
+      rpcpb.Rpc.GetAccountStateResponse> getGetAccountStateMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.GetAccountStateRequest, rpcpb.Rpc.GetAccountStateResponse> getGetAccountStateMethod;
     if ((getGetAccountStateMethod = ApiServiceGrpc.getGetAccountStateMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -225,7 +255,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getSendTransactionMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
-      rpcpb.Rpc.SendTransactionResponse> METHOD_SEND_TRANSACTION = getSendTransactionMethod();
+      rpcpb.Rpc.SendTransactionResponse> METHOD_SEND_TRANSACTION = getSendTransactionMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
       rpcpb.Rpc.SendTransactionResponse> getSendTransactionMethod;
@@ -233,6 +263,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
       rpcpb.Rpc.SendTransactionResponse> getSendTransactionMethod() {
+    return getSendTransactionMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
+      rpcpb.Rpc.SendTransactionResponse> getSendTransactionMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest, rpcpb.Rpc.SendTransactionResponse> getSendTransactionMethod;
     if ((getSendTransactionMethod = ApiServiceGrpc.getSendTransactionMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -257,7 +292,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getCallMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
-      rpcpb.Rpc.CallResponse> METHOD_CALL = getCallMethod();
+      rpcpb.Rpc.CallResponse> METHOD_CALL = getCallMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
       rpcpb.Rpc.CallResponse> getCallMethod;
@@ -265,6 +300,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
       rpcpb.Rpc.CallResponse> getCallMethod() {
+    return getCallMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
+      rpcpb.Rpc.CallResponse> getCallMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest, rpcpb.Rpc.CallResponse> getCallMethod;
     if ((getCallMethod = ApiServiceGrpc.getCallMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -289,7 +329,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getSendRawTransactionMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.SendRawTransactionRequest,
-      rpcpb.Rpc.SendTransactionResponse> METHOD_SEND_RAW_TRANSACTION = getSendRawTransactionMethod();
+      rpcpb.Rpc.SendTransactionResponse> METHOD_SEND_RAW_TRANSACTION = getSendRawTransactionMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.SendRawTransactionRequest,
       rpcpb.Rpc.SendTransactionResponse> getSendRawTransactionMethod;
@@ -297,6 +337,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.SendRawTransactionRequest,
       rpcpb.Rpc.SendTransactionResponse> getSendRawTransactionMethod() {
+    return getSendRawTransactionMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.SendRawTransactionRequest,
+      rpcpb.Rpc.SendTransactionResponse> getSendRawTransactionMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.SendRawTransactionRequest, rpcpb.Rpc.SendTransactionResponse> getSendRawTransactionMethod;
     if ((getSendRawTransactionMethod = ApiServiceGrpc.getSendRawTransactionMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -321,7 +366,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getGetBlockByHashMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.GetBlockByHashRequest,
-      rpcpb.Rpc.BlockResponse> METHOD_GET_BLOCK_BY_HASH = getGetBlockByHashMethod();
+      rpcpb.Rpc.BlockResponse> METHOD_GET_BLOCK_BY_HASH = getGetBlockByHashMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.GetBlockByHashRequest,
       rpcpb.Rpc.BlockResponse> getGetBlockByHashMethod;
@@ -329,6 +374,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.GetBlockByHashRequest,
       rpcpb.Rpc.BlockResponse> getGetBlockByHashMethod() {
+    return getGetBlockByHashMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.GetBlockByHashRequest,
+      rpcpb.Rpc.BlockResponse> getGetBlockByHashMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.GetBlockByHashRequest, rpcpb.Rpc.BlockResponse> getGetBlockByHashMethod;
     if ((getGetBlockByHashMethod = ApiServiceGrpc.getGetBlockByHashMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -353,7 +403,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getGetBlockByHeightMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.GetBlockByHeightRequest,
-      rpcpb.Rpc.BlockResponse> METHOD_GET_BLOCK_BY_HEIGHT = getGetBlockByHeightMethod();
+      rpcpb.Rpc.BlockResponse> METHOD_GET_BLOCK_BY_HEIGHT = getGetBlockByHeightMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.GetBlockByHeightRequest,
       rpcpb.Rpc.BlockResponse> getGetBlockByHeightMethod;
@@ -361,6 +411,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.GetBlockByHeightRequest,
       rpcpb.Rpc.BlockResponse> getGetBlockByHeightMethod() {
+    return getGetBlockByHeightMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.GetBlockByHeightRequest,
+      rpcpb.Rpc.BlockResponse> getGetBlockByHeightMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.GetBlockByHeightRequest, rpcpb.Rpc.BlockResponse> getGetBlockByHeightMethod;
     if ((getGetBlockByHeightMethod = ApiServiceGrpc.getGetBlockByHeightMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -385,7 +440,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getGetTransactionReceiptMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.GetTransactionByHashRequest,
-      rpcpb.Rpc.TransactionResponse> METHOD_GET_TRANSACTION_RECEIPT = getGetTransactionReceiptMethod();
+      rpcpb.Rpc.TransactionResponse> METHOD_GET_TRANSACTION_RECEIPT = getGetTransactionReceiptMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.GetTransactionByHashRequest,
       rpcpb.Rpc.TransactionResponse> getGetTransactionReceiptMethod;
@@ -393,6 +448,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.GetTransactionByHashRequest,
       rpcpb.Rpc.TransactionResponse> getGetTransactionReceiptMethod() {
+    return getGetTransactionReceiptMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.GetTransactionByHashRequest,
+      rpcpb.Rpc.TransactionResponse> getGetTransactionReceiptMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.GetTransactionByHashRequest, rpcpb.Rpc.TransactionResponse> getGetTransactionReceiptMethod;
     if ((getGetTransactionReceiptMethod = ApiServiceGrpc.getGetTransactionReceiptMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -417,7 +477,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getSubscribeMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.SubscribeRequest,
-      rpcpb.Rpc.SubscribeResponse> METHOD_SUBSCRIBE = getSubscribeMethod();
+      rpcpb.Rpc.SubscribeResponse> METHOD_SUBSCRIBE = getSubscribeMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.SubscribeRequest,
       rpcpb.Rpc.SubscribeResponse> getSubscribeMethod;
@@ -425,6 +485,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.SubscribeRequest,
       rpcpb.Rpc.SubscribeResponse> getSubscribeMethod() {
+    return getSubscribeMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.SubscribeRequest,
+      rpcpb.Rpc.SubscribeResponse> getSubscribeMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.SubscribeRequest, rpcpb.Rpc.SubscribeResponse> getSubscribeMethod;
     if ((getSubscribeMethod = ApiServiceGrpc.getSubscribeMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -449,7 +514,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getGetGasPriceMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
-      rpcpb.Rpc.GasPriceResponse> METHOD_GET_GAS_PRICE = getGetGasPriceMethod();
+      rpcpb.Rpc.GasPriceResponse> METHOD_GET_GAS_PRICE = getGetGasPriceMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.GasPriceResponse> getGetGasPriceMethod;
@@ -457,6 +522,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.GasPriceResponse> getGetGasPriceMethod() {
+    return getGetGasPriceMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
+      rpcpb.Rpc.GasPriceResponse> getGetGasPriceMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest, rpcpb.Rpc.GasPriceResponse> getGetGasPriceMethod;
     if ((getGetGasPriceMethod = ApiServiceGrpc.getGetGasPriceMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -481,7 +551,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getEstimateGasMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
-      rpcpb.Rpc.GasResponse> METHOD_ESTIMATE_GAS = getEstimateGasMethod();
+      rpcpb.Rpc.GasResponse> METHOD_ESTIMATE_GAS = getEstimateGasMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
       rpcpb.Rpc.GasResponse> getEstimateGasMethod;
@@ -489,6 +559,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
       rpcpb.Rpc.GasResponse> getEstimateGasMethod() {
+    return getEstimateGasMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
+      rpcpb.Rpc.GasResponse> getEstimateGasMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest, rpcpb.Rpc.GasResponse> getEstimateGasMethod;
     if ((getEstimateGasMethod = ApiServiceGrpc.getEstimateGasMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -513,7 +588,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getGetGasUsedMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.HashRequest,
-      rpcpb.Rpc.GasResponse> METHOD_GET_GAS_USED = getGetGasUsedMethod();
+      rpcpb.Rpc.GasResponse> METHOD_GET_GAS_USED = getGetGasUsedMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.HashRequest,
       rpcpb.Rpc.GasResponse> getGetGasUsedMethod;
@@ -521,6 +596,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.HashRequest,
       rpcpb.Rpc.GasResponse> getGetGasUsedMethod() {
+    return getGetGasUsedMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.HashRequest,
+      rpcpb.Rpc.GasResponse> getGetGasUsedMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.HashRequest, rpcpb.Rpc.GasResponse> getGetGasUsedMethod;
     if ((getGetGasUsedMethod = ApiServiceGrpc.getGetGasUsedMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -545,7 +625,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getGetEventsByHashMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.HashRequest,
-      rpcpb.Rpc.EventsResponse> METHOD_GET_EVENTS_BY_HASH = getGetEventsByHashMethod();
+      rpcpb.Rpc.EventsResponse> METHOD_GET_EVENTS_BY_HASH = getGetEventsByHashMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.HashRequest,
       rpcpb.Rpc.EventsResponse> getGetEventsByHashMethod;
@@ -553,6 +633,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.HashRequest,
       rpcpb.Rpc.EventsResponse> getGetEventsByHashMethod() {
+    return getGetEventsByHashMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.HashRequest,
+      rpcpb.Rpc.EventsResponse> getGetEventsByHashMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.HashRequest, rpcpb.Rpc.EventsResponse> getGetEventsByHashMethod;
     if ((getGetEventsByHashMethod = ApiServiceGrpc.getGetEventsByHashMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -577,7 +662,7 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getGetDynastyMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
-      rpcpb.Rpc.GetDynastyResponse> METHOD_GET_DYNASTY = getGetDynastyMethod();
+      rpcpb.Rpc.GetDynastyResponse> METHOD_GET_DYNASTY = getGetDynastyMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
       rpcpb.Rpc.GetDynastyResponse> getGetDynastyMethod;
@@ -585,6 +670,11 @@ public final class ApiServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
       rpcpb.Rpc.GetDynastyResponse> getGetDynastyMethod() {
+    return getGetDynastyMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
+      rpcpb.Rpc.GetDynastyResponse> getGetDynastyMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest, rpcpb.Rpc.GetDynastyResponse> getGetDynastyMethod;
     if ((getGetDynastyMethod = ApiServiceGrpc.getGetDynastyMethod) == null) {
       synchronized (ApiServiceGrpc.class) {
@@ -644,7 +734,7 @@ public final class ApiServiceGrpc {
      */
     public void getNebState(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GetNebStateResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetNebStateMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetNebStateMethodHelper(), responseObserver);
     }
 
     /**
@@ -654,7 +744,7 @@ public final class ApiServiceGrpc {
      */
     public void nodeInfo(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.NodeInfoResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getNodeInfoMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getNodeInfoMethodHelper(), responseObserver);
     }
 
     /**
@@ -664,7 +754,7 @@ public final class ApiServiceGrpc {
      */
     public void blockDump(rpcpb.Rpc.BlockDumpRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.BlockDumpResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getBlockDumpMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getBlockDumpMethodHelper(), responseObserver);
     }
 
     /**
@@ -674,7 +764,7 @@ public final class ApiServiceGrpc {
      */
     public void latestIrreversibleBlock(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.BlockResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getLatestIrreversibleBlockMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getLatestIrreversibleBlockMethodHelper(), responseObserver);
     }
 
     /**
@@ -684,7 +774,7 @@ public final class ApiServiceGrpc {
      */
     public void accounts(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.AccountsResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getAccountsMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getAccountsMethodHelper(), responseObserver);
     }
 
     /**
@@ -694,7 +784,7 @@ public final class ApiServiceGrpc {
      */
     public void getAccountState(rpcpb.Rpc.GetAccountStateRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GetAccountStateResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetAccountStateMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetAccountStateMethodHelper(), responseObserver);
     }
 
     /**
@@ -704,7 +794,7 @@ public final class ApiServiceGrpc {
      */
     public void sendTransaction(rpcpb.Rpc.TransactionRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.SendTransactionResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getSendTransactionMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getSendTransactionMethodHelper(), responseObserver);
     }
 
     /**
@@ -714,7 +804,7 @@ public final class ApiServiceGrpc {
      */
     public void call(rpcpb.Rpc.TransactionRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.CallResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getCallMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getCallMethodHelper(), responseObserver);
     }
 
     /**
@@ -724,7 +814,7 @@ public final class ApiServiceGrpc {
      */
     public void sendRawTransaction(rpcpb.Rpc.SendRawTransactionRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.SendTransactionResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getSendRawTransactionMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getSendRawTransactionMethodHelper(), responseObserver);
     }
 
     /**
@@ -734,7 +824,7 @@ public final class ApiServiceGrpc {
      */
     public void getBlockByHash(rpcpb.Rpc.GetBlockByHashRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.BlockResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetBlockByHashMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetBlockByHashMethodHelper(), responseObserver);
     }
 
     /**
@@ -744,7 +834,7 @@ public final class ApiServiceGrpc {
      */
     public void getBlockByHeight(rpcpb.Rpc.GetBlockByHeightRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.BlockResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetBlockByHeightMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetBlockByHeightMethodHelper(), responseObserver);
     }
 
     /**
@@ -754,7 +844,7 @@ public final class ApiServiceGrpc {
      */
     public void getTransactionReceipt(rpcpb.Rpc.GetTransactionByHashRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.TransactionResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetTransactionReceiptMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetTransactionReceiptMethodHelper(), responseObserver);
     }
 
     /**
@@ -764,7 +854,7 @@ public final class ApiServiceGrpc {
      */
     public void subscribe(rpcpb.Rpc.SubscribeRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.SubscribeResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getSubscribeMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getSubscribeMethodHelper(), responseObserver);
     }
 
     /**
@@ -774,7 +864,7 @@ public final class ApiServiceGrpc {
      */
     public void getGasPrice(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GasPriceResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetGasPriceMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetGasPriceMethodHelper(), responseObserver);
     }
 
     /**
@@ -784,7 +874,7 @@ public final class ApiServiceGrpc {
      */
     public void estimateGas(rpcpb.Rpc.TransactionRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GasResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getEstimateGasMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getEstimateGasMethodHelper(), responseObserver);
     }
 
     /**
@@ -794,146 +884,146 @@ public final class ApiServiceGrpc {
      */
     public void getGasUsed(rpcpb.Rpc.HashRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GasResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetGasUsedMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetGasUsedMethodHelper(), responseObserver);
     }
 
     /**
      */
     public void getEventsByHash(rpcpb.Rpc.HashRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.EventsResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetEventsByHashMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetEventsByHashMethodHelper(), responseObserver);
     }
 
     /**
      */
     public void getDynasty(rpcpb.Rpc.ByBlockHeightRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GetDynastyResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetDynastyMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetDynastyMethodHelper(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
-            getGetNebStateMethod(),
+            getGetNebStateMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.NonParamsRequest,
                 rpcpb.Rpc.GetNebStateResponse>(
                   this, METHODID_GET_NEB_STATE)))
           .addMethod(
-            getNodeInfoMethod(),
+            getNodeInfoMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.NonParamsRequest,
                 rpcpb.Rpc.NodeInfoResponse>(
                   this, METHODID_NODE_INFO)))
           .addMethod(
-            getBlockDumpMethod(),
+            getBlockDumpMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.BlockDumpRequest,
                 rpcpb.Rpc.BlockDumpResponse>(
                   this, METHODID_BLOCK_DUMP)))
           .addMethod(
-            getLatestIrreversibleBlockMethod(),
+            getLatestIrreversibleBlockMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.NonParamsRequest,
                 rpcpb.Rpc.BlockResponse>(
                   this, METHODID_LATEST_IRREVERSIBLE_BLOCK)))
           .addMethod(
-            getAccountsMethod(),
+            getAccountsMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.NonParamsRequest,
                 rpcpb.Rpc.AccountsResponse>(
                   this, METHODID_ACCOUNTS)))
           .addMethod(
-            getGetAccountStateMethod(),
+            getGetAccountStateMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.GetAccountStateRequest,
                 rpcpb.Rpc.GetAccountStateResponse>(
                   this, METHODID_GET_ACCOUNT_STATE)))
           .addMethod(
-            getSendTransactionMethod(),
+            getSendTransactionMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.TransactionRequest,
                 rpcpb.Rpc.SendTransactionResponse>(
                   this, METHODID_SEND_TRANSACTION)))
           .addMethod(
-            getCallMethod(),
+            getCallMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.TransactionRequest,
                 rpcpb.Rpc.CallResponse>(
                   this, METHODID_CALL)))
           .addMethod(
-            getSendRawTransactionMethod(),
+            getSendRawTransactionMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.SendRawTransactionRequest,
                 rpcpb.Rpc.SendTransactionResponse>(
                   this, METHODID_SEND_RAW_TRANSACTION)))
           .addMethod(
-            getGetBlockByHashMethod(),
+            getGetBlockByHashMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.GetBlockByHashRequest,
                 rpcpb.Rpc.BlockResponse>(
                   this, METHODID_GET_BLOCK_BY_HASH)))
           .addMethod(
-            getGetBlockByHeightMethod(),
+            getGetBlockByHeightMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.GetBlockByHeightRequest,
                 rpcpb.Rpc.BlockResponse>(
                   this, METHODID_GET_BLOCK_BY_HEIGHT)))
           .addMethod(
-            getGetTransactionReceiptMethod(),
+            getGetTransactionReceiptMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.GetTransactionByHashRequest,
                 rpcpb.Rpc.TransactionResponse>(
                   this, METHODID_GET_TRANSACTION_RECEIPT)))
           .addMethod(
-            getSubscribeMethod(),
+            getSubscribeMethodHelper(),
             asyncServerStreamingCall(
               new MethodHandlers<
                 rpcpb.Rpc.SubscribeRequest,
                 rpcpb.Rpc.SubscribeResponse>(
                   this, METHODID_SUBSCRIBE)))
           .addMethod(
-            getGetGasPriceMethod(),
+            getGetGasPriceMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.NonParamsRequest,
                 rpcpb.Rpc.GasPriceResponse>(
                   this, METHODID_GET_GAS_PRICE)))
           .addMethod(
-            getEstimateGasMethod(),
+            getEstimateGasMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.TransactionRequest,
                 rpcpb.Rpc.GasResponse>(
                   this, METHODID_ESTIMATE_GAS)))
           .addMethod(
-            getGetGasUsedMethod(),
+            getGetGasUsedMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.HashRequest,
                 rpcpb.Rpc.GasResponse>(
                   this, METHODID_GET_GAS_USED)))
           .addMethod(
-            getGetEventsByHashMethod(),
+            getGetEventsByHashMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.HashRequest,
                 rpcpb.Rpc.EventsResponse>(
                   this, METHODID_GET_EVENTS_BY_HASH)))
           .addMethod(
-            getGetDynastyMethod(),
+            getGetDynastyMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.ByBlockHeightRequest,
@@ -972,7 +1062,7 @@ public final class ApiServiceGrpc {
     public void getNebState(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GetNebStateResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetNebStateMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetNebStateMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -983,7 +1073,7 @@ public final class ApiServiceGrpc {
     public void nodeInfo(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.NodeInfoResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getNodeInfoMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getNodeInfoMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -994,7 +1084,7 @@ public final class ApiServiceGrpc {
     public void blockDump(rpcpb.Rpc.BlockDumpRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.BlockDumpResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getBlockDumpMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getBlockDumpMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1005,7 +1095,7 @@ public final class ApiServiceGrpc {
     public void latestIrreversibleBlock(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.BlockResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getLatestIrreversibleBlockMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getLatestIrreversibleBlockMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1016,7 +1106,7 @@ public final class ApiServiceGrpc {
     public void accounts(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.AccountsResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getAccountsMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getAccountsMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1027,7 +1117,7 @@ public final class ApiServiceGrpc {
     public void getAccountState(rpcpb.Rpc.GetAccountStateRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GetAccountStateResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetAccountStateMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetAccountStateMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1038,7 +1128,7 @@ public final class ApiServiceGrpc {
     public void sendTransaction(rpcpb.Rpc.TransactionRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.SendTransactionResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getSendTransactionMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getSendTransactionMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1049,7 +1139,7 @@ public final class ApiServiceGrpc {
     public void call(rpcpb.Rpc.TransactionRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.CallResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getCallMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getCallMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1060,7 +1150,7 @@ public final class ApiServiceGrpc {
     public void sendRawTransaction(rpcpb.Rpc.SendRawTransactionRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.SendTransactionResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getSendRawTransactionMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getSendRawTransactionMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1071,7 +1161,7 @@ public final class ApiServiceGrpc {
     public void getBlockByHash(rpcpb.Rpc.GetBlockByHashRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.BlockResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetBlockByHashMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetBlockByHashMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1082,7 +1172,7 @@ public final class ApiServiceGrpc {
     public void getBlockByHeight(rpcpb.Rpc.GetBlockByHeightRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.BlockResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetBlockByHeightMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetBlockByHeightMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1093,7 +1183,7 @@ public final class ApiServiceGrpc {
     public void getTransactionReceipt(rpcpb.Rpc.GetTransactionByHashRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.TransactionResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetTransactionReceiptMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetTransactionReceiptMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1104,7 +1194,7 @@ public final class ApiServiceGrpc {
     public void subscribe(rpcpb.Rpc.SubscribeRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.SubscribeResponse> responseObserver) {
       asyncServerStreamingCall(
-          getChannel().newCall(getSubscribeMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getSubscribeMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1115,7 +1205,7 @@ public final class ApiServiceGrpc {
     public void getGasPrice(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GasPriceResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetGasPriceMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetGasPriceMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1126,7 +1216,7 @@ public final class ApiServiceGrpc {
     public void estimateGas(rpcpb.Rpc.TransactionRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GasResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getEstimateGasMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getEstimateGasMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1137,7 +1227,7 @@ public final class ApiServiceGrpc {
     public void getGasUsed(rpcpb.Rpc.HashRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GasResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetGasUsedMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetGasUsedMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1145,7 +1235,7 @@ public final class ApiServiceGrpc {
     public void getEventsByHash(rpcpb.Rpc.HashRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.EventsResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetEventsByHashMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetEventsByHashMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1153,7 +1243,7 @@ public final class ApiServiceGrpc {
     public void getDynasty(rpcpb.Rpc.ByBlockHeightRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GetDynastyResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetDynastyMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetDynastyMethodHelper(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -1185,7 +1275,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.GetNebStateResponse getNebState(rpcpb.Rpc.NonParamsRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetNebStateMethod(), getCallOptions(), request);
+          getChannel(), getGetNebStateMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1195,7 +1285,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.NodeInfoResponse nodeInfo(rpcpb.Rpc.NonParamsRequest request) {
       return blockingUnaryCall(
-          getChannel(), getNodeInfoMethod(), getCallOptions(), request);
+          getChannel(), getNodeInfoMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1205,7 +1295,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.BlockDumpResponse blockDump(rpcpb.Rpc.BlockDumpRequest request) {
       return blockingUnaryCall(
-          getChannel(), getBlockDumpMethod(), getCallOptions(), request);
+          getChannel(), getBlockDumpMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1215,7 +1305,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.BlockResponse latestIrreversibleBlock(rpcpb.Rpc.NonParamsRequest request) {
       return blockingUnaryCall(
-          getChannel(), getLatestIrreversibleBlockMethod(), getCallOptions(), request);
+          getChannel(), getLatestIrreversibleBlockMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1225,7 +1315,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.AccountsResponse accounts(rpcpb.Rpc.NonParamsRequest request) {
       return blockingUnaryCall(
-          getChannel(), getAccountsMethod(), getCallOptions(), request);
+          getChannel(), getAccountsMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1235,7 +1325,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.GetAccountStateResponse getAccountState(rpcpb.Rpc.GetAccountStateRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetAccountStateMethod(), getCallOptions(), request);
+          getChannel(), getGetAccountStateMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1245,7 +1335,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.SendTransactionResponse sendTransaction(rpcpb.Rpc.TransactionRequest request) {
       return blockingUnaryCall(
-          getChannel(), getSendTransactionMethod(), getCallOptions(), request);
+          getChannel(), getSendTransactionMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1255,7 +1345,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.CallResponse call(rpcpb.Rpc.TransactionRequest request) {
       return blockingUnaryCall(
-          getChannel(), getCallMethod(), getCallOptions(), request);
+          getChannel(), getCallMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1265,7 +1355,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.SendTransactionResponse sendRawTransaction(rpcpb.Rpc.SendRawTransactionRequest request) {
       return blockingUnaryCall(
-          getChannel(), getSendRawTransactionMethod(), getCallOptions(), request);
+          getChannel(), getSendRawTransactionMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1275,7 +1365,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.BlockResponse getBlockByHash(rpcpb.Rpc.GetBlockByHashRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetBlockByHashMethod(), getCallOptions(), request);
+          getChannel(), getGetBlockByHashMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1285,7 +1375,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.BlockResponse getBlockByHeight(rpcpb.Rpc.GetBlockByHeightRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetBlockByHeightMethod(), getCallOptions(), request);
+          getChannel(), getGetBlockByHeightMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1295,7 +1385,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.TransactionResponse getTransactionReceipt(rpcpb.Rpc.GetTransactionByHashRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetTransactionReceiptMethod(), getCallOptions(), request);
+          getChannel(), getGetTransactionReceiptMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1306,7 +1396,7 @@ public final class ApiServiceGrpc {
     public java.util.Iterator<rpcpb.Rpc.SubscribeResponse> subscribe(
         rpcpb.Rpc.SubscribeRequest request) {
       return blockingServerStreamingCall(
-          getChannel(), getSubscribeMethod(), getCallOptions(), request);
+          getChannel(), getSubscribeMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1316,7 +1406,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.GasPriceResponse getGasPrice(rpcpb.Rpc.NonParamsRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetGasPriceMethod(), getCallOptions(), request);
+          getChannel(), getGetGasPriceMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1326,7 +1416,7 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.GasResponse estimateGas(rpcpb.Rpc.TransactionRequest request) {
       return blockingUnaryCall(
-          getChannel(), getEstimateGasMethod(), getCallOptions(), request);
+          getChannel(), getEstimateGasMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -1336,21 +1426,21 @@ public final class ApiServiceGrpc {
      */
     public rpcpb.Rpc.GasResponse getGasUsed(rpcpb.Rpc.HashRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetGasUsedMethod(), getCallOptions(), request);
+          getChannel(), getGetGasUsedMethodHelper(), getCallOptions(), request);
     }
 
     /**
      */
     public rpcpb.Rpc.EventsResponse getEventsByHash(rpcpb.Rpc.HashRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetEventsByHashMethod(), getCallOptions(), request);
+          getChannel(), getGetEventsByHashMethodHelper(), getCallOptions(), request);
     }
 
     /**
      */
     public rpcpb.Rpc.GetDynastyResponse getDynasty(rpcpb.Rpc.ByBlockHeightRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetDynastyMethod(), getCallOptions(), request);
+          getChannel(), getGetDynastyMethodHelper(), getCallOptions(), request);
     }
   }
 
@@ -1383,7 +1473,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.GetNebStateResponse> getNebState(
         rpcpb.Rpc.NonParamsRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetNebStateMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetNebStateMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1394,7 +1484,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.NodeInfoResponse> nodeInfo(
         rpcpb.Rpc.NonParamsRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getNodeInfoMethod(), getCallOptions()), request);
+          getChannel().newCall(getNodeInfoMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1405,7 +1495,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.BlockDumpResponse> blockDump(
         rpcpb.Rpc.BlockDumpRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getBlockDumpMethod(), getCallOptions()), request);
+          getChannel().newCall(getBlockDumpMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1416,7 +1506,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.BlockResponse> latestIrreversibleBlock(
         rpcpb.Rpc.NonParamsRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getLatestIrreversibleBlockMethod(), getCallOptions()), request);
+          getChannel().newCall(getLatestIrreversibleBlockMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1427,7 +1517,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.AccountsResponse> accounts(
         rpcpb.Rpc.NonParamsRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getAccountsMethod(), getCallOptions()), request);
+          getChannel().newCall(getAccountsMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1438,7 +1528,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.GetAccountStateResponse> getAccountState(
         rpcpb.Rpc.GetAccountStateRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetAccountStateMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetAccountStateMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1449,7 +1539,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.SendTransactionResponse> sendTransaction(
         rpcpb.Rpc.TransactionRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getSendTransactionMethod(), getCallOptions()), request);
+          getChannel().newCall(getSendTransactionMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1460,7 +1550,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.CallResponse> call(
         rpcpb.Rpc.TransactionRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getCallMethod(), getCallOptions()), request);
+          getChannel().newCall(getCallMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1471,7 +1561,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.SendTransactionResponse> sendRawTransaction(
         rpcpb.Rpc.SendRawTransactionRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getSendRawTransactionMethod(), getCallOptions()), request);
+          getChannel().newCall(getSendRawTransactionMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1482,7 +1572,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.BlockResponse> getBlockByHash(
         rpcpb.Rpc.GetBlockByHashRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetBlockByHashMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetBlockByHashMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1493,7 +1583,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.BlockResponse> getBlockByHeight(
         rpcpb.Rpc.GetBlockByHeightRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetBlockByHeightMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetBlockByHeightMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1504,7 +1594,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.TransactionResponse> getTransactionReceipt(
         rpcpb.Rpc.GetTransactionByHashRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetTransactionReceiptMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetTransactionReceiptMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1515,7 +1605,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.GasPriceResponse> getGasPrice(
         rpcpb.Rpc.NonParamsRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetGasPriceMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetGasPriceMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1526,7 +1616,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.GasResponse> estimateGas(
         rpcpb.Rpc.TransactionRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getEstimateGasMethod(), getCallOptions()), request);
+          getChannel().newCall(getEstimateGasMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1537,7 +1627,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.GasResponse> getGasUsed(
         rpcpb.Rpc.HashRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetGasUsedMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetGasUsedMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1545,7 +1635,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.EventsResponse> getEventsByHash(
         rpcpb.Rpc.HashRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetEventsByHashMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetEventsByHashMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1553,7 +1643,7 @@ public final class ApiServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.GetDynastyResponse> getDynasty(
         rpcpb.Rpc.ByBlockHeightRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetDynastyMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetDynastyMethodHelper(), getCallOptions()), request);
     }
   }
 
@@ -1726,24 +1816,24 @@ public final class ApiServiceGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new ApiServiceFileDescriptorSupplier())
-              .addMethod(getGetNebStateMethod())
-              .addMethod(getNodeInfoMethod())
-              .addMethod(getBlockDumpMethod())
-              .addMethod(getLatestIrreversibleBlockMethod())
-              .addMethod(getAccountsMethod())
-              .addMethod(getGetAccountStateMethod())
-              .addMethod(getSendTransactionMethod())
-              .addMethod(getCallMethod())
-              .addMethod(getSendRawTransactionMethod())
-              .addMethod(getGetBlockByHashMethod())
-              .addMethod(getGetBlockByHeightMethod())
-              .addMethod(getGetTransactionReceiptMethod())
-              .addMethod(getSubscribeMethod())
-              .addMethod(getGetGasPriceMethod())
-              .addMethod(getEstimateGasMethod())
-              .addMethod(getGetGasUsedMethod())
-              .addMethod(getGetEventsByHashMethod())
-              .addMethod(getGetDynastyMethod())
+              .addMethod(getGetNebStateMethodHelper())
+              .addMethod(getNodeInfoMethodHelper())
+              .addMethod(getBlockDumpMethodHelper())
+              .addMethod(getLatestIrreversibleBlockMethodHelper())
+              .addMethod(getAccountsMethodHelper())
+              .addMethod(getGetAccountStateMethodHelper())
+              .addMethod(getSendTransactionMethodHelper())
+              .addMethod(getCallMethodHelper())
+              .addMethod(getSendRawTransactionMethodHelper())
+              .addMethod(getGetBlockByHashMethodHelper())
+              .addMethod(getGetBlockByHeightMethodHelper())
+              .addMethod(getGetTransactionReceiptMethodHelper())
+              .addMethod(getSubscribeMethodHelper())
+              .addMethod(getGetGasPriceMethodHelper())
+              .addMethod(getEstimateGasMethodHelper())
+              .addMethod(getGetGasUsedMethodHelper())
+              .addMethod(getGetEventsByHashMethodHelper())
+              .addMethod(getGetDynastyMethodHelper())
               .build();
         }
       }

@@ -3,6 +3,7 @@ package io.nebulas.explorer.controller;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.nebulas.explorer.domain.*;
+import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionStatusEnum;
 import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.model.PageIterator;
@@ -50,6 +51,7 @@ public class RpcController {
     private final NebApiServiceWrapper nebApiServiceWrapper;
 
     private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(20);
+    private static final Base64.Decoder DECODER = Base64.getDecoder();
 
     @RequestMapping(value = "/market_cap", method = RequestMethod.GET)
     public JsonResult marketCap() {
@@ -246,7 +248,7 @@ public class RpcController {
                 if (address.getUpdatedAt().before(LocalDateTime.now().plusSeconds(-5).toDate())) {
                     GetAccountStateResponse accountState = nebApiServiceWrapper.getAccountState(address.getHash());
                     if (null != accountState && StringUtils.isNotEmpty(accountState.getBalance())) {
-                        nebAddressService.updateAddressBalance(address.getHash(), accountState.getBalance());
+                        nebAddressService.updateAddressBalance(address.getHash(), accountState.getBalance(), accountState.getNonce());
                     }
                 }
             }
@@ -256,10 +258,13 @@ public class RpcController {
 
     @RequestMapping("/address/{hash}")
     public JsonResult address(@PathVariable("hash") String hash) {
-        NebAddress address = nebAddressService.getNebAddressByHash(hash);
+        NebAddress address = nebAddressService.getNebAddressByHashRpc(hash);
         if (null == address) {
             return JsonResult.failed();
         }
+
+        nebAddressService.updateAddressBalance(hash, address.getCurrentBalance().toPlainString(), address.getNonce());
+
         long pendingTxCnt = nebTransactionService.countPendingTxnCnt(address.getHash());
 
         JsonResult result = JsonResult.success();
@@ -292,12 +297,24 @@ public class RpcController {
         }
         result.put("txList", convertTxn2TxnVoWithAddress(txList));
 
-        if (address.getUpdatedAt().before(LocalDateTime.now().plusSeconds(-5).toDate())) {
-            GetAccountStateResponse accountState = nebApiServiceWrapper.getAccountState(address.getHash());
-            if (null != accountState && StringUtils.isNotEmpty(accountState.getBalance())) {
-                String balance = accountState.getBalance();
-                address.setCurrentBalance(new BigDecimal(balance));
-                nebAddressService.updateAddressBalance(hash, balance);
+//        if (address.getUpdatedAt().before(LocalDateTime.now().plusSeconds(-5).toDate())) {
+//            GetAccountStateResponse accountState = nebApiServiceWrapper.getAccountState(address.getHash());
+//            if (null != accountState && StringUtils.isNotEmpty(accountState.getBalance())) {
+//                String balance = accountState.getBalance();
+//                address.setCurrentBalance(new BigDecimal(balance));
+
+//            }
+//        }
+
+        //contract address
+        if (NebAddressTypeEnum.CONTRACT.getValue() == address.getType()) {
+            NebTransaction nebTx = nebTransactionService.getNebTransactionByContractAddress(address.getHash());
+            if (null != nebTx) {
+                try {
+                    result.put("contractCode", StringUtils.isNotEmpty(nebTx.getData()) ? new String(DECODER.decode(nebTx.getData()), "UTF-8") : "");
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                }
             }
         }
         return result;
@@ -321,8 +338,8 @@ public class RpcController {
                 return JsonResult.success("type", "address").put("q", address.getHash());
             }
             address = nebAddressService.getNebAddressByHashRpc(q);
-            if (null != address) {
-                nebAddressService.addNebAddress(address.getHash(), address.getType(), address.getCurrentBalance());
+            if (null != address && address.getType() == NebAddressTypeEnum.NORMAL.getValue()) {
+                nebAddressService.addNebAddress(address);
                 return JsonResult.success("type", "address").put("q", address.getHash());
             }
         } else {

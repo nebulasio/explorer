@@ -34,6 +34,11 @@ public class NebAddress implements Serializable {
     private String hash;
 
     /**
+     * current transaction count
+     */
+    private String nonce;
+
+    /**
      * address type, 0: Normal; 1: Contract
      */
     private Integer type;
