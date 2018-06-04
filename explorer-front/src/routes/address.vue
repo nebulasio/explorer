@@ -74,7 +74,7 @@
                 </tr>
                 <tr>
                     <td>Number Of Transactions:</td>
-                    <td>{{ obj.pendingTxCnt }}</td>
+                    <td>{{ obj.txCnt }}</td>
                 </tr>
                 <tr>
                     <td>Minted:</td>
@@ -96,8 +96,9 @@
                         <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
                     </div>
                     <div class=col-auto>
-                        <span v-if="contractHash"><router-link class="btn btn-link" v-bind:to='fragApi + "/tx/"+contractHash'>View Smart Contract</router-link>
-                        |</span>
+                        <span v-if="contractHash">
+                            <router-link class="btn btn-link" v-bind:to='fragApi + "/tx/"+contractHash'>View Smart Contract</router-link>
+                            |</span>
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All {{ obj.txCnt }} Txn</router-link>
                         |
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>View All {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn</router-link>
@@ -149,9 +150,18 @@
                 </table>
             </div>
 
-            <!--    Minted Blocks
+            <!--    code
                 ============================================================ -->
             <div class=tab v-show="tab == 2">
+                <table class="mt20 table">
+                        <pre><code class=language-javascript v-html=formatCode></code></pre>
+                    </tr>
+                </table>
+            </div>
+
+            <!--    Minted Blocks
+                ============================================================ -->
+            <!-- <div class=tab v-show="tab == 2">
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
@@ -182,7 +192,7 @@
                         <td>{{ toWei(o.gasReward) }}</td>
                     </tr>
                 </table>
-            </div>
+            </div> -->
 
             <!--    Minted Uncles
                 ============================================================ -->
@@ -228,6 +238,8 @@
 </template>
 <script>
     var api = require("@/assets/api"),
+        prism = require("prismjs"),
+        jsBeautify = require("js-beautify").js_beautify,
         utility = require("@/assets/utility");
 
     module.exports = {
@@ -237,16 +249,24 @@
             "vue-tab-buttons": require("@/components/vue-tab-buttons").default
         },
         computed: {
+            formatCode() {
+                var lang = prism.languages.javascript;
+
+                if (this.obj.contractCode) {
+                    return prism.highlight(jsBeautify(JSON.parse(this.obj.contractCode).Source), lang);
+                }
+                return "0x0";
+            },
             tabButtons() {
-                return this.obj && this.obj.mintedBlkCnt ? ["Transactions", "Minted Blocks"] : ["Transactions"];
+                return this.obj && this.obj.contractCode ? ["Transactions", "Contract Code"] : ["Transactions"];
             },
             urlChange() {
                 this.contractHash = ""
                 api.getAddress(this.$route.params.id, o => {
                     this.minted = o.mintedBlkList;
                     this.obj = o;
-                    if(o.address.type == 1){// this is a smart contract address
-                        api.getTransactionByContract({address:o.address.hash}, this.$route.params.api, (transaction) =>{
+                    if (o.address.type == 1) {// this is a smart contract address
+                        api.getTransactionByContract({ address: o.address.hash }, this.$route.params.api, (transaction) => {
                             var transaction = JSON.parse(transaction)
                             this.contractHash = transaction.result.hash
                         })
@@ -259,7 +279,7 @@
         },
         data() {
             return {
-                contractHash:"",
+                contractHash: "",
                 breadcrumb: [
                     { text: "Home", to: "/" },
                     { text: "Normal Accounts", to: "/accounts" },
