@@ -69,12 +69,16 @@
                     <td>{{ easyNumber(obj.address.balance/1000000000000000000) }} NAS </td>
                 </tr>
                 <tr>
-                    <td>Minted:</td>
-                    <td>{{ obj.mintedBlkCnt }}</td>
+                    <td>Nonce:</td>
+                    <td>{{ obj.address.nonce }}</td>
                 </tr>
                 <tr>
                     <td>Number Of Transactions:</td>
                     <td>{{ obj.pendingTxCnt }}</td>
+                </tr>
+                <tr>
+                    <td>Minted:</td>
+                    <td>{{ obj.mintedBlkCnt }}</td>
                 </tr>
             </table>
 
