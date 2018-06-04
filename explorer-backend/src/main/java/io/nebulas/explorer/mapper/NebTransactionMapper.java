@@ -30,6 +30,8 @@ public interface NebTransactionMapper {
 
     NebTransaction getByHash(String hash);
 
+    NebTransaction getByContractAddress(String contractAddress);
+
     List<NebTransaction> findTxnByBlockHeight(Long blockHeight);
 
     List<NebTransaction> findTxnByCondition(@Param("blockHeight") Long blockHeight, @Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);

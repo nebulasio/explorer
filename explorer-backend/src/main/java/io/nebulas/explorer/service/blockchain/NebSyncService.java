@@ -220,13 +220,16 @@ public class NebSyncService {
         if (StringUtils.isEmpty(hash)) {
             return;
         }
-        NebAddress addr = nebAddressService.getNebAddressByHash(hash);
-        if (addr == null) {
-            try {
-                nebAddressService.addNebAddress(hash, type.getValue());
-            } catch (Throwable e) {
-                log.error("add address error", e);
+        try {
+            NebAddress addr = nebAddressService.getNebAddressByHash(hash);
+            if (addr == null) {
+                addr = nebAddressService.getNebAddressByHashRpc(hash);
+                if (null != addr) {
+                    nebAddressService.addNebAddress(addr);
+                }
             }
+        } catch (Throwable e) {
+            log.error("add address error", e);
         }
     }
 

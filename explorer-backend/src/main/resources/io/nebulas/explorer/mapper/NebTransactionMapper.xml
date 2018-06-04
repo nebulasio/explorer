@@ -86,6 +86,14 @@
         WHERE `hash` = #{hash,jdbcType=VARCHAR}
     </select>
 
+    <select id="getByContractAddress" resultType="NebTransaction" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `contract_address` = #{contractAddress,jdbcType=VARCHAR}
+        LIMIT 1
+    </select>
+
     <select id="findTxnByBlockHeight" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
