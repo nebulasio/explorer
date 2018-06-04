@@ -127,6 +127,20 @@ public class NebTransactionService {
     }
 
     /**
+     * According to contract address query transaction information
+     * ps: return null when contract address is empty
+     *
+     * @param contractAddress contractAddress hash
+     * @return transaction information
+     */
+    public NebTransaction getNebTransactionByContractAddress(String contractAddress) {
+        if (StringUtils.isEmpty(contractAddress)) {
+            return null;
+        }
+        return nebTransactionMapper.getByContractAddress(contractAddress);
+    }
+
+    /**
      * According to pending transaction hash query pending transaction information
      *
      * @param hash pending transaction hash
