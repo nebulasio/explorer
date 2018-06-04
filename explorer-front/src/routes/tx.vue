@@ -96,7 +96,7 @@
                 </tr>
                 <tr>
                     <td>Transaction Type:</td>
-                    <td v-if=" tx.type == 'deploy' ">{{ txType }} ( contract address: <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.contractAddress'> {{tx.contractAddress}} )</router-link></td>
+                    <td v-if=" tx.type == 'deploy' ">{{ txType }} ( contract address: <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.contractAddress'> {{tx.contractAddress}} </router-link>)</td>
                     <td v-else>{{ txType }}</td>
                 </tr>
                 <tr>
