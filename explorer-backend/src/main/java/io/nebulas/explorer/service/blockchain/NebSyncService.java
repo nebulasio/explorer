@@ -106,7 +106,7 @@ public class NebSyncService {
         for (Transaction tx : txs) {
             i++;
             try {
-                syncTx(tx, block.getHeight(), block.getHash(), i);
+                syncTx(tx, block, i);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
@@ -117,7 +117,7 @@ public class NebSyncService {
         nebDynastyService.batchAddNebDynasty(block.getHeight(), dynastyList);
     }
 
-    private void syncTx(Transaction tx, long blkHeight, String blkHash, int seq) {
+    private void syncTx(Transaction tx, Block block, int seq) {
         //sync address
         syncAddress(tx.getFrom(), NebAddressTypeEnum.NORMAL);
 
@@ -140,18 +140,18 @@ public class NebSyncService {
 
         NebTransaction nebTxs = NebTransaction.builder()
                 .hash(tx.getHash())
-                .blockHeight(blkHeight)
-                .blockHash(blkHash)
+                .blockHeight(block.getHeight())
+                .blockHash(block.getHash())
                 .txSeq(seq)
                 .from(tx.getFrom())
                 .to(tx.getTo())
                 .status(tx.getStatus())
                 .value(tx.getValue())
                 .nonce(tx.getNonce())
-                .timestamp(new Date(tx.getTimestamp() * 1000))
+                .timestamp(new Date(block.getTimestamp() * 1000))
                 .type(tx.getType())
                 .contractAddress(StringUtils.isEmpty(tx.getContractAddress()) ? "" : tx.getContractAddress())
-                .data(blkHeight == 1 ? convertData(typeEnum, tx.getData()) : tx.getData())
+                .data(block.getHeight() == 1 ? convertData(typeEnum, tx.getData()) : tx.getData())
                 .gasPrice(tx.getGasPrice())
                 .gasLimit(tx.getGasLimit())
                 .gasUsed(tx.getGasUsed())

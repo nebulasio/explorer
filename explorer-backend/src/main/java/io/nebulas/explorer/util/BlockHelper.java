@@ -38,7 +38,7 @@ public class BlockHelper {
                 .status(tx.getStatus())
                 .value(tx.getValue())
                 .nonce(tx.getNonce())
-                .timestamp(new Date(tx.getTimestamp() * 1000))
+                .timestamp(new Date(blk.getTimestamp() * 1000))
                 .type(tx.getType())
                 .data(data)
                 .contractAddress(StringUtils.isEmpty(tx.getContractAddress()) ? "" : tx.getContractAddress())
