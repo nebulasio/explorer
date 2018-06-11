@@ -33,7 +33,7 @@
                 <tr>
                     <td>TxReceipt Status:</td>
                     <td v-if="tx.status == 0">
-                        <span class="fail">fail</span>
+                        <span class="fail">fail ( {{ tx.executeError }} )</span>
                     </td>
                     <td v-else-if="tx.status == 1">
                         <span class="success">success</span>
