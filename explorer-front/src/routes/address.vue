@@ -47,6 +47,12 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    .vue-address .tdxxxwddd{
+      padding: .75rem 0.4rem;
+    }
+    .vue-address .tdxxxwddd img{
+      margin-right: 5px;
+    }
 </style>
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
@@ -133,11 +139,13 @@
                             <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                         </td>
                         <td class=tdxxxwddd>
+                            <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                             <span v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
                         </td>
                         <td class=text-uppercase v-bind:class=inOutClass(o)></td>
                         <td class=tdxxxwddd>
+                            <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                             <span v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                         </td>
@@ -246,7 +254,8 @@
         components: {
             "vue-bread": require("@/components/vue-bread").default,
             "vue-pagination": require("@/components/vue-pagination").default,
-            "vue-tab-buttons": require("@/components/vue-tab-buttons").default
+            "vue-tab-buttons": require("@/components/vue-tab-buttons").default,
+            "vue-blockies": require("@/components/vue-blockies").default
         },
         computed: {
             formatCode() {
