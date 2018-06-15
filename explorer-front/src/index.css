@@ -77,6 +77,10 @@ td.fail:hover :nth-child(2) {
     width: 24px;
 }
 
+.txs-box {
+    overflow: auto;
+}
+
 /*  .modal
     ============================================================ */
 

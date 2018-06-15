@@ -13,25 +13,27 @@
                 <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
             </div>
 
-            <table class="mt20 table">
-                <tr>
-                    <th>Rank</th>
-                    <th>Address</th>
-                    <th class=text-right>Balance</th>
-                    <th class=text-right>Percentage</th>
-                    <th class=text-right>TxCount</th>
-                </tr>
-                <tr v-for="o in arr">
-                    <td>{{ o.rank }}</td>
-                    <td class=monospace>
-                        <router-link v-bind:to='fragApi + "/address/" + o.hash'>{{ o.hash }}</router-link>
-                        <span v-show=o.alias> | {{ o.alias }}</span>
-                    </td>
-                    <td class=text-right>{{ toWei(o.balance) }}</td>
-                    <td class=text-right>{{ o.percentage }}%</td>
-                    <td class=text-right>{{ o.txCnt }}</td>
-                </tr>
-            </table>
+            <div class="txs-box">
+                <table class="mt20 table">
+                    <tr>
+                        <th>Rank</th>
+                        <th>Address</th>
+                        <th class=text-right>Balance</th>
+                        <th class=text-right>Percentage</th>
+                        <th class=text-right>TxCount</th>
+                    </tr>
+                    <tr v-for="o in arr">
+                        <td>{{ o.rank }}</td>
+                        <td class=monospace>
+                            <router-link v-bind:to='fragApi + "/address/" + o.hash'>{{ o.hash }}</router-link>
+                            <span v-show=o.alias> | {{ o.alias }}</span>
+                        </td>
+                        <td class=text-right>{{ toWei(o.balance) }}</td>
+                        <td class=text-right>{{ o.percentage }}%</td>
+                        <td class=text-right>{{ o.txCnt }}</td>
+                    </tr>
+                </table>
+            </div>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
         </div>
     </div>

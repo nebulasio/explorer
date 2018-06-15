@@ -43,10 +43,6 @@
         color: silver;
     }
 
-    .vue-address .tab .txs-box {
-        overflow: auto;
-    }
-
     .vue-address .tab a {
         font-size: 13px;
     }

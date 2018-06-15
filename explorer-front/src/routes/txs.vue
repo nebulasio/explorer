@@ -25,10 +25,6 @@
         text-overflow: ellipsis;
     }
 
-    .vue-txs .txs-box {
-        overflow: auto;
-    }
-
     .vue-txs h4 .title-address {
         font-weight: 200;
         font-size: 1.1rem;
