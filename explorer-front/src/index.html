@@ -2,9 +2,10 @@
 <html>
 <head>
     <meta charset=utf-8>
-    <link rel=icon href=/static/img/favicon.png>
-    <meta name=description content=Nebulas>
+    <title>Nebulas Explorer</title>
+    <meta name=description content='Nebulas Explorer allows you to explore and search the Nebulas blockchain for transactions, addresses, prices and other activities taking place on Nebulas (NAS).'>
     <meta name=viewport content="width=device-width, initial-scale=1.0">
+    <link rel=icon href=/static/img/favicon.png>
     <style>
         .file-issue {
             background-color: rgb(150, 71, 71);
@@ -15,16 +16,33 @@
             padding: 3px 0 3px 16px;
             position: fixed;
             right: 0;
-            top: 70vh;
+            top: 80vh;
             width: 120px;
         }
 
         .file-issue:hover {
             color: white;
             text-decoration: none;
+            background-color: rgb(181, 86, 86);
+        }
+
+        .file-issue-mobile {
+            display: none;
+            padding: 3px 0 3px 10px;
+            top: 80vh;
+            width: 52px;
+            font-size: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .file-issue{
+                display: none;
+            }
+            .file-issue-mobile {
+                display: block !important;
+            }
         }
     </style>
-    <title>Nebulas Explorer</title>
 </head>
 <body>
     <div class=vue>
@@ -38,5 +56,6 @@
         </vue-modal>
     </div>
     <a class=file-issue href=https://github.com/nebulasio/explorer/issues target=_blank>File an issue about this site</a>
+    <a class='file-issue file-issue-mobile' href=https://github.com/nebulasio/explorer/issues target=_blank>File an issue</a>
 </body>
 </html>

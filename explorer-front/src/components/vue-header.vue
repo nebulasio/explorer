@@ -23,6 +23,10 @@
         visibility: hidden;
     }
 
+    .vue-header .form-inline input {
+        width: 290px;
+    }
+
     @media (min-width: 992px) {
         .vue-header .navbar-nav>li>a {
             border-bottom: 2px solid transparent;
@@ -48,6 +52,9 @@
         .vue-header .form-inline input {
             flex: 1;
             margin: 0 10px 0;
+            font-size: 0.9rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
         }
     }
 </style>
@@ -97,7 +104,7 @@
                     </li>
                 </ul>
                 <form class=form-inline v-on:submit.prevent=onSubmit>
-                    <input class="form-control mr-sm-2" v-model=search type=search placeholder=Search>
+                    <input class="form-control mr-sm-2" v-model=search type=search placeholder='Search by Address / Txhash / Block'>
                     <button class="btn btn-outline-success" type=submit>GO</button>
                 </form>
             </div>
@@ -128,7 +135,7 @@
             },
             onSubmit() {
                 this.$root.showModalLoading = true;
-                api.getSearch(this.search, o => {
+                api.getSearch(this.search.trim(), o => {
                     this.$root.showModalLoading = false;
                     this.search = "";
 

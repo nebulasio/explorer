@@ -1,13 +1,24 @@
 <style>
-    .vue-address td.out {
-        width: 50px;
+    .vue-address .tdxxxwddd,
+    .vue-address table td {
+        white-space: nowrap;
+        padding: 0.9rem 0.75rem;
+    }
+
+    .vue-address td.out,
+    .vue-address td.in {
+        padding-top: 0.8rem;
+        min-width: 50px;
     }
 
     .vue-address td.in::before,
     .vue-address td.out::before {
+        display: inline-block;
+        width: 40px;
         border-radius: 4px;
         color: white;
-        padding: 3px 5px;
+        padding: 1px 0;
+        text-align: center;
     }
 
     .vue-address td.in::before {
@@ -32,6 +43,10 @@
         color: silver;
     }
 
+    .vue-address .tab .txs-box {
+        overflow: auto;
+    }
+
     .vue-address .tab a {
         font-size: 13px;
     }
@@ -47,17 +62,59 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .vue-address .tdxxxwddd{
-      padding: .75rem 0.4rem;
+
+    .vue-address .tdxxxwddd.blockie {
+        padding: .7rem 0.75rem 0.7rem;
     }
-    .vue-address .tdxxxwddd img{
-      margin-right: 5px;
+
+    .vue-address .tdxxxwddd.blockie span,
+    .vue-address .tdxxxwddd.blockie a {
+        margin-top: 0.2rem;
+    }
+
+    .vue-address .tdxxxwddd img {
+        margin-right: 5px;
+    }
+
+    .vue-address h4 .title-address {
+        font-weight: 200;
+        font-size: 1.1rem;
+        margin-left: 10px;
+    }
+
+    .vue-address h4 .block,
+    .vue-address h4 span {
+        display: inline-block;
+    }
+
+    .vue-address h4 .block img {
+        width: 24px;
+        margin-top: -3px;
+        margin-right: 5px;
+    }
+
+    @media (max-width: 600px) {
+        .vue-address .vue-bread h4 {
+            display: block;
+            text-align: center;
+        }
+        .vue-address .vue-bread h4 .title-address {
+            margin-left: 0;
+            font-size: 0.9rem;
+        }
     }
 </style>
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
     <div class=vue-address v-bind:triggerComputed=urlChange>
-        <vue-bread v-bind:arr=breadcrumb v-bind:title='"Address " + $route.params.id'></vue-bread>
+        <vue-bread v-bind:arr=breadcrumb>
+            <slot>
+                <h4 name=title class=col>
+                    <vue-blockies v-bind:address='obj.address.alias || $route.params.id'></vue-blockies>
+                    <span>Address</span><span class="title-address">{{$route.params.id}}</span>
+                </h4>
+            </slot>
+        </vue-bread>
         <div class=container v-if=obj>
             <table class="c333 table">
                 <tr>
@@ -111,51 +168,53 @@
                     </div>
                 </div>
 
-                <table class="mt20 table">
-                    <tr>
-                        <th>TxHash</th>
-                        <th>Block</th>
-                        <th>Age</th>
-                        <th>From</th>
-                        <th></th>
-                        <th>To</th>
-                        <th>Value</th>
-                        <th class=txfee>[TxFee]</th>
-                    </tr>
+                <div class="txs-box">
+                    <table class="mt20 table">
+                        <tr>
+                            <th>TxHash</th>
+                            <th>Block</th>
+                            <th>Age</th>
+                            <th>From</th>
+                            <th></th>
+                            <th>To</th>
+                            <th class="text-right">Value</th>
+                            <th class=txfee>[TxFee]</th>
+                        </tr>
 
-                    <tr v-for="o in txs">
-                        <td v-if="o.status == 0" class=fail>
-                            <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
-                        </td>
-                        <td class=tdxxxwddd v-if="o.status != 0">
-                            <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
-                        </td>
-                        <td>
-                            <router-link v-if=o.block.height v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
-                            <i v-else>(pending)</i>
-                        </td>
-                        <td class=time>
-                            <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
-                            <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
-                        </td>
-                        <td class=tdxxxwddd>
-                            <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
-                            <span v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
-                            <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
-                        </td>
-                        <td class=text-uppercase v-bind:class=inOutClass(o)></td>
-                        <td class=tdxxxwddd>
-                            <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
-                            <span v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
-                            <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
-                        </td>
-                        <td>{{ easyNumber(o.value/1000000000000000000) }} NAS</td>
-                        <td class=txfee>
-                            <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
-                            <i v-else>(pending)</i>
-                        </td>
-                    </tr>
-                </table>
+                        <tr v-for="o in txs">
+                            <td v-if="o.status == 0" class=fail>
+                                <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
+                            </td>
+                            <td class=tdxxxwddd v-if="o.status != 0">
+                                <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
+                            </td>
+                            <td>
+                                <router-link v-if=o.block.height v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
+                                <i v-else>(pending)</i>
+                            </td>
+                            <td class=time>
+                                <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
+                                <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
+                            </td>
+                            <td class='tdxxxwddd blockie'>
+                                <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
+                                <span v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
+                                <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
+                            </td>
+                            <td class=text-uppercase v-bind:class=inOutClass(o)></td>
+                            <td class='tdxxxwddd blockie'>
+                                <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
+                                <span v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
+                                <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
+                            </td>
+                            <td class="text-right">{{ easyNumber(o.value/1000000000000000000) }} NAS</td>
+                            <td class=txfee>
+                                <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
+                                <i v-else>(pending)</i>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
             <!--    code

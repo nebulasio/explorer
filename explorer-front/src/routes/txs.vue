@@ -10,6 +10,7 @@
     .vue-txs td,
     .vue-txs th {
         border-top-color: #ddd;
+        white-space: nowrap;
     }
 
     .vue-txs .fail {
@@ -22,6 +23,10 @@
         max-width: 142px;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    .vue-txs .txs-box {
+        overflow: auto;
     }
 </style>
 <template>
@@ -36,57 +41,59 @@
                     v-on:prev=onPrev v-on:to=onTo></vue-pagination>
             </div>
 
-            <table class="mt20 table">
-                <tr>
-                    <th>TxHash</th>
-                    <th>Block</th>
-                    <th class=text-right>Age</th>
-                    <th>From</th>
-                    <th></th>
-                    <th>To</th>
-                    <th class=text-right>Value</th>
-                    <th class=text-right>TxFee</th>
-                </tr>
+            <div class="txs-box">
+                <table class="mt20 table">
+                    <tr>
+                        <th>TxHash</th>
+                        <th>Block</th>
+                        <th class=text-right>Age</th>
+                        <th>From</th>
+                        <th></th>
+                        <th>To</th>
+                        <th class=text-right>Value</th>
+                        <th class=text-right>TxFee</th>
+                    </tr>
 
-                <tr v-for="o in arr">
-                    <td v-if="o.status == 0" class=fail>
-                        <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
-                    </td>
-                    <td class=tdxxxwddd v-if="o.status != 0">
-                        <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
-                    </td>
+                    <tr v-for="o in arr">
+                        <td v-if="o.status == 0" class=fail>
+                            <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
+                        </td>
+                        <td class=tdxxxwddd v-if="o.status != 0">
+                            <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
+                        </td>
 
-                    <td>
-                        <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
-                    </td>
-                    <!-- 
-                    <td>
-                        <template v-if=txs.isPending>
-                            <span> pending </span>
-                        </template>
-                        <template v-else>
-                            <router-link v-if=o.block v-bind:to='fragApi + "/block/" + o.block.height'>{{o.block.height}}</router-link>
-                        </template>
-                         <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link> 
-                    </td>
-                    -->
-                    <td class=time>
-                        <div class=text-right>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
-                        <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
-                    </td>
-                    <td class=tdxxxwddd>
-                        <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.hash }}</router-link>
-                    </td>
-                    <td>
-                        <span class="fa fa-arrow-right" aria-hidden=true></span>
-                    </td>
-                    <td class=tdxxxwddd>
-                        <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
-                    </td>
-                    <td class=text-right>{{ easyNumber(o.value/1000000000000000000) }} NAS</td>
-                    <td class=text-right>{{ toWei(o.txFee) }}</td>
-                </tr>
-            </table>
+                        <td>
+                            <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
+                        </td>
+                        <!--
+                        <td>
+                            <template v-if=txs.isPending>
+                                <span> pending </span>
+                            </template>
+                            <template v-else>
+                                <router-link v-if=o.block v-bind:to='fragApi + "/block/" + o.block.height'>{{o.block.height}}</router-link>
+                            </template>
+                             <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
+                        </td>
+                        -->
+                        <td class=time>
+                            <div class=text-right>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
+                            <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
+                        </td>
+                        <td class=tdxxxwddd>
+                            <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.hash }}</router-link>
+                        </td>
+                        <td>
+                            <span class="fa fa-arrow-right" aria-hidden=true></span>
+                        </td>
+                        <td class=tdxxxwddd>
+                            <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
+                        </td>
+                        <td class=text-right>{{ easyNumber(o.value/1000000000000000000) }} NAS</td>
+                        <td class=text-right>{{ toWei(o.txFee) }}</td>
+                    </tr>
+                </table>
+            </div>
 
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
                 v-on:prev=onPrev v-on:to=onTo></vue-pagination>

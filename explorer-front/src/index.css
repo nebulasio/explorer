@@ -52,6 +52,10 @@ td.time:hover :nth-child(2) {
     vertical-align: top;
 }
 
+.tdxxxwddd .block img{
+    width: 24px;
+}
+
 /*  .modal
     ============================================================ */
 

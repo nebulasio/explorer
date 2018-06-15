@@ -10,20 +10,34 @@
         color: inherit;
     }
 
+    .vue-bread h4 {
+        font-weight: 400;
+    }
+
     .vue-bread .breadcrumb {
         background-color: initial;
         margin: 0;
     }
 
-    .vue-bread ol> :last-child {
+    .vue-bread ol > :last-child {
         color: #3498db;
+    }
+
+    @media (max-width: 600px) {
+        .vue-bread .col-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
     }
 </style>
 <template>
     <div class=vue-bread>
         <div class=container>
             <div class="align-items-center row">
-                <h4 name=title class=col>{{ title }}</h4>
+                <slot v-if="$slots.default"></slot>
+                <template v-else>
+                    <h4 name=title class=col>{{ title }}</h4>
+                </template>
                 <nav class=col-auto aria-label=breadcrumb>
                     <ol class=breadcrumb>
                         <li class=breadcrumb-item v-bind:class="{ active: i == arr.length - 1 }" v-for="(o, i) in arr">

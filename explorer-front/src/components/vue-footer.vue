@@ -29,8 +29,7 @@
         <div class=container>
             <h4>About</h4>
             <div class="justify-content-center row">
-                <div class=col-1></div>
-                <div class=col-2>
+                <div class='offset-1 col-md-3'>
                     <div>
                         <!-- <span class="fa fa-(nebulas?)" aria-hidden=true></span> -->
                         <a target=_blank href=https://nebulas.io>Nebulas.io</a>
@@ -48,8 +47,7 @@
                         <a target=_blank href=https://twitter.com/nebulasio>Twitter</a>
                     </div>
                 </div>
-                <div class=col-1></div>
-                <div class=col-3>
+                <div class='offset-1 col-md-3'>
                     <div>
                         <span class="fa fa-github" aria-hidden=true></span>
                         <a target=_blank href=https://github.com/nebulasio>Github.com/nebulasio</a>

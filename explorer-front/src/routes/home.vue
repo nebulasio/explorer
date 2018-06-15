@@ -181,6 +181,60 @@
     .vue-home .updataTime {
         float: right;
     }
+
+    /* Mobile Styles */
+
+    @media (max-width: 540px) {
+        .vue-home .li {
+            height: 100px;
+        }
+
+        .vue-home .li .right {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .vue-home .blocks li .monospace {
+            width: 100%;
+        }
+
+        .vue-home .blocks li > .img {
+            margin-right: 15px;
+            padding-top: 3px;
+            height: 76px;
+            width: 125px;
+        }
+
+        .vue-home .blocks li > .img .mt20 {
+            margin-top: 10px;
+        }
+
+        .vue-home .txs li > img {
+            margin: 0 12px;
+            width: 24px;
+            height: 24px;
+        }
+
+        .vue-home .txs li {
+            padding: 5px 0;
+            height: auto;
+        }
+
+        .vue-home .txs li tr > td {
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: calc(100vw - 120px);
+        }
+
+        .vue-home .txs li tr > td:first-child {
+            height: auto;
+        }
+
+        .vue-home .txs li .monospace {
+            width: 100%;
+        }
+    }
 </style>
 <template>
     <div class="container vue-home">
@@ -324,11 +378,12 @@
                     // },
                     series: [{
                         data: null,
-                        name: "transactions"
+                        name: "transactions",
+                        showInLegend: false
                         // , type: "area"
                     }],
                     subtitle: {
-                        text: "数据来源：Nebulas"
+                        text: "Data Source：Nebulas"
                     },
                     title: {
                         text: "transactions"
@@ -342,7 +397,7 @@
                     },
                     yAxis: {
                         title: {
-                            text: "数量"
+                            text: "Txs"
                         }
                     }
                 },
