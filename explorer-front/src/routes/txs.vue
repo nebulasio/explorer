@@ -57,6 +57,7 @@
                     <tr v-for="o in arr">
                         <td v-if="o.status == 0" class=fail>
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
+                            <div v-if="o.executeError">{{ o.executeError }}</div>
                         </td>
                         <td class=tdxxxwddd v-if="o.status != 0">
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>

@@ -44,6 +44,27 @@ td.time:hover :nth-child(2) {
     display: block;
 }
 
+td.fail {
+    position: relative;
+}
+
+td.fail :nth-child(2) {
+    background-color: rgb(255, 219, 214);
+    color: #dc3545;
+    display: none;
+    left: 50%;
+    padding: 10px;
+    pointer-events: none;
+    position: absolute;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 1;
+}
+
+td.fail:hover :nth-child(2) {
+    display: block;
+}
+
 .tdxxxwddd > * {
     display: inline-block;
     max-width: 160px;
