@@ -28,11 +28,24 @@
     .vue-txs .txs-box {
         overflow: auto;
     }
+
+    .vue-txs h4 .title-address {
+        font-weight: 200;
+        font-size: 1.1rem;
+        margin-left: 10px;
+    }
 </style>
 <template>
     <!-- https://etherscan.io/txs -->
     <div class=vue-txs>
-        <vue-bread v-bind:arr=breadcrumb title=Transactions></vue-bread>
+        <vue-bread v-bind:arr=breadcrumb>
+            <slot>
+                <h4 name=title class=col>
+                    <span>Transactions</span><span class="title-address">Address:
+                    <router-link v-bind:to='fragApi + "/address/" + $route.query.a'>{{$route.query.a}}</router-link></span>
+                </h4>
+            </slot>
+        </vue-bread>
 
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">

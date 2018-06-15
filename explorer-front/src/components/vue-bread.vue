@@ -14,6 +14,10 @@
         font-weight: 400;
     }
 
+    .vue-bread h4 a {
+        color: #3498db;
+    }
+
     .vue-bread .breadcrumb {
         background-color: initial;
         margin: 0;
