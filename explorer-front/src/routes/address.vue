@@ -98,6 +98,9 @@
             margin-left: 0;
             font-size: 0.9rem;
         }
+        .vue-address .price{
+            display: block;
+        }
     }
 </style>
 <template>
@@ -106,7 +109,7 @@
         <vue-bread v-bind:arr=breadcrumb>
             <slot>
                 <h4 name=title class=col>
-                    <vue-blockies v-bind:address='obj.address.alias || $route.params.id'></vue-blockies>
+                    <vue-blockies v-bind:address='(obj && obj.address && obj.address.alias) || $route.params.id'></vue-blockies>
                     <span>Address</span><span class="title-address">{{$route.params.id}}</span>
                 </h4>
             </slot>
@@ -125,15 +128,20 @@
                 </tr>
                 <tr>
                     <td>NAS Balance:</td>
-                    <td>{{ easyNumber(obj.address.balance/1000000000000000000) }} NAS </td>
+                    <td>
+                        {{ easyNumber(obj.address.balance/1000000000000000000) }} NAS
+                        <span v-if="price" class="price">
+                            ( ${{ easyNumber(price * obj.address.balance/1000000000000000000, 2) }} )
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td>Nonce:</td>
                     <td>{{ obj.address.nonce }}</td>
                 </tr>
                 <tr>
-                    <td>Number Of Transactions:</td>
-                    <td>{{ obj.txCnt }}</td>
+                    <td>Transactions: </td>
+                    <td>{{ obj.txCnt }} txns</td>
                 </tr>
                 <tr>
                     <td>Minted:</td>
@@ -327,6 +335,7 @@
             },
             urlChange() {
                 this.contractHash = ""
+                api.getMarketCap(o => this.price = o.price);
                 api.getAddress(this.$route.params.id, o => {
                     this.minted = o.mintedBlkList;
                     this.obj = o;
@@ -354,7 +363,8 @@
                 minted: [],
                 obj: null,
                 tab: 0,
-                txs: []
+                txs: [],
+                price: null
             };
         },
         methods: {
@@ -384,8 +394,8 @@
             toWei(n) {
                 return utility.toWei(n);
             },
-            easyNumber(n) {
-                return utility.easyNumber(n);
+            easyNumber(n, t) {
+                return utility.easyNumber(n, t);
             }
         }
     };

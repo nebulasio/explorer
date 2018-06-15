@@ -169,8 +169,11 @@ function toWei(n) {
     return (i == len ? numberAddComma(n) : n) + " " + arr[i];
 }
 
-function easyNumber(num) {
-    const str = (num || 0).toString()
+function easyNumber(num, fixed) {
+    let n = Number(num)
+    if(isNaN(n)) return 0;
+    if(fixed && String(n).split('.').length === 2 && String(n).split('.')[1].length > fixed) n = num.toFixed(fixed)
+    const str = (n || 0).toString()
     return str.indexOf('.') > -1 ? str.replace(/(\d)(?=(?:\d{3})+\.)/g, '$1,') : str.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
 }
 
