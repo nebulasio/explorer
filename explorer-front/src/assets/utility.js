@@ -170,11 +170,8 @@ function toWei(n) {
 }
 
 function easyNumber(num) {
-    return num && num
-        .toString()
-        .replace(/(\d)(?=(\d{3})+\.)/g, function($0, $1) {
-            return $1 + ",";
-        });
+    const str = (num || 0).toString()
+    return str.indexOf('.') > -1 ? str.replace(/(\d)(?=(?:\d{3})+\.)/g, '$1,') : str.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
 }
 
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
@@ -185,7 +182,7 @@ function ua() {
     // Firefox 1.0+
     var isFirefox = typeof InstallTrigger !== 'undefined';
 
-    // Safari 3.0+ "[object HTMLElementConstructor]" 
+    // Safari 3.0+ "[object HTMLElementConstructor]"
     var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
 
     // Internet Explorer 6-11
@@ -220,7 +217,7 @@ function yyyymmdd(dateNow) {
 
 function getNebulasNetHost(net){
     var mainnet = 'https://mainnet.nebulas.io/v1'
-    
+
     if(!net){
         return mainnet
     }
