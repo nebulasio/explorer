@@ -62,7 +62,7 @@
     <nav class="bg-light navbar navbar-expand-lg navbar-light vue-header">
         <div class=container>
             <div>
-                <router-link v-bind:to="fragApi + '/'" class=navbar-brand>
+                <router-link v-bind:to="fragApi + '/'" class=navbar-brand title="Home Page">
                     <img src=/static/img/logo.png width=150 alt="">
                 </router-link>
                 <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='

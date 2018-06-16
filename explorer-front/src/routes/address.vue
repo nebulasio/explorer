@@ -110,7 +110,11 @@
             <slot>
                 <h4 name=title class=col>
                     <vue-blockies v-bind:address='(obj && obj.address && obj.address.alias) || $route.params.id'></vue-blockies>
-                    <span>Address</span><span class="title-address">{{$route.params.id}}</span>
+                    <span>Address</span><span class="title-address">{{$route.params.id}}&nbsp;
+                        <i class="fa fa-clipboard"
+                           v-copy="(obj && obj.address && obj.address.alias) || $route.params.id"
+                           v-copy:callback="handleCopied"></i></span>
+                    <span class="clipboard-tip" v-if="copied">Address copied</span>
                 </h4>
             </slot>
         </vue-bread>
@@ -369,7 +373,8 @@
                 obj: null,
                 tab: 0,
                 txs: [],
-                market: null
+                market: null,
+                copied: false
             };
         },
         methods: {
@@ -401,6 +406,10 @@
             },
             easyNumber(n, t) {
                 return utility.easyNumber(n, t);
+            },
+            handleCopied() {
+                this.copied = true;
+                setTimeout(()=>{this.copied = false}, 1500)
             }
         }
     };

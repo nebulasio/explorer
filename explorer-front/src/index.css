@@ -138,3 +138,20 @@ label {
 .tooltip-inner {
     max-width: 320px;
 }
+
+/* copy btn
+    ============================================================ */
+
+.fa-clipboard {
+    cursor: pointer;
+}
+
+.clipboard-tip {
+    display: inline-block;
+    margin-left: 5px;
+    padding: 2px 5px;
+    color: #ffffff;
+    font-size: 0.6rem;
+    background-color: #888;
+    transition: all 0.5s;
+}

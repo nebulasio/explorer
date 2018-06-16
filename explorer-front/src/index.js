@@ -1,6 +1,7 @@
 
 var Vue = require("vue").default,
     VueRouter = require("vue-router").default,
+    VueCopy = require("v-copy").default,
     vApp = {},
     vAppConfig = require("@/assets/app-config"),
     vRouter = new VueRouter({ routes: require("@/assets/routes") });
@@ -12,6 +13,7 @@ require("./index.css");
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
+Vue.use(VueCopy);
 vRouter.beforeEach(onBeforeEach);
 
 vApp = new Vue({
