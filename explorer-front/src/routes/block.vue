@@ -30,93 +30,124 @@
     .vue-block .card {
         border: 0;
     }
+
+    .vue-block h4 .title-address {
+        font-weight: 200;
+        font-size: 1.1rem;
+        margin-left: 10px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    @media (max-width: 600px) {
+        .vue-block .vue-bread h4 {
+            display: block;
+            text-align: center;
+        }
+        .vue-block .vue-bread h4 .title-address {
+            font-size: 0.9rem;
+        }
+    }
 </style>
 <template>
     <!-- https://etherscan.io/block/4951841 -->
-    <div class="container vue-block" v-bind:triggerComputed=urlChange>
-        <vue-tab-buttons class=mt20 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
-        <div class=mt20></div>
-        <div class=tab v-show="tab == 1">
-            <h4>Block Information</h4>
-            <table class=table v-if=block>
-                <tr>
-                    <td>Height</td>
-                    <td>
-                        <nav aria-label="Page navigation" class=navgation-tab>
-                            <ul class=pagination>
-                                <li>
-                                    <router-link v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label=Previous>
-                                        <span aria-hidden=true>&lt; Prev</span>
-                                    </router-link>
-                                </li>
-                                <li>&nbsp; {{ block.height }} &nbsp;</li>
-                                <li>
-                                    <router-link v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label=Next>
-                                        <span aria-hidden=true>Next &gt;</span>
-                                    </router-link>
-                                </li>
-                            </ul>
-                        </nav>
-                    </td>
-                </tr>
-                <tr>
-                    <td>TimeStamp</td>
-                    <td>{{ timeConversion(Date.now() - block.timestamp ) }} ago ({{ new Date(block.timestamp).toString() }} | {{ block.timestamp }})</td>
-                </tr>
-                <tr>
-                    <td>Transactions</td>
-                    <td>
-                        <router-link v-bind:to='fragApi + "/txs?block=" + block.height'>{{ block.blkSummary.txCnt }}</router-link>
-                        tx in this block
-                    </td>
-                </tr>
-                <tr>
-                    <td>Hash</td>
-                    <td class=monospace>{{ block.hash }}</td>
-                </tr>
-                <tr>
-                    <td>Parent Hash</td>
-                    <td class=monospace>
-                        <router-link v-bind:to='fragApi + "/block/" + block.parentHash'>{{ block.parentHash }}</router-link>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Minted</td>
-                    <td class=monospace>
-                        <router-link v-bind:to='fragApi + "/address/" + block.miner.hash'>{{ block.miner.hash }}</router-link>
-                        <span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Coinbase</td>
-                    <td class=monospace>
-                        <router-link v-bind:to='fragApi + "/address/" + block.coinbase'>{{ block.coinbase }}</router-link>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Dynasty</td>
-                    <td class="dynasty monospace">
+    <div class="vue-block">
+        <vue-bread v-bind:arr=breadcrumb>
+            <slot>
+                <h4 name=title class=col>
+                    <span>Block</span><span class="title-address">#{{$route.params.id}}</span>
+                </h4>
+            </slot>
+        </vue-bread>
 
-                        <p>
-                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                Show Dynasty
-                            </button>
-                        </p>
-                        <div class="collapse" id="collapseExample">
-                            <div class="card card-body">
-                                <template v-for="dynasty in block.dynasty">
-                                    <router-link v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>{{ dynasty }} </router-link>
-                                    <br>
-                                </template>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Gas Reward</td>
-                    <td>{{ toWei(block.blkSummary.gasReward) }}</td>
-                </tr>
-            </table>
+        <div class="container" v-bind:triggerComputed=urlChange>
+            <vue-tab-buttons class=mt20 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
+            <div class=mt20></div>
+            <div class=tab v-show="tab == 1">
+                <h4>Block Information</h4>
+                <div class="txs-box">
+                    <table class=table v-if=block>
+                        <tr>
+                            <td>Height</td>
+                            <td>
+                                <nav aria-label="Page navigation" class=navgation-tab>
+                                    <ul class=pagination>
+                                        <li>
+                                            <router-link v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label=Previous>
+                                                <span aria-hidden=true>&lt; Prev</span>
+                                            </router-link>
+                                        </li>
+                                        <li>&nbsp; {{ block.height }} &nbsp;</li>
+                                        <li>
+                                            <router-link v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label=Next>
+                                                <span aria-hidden=true>Next &gt;</span>
+                                            </router-link>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>TimeStamp</td>
+                            <td>{{ timeConversion(Date.now() - block.timestamp ) }} ago ({{ new Date(block.timestamp).toString() }} | {{ block.timestamp }})</td>
+                        </tr>
+                        <tr>
+                            <td>Transactions</td>
+                            <td>
+                                <router-link v-bind:to='fragApi + "/txs?block=" + block.height'>{{ block.blkSummary.txCnt }}</router-link>
+                                tx in this block
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hash</td>
+                            <td class=monospace>{{ block.hash }}</td>
+                        </tr>
+                        <tr>
+                            <td>Parent Hash</td>
+                            <td class=monospace>
+                                <router-link v-bind:to='fragApi + "/block/" + block.parentHash'>{{ block.parentHash }}</router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Minted</td>
+                            <td class=monospace>
+                                <router-link v-bind:to='fragApi + "/address/" + block.miner.hash'>{{ block.miner.hash }}</router-link>
+                                <span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Coinbase</td>
+                            <td class=monospace>
+                                <router-link v-bind:to='fragApi + "/address/" + block.coinbase'>{{ block.coinbase }}</router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Dynasty</td>
+                            <td class="dynasty monospace">
+
+                                <p>
+                                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                        Show Dynasty
+                                    </button>
+                                </p>
+                                <div class="collapse" id="collapseExample">
+                                    <div class="card card-body">
+                                        <template v-for="dynasty in block.dynasty">
+                                            <router-link v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>{{ dynasty }} </router-link>
+                                            <br>
+                                        </template>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Gas Reward</td>
+                            <td>{{ toWei(block.blkSummary.gasReward) }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -126,6 +157,7 @@
 
     module.exports = {
         components: {
+            "vue-bread": require("@/components/vue-bread").default,
             "vue-tab-buttons": require("@/components/vue-tab-buttons").default
         },
         computed: {
@@ -150,6 +182,11 @@
         },
         data() {
             return {
+                breadcrumb: [
+                    { text: "Home", to: "/" },
+                    { text: "Blocks", to: "/blocks" },
+                    { text: "Block", to: "" }
+                ],
                 block: null,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 tab: 0,

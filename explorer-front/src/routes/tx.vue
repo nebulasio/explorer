@@ -17,110 +17,146 @@
         color:green;
     }
 
+    .vue-tx h4 .title-address {
+        font-weight: 200;
+        font-size: 0.8rem;
+        margin-left: 10px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    @media (max-width: 600px) {
+        .vue-tx h4 span {
+            display: inline-block;
+        }
+        .vue-tx .vue-bread h4 {
+            display: block;
+            text-align: center;
+        }
+        .vue-tx .vue-bread h4 .title-address {
+            margin-left: 0;
+            font-size: 0.7rem;
+        }
+    }
+
 </style>
 <template>
-    <div class="container vue-tx" v-bind:triggerComputed=urlChange>
-        <vue-tab-buttons class=mt20 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
-        <div class=mt20></div>
+    <div class="vue-tx">
+        <vue-bread v-bind:arr=breadcrumb>
+            <slot>
+                <h4 name=title class=col>
+                    <span>Transaction</span><span class="title-address">{{$route.params.id}}</span>
+                </h4>
+            </slot>
+        </vue-bread>
+        <div class="container" v-bind:triggerComputed=urlChange>
 
-        <div class=tab v-show="tab == 1">
-            <h3>Transaction Information</h3>
-            <table class=table v-if=tx>
-                <tr>
-                    <td>TxHash:</td>
-                    <td class=monospace>{{ tx.hash }}</td>
-                </tr>
-                <tr>
-                    <td>TxReceipt Status:</td>
-                    <td v-if="tx.status == 0">
-                        <span class="fail">fail ( {{ tx.executeError }} )</span>
-                    </td>
-                    <td v-else-if="tx.status == 1">
-                        <span class="success">success</span>
-                    </td>
-                    <td v-else>
-                        pending
-                    </td>
-                </tr>
-                <tr>
-                    <td>Block Height:</td>
-                    <td>
-                        <template v-if=tx.isPending>
-                            <span> pending </span>
-                        </template>
-                        <template v-else>
-                            <router-link v-if=tx.block v-bind:to='fragApi + "/block/" + tx.block.height'>{{tx.block.height}}</router-link>
-                        </template>
-                    </td>
-                </tr>
-                <tr>
-                    <td>TimeStamp:</td>
-                    <td>{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})
-                    </td>
-                </tr>
-                <tr>
-                    <td>From:</td>
-                    <td class=monospace>
-                        <router-link v-if=tx.from v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link>
-                    </td>
-                </tr>
-                <tr>
-                    <td>To:</td>
-                    <td class=monospace>
-                        <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Value:</td>
-                    <td>{{ numberAddComma(tx.value/1000000000000000000) }} NAS</td>
-                </tr>
-                <tr>
-                    <td>Gas Limit:</td>
-                    <td>{{ numberAddComma(tx.gasLimit) }}</td>
-                </tr>
-                <tr>
-                    <td>Gas Used By Txn:</td>
-                    <td>{{ tx.isPending == true ? 'pending' : toWei(tx.gasUsed) }}</td>
-                </tr>
-                <tr>
-                    <td>Gas Price:</td>
-                    <td>{{ toWei(tx.gasPrice) }}</td>
-                </tr>
-                <tr>
-                    <td>Actual Tx Cost/Fee:</td>
-                    <td>{{ toWei(tx.txFee) }}</td>
-                </tr>
-                <tr>
-                    <td>Nonce:</td>
-                    <td>{{ tx.nonce }}</td>
-                </tr>
-                <tr>
-                    <td>Transaction Type:</td>
-                    <td v-if=" tx.type == 'deploy' ">{{ txType }} ( contract address: <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.contractAddress'> {{tx.contractAddress}} </router-link>)</td>
-                    <td v-else>{{ txType }}</td>
-                </tr>
-                <tr>
-                    <td>Payload Data:</td>
-                    <td v-if="tx.type == 'binary'" class=text>
-                        {{ tx.data }}
-                    </td>
-                    <td v-else class=code>
-                        <pre><code class=language-javascript v-html=formatCode></code></pre>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
-        </div>
+            <vue-tab-buttons class=mt20 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
+            <div class=mt20></div>
 
-        <div class=tab v-show="tab == 2">
-            <h3>Internal Transactions</h3>
-        </div>
+            <div class=tab v-show="tab == 1">
+                <h3>Transaction Information</h3>
 
-        <div class=tab v-show="tab == 3">
-            <h3>Event Logs</h3>
+                <div class="txs-box">
+                    <table class=table v-if=tx>
+                        <tr>
+                            <td>TxHash:</td>
+                            <td class=monospace>{{ tx.hash }}</td>
+                        </tr>
+                        <tr>
+                            <td>TxReceipt Status:</td>
+                            <td v-if="tx.status == 0">
+                                <span class="fail">fail ( {{ tx.executeError }} )</span>
+                            </td>
+                            <td v-else-if="tx.status == 1">
+                                <span class="success">success</span>
+                            </td>
+                            <td v-else>
+                                pending
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Block Height:</td>
+                            <td>
+                                <template v-if=tx.isPending>
+                                    <span> pending </span>
+                                </template>
+                                <template v-else>
+                                    <router-link v-if=tx.block v-bind:to='fragApi + "/block/" + tx.block.height'>{{tx.block.height}}</router-link>
+                                </template>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>TimeStamp:</td>
+                            <td>{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>From:</td>
+                            <td class=monospace>
+                                <router-link v-if=tx.from v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>To:</td>
+                            <td class=monospace>
+                                <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Value:</td>
+                            <td>{{ numberAddComma(tx.value/1000000000000000000) }} NAS</td>
+                        </tr>
+                        <tr>
+                            <td>Gas Limit:</td>
+                            <td>{{ numberAddComma(tx.gasLimit) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Gas Used By Txn:</td>
+                            <td>{{ tx.isPending == true ? 'pending' : toWei(tx.gasUsed) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Gas Price:</td>
+                            <td>{{ toWei(tx.gasPrice) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Actual Tx Cost/Fee:</td>
+                            <td>{{ toWei(tx.txFee) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Nonce:</td>
+                            <td>{{ tx.nonce }}</td>
+                        </tr>
+                        <tr>
+                            <td>Transaction Type:</td>
+                            <td v-if=" tx.type == 'deploy' ">{{ txType }} ( contract address: <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.contractAddress'> {{tx.contractAddress}} </router-link>)</td>
+                            <td v-else>{{ txType }}</td>
+                        </tr>
+                        <tr>
+                            <td>Payload Data:</td>
+                            <td v-if="tx.type == 'binary'" class=text>
+                                {{ tx.data }}
+                            </td>
+                            <td v-else class=code>
+                                <pre><code class=language-javascript v-html=formatCode></code></pre>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class=tab v-show="tab == 2">
+                <h3>Internal Transactions</h3>
+            </div>
+
+            <div class=tab v-show="tab == 3">
+                <h3>Event Logs</h3>
+            </div>
         </div>
     </div>
 </template>
@@ -134,6 +170,7 @@
 
     module.exports = {
         components: {
+            "vue-bread": require("@/components/vue-bread").default,
             "vue-tab-buttons": require("@/components/vue-tab-buttons").default
         },
         computed: {
@@ -174,6 +211,11 @@
         },
         data() {
             return {
+                breadcrumb: [
+                    { text: "Home", to: "/" },
+                    { text: "Transactions", to: "/txs" },
+                    { text: "Transaction", to: "" }
+                ],
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 tab: 0,
                 tabButtons: ["Overview"],

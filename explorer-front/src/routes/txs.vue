@@ -30,6 +30,20 @@
         font-size: 1.1rem;
         margin-left: 10px;
     }
+
+    @media (max-width: 600px) {
+        .vue-txs h4 span {
+            display: inline-block;
+        }
+        .vue-txs .vue-bread h4 {
+            display: block;
+            text-align: center;
+        }
+        .vue-txs .vue-bread h4 .title-address {
+            margin-left: 0;
+            font-size: 0.9rem;
+        }
+    }
 </style>
 <template>
     <!-- https://etherscan.io/txs -->
@@ -37,8 +51,13 @@
         <vue-bread v-bind:arr=breadcrumb>
             <slot>
                 <h4 name=title class=col>
-                    <span>Transactions</span><span class="title-address">Address:
-                    <router-link v-bind:to='fragApi + "/address/" + $route.query.a'>{{$route.query.a}}</router-link></span>
+                    <span>{{ $route.query.isPending?'Pending ':'' }}Transactions</span>
+                    <span class="title-address" v-if="$route.query.a">Address:
+                        <router-link v-bind:to='fragApi + "/address/" + $route.query.a'>{{$route.query.a}}</router-link>
+                    </span>
+                    <span class="title-address" v-else-if="$route.query.block">Block:
+                        <router-link v-bind:to='fragApi + "/block/" + $route.query.block'>{{$route.query.block}}</router-link>
+                    </span>
                 </h4>
             </slot>
         </vue-bread>
@@ -73,7 +92,8 @@
                         </td>
 
                         <td>
-                            <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
+                            <router-link v-if="o.block && o.block.height" v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
+                            <i v-else>(pending)</i>
                         </td>
                         <!--
                         <td>
