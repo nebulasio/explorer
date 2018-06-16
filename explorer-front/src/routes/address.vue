@@ -130,8 +130,13 @@
                     <td>NAS Balance:</td>
                     <td>
                         {{ easyNumber(obj.address.balance/1000000000000000000) }} NAS
-                        <span v-if="price" class="price">
-                            ( ${{ easyNumber(price * obj.address.balance/1000000000000000000, 2) }} )
+                    </td>
+                </tr>
+                <tr>
+                    <td>NAS Value:</td>
+                    <td>
+                        <span v-if="market" class="price">
+                            ${{ easyNumber(market.price * obj.address.balance/1000000000000000000, 2) }}  ( ${{ market.price }}/NAS )
                         </span>
                     </td>
                 </tr>
@@ -335,7 +340,7 @@
             },
             urlChange() {
                 this.contractHash = ""
-                api.getMarketCap(o => this.price = o.price);
+                api.getMarketCap(o => this.market = o);
                 api.getAddress(this.$route.params.id, o => {
                     this.minted = o.mintedBlkList;
                     this.obj = o;
@@ -364,7 +369,7 @@
                 obj: null,
                 tab: 0,
                 txs: [],
-                price: null
+                market: null
             };
         },
         methods: {
