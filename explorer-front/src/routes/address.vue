@@ -125,9 +125,10 @@
                         Overview
                         <span class=c777 v-show=obj.address.alias> | {{ obj.address.alias }}</span>
                     </th>
-                    <th class=text-right>
+                    <th class="text-right">
                         <!-- * uncomment this img tag -->
                         <!-- <img src=%qrcode> -->
+                        <i class="fa fa-qrcode" @click.prevent="qrcodeModalShow = true" title="Click For QR Code"></i>
                     </th>
                 </tr>
                 <tr>
@@ -315,13 +316,32 @@
             </div> -->
 
         </div>
+        <div class="modal fade qrcode" :class="{ show: qrcodeModalShow }"
+             :style="{ display: qrcodeModalShow?'block':'none'}">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">{{$route.params.id}}</h5>
+                        <button type="button" class="close" @click.prevent="qrcodeModalShow = false">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center" id="qrcode-container">
+                        <canvas id="qrcode-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div v-if="qrcodeModalShow" class="modal-backdrop fade" :class="{ show: qrcodeModalShow }"
+                 @click.prevent="qrcodeModalShow = false"></div>
+        </div>
     </div>
 </template>
 <script>
     var api = require("@/assets/api"),
         prism = require("prismjs"),
         jsBeautify = require("js-beautify").js_beautify,
-        utility = require("@/assets/utility");
+        utility = require("@/assets/utility"),
+        QRCode = require("qrcode");
 
     module.exports = {
         components: {
@@ -355,6 +375,17 @@
                         })
                     }
                     this.txs = o.txList;
+
+                    // generate qrcode
+                    if(this.$route.params.id && document.getElementById('qrcode-canvas')){
+                        QRCode.toCanvas(document.getElementById('qrcode-canvas'), this.$route.params.id, {
+                            width: 250,
+                            margin: 0,
+                            errorCorrectionLevel: 'H'
+                        }, function (error) {
+                            if (error) console.error(error)
+                        })
+                    }
                 }, xhr => {
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                 });
@@ -374,7 +405,8 @@
                 tab: 0,
                 txs: [],
                 market: null,
-                copied: false
+                copied: false,
+                qrcodeModalShow: false
             };
         },
         methods: {

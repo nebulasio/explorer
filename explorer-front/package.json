@@ -7,6 +7,7 @@
   "scripts": {
     "build": "node build/build.js",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev-remote": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
     "start": "npm run dev"
   },
   "dependencies": {
@@ -17,6 +18,8 @@
     "js-beautify": "^1.7.5",
     "popper.js": "^1.14.3",
     "prismjs": "^1.14.0",
+    "qrcode": "^1.2.0",
+    "v-copy": "^0.1.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1"
   },

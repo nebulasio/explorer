@@ -155,3 +155,35 @@ label {
     background-color: #888;
     transition: all 0.5s;
 }
+
+/* qrcode btn
+    ============================================================ */
+
+.fa-qrcode {
+    font-size: 1.1rem;
+    display: inline-block;
+}
+
+.fa-qrcode:hover {
+    cursor: pointer;
+}
+
+.qrcode canvas {
+    display: block;
+    margin: 15px auto 20px;
+    width: 250px;
+}
+
+.qrcode .modal-header {
+    word-break: break-all;
+    white-space: normal;
+}
+
+.qrcode .modal-header h5 {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.qrcode .modal-dialog {
+    z-index: 2000;
+}
