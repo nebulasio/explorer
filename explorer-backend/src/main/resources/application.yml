@@ -120,3 +120,5 @@ spring:
     mode: LEGACYHTML5
 environment: production
 pendingTxExpiredTime : 48
+apiHost:
+  nebulas: https://mainnet.nebulas.io

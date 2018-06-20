@@ -7,17 +7,16 @@ import io.grpc.stub.StreamObserver;
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.service.blockchain.NebBlockService;
 import io.nebulas.explorer.service.blockchain.NebSyncService;
+import io.nebulas.explorer.task.DataInitTask;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import rpcpb.ApiServiceGrpc;
 import rpcpb.Rpc;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,16 +35,21 @@ public class GrpcClientService {
     private GrpcChannelService grpcChannelService;
     private NebBlockService nebBlockService;
     private NebSyncService nebSyncService;
-
-    private static ExecutorService LINK_BLOCK_EXECUTOR = Executors.newFixedThreadPool(5);
-    private static ExecutorService PENDING_TX_EXECUTOR = Executors.newFixedThreadPool(20);
-    private static ExecutorService LIB_BLOCK_EXECUTOR = Executors.newFixedThreadPool(1);
+    private ThreadPoolTaskExecutor executor;
 
     public void subscribe() {
+
+        while (!DataInitTask.isDone()) {
+            log.warn("DataInitTask is running, waiting for it to be done.");
+            try {
+                TimeUnit.SECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
         Channel channel = grpcChannelService.getChannel();
 
         ApiServiceGrpc.ApiServiceStub asyncStub = ApiServiceGrpc.newStub(channel);
-        final CountDownLatch finishLatch = new CountDownLatch(1);
 
         StreamObserver<Rpc.SubscribeResponse> responseObserver = new StreamObserver<Rpc.SubscribeResponse>() {
             @Override
@@ -70,11 +74,11 @@ public class GrpcClientService {
                 String hash = data.getString("hash");
 
                 if (Const.TopicLinkBlock.equals(topic)) {
-                    LINK_BLOCK_EXECUTOR.execute(() -> processTopicLinkBlock(hash));
+                    executor.execute(() -> processTopicLinkBlock(hash));
                 } else if (Const.TopicPendingTransaction.equals(topic)) {
-                    PENDING_TX_EXECUTOR.execute(() -> processTopicPendingTransaction(hash));
+                    executor.execute(() -> processTopicPendingTransaction(hash));
                 } else if (Const.TopicLibBlock.equals(topic)) {
-                    LIB_BLOCK_EXECUTOR.execute(() -> processTopicLibBlock(hash));
+                    executor.execute(() -> processTopicLibBlock(hash));
                 } else if (Const.TopicDropTransaction.equals(topic)) {
                     processTopicDropTransaction(hash);
                 }
@@ -92,14 +96,12 @@ public class GrpcClientService {
                     subscribe();
                 } catch (InterruptedException e1) {
                     log.error("thread sleep interrupted, skipped reconnect", e1);
-                    finishLatch.countDown();
                 }
             }
 
             @Override
             public void onCompleted() {
                 log.info("Finished");
-                finishLatch.countDown();
             }
         };
 

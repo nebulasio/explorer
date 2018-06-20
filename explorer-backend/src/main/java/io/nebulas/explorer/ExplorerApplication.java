@@ -12,8 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -42,12 +40,6 @@ public class ExplorerApplication {
 
             DeadlockDetector deadlockDetector = new DeadlockDetector(new DeadlockConsoleHandler(), 5, TimeUnit.SECONDS);
             deadlockDetector.start();
-
-            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            scheduler.schedule(() -> {
-                sysService.init(myConfig.getSync().isSubscribe());
-                dataInitTask.init(myConfig.getSync().isOpen());
-            }, 1500L, TimeUnit.MILLISECONDS);
         };
     }
 }

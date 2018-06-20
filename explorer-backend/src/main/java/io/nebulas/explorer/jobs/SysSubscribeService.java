@@ -1,7 +1,6 @@
 package io.nebulas.explorer.jobs;
 
 import io.grpc.StatusRuntimeException;
-import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.grpc.GrpcChannelService;
 import io.nebulas.explorer.grpc.GrpcClientService;
 import lombok.AllArgsConstructor;

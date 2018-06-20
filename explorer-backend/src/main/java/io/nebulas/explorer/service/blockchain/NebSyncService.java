@@ -2,8 +2,11 @@ package io.nebulas.explorer.service.blockchain;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
+import io.nebulas.explorer.domain.BlockSyncRecord;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
+import io.nebulas.explorer.domain.NebDynasty;
 import io.nebulas.explorer.domain.NebPendingTransaction;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
@@ -11,13 +14,16 @@ import io.nebulas.explorer.enums.NebTransactionTypeEnum;
 import io.nebulas.explorer.grpc.GrpcChannelService;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetAccountStateResponse;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
@@ -44,6 +50,8 @@ public class NebSyncService {
     private NebDynastyService nebDynastyService;
     @Autowired
     private NebApiServiceWrapper nebApiServiceWrapper;
+    @Autowired
+    private BlockSyncRecordService blockSyncRecordService;
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
 
@@ -103,10 +111,12 @@ public class NebSyncService {
             nebTransactionService.deleteNebTransactionByBlkHeight(block.getHeight());
         }
         int i = 0;
+        long txSyncedCount = 0;
         for (Transaction tx : txs) {
             i++;
             try {
                 syncTx(tx, block, i);
+                txSyncedCount++;
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
@@ -115,6 +125,12 @@ public class NebSyncService {
         //sync dynasty
         List<String> dynastyList = nebApiServiceWrapper.getDynasty(block.getHeight());
         nebDynastyService.batchAddNebDynasty(block.getHeight(), dynastyList);
+
+        //if isLib and synced all the txns successfully, then then block can be confirmed directly
+        boolean canBeConfirmed = isLib && txSyncedCount == txs.size();
+        if (canBeConfirmed) {
+            blockSyncRecordService.setConfirmed(block.getHeight(), txSyncedCount);
+        }
     }
 
     private void syncTx(Transaction tx, Block block, int seq) {
@@ -226,6 +242,7 @@ public class NebSyncService {
                 addr = nebAddressService.getNebAddressByHashRpc(hash);
                 if (null != addr) {
                     nebAddressService.addNebAddress(addr);
+                    syncBalance(hash);
                 }
             }
         } catch (Throwable e) {
@@ -269,5 +286,29 @@ public class NebSyncService {
             log.error(e.getMessage(), e);
         }
         return "";
+    }
+
+    /**
+     * sync the account balance
+     * @param hash
+     */
+    public void syncBalance(String hash) {
+        try {
+            NebAddress address = nebAddressService.getNebAddressByHash(hash);
+            if (null == address) {
+                return;
+            }
+            if (address.getUpdatedAt().before(LocalDateTime.now().plusMinutes(-5).toDate())) {
+                GetAccountStateResponse accountState = nebApiServiceWrapper.getAccountState(address.getHash());
+                if (null != accountState && StringUtils.isNotEmpty(accountState.getBalance())) {
+                    String balance = accountState.getBalance();
+                    String nocne = accountState.getNonce();
+                    address.setCurrentBalance(new BigDecimal(balance));
+                    nebAddressService.updateAddressBalance(hash, balance, nocne);
+                }
+            }
+        } catch (Exception e) {
+            log.warn("sync account[{}] balance error", hash);
+        }
     }
 }

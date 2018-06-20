@@ -2,30 +2,39 @@ package io.nebulas.explorer.jobs;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.domain.BlockSyncRecord;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
 import io.nebulas.explorer.domain.NebTransaction;
-import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionTypeEnum;
-import io.nebulas.explorer.service.blockchain.*;
+import io.nebulas.explorer.service.blockchain.BlockSyncRecordService;
+import io.nebulas.explorer.service.blockchain.NebAddressService;
+import io.nebulas.explorer.service.blockchain.NebBlockService;
+import io.nebulas.explorer.service.blockchain.NebDynastyService;
+import io.nebulas.explorer.service.blockchain.NebSyncService;
+import io.nebulas.explorer.service.blockchain.NebTransactionService;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.NebState;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
+import io.nebulas.explorer.task.DataInitTask;
 import io.nebulas.explorer.util.BlockHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import static com.alibaba.fastjson.JSON.toJSONString;
 
@@ -48,11 +57,20 @@ public class DataConsensusJob {
     private final NebApiServiceWrapper nebApiServiceWrapper;
     private final StringRedisTemplate redisTemplate;
     private final YAMLConfig myConfig;
+    private final ThreadPoolTaskExecutor executor;
+    private final NebSyncService nebSyncService;
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
 
+
     @Scheduled(cron = "0 0/2 * * * ?")
     public void check() {
+
+        if (!DataInitTask.isDone()) {
+            log.warn("DataInitTask is running, waiting for it to be done.");
+            return;
+        }
+
         String key = getHashKey();
         String running = redisTemplate.opsForValue().get(key);
         if (StringUtils.isNotEmpty(running)) {
@@ -60,53 +78,83 @@ public class DataConsensusJob {
             return;
         }
 
-        NebState nebState = nebApiServiceWrapper.getNebState();
-        if (nebState == null) {
-            log.error("neb state not found");
-            return;
-        }
-        log.info("neb state: {}", toJSONString(nebState));
-
-        Block block = nebApiServiceWrapper.getBlockByHash(nebState.getTail(), false);
-        if (block == null) {
-            log.error("block by hash {} not found", nebState.getTail());
-            return;
-        }
-        log.info("top block: {}", toJSONString(block));
+        log.info("DataConsensusJob starting to run");
 
         Long lastConfirmHeight = blockSyncRecordService.getMaxConfirmedBlockHeight();
-        if (lastConfirmHeight < block.getHeight()) {
-            try {
-                redisTemplate.opsForValue().set(key, "running");
-                redisTemplate.opsForValue().getOperations().expire(key, 5, TimeUnit.MINUTES);
+        try {
 
+            List<BlockSyncRecord> recordList = blockSyncRecordService.findUnConfirmed(lastConfirmHeight);
+            if (recordList.size() > 0) {
+                List<CompletableFuture<Void>> taskList = Lists.newArrayList();
                 Block latestLibBlk = nebApiServiceWrapper.getLatestLibBlock();
+                recordList.forEach(r -> {
+                    taskList.add(CompletableFuture.runAsync(() -> {
+                        syncBlock(r.getBlockHeight(), latestLibBlk);
+                    }, executor));
+                });
 
-                long end = block.getHeight() - lastConfirmHeight > 2000 ? lastConfirmHeight + 2000 : block.getHeight();
-
-                for (long i = lastConfirmHeight + 1; i <= end; i++) {
-                    BlockSyncRecord record = new BlockSyncRecord();
-                    record.setBlockHeight(i);
-                    record.setTxCnt(0L);
-                    record.setConfirm(0L);
-                    blockSyncRecordService.add(record);
-
-                    syncBlock(i, latestLibBlk);
-                }
-                redisTemplate.opsForValue().getOperations().delete(key);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                redisTemplate.opsForValue().getOperations().delete(key);
+                //waiting for all the tasks done
+                taskList.stream().map(CompletableFuture::join).collect(Collectors.toList());
             }
+
+            NebState nebState = nebApiServiceWrapper.getNebState();
+            if (nebState == null) {
+                log.error("neb state not found");
+                return;
+            }
+            log.info("neb state: {}", toJSONString(nebState));
+
+            Long maxBlockHeight = lastConfirmHeight;
+            Block block = nebApiServiceWrapper.getBlockByHash(nebState.getTail(), false);
+            if (block == null) {
+                log.error("block by hash {} not found", nebState.getTail());
+                maxBlockHeight = blockSyncRecordService.getMaxBlockHeight();
+            } else {
+                log.info("top block: {}", toJSONString(block));
+                maxBlockHeight = block.getHeight();
+            }
+
+
+            if (lastConfirmHeight < maxBlockHeight) {
+                try {
+                    redisTemplate.opsForValue().set(key, "running");
+
+                    final Block latestLibBlk = nebApiServiceWrapper.getLatestLibBlock();
+
+                    long end = maxBlockHeight - lastConfirmHeight > 2000 ? lastConfirmHeight + 2000 : maxBlockHeight;
+                    List<CompletableFuture<Void>> taskList = Lists.newArrayList();
+                    for (long i = lastConfirmHeight + 1; i <= end; i++) {
+                        BlockSyncRecord record = new BlockSyncRecord();
+                        record.setBlockHeight(i);
+                        record.setTxCnt(0L);
+                        record.setConfirm(0L);
+                        blockSyncRecordService.add(record);
+                        final long loop = i;
+                        taskList.add(CompletableFuture.runAsync(() -> {
+                            syncBlock(loop, latestLibBlk);
+                        }, executor));
+                    }
+
+                    //waiting for all the tasks done
+                    taskList.stream().map(CompletableFuture::join).collect(Collectors.toList());
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
+        } finally {
+            redisTemplate.opsForValue().getOperations().delete(key);
+            log.info("DataConsensusJob is done.");
         }
 
-        List<BlockSyncRecord> recordList = blockSyncRecordService.findUnConfirmed(lastConfirmHeight);
-        if (recordList.size() > 0) {
-            Block latestLibBlk = nebApiServiceWrapper.getLatestLibBlock();
-            recordList.forEach(r -> {
-                syncBlock(r.getBlockHeight(), latestLibBlk);
-            });
-        }
+    }
+
+    /**
+     * clear the running key in case the program terminates abnormally
+     */
+    @PreDestroy
+    public void destroy() {
+        String key = getHashKey();
+        redisTemplate.opsForValue().getOperations().delete(key);
     }
 
     private void syncBlock(long i, Block latestIrreversibleBlk) {
@@ -191,6 +239,7 @@ public class DataConsensusJob {
                     nebAddressService.addNebAddress(addr);
                 }
             }
+            nebSyncService.syncBalance(hash);
         } catch (Throwable e) {
             log.error("add address error", e);
         }
