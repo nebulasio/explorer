@@ -192,7 +192,11 @@ public class DataConsensusJob {
                         nebTx.setGasUsed("");
                         log.warn("gas used not found for tx hash {}", tx.getHash());
                     }
-                    nebTransactionService.addNebTransaction(nebTx);
+                    try {
+                        nebTransactionService.addNebTransaction(nebTx);
+                    } catch (Exception e) {
+                        // just ignore here
+                    }
                     log.info("save tx={}", tx.getHash());
                 }
                 isOk = false;
