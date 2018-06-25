@@ -43,7 +43,7 @@ public class DataInitTask {
     private final YAMLConfig myConfig;
     private final SysSubscribeService sysSubscribeService;
     //indicate if the init task done.
-    private static boolean isDone = false;
+    private static volatile boolean isDone = false;
 
     @PostConstruct
     public void init() {

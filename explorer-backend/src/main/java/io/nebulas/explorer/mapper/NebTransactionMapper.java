@@ -38,6 +38,8 @@ public interface NebTransactionMapper {
 
     List<NebTransaction> findTxnByFromTo(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
 
+    List<NebTransaction> findTxnByTo(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
+
     List<NebTransaction> findTxnOrderById(@Param("offset") int offset, @Param("limit") int limit);
 
     List<NebTransaction> findByBlockHeights(@Param("blockHeights") List<Long> blockHeights);
@@ -49,4 +51,14 @@ public interface NebTransactionMapper {
     List<Map<String, String>> countTxnCntMapByTo(List<String> addressHashes);
 
     List<Map<String, Object>> countTxCntGroupByTimestamp(@Param("from") String from, @Param("to") String to);
+
+    List<NebTransaction> findTopAccount(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
+
+    List<NebTransaction> findTopTxn(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
+
+    List<NebTransaction> findRecentTxn(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
+
+    List<Map<String, Object>> recent7days(@Param("addressHash") String addressHash);
+
+    long countTxnByTo(@Param("addressHash") String addressHash);
 }

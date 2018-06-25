@@ -185,4 +185,56 @@
         WHERE `timestamp` BETWEEN #{from,jdbcType=TIMESTAMP} and #{to,jdbcType=TIMESTAMP}
         GROUP BY LEFT(`timestamp`,10)
     </select>
+
+    <select id="findTopAccount" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        nt.*
+        from neb_transaction nt, neb_address na
+        where nt.`to` = #{addressHash,jdbcType=VARCHAR} and nt.`from` = na.`hash`
+        and status = 1
+        order by na.current_balance desc
+        LIMIT ${offset},${limit}
+    </select>
+
+    <select id="findTopTxn" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `to` = #{addressHash,jdbcType=VARCHAR}
+        and status = 1
+        order by cast(value as decimal(50)) desc
+        LIMIT ${offset},${limit}
+    </select>
+
+    <select id="findRecentTxn" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `to` = #{addressHash,jdbcType=VARCHAR}
+        and status = 1
+        order by `timestamp` desc
+        LIMIT ${offset},${limit}
+    </select>
+
+    <select id="recent7days" resultType="map" parameterType="map">
+        select * from (select date(`timestamp`) as d, count(1) as c from neb_transaction
+        where `to` = #{addressHash,jdbcType=VARCHAR} and timestamp > date_sub(date(now()), interval 6 day)
+        group by date(timestamp)) a
+        order by d desc  limit 7;
+    </select>
+
+    <select id="countTxnByTo" parameterType="map" resultType="long">
+        SELECT
+        count(1)
+        FROM `neb_transaction`
+        WHERE `to` = #{addressHash,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findTxnByTo" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `to` = #{addressHash,jdbcType=VARCHAR}
+        LIMIT ${offset},${limit}
+    </select>
 </mapper>
