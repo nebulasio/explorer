@@ -49,6 +49,7 @@ public class RpcController {
     private final NebMarketCapitalizationService nebMarketCapitalizationService;
     private final NebDynastyService nebDynastyService;
     private final NebApiServiceWrapper nebApiServiceWrapper;
+    private final NebStatService nebStatService;
 
     private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(20);
     private static final Base64.Decoder DECODER = Base64.getDecoder();
@@ -198,6 +199,11 @@ public class RpcController {
     @RequestMapping("/tx/cnt_static")
     public JsonResult txStatic() {
         return JsonResult.success(nebTransactionService.countTxCntGroupMapByTimestamp(LocalDate.now().plusDays(-15).toDate(), LocalDate.now().toDate()));
+    }
+
+    @GetMapping("/stat/data")
+    public JsonResult statData() {
+        return JsonResult.success(nebStatService.stat());
     }
 
     @RequestMapping("/account")
