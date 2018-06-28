@@ -34,6 +34,12 @@
         FROM `neb_address`
     </select>
 
+    <select id="countAccountGroupByType" resultType="io.nebulas.explorer.model.vo.AddrTypeVo">
+        select `type` as type,count(*) as amount
+        from `neb_address`
+        group by `type`
+    </select>
+
     <select id="getByHash" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT
         <include refid="Base_Column_List"/>

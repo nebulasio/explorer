@@ -3,9 +3,11 @@ package io.nebulas.explorer.service.blockchain;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.mapper.NebAddressMapper;
+import io.nebulas.explorer.model.vo.AddrTypeVo;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetAccountStateResponse;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -74,6 +76,14 @@ public class NebAddressService {
      */
     public long countTotalAddressCnt() {
         return nebAddressMapper.countTotalAddressCnt();
+    }
+
+    public Map<NebAddressTypeEnum, Long> countAccountGroupByType() {
+        List<AddrTypeVo> voList = nebAddressMapper.countAccountGroupByType();
+        if (CollectionUtils.isEmpty(voList)) {
+            return MapUtils.EMPTY_MAP;
+        }
+        return voList.stream().collect(Collectors.toMap(it -> NebAddressTypeEnum.of(it.getType()), AddrTypeVo::getAmount));
     }
 
     /**

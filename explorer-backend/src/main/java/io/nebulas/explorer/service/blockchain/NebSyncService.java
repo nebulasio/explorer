@@ -188,13 +188,16 @@ public class NebSyncService {
                 }
 
                 log.info("get pending tx by hash {}", hash);
+                Long timestamp = String.valueOf(txSource.getTimestamp()).length() < 13 ?
+                        txSource.getTimestamp() * 1000 : txSource.getTimestamp();
                 NebPendingTransaction pendingTxToSave = NebPendingTransaction.builder()
                         .hash(hash)
                         .from(txSource.getFrom())
                         .to(txSource.getTo())
                         .value(txSource.getValue())
                         .nonce(txSource.getNonce())
-                        .timestamp(new Date(txSource.getTimestamp() * 1000))
+//                        .timestamp(new Date(txSource.getTimestamp() * 1000))
+                        .timestamp(new Date(timestamp))
                         .type(txSource.getType())
                         .contractAddress(StringUtils.isEmpty(txSource.getContractAddress()) ? "" : txSource.getContractAddress())
                         .gasPrice(txSource.getGasPrice())
@@ -209,7 +212,7 @@ public class NebSyncService {
         }
     }
 
-    public void deletePendingTx(String hash){
+    public void deletePendingTx(String hash) {
         if (StringUtils.isEmpty(hash)) {
             return;
         }
