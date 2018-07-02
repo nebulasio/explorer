@@ -96,6 +96,13 @@ public class NebTransaction implements Serializable {
      */
     private String data;
 
+    /**
+     * contract address. it is not null, when the type of transaction is deploy.
+     */
+    private String contractAddress;
+
+    private String executeError;
+
     private static final long serialVersionUID = 1L;
 
     public String getTxFee() {

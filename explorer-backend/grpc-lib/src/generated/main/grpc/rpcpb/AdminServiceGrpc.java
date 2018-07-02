@@ -18,7 +18,7 @@ import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.9.0)",
+    value = "by gRPC proto compiler (version 1.12.0)",
     comments = "Source: rpc.proto")
 public final class AdminServiceGrpc {
 
@@ -30,7 +30,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getNewAccountMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.NewAccountRequest,
-      rpcpb.Rpc.NewAccountResponse> METHOD_NEW_ACCOUNT = getNewAccountMethod();
+      rpcpb.Rpc.NewAccountResponse> METHOD_NEW_ACCOUNT = getNewAccountMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.NewAccountRequest,
       rpcpb.Rpc.NewAccountResponse> getNewAccountMethod;
@@ -38,6 +38,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.NewAccountRequest,
       rpcpb.Rpc.NewAccountResponse> getNewAccountMethod() {
+    return getNewAccountMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.NewAccountRequest,
+      rpcpb.Rpc.NewAccountResponse> getNewAccountMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.NewAccountRequest, rpcpb.Rpc.NewAccountResponse> getNewAccountMethod;
     if ((getNewAccountMethod = AdminServiceGrpc.getNewAccountMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -62,7 +67,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getUnlockAccountMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.UnlockAccountRequest,
-      rpcpb.Rpc.UnlockAccountResponse> METHOD_UNLOCK_ACCOUNT = getUnlockAccountMethod();
+      rpcpb.Rpc.UnlockAccountResponse> METHOD_UNLOCK_ACCOUNT = getUnlockAccountMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.UnlockAccountRequest,
       rpcpb.Rpc.UnlockAccountResponse> getUnlockAccountMethod;
@@ -70,6 +75,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.UnlockAccountRequest,
       rpcpb.Rpc.UnlockAccountResponse> getUnlockAccountMethod() {
+    return getUnlockAccountMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.UnlockAccountRequest,
+      rpcpb.Rpc.UnlockAccountResponse> getUnlockAccountMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.UnlockAccountRequest, rpcpb.Rpc.UnlockAccountResponse> getUnlockAccountMethod;
     if ((getUnlockAccountMethod = AdminServiceGrpc.getUnlockAccountMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -94,7 +104,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getLockAccountMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.LockAccountRequest,
-      rpcpb.Rpc.LockAccountResponse> METHOD_LOCK_ACCOUNT = getLockAccountMethod();
+      rpcpb.Rpc.LockAccountResponse> METHOD_LOCK_ACCOUNT = getLockAccountMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.LockAccountRequest,
       rpcpb.Rpc.LockAccountResponse> getLockAccountMethod;
@@ -102,6 +112,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.LockAccountRequest,
       rpcpb.Rpc.LockAccountResponse> getLockAccountMethod() {
+    return getLockAccountMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.LockAccountRequest,
+      rpcpb.Rpc.LockAccountResponse> getLockAccountMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.LockAccountRequest, rpcpb.Rpc.LockAccountResponse> getLockAccountMethod;
     if ((getLockAccountMethod = AdminServiceGrpc.getLockAccountMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -126,7 +141,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getSignTransactionMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
-      rpcpb.Rpc.SignTransactionResponse> METHOD_SIGN_TRANSACTION = getSignTransactionMethod();
+      rpcpb.Rpc.SignTransactionResponse> METHOD_SIGN_TRANSACTION = getSignTransactionMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
       rpcpb.Rpc.SignTransactionResponse> getSignTransactionMethod;
@@ -134,6 +149,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
       rpcpb.Rpc.SignTransactionResponse> getSignTransactionMethod() {
+    return getSignTransactionMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest,
+      rpcpb.Rpc.SignTransactionResponse> getSignTransactionMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.TransactionRequest, rpcpb.Rpc.SignTransactionResponse> getSignTransactionMethod;
     if ((getSignTransactionMethod = AdminServiceGrpc.getSignTransactionMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -158,7 +178,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getSendTransactionWithPassphraseMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.SendTransactionPassphraseRequest,
-      rpcpb.Rpc.SendTransactionPassphraseResponse> METHOD_SEND_TRANSACTION_WITH_PASSPHRASE = getSendTransactionWithPassphraseMethod();
+      rpcpb.Rpc.SendTransactionPassphraseResponse> METHOD_SEND_TRANSACTION_WITH_PASSPHRASE = getSendTransactionWithPassphraseMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.SendTransactionPassphraseRequest,
       rpcpb.Rpc.SendTransactionPassphraseResponse> getSendTransactionWithPassphraseMethod;
@@ -166,6 +186,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.SendTransactionPassphraseRequest,
       rpcpb.Rpc.SendTransactionPassphraseResponse> getSendTransactionWithPassphraseMethod() {
+    return getSendTransactionWithPassphraseMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.SendTransactionPassphraseRequest,
+      rpcpb.Rpc.SendTransactionPassphraseResponse> getSendTransactionWithPassphraseMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.SendTransactionPassphraseRequest, rpcpb.Rpc.SendTransactionPassphraseResponse> getSendTransactionWithPassphraseMethod;
     if ((getSendTransactionWithPassphraseMethod = AdminServiceGrpc.getSendTransactionWithPassphraseMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -190,7 +215,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getStatisticsNodeInfoMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
-      rpcpb.Rpc.StatisticsNodeInfoResponse> METHOD_STATISTICS_NODE_INFO = getStatisticsNodeInfoMethod();
+      rpcpb.Rpc.StatisticsNodeInfoResponse> METHOD_STATISTICS_NODE_INFO = getStatisticsNodeInfoMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.StatisticsNodeInfoResponse> getStatisticsNodeInfoMethod;
@@ -198,6 +223,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.StatisticsNodeInfoResponse> getStatisticsNodeInfoMethod() {
+    return getStatisticsNodeInfoMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
+      rpcpb.Rpc.StatisticsNodeInfoResponse> getStatisticsNodeInfoMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest, rpcpb.Rpc.StatisticsNodeInfoResponse> getStatisticsNodeInfoMethod;
     if ((getStatisticsNodeInfoMethod = AdminServiceGrpc.getStatisticsNodeInfoMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -222,7 +252,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getGetDynastyMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
-      rpcpb.Rpc.GetDynastyResponse> METHOD_GET_DYNASTY = getGetDynastyMethod();
+      rpcpb.Rpc.GetDynastyResponse> METHOD_GET_DYNASTY = getGetDynastyMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
       rpcpb.Rpc.GetDynastyResponse> getGetDynastyMethod;
@@ -230,6 +260,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
       rpcpb.Rpc.GetDynastyResponse> getGetDynastyMethod() {
+    return getGetDynastyMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
+      rpcpb.Rpc.GetDynastyResponse> getGetDynastyMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest, rpcpb.Rpc.GetDynastyResponse> getGetDynastyMethod;
     if ((getGetDynastyMethod = AdminServiceGrpc.getGetDynastyMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -254,7 +289,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getGetCandidatesMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
-      rpcpb.Rpc.GetCandidatesResponse> METHOD_GET_CANDIDATES = getGetCandidatesMethod();
+      rpcpb.Rpc.GetCandidatesResponse> METHOD_GET_CANDIDATES = getGetCandidatesMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
       rpcpb.Rpc.GetCandidatesResponse> getGetCandidatesMethod;
@@ -262,6 +297,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
       rpcpb.Rpc.GetCandidatesResponse> getGetCandidatesMethod() {
+    return getGetCandidatesMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest,
+      rpcpb.Rpc.GetCandidatesResponse> getGetCandidatesMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.ByBlockHeightRequest, rpcpb.Rpc.GetCandidatesResponse> getGetCandidatesMethod;
     if ((getGetCandidatesMethod = AdminServiceGrpc.getGetCandidatesMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -286,7 +326,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getGetDelegateVotersMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.GetDelegateVotersRequest,
-      rpcpb.Rpc.GetDelegateVotersResponse> METHOD_GET_DELEGATE_VOTERS = getGetDelegateVotersMethod();
+      rpcpb.Rpc.GetDelegateVotersResponse> METHOD_GET_DELEGATE_VOTERS = getGetDelegateVotersMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.GetDelegateVotersRequest,
       rpcpb.Rpc.GetDelegateVotersResponse> getGetDelegateVotersMethod;
@@ -294,6 +334,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.GetDelegateVotersRequest,
       rpcpb.Rpc.GetDelegateVotersResponse> getGetDelegateVotersMethod() {
+    return getGetDelegateVotersMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.GetDelegateVotersRequest,
+      rpcpb.Rpc.GetDelegateVotersResponse> getGetDelegateVotersMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.GetDelegateVotersRequest, rpcpb.Rpc.GetDelegateVotersResponse> getGetDelegateVotersMethod;
     if ((getGetDelegateVotersMethod = AdminServiceGrpc.getGetDelegateVotersMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -318,7 +363,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getChangeNetworkIDMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.ChangeNetworkIDRequest,
-      rpcpb.Rpc.ChangeNetworkIDResponse> METHOD_CHANGE_NETWORK_ID = getChangeNetworkIDMethod();
+      rpcpb.Rpc.ChangeNetworkIDResponse> METHOD_CHANGE_NETWORK_ID = getChangeNetworkIDMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.ChangeNetworkIDRequest,
       rpcpb.Rpc.ChangeNetworkIDResponse> getChangeNetworkIDMethod;
@@ -326,6 +371,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.ChangeNetworkIDRequest,
       rpcpb.Rpc.ChangeNetworkIDResponse> getChangeNetworkIDMethod() {
+    return getChangeNetworkIDMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.ChangeNetworkIDRequest,
+      rpcpb.Rpc.ChangeNetworkIDResponse> getChangeNetworkIDMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.ChangeNetworkIDRequest, rpcpb.Rpc.ChangeNetworkIDResponse> getChangeNetworkIDMethod;
     if ((getChangeNetworkIDMethod = AdminServiceGrpc.getChangeNetworkIDMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -350,7 +400,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getStartMiningMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.StartMiningRequest,
-      rpcpb.Rpc.MiningResponse> METHOD_START_MINING = getStartMiningMethod();
+      rpcpb.Rpc.MiningResponse> METHOD_START_MINING = getStartMiningMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.StartMiningRequest,
       rpcpb.Rpc.MiningResponse> getStartMiningMethod;
@@ -358,6 +408,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.StartMiningRequest,
       rpcpb.Rpc.MiningResponse> getStartMiningMethod() {
+    return getStartMiningMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.StartMiningRequest,
+      rpcpb.Rpc.MiningResponse> getStartMiningMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.StartMiningRequest, rpcpb.Rpc.MiningResponse> getStartMiningMethod;
     if ((getStartMiningMethod = AdminServiceGrpc.getStartMiningMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -382,7 +437,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getStopMiningMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
-      rpcpb.Rpc.MiningResponse> METHOD_STOP_MINING = getStopMiningMethod();
+      rpcpb.Rpc.MiningResponse> METHOD_STOP_MINING = getStopMiningMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.MiningResponse> getStopMiningMethod;
@@ -390,6 +445,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
       rpcpb.Rpc.MiningResponse> getStopMiningMethod() {
+    return getStopMiningMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest,
+      rpcpb.Rpc.MiningResponse> getStopMiningMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.NonParamsRequest, rpcpb.Rpc.MiningResponse> getStopMiningMethod;
     if ((getStopMiningMethod = AdminServiceGrpc.getStopMiningMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -414,7 +474,7 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getStartPprofMethod()} instead. 
   public static final io.grpc.MethodDescriptor<rpcpb.Rpc.PprofRequest,
-      rpcpb.Rpc.PprofResponse> METHOD_START_PPROF = getStartPprofMethod();
+      rpcpb.Rpc.PprofResponse> METHOD_START_PPROF = getStartPprofMethodHelper();
 
   private static volatile io.grpc.MethodDescriptor<rpcpb.Rpc.PprofRequest,
       rpcpb.Rpc.PprofResponse> getStartPprofMethod;
@@ -422,6 +482,11 @@ public final class AdminServiceGrpc {
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   public static io.grpc.MethodDescriptor<rpcpb.Rpc.PprofRequest,
       rpcpb.Rpc.PprofResponse> getStartPprofMethod() {
+    return getStartPprofMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<rpcpb.Rpc.PprofRequest,
+      rpcpb.Rpc.PprofResponse> getStartPprofMethodHelper() {
     io.grpc.MethodDescriptor<rpcpb.Rpc.PprofRequest, rpcpb.Rpc.PprofResponse> getStartPprofMethod;
     if ((getStartPprofMethod = AdminServiceGrpc.getStartPprofMethod) == null) {
       synchronized (AdminServiceGrpc.class) {
@@ -478,7 +543,7 @@ public final class AdminServiceGrpc {
      */
     public void newAccount(rpcpb.Rpc.NewAccountRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.NewAccountResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getNewAccountMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getNewAccountMethodHelper(), responseObserver);
     }
 
     /**
@@ -488,7 +553,7 @@ public final class AdminServiceGrpc {
      */
     public void unlockAccount(rpcpb.Rpc.UnlockAccountRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.UnlockAccountResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getUnlockAccountMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getUnlockAccountMethodHelper(), responseObserver);
     }
 
     /**
@@ -498,7 +563,7 @@ public final class AdminServiceGrpc {
      */
     public void lockAccount(rpcpb.Rpc.LockAccountRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.LockAccountResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getLockAccountMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getLockAccountMethodHelper(), responseObserver);
     }
 
     /**
@@ -508,7 +573,7 @@ public final class AdminServiceGrpc {
      */
     public void signTransaction(rpcpb.Rpc.TransactionRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.SignTransactionResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getSignTransactionMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getSignTransactionMethodHelper(), responseObserver);
     }
 
     /**
@@ -518,153 +583,153 @@ public final class AdminServiceGrpc {
      */
     public void sendTransactionWithPassphrase(rpcpb.Rpc.SendTransactionPassphraseRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.SendTransactionPassphraseResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getSendTransactionWithPassphraseMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getSendTransactionWithPassphraseMethodHelper(), responseObserver);
     }
 
     /**
      */
     public void statisticsNodeInfo(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.StatisticsNodeInfoResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getStatisticsNodeInfoMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getStatisticsNodeInfoMethodHelper(), responseObserver);
     }
 
     /**
      */
     public void getDynasty(rpcpb.Rpc.ByBlockHeightRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GetDynastyResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetDynastyMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetDynastyMethodHelper(), responseObserver);
     }
 
     /**
      */
     public void getCandidates(rpcpb.Rpc.ByBlockHeightRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GetCandidatesResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetCandidatesMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetCandidatesMethodHelper(), responseObserver);
     }
 
     /**
      */
     public void getDelegateVoters(rpcpb.Rpc.GetDelegateVotersRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GetDelegateVotersResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getGetDelegateVotersMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getGetDelegateVotersMethodHelper(), responseObserver);
     }
 
     /**
      */
     public void changeNetworkID(rpcpb.Rpc.ChangeNetworkIDRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.ChangeNetworkIDResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getChangeNetworkIDMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getChangeNetworkIDMethodHelper(), responseObserver);
     }
 
     /**
      */
     public void startMining(rpcpb.Rpc.StartMiningRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.MiningResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getStartMiningMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getStartMiningMethodHelper(), responseObserver);
     }
 
     /**
      */
     public void stopMining(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.MiningResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getStopMiningMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getStopMiningMethodHelper(), responseObserver);
     }
 
     /**
      */
     public void startPprof(rpcpb.Rpc.PprofRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.PprofResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getStartPprofMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getStartPprofMethodHelper(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
-            getNewAccountMethod(),
+            getNewAccountMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.NewAccountRequest,
                 rpcpb.Rpc.NewAccountResponse>(
                   this, METHODID_NEW_ACCOUNT)))
           .addMethod(
-            getUnlockAccountMethod(),
+            getUnlockAccountMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.UnlockAccountRequest,
                 rpcpb.Rpc.UnlockAccountResponse>(
                   this, METHODID_UNLOCK_ACCOUNT)))
           .addMethod(
-            getLockAccountMethod(),
+            getLockAccountMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.LockAccountRequest,
                 rpcpb.Rpc.LockAccountResponse>(
                   this, METHODID_LOCK_ACCOUNT)))
           .addMethod(
-            getSignTransactionMethod(),
+            getSignTransactionMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.TransactionRequest,
                 rpcpb.Rpc.SignTransactionResponse>(
                   this, METHODID_SIGN_TRANSACTION)))
           .addMethod(
-            getSendTransactionWithPassphraseMethod(),
+            getSendTransactionWithPassphraseMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.SendTransactionPassphraseRequest,
                 rpcpb.Rpc.SendTransactionPassphraseResponse>(
                   this, METHODID_SEND_TRANSACTION_WITH_PASSPHRASE)))
           .addMethod(
-            getStatisticsNodeInfoMethod(),
+            getStatisticsNodeInfoMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.NonParamsRequest,
                 rpcpb.Rpc.StatisticsNodeInfoResponse>(
                   this, METHODID_STATISTICS_NODE_INFO)))
           .addMethod(
-            getGetDynastyMethod(),
+            getGetDynastyMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.ByBlockHeightRequest,
                 rpcpb.Rpc.GetDynastyResponse>(
                   this, METHODID_GET_DYNASTY)))
           .addMethod(
-            getGetCandidatesMethod(),
+            getGetCandidatesMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.ByBlockHeightRequest,
                 rpcpb.Rpc.GetCandidatesResponse>(
                   this, METHODID_GET_CANDIDATES)))
           .addMethod(
-            getGetDelegateVotersMethod(),
+            getGetDelegateVotersMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.GetDelegateVotersRequest,
                 rpcpb.Rpc.GetDelegateVotersResponse>(
                   this, METHODID_GET_DELEGATE_VOTERS)))
           .addMethod(
-            getChangeNetworkIDMethod(),
+            getChangeNetworkIDMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.ChangeNetworkIDRequest,
                 rpcpb.Rpc.ChangeNetworkIDResponse>(
                   this, METHODID_CHANGE_NETWORK_ID)))
           .addMethod(
-            getStartMiningMethod(),
+            getStartMiningMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.StartMiningRequest,
                 rpcpb.Rpc.MiningResponse>(
                   this, METHODID_START_MINING)))
           .addMethod(
-            getStopMiningMethod(),
+            getStopMiningMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.NonParamsRequest,
                 rpcpb.Rpc.MiningResponse>(
                   this, METHODID_STOP_MINING)))
           .addMethod(
-            getStartPprofMethod(),
+            getStartPprofMethodHelper(),
             asyncUnaryCall(
               new MethodHandlers<
                 rpcpb.Rpc.PprofRequest,
@@ -700,7 +765,7 @@ public final class AdminServiceGrpc {
     public void newAccount(rpcpb.Rpc.NewAccountRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.NewAccountResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getNewAccountMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getNewAccountMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -711,7 +776,7 @@ public final class AdminServiceGrpc {
     public void unlockAccount(rpcpb.Rpc.UnlockAccountRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.UnlockAccountResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getUnlockAccountMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getUnlockAccountMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -722,7 +787,7 @@ public final class AdminServiceGrpc {
     public void lockAccount(rpcpb.Rpc.LockAccountRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.LockAccountResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getLockAccountMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getLockAccountMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -733,7 +798,7 @@ public final class AdminServiceGrpc {
     public void signTransaction(rpcpb.Rpc.TransactionRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.SignTransactionResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getSignTransactionMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getSignTransactionMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -744,7 +809,7 @@ public final class AdminServiceGrpc {
     public void sendTransactionWithPassphrase(rpcpb.Rpc.SendTransactionPassphraseRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.SendTransactionPassphraseResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getSendTransactionWithPassphraseMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getSendTransactionWithPassphraseMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -752,7 +817,7 @@ public final class AdminServiceGrpc {
     public void statisticsNodeInfo(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.StatisticsNodeInfoResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getStatisticsNodeInfoMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getStatisticsNodeInfoMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -760,7 +825,7 @@ public final class AdminServiceGrpc {
     public void getDynasty(rpcpb.Rpc.ByBlockHeightRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GetDynastyResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetDynastyMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetDynastyMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -768,7 +833,7 @@ public final class AdminServiceGrpc {
     public void getCandidates(rpcpb.Rpc.ByBlockHeightRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GetCandidatesResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetCandidatesMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetCandidatesMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -776,7 +841,7 @@ public final class AdminServiceGrpc {
     public void getDelegateVoters(rpcpb.Rpc.GetDelegateVotersRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.GetDelegateVotersResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getGetDelegateVotersMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getGetDelegateVotersMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -784,7 +849,7 @@ public final class AdminServiceGrpc {
     public void changeNetworkID(rpcpb.Rpc.ChangeNetworkIDRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.ChangeNetworkIDResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getChangeNetworkIDMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getChangeNetworkIDMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -792,7 +857,7 @@ public final class AdminServiceGrpc {
     public void startMining(rpcpb.Rpc.StartMiningRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.MiningResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getStartMiningMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getStartMiningMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -800,7 +865,7 @@ public final class AdminServiceGrpc {
     public void stopMining(rpcpb.Rpc.NonParamsRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.MiningResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getStopMiningMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getStopMiningMethodHelper(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -808,7 +873,7 @@ public final class AdminServiceGrpc {
     public void startPprof(rpcpb.Rpc.PprofRequest request,
         io.grpc.stub.StreamObserver<rpcpb.Rpc.PprofResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getStartPprofMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getStartPprofMethodHelper(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -837,7 +902,7 @@ public final class AdminServiceGrpc {
      */
     public rpcpb.Rpc.NewAccountResponse newAccount(rpcpb.Rpc.NewAccountRequest request) {
       return blockingUnaryCall(
-          getChannel(), getNewAccountMethod(), getCallOptions(), request);
+          getChannel(), getNewAccountMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -847,7 +912,7 @@ public final class AdminServiceGrpc {
      */
     public rpcpb.Rpc.UnlockAccountResponse unlockAccount(rpcpb.Rpc.UnlockAccountRequest request) {
       return blockingUnaryCall(
-          getChannel(), getUnlockAccountMethod(), getCallOptions(), request);
+          getChannel(), getUnlockAccountMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -857,7 +922,7 @@ public final class AdminServiceGrpc {
      */
     public rpcpb.Rpc.LockAccountResponse lockAccount(rpcpb.Rpc.LockAccountRequest request) {
       return blockingUnaryCall(
-          getChannel(), getLockAccountMethod(), getCallOptions(), request);
+          getChannel(), getLockAccountMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -867,7 +932,7 @@ public final class AdminServiceGrpc {
      */
     public rpcpb.Rpc.SignTransactionResponse signTransaction(rpcpb.Rpc.TransactionRequest request) {
       return blockingUnaryCall(
-          getChannel(), getSignTransactionMethod(), getCallOptions(), request);
+          getChannel(), getSignTransactionMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -877,63 +942,63 @@ public final class AdminServiceGrpc {
      */
     public rpcpb.Rpc.SendTransactionPassphraseResponse sendTransactionWithPassphrase(rpcpb.Rpc.SendTransactionPassphraseRequest request) {
       return blockingUnaryCall(
-          getChannel(), getSendTransactionWithPassphraseMethod(), getCallOptions(), request);
+          getChannel(), getSendTransactionWithPassphraseMethodHelper(), getCallOptions(), request);
     }
 
     /**
      */
     public rpcpb.Rpc.StatisticsNodeInfoResponse statisticsNodeInfo(rpcpb.Rpc.NonParamsRequest request) {
       return blockingUnaryCall(
-          getChannel(), getStatisticsNodeInfoMethod(), getCallOptions(), request);
+          getChannel(), getStatisticsNodeInfoMethodHelper(), getCallOptions(), request);
     }
 
     /**
      */
     public rpcpb.Rpc.GetDynastyResponse getDynasty(rpcpb.Rpc.ByBlockHeightRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetDynastyMethod(), getCallOptions(), request);
+          getChannel(), getGetDynastyMethodHelper(), getCallOptions(), request);
     }
 
     /**
      */
     public rpcpb.Rpc.GetCandidatesResponse getCandidates(rpcpb.Rpc.ByBlockHeightRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetCandidatesMethod(), getCallOptions(), request);
+          getChannel(), getGetCandidatesMethodHelper(), getCallOptions(), request);
     }
 
     /**
      */
     public rpcpb.Rpc.GetDelegateVotersResponse getDelegateVoters(rpcpb.Rpc.GetDelegateVotersRequest request) {
       return blockingUnaryCall(
-          getChannel(), getGetDelegateVotersMethod(), getCallOptions(), request);
+          getChannel(), getGetDelegateVotersMethodHelper(), getCallOptions(), request);
     }
 
     /**
      */
     public rpcpb.Rpc.ChangeNetworkIDResponse changeNetworkID(rpcpb.Rpc.ChangeNetworkIDRequest request) {
       return blockingUnaryCall(
-          getChannel(), getChangeNetworkIDMethod(), getCallOptions(), request);
+          getChannel(), getChangeNetworkIDMethodHelper(), getCallOptions(), request);
     }
 
     /**
      */
     public rpcpb.Rpc.MiningResponse startMining(rpcpb.Rpc.StartMiningRequest request) {
       return blockingUnaryCall(
-          getChannel(), getStartMiningMethod(), getCallOptions(), request);
+          getChannel(), getStartMiningMethodHelper(), getCallOptions(), request);
     }
 
     /**
      */
     public rpcpb.Rpc.MiningResponse stopMining(rpcpb.Rpc.NonParamsRequest request) {
       return blockingUnaryCall(
-          getChannel(), getStopMiningMethod(), getCallOptions(), request);
+          getChannel(), getStopMiningMethodHelper(), getCallOptions(), request);
     }
 
     /**
      */
     public rpcpb.Rpc.PprofResponse startPprof(rpcpb.Rpc.PprofRequest request) {
       return blockingUnaryCall(
-          getChannel(), getStartPprofMethod(), getCallOptions(), request);
+          getChannel(), getStartPprofMethodHelper(), getCallOptions(), request);
     }
   }
 
@@ -963,7 +1028,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.NewAccountResponse> newAccount(
         rpcpb.Rpc.NewAccountRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getNewAccountMethod(), getCallOptions()), request);
+          getChannel().newCall(getNewAccountMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -974,7 +1039,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.UnlockAccountResponse> unlockAccount(
         rpcpb.Rpc.UnlockAccountRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getUnlockAccountMethod(), getCallOptions()), request);
+          getChannel().newCall(getUnlockAccountMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -985,7 +1050,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.LockAccountResponse> lockAccount(
         rpcpb.Rpc.LockAccountRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getLockAccountMethod(), getCallOptions()), request);
+          getChannel().newCall(getLockAccountMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -996,7 +1061,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.SignTransactionResponse> signTransaction(
         rpcpb.Rpc.TransactionRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getSignTransactionMethod(), getCallOptions()), request);
+          getChannel().newCall(getSignTransactionMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1007,7 +1072,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.SendTransactionPassphraseResponse> sendTransactionWithPassphrase(
         rpcpb.Rpc.SendTransactionPassphraseRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getSendTransactionWithPassphraseMethod(), getCallOptions()), request);
+          getChannel().newCall(getSendTransactionWithPassphraseMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1015,7 +1080,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.StatisticsNodeInfoResponse> statisticsNodeInfo(
         rpcpb.Rpc.NonParamsRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getStatisticsNodeInfoMethod(), getCallOptions()), request);
+          getChannel().newCall(getStatisticsNodeInfoMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1023,7 +1088,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.GetDynastyResponse> getDynasty(
         rpcpb.Rpc.ByBlockHeightRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetDynastyMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetDynastyMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1031,7 +1096,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.GetCandidatesResponse> getCandidates(
         rpcpb.Rpc.ByBlockHeightRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetCandidatesMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetCandidatesMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1039,7 +1104,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.GetDelegateVotersResponse> getDelegateVoters(
         rpcpb.Rpc.GetDelegateVotersRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getGetDelegateVotersMethod(), getCallOptions()), request);
+          getChannel().newCall(getGetDelegateVotersMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1047,7 +1112,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.ChangeNetworkIDResponse> changeNetworkID(
         rpcpb.Rpc.ChangeNetworkIDRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getChangeNetworkIDMethod(), getCallOptions()), request);
+          getChannel().newCall(getChangeNetworkIDMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1055,7 +1120,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.MiningResponse> startMining(
         rpcpb.Rpc.StartMiningRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getStartMiningMethod(), getCallOptions()), request);
+          getChannel().newCall(getStartMiningMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1063,7 +1128,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.MiningResponse> stopMining(
         rpcpb.Rpc.NonParamsRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getStopMiningMethod(), getCallOptions()), request);
+          getChannel().newCall(getStopMiningMethodHelper(), getCallOptions()), request);
     }
 
     /**
@@ -1071,7 +1136,7 @@ public final class AdminServiceGrpc {
     public com.google.common.util.concurrent.ListenableFuture<rpcpb.Rpc.PprofResponse> startPprof(
         rpcpb.Rpc.PprofRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getStartPprofMethod(), getCallOptions()), request);
+          getChannel().newCall(getStartPprofMethodHelper(), getCallOptions()), request);
     }
   }
 
@@ -1219,19 +1284,19 @@ public final class AdminServiceGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new AdminServiceFileDescriptorSupplier())
-              .addMethod(getNewAccountMethod())
-              .addMethod(getUnlockAccountMethod())
-              .addMethod(getLockAccountMethod())
-              .addMethod(getSignTransactionMethod())
-              .addMethod(getSendTransactionWithPassphraseMethod())
-              .addMethod(getStatisticsNodeInfoMethod())
-              .addMethod(getGetDynastyMethod())
-              .addMethod(getGetCandidatesMethod())
-              .addMethod(getGetDelegateVotersMethod())
-              .addMethod(getChangeNetworkIDMethod())
-              .addMethod(getStartMiningMethod())
-              .addMethod(getStopMiningMethod())
-              .addMethod(getStartPprofMethod())
+              .addMethod(getNewAccountMethodHelper())
+              .addMethod(getUnlockAccountMethodHelper())
+              .addMethod(getLockAccountMethodHelper())
+              .addMethod(getSignTransactionMethodHelper())
+              .addMethod(getSendTransactionWithPassphraseMethodHelper())
+              .addMethod(getStatisticsNodeInfoMethodHelper())
+              .addMethod(getGetDynastyMethodHelper())
+              .addMethod(getGetCandidatesMethodHelper())
+              .addMethod(getGetDelegateVotersMethodHelper())
+              .addMethod(getChangeNetworkIDMethodHelper())
+              .addMethod(getStartMiningMethodHelper())
+              .addMethod(getStopMiningMethodHelper())
+              .addMethod(getStartPprofMethodHelper())
               .build();
         }
       }

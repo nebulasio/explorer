@@ -1,5 +1,10 @@
 package io.nebulas.explorer.enums;
 
+import com.google.common.collect.Maps;
+
+import java.util.Arrays;
+import java.util.Map;
+
 /**
  * Desc:
  * User: nathan
@@ -17,11 +22,21 @@ public enum NebAddressTypeEnum {
     private int value;
     private String desc;
 
+    private static final Map<Integer, NebAddressTypeEnum> map = Maps.newHashMap();
+
+    static {
+        Arrays.asList(NebAddressTypeEnum.values()).forEach(it -> map.put(it.getValue(), it));
+    }
+
     public int getValue() {
         return value;
     }
 
     public String getDesc() {
         return desc;
+    }
+
+    public static NebAddressTypeEnum of(Integer value) {
+        return map.get(value);
     }
 }

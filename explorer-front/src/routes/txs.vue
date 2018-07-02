@@ -11,6 +11,18 @@
     .vue-txs th {
         border-top-color: #ddd;
     }
+
+    .vue-txs .fail {
+        background: url(../../static/img/warning_icon.png)no-repeat 0 10px;
+        padding-left: 28px;
+    }
+
+    .vue-txs .fail a {
+        display: inline-block;
+        max-width: 142px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
 <template>
     <!-- https://etherscan.io/txs -->
@@ -37,9 +49,13 @@
                 </tr>
 
                 <tr v-for="o in arr">
-                    <td class=tdxxxwddd>
+                    <td v-if="o.status == 0" class=fail>
                         <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>
+                    <td class=tdxxxwddd v-if="o.status != 0">
+                        <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
+                    </td>
+
                     <td>
                         <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
                     </td>
@@ -67,7 +83,7 @@
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
                     </td>
-                    <td class=text-right>{{ numberAddComma(o.value/1000000000000000000) }} NAS</td>
+                    <td class=text-right>{{ easyNumber(o.value/1000000000000000000) }} NAS</td>
                     <td class=text-right>{{ toWei(o.txFee) }}</td>
                 </tr>
             </table>
@@ -152,7 +168,7 @@
             toWei(n) {
                 return utility.toWei(n);
             },
-            easyNumber(n){
+            easyNumber(n) {
                 return utility.easyNumber(n);
             }
         },

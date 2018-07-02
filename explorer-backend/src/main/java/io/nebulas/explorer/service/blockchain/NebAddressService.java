@@ -3,9 +3,11 @@ package io.nebulas.explorer.service.blockchain;
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.mapper.NebAddressMapper;
+import io.nebulas.explorer.model.vo.AddrTypeVo;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetAccountStateResponse;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -31,27 +33,25 @@ public class NebAddressService {
     private final NebAddressMapper nebAddressMapper;
     private final NebApiServiceWrapper nebApiServiceWrapper;
 
-    /**
-     * save address information
-     *
-     * @param hash address hash
-     * @param type address type
-     * @return saved result
-     */
-    public boolean addNebAddress(String hash, int type) {
-        return nebAddressMapper.add(hash, type) > 0;
-    }
+//    /**
+//     * save address information
+//     *
+//     * @param hash address hash
+//     * @param type address type
+//     * @return saved result
+//     */
+//    public boolean addNebAddress(String hash, int type) {
+//        return nebAddressMapper.add(hash, type) > 0;
+//    }
 
     /**
      * save address information
      *
-     * @param hash    address hash
-     * @param type    address type
-     * @param balance address current_balance
+     * @param address neb address entity
      * @return saved result
      */
-    public boolean addNebAddress(String hash, int type, BigDecimal balance) {
-        return nebAddressMapper.addAddress(hash, type, balance) > 0;
+    public boolean addNebAddress(NebAddress address) {
+        return nebAddressMapper.addAddress(address.getHash(), address.getNonce(), address.getType(), address.getCurrentBalance()) > 0;
     }
 
     /**
@@ -59,13 +59,14 @@ public class NebAddressService {
      *
      * @param hash    address hash
      * @param balance current balance
+     * @param nonce   current tx count
      * @return saved result
      */
-    public boolean updateAddressBalance(String hash, String balance) {
-        if (StringUtils.isEmpty(hash) || StringUtils.isEmpty(balance)) {
+    public boolean updateAddressBalance(String hash, String balance, String nonce) {
+        if (StringUtils.isEmpty(hash) || StringUtils.isEmpty(balance) || StringUtils.isEmpty(nonce)) {
             return false;
         }
-        return nebAddressMapper.update(hash, new BigDecimal(balance)) > 0;
+        return nebAddressMapper.update(hash, new BigDecimal(balance), nonce) > 0;
     }
 
     /**
@@ -75,6 +76,14 @@ public class NebAddressService {
      */
     public long countTotalAddressCnt() {
         return nebAddressMapper.countTotalAddressCnt();
+    }
+
+    public Map<NebAddressTypeEnum, Long> countAccountGroupByType() {
+        List<AddrTypeVo> voList = nebAddressMapper.countAccountGroupByType();
+        if (CollectionUtils.isEmpty(voList)) {
+            return MapUtils.EMPTY_MAP;
+        }
+        return voList.stream().collect(Collectors.toMap(it -> NebAddressTypeEnum.of(it.getType()), AddrTypeVo::getAmount));
     }
 
     /**
@@ -103,6 +112,7 @@ public class NebAddressService {
         }
         NebAddress nebAddress = new NebAddress();
         nebAddress.setHash(hash);
+        nebAddress.setNonce(response.getNonce());
         nebAddress.setCurrentBalance(new BigDecimal(response.getBalance()));
         nebAddress.setType(87 == response.getType() ? NebAddressTypeEnum.NORMAL.getValue() : NebAddressTypeEnum.CONTRACT.getValue());
         return nebAddress;

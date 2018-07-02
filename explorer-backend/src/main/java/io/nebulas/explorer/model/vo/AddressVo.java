@@ -25,6 +25,7 @@ public class AddressVo implements Serializable {
     private String balance;
     private String percentage;
     private Long txCnt;
+    private Integer type;
 
     public AddressVo() {
     }
@@ -36,6 +37,7 @@ public class AddressVo implements Serializable {
         this.hash = address.getHash();
         this.alias = address.getAlias();
         this.balance = address.getCurrentBalance().toPlainString();
+        this.type = address.getType();
         return this;
     }
 }

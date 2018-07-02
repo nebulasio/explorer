@@ -10,6 +10,13 @@
     .vue-tx td.text {
         white-space: pre-line;
     }
+    .vue-tx .fail {
+        color:red;
+    }
+    .vue-tx .success {
+        color:green;
+    }
+
 </style>
 <template>
     <div class="container vue-tx" v-bind:triggerComputed=urlChange>
@@ -25,7 +32,15 @@
                 </tr>
                 <tr>
                     <td>TxReceipt Status:</td>
-                    <td>{{ tx.status == 0 ? 'fail' : tx.status == 1 ? 'Success' : 'pending' }}</td>
+                    <td v-if="tx.status == 0">
+                        <span class="fail">fail ( {{ tx.executeError }} )</span>
+                    </td>
+                    <td v-else-if="tx.status == 1">
+                        <span class="success">success</span>
+                    </td>
+                    <td v-else>
+                        pending
+                    </td>
                 </tr>
                 <tr>
                     <td>Block Height:</td>
@@ -81,7 +96,8 @@
                 </tr>
                 <tr>
                     <td>Transaction Type:</td>
-                    <td>{{ txType }}</td>
+                    <td v-if=" tx.type == 'deploy' ">{{ txType }} ( contract address: <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.contractAddress'> {{tx.contractAddress}} </router-link>)</td>
+                    <td v-else>{{ txType }}</td>
                 </tr>
                 <tr>
                     <td>Payload Data:</td>
