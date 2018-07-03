@@ -1,11 +1,17 @@
 <style>
+    .vue-address {
+        white-space: nowrap;
+    }
+
     .vue-address td.out {
         width: 60px;
     }
 
     .vue-address td.in::before,
     .vue-address td.out::before,
-    .vue-address td.contract::before {
+    .vue-address td.contract::before,
+    .vue-address td.self::before,
+    .vue-address td.call::before {
         border-radius: 4px;
         color: white;
         padding: 3px 5px;
@@ -24,6 +30,16 @@
     .vue-address td.contract::before {
         background-color: var(--blue);
         content: "contract creation";
+    }
+
+    .vue-address td.self::before {
+        background-color: var(--red);
+        content: "self";
+    }
+
+    .vue-address td.call::before {
+        background-color: var(--teal);
+        content: "contract call";
     }
 
     .vue-address .container .table th {
@@ -63,8 +79,8 @@
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
     <div class=vue-address v-bind:triggerComputed=urlChange>
-        <vue-bread v-bind:arr=breadcrumb v-bind:title='"Address " + $route.params.id'></vue-bread>
-        <div class=container v-if=obj>
+        <vue-bread v-if=obj v-bind:arr=breadcrumb v-bind:title='addressType + $route.params.id'></vue-bread>
+        <div class=container>
             <table class="c333 table">
                 <tr>
                     <th>
@@ -124,7 +140,6 @@
                         <th>Age</th>
                         <th>From</th>
                         <th></th>
-                        <th></th>
                         <th>To</th>
                         <th>Value</th>
                         <th class=txfee>[TxFee]</th>
@@ -150,8 +165,7 @@
                             <span v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
                         </td>
-                        <td class=text-uppercase v-bind:class=inOutClass(o)></td>
-                        <td class=text-uppercase v-bind:class=contractClass(o)></td>
+                        <td class=text-uppercase v-bind:class=labelClass(o)></td>
                         <td class=tdxxxwddd>
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                             <span v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
@@ -277,6 +291,9 @@
             tabButtons() {
                 return this.obj && this.obj.contractCode ? ["Transactions", "Contract Code"] : ["Transactions"];
             },
+            addressType() {
+                return this.obj.address.type ? "Contract " : "Address ";
+            },
             urlChange() {
                 this.contractHash = ""
                 api.getAddress(this.$route.params.id, o => {
@@ -310,17 +327,20 @@
             };
         },
         methods: {
-            inOutClass(o) {
-                if (o.from.hash == this.$route.params.id)
+            labelClass(o) {
+                if (o.type == "deploy")
+                    return "contract";
+                if (o.type == "call")
+                    return "call";
+                else if (o.from.hash == o.to.hash)
+                    return "self";
+                else if (o.from.hash == this.$route.params.id)
                     return "out";
                 else if (o.to.hash == this.$route.params.id)
                     return "in";
                 else
                     return "";
             },
-            contractClass (o) {
-                if (o.type == "deploy")
-                    return "contract";
             failClass(o) {
                 if (o.status == 0)
                     return "!";
