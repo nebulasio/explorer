@@ -29,7 +29,7 @@
 
     .vue-address td.contract::before {
         background-color: var(--blue);
-        content: "contract creation";
+        content: "contract deploy";
     }
 
     .vue-address td.self::before {
@@ -44,6 +44,10 @@
 
     .vue-address .container .table th {
         border-top: 0;
+    }
+
+    .vue-address .container .c333 tr td:nth-child(1) {
+        width: 50%;
     }
 
     .vue-address .container .title {
@@ -107,6 +111,10 @@
                 <tr>
                     <td>Minted:</td>
                     <td>{{ obj.mintedBlkCnt }}</td>
+                </tr>
+                <tr v-if=obj.address.type>
+                    <td>Created By:</td>
+                    <td><router-link v-bind:to='fragApi + "/address/" + contractOwner'>{{ contractOwner }}</router-link></td>
                 </tr>
             </table>
 
@@ -296,6 +304,7 @@
             },
             urlChange() {
                 this.contractHash = ""
+                this.contractOwner = ""
                 api.getAddress(this.$route.params.id, o => {
                     this.minted = o.mintedBlkList;
                     this.obj = o;
@@ -303,6 +312,7 @@
                         api.getTransactionByContract({ address: o.address.hash }, this.$route.params.api, (transaction) => {
                             var transaction = JSON.parse(transaction)
                             this.contractHash = transaction.result.hash
+                            this.contractOwner = transaction.result.from
                         })
                     }
                     this.txs = o.txList;
@@ -314,6 +324,7 @@
         data() {
             return {
                 contractHash: "",
+                contractOwner: "",
                 breadcrumb: [
                     { text: "Home", to: "/" },
                     { text: "Normal Accounts", to: "/accounts" },
@@ -330,7 +341,7 @@
             labelClass(o) {
                 if (o.type == "deploy")
                     return "contract";
-                if (o.type == "call")
+                else if (o.type == "call")
                     return "call";
                 else if (o.from.hash == o.to.hash)
                     return "self";

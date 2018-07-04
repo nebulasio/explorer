@@ -1,5 +1,5 @@
 <template>
-    <!-- https://etherscan.io/contracts  -->
+    <!-- https://etherscan.io/contractsVerified  -->
     <div class=vue-contracts>
         <vue-bread v-bind:arr=breadcrumb title="All Contracts"></vue-bread>
 
