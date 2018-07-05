@@ -83,8 +83,8 @@
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
     <div class=vue-address v-bind:triggerComputed=urlChange>
-        <vue-bread v-if=obj v-bind:arr=breadcrumb v-bind:title='addressType + $route.params.id'></vue-bread>
-        <div class=container>
+        <vue-bread v-bind:arr=breadcrumb v-bind:title='addressType + $route.params.id'></vue-bread>
+        <div class=container v-if=obj>
             <table class="c333 table">
                 <tr>
                     <th>
@@ -114,7 +114,7 @@
                 </tr>
                 <tr v-if=obj.address.type>
                     <td>Created By:</td>
-                    <td><router-link v-bind:to='fragApi + "/address/" + contractOwner'>{{ contractOwner }}</router-link></td>
+                    <td><router-link v-bind:to='fragApi + "/address/" + contract.from'>{{ contract.from }}</router-link></td>
                 </tr>
             </table>
 
@@ -132,8 +132,8 @@
                         <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
                     </div>
                     <div class=col-auto>
-                        <span v-if="contractHash">
-                            <router-link class="btn btn-link" v-bind:to='fragApi + "/tx/"+contractHash'>View Smart Contract</router-link>
+                        <span v-if="obj.address.type">
+                            <router-link class="btn btn-link" v-bind:to='fragApi + "/tx/"+ contract.hash'>View Smart Contract</router-link>
                             |</span>
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All {{ obj.txCnt }} Txn</router-link>
                         |
@@ -303,16 +303,13 @@
                 return this.obj.address.type ? "Contract " : "Address ";
             },
             urlChange() {
-                this.contractHash = ""
-                this.contractOwner = ""
                 api.getAddress(this.$route.params.id, o => {
                     this.minted = o.mintedBlkList;
                     this.obj = o;
                     if (o.address.type == 1) {// this is a smart contract address
                         api.getTransactionByContract({ address: o.address.hash }, this.$route.params.api, (transaction) => {
                             var transaction = JSON.parse(transaction)
-                            this.contractHash = transaction.result.hash
-                            this.contractOwner = transaction.result.from
+                            this.contract = transaction.result
                         })
                     }
                     this.txs = o.txList;
@@ -323,8 +320,6 @@
         },
         data() {
             return {
-                contractHash: "",
-                contractOwner: "",
                 breadcrumb: [
                     { text: "Home", to: "/" },
                     { text: "Normal Accounts", to: "/accounts" },
@@ -333,6 +328,7 @@
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 minted: [],
                 obj: null,
+                contract: null,
                 tab: 0,
                 txs: []
             };
