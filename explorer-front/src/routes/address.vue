@@ -83,8 +83,8 @@
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
     <div class=vue-address v-bind:triggerComputed=urlChange>
-        <vue-bread v-bind:arr=breadcrumb v-bind:title='addressType + $route.params.id'></vue-bread>
-        <div class=container v-if=obj>
+        <vue-bread v-if=obj v-bind:arr=breadcrumb v-bind:title='addressType + $route.params.id'></vue-bread>
+        <div class=container>
             <table class="c333 table">
                 <tr>
                     <th>
