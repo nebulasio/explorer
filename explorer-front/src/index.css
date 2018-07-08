@@ -1,6 +1,6 @@
 
 body {
-    color: #777;
+    color: #88929b;
     font-size: 13px;
 }
 
@@ -50,6 +50,18 @@ td.time:hover :nth-child(2) {
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: top;
+}
+
+/* Sticky footer */
+
+.vue {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.vue .content-wrapper {
+    flex: 1;
 }
 
 /*  .modal

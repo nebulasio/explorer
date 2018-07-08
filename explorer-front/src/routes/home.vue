@@ -15,7 +15,6 @@
     .vue-home .banner_left .list_tab {
         width: 100%;
         height: 60px;
-        border-bottom: 3px solid #f7f7f7;
         background-color: #fff;
         position: relative;
     }
@@ -36,7 +35,6 @@
     .vue-home .li {
         align-items: center;
         background-color: #fff;
-        border-bottom: 4px solid #f7f7f7;
         display: flex;
         height: 120px;
     }
@@ -45,6 +43,12 @@
         display: block;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    .vue-home .list li {
+        padding: 30px 20px;  
+        background: #f7f7f7;
+        border-bottom: 3px solid #fff;
     }
 
     .vue-home .blocks li .monospace {
@@ -56,7 +60,7 @@
     }
 
     .vue-home .blocks li>.img {
-        background: url(/static/img/block_bg.jpg) center no-repeat;
+        background-color: #3C3F44;
         flex-shrink: 0;
         margin-right: 20px;
         height: 90px;
@@ -71,7 +75,6 @@
 
     .vue-home .tab-right {
         height: 60px;
-        border-bottom: 3px solid #f7f7f7;
         background-color: #fff;
         position: relative;
     }
@@ -96,7 +99,7 @@
 
     .vue-home .txs li>img {
         flex-shrink: 0;
-        margin: 0 20px;
+        margin: 0 20px 0 10px;
     }
 
     .vue-home .txs li tr>td:first-child {
@@ -120,10 +123,20 @@
         border-left-color: #4885ed;
     }
 
-    /*
-        chart
-        */
+    .vue-home .top {
+        border-bottom: 2px solid #dee2e6;
+        background: #f7f7f7;
+        padding: 20px;
+    }
 
+    .vue-home .top .col-md-6:last-child {
+        border-left: 1px dashed #dee2e6;
+    }
+
+    /*
+     Chart
+    */
+        
     .vue-home #chart {
         height: 300px;
         max-width: 800px;
@@ -180,16 +193,27 @@
 
     .vue-home .updataTime {
         float: right;
+        margin-right: 10px;
     }
+
+    @media only screen and (max-width: 768px) {
+        .vue-home .top .col-md-6:last-child {
+            border: none;
+        }
+
+        .vue-home #chart {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed #dee2e6;
+        }
+    }
+
 </style>
 <template>
     <div class="container vue-home">
-        <div class=top>
+        <div class="top mt-4">
             <div class=row>
-                <div class=col-md-8>
-                    <div id=chart></div>
-                </div>
-                <div class=col-md-4>
+                <div class=col-md-6>
                     <div class=chart_banner v-if=market>
                         <div class=name>NAS</div>
                         <div class=value>$ {{ market.price }}</div>
@@ -210,6 +234,9 @@
                         <div class="mt16 updataTime">update time : {{ timeConversion(Date.now() - market.createdAt) }} ago</div>
                     </div>
                 </div>
+                <div class=col-md-6>
+                    <div id=chart></div>
+                </div>
             </div>
         </div>
         <div class=mt20>
@@ -226,7 +253,7 @@
                         <li class=li v-for="o in blocks">
                             <div class=img>
                                 <router-link class=mt20 v-bind:to='fragApi + "/block/" + o.height'>block {{ o.height }}</router-link>
-                                <div class=mt20>{{ timeConversion(msVmReady - o.timestamp) }} ago</div>
+                                <div class=mt-2>{{ timeConversion(msVmReady - o.timestamp) }} ago</div>
                             </div>
                             <div class=right>
                                 Minted By
@@ -291,47 +318,18 @@
             return {
                 blocks: [],
                 chartConfig: {
-                    legend: {
-                        align: "right",
-                        layout: "vertical",
-                        verticalAlign: "middle"
+                    chart: {
+                        backgroundColor: '#f7f7f7'
                     },
-                    // plotOptions: {
-                    //     area: {
-                    //         fillColor: {
-                    //             linearGradient: {
-                    //                 x1: 0,
-                    //                 y1: 0,
-                    //                 x2: 0,
-                    //                 y2: 1
-                    //             },
-                    //             stops: [
-                    //                 [0, "#2233ee"],
-                    //                 [1, "#2266ee00"]
-                    //             ]
-                    //         },
-                    //         marker: {
-                    //             radius: 2
-                    //         },
-                    //         lineWidth: 1,
-                    //         states: {
-                    //             hover: {
-                    //                 lineWidth: 1
-                    //             }
-                    //         },
-                    //         threshold: null
-                    //     }
-                    // },
                     series: [{
                         data: null,
-                        name: "transactions"
-                        // , type: "area"
+                        name: "Transactions"
                     }],
                     subtitle: {
                         text: "数据来源：Nebulas"
                     },
                     title: {
-                        text: "transactions"
+                        text: "Transactions"
                     },
                     xAxis: {
                         labels: {

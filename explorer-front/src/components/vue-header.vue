@@ -1,6 +1,24 @@
 <style>
+    .vue-header {
+        background: #3C3F44;
+        padding: 15px;
+    }
+
+    .vue-header .search {
+        background: transparent;
+        border-color: #88929b;
+    }
+
+    .vue-header .btn.btn-outline-secondary {
+        border-color: #88929b;
+    }
+
     .vue-header a {
         color: inherit;
+    }
+
+    .vue-header .nav-item {
+        padding: 0 10px;
     }
 
     .vue-header .dev-version {
@@ -52,11 +70,11 @@
     }
 </style>
 <template>
-    <nav class="bg-light navbar navbar-expand-lg navbar-light vue-header">
+    <nav class="navbar navbar-dark navbar-expand-lg vue-header sticky-top">
         <div class=container>
             <div>
                 <router-link v-bind:to="fragApi + '/'" class=navbar-brand>
-                    <img src=/static/img/logo.png width=150 alt="">
+                    <img src=/static/img/nebulasx60-white.png width=150 alt="">
                 </router-link>
                 <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
 <span class="fa fa-flask" aria-hidden=true></span>
@@ -97,8 +115,8 @@
                     </li>
                 </ul>
                 <form class=form-inline v-on:submit.prevent=onSubmit>
-                    <input class="form-control mr-sm-2" v-model=search type=search placeholder=Search>
-                    <button class="btn btn-outline-success" type=submit>GO</button>
+                    <input class="form-control search mr-sm-2" v-model=search type=search placeholder=Search>
+                    <button class="btn btn-outline-secondary" type=submit>GO</button>
                 </form>
             </div>
         </div>

@@ -29,7 +29,10 @@
 <body>
     <div class=vue>
         <vue-header></vue-header>
-        <router-view></router-view>
+        <div class="content-wrapper">
+            <router-view></router-view>
+        </div>
+        
         <vue-footer></vue-footer>
         <vue-modal class=loading v-show=showModalLoading>
             <div slot=l1 class=progress>

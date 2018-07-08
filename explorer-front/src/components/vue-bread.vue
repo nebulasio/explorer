@@ -1,9 +1,9 @@
 <style>
     .vue-bread {
-        background-color: #f8f8f8;
+        background-color: #f7f7f7;
         border-bottom: 1px solid #eee;
         overflow: auto;
-        padding: 10px 0;
+        padding: 20px 0;
     }
 
     .vue-bread a {
