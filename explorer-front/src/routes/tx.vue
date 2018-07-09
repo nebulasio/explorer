@@ -72,7 +72,7 @@
                 </tr>
                 <tr>
                     <td>Value:</td>
-                    <td>{{ numberAddComma(tx.value/1000000000000000000) }} NAS</td>
+                    <td>{{ numberAddComma( parseFloat(tx.value/1000000000000000000).toPrecision(15) ) }} NAS</td>
                 </tr>
                 <tr>
                     <td>Gas Limit:</td>
