@@ -30,14 +30,14 @@
 
 
 .span_history{
-	width:13px;
+	width:15px;
 	height:80px;
 	background:green;
 	display:-moz-inline-box;
 	display:inline-block;
 	border-radius:2px;
 	margin-left:1px;
-	margin-right:0px;
+	margin-right:1px;
 }
 .div_node_full{
 	color:white;

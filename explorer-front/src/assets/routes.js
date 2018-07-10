@@ -7,11 +7,13 @@ module.exports = [{
     component: require("@/routes/accounts").default,
     meta: { headerActive: 3 },
     path: "/:api?/accounts"
-}, {
-    component: require("@/routes/contracts").default,
-    meta: { headerActive: 4 },
-    path: "/:api?/contracts"
-}, {
+}, 
+// {
+//     component: require("@/routes/contracts").default,
+//     meta: { headerActive: 2 },
+//     path: "/:api?/contracts"
+// }, 
+{
     component: require("@/routes/block").default,
     meta: { headerActive: 2 },
     path: "/:api?/block/:id"

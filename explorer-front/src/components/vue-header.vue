@@ -86,9 +86,9 @@
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
                         <router-link class=nav-link v-bind:to="fragApi + '/accounts'">ACCOUNT</router-link>
                     </li>
-                    <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 4 }">
+                    <!-- <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 4 }">
                         <router-link class=nav-link v-bind:to="fragApi + '/contracts'">CONTRACT</router-link>
-                    </li>
+                    </li> -->
                     <li class="dropdown nav-item">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{ MenuMisc }}</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
