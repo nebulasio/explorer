@@ -80,7 +80,7 @@
                 </tr>
                 <tr>
                     <td>Gas Used By Txn:</td>
-                    <td>{{ tx.isPending == true ? 'pending' : toWei(tx.gasUsed) }}</td>
+                    <td>{{ tx.isPending == true ? 'pending' : tx.gasUsed }}</td>
                 </tr>
                 <tr>
                     <td>Gas Price:</td>
