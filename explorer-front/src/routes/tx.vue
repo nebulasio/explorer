@@ -100,6 +100,16 @@
                     <td v-else>{{ txType }}</td>
                 </tr>
                 <tr>
+                    <td>SourceType:</td>
+                    <td v-if=" tx.type == 'deploy' ">{{ JSON.parse(tx.data).SourceType }}</td>
+                    <td v-else></td>
+                </tr>
+                <tr>
+                    <td>Args:</td>
+                    <td v-if=" tx.type == 'deploy' ">{{ JSON.parse(tx.data).Args }}</td>
+                    <td v-else></td>
+                </tr>
+                <tr>
                     <td>Payload Data:</td>
                     <td v-if="tx.type == 'binary'" class=text>
                         {{ tx.data }}
