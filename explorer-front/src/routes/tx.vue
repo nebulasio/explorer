@@ -22,7 +22,8 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         display: inline-block;
-        line-height: 9px;
+        line-height: 18px;
+        vertical-align: bottom;
     }
 
 </style>
