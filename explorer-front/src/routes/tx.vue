@@ -17,7 +17,7 @@
         color:green;
     }
     .vue-tx .atpAddress{
-        width: 138px;
+        width: 134px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -90,7 +90,7 @@
                 </tr>
                 <tr>
                     <td>Value:</td>
-                    <td>{{ numberAddComma( parseFloat(tx.value/1000000000000000000).toPrecision(15) ) }} NAS</td>
+                    <td>{{ numberAddComma( parseFloat(tx.value/1000000000000000000) ) }} NAS</td>
                 </tr>
                 <tr>
                     <td>Gas Limit:</td>
@@ -144,7 +144,7 @@
         </div>
 
         <div class=tab v-show="tab == 2">
-            <h3>Internal Transactions</h3>
+            <h3>Internal Transactions</h3> 
         </div>
 
         <div class=tab v-show="tab == 3">
