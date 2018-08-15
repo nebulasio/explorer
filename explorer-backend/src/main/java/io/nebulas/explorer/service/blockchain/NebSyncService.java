@@ -93,10 +93,10 @@ public class NebSyncService {
                 .createdAt(new Date(System.currentTimeMillis())).build();
         if (isLib) {
             nebBlockService.replaceNebBlock(newBlock);
-            log.info("replace block, height={}, timestamp={}, date={}", newBlock.getHeight(), newBlock.getTimestamp().getTime(), newBlock.getTimestamp());
+            log.info("replace block, height={}, blockTimestamp={}, timestamp={}, date={}", newBlock.getHeight(), block.getTimestamp(), newBlock.getTimestamp().getTime(), newBlock.getTimestamp());
         } else {
             nebBlockService.addNebBlock(newBlock);
-            log.info("add block(nebSyncService), height={}, timestamp={}, date={}", newBlock.getHeight(), newBlock.getTimestamp().getTime(), newBlock.getTimestamp());
+            log.info("add block(nebSyncService), blockTimestamp={}, height={}, timestamp={}, date={}", newBlock.getHeight(), block.getTimestamp(), newBlock.getTimestamp().getTime(), newBlock.getTimestamp());
         }
 
         //sync transaction

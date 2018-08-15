@@ -173,7 +173,7 @@ public class DataConsensusJob {
         NebBlock nblk = nebBlockService.getNebBlockByHash(nebBlk.getHash());
         if (nblk == null) {
             nebBlockService.addNebBlock(nebBlk);
-            log.info("save block, height={}, timestamp={}, date={}", nebBlk.getHeight(), nebBlk.getTimestamp().getTime(), nebBlk.getTimestamp());
+            log.info("save block, height={}, blockTimestamp={}, timestamp={}, date={}", nebBlk.getHeight(), blk.getTimestamp(), nebBlk.getTimestamp().getTime(), nebBlk.getTimestamp());
         } else {
             log.warn("duplicate block hash {}", nebBlk.getHash());
         }
