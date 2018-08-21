@@ -12,6 +12,8 @@
 }
 .vue-popmsg-wrap h1 {
     font-size:1.4rem;
+    margin-bottom:20px;
+    text-align: center;
 }
 .vue-popmsg-tr {
     text-align: right;
