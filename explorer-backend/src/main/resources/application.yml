@@ -7,6 +7,10 @@ spring:
     name: explorer
   aop:
     proxy-target-class: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
   datasource:
     sql-script-encoding: UTF-8
     platform: mysql
@@ -56,10 +60,6 @@ sync:
 apiHost:
   coinmarketcap: https://api.coinmarketcap.com
   nebulas: https://testnet.nebulas.io
-redis:
-  host: 127.0.0.1
-  port: 6379
-  password:
 environment: dev
 pendingTxExpiredTime : 1
 
