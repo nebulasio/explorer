@@ -16,6 +16,15 @@
     .vue-tx .success {
         color:green;
     }
+    .vue-tx .atpAddress{
+        width: 134px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        line-height: 18px;
+        vertical-align: bottom;
+    }
 
 </style>
 <template>
@@ -66,13 +75,22 @@
                 </tr>
                 <tr>
                     <td>To:</td>
-                    <td class=monospace>
+                    <td class=monospace v-if=" tx.to.hash == 'n1rR5uiy4vDUn7TPMAtJ8Y1Eo54K6EYvSJ6' ">
+                        Contract <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link> (ATP)
+                    </td>
+                    <td class=monospace v-else>
                         <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
+                    </td>
+                </tr>
+                <tr  v-if=" tx.to.hash == 'n1rR5uiy4vDUn7TPMAtJ8Y1Eo54K6EYvSJ6' ">
+                    <td>Token Transfered:</td>
+                    <td class=monospace>
+                        From <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link> To <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </router-link> for {{ numberAddComma(parseFloat(JSON.parse(JSON.parse(tx.data).Args)[1] / 1000000000000000000).toPrecision(15) )}} ATP
                     </td>
                 </tr>
                 <tr>
                     <td>Value:</td>
-                    <td>{{ numberAddComma( parseFloat(tx.value/1000000000000000000).toPrecision(15) ) }} NAS</td>
+                    <td>{{ numberAddComma( parseFloat(tx.value/1000000000000000000) ) }} NAS</td>
                 </tr>
                 <tr>
                     <td>Gas Limit:</td>
@@ -83,7 +101,7 @@
                     <td>{{ tx.isPending == true ? 'pending' : tx.gasUsed }}</td>
                 </tr>
                 <tr>
-                    <td>Gas Price:</td>
+                    <td>Gas Price:</td>   
                     <td>{{ toWei(tx.gasPrice) }}</td>
                 </tr>
                 <tr>
@@ -126,7 +144,7 @@
         </div>
 
         <div class=tab v-show="tab == 2">
-            <h3>Internal Transactions</h3>
+            <h3>Internal Transactions</h3> 
         </div>
 
         <div class=tab v-show="tab == 3">
@@ -147,9 +165,9 @@
             "vue-tab-buttons": require("@/components/vue-tab-buttons").default
         },
         computed: {
+            
             formatCode() {
                 var lang = prism.languages.javascript;
-
                 if (this.tx.data)
                     if (this.tx.type == "deploy")
                         return prism.highlight(jsBeautify(JSON.parse(this.tx.data).Source), lang);
