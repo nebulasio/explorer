@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 public class RpcController {
     private static final Integer PAGE_SIZE = 25;
     private static final int MAX_PAGE = 400;
+    private String BAN_ADDRESS = "n1ggAx4ZJ9Bn63Fuor8ZbqXAJ6x49wLi11D";
 
     private final NebAddressService nebAddressService;
     private final NebBlockService nebBlockService;
@@ -265,7 +266,8 @@ public class RpcController {
     @RequestMapping("/address/{hash}")
     public JsonResult address(@PathVariable("hash") String hash) {
         NebAddress address = nebAddressService.getNebAddressByHashRpc(hash);
-        if (null == address) {
+        //直接屏蔽攻击地址的查询，对其返回失败
+        if (null == address || BAN_ADDRESS.equals(hash)) {
             return JsonResult.failed();
         }
 
