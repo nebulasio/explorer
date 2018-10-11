@@ -48,7 +48,7 @@
                     <th class=text-right>TxFee</th>
                 </tr>
 
-                <tr v-for="o in arr">
+                <tr v-for="(o, i) in arr" :key="i">
                     <td v-if="o.status == 0" class=fail>
                         <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>

@@ -89,7 +89,7 @@
                     <li class="dropdown nav-item">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{ MenuMisc }}</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
-                            <a v-for="(o, i) in apiPrefixes" class=nav-link href=# v-on:click.prevent=apiSwitch(i)>
+                            <a v-for="(o, i) in apiPrefixes" :key="i" class=nav-link href=# v-on:click.prevent=apiSwitch(i)>
                                 <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': paramsApi != i }" aria-hidden=true></span>
                                 {{ o.name }}
                             </a>
