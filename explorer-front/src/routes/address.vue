@@ -129,7 +129,7 @@
                         <th class=txfee>[TxFee]</th>
                     </tr>
 
-                    <tr v-for="o in txs">
+                    <tr v-for="(o, i) in txs" :key="i">
                         <td v-if="o.status == 0" class=fail>
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                         </td>
@@ -166,12 +166,12 @@
 
             <!--    code
                 ============================================================ -->
-            <div class=tab v-show="tab == 2">
+            <!-- <div class=tab v-show="tab == 2">
                 <table class="mt20 table">
                         <pre><code class=language-javascript v-html=formatCode></code></pre>
                     </tr>
                 </table>
-            </div>
+            </div> -->
 
             <!--    Minted Blocks
                 ============================================================ -->

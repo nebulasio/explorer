@@ -1,4 +1,9 @@
 <style>
+/*  <tag
+        v-bind:arr
+        v-bind:tab.sync
+    ></tag>
+    */
     .nav-link {
         margin-right: 5px;
     }
@@ -6,7 +11,7 @@
 <template>
     <div class=vue-tab-buttons>
         <ul class="nav nav-tabs">
-            <li class=nav-item v-for="(o, i) in arr">
+            <li class=nav-item v-for="(o, i) in arr" :key="i">
                 <a class=nav-link href=# v-bind:class="{ active: tab == i + 1 }" v-on:click.prevent='$emit("update:tab", i + 1)'>{{ o }}</a>
             </li>
         </ul>
