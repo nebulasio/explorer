@@ -1,9 +1,7 @@
 <style>
-    /*  <tag
-            v-bind:arr
-            v-bind:tab.sync
-        ></tag>
-        */
+    .nav-link {
+        margin-right: 5px;
+    }
 </style>
 <template>
     <div class=vue-tab-buttons>
