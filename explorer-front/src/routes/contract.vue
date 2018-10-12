@@ -78,15 +78,15 @@
                 </tr>
                 <tr>
                     <td>Total supply:</td>
-                    <td>{{ easyNumber(obj.total/1000000000000000000) }} {{ obj.tokenName }} </td>
+                    <td>{{ numberAddComma(easyNumber(obj.total/1000000000000000000)) }} {{ obj.tokenName }} </td>
                 </tr>
                 <tr>
                     <td>Holders:</td>
-                    <td>{{ obj.holderCount }} addresses</td>
+                    <td>{{ numberAddComma(obj.holderCount) }} addresses</td>
                 </tr>
                 <tr>
                     <td>Transfer:</td>
-                    <td>{{ obj.transactionCount }}</td>
+                    <td>{{ numberAddComma(obj.transactionCount) }}</td>
                 </tr>
             </table>
 
@@ -148,7 +148,7 @@
                             <span v-if="o.to == $route.params.id">{{ o.to }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to'>{{ o.to }}</router-link>
                         </td>
-                        <td>{{ numberAddComma( parseFloat(o.contractValue/1000000000000000000).toPrecision(15) )  }} {{ o.tokenName }}</td>
+                        <td>{{ numberAddComma( parseFloat(o.contractValue/1000000000000000000).toPrecision(15) )  }} {{ obj.tokenName }}</td>
                         <td class=txfee>
                             <span v-if=o.blockHeight>{{ toWei(o.txFee) }}</span>
                             <i v-else>(pending)</i>
