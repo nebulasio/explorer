@@ -60,7 +60,7 @@
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
     <div class=vue-contract v-bind:triggedComputed=urlChange>
-        <vue-bread v-if=obj v-bind:arr=breadcrumb v-bind:title='"NRC20 Token " + obj.tokenName'></vue-bread>
+        <vue-bread v-if=obj v-bind:arr=breadcrumb v-bind:title='obj.tokenName' subtitle="(NRC20 Token)"></vue-bread>
         <div class=container v-if=obj>
             <table class="c333 table">
                 <tr>
