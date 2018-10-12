@@ -328,7 +328,7 @@
                         // , type: "area"
                     }],
                     subtitle: {
-                        text: "数据来源：Nebulas"
+                        text: "Data Source：Nebulas"
                     },
                     title: {
                         text: "transactions"
@@ -342,7 +342,7 @@
                     },
                     yAxis: {
                         title: {
-                            text: "数量"
+                            text: "Amount"
                         }
                     }
                 },
