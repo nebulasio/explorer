@@ -157,7 +157,7 @@
                 // 搜索框进入 ATP 的临时方案！！！不要随便改动下方地址！！！
                 var atpAddress = "n1rR5uiy4vDUn7TPMAtJ8Y1Eo54K6EYvSJ6";// testnet
                 if (this.$route.params.api != 'testnet') {
-                    atpAddress = "n1pXhp2nxxbKAmWXm2z9hfYHVGbN9afsZB6";// mainnet
+                    atpAddress = "n1zUNqeBPvsyrw5zxp9mKcDdLTjuaEL7s39";// mainnet
                 }
                 this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/contract/" + atpAddress);
             }
