@@ -67,10 +67,22 @@
         </where>
     </select>
 
+    <select id="countContractTransfer" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_transaction`
+        WHERE status=1 and `type` = 'call' and `to` = #{contract,jdbcType=VARCHAR}
+    </select>
+
     <select id="countTxnCntByFromTo" parameterType="java.lang.String" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_transaction`
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
+    </select>
+
+    <select id="countTxnCntByFromAndTo" parameterType="map" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_transaction`
+        WHERE `from` = #{from,jdbcType=VARCHAR} and `to` = #{to,jdbcType=VARCHAR}
     </select>
 
     <select id="countTxnCntByBlockHeight" parameterType="java.lang.Long" resultType="java.lang.Long">
@@ -116,6 +128,16 @@
                 </if>
             </trim>
         </where>
+        ORDER BY `block_height` DESC,`tx_seq` DESC
+        LIMIT ${offset},${limit}
+    </select>
+
+    <select id="findContractTransactions" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `to` = #{contract,jdbcType=VARCHAR}
+        and type='call'
         ORDER BY `block_height` DESC,`tx_seq` DESC
         LIMIT ${offset},${limit}
     </select>

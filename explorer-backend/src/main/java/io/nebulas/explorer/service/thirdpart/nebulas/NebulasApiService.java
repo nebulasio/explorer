@@ -34,4 +34,7 @@ public interface NebulasApiService {
 
     @POST("/v1/user/accountstate")
     Observable<NebResponse<GetAccountStateResponse>> getAccountState(@Body GetAccountStateRequest request);
+
+    @POST("/v1/user/call")
+    Observable<NebResponse<CallContractResponse>> callContract(@Body CallContractRequest request);
 }
