@@ -32,6 +32,14 @@ public class NebTransactionService {
     private final NebTransactionMapper nebTransactionMapper;
     private final NebPendingTransactionMapper nebPendingTransactionMapper;
 
+    //数据库很慢，比RPC还慢，暂时弃用
+    public boolean hasContractTransfer(String address, String contract){
+        if (StringUtils.isEmpty(address) || StringUtils.isEmpty(contract)) {
+            return false;
+        }
+        return nebTransactionMapper.countTxnCntByFromAndTo(address, contract)>0;
+    }
+
     /**
      * save transaction information
      *
@@ -86,6 +94,10 @@ public class NebTransactionService {
         return nebTransactionMapper.countTxnCntByCondition(blockHeight, addressHash);
     }
 
+    public long countContractTransfer(String contract) {
+        return nebTransactionMapper.countContractTransfer(contract);
+    }
+
     /**
      * according address hash to query transaction total count
      *
@@ -107,6 +119,13 @@ public class NebTransactionService {
      */
     public long countPendingTxnCnt(String addressHash) {
         return nebPendingTransactionMapper.countPendingTxnCntByCondition(addressHash);
+    }
+
+    public long countPendingContractTransaction(String contract) {
+        if (StringUtils.isEmpty(contract)) {
+            return 0L;
+        }
+        return nebPendingTransactionMapper.countPendingContractTransaction(contract);
     }
 
     public long countTxnCntByBlockHeight(Long blockHeight) {
@@ -194,6 +213,20 @@ public class NebTransactionService {
 
     public List<NebPendingTransaction> findLessThanTimestamp(Date timestamp, int limit) {
         return nebPendingTransactionMapper.findLessThanTimestamp(timestamp, limit);
+    }
+
+    public List<NebPendingTransaction> findPendingContractTransactions(String contract, int page, int pageSize){
+        if (StringUtils.isEmpty(contract)){
+            return Collections.emptyList();
+        }
+        return nebPendingTransactionMapper.findPendingContractTransactions(contract, (page - 1) * pageSize, pageSize);
+    }
+
+    public List<NebTransaction> findContractTransactions(String contract, int page, int pageSize){
+        if (StringUtils.isEmpty(contract)){
+            return Collections.emptyList();
+        }
+        return nebTransactionMapper.findContractTransactions(contract, (page - 1) * pageSize, pageSize);
     }
 
     /**
