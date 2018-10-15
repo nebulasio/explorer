@@ -106,7 +106,7 @@
                             <div class="card card-body">
                                 <template v-for="dynasty in block.dynasty">
                                     <router-link v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>{{ dynasty }} </router-link>
-                                    <br>
+                                    <br v-bind:key=dynasty>
                                 </template>
                             </div>
                         </div>

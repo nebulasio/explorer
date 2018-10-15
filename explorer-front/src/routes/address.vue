@@ -86,6 +86,12 @@
                     <td>Minted:</td>
                     <td>{{ obj.mintedBlkCnt }}</td>
                 </tr>
+                <tr v-for="token in tokens" :key="token.tokenName" v-if="token.tokenName == 'ATP'">
+                    <td>NRC20 Tokens:</td>
+                    <td>
+                        {{ easyNumber(token.balance/1000000000000000000) }} <router-link v-bind:to='fragApi + "/contract/" + token.contract'>{{ token.tokenName }}</router-link>
+                    </td>
+                </tr>
             </table>
 
             <vue-tab-buttons class=mt20 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
@@ -123,7 +129,7 @@
                         <th class=txfee>[TxFee]</th>
                     </tr>
 
-                    <tr v-for="o in txs">
+                    <tr v-for="(o, i) in txs" :key="i">
                         <td v-if="o.status == 0" class=fail>
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                         </td>
@@ -162,6 +168,7 @@
                 ============================================================ -->
             <div class=tab v-show="tab == 2">
                 <table class="mt20 table">
+                    <tr>
                         <pre><code class=language-javascript v-html=formatCode></code></pre>
                     </tr>
                 </table>
@@ -271,9 +278,12 @@
             },
             urlChange() {
                 this.contractHash = ""
+                this.$root.showModalLoading = true;
                 api.getAddress(this.$route.params.id, o => {
+                    this.$root.showModalLoading = false;
                     this.minted = o.mintedBlkList;
                     this.obj = o;
+                    this.tokens = o.tokens;
                     if (o.address.type == 1) {// this is a smart contract address
                         api.getTransactionByContract({ address: o.address.hash }, this.$route.params.api, (transaction) => {
                             var transaction = JSON.parse(transaction)
@@ -282,6 +292,7 @@
                     }
                     this.txs = o.txList;
                 }, xhr => {
+                    this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                 });
             }
@@ -298,7 +309,8 @@
                 minted: [],
                 obj: null,
                 tab: 0,
-                txs: []
+                txs: [],
+                tokens: []
             };
         },
         methods: {

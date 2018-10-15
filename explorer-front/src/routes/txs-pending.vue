@@ -18,7 +18,7 @@
                     <th>To</th>
                     <th class=text-right>Value</th>
                 </tr>
-                <tr v-for="o in arr">
+                <tr v-for="(o, i) in arr" :key="i">
                     <td class="tdxxxwddd monospace">
                         <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>

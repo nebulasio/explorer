@@ -21,7 +21,7 @@
                     <th class=text-right>Percentage</th>
                     <th class=text-right>TxCount</th>
                 </tr>
-                <tr v-for="o in arr">
+                <tr v-for="(o, i) in arr" :key="i">
                     <td>{{ o.rank }}</td>
                     <td class=monospace>
                         <router-link v-bind:to='fragApi + "/address/" + o.hash'>{{ o.hash }}</router-link>
