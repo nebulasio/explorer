@@ -55,7 +55,7 @@ public class GrpcChannelService {
                 managedChannelBuilder.keepAliveWithoutCalls(grpcCfg.getKeepAliveWithoutCalls());
                 managedChannelBuilder.keepAliveTimeout(grpcCfg.getKeepAliveTimeout(), TimeUnit.SECONDS);
             }
-            managedChannelBuilder.usePlaintext(true);
+            managedChannelBuilder.usePlaintext();
             return managedChannelBuilder.build();
         } catch (Exception e) {
             log.error("build channel error", e);

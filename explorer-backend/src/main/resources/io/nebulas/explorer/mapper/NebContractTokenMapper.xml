@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.nebulas.explorer.mapper.NebContractTokenMapper">
+    <cache/>
+    <resultMap id="BaseResultMap" type="io.nebulas.explorer.domain.NebContractToken">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="token_name" property="tokenName" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="contract" property="contract" jdbcType="VARCHAR"/>
+        <result column="total" property="total" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `id`, `token_name`,`description`, `contract`, `total`
+    </sql>
+
+    <select id="getByContract" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from `neb_contract_token_dictionary`
+        where `contract`=#{contract,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getAllContractTokens" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `neb_contract_token_dictionary`
+    </select>
+</mapper>

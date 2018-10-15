@@ -223,7 +223,7 @@
                         <router-link class="btn btn-default pull-right" v-bind:to='fragApi + "/blocks"' role=button>View All</router-link>
                     </div>
                     <ul class="blocks list">
-                        <li class=li v-for="o in blocks">
+                        <li class=li v-for="(o, i) in blocks" :key="i">
                             <div class=img>
                                 <router-link class=mt20 v-bind:to='fragApi + "/block/" + o.height'>block {{ o.height }}</router-link>
                                 <div class=mt20>{{ timeConversion(msVmReady - o.timestamp) }} ago</div>
@@ -248,7 +248,7 @@
                         <router-link class="btn btn-default pull-right" v-bind:to='fragApi + "/txs"' role=button>View All</router-link>
                     </div>
                     <ul class="list txs">
-                        <li class=li v-for="o in txs">
+                        <li class=li v-for="(o, i) in txs" :key="i">
                             <img src=/static/img/icon.png height=43 width=43 alt="">
                             <div>
                                 <table>
@@ -328,7 +328,7 @@
                         // , type: "area"
                     }],
                     subtitle: {
-                        text: "数据来源：Nebulas"
+                        text: "Data Source：Nebulas"
                     },
                     title: {
                         text: "transactions"
@@ -342,7 +342,7 @@
                     },
                     yAxis: {
                         title: {
-                            text: "数量"
+                            text: "Amount"
                         }
                     }
                 },

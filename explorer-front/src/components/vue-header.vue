@@ -89,7 +89,7 @@
                     <li class="dropdown nav-item">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{ MenuMisc }}</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
-                            <a v-for="(o, i) in apiPrefixes" class=nav-link href=# v-on:click.prevent=apiSwitch(i)>
+                            <a v-for="(o, i) in apiPrefixes" :key="i" class=nav-link href=# v-on:click.prevent=apiSwitch(i)>
                                 <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': paramsApi != i }" aria-hidden=true></span>
                                 {{ o.name }}
                             </a>
@@ -127,6 +127,10 @@
                 }
             },
             onSubmit() {
+                if (this.search.trim().toLowerCase() == 'atp') {
+                    this.showATP();
+                    return;
+                }
                 this.$root.showModalLoading = true;
                 api.getSearch(this.search, o => {
                     this.$root.showModalLoading = false;
@@ -148,6 +152,14 @@
                     this.search = "";
                     this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/oops");
                 });
+            },
+            showATP() {
+                // 搜索框进入 ATP 的临时方案！！！不要随便改动下方地址！！！
+                var atpAddress = "n1rR5uiy4vDUn7TPMAtJ8Y1Eo54K6EYvSJ6";// testnet
+                if (this.$route.params.api != 'testnet') {
+                    atpAddress = "n1zUNqeBPvsyrw5zxp9mKcDdLTjuaEL7s39";// mainnet
+                }
+                this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/contract/" + atpAddress);
             }
         },
         mounted() {

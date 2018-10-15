@@ -27,11 +27,11 @@
 <template>
     <!-- https://etherscan.io/txs -->
     <div class=vue-txs>
-        <vue-bread v-bind:arr=breadcrumb title=Transactions></vue-bread>
+        <vue-bread v-bind:arr=breadcrumb v-bind:title=transactionsTitle></vue-bread>
 
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info">{{ totalTxs }} transactions found (showing the last {{ maxDisplayCnt }} records)</div>
+                <div class="col info">{{ totalTxs }} transactions found</div>
                 <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
                     v-on:prev=onPrev v-on:to=onTo></vue-pagination>
             </div>
@@ -57,7 +57,7 @@
                     </td>
 
                     <td>
-                        <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
+                        <router-link v-bind:to='fragApi + "/block/" + o.blockHeight'>{{ o.blockHeight }}</router-link>
                     </td>
                     <!-- 
                     <td>
@@ -65,9 +65,9 @@
                             <span> pending </span>
                         </template>
                         <template v-else>
-                            <router-link v-if=o.block v-bind:to='fragApi + "/block/" + o.block.height'>{{o.block.height}}</router-link>
+                            <router-link v-if=o.block v-bind:to='fragApi + "/block/" + o.blockHeight'>{{o.blockHeight}}</router-link>
                         </template>
-                         <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link> 
+                         <router-link v-bind:to='fragApi + "/block/" + o.blockHeight'>{{ o.blockHeight }}</router-link> 
                     </td>
                     -->
                     <td class=time>
@@ -75,15 +75,15 @@
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td class=tdxxxwddd>
-                        <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/address/" + o.from'>{{ o.from }}</router-link>
                     </td>
                     <td>
                         <span class="fa fa-arrow-right" aria-hidden=true></span>
                     </td>
                     <td class=tdxxxwddd>
-                        <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/address/" + o.to'>{{ o.to }}</router-link>
                     </td>
-                    <td class=text-right>{{ easyNumber(o.value/1000000000000000000) }} NAS</td>
+                    <td class=text-right>{{ easyNumber(o.contractValue/1000000000000000000) }} {{ o.tokenName }}</td>
                     <td class=text-right>{{ toWei(o.txFee) }}</td>
                 </tr>
             </table>
@@ -105,16 +105,24 @@
         data() {
             return {
                 arr: [],
-                breadcrumb: [
-                    { text: "Home", to: "/" },
-                    { text: "Transactions", to: "" }
-                ],
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 maxDisplayCnt: 0,
                 totalPage: 0,
-                totalTxs: 0
+                totalTxs: 0,
+                tokenName: null
             };
+        },
+        computed: {
+            transactionsTitle: function () {
+                return (this.tokenName ? this.tokenName + ' ' : '') + "Transactions";
+            },
+            breadcrumb: function () {
+                return [
+                    { text: "Home", to: "/" },
+                    { text: this.transactionsTitle, to: "" }
+                ];
+            }
         },
         methods: {
             nav(n) {
@@ -126,9 +134,8 @@
             nthPage() {
                 this.$root.showModalLoading = true;
 
-                api.getTx({
-                    a: this.$route.query.a,
-                    block: this.$route.query.block,
+                api.getContractTx({
+                    contract: this.$route.query.contract,
                     p: this.$route.query.p || 1,
                     isPending: this.$route.query.isPending
                 }, o => {
@@ -138,6 +145,7 @@
                     this.maxDisplayCnt = o.maxDisplayCnt;
                     this.totalPage = o.totalPage;
                     this.totalTxs = o.txnCnt;
+                    this.tokenName = o.tokenName;
                 }, xhr => {
                     console.log(xhr);
                     this.$root.showModalLoading = false;

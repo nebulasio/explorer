@@ -24,6 +24,7 @@
         position: absolute;
         top: .4em;
         width: 4em;
+        text-align: center;
     }
 </style>
 <template>
@@ -58,7 +59,8 @@
             <li class=page-item>
                 <div class="current page-link">
                     <span>Page</span>
-                    <input v-bind:value=current v-on:keyup.enter="$emit('to', $event.target.value)"> of
+                    <input v-bind:value=current v-on:keyup.enter="$emit('to', $event.target.value)">
+                    of 
                     <b>{{ total }}</b>
                 </div>
             </li>

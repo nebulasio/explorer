@@ -7,6 +7,7 @@ module.exports = {
         // first item is default
         mainnet: {
             name: "Mainnet",
+            // url: "http://172.16.15.94:8080/api/" // 旭存的ip
             url: "https://explorer.nebulas.io/main/api/"
         },
         testnet: {

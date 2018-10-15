@@ -25,9 +25,13 @@ public interface NebPendingTransactionMapper {
 
     long countPendingTxnCntByCondition(@Param("addressHash") String addressHash);
 
+    long countPendingContractTransaction(@Param("contract") String contract);
+
     NebPendingTransaction getByHash(String hash);
 
     List<NebPendingTransaction> findPendingTxnByCondition(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
+
+    List<NebPendingTransaction> findPendingContractTransactions(@Param("contract") String contract, @Param("offset") int offset, @Param("limit") int limit);
 
     List<NebPendingTransaction> findLessThanTimestamp(@Param("timestamp") Date timestamp, @Param("limit") int limit);
 }
