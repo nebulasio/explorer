@@ -98,7 +98,7 @@
                 </tr>
                 <tr>
                     <td>Gas Used By Txn:</td>
-                    <td>{{ tx.isPending == true ? 'pending' : tx.gasUsed }}</td>
+                    <td>{{ tx.isPending == true ? 'pending' : numberAddComma(tx.gasUsed) }}</td>
                 </tr>
                 <tr>
                     <td>Gas Price:</td>   

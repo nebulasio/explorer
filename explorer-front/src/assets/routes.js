@@ -40,6 +40,14 @@ module.exports = [{
     component: require("@/routes/404").default,
     path: "/:api?/404"
 }, {
+    component: require("@/routes/contract").default,
+    meta: { headerActive: 2 },
+    path: "/:api?/contract/:id"
+}, {
+    component: require("@/routes/contract-txs").default,
+    meta: { headerActive: 2 },
+    path: "/:api?/contract-txs"
+}, {
     component: require("@/routes/home").default,
     meta: { headerActive: 1 },
     path: "/:api?"

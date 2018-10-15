@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.nebulas.explorer.mapper.NebContractTokenBalanceMapper">
+    <resultMap id="BaseResultMap" type="io.nebulas.explorer.domain.NebContractTokenBalance">
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="contract" property="contract" jdbcType="VARCHAR"/>
+        <result column="balance" property="balance" jdbcType="DECIMAL"/>
+        <result column="created_time" property="createdTime" jdbcType="BIGINT"/>
+        <result column="updated_time" property="updatedTime" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `address`, `contract`,`balance`, `created_time`, `updated_time`
+    </sql>
+
+    <insert id="insert" parameterType="map">
+        insert into `neb_contract_token_balance`
+        (`address`, `contract`,`balance`, `created_time`, `updated_time`)
+        values
+        (#{address}, #{contract}, #{balance}, #{createdTime}, #{updatedTime})
+    </insert>
+
+    <update id="update" parameterType="map">
+        update `neb_contract_token_balance`
+        set `balance`=#{balance}, `updated_time`=#{updatedTime}
+        where `address`=#{address} and `contract`=#{contract}
+    </update>
+
+    <select id="getByAddressAndContract" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from `neb_contract_token_balance`
+        where `contract`=#{contract,jdbcType=VARCHAR}
+        and `address`=#{address,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getValidAddressesByContractOrderByBalance" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from `neb_contract_token_balance`
+        where `contract`=#{contract,jdbcType=VARCHAR}
+        and `balance`>0
+        order by `balance` desc
+        LIMIT ${offset},${limit}
+    </select>
+
+    <select id="countValidHolders" parameterType="java.lang.String" resultType="java.lang.Long">
+        select count(1)
+        from `neb_contract_token_balance`
+        where `contract`=#{contract,jdbcType=VARCHAR}
+        and `balance`>0
+    </select>
+
+
+
+</mapper>
