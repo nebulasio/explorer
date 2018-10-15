@@ -26,6 +26,10 @@ public interface NebTransactionMapper {
 
     long countTxnCntByFromTo(String addressHash);
 
+    long countContractTransfer(String contract);
+
+    long countTxnCntByFromAndTo(@Param("from") String from, @Param("to") String to);
+
     long countTxnCntByBlockHeight(Long blockHeight);
 
     NebTransaction getByHash(String hash);
@@ -35,6 +39,8 @@ public interface NebTransactionMapper {
     List<NebTransaction> findTxnByBlockHeight(Long blockHeight);
 
     List<NebTransaction> findTxnByCondition(@Param("blockHeight") Long blockHeight, @Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
+
+    List<NebTransaction> findContractTransactions(@Param("contract") String contract, @Param("offset") int offset, @Param("limit") int limit);
 
     List<NebTransaction> findTxnByFromTo(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
 
