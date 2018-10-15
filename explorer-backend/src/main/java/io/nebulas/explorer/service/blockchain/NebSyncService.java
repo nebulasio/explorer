@@ -2,8 +2,10 @@ package io.nebulas.explorer.service.blockchain;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
+import io.nebulas.explorer.domain.NebContractTokenBalance;
 import io.nebulas.explorer.domain.NebPendingTransaction;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
@@ -13,6 +15,7 @@ import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
 import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +47,35 @@ public class NebSyncService {
     private NebDynastyService nebDynastyService;
     @Autowired
     private NebApiServiceWrapper nebApiServiceWrapper;
+    @Autowired
+    private ContractTokenBalanceService contractTokenBalanceService;
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
+
+
+    public void testSyncContractTransactions(String hash){
+        try {
+            Block block = nebApiServiceWrapper.getBlockByHash(hash, true);
+            if (block == null) {
+                log.error("block with hash {} not found", hash);
+                return;
+            }
+            log.info("get block by hash {}", block.getHash());
+            List<Transaction> txs = block.getTransactions();
+            for (Transaction tx: txs) {
+                NebTransactionTypeEnum typeEnum = NebTransactionTypeEnum.parse(tx.getType());
+                if (NebTransactionTypeEnum.CALL.equals(typeEnum)) {
+                    log.info("开始处理合约调用交易: " + tx.getHash());
+                    JSONObject data = decodeData(tx.getData());
+                    processContractBalanceInfo(tx, data);
+                }
+            }
+        } catch (Exception e) {
+            log.error("no block yet", e);
+        }
+    }
+
+
 
     public void syncBlockByHash(String hash, boolean isLib) {
         try {
@@ -121,6 +151,7 @@ public class NebSyncService {
 
     private void syncTx(Transaction tx, Block block, int seq) {
         //sync address
+        log.error("开始同步交易: " + tx.getHash());
         syncAddress(tx.getFrom(), NebAddressTypeEnum.NORMAL);
 
         NebTransactionTypeEnum typeEnum = NebTransactionTypeEnum.parse(tx.getType());
@@ -128,9 +159,12 @@ public class NebSyncService {
         if (NebTransactionTypeEnum.BINARY.equals(typeEnum)) {
             syncAddress(tx.getTo(), NebAddressTypeEnum.NORMAL);
         } else if (NebTransactionTypeEnum.CALL.equals(typeEnum)) {
+            log.error("开始处理合约调用交易: " + tx.getHash());
             syncAddress(tx.getTo(), NebAddressTypeEnum.CONTRACT);
-            String realReceiver = extractReceiverAddress(tx.getData());
+            JSONObject data = decodeData(tx.getData());
+            String realReceiver = extractReceiverAddress(data);
             syncAddress(realReceiver, NebAddressTypeEnum.NORMAL);
+            processContractBalanceInfo(tx, data);
         } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
             syncAddress(tx.getContractAddress(), NebAddressTypeEnum.CONTRACT);
         }
@@ -183,8 +217,10 @@ public class NebSyncService {
                     syncAddress(txSource.getTo(), NebAddressTypeEnum.NORMAL);
                 } else if (NebTransactionTypeEnum.CALL.equals(typeEnum)) {
                     syncAddress(txSource.getTo(), NebAddressTypeEnum.CONTRACT);
-                    String realReceiver = extractReceiverAddress(txSource.getData());
+                    JSONObject data = decodeData(txSource.getData());
+                    String realReceiver = extractReceiverAddress(data);
                     syncAddress(realReceiver, NebAddressTypeEnum.NORMAL);
+                    processContractBalanceInfo(txSource, data);
                 } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
                     syncAddress(txSource.getContractAddress(), NebAddressTypeEnum.CONTRACT);
                 }
@@ -260,10 +296,8 @@ public class NebSyncService {
         return data;
     }
 
-    private String extractReceiverAddress(String data) {
+    private String extractReceiverAddress(JSONObject jsonObject) {
         try {
-            String dataStr = new String(DECODER.decode(data), "UTF-8");
-            JSONObject jsonObject = JSONObject.parseObject(dataStr);
             String func = jsonObject.getString("Function");
 
             if ("transfer".equals(func)) {
@@ -275,4 +309,48 @@ public class NebSyncService {
         }
         return "";
     }
+
+    private void processContractBalanceInfo(Transaction tx, JSONObject data) {
+        log.error("开始处理合约地址资产: " + data.toJSONString());
+        if (!isContractTransfer(data)) {
+            return;
+        }
+        String contract = tx.getTo();
+        String sender = tx.getFrom();
+        String receiver = extractReceiverAddress(data);
+        syncContractBalanceAddress(sender, contract);
+        syncContractBalanceAddress(receiver, contract);
+    }
+
+    private void syncContractBalanceAddress(String address, String contract) {
+        try {
+            NebContractTokenBalance addressBalance = contractTokenBalanceService.getByAddressAndContract(address, contract);
+            if (addressBalance == null) {
+                addressBalance = contractTokenBalanceService.getFromRPC(address, contract);
+                if (addressBalance != null) {
+                    contractTokenBalanceService.addAddressBalance(addressBalance);
+                }
+                log.error("从RPC获取合约地址资产: " + addressBalance.getBalance());
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    private boolean isContractTransfer(JSONObject data) {
+        String func = data.getString("Function");
+        return "transfer".equals(func);
+    }
+
+    private JSONObject decodeData(String data) {
+        try {
+            String dataStr = new String(DECODER.decode(data), "UTF-8");
+            JSONObject jsonObject = JSONObject.parseObject(dataStr);
+            return jsonObject;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return new JSONObject();
+    }
+
 }
