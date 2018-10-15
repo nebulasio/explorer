@@ -75,14 +75,14 @@
                 </tr>
                 <tr>
                     <td>To:</td>
-                    <td class=monospace v-if=" tx.to.hash == 'n1rR5uiy4vDUn7TPMAtJ8Y1Eo54K6EYvSJ6' ">
+                    <td class=monospace v-if=" tx.to.hash == atpAddress ">
                         Contract <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link> (ATP)
                     </td>
                     <td class=monospace v-else>
                         <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
                     </td>
                 </tr>
-                <tr  v-if=" tx.to.hash == 'n1rR5uiy4vDUn7TPMAtJ8Y1Eo54K6EYvSJ6' ">
+                <tr  v-if=" tx.to.hash == atpAddress ">
                     <td>Token Transfered:</td>
                     <td class=monospace>
                         From <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link> To <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </router-link> for {{ numberAddComma(parseFloat(JSON.parse(JSON.parse(tx.data).Args)[1] / 1000000000000000000).toPrecision(15) )}} ATP
@@ -156,7 +156,8 @@
     var jsBeautify = require("js-beautify").js_beautify,
         prism = require("prismjs"),
         api = require("@/assets/api"),
-        utility = require("@/assets/utility");
+        utility = require("@/assets/utility"),
+        appConfig = require("@/assets/app-config");
 
     require("prismjs/themes/prism.css");
 
@@ -198,6 +199,10 @@
                 }, xhr => {
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                 });
+            },
+            atpAddress() {
+                var api = this.$route.params.api ? this.$route.params.api : "mainnet";
+                return appConfig.apiPrefixes[api].atp;
             }
         },
         data() {

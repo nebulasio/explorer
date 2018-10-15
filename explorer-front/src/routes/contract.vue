@@ -76,10 +76,10 @@
                     <td>Contract:</td>
                     <td>{{ obj.contract }} </td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <td>Total supply:</td>
                     <td>{{ numberAddComma(easyNumber(obj.total/1000000000000000000)) }} {{ obj.tokenName }} </td>
-                </tr>
+                </tr> -->
                 <tr>
                     <td>Holders:</td>
                     <td>{{ numberAddComma(obj.holderCount) }} addresses</td>
