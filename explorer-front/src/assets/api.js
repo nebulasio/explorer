@@ -114,8 +114,62 @@ module.exports = {
         }
     },
 
+    // get api/contract?
+    // - c      - contract address
+    getContract(c, done, fail) {
+        if (eval('typeof t == "object"'))
+            ajax1("contract", c, d, fail);
+        else
+            ajax1("contract/" + c, null, d, fail);
 
+        function d(s, xhr) {
+            var o = JSON.parse(s);
 
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
+
+    // get api/contract/tx?
+    // - contract   - contract address
+    // - isPending  - 默认 false
+    // - p          - 页码, 默认 1
+    getContractTx(t, done, fail) {
+        if (eval('typeof t == "object"'))
+            ajax1("contract/tx", t, d, fail);
+        else
+            ajax1("contract/tx/" + t, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
+
+    // get api/contract/holders?
+    // - contract   - contract address
+    // - p          - 页码, 默认 1
+    getContractHolders(t, done, fail) {
+        if (eval('typeof t == "object"'))
+            ajax1("contract/holders", t, d, fail);
+        else
+            ajax1("contract/holders/" + t, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    }
 };
 
 function ajax1(action, args, done, fail) {
