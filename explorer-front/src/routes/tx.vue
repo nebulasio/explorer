@@ -85,7 +85,7 @@
                 <tr  v-if=" tx.to.hash == atpAddress ">
                     <td>Token Transfered:</td>
                     <td class=monospace>
-                        From <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link> To <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </router-link> for {{ numberAddComma(parseFloat(JSON.parse(JSON.parse(tx.data).Args)[1] / 1000000000000000000).toPrecision(15) )}} ATP
+                        From <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link> To <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </router-link> for {{ numberAddComma(parseFloat(JSON.parse(JSON.parse(tx.data).Args)[1] / 1000000000000000000).toPrecision(17) )}} ATP
                     </td>
                 </tr>
                 <tr>
