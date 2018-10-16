@@ -148,7 +148,7 @@
                             <span v-if="o.to == $route.params.id">{{ o.to }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to'>{{ o.to }}</router-link>
                         </td>
-                        <td>{{ numberAddComma( parseFloat(o.contractValue/1000000000000000000).toPrecision(15) )  }} {{ obj.tokenName }}</td>
+                        <td>{{ numberAddComma( parseFloat(o.contractValue/1000000000000000000).toPrecision(17) )  }} {{ obj.tokenName }}</td>
                         <td class=txfee>
                             <span v-if=o.blockHeight>{{ toWei(o.txFee) }}</span>
                             <i v-else>(pending)</i>
