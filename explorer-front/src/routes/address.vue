@@ -269,7 +269,10 @@
                 var lang = prism.languages.javascript;
 
                 if (this.obj.contractCode) {
-                    return prism.highlight(jsBeautify(JSON.parse(this.obj.contractCode).Source), lang);
+                    var code = JSON.parse(this.obj.contractCode);
+                    if (code.Source) {
+                        return prism.highlight(jsBeautify(code.Source), lang);
+                    }
                 }
                 return "0x0";
             },
