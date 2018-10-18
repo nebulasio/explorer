@@ -122,7 +122,7 @@
                         <th class=txfee>[TxFee]</th>
                     </tr>
 
-                    <tr v-for="o in txs" :key="o.hash">
+                    <tr v-for="o in txs" v-if="o" :key="o.hash">
                         <td v-if="o.status == 0" class=fail>
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                         </td>
