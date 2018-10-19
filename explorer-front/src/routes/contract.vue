@@ -76,10 +76,10 @@
                     <td>Contract:</td>
                     <td>{{ obj.contract }} </td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <td>Total supply:</td>
                     <td>{{ numberAddComma(easyNumber(obj.total/1000000000000000000)) }} {{ obj.tokenName }} </td>
-                </tr>
+                </tr> -->
                 <tr>
                     <td>Holders:</td>
                     <td>{{ numberAddComma(obj.holderCount) }} addresses</td>
@@ -122,7 +122,7 @@
                         <th class=txfee>[TxFee]</th>
                     </tr>
 
-                    <tr v-for="o in txs" :key="o.hash">
+                    <tr v-for="o in txs" v-if="o" :key="o.hash">
                         <td v-if="o.status == 0" class=fail>
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                         </td>
@@ -148,7 +148,7 @@
                             <span v-if="o.to == $route.params.id">{{ o.to }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to'>{{ o.to }}</router-link>
                         </td>
-                        <td>{{ numberAddComma( parseFloat(o.contractValue/1000000000000000000).toPrecision(15) )  }} {{ obj.tokenName }}</td>
+                        <td>{{ numberAddComma( parseFloat(o.contractValue/1000000000000000000).toPrecision(17) )  }} {{ obj.tokenName }}</td>
                         <td class=txfee>
                             <span v-if=o.blockHeight>{{ toWei(o.txFee) }}</span>
                             <i v-else>(pending)</i>
@@ -160,31 +160,29 @@
             <!-- =============== Holders =============== -->
             <div class=tab v-show="tab == 2">
                 <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info">{{ totalHolderCount }} holders found</div>
-                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
-                    v-on:prev=onPrev v-on:to=onTo></vue-pagination>
-            </div>
+                    <div class="col info">{{ totalHolderCount }} holders found</div>
+                    <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
+                </div>
 
-            <table class="mt20 table">
-                <tr>
-                    <th>Rank</th>
-                    <th>Address</th>
-                    <th>Quantity</th>
-                    <th>Percentage</th>
-                </tr>
+                <table class="mt20 table">
+                    <tr>
+                        <th>Rank</th>
+                        <th>Address</th>
+                        <th>Quantity</th>
+                        <th>Percentage</th>
+                    </tr>
 
-                <tr v-for="o in holders" :key="o.address">
-                    <td>{{ o.rank }}</td>
-                    <td class=tdxxxwddd>
-                        <router-link v-bind:to='fragApi + "/address/" + o.address'>{{ o.address }}</router-link>
-                    </td>
-                    <td>{{ easyNumber(o.balance/1000000000000000000) }}</td>
-                    <td>{{ o.percentage }}%</td>
-                </tr>
-            </table>
+                    <tr v-for="o in holders" :key="o.address">
+                        <td>{{ o.rank }}</td>
+                        <td class=tdxxxwddd>
+                            <router-link v-bind:to='fragApi + "/address/" + o.address'>{{ o.address }}</router-link>
+                        </td>
+                        <td>{{ easyNumber(o.balance/1000000000000000000) }}</td>
+                        <td>{{ o.percentage }}%</td>
+                    </tr>
+                </table>
 
-            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
-                v-on:prev=onPrev v-on:to=onTo></vue-pagination>
+                <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
             </div>
 
         </div>
@@ -220,7 +218,7 @@
                 ];
             },
             tabButtons() {
-                return ["Transfers", "Holders"];
+                return ["Transfers"];//["Transfers", "Holders"]
             },
             urlChange() {
                 this.$root.showModalLoading = true;

@@ -155,7 +155,7 @@
                             <span v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                         </td>
-                        <td>{{ numberAddComma( parseFloat(o.value/1000000000000000000).toPrecision(15) )  }} NAS</td>
+                        <td>{{ numberAddComma( parseFloat(o.value/1000000000000000000).toPrecision(17) )  }} NAS</td>
                         <td class=txfee>
                             <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
                             <i v-else>(pending)</i>
@@ -269,7 +269,10 @@
                 var lang = prism.languages.javascript;
 
                 if (this.obj.contractCode) {
-                    return prism.highlight(jsBeautify(JSON.parse(this.obj.contractCode).Source), lang);
+                    var code = JSON.parse(this.obj.contractCode);
+                    if (code.Source) {
+                        return prism.highlight(jsBeautify(code.Source), lang);
+                    }
                 }
                 return "0x0";
             },
