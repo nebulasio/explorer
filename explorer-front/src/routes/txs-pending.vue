@@ -37,7 +37,7 @@
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                     </td>
-                    <td class=text-right>{{ numberAddComma(o.value/1000000000000000000) }} NAS</td>
+                    <td class=text-right>{{ tokenAmount(o.value) }} NAS</td>
                 </tr>
             </table>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
@@ -46,7 +46,8 @@
 </template>
 <script>
     var api = require("@/assets/api"),
-        utility = require("@/assets/utility");
+        utility = require("@/assets/utility"),
+        BigNumber = require("bignumber.js");
 
     module.exports = {
         components: {
@@ -137,6 +138,12 @@
             },
             easyNumber(n){
                 return utility.easyNumber(n);
+            },
+            tokenAmount(n) {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(n);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
             }
         },
         mounted() {

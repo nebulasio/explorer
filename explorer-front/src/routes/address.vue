@@ -155,7 +155,7 @@
                             <span v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                         </td>
-                        <td>{{ numberAddComma( parseFloat(o.value/1000000000000000000).toPrecision(17) )  }} NAS</td>
+                        <td>{{ tokenAmount(o.value) }} NAS</td>
                         <td class=txfee>
                             <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
                             <i v-else>(pending)</i>
@@ -255,7 +255,8 @@
     var api = require("@/assets/api"),
         prism = require("prismjs"),
         jsBeautify = require("js-beautify").js_beautify,
-        utility = require("@/assets/utility");
+        utility = require("@/assets/utility"),
+        BigNumber = require("bignumber.js");
 
     module.exports = {
         components: {
@@ -345,6 +346,12 @@
             },
             easyNumber(n) {
                 return utility.easyNumber(n);
+            },
+            tokenAmount(n) {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(n);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
             }
         }
     };

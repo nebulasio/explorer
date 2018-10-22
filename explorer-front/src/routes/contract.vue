@@ -148,7 +148,7 @@
                             <span v-if="o.to == $route.params.id">{{ o.to }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to'>{{ o.to }}</router-link>
                         </td>
-                        <td>{{ numberAddComma( parseFloat(o.contractValue/1000000000000000000).toPrecision(17) )  }} {{ obj.tokenName }}</td>
+                        <td>{{ tokenAmount(o.contractValue) }} {{ obj.tokenName }}</td>
                         <td class=txfee>
                             <span v-if=o.blockHeight>{{ toWei(o.txFee) }}</span>
                             <i v-else>(pending)</i>
@@ -192,7 +192,8 @@
     var api = require("@/assets/api"),
         prism = require("prismjs"),
         jsBeautify = require("js-beautify").js_beautify,
-        utility = require("@/assets/utility");
+        utility = require("@/assets/utility"),
+        BigNumber = require("bignumber.js");
 
     module.exports = {
         components: {
@@ -306,6 +307,12 @@
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                 });
+            },
+            tokenAmount(n) {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(n);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
             }
         },
         watch: {
