@@ -78,7 +78,7 @@
                 </tr>
                 <!-- <tr>
                     <td>Total supply:</td>
-                    <td>{{ numberAddComma(easyNumber(obj.total/1000000000000000000)) }} {{ obj.tokenName }} </td>
+                    <td>{{ tokenAmount(obj.total)) }} {{ obj.tokenName }} </td>
                 </tr> -->
                 <tr>
                     <td>Holders:</td>
@@ -177,7 +177,7 @@
                         <td class=tdxxxwddd>
                             <router-link v-bind:to='fragApi + "/address/" + o.address'>{{ o.address }}</router-link>
                         </td>
-                        <td>{{ easyNumber(o.balance/1000000000000000000) }}</td>
+                        <td>{{ tokenAmount(o.balance) }}</td>
                         <td>{{ o.percentage }}%</td>
                     </tr>
                 </table>
