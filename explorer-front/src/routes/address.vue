@@ -72,7 +72,7 @@
                 </tr>
                 <tr>
                     <td>NAS Balance:</td>
-                    <td>{{ easyNumber(obj.address.balance/1000000000000000000) }} NAS </td>
+                    <td>{{ tokenAmount(obj.address.balance) }} NAS </td>
                 </tr>
                 <tr>
                     <td>Nonce:</td>
@@ -89,7 +89,7 @@
                 <tr v-for="token in tokens" :key="token.tokenName" v-if="token.tokenName == 'ATP'">
                     <td>NRC20 Tokens:</td>
                     <td>
-                        {{ easyNumber(token.balance/1000000000000000000) }} <router-link v-bind:to='fragApi + "/contract/" + token.contract'>{{ token.tokenName }}</router-link>
+                        {{ tokenAmount(token.balance) }} <router-link v-bind:to='fragApi + "/contract/" + token.contract'>{{ token.tokenName }}</router-link>
                     </td>
                 </tr>
             </table>
