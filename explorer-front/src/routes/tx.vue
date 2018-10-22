@@ -237,7 +237,7 @@
             },
             nasAmount(n) {
                 BigNumber.config({ DECIMAL_PLACES: 18 })
-                var amount = BigNumber(JSON.parse(JSON.parse(this.tx.data).Args)[1]);
+                var amount = BigNumber(n);
                 var decimals = BigNumber('1e+18');
                 return amount.div(decimals).toFormat();
             }
