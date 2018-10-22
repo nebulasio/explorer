@@ -85,7 +85,7 @@
                 <tr  v-if=isTokenTransfer>
                     <td>Token Transfered:</td>
                     <td class=monospace>
-                        From <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link> To <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </router-link> for {{ numberAddComma(parseFloat(JSON.parse(JSON.parse(tx.data).Args)[1] / 1000000000000000000).toPrecision(17) )}} ATP
+                        From <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link> To <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </router-link> for {{ tokenAmount }} ATP
                     </td>
                 </tr>
                 <tr>
@@ -157,7 +157,8 @@
         prism = require("prismjs"),
         api = require("@/assets/api"),
         utility = require("@/assets/utility"),
-        appConfig = require("@/assets/app-config");
+        appConfig = require("@/assets/app-config"),
+        BigNumber = require("bignumber.js");
 
     require("prismjs/themes/prism.css");
 
@@ -208,6 +209,12 @@
                 } catch (error) {
                 }
                 return false;
+            },
+            tokenAmount() {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(JSON.parse(JSON.parse(this.tx.data).Args)[1]);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
             }
         },
         data() {

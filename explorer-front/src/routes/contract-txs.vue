@@ -83,7 +83,7 @@
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='fragApi + "/address/" + o.to'>{{ o.to }}</router-link>
                     </td>
-                    <td class=text-right>{{ easyNumber(o.contractValue/1000000000000000000) }} {{ o.tokenName }}</td>
+                    <td class=text-right>{{ tokenAmount(o.contractValue) }} {{ o.tokenName }}</td>
                     <td class=text-right>{{ toWei(o.txFee) }}</td>
                 </tr>
             </table>
@@ -95,7 +95,8 @@
 </template>
 <script>
     var api = require("@/assets/api"),
-        utility = require("@/assets/utility");
+        utility = require("@/assets/utility"),
+        BigNumber = require("bignumber.js");
 
     module.exports = {
         components: {
@@ -176,8 +177,11 @@
             toWei(n) {
                 return utility.toWei(n);
             },
-            easyNumber(n) {
-                return utility.easyNumber(n);
+            tokenAmount(n) {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(n);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
             }
         },
         mounted() {
