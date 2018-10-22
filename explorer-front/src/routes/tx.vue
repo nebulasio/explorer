@@ -90,7 +90,7 @@
                 </tr>
                 <tr>
                     <td>Value:</td>
-                    <td>{{ tokenAmount(tx.value) }} NAS</td>
+                    <td>{{ nasAmount(tx.value) }} NAS</td>
                 </tr>
                 <tr>
                     <td>Gas Limit:</td>
@@ -234,6 +234,12 @@
             },
             toWei(n) {
                 return utility.toWei(n);
+            },
+            nasAmount(n) {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(JSON.parse(JSON.parse(this.tx.data).Args)[1]);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
             }
         }
     };
