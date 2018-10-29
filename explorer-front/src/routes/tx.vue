@@ -78,7 +78,7 @@
                     <td class=monospace v-if=isTokenTransfer>
                         Contract 
                         <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link> 
-                        <div class="token-name" v-if="tx.tokenName">{{ (tx.tokenName) }}</div>
+                        <div class="token-name" v-if="tx.tokenName">{{ '(' + tx.tokenName + ')' }}</div>
                     </td>
                     <td class=monospace v-else>
                         <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
