@@ -76,7 +76,9 @@
                 <tr>
                     <td>To:</td>
                     <td class=monospace v-if=isTokenTransfer>
-                        Contract <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link> (ATP)
+                        Contract 
+                        <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link> 
+                        <div class="token-name" v-if="tx.tokenName">{{ (tx.tokenName) }}</div>
                     </td>
                     <td class=monospace v-else>
                         <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
@@ -85,7 +87,7 @@
                 <tr  v-if=isTokenTransfer>
                     <td>Token Transfered:</td>
                     <td class=monospace>
-                        From <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link> To <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </router-link> for {{ tokenAmount }} ATP
+                        From <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link> To <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </router-link> for {{ tokenAmount }} <div class="token-name" v-if="tx.tokenName">{{ (tx.tokenName) }}</div>
                     </td>
                 </tr>
                 <tr>
@@ -197,6 +199,11 @@
             urlChange() {
                 api.getTx(this.$route.params.id, o => {
                     this.tx = o;
+                    if (!o.tokenName || o.tokenName.length == 0) {
+                        if (o.to.hash == this.atpAddress()) {
+                            this.tx.tokenName = "ATP";
+                        }
+                    }
                 }, xhr => {
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                 });
@@ -222,7 +229,7 @@
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 tab: 0,
                 tabButtons: ["Overview"],
-                tx: null
+                tx: {tokenName: null}
             };
         },
         methods: {
@@ -240,6 +247,10 @@
                 var amount = BigNumber(n);
                 var decimals = BigNumber('1e+18');
                 return amount.div(decimals).toFormat();
+            },
+            atpAddress() {
+                var api = this.$route.params.api ? this.$route.params.api : "mainnet";
+                return appConfig.apiPrefixes[api].atp;
             }
         }
     };
