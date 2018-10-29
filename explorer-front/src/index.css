@@ -63,6 +63,9 @@ td.time:hover :nth-child(2) {
     vertical-align: top;
 }
 
+.token-name {
+    display: inline-block;
+}
 /*  .modal
     ============================================================ */
 
