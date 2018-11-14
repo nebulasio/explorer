@@ -57,7 +57,7 @@
                     </td>
 
                     <td>
-                        <router-link v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
+                        <router-link v-if=o.block v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
                     </td>
                     <!-- 
                     <td>
