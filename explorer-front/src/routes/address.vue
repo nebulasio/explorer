@@ -108,9 +108,11 @@
                         <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
                     </div>
                     <div class=col-auto>
-                        <span v-if="contractHash">
-                            <router-link class="btn btn-link" v-bind:to='fragApi + "/tx/"+contractHash'>View Smart Contract</router-link>
-                            |</span>
+                        <span v-if="isContract">
+                            <router-link v-if="contractHash" class="btn btn-link" v-bind:to='fragApi + "/tx/"+contractHash'>View Smart Contract</router-link>
+                            <a v-else class="btn btn-link">View Smart Contract</a>
+                            |
+                        </span>
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All {{ obj.txCnt }} Txn</router-link>
                         |
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>View All {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn</router-link>
@@ -281,7 +283,8 @@
                 return this.obj && this.obj.contractCode ? ["Transactions", "Contract Code"] : ["Transactions"];
             },
             urlChange() {
-                this.contractHash = ""
+                this.isContract = false;
+                this.contractHash = null;
                 this.$root.showModalLoading = true;
                 api.getAddress(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;
@@ -289,6 +292,7 @@
                     this.obj = o;
                     this.tokens = o.tokens;
                     if (o.address.type == 1) {// this is a smart contract address
+                        this.isContract = true;
                         api.getTransactionByContract({ address: o.address.hash }, this.$route.params.api, (transaction) => {
                             var transaction = JSON.parse(transaction)
                             this.contractHash = transaction.result.hash
@@ -303,7 +307,6 @@
         },
         data() {
             return {
-                contractHash: "",
                 breadcrumb: [
                     { text: "Home", to: "/" },
                     { text: "Normal Accounts", to: "/accounts" },
@@ -314,7 +317,9 @@
                 obj: null,
                 tab: 0,
                 txs: [],
-                tokens: []
+                tokens: [],
+                isContract: false,
+                contractHash: null
             };
         },
         methods: {
