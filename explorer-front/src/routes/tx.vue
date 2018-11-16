@@ -10,6 +10,22 @@
     .vue-tx td.text {
         white-space: pre-line;
     }
+    .vue-tx .fail {
+        color:red;
+    }
+    .vue-tx .success {
+        color:green;
+    }
+    .vue-tx .atpAddress{
+        width: 134px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        line-height: 18px;
+        vertical-align: bottom;
+    }
+
 </style>
 <template>
     <div class="container vue-tx" v-bind:triggerComputed=urlChange>
@@ -25,7 +41,15 @@
                 </tr>
                 <tr>
                     <td>TxReceipt Status:</td>
-                    <td>{{ tx.isPending == true ? 'pending' : 'Success' }}</td>
+                    <td v-if="tx.status == 0">
+                        <span class="fail">fail ( {{ tx.executeError }} )</span>
+                    </td>
+                    <td v-else-if="tx.status == 1">
+                        <span class="success">success</span>
+                    </td>
+                    <td v-else>
+                        pending
+                    </td>
                 </tr>
                 <tr>
                     <td>Block Height:</td>
@@ -51,13 +75,24 @@
                 </tr>
                 <tr>
                     <td>To:</td>
-                    <td class=monospace>
+                    <td class=monospace v-if=isTokenTransfer>
+                        Contract 
+                        <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link> 
+                        <div class="token-name" v-if="tx.tokenName">{{ '(' + tx.tokenName + ')' }}</div>
+                    </td>
+                    <td class=monospace v-else>
                         <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>{{ tx.to.hash }}</router-link>
+                    </td>
+                </tr>
+                <tr  v-if=isTokenTransfer>
+                    <td>Token Transfered:</td>
+                    <td class=monospace>
+                        From <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + tx.from.hash'>{{ tx.from.hash }}</router-link> To <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </router-link> for {{ tokenAmount }} <div class="token-name" v-if="tx.tokenName">{{ (tx.tokenName) }}</div>
                     </td>
                 </tr>
                 <tr>
                     <td>Value:</td>
-                    <td>{{ toWei(tx.value) }}</td>
+                    <td>{{ nasAmount(tx.value) }} NAS</td>
                 </tr>
                 <tr>
                     <td>Gas Limit:</td>
@@ -65,10 +100,10 @@
                 </tr>
                 <tr>
                     <td>Gas Used By Txn:</td>
-                    <td>{{ tx.isPending == true ? 'pending' : toWei(tx.gasUsed) }}</td>
+                    <td>{{ tx.isPending == true ? 'pending' : numberAddComma(tx.gasUsed) }}</td>
                 </tr>
                 <tr>
-                    <td>Gas Price:</td>
+                    <td>Gas Price:</td>   
                     <td>{{ toWei(tx.gasPrice) }}</td>
                 </tr>
                 <tr>
@@ -81,7 +116,18 @@
                 </tr>
                 <tr>
                     <td>Transaction Type:</td>
-                    <td>{{ txType }}</td>
+                    <td v-if=" tx.type == 'deploy' ">{{ txType }} ( contract address: <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.contractAddress'> {{tx.contractAddress}} </router-link>)</td>
+                    <td v-else>{{ txType }}</td>
+                </tr>
+                <tr>
+                    <td>SourceType:</td>
+                    <td v-if=" tx.type == 'deploy' ">{{ JSON.parse(tx.data).SourceType }}</td>
+                    <td v-else></td>
+                </tr>
+                <tr>
+                    <td>Args:</td>
+                    <td v-if=" tx.type == 'deploy' ">{{ JSON.parse(tx.data).Args }}</td>
+                    <td v-else></td>
                 </tr>
                 <tr>
                     <td>Payload Data:</td>
@@ -100,7 +146,7 @@
         </div>
 
         <div class=tab v-show="tab == 2">
-            <h3>Internal Transactions</h3>
+            <h3>Internal Transactions</h3> 
         </div>
 
         <div class=tab v-show="tab == 3">
@@ -112,7 +158,9 @@
     var jsBeautify = require("js-beautify").js_beautify,
         prism = require("prismjs"),
         api = require("@/assets/api"),
-        utility = require("@/assets/utility");
+        utility = require("@/assets/utility"),
+        appConfig = require("@/assets/app-config"),
+        BigNumber = require("bignumber.js");
 
     require("prismjs/themes/prism.css");
 
@@ -121,9 +169,9 @@
             "vue-tab-buttons": require("@/components/vue-tab-buttons").default
         },
         computed: {
+            
             formatCode() {
                 var lang = prism.languages.javascript;
-
                 if (this.tx.data)
                     if (this.tx.type == "deploy")
                         return prism.highlight(jsBeautify(JSON.parse(this.tx.data).Source), lang);
@@ -151,9 +199,29 @@
             urlChange() {
                 api.getTx(this.$route.params.id, o => {
                     this.tx = o;
+                    if (!o.tokenName || o.tokenName.length == 0) {
+                        if (o.to.hash == this.atpAddress()) {
+                            this.tx.tokenName = "ATP";
+                        }
+                    }
                 }, xhr => {
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                 });
+            },
+            isTokenTransfer() {
+                try {
+                    if (this.tx.type == 'call' && JSON.parse(this.tx.data).Function == 'transfer' && JSON.parse(JSON.parse(this.tx.data).Args).length >= 2) {
+                        return true;
+                    }
+                } catch (error) {
+                }
+                return false;
+            },
+            tokenAmount() {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(JSON.parse(JSON.parse(this.tx.data).Args)[1]);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
             }
         },
         data() {
@@ -161,7 +229,7 @@
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 tab: 0,
                 tabButtons: ["Overview"],
-                tx: null
+                tx: {tokenName: null}
             };
         },
         methods: {
@@ -173,6 +241,16 @@
             },
             toWei(n) {
                 return utility.toWei(n);
+            },
+            nasAmount(n) {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(n);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
+            },
+            atpAddress() {
+                var api = this.$route.params.api ? this.$route.params.api : "mainnet";
+                return appConfig.apiPrefixes[api].atp;
             }
         }
     };

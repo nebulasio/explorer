@@ -11,8 +11,10 @@ module.exports = {
     timeConversion: timeConversion,
     timeConversionSec: timeConversionSec,
     toWei: toWei,
+    easyNumber:easyNumber,
     ua: ua,
-    yyyymmdd: yyyymmdd
+    yyyymmdd: yyyymmdd,
+    getNebulasNetHost: getNebulasNetHost
 };
 
 ////////////////////////////////////////////////////////////
@@ -167,6 +169,14 @@ function toWei(n) {
     return (i == len ? numberAddComma(n) : n) + " " + arr[i];
 }
 
+function easyNumber(num) {
+    return num && num
+        .toString()
+        .replace(/(\d)(?=(\d{3})+\.)/g, function($0, $1) {
+            return $1 + ",";
+        });
+}
+
 // https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
 function ua() {
     // Opera 8.0+
@@ -206,4 +216,18 @@ function ua() {
 function yyyymmdd(dateNow) {
     var d = new Date(dateNow);
     return 10000 * d.getFullYear() + 100 * d.getMonth() + 100 + d.getDate();
+}
+
+function getNebulasNetHost(net){
+    var mainnet = 'https://mainnet.nebulas.io/v1'
+    
+    if(!net){
+        return mainnet
+    }
+
+    if (net.toLowerCase() == 'testnet') {
+        return 'https://testnet.nebulas.io/v1'
+    }
+
+    return mainnet
 }

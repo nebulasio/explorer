@@ -18,6 +18,8 @@
         <result column="gas_limit" property="gasLimit" jdbcType="VARCHAR"/>
         <result column="gas_used" property="gasUsed" jdbcType="VARCHAR"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="contract_address" property="contractAddress" jdbcType="VARCHAR"/>
+        <result column="execute_error" property="executeError" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
       `hash`,
@@ -32,16 +34,18 @@
       `timestamp`,
       `type`,
       `data`,
+      `contract_address`,
       `gas_price`,
       `gas_limit`,
       `gas_used`,
-      `created_at`
+      `created_at`,
+      `execute_error`
     </sql>
 
     <insert id="addNebTransaction" parameterType="NebTransaction" useGeneratedKeys="false">
-        replace INTO `neb_transaction` (`hash`, `block_hash`, `block_height`, `tx_seq`, `from`, `to`, `status`, `value`,`nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `gas_used`, `created_at`)
+        replace INTO `neb_transaction` (`hash`, `block_hash`, `block_height`, `tx_seq`, `from`, `to`, `status`, `value`,`nonce`, `timestamp`, `type`, `data`, `contract_address`, `gas_price`, `gas_limit`, `gas_used`, `created_at`, `execute_error`)
         VALUES
-        (#{hash}, #{blockHash}, #{blockHeight}, #{txSeq}, #{from}, #{to}, #{status}, #{value}, #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}, #{gasLimit}, #{gasUsed}, #{createdAt})
+        (#{hash}, #{blockHash}, #{blockHeight}, #{txSeq}, #{from}, #{to}, #{status}, #{value}, #{nonce}, #{timestamp}, #{type}, #{data}, #{contractAddress}, #{gasPrice}, #{gasLimit}, #{gasUsed}, #{createdAt}, #{executeError})
     </insert>
 
     <delete id="deleteByBlkHeight" parameterType="map">
@@ -63,10 +67,22 @@
         </where>
     </select>
 
+    <select id="countContractTransfer" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_transaction`
+        WHERE status=1 and `type` = 'call' and `to` = #{contract,jdbcType=VARCHAR}
+    </select>
+
     <select id="countTxnCntByFromTo" parameterType="java.lang.String" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_transaction`
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
+    </select>
+
+    <select id="countTxnCntByFromAndTo" parameterType="map" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_transaction`
+        WHERE `from` = #{from,jdbcType=VARCHAR} and `to` = #{to,jdbcType=VARCHAR}
     </select>
 
     <select id="countTxnCntByBlockHeight" parameterType="java.lang.Long" resultType="java.lang.Long">
@@ -82,12 +98,20 @@
         WHERE `hash` = #{hash,jdbcType=VARCHAR}
     </select>
 
+    <select id="getByContractAddress" resultType="NebTransaction" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `contract_address` = #{contractAddress,jdbcType=VARCHAR}
+        LIMIT 1
+    </select>
+
     <select id="findTxnByBlockHeight" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
         WHERE block_height = #{blockHeight,jdbcType=BIGINT}
-        ORDER BY `tx_seq` ASC
+        ORDER BY `tx_seq` DESC
     </select>
 
     <select id="findTxnByCondition" parameterType="map" resultMap="BaseResultMap">
@@ -104,7 +128,17 @@
                 </if>
             </trim>
         </where>
-        ORDER BY `block_height` DESC,`tx_seq` ASC
+        ORDER BY `block_height` DESC,`tx_seq` DESC
+        LIMIT ${offset},${limit}
+    </select>
+
+    <select id="findContractTransactions" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `to` = #{contract,jdbcType=VARCHAR}
+        and type='call'
+        ORDER BY `block_height` DESC,`tx_seq` DESC
         LIMIT ${offset},${limit}
     </select>
 
@@ -113,7 +147,7 @@
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
-        ORDER BY `block_height` DESC,`tx_seq` ASC
+        ORDER BY `block_height` DESC,`tx_seq` DESC
         LIMIT ${offset},${limit}
     </select>
 
@@ -121,7 +155,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
-        ORDER BY `block_height` DESC,`tx_seq` ASC
+        ORDER BY `block_height` DESC,`tx_seq` DESC
         LIMIT ${offset},${limit}
     </select>
 

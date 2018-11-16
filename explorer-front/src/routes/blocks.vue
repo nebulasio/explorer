@@ -18,7 +18,7 @@
                     <th class=text-right>GasLimit</th>
                     <th class=text-right>Avg.GasPrice</th>
                 </tr>
-                <tr v-for="o in arr">
+                <tr v-for="(o, i) in arr" :key="i">
                     <td>
                         <router-link v-bind:to='fragApi + "/block/" + o.height'>{{ o.height }}</router-link>
                     </td>

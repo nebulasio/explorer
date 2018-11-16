@@ -125,18 +125,18 @@ public class DataConsensusJob {
                 int seq = 0;
                 for (Transaction tx : blk.getTransactions()) {
                     seq++;
-                    addAddr(tx.getFrom(), NebAddressTypeEnum.NORMAL);
+                    addAddr(tx.getFrom());
 
                     NebTransactionTypeEnum typeEnum = NebTransactionTypeEnum.parse(tx.getType());
 
                     if (NebTransactionTypeEnum.BINARY.equals(typeEnum)) {
-                        addAddr(tx.getTo(), NebAddressTypeEnum.NORMAL);
+                        addAddr(tx.getTo());
                     } else if (NebTransactionTypeEnum.CALL.equals(typeEnum)) {
-                        addAddr(tx.getTo(), NebAddressTypeEnum.CONTRACT);
+                        addAddr(tx.getTo());
                         String realReceiver = extractReceiverAddress(tx.getData());
-                        addAddr(realReceiver, NebAddressTypeEnum.NORMAL);
+                        addAddr(realReceiver);
                     } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
-                        addAddr(tx.getContractAddress(), NebAddressTypeEnum.NORMAL);
+                        addAddr(tx.getContractAddress());
                     }
 
                     NebTransaction nebTx = BlockHelper.buildNebTransaction(tx, blk, seq, convertData(typeEnum, tx.getData()));
@@ -167,13 +167,13 @@ public class DataConsensusJob {
                 .finality(blk.getHeight() <= libBlkHeight)
                 .build();
 
-        addAddr(blk.getMiner(), NebAddressTypeEnum.NORMAL);
-        addAddr(blk.getCoinbase(), NebAddressTypeEnum.NORMAL);
+        addAddr(blk.getMiner());
+        addAddr(blk.getCoinbase());
 
         NebBlock nblk = nebBlockService.getNebBlockByHash(nebBlk.getHash());
         if (nblk == null) {
             nebBlockService.addNebBlock(nebBlk);
-            log.info("save block, height={}", nebBlk.getHeight());
+            log.info("save block, height={}, blockTimestamp={}, timestamp={}, date={}", nebBlk.getHeight(), blk.getTimestamp(), nebBlk.getTimestamp().getTime(), nebBlk.getTimestamp());
         } else {
             log.warn("duplicate block hash {}", nebBlk.getHash());
         }
@@ -182,15 +182,19 @@ public class DataConsensusJob {
         nebDynastyService.batchAddNebDynasty(blk.getHeight(), dynastyList);
     }
 
-    private void addAddr(String hash, NebAddressTypeEnum type) {
-        NebAddress addr = nebAddressService.getNebAddressByHash(hash);
-        if (addr == null) {
-            try {
-                nebAddressService.addNebAddress(hash, type.getValue());
-            } catch (Throwable e) {
-                log.error("add address error", e);
+    private void addAddr(String hash) {
+        try {
+            NebAddress addr = nebAddressService.getNebAddressByHash(hash);
+            if (addr == null) {
+                addr = nebAddressService.getNebAddressByHashRpc(hash);
+                if (null != addr) {
+                    nebAddressService.addNebAddress(addr);
+                }
             }
+        } catch (Throwable e) {
+            log.error("add address error", e);
         }
+
     }
 
     private String convertData(NebTransactionTypeEnum type, String data) {

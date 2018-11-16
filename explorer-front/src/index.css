@@ -1,10 +1,11 @@
-
 body {
     color: #777;
     font-size: 13px;
 }
 
-dl, ol, ul {
+dl,
+ol,
+ul {
     list-style: none;
     padding: 0;
 }
@@ -13,11 +14,21 @@ dl, ol, ul {
     display: none;
 }
 
-.c333   { color: #333; }
-.c777   { color: #777; }
-.mt20   { margin-top: 20px; }
-.mt50   { margin-top: 50px; }
+.c333 {
+    color: #333;
+}
 
+.c777 {
+    color: #777;
+}
+
+.mt20 {
+    margin-top: 20px;
+}
+
+.mt50 {
+    margin-top: 50px;
+}
 
 .monospace {
     font-family: consolas, menlo, monaco, lucida console, liberation mono, dejavu sans mono, bitstream vera sans mono, courier new, monospace;
@@ -44,7 +55,7 @@ td.time:hover :nth-child(2) {
     display: block;
 }
 
-.tdxxxwddd > * {
+.tdxxxwddd>* {
     display: inline-block;
     max-width: 160px;
     overflow: hidden;
@@ -52,6 +63,9 @@ td.time:hover :nth-child(2) {
     vertical-align: top;
 }
 
+.token-name {
+    display: inline-block;
+}
 /*  .modal
     ============================================================ */
 
@@ -94,11 +108,15 @@ td.time:hover :nth-child(2) {
 /*  overrides - bootstrap
     ============================================================ */
 
-a, .btn-link, .page-link {
+a,
+.btn-link,
+.page-link {
     color: #3498db;
 }
 
-dl, ol, ul {
+dl,
+ol,
+ul {
     margin: 0;
 }
 

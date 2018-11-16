@@ -18,12 +18,12 @@
                     <th>To</th>
                     <th class=text-right>Value</th>
                 </tr>
-                <tr v-for="o in arr">
+                <tr v-for="(o, i) in arr" :key="i">
                     <td class="tdxxxwddd monospace">
                         <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                     </td>
                     <td class=time>
-                        <div class=text-right>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
+                        <div class=text-right>{{ timeConversion(o.timeDiff) }} ago</div>
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
                     <td class=text-right>{{ numberAddComma(o.gasLimit) }}</td>
@@ -37,7 +37,7 @@
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                     </td>
-                    <td class=text-right>{{ toWei(o.value) }}</td>
+                    <td class=text-right>{{ tokenAmount(o.value) }} NAS</td>
                 </tr>
             </table>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
@@ -46,7 +46,8 @@
 </template>
 <script>
     var api = require("@/assets/api"),
-        utility = require("@/assets/utility");
+        utility = require("@/assets/utility"),
+        BigNumber = require("bignumber.js");
 
     module.exports = {
         components: {
@@ -127,13 +128,22 @@
                 });
             },
             timeConversion(ms) {
-                return utility.timeConversion(ms / 1000);
+                return utility.timeConversion(ms);
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
             },
             toWei(n) {
                 return utility.toWei(n);
+            },
+            easyNumber(n){
+                return utility.easyNumber(n);
+            },
+            tokenAmount(n) {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(n);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
             }
         },
         mounted() {

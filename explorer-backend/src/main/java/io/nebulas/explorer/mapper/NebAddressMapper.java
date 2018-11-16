@@ -1,6 +1,7 @@
 package io.nebulas.explorer.mapper;
 
 import io.nebulas.explorer.domain.NebAddress;
+import io.nebulas.explorer.model.vo.AddrTypeVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,9 +18,11 @@ import java.util.List;
 @Mapper
 public interface NebAddressMapper {
 
-    Integer add(@Param("hash") String hash, @Param("type") Integer type);
+//    Integer add(@Param("hash") String hash, @Param("type") Integer type);
 
-    Integer update(@Param("hash") String hash, @Param("balance") BigDecimal balance);
+    Integer addAddress(@Param("hash") String hash, @Param("nonce") String nonce, @Param("type") Integer type, @Param("balance") BigDecimal balance);
+
+    Integer update(@Param("hash") String hash, @Param("balance") BigDecimal balance, @Param("nonce") String nonce);
 
     long countTotalAddressCnt();
 
@@ -28,4 +31,6 @@ public interface NebAddressMapper {
     List<NebAddress> findAddressOrderByBalance(@Param("offset") int offset, @Param("limit") int limit);
 
     List<NebAddress> findAddressMapByAddressHash(List<String> addressHashes);
+
+    List<AddrTypeVo> countAccountGroupByType();
 }

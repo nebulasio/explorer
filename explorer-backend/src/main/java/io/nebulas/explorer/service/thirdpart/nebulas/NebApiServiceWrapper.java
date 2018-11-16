@@ -2,6 +2,7 @@ package io.nebulas.explorer.service.thirdpart.nebulas;
 
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
 import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,6 +100,22 @@ public class NebApiServiceWrapper {
         }
         try {
             NebResponse<GetAccountStateResponse> response = nebApiService.getAccountState(new GetAccountStateRequest(address, "latest")).toBlocking().first();
+            return response.getResult();
+        } catch (Exception e) {
+            log.info(e.getMessage(), e);
+            return null;
+        }
+    }
+
+    public CallContractResponse callContractBalance(String address, String contract) {
+        if (StringUtils.isEmpty(address) || StringUtils.isEmpty(contract)) {
+            return null;
+        }
+        try {
+            CallContractRequest request = CallContractRequest.buildQueryBalanceRequest(address, contract);
+            NebResponse<CallContractResponse> response = nebApiService
+                    .callContract(request)
+                    .toBlocking().first();
             return response.getResult();
         } catch (Exception e) {
             log.info(e.getMessage(), e);

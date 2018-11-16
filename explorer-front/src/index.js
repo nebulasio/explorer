@@ -16,6 +16,7 @@ vRouter.beforeEach(onBeforeEach);
 
 vApp = new Vue({
     components: {
+        //"vue-popmsg": require("@/components/vue-popmsg").default,
         "vue-footer": require("@/components/vue-footer").default,
         "vue-header": require("@/components/vue-header").default,
         "vue-modal": require("@/components/vue-modal").default

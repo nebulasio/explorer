@@ -76,9 +76,9 @@ npm run build
 
 ## Run explorer backend locally
 ### Step 1: Install JDK 8, MySQL and Redis
-JDK 8: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-Mysql ：https://www.mysql.com/
-Redis ：https://redis.io/
+* JDK 8: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+* MySQL ：https://www.mysql.com/
+* Redis ：https://redis.io/
 
 ### Step 2: Build, Run and Stop
 ```

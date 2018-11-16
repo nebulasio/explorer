@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="io.nebulas.explorer.domain.NebAddress">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="hash" property="hash" jdbcType="VARCHAR"/>
+        <result column="nonce" property="nonce" jdbcType="VARCHAR"/>
         <result column="type" property="type" jdbcType="TINYINT"/>
         <result column="alias" property="alias" jdbcType="VARCHAR"/>
         <result column="current_balance" property="currentBalance" jdbcType="DECIMAL"/>
@@ -11,22 +12,32 @@
         <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`, `hash`, `type`, `alias`,`current_balance`, `created_at`, `updated_at`
+        `id`, `hash`,`nonce`, `type`, `alias`,`current_balance`, `created_at`, `updated_at`
     </sql>
 
-    <insert id="add" parameterType="map" useGeneratedKeys="false">
-        INSERT ignore INTO `neb_address` (`hash`, `type`) VALUES (#{hash}, #{type})
+    <!--<insert id="add" parameterType="map" useGeneratedKeys="false">-->
+        <!--INSERT ignore INTO `neb_address` (`hash`, `type`) VALUES (#{hash}, #{type})-->
+    <!--</insert>-->
+
+    <insert id="addAddress" parameterType="map" useGeneratedKeys="false">
+        INSERT ignore INTO `neb_address` (`hash`,`nonce`, `type`, `current_balance`) VALUES (#{hash}, #{nonce}, #{type}, #{balance})
     </insert>
 
     <update id="update" parameterType="map">
         UPDATE `neb_address`
-        SET `current_balance` = #{balance,jdbcType=DECIMAL}
+        SET `current_balance` = #{balance,jdbcType=DECIMAL}, `nonce` = #{nonce,jdbcType=VARCHAR}
         WHERE `hash` = #{hash,jdbcType=VARCHAR}
     </update>
 
     <select id="countTotalAddressCnt" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_address`
+    </select>
+
+    <select id="countAccountGroupByType" resultType="io.nebulas.explorer.model.vo.AddrTypeVo">
+        select `type` as type,count(*) as amount
+        from `neb_address`
+        group by `type`
     </select>
 
     <select id="getByHash" resultMap="BaseResultMap" parameterType="java.lang.String">

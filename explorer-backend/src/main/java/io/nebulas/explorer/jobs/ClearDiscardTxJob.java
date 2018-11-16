@@ -23,8 +23,8 @@ public class ClearDiscardTxJob {
     @Scheduled(cron = "0 0/3 * * * ?")
     public void clear() {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime endTime = now.plusHours(0 - myConfig.getPendingTxExpiredTime());
-
+        LocalDateTime endTime = now.plusHours(0 - myConfig.getPendingTxExpiredTime()).plusMinutes(-30);
+        log.info("ClearDiscardTxJob at {}", now.toString("yyyy-MM-dd HH:mm:ss"));
         nebTransactionService.deleteNebPendingTransactionByTimestamp(endTime.toDate());
     }
 }

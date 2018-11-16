@@ -39,6 +39,8 @@ public class TransactionVo implements Serializable {
     private String data;
     private Date currentTimestamp;
     private Long timeDiff;
+    private String contractAddress;
+    private String executeError;
 
     private static final long serialVersionUID = 1L;
     private static final Base64.Decoder DECODER = Base64.getDecoder();
@@ -60,7 +62,12 @@ public class TransactionVo implements Serializable {
         this.timestamp = txn.getTimestamp();
         this.currentTimestamp = new Date();
         this.timeDiff = System.currentTimeMillis() - txn.getTimestamp().getTime();
+        if (this.timeDiff < 0) {
+            this.timeDiff = 0L;
+        }
         this.createdAt = txn.getCreatedAt();
+        this.contractAddress = txn.getContractAddress();
+        this.executeError = txn.getExecuteError();
         return this;
     }
 
@@ -79,7 +86,11 @@ public class TransactionVo implements Serializable {
         this.timestamp = txn.getTimestamp();
         this.currentTimestamp = new Date();
         this.timeDiff = System.currentTimeMillis() - txn.getTimestamp().getTime();
+        if (this.timeDiff < 0) {
+            this.timeDiff = 0L;
+        }
         this.createdAt = txn.getCreatedAt();
+        this.contractAddress = txn.getContractAddress();
         return this;
     }
 

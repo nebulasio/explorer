@@ -13,6 +13,7 @@
         <result column="gas_price" property="gasPrice" jdbcType="VARCHAR"/>
         <result column="gas_limit" property="gasLimit" jdbcType="VARCHAR"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="contract_address" property="contractAddress" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
       `hash`,
@@ -23,15 +24,16 @@
       `timestamp`,
       `type`,
       `data`,
+      `contract_address`,
       `gas_price`,
       `gas_limit`,
       `created_at`
     </sql>
 
     <insert id="add" parameterType="NebPendingTransaction" useGeneratedKeys="false">
-        INSERT INTO `neb_pending_transaction` (`hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `gas_price`, `gas_limit`, `created_at`)
+        INSERT INTO `neb_pending_transaction` (`hash`, `from`, `to`, `value`, `nonce`, `timestamp`, `type`, `data`, `contract_address`, `gas_price`, `gas_limit`, `created_at`)
         VALUES
-        (#{hash}, #{from}, #{to}, #{value}, #{nonce}, #{timestamp}, #{type}, #{data}, #{gasPrice}, #{gasLimit}, #{createdAt})
+        (#{hash}, #{from}, #{to}, #{value}, #{nonce}, #{timestamp}, #{type}, #{data}, #{contractAddress}, #{gasPrice}, #{gasLimit}, #{createdAt})
     </insert>
 
     <delete id="delete" parameterType="java.lang.String">
@@ -53,6 +55,12 @@
         </if>
     </select>
 
+    <select id="countPendingContractTransaction" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_pending_transaction`
+        WHERE `to` = #{contract,jdbcType=VARCHAR} and type='call'
+    </select>
+
     <select id="getByHash" resultType="NebPendingTransaction" parameterType="java.lang.String">
         SELECT
         <include refid="Base_Column_List"/>
@@ -67,6 +75,15 @@
         <if test="addressHash != null">
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
         </if>
+        ORDER BY `timestamp` DESC
+        LIMIT ${offset},${limit}
+    </select>
+
+    <select id="findPendingContractTransactions" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_pending_transaction`
+        WHERE `to` = #{contract,jdbcType=VARCHAR} and type='call'
         ORDER BY `timestamp` DESC
         LIMIT ${offset},${limit}
     </select>

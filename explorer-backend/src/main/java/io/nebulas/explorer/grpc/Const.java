@@ -40,6 +40,11 @@ public class Const {
     // TopicLibBlock the topic of latest irreversible block.
     public static final String TopicLibBlock = "chain.latestIrreversibleBlock";
 
+    // TopicRevertBlock the topic of revert block
+    public static final String TopicRevertBlock = "chain.revertBlock";
+
+    // TopicDropTransaction drop tx (1): smaller nonce (2) expire txLifeTime
+    public static final String TopicDropTransaction = "chain.dropTransaction";
     // above block
 
 

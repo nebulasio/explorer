@@ -87,9 +87,9 @@
                         <router-link class=nav-link v-bind:to="fragApi + '/accounts'">ACCOUNT</router-link>
                     </li>
                     <li class="dropdown nav-item">
-                        <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>MISC</a>
+                        <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{ MenuMisc }}</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
-                            <a v-for="(o, i) in apiPrefixes" class=nav-link href=# v-on:click.prevent=apiSwitch(i)>
+                            <a v-for="(o, i) in apiPrefixes" :key="i" class=nav-link href=# v-on:click.prevent=apiSwitch(i)>
                                 <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': paramsApi != i }" aria-hidden=true></span>
                                 {{ o.name }}
                             </a>
@@ -114,31 +114,34 @@
                 apiPrefixes: null,
                 fragApi: "",
                 paramsApi: "",
-                search: ""
+                search: "",
+                MenuMisc:"MISC"
             };
         },
         methods: {
             apiSwitch(s) {
                 var api = this.$route.params.api || "";
-
                 if (api != s) {
                     this.$router.replace("/" + s);
                     location.reload();
                 }
             },
             onSubmit() {
+                if (this.search.trim().toLowerCase() == 'atp') {
+                    this.showATP();
+                    return;
+                }
                 this.$root.showModalLoading = true;
-
                 api.getSearch(this.search, o => {
                     this.$root.showModalLoading = false;
                     this.search = "";
 
                     if (o.type == "block")
-                        this.$router.push("/block/" + o.q);
+                        this.$router.push(this.fragApi + "/block/" + o.q);
                     else if (o.type == "address")
-                        this.$router.push("/address/" + o.q);
+                        this.$router.push(this.fragApi + "/address/" + o.q);
                     else if (o.type == "tx")
-                        this.$router.push("/tx/" + o.q);
+                        this.$router.push(this.fragApi + "/tx/" + o.q);
                     else {
                         this.$root.search = o.q;
                         this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/oops");
@@ -149,6 +152,14 @@
                     this.search = "";
                     this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/oops");
                 });
+            },
+            atpAddress() {
+                var api = this.$route.params.api ? this.$route.params.api : "mainnet";
+                return appConfig.apiPrefixes[api].atp;
+            },
+            showATP() {
+                // 搜索框进入 ATP 的临时方案！！！
+                this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/contract/" + this.atpAddress());
             }
         },
         mounted() {
@@ -164,6 +175,7 @@
             if (!(paramsApi in apiPrefixes))
                 paramsApi = "";
 
+            paramsApi == 'testnet' ? this.MenuMisc = 'TESTNET' : this.MenuMisc = 'MAINNET';
             this.apiPrefixes = apiPrefixes;
             this.fragApi = paramsApi ? "/" + paramsApi : "";
             this.paramsApi = paramsApi;

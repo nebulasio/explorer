@@ -6,7 +6,7 @@
         <div class="container mt20">
             <div class="align-items-center info-and-pagination row">
                 <div class=col>
-                    A total of {{ totalAccounts }} accounts found ( {{ numberAddComma(totalBalance) }} NAS )
+                    A total of {{ totalAccounts }} accounts found
                     <br>
                     <!-- <em>Displaying the last %2 records only</em> -->
                 </div>
@@ -21,7 +21,7 @@
                     <th class=text-right>Percentage</th>
                     <th class=text-right>TxCount</th>
                 </tr>
-                <tr v-for="o in arr">
+                <tr v-for="(o, i) in arr" :key="i">
                     <td>{{ o.rank }}</td>
                     <td class=monospace>
                         <router-link v-bind:to='fragApi + "/address/" + o.hash'>{{ o.hash }}</router-link>
