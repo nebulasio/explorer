@@ -122,4 +122,23 @@ public class NebApiServiceWrapper {
             return null;
         }
     }
+
+    //添加getEventsByHash rpc方法 :xihao.liao@nebulas.io   2018.11
+    public GetEventsByHashResponse getEventsByHash(String hash){
+        if (StringUtils.isEmpty(hash)){
+            return null;
+        }
+        try {
+            //构造request对象并获取response
+            GetEventsByHashRequest request = new GetEventsByHashRequest(hash);
+            NebResponse<GetEventsByHashResponse> response = nebApiService.getEventsByHash(request).toBlocking().first();
+            return response.getResult();
+        } catch (Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            log.info(e.getMessage(), e);
+            return null;
+        }
+    }
+
 }

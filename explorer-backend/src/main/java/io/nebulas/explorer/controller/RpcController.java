@@ -8,6 +8,7 @@ import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.domain.extention.ContractTransaction;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionStatusEnum;
+import io.nebulas.explorer.enums.NebTransactionTypeEnum;
 import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.model.PageIterator;
 import io.nebulas.explorer.model.vo.AddressVo;
@@ -58,6 +59,7 @@ public class RpcController {
     private final NebDynastyService nebDynastyService;
     private final NebApiServiceWrapper nebApiServiceWrapper;
     private final NebStatService nebStatService;
+    private final NebEventService nebEventService;
 
     private final ContractTokenService contractTokenService;
     private final ContractTokenBalanceService contractTokenBalanceService;
@@ -200,6 +202,8 @@ public class RpcController {
 
         NebAddress toAddress = nebAddressMap.get(txn.getTo());
         vo.setTo(toAddress != null ? (new AddressVo().build(toAddress)) : new AddressVo(txn.getTo()));
+
+        vo.setEvents(nebEventService.findEventListByHash(txHash));
 
         JsonResult result = JsonResult.success();
         result.add(vo);
@@ -539,6 +543,8 @@ public class RpcController {
                 }
             }
         }
+        //todo: contract addresss是否需要添加event data
+
         return result;
     }
 
