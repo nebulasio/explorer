@@ -80,6 +80,7 @@ public class ContractTransaction extends NebTransaction {
             return;
         }
         String decodedData = decodeData(getData());
+
         JSONObject jsonObject = JSONObject.parseObject(decodedData);
         this.decodedData = decodedData;
         this.contractFunction = jsonObject.getString("Function");
@@ -90,10 +91,16 @@ public class ContractTransaction extends NebTransaction {
         if (args.size() < 2) {
             return;
         }
-        this.contractTo = args.getString(0);
-        String val = args.getString(1);
-        val = val.replace("\"", "").trim();
-        this.contractValue = new BigDecimal(val);
+
+        try{
+            this.contractTo = args.getString(0);
+            String val = args.getString(1);
+            val = val.replace("\"", "").trim();
+            this.contractValue = new BigDecimal(val);
+        } catch (Exception e){
+            this.contractValue = BigDecimal.ZERO;
+        }
+
     }
 
     private String decodeData(String data) {
