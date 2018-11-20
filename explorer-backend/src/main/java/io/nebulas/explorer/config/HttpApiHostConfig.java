@@ -13,4 +13,5 @@ import lombok.ToString;
 public class HttpApiHostConfig {
     private String coinmarketcap;
     private String nebulas;
+    private String gateio;
 }
