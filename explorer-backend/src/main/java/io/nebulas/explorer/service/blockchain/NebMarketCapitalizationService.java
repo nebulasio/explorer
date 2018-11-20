@@ -38,4 +38,14 @@ public class NebMarketCapitalizationService {
     public NebMarketCapitalization getLatest() {
         return marketCapitalizationMapper.getLatest();
     }
+
+    /**
+     * query the latest atp market capitalization
+     *
+     * @return atp market capitalization information
+     */
+    public NebMarketCapitalization  getAtpLatest(){
+
+        return marketCapitalizationMapper.getAtpLatest();
+    }
 }
