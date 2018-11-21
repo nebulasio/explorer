@@ -203,10 +203,10 @@ public class RpcController {
         NebAddress toAddress = nebAddressMap.get(txn.getTo());
 
         NebContractToken contractToken = new NebContractToken();
-        if(toAddress!=null){
+        if (toAddress != null) {
             vo.setTo(new AddressVo().build(toAddress));
             contractToken = contractTokenService.getByContract(toAddress.getHash());
-        }else{
+        } else {
             vo.setTo(new AddressVo(txn.getTo()));
         }
 
@@ -216,7 +216,7 @@ public class RpcController {
         JsonResult result = JsonResult.success();
         result.add(vo);
         result.put("isPending", isPending);
-        result.put("tokenName",contractToken.getTokenName());
+        result.put("tokenName", contractToken.getTokenName());
 
         return result;
     }
@@ -352,7 +352,7 @@ public class RpcController {
                     .stream()
                     .map(ContractTransaction::fromNebTransaction)
                     .peek(t -> {
-                        if (t!=null) {
+                        if (t != null) {
                             t.setTokenName(token.getTokenName());
                         }
                     })
@@ -451,9 +451,9 @@ public class RpcController {
         JsonResult result = JsonResult.success();
         result.put("contract", info);
         result.put("txList", transactions);
-        result.put("price",marketCapitalization.getPrice());
-        result.put("change24h",marketCapitalization.getChange24h());
-        result.put("trends",marketCapitalization.getTrends());
+        result.put("price", marketCapitalization.getPrice());
+        result.put("change24h", marketCapitalization.getChange24h());
+        result.put("trends", marketCapitalization.getTrends());
 
         return result;
     }
@@ -477,15 +477,15 @@ public class RpcController {
             if (balance == null) {
                 continue;
             }
-            if (token.getContract().equals(hash)){
-                result.put("tokenName",token.getTokenName());
+            if (token.getContract().equals(hash)) {
+                result.put("tokenName", token.getTokenName());
             }
 
             EXECUTOR.execute(() -> contractTokenBalanceService.updateAddressBalance(balance));
             ContractTokenBalance tokenBalance = new ContractTokenBalance();
             tokenBalance.setAddress(hash);
             tokenBalance.setContract(token.getContract());
-            tokenBalance.setBalance( balance.getBalance());
+            tokenBalance.setBalance(balance.getBalance());
             tokenBalance.setTokenName(token.getTokenName());
             tokenBalanceList.add(tokenBalance);
         }
@@ -651,34 +651,44 @@ public class RpcController {
     }
 
     @RequestMapping("/address/nrc20/{hash}/{page}")
-    public JsonResult nrc20Transactions(@PathVariable("hash") String hash,@PathVariable("page") int page){
+    public JsonResult nrc20Transactions(@PathVariable("hash") String hash, @PathVariable("page") int page) {
         NebAddress address = nebAddressService.getNebAddressByHashRpc(hash);
         if (null == address || hash.equals(BAN_ADDRESS)) {
             return JsonResult.failed();
         }
 
-        List<NebTransaction> txList = Lists.newLinkedList();
-        long size = nebTransactionService.countNrc20Txn(hash);
-        System.out.println(size);
-        //pending的交易
-//        long txnCnt = nebTransactionService.countPendingTxnCnt(hash);
-//        List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingTxnByCondition(hash, page, PAGE_SIZE);
-//        result.put("txnList", convertPendingTxn2TxnVo(pendingTxnList));
-//
+        List<NebTransaction> txList = nebTransactionService.getNrc20Transactions(hash);
+        JsonResult result = JsonResult.success();
 
+        int totalRowNum = txList.size();
+        int realPageNo = page;
+        int totalPageNum = (totalRowNum - 1) / PAGE_SIZE + 1;
 
-//        long txnCnt = nebTransactionService.countTxnCnt(block, address);
-//        List<NebTransaction> txnList = nebTransactionService.findTxnByCondition(block, address, page, PAGE_SIZE);
-//        result.put("txnList", convertTxn2TxnVoWithAddress(txnList));
-//
-//
-//
+        if (page > totalPageNum) {
+            realPageNo = totalPageNum;
+        } else if (page < 1) {
+            realPageNo = 1;
+        }
 
+        int fromIdx = (realPageNo - 1) * PAGE_SIZE;
+        int toIdx = realPageNo * PAGE_SIZE + 1;
+        if (realPageNo == totalPageNum && totalPageNum * PAGE_SIZE > totalRowNum) {
+            toIdx = totalRowNum;
+        }
 
-        return null;
+        List<NebTransaction> resultList = txList.subList(fromIdx, toIdx);
+
+        result.put("txnCnt", totalRowNum);
+        result.put("currentPage", page);
+        result.put("txnList", convertTxn2TxnVoWithAddress(resultList));
+        result.put("totalPage", totalPageNum > 20 ? 20 : totalPageNum);
+        result.put("maxDisplayCnt", totalRowNum > 500 ? 500 : totalRowNum);
+
+        return result;
     }
 
 
+    
 
 
 }
