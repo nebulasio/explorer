@@ -28,7 +28,7 @@ spring:
       connection-init-sql: SELECT 1
       connection-test-query: SELECT 1
       connection-timeout: 5000
-      validation-timeout: 3000
+      validation-timeout: 5000
       minimum-idle: 1
       auto-commit: false
       initializationFailTimeout: 200
@@ -83,9 +83,9 @@ spring:
     platform: mysql
     initialize: false
     schema: classpath:schema.sql
-    url: jdbc:mysql://nebulas.cvajxeo2mhiu.us-west-1.rds.amazonaws.com:3306/explorer_test?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
+    url: jdbc:mysql://127.0.0.1:3306/explorer?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
     username: explorer
-    password: NbVgE6bQ8iM,(Aty5HBs
+    password: 123456
     separator: ;
     name: expltest
     continue-on-error: false
