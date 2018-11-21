@@ -114,7 +114,7 @@ public class NebAddressService {
         nebAddress.setHash(hash);
         nebAddress.setNonce(response.getNonce());
         nebAddress.setCurrentBalance(new BigDecimal(response.getBalance()));
-        nebAddress.setType(87 == response.getType() ? NebAddressTypeEnum.NORMAL.getValue() : NebAddressTypeEnum.CONTRACT.getValue());
+        nebAddress.setType(248 == response.getType() ? NebAddressTypeEnum.NORMAL.getValue() : NebAddressTypeEnum.CONTRACT.getValue());
         return nebAddress;
     }
 
