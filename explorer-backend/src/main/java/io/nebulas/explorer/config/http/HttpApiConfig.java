@@ -6,6 +6,7 @@ import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.service.thirdpart.coinmarketcap.CoinMarketCapApiService;
+import io.nebulas.explorer.service.thirdpart.huobi.HuobiApiService;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
 import io.nebulas.explorer.service.thirdpart.nebulas.converter.NebulasApiConverterFactory;
 import okhttp3.*;

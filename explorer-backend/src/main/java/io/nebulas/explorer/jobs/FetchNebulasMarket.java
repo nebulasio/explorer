@@ -32,22 +32,22 @@ public class FetchNebulasMarket {
         if (null != jsonArray && jsonArray.size() > 0) {
             /** jsonObject格式
              * {
-             "id": "nebulas-token",
-             "name": "Nebulas",
-             "symbol": "NAS",
-             "rank": "67",
-             "price_usd": "8.0421",
-             "price_btc": "0.00080844",
-             "24h_volume_usd": "7921550.0",
-             "market_cap_usd": "285494550.0",
-             "available_supply": "35500000.0",
-             "total_supply": "100000000.0",
-             "max_supply": "100000000.0",
-             "percent_change_1h": "1.14",
-             "percent_change_24h": "-3.66",
-             "percent_change_7d": "-11.3",
-             "last_updated": "1519376054"
-             }
+             *         "id": "xmax",
+             *         "name": "XMax",
+             *         "symbol": "XMX",
+             *         "rank": "612",
+             *         "price_usd": "0.000283929",
+             *         "price_btc": "0.00000006",
+             *         "24h_volume_usd": "127419.169077",
+             *         "market_cap_usd": "2123094.0",
+             *         "available_supply": "7477551983.0",
+             *         "total_supply": "30000000000.0",
+             *         "max_supply": null,
+             *         "percent_change_1h": "2.48",
+             *         "percent_change_24h": "1.04",
+             *         "percent_change_7d": "-36.2",
+             *         "last_updated": "1542786412"
+             *     }
              */
             JSONObject jsonObject = jsonArray.getJSONObject(0);
 

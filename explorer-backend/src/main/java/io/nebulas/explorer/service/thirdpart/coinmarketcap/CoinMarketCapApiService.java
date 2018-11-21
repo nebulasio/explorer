@@ -11,7 +11,7 @@ import rx.Observable;
  */
 public interface CoinMarketCapApiService {
 
-    @GET("/v1/ticker/nebulas-token/")
+    @GET("/v1/ticker/xmax/")
     Observable<JSONArray> getMarket();
 
 }
