@@ -142,7 +142,7 @@
     }
 
     .vue-home .chart_banner .value {
-        font-size: 60px;
+        font-size: 40px;
     }
 
     .vue-home .chart_banner .msg {
