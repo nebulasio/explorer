@@ -191,7 +191,7 @@
                 </div>
                 <div class=col-md-4>
                     <div class=chart_banner v-if=market>
-                        <div class=name>NAS</div>
+                        <div class=name>XMX</div>
                         <div class=value>$ {{ market.price }}</div>
                         <div class=msg>
                             <div class=msg_change>
@@ -328,7 +328,7 @@
                         // , type: "area"
                     }],
                     subtitle: {
-                        text: "Data Source：Nebulas"
+                        text: "Data Source：XMAX"
                     },
                     title: {
                         text: "transactions"

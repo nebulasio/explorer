@@ -86,7 +86,7 @@
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
                         <router-link class=nav-link v-bind:to="fragApi + '/accounts'">ACCOUNT</router-link>
                     </li>
-                    <li class="dropdown nav-item">
+                    <!-- <li class="dropdown nav-item">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{ MenuMisc }}</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
                             <a v-for="(o, i) in apiPrefixes" :key="i" class=nav-link href=# v-on:click.prevent=apiSwitch(i)>
@@ -94,7 +94,7 @@
                                 {{ o.name }}
                             </a>
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
                 <form class=form-inline v-on:submit.prevent=onSubmit>
                     <input class="form-control mr-sm-2" v-model=search type=search placeholder=Search>
@@ -127,10 +127,10 @@
                 }
             },
             onSubmit() {
-                if (this.search.trim().toLowerCase() == 'atp') {
-                    this.showATP();
-                    return;
-                }
+                // if (this.search.trim().toLowerCase() == 'atp') {
+                //     this.showATP();
+                //     return;
+                // }
                 this.$root.showModalLoading = true;
                 api.getSearch(this.search, o => {
                     this.$root.showModalLoading = false;
