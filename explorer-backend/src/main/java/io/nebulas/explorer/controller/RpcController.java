@@ -650,8 +650,8 @@ public class RpcController {
         return txnVoList;
     }
 
-    @RequestMapping("/address/nrc20/{hash}")
-    public JsonResult nrc20Transactions(@PathVariable("hash") String hash){
+    @RequestMapping("/address/nrc20/{hash}/{page}")
+    public JsonResult nrc20Transactions(@PathVariable("hash") String hash,@PathVariable("page") int page){
         NebAddress address = nebAddressService.getNebAddressByHashRpc(hash);
         if (null == address || hash.equals(BAN_ADDRESS)) {
             return JsonResult.failed();
@@ -660,6 +660,19 @@ public class RpcController {
         List<NebTransaction> txList = Lists.newLinkedList();
 
 
+        //pending的交易
+//        long txnCnt = nebTransactionService.countPendingTxnCnt(hash);
+//        List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingTxnByCondition(hash, page, PAGE_SIZE);
+//        result.put("txnList", convertPendingTxn2TxnVo(pendingTxnList));
+//
+
+
+//        long txnCnt = nebTransactionService.countTxnCnt(block, address);
+//        List<NebTransaction> txnList = nebTransactionService.findTxnByCondition(block, address, page, PAGE_SIZE);
+//        result.put("txnList", convertTxn2TxnVoWithAddress(txnList));
+//
+//
+//
 
 
         return null;
