@@ -53,11 +53,17 @@
     .vue-address .tdxxxwddd img{
       margin-right: 5px;
     }
+
+    /* .contract-creator a {
+        max-width: 160px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    } */
 </style>
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
     <div class=vue-address v-bind:triggerComputed=urlChange>
-        <vue-bread v-bind:arr=breadcrumb v-bind:title='"Address " + $route.params.id'></vue-bread>
+        <vue-bread v-bind:arr=breadcrumb v-bind:title='navTitle + " " + $route.params.id'></vue-bread>
         <div class=container v-if=obj>
             <table class="c333 table">
                 <tr>
@@ -74,6 +80,15 @@
                     <td>NAS Balance:</td>
                     <td>{{ tokenAmount(obj.address.balance) }} NAS </td>
                 </tr>
+                <tr v-if="isContract">
+                    <td>Contract Creator:</td>
+                    <td v-if="contract.hash && contract.from" class="contract-creator">
+                        <router-link v-bind:to='fragApi + "/address/" + contract.from' title="Creator Address">{{ toShortStr(contract.from) }}</router-link> 
+                        at tx 
+                        <router-link v-bind:to='fragApi + "/tx/" + contract.hash' title="Creator TxHash">{{ toShortStr(contract.hash) }}</router-link>
+                    </td>
+                    <td v-else></td>
+                </tr>
                 <tr>
                     <td>Nonce:</td>
                     <td>{{ obj.address.nonce }}</td>
@@ -85,6 +100,10 @@
                 <tr>
                     <td>Minted:</td>
                     <td>{{ obj.mintedBlkCnt }}</td>
+                </tr>
+                <tr v-if="obj.tokenName">
+                    <td>Token Taker:</td>
+                    <td>{{ obj.tokenName }}</td>
                 </tr>
                 <tr v-for="token in tokens" :key="token.tokenName" v-if="token.tokenName == 'ATP'">
                     <td>NRC20 Tokens:</td>
@@ -109,7 +128,7 @@
                     </div>
                     <div class=col-auto>
                         <span v-if="isContract">
-                            <router-link v-if="contractHash" class="btn btn-link" v-bind:to='fragApi + "/tx/"+contractHash'>View Smart Contract</router-link>
+                            <router-link v-if="contract.hash" class="btn btn-link" v-bind:to='fragApi + "/tx/"+contract.hash'>View Smart Contract</router-link>
                             <a v-else class="btn btn-link">View Smart Contract</a>
                             |
                         </span>
@@ -168,13 +187,13 @@
 
             <!--    code
                 ============================================================ -->
-            <div class=tab v-show="tab == 2">
+            <!-- <div class=tab v-show="tab == 2">
                 <table class="mt20 table">
                     <tr>
                         <pre><code class=language-javascript v-html=formatCode></code></pre>
                     </tr>
                 </table>
-            </div>
+            </div> -->
 
             <!--    Minted Blocks
                 ============================================================ -->
@@ -280,11 +299,15 @@
                 return "0x0";
             },
             tabButtons() {
-                return this.obj && this.obj.contractCode ? ["Transactions", "Contract Code"] : ["Transactions"];
+                var buttons = ["Transactions", "NRC20 Token Txns"];
+                // if (this.obj.contractCode) {
+                //     buttons.push("Contract Code");
+                // }
+                return buttons;
             },
             urlChange() {
+                this.contract = { hash: null, from : null };
                 this.isContract = false;
-                this.contractHash = null;
                 this.$root.showModalLoading = true;
                 api.getAddress(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;
@@ -293,16 +316,20 @@
                     this.tokens = o.tokens;
                     if (o.address.type == 1) {// this is a smart contract address
                         this.isContract = true;
-                        api.getTransactionByContract({ address: o.address.hash }, this.$route.params.api, (transaction) => {
-                            var transaction = JSON.parse(transaction)
-                            this.contractHash = transaction.result.hash
+                        api.getTransactionByContract({ address: o.address.hash }, this.$route.params.api, (data) => {
+                            var data = JSON.parse(data);
+                            this.contract = data.result ? data.result : {};
                         })
                     }
                     this.txs = o.txList;
+                    this.contractCode = o.contractCode;
                 }, xhr => {
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                 });
+            },
+            navTitle() {
+                return this.isContract ? "Contract" :"Address";
             }
         },
         data() {
@@ -319,7 +346,7 @@
                 txs: [],
                 tokens: [],
                 isContract: false,
-                contractHash: null
+                contract: { hash: null, from : null }
             };
         },
         methods: {
@@ -357,6 +384,12 @@
                 var amount = BigNumber(n);
                 var decimals = BigNumber('1e+18');
                 return amount.div(decimals).toFormat();
+            },
+            toShortStr(s) {
+                if (s.length > 20) {
+                    return s.substring(0, 17) + '...';
+                }
+                return s;
             }
         }
     };

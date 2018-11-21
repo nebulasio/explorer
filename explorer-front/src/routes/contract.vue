@@ -73,13 +73,20 @@
                     </th>
                 </tr>
                 <tr>
-                    <td>Contract:</td>
-                    <td>{{ obj.contract }} </td>
-                </tr>
-                <!-- <tr>
                     <td>Total supply:</td>
-                    <td>{{ tokenAmount(obj.total)) }} {{ obj.tokenName }} </td>
-                </tr> -->
+                    <td>{{ tokenAmount(obj.total) }} {{ obj.tokenName }} </td>
+                </tr>
+                <tr v-if="tokenPrice">
+                    <td>Price:</td>
+                    <td>
+                        ${{ tokenPrice.price }}
+                        (
+                        <span v-if="tokenPrice.trends == 1" style="color: red; font-size: 16px; font-weight: bolder">↑</span>
+                        <span v-else style="color: green; font-size: 16px; font-weight: bolder">↓</span>
+                        {{ tokenPrice.change24h + '%' }}
+                        )
+                    </td>
+                </tr>
                 <tr>
                     <td>Holders:</td>
                     <td>{{ numberAddComma(obj.holderCount) }} addresses</td>
@@ -87,6 +94,10 @@
                 <tr>
                     <td>Transfer:</td>
                     <td>{{ numberAddComma(obj.transactionCount) }}</td>
+                </tr>
+                <tr>
+                    <td>Contract:</td>
+                    <td>{{ obj.contract }} </td>
                 </tr>
             </table>
 
@@ -185,6 +196,16 @@
                 <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
             </div>
 
+            <!--    code
+                ============================================================ -->
+            <div class=tab v-show="tab == 3">
+                <table class="mt20 table">
+                    <tr>
+                        <pre><code class=language-javascript v-html=formatCode></code></pre>
+                    </tr>
+                </table>
+            </div>
+
         </div>
     </div>
 </template>
@@ -219,7 +240,7 @@
                 ];
             },
             tabButtons() {
-                return ["Transfers"];//["Transfers", "Holders"]
+                return ["Transfers", "Holders", "Code"]
             },
             urlChange() {
                 this.$root.showModalLoading = true;
@@ -227,6 +248,7 @@
                     this.$root.showModalLoading = false;
                     this.obj = o.contract;
                     this.txs = o.txList;
+                    this.tokenPrice = {price: o.price, trends: o.trends, change24h: o.change24h};
                 }, xhr => {
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
@@ -242,7 +264,8 @@
                 holders: [],
                 currentPage: 0,
                 totalPage: 0,
-                totalHolderCount: 0
+                totalHolderCount: 0,
+                tokenPrice: null
             };
         },
         methods: {
