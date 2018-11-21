@@ -8,7 +8,8 @@ module.exports = {
         mainnet: {
             name: "Mainnet",
             // url: "http://172.16.15.94:8080/api/", // 旭存的ip
-            url: "http://47.52.137.118:8080/api/", // xihao的ip
+            url: "http://172.16.15.124:8080/api/", // xihao的ip
+            // url: "http://47.52.137.118:8080/api/", // xmx的ip
             // url: "https://explorer.nebulas.io/main/api/",
             atp: "n1zUNqeBPvsyrw5zxp9mKcDdLTjuaEL7s39"
         },
