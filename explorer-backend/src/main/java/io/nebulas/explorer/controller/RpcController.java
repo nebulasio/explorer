@@ -658,8 +658,8 @@ public class RpcController {
         }
 
         List<NebTransaction> txList = Lists.newLinkedList();
-
-
+        long size = nebTransactionService.countNrc20Txn(hash);
+        System.out.println(size);
         //pending的交易
 //        long txnCnt = nebTransactionService.countPendingTxnCnt(hash);
 //        List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingTxnByCondition(hash, page, PAGE_SIZE);
