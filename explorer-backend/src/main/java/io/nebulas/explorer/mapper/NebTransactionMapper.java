@@ -50,7 +50,7 @@ public interface NebTransactionMapper {
 
     List<NebTransaction> findByBlockHeights(@Param("blockHeights") List<Long> blockHeights);
 
-    List<NebTransaction> findTxnByFromToAndCall(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
+    List<NebTransaction> findTxnByFromToAndCall(@Param("addressHash") String addressHash);
 
     List<BlockSummary> countTxnInBlock(@Param("blockHeights") List<Long> blockHeights);
 

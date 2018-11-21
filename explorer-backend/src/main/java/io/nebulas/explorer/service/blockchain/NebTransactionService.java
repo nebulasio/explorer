@@ -1,11 +1,14 @@
 package io.nebulas.explorer.service.blockchain;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.nebulas.explorer.domain.BlockSummary;
 import io.nebulas.explorer.domain.NebPendingTransaction;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.mapper.NebPendingTransactionMapper;
 import io.nebulas.explorer.mapper.NebTransactionMapper;
+import io.nebulas.explorer.util.DecodeUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,10 +16,7 @@ import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 public class NebTransactionService {
     private final NebTransactionMapper nebTransactionMapper;
     private final NebPendingTransactionMapper nebPendingTransactionMapper;
+
+    private static final Base64.Decoder DECODER = Base64.getDecoder();
 
     //数据库很慢，比RPC还慢，暂时弃用
     public boolean hasContractTransfer(String address, String contract) {
@@ -151,18 +153,24 @@ public class NebTransactionService {
      * @param addressHash:the nas address
      * @return the list of nrc20 transaction in page
      */
-    public List<NebTransaction> getNrc20Transactions(String addressHash, int page, int pageSize) {
+    public List<NebTransaction> getNrc20Transactions(String addressHash) {
 
-        List<NebTransaction> nrc20TxList = nebTransactionMapper.findTxnByFromToAndCall(addressHash, page, pageSize);
+        List<NebTransaction> contractTxList = nebTransactionMapper.findTxnByFromToAndCall(addressHash);
+
+        List<NebTransaction> nrc20TxList = Lists.newLinkedList();
 
         //过滤掉非nrc20的数据
-        nrc20TxList.forEach(nebTransaction -> {
-            if(nebTransaction.getData())
-                
+        contractTxList.forEach(nebTransaction -> {
+            JSONObject data = DecodeUtil.decodeData(nebTransaction.getData());
+            if (DecodeUtil.isContractTransfer(data)){
+                nrc20TxList.add(nebTransaction);
+            }
         });
-
-
-
+//
+//        if(contractTxList.size() <= pageSize){
+//            return contractTxList;
+//        }
+//
         return nrc20TxList;
     }
 

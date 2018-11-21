@@ -161,7 +161,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
-        WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR} AND `type` = 'call'
+        WHERE (`from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}) AND `type` = 'call'
         ORDER BY `block_height` DESC,`tx_seq` DESC
     </select>
 
