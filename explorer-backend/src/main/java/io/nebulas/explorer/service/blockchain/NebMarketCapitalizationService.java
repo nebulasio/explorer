@@ -5,6 +5,8 @@ import io.nebulas.explorer.mapper.NebMarketCapitalizationMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 /**
  * nebulas market capitalization related operation service
  *
@@ -36,6 +38,11 @@ public class NebMarketCapitalizationService {
      * @return nebulas market capitalization information
      */
     public NebMarketCapitalization getLatest() {
-        return marketCapitalizationMapper.getLatest();
+
+        NebMarketCapitalization marketCapitalization = marketCapitalizationMapper.getLatest();
+
+        marketCapitalization.setPrice(marketCapitalization.getPrice().setScale(7, BigDecimal.ROUND_HALF_UP));
+
+        return marketCapitalization;
     }
 }
