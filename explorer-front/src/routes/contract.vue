@@ -198,13 +198,13 @@
 
             <!--    code
                 ============================================================ -->
-            <div class=tab v-show="tab == 3">
+            <!-- <div class=tab v-show="tab == 3">
                 <table class="mt20 table">
                     <tr>
                         <pre><code class=language-javascript v-html=formatCode></code></pre>
                     </tr>
                 </table>
-            </div>
+            </div> -->
 
         </div>
     </div>
@@ -224,14 +224,14 @@
             "vue-blockies": require("@/components/vue-blockies").default
         },
         computed: {
-            formatCode() {
-                var lang = prism.languages.javascript;
+            // formatCode() {
+            //     var lang = prism.languages.javascript;
 
-                if (this.obj.contractCode) {
-                    return prism.highlight(jsBeautify(JSON.parse(this.obj.contractCode).Source), lang);
-                }
-                return "0x0";
-            },
+            //     if (this.obj.contractCode) {
+            //         return prism.highlight(jsBeautify(JSON.parse(this.obj.contractCode).Source), lang);
+            //     }
+            //     return "0x0";
+            // },
             breadcrumb() {
                 return [
                     { text: "Home", to: "/" },
@@ -240,7 +240,7 @@
                 ];
             },
             tabButtons() {
-                return ["Transfers", "Holders", "Code"]
+                return ["Transfers", "Holders"]
             },
             urlChange() {
                 this.$root.showModalLoading = true;

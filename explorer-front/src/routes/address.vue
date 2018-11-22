@@ -59,6 +59,32 @@
         overflow: hidden;
         text-overflow: ellipsis;
     } */
+
+    .contract-creator a {
+        position: relative;
+    }
+
+    .contract-creator .popover {
+        background-color: rgba(0, 0, 0, .8);
+        color: white;
+        display: none;
+        left: 50%;
+        top: -50px;
+        padding: 10px;
+        border-radius: 0px;
+        border: none;
+        pointer-events: none;
+        position: absolute;
+        -webkit-transform: translateX(-50%);
+                transform: translateX(-50%);
+        white-space: nowrap;
+        z-index: 1;
+    }
+
+    .contract-creator a:hover .popover {
+        display: block;
+    }
+
 </style>
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
@@ -83,9 +109,15 @@
                 <tr v-if="isContract">
                     <td>Contract Creator:</td>
                     <td v-if="contract.hash && contract.from" class="contract-creator">
-                        <router-link v-bind:to='fragApi + "/address/" + contract.from' title="Creator Address">{{ toShortStr(contract.from) }}</router-link> 
+                        <router-link v-bind:to='fragApi + "/address/" + contract.from' title="Creator Address">
+                            {{ toShortStr(contract.from) }}
+                            <div class="popover">Creator Address</div>
+                        </router-link> 
                         at tx 
-                        <router-link v-bind:to='fragApi + "/tx/" + contract.hash' title="Creator TxHash">{{ toShortStr(contract.hash) }}</router-link>
+                        <router-link v-bind:to='fragApi + "/tx/" + contract.hash' title="Creator TxHash">
+                            {{ toShortStr(contract.hash) }}
+                            <div class="popover">Creator TxHash</div>
+                        </router-link>
                     </td>
                     <td v-else></td>
                 </tr>
@@ -127,11 +159,6 @@
                         <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
                     </div>
                     <div class=col-auto>
-                        <span v-if="isContract">
-                            <router-link v-if="contract.hash" class="btn btn-link" v-bind:to='fragApi + "/tx/"+contract.hash'>View Smart Contract</router-link>
-                            <a v-else class="btn btn-link">View Smart Contract</a>
-                            |
-                        </span>
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All {{ obj.txCnt }} Txn</router-link>
                         |
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>View All {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn</router-link>
@@ -185,15 +212,77 @@
                 </table>
             </div>
 
-            <!--    code
+            <!--    NRC20 Transactions
                 ============================================================ -->
-            <!-- <div class=tab v-show="tab == 2">
+            <div class=tab v-show="tab == 2">
+                <div class="align-items-center row title">
+                    <div class=col>
+                        <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
+                        Latest {{ nrc20TxList.length }} txns from a total Of
+                        <router-link v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>{{ nrc20TxCnt }} transactions </router-link>
+                    </div>
+                    <div class=col-auto>
+                        <router-link class="btn btn-link" v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>View All {{ nrc20TxCnt }} Txn</router-link>
+                    </div>
+                </div>
+
+                <table class="mt20 table">
+                    <tr>
+                        <th>TxHash</th>
+                        <th>Block</th>
+                        <th>Age</th>
+                        <th>From</th>
+                        <th></th>
+                        <th>To</th>
+                        <th>Value</th>
+                        <th class=txfee>[TxFee]</th>
+                    </tr>
+
+                    <tr v-for="(o, i) in nrc20TxList" :key="i">
+                        <td v-if="o.status == 0" class=fail>
+                            <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
+                        </td>
+                        <td class=tdxxxwddd v-if="o.status != 0">
+                            <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
+                        </td>
+                        <td>
+                            <router-link v-if=o.block.height v-bind:to='fragApi + "/block/" + o.block.height'>{{ o.block.height }}</router-link>
+                            <i v-else>(pending)</i>
+                        </td>
+                        <td class=time>
+                            <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
+                            <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
+                        </td>
+                        <td class=tdxxxwddd>
+                            <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
+                            <span v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
+                            <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
+                        </td>
+                        <td class=text-uppercase v-bind:class=inOutClass(o)></td>
+                        <td class=tdxxxwddd>
+                            <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
+                            <span v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
+                            <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
+                        </td>
+                        <td>{{ tokenAmount(o.value) }} NAS</td>
+                        <td class=txfee>
+                            <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
+                            <i v-else>(pending)</i>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+               <!-- code
+                ============================================================ -->
+            <div class=tab v-show="tab == 3">
                 <table class="mt20 table">
                     <tr>
                         <pre><code class=language-javascript v-html=formatCode></code></pre>
                     </tr>
                 </table>
-            </div> -->
+            </div>
 
             <!--    Minted Blocks
                 ============================================================ -->
@@ -300,14 +389,16 @@
             },
             tabButtons() {
                 var buttons = ["Transactions", "NRC20 Token Txns"];
-                // if (this.obj.contractCode) {
-                //     buttons.push("Contract Code");
-                // }
+                if (this.obj.contractCode) {
+                    buttons.push("Contract Code");
+                }
                 return buttons;
             },
             urlChange() {
                 this.contract = { hash: null, from : null };
                 this.isContract = false;
+                this.nrc20TxList = [];
+                this.nrc20TxCnt = 0;
                 this.$root.showModalLoading = true;
                 api.getAddress(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;
@@ -347,7 +438,8 @@
                 tokens: [],
                 isContract: false,
                 contract: { hash: null, from : null },
-                nrc20Txs: []
+                nrc20TxList: [],
+                nrc20TxCnt: 0
             };
         },
         methods: {
@@ -395,23 +487,15 @@
         },
         watch: {
             tab: function (newTab, oldTaB) {
-                if (newTab == 2 && this.nrc20Txs.count == 0) {
+                if (newTab == 2 && this.nrc20TxList.length == 0) {
                     this.$root.showModalLoading = true;
                     api.getNrc20Txs(this.$route.params.id, 1, o => {
                         this.$root.showModalLoading = false;
-                        this.nrc20Txs = o;
-                        if (o.address.type == 1) {// this is a smart contract address
-                            this.isContract = true;
-                            api.getTransactionByContract({ address: o.address.hash }, this.$route.params.api, (data) => {
-                                var data = JSON.parse(data);
-                                this.contract = data.result ? data.result : {};
-                            })
-                        }
-                        this.txs = o.txList;
-                        this.contractCode = o.contractCode;
+                        this.nrc20TxList = o.txnList || [];
+                        this.nrc20TxCnt = o.txnCnt;
                     }, xhr => {
+                        console.log(xhr);
                         this.$root.showModalLoading = false;
-                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                     });
                 }
             }
