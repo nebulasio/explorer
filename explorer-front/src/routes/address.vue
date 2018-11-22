@@ -391,6 +391,13 @@
                 }
                 return s;
             }
+        },
+        watch: {
+            tab: function (newTab, oldTaB) {
+                if (newTab == 2 && this.currentPage == 0) {
+                    this.nav(1);
+                }
+            }
         }
     };
 </script>
