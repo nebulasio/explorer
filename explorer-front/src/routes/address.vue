@@ -346,7 +346,8 @@
                 txs: [],
                 tokens: [],
                 isContract: false,
-                contract: { hash: null, from : null }
+                contract: { hash: null, from : null },
+                nrc20Txs: []
             };
         },
         methods: {
@@ -394,8 +395,24 @@
         },
         watch: {
             tab: function (newTab, oldTaB) {
-                if (newTab == 2 && this.currentPage == 0) {
-                    this.nav(1);
+                if (newTab == 2 && this.nrc20Txs.count == 0) {
+                    this.$root.showModalLoading = true;
+                    api.getNrc20Txs(this.$route.params.id, 1, o => {
+                        this.$root.showModalLoading = false;
+                        this.nrc20Txs = o;
+                        if (o.address.type == 1) {// this is a smart contract address
+                            this.isContract = true;
+                            api.getTransactionByContract({ address: o.address.hash }, this.$route.params.api, (data) => {
+                                var data = JSON.parse(data);
+                                this.contract = data.result ? data.result : {};
+                            })
+                        }
+                        this.txs = o.txList;
+                        this.contractCode = o.contractCode;
+                    }, xhr => {
+                        this.$root.showModalLoading = false;
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                    });
                 }
             }
         }
