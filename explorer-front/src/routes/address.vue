@@ -138,15 +138,15 @@
                     <td>{{ obj.mintedBlkCnt }}</td>
                 </tr>
                 <tr v-if="obj.tokenName">
-                    <td>Token Taker:</td>
-                    <td>{{ obj.tokenName }}</td>
+                    <td>Token Tracker:</td>
+                    <td><router-link v-bind:to='fragApi + "/contract/" + $route.params.id'>{{ obj.tokenName }}</router-link></td>
                 </tr>
                 <tr v-for="token in tokens" :key="token.tokenName" v-if="token.tokenName == 'ATP'">
                     <td>NRC20 Tokens:</td>
                     <td>
-                        <div id="dropdown-tokens" class="dropdown-toggle" data-toggle=dropdown>{{ tokenAmount(token.balance) }} <router-link v-bind:to='fragApi + "/contract/" + token.contract'>{{ token.tokenName }}</router-link></div>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-item" v-for="(token, i) in tokens" :key=i>
+                        <div id="dropdown-tokens" :class='{"dropdown-toggle": validTokens.length > 1}' data-toggle=dropdown>{{ tokenAmount(token.balance) }} <router-link v-bind:to='fragApi + "/contract/" + token.contract'>{{ token.tokenName }}</router-link></div>
+                        <div v-if="validTokens.length > 1" class="dropdown-menu">
+                            <div class="dropdown-item" v-for="(token, i) in validTokens" :key=i>
                                 {{ tokenAmount(token.balance) }} <router-link v-bind:to='fragApi + "/contract/" + token.contract'>{{ token.tokenName }}</router-link>
                             </div>
                         </div>
@@ -430,6 +430,9 @@
             },
             navTitle() {
                 return this.isContract ? "Contract" :"Address";
+            },
+            validTokens() {
+                return this.tokens.filter(token => token.balance > 0);
             }
         },
         data() {
