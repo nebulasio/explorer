@@ -52,7 +52,7 @@
     }
 </style>
 <template>
-    <nav class="bg-light navbar navbar-expand-lg navbar-light vue-header">
+    <nav class="bg-dark navbar navbar-expand-lg navbar-light vue-header">
         <div class=container>
             <div>
                 <router-link v-bind:to="fragApi + '/'" class=navbar-brand>
