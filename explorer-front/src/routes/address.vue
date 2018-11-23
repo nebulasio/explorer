@@ -85,6 +85,10 @@
         display: block;
     }
 
+    #dropdown-tokens a{
+        margin-right: 5px;
+    }
+
 </style>
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
@@ -140,7 +144,12 @@
                 <tr v-for="token in tokens" :key="token.tokenName" v-if="token.tokenName == 'ATP'">
                     <td>NRC20 Tokens:</td>
                     <td>
-                        {{ tokenAmount(token.balance) }} <router-link v-bind:to='fragApi + "/contract/" + token.contract'>{{ token.tokenName }}</router-link>
+                        <div id="dropdown-tokens" class="dropdown-toggle" data-toggle=dropdown>{{ tokenAmount(token.balance) }} <router-link v-bind:to='fragApi + "/contract/" + token.contract'>{{ token.tokenName }}</router-link></div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item" v-for="(token, i) in tokens" :key=i>
+                                {{ tokenAmount(token.balance) }} <router-link v-bind:to='fragApi + "/contract/" + token.contract'>{{ token.tokenName }}</router-link>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </table>
