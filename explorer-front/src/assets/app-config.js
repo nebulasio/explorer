@@ -14,7 +14,7 @@ module.exports = {
         testnet: {
             name: "Testnet",
             url: "https://explorer.nebulas.io/test/api/",
-            atp: "n1rR5uiy4vDUn7TPMAtJ8Y1Eo54K6EYvSJ6"
+            atp: "n1nkoSJVLQnaKnDKH56mtKtdjbgLKoHZhtD"
         }
     }
 };
