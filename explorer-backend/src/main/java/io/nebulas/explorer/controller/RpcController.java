@@ -205,14 +205,13 @@ public class RpcController {
 
         NebAddress toAddress = nebAddressMap.get(txn.getTo());
 
-        NebContractToken contractToken = new NebContractToken();
         if (toAddress != null) {
             vo.setTo(new AddressVo().build(toAddress));
-            contractToken = contractTokenService.getByContract(toAddress.getHash());
+            NebContractToken contractToken = contractTokenService.getByContract(toAddress.getHash());
             if (contractToken == null){
-                result.put("tokenName", "");
+                vo.setTokenName("");
             }else{
-                result.put("tokenName", contractToken.getTokenName());
+                vo.setTokenName(contractToken.getTokenName());
             }
         } else {
             vo.setTo(new AddressVo(txn.getTo()));
@@ -717,7 +716,7 @@ public class RpcController {
             toIdx = totalRowNum;
         }
 
-        List<NebTransaction> resultList = txList.subList(fromIdx, toIdx);
+        List<NebTransaction> resultList = txList.subList(fromIdx, toIdx - 1);
 
         result.put("txnCnt", totalRowNum);
         result.put("currentPage", page);
