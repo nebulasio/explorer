@@ -84,7 +84,8 @@ public class ContractTransaction extends NebTransaction {
         JSONObject jsonObject = JSONObject.parseObject(decodedData);
         this.decodedData = decodedData;
         this.contractFunction = jsonObject.getString("Function");
-        if (!"transfer".equals(this.contractFunction)) {
+        if (!"transfer".equals(this.contractFunction) && !"proposeMinting".equals(this.contractFunction)) {
+            this.contractValue = BigDecimal.ZERO;
             return;
         }
         JSONArray args = jsonObject.getJSONArray("Args");
