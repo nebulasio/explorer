@@ -163,7 +163,7 @@
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
-                        Latest {{ txs.length }} txns from a total Of
+                        Latest {{ txs.length }} txns from a total of
                         <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id'>{{ obj.txCnt }} transactions </router-link>
                         <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
                     </div>
@@ -227,7 +227,7 @@
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
-                        Latest {{ nrc20TxList.length }} txns from a total Of
+                        Latest {{ nrc20TxList.length }} txns from a total of
                         <router-link v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>{{ nrc20TxCnt }} transactions </router-link>
                     </div>
                     <div class=col-auto>
