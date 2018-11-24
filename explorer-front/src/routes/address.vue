@@ -404,6 +404,7 @@
                 return buttons;
             },
             urlChange() {
+                this.tab = 1;
                 this.contract = { hash: null, from : null };
                 this.isContract = false;
                 this.nrc20TxList = [];
