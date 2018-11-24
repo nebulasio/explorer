@@ -562,7 +562,7 @@ public class RpcController {
             }
             return JsonResult.success("type", "unknown").put("q", q);
         }
-        if (q.equalsIgnoreCase("atp")){
+        if (q.trim().equalsIgnoreCase("atp")){
             NebContractToken contractToken = contractTokenService.getByTokenName("atp");
             if (contractToken == null){
                 return JsonResult.failed();
@@ -716,7 +716,7 @@ public class RpcController {
             toIdx = totalRowNum;
         }
 
-        List<NebTransaction> resultList = txList.subList(fromIdx, toIdx - 1);
+        List<NebTransaction> resultList = txList.subList(fromIdx, toIdx);
 
         result.put("txnCnt", totalRowNum);
         result.put("currentPage", page);
