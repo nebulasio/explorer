@@ -92,7 +92,7 @@
                     <td>{{ numberAddComma(obj.holderCount) }} addresses</td>
                 </tr>
                 <tr>
-                    <td>Transfer:</td>
+                    <td>Transfers:</td>
                     <td>{{ numberAddComma(obj.transactionCount) }}</td>
                 </tr>
                 <tr>
