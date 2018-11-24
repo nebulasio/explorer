@@ -45,6 +45,7 @@ public class TransactionVo implements Serializable {
     private String contractAddress;
     private String executeError;
     private List<Event> events;
+    private String tokenName;
 
     private static final long serialVersionUID = 1L;
     private static final Base64.Decoder DECODER = Base64.getDecoder();

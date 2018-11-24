@@ -1,13 +1,17 @@
 package io.nebulas.explorer.service.blockchain;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import io.nebulas.explorer.domain.BlockSummary;
+import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebPendingTransaction;
 import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.mapper.NebPendingTransactionMapper;
 import io.nebulas.explorer.mapper.NebTransactionMapper;
+import io.nebulas.explorer.model.vo.TransactionVo;
 import io.nebulas.explorer.util.DecodeUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -159,18 +163,23 @@ public class NebTransactionService {
 
         List<NebTransaction> nrc20TxList = Lists.newLinkedList();
 
-        //过滤掉非nrc20的数据
+        //过滤掉非nrc20的数据,并且提取对应的data
         contractTxList.forEach(nebTransaction -> {
             JSONObject data = DecodeUtil.decodeData(nebTransaction.getData());
             if (DecodeUtil.isContractTransfer(data)){
+                //将to的合约地址放到对应的contractAddress字段里
+                nebTransaction.setContractAddress(nebTransaction.getTo());
+                JSONArray args = data.getJSONArray("Args");
+                //"Args" -> "["n1JdmmyhrrqBuESseZSbrBucnvugSewSMTE","9299123456789987654321"]"
+                String to = args.get(0).toString();
+                String value = args.get(1).toString();
+                nebTransaction.setTo(to);
+                nebTransaction.setValue(value);
                 nrc20TxList.add(nebTransaction);
             }
         });
-//
-//        if(contractTxList.size() <= pageSize){
-//            return contractTxList;
-//        }
-//
+
+
         return nrc20TxList;
     }
 
