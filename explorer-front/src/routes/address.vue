@@ -273,7 +273,7 @@
                             <span v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
                         </td>
-                        <td>{{ tokenAmount(o.value) }} NAS</td>
+                        <td>{{ tokenAmount(o.value) }} {{ o.tokenName || '' }}</td>
                         <td class=txfee>
                             <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
                             <i v-else>(pending)</i>
