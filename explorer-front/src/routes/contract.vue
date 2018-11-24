@@ -243,6 +243,7 @@
                 return ["Transfers", "Holders"]
             },
             urlChange() {
+                this.tab = 1;
                 this.$root.showModalLoading = true;
                 api.getContract(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;
