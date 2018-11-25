@@ -70,7 +70,7 @@
     <select id="countContractTransfer" parameterType="java.lang.String" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_transaction`
-        WHERE status=1 and `type` = 'call' and `to` = #{contract,jdbcType=VARCHAR}
+        WHERE `to` = #{contract,jdbcType=VARCHAR}
     </select>
 
     <select id="countTxnCntByFromTo" parameterType="java.lang.String" resultType="java.lang.Long">
