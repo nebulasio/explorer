@@ -67,29 +67,29 @@ public class FetchNebulasMarket {
             nebMarketCapitalizationService.addMarket(record);
         }
 
-//        //fetch atp price from gate.io api
-//        JSONObject jsonObject = gateioApiService.getAtpMarket().toBlocking().first();
-//        if (null != jsonObject){
-//            NebMarketCapitalization record = new NebMarketCapitalization();
-//            //读取交易市场数据
-//            record.setCurrencyId("ATP");
-//
-//            BigDecimal lastPrice = jsonObject.getBigDecimal("last");
-//            BigDecimal atpTotalAmount = new BigDecimal("10000000000");
-//
-//            BigDecimal marketCap = lastPrice.multiply(atpTotalAmount);
-//            record.setMarketCap(marketCap);
-//            record.setVolume24h(jsonObject.getBigDecimal("baseVolume"));
-//
-//            BigDecimal change24HBD = jsonObject.getBigDecimal("percentChange");
-//            record.setChange24h(change24HBD.abs());
-//
-//            record.setTrends(change24HBD.compareTo(BigDecimal.ZERO) > 0 ? 1 : 0);
-//
-//            record.setPrice(lastPrice);
-//            record.setPriceUnit("USD");
-//            nebMarketCapitalizationService.addMarket(record);
-//        }
+        //fetch atp price from gate.io api
+        JSONObject jsonObject = gateioApiService.getAtpMarket().toBlocking().first();
+        if (null != jsonObject){
+            NebMarketCapitalization record = new NebMarketCapitalization();
+            //读取交易市场数据
+            record.setCurrencyId("ATP");
+
+            BigDecimal lastPrice = jsonObject.getBigDecimal("last");
+            BigDecimal atpTotalAmount = new BigDecimal("10000000000");
+
+            BigDecimal marketCap = lastPrice.multiply(atpTotalAmount);
+            record.setMarketCap(marketCap);
+            record.setVolume24h(jsonObject.getBigDecimal("baseVolume"));
+
+            BigDecimal change24HBD = jsonObject.getBigDecimal("percentChange");
+            record.setChange24h(change24HBD.abs());
+
+            record.setTrends(change24HBD.compareTo(BigDecimal.ZERO) > 0 ? 1 : 0);
+
+            record.setPrice(lastPrice);
+            record.setPriceUnit("USD");
+            nebMarketCapitalizationService.addMarket(record);
+        }
 
     }
 }
