@@ -15,8 +15,8 @@ module.exports = {
         testnet: {
             name: "Testnet",
             // url: "http://172.16.15.124:8080/api/", // xihao的ip
-            url: "http://18.188.124.226:8080/api/", // 公司测试服务器的ip
-            // url: "https://explorer.nebulas.io/test/api/",
+            // url: "http://18.188.124.226:8080/api/", // 公司测试服务器的ip
+            url: "https://explorer.nebulas.io/test/api/",
             atp: "n1rR5uiy4vDUn7TPMAtJ8Y1Eo54K6EYvSJ6"
         }
     }
