@@ -26,6 +26,10 @@ module.exports = [{
     component: require("@/routes/txs").default,
     meta: { headerActive: 2 },
     path: "/:api?/txs"
+}, {
+    component: require("@/routes/txs-nrc20").default,
+    meta: { headerActive: 2 },
+    path: "/:api?/txs-nrc20"
 },
 // {
 //     component: require("@/routes/txs-internal").default,

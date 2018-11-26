@@ -169,7 +169,23 @@ module.exports = {
             else if (typeof fail == "function")
                 fail(xhr);
         }
-    }
+    },
+
+    // get address/nrc20/{hash}/{page}
+    // - address   - address
+    // - page   - 页码, 默认 1
+    getNrc20Txs(address, page, done, fail) {
+        ajax1("address/nrc20/" + address + "/" + page, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
 };
 
 function ajax1(action, args, done, fail) {
