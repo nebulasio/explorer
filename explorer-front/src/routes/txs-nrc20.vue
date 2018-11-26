@@ -83,7 +83,7 @@
                     <td class=tdxxxwddd>
                         <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.hash }}</router-link>
                     </td>
-                    <td class=text-right>{{ tokenAmount(o.value) }} NAS</td>
+                    <td class=text-right>{{ tokenAmount(o.value) }} {{ o.tokenName || '' }}</td>
                     <td class=text-right>{{ toWei(o.txFee) }}</td>
                 </tr>
             </table>

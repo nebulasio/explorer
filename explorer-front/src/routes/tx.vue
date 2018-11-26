@@ -197,7 +197,9 @@
                     return "";
             },
             urlChange() {
+                this.$root.showModalLoading = true;
                 api.getTx(this.$route.params.id, o => {
+                    this.$root.showModalLoading = false;
                     this.tx = o;
                     if (!o.tokenName || o.tokenName.length == 0) {
                         if (o.to.hash == this.atpAddress()) {
@@ -205,6 +207,7 @@
                         }
                     }
                 }, xhr => {
+                    this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
                 });
             },

@@ -92,7 +92,7 @@
                     <td>{{ numberAddComma(obj.holderCount) }} addresses</td>
                 </tr>
                 <tr>
-                    <td>Transfer:</td>
+                    <td>Transfers:</td>
                     <td>{{ numberAddComma(obj.transactionCount) }}</td>
                 </tr>
                 <tr>
@@ -110,7 +110,7 @@
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
-                        Latest {{ txs.length }} txns from a total Of
+                        Latest {{ txs.length }} txns from a total of
                         <router-link v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id'>{{ obj.transactionCount }} transactions </router-link>
                         <router-link v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id + "&isPending=true" '>( + {{ obj.pendingTransactionCount }} PendingTxn )</router-link>
                     </div>
@@ -243,6 +243,7 @@
                 return ["Transfers", "Holders"]
             },
             urlChange() {
+                this.tab = 1;
                 this.$root.showModalLoading = true;
                 api.getContract(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;
