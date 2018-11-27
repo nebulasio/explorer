@@ -375,7 +375,8 @@
         prism = require("prismjs"),
         jsBeautify = require("js-beautify").js_beautify,
         utility = require("@/assets/utility"),
-        BigNumber = require("bignumber.js");
+        BigNumber = require("bignumber.js"),
+        base64 = require("js-base64").Base64;
 
     module.exports = {
         components: {
@@ -420,6 +421,7 @@
                         api.getTransactionByContract({ address: o.address.hash }, this.$route.params.api, (data) => {
                             var data = JSON.parse(data);
                             this.contract = data.result ? data.result : {};
+                            this.obj.contractCode = base64.decode(this.contract.data);
                         })
                     }
                     this.txs = o.txList;
