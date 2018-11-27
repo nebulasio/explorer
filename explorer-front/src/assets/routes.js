@@ -52,7 +52,7 @@ module.exports = [{
     meta: { headerActive: 2 },
     path: "/:api?/contract-txs"
 }, {
-    component: require("@/routes/home").default,
+    component: require("@/routes/dashboard").default,
     meta: { headerActive: 1 },
     path: "/:api?"
 }, {

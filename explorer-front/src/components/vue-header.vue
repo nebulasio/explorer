@@ -31,7 +31,7 @@
         .vue-header .navbar-nav>li>a:hover,
         .vue-header .navbar-nav>li.active>a,
         .vue-header .navbar-nav>li.show>a {
-            border-bottom-color: #3498db;
+            border-bottom-color: white;
         }
 
         .vue-header.navbar.navbar-default .navbar-nav>li>a {
@@ -52,7 +52,7 @@
     }
 </style>
 <template>
-    <nav class="bg-dark navbar navbar-expand-lg navbar-light vue-header">
+    <nav class="bg-black navbar navbar-expand-lg navbar-dark vue-header">
         <div class=container>
             <div>
                 <router-link v-bind:to="fragApi + '/'" class=navbar-brand>
@@ -89,7 +89,7 @@
                     <li class="dropdown nav-item">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{ MenuMisc }}</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
-                            <a v-for="(o, i) in apiPrefixes" :key="i" class=nav-link href=# v-on:click.prevent=apiSwitch(i)>
+                            <a v-for="(o, i) in apiPrefixes" :key="i" class="nav-link text-dark" href=# v-on:click.prevent=apiSwitch(i)>
                                 <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': paramsApi != i }" aria-hidden=true></span>
                                 {{ o.name }}
                             </a>

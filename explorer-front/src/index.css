@@ -1,5 +1,11 @@
+html {
+    height: 100%;
+}
+
 body {
+    height: 100%;
     color: #777;
+    background-color: #f2f2f2;
     font-size: 13px;
 }
 
@@ -12,6 +18,14 @@ ul {
 
 ::-webkit-scrollbar {
     display: none;
+}
+
+.bg-black {
+    background-color: black;
+}
+
+.text-black {
+    color: black;
 }
 
 .c333 {
@@ -66,6 +80,7 @@ td.time:hover :nth-child(2) {
 .token-name {
     display: inline-block;
 }
+
 /*  .modal
     ============================================================ */
 
