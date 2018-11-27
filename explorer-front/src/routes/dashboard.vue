@@ -86,6 +86,7 @@
     }
 
     .flex-item {
+        position: relative;
         background-color: white;
         box-shadow:-10px 10px 20px 0px rgba(30,30,30,0.05);
     }
@@ -121,33 +122,75 @@
             height: 972px;
         }
     }
+
+    .item-title {
+        position: absolute;
+        left: 30px;
+        top: 25px;
+        color: black;
+        font-size: 20px;
+        font-weight: semibold;
+    }
+
+    .row1 .item-title {
+        color: white;
+    }
+
+    .row3 .item-title {
+        top: 23px;
+        font-size: 28px;
+        /* font-weight: medium; */
+    }
+
 </style>
 <template>
     <div class="vue-dashboard">
         <div class="bg-black black-header"></div>
         <div class="containter flex-column-container">
             <div class="row1 flex-row-container">
-                <div class="flex-item w590 row1-item"></div>
-                <div class="flex-item w590 row1-item"></div>
+                <div class="flex-item w590 row1-item">
+                    <div class="item-title">Daily Transactions</div>
+                </div>
+                <div class="flex-item w590 row1-item">
+                    <div class="item-title">NAS Price</div>
+                </div>
             </div>
-            <div class="row2 flex-item"></div>
+            <div class="row2 flex-item">
+                <div class="item-title">NAS Price</div>
+            </div>
             <div class="row3 flex-row-container">
                 <div class="flex-row-container w590 row3-item">
-                    <div class="flex-item w285"></div>
-                    <div class="flex-item w285"></div>
+                    <div class="flex-item w285">
+                        <div class="item-title">1,189,786</div>
+                    </div>
+                    <div class="flex-item w285">
+                        <div class="item-title">1,189,786</div>
+                    </div>
                 </div>
                 <div class="flex-row-container w590 row3-item">
-                    <div class="flex-item w285"></div>
-                    <div class="flex-item w285"></div>
+                    <div class="flex-item w285">
+                        <div class="item-title">1,189,786</div>
+                    </div>
+                    <div class="flex-item w285">
+                        <div class="item-title">1,189,786</div>
+                    </div>
                 </div>
             </div>
             <div class="row4 flex-row-container">
-                <div class="flex-item w590 row4-item"></div>
-                <div class="flex-item w590 row4-item"></div>
+                <div class="flex-item w590 row4-item">
+                    <div class="item-title">NAS Price</div>
+                </div>
+                <div class="flex-item w590 row4-item">
+                    <div class="item-title">NAS Price</div>
+                </div>
             </div>
             <div class="row5 flex-row-container">
-                <div class="flex-item w590 row5-item"></div>
-                <div class="flex-item w590 row5-item"></div>
+                <div class="flex-item w590 row5-item">
+                    <div class="item-title">NAS Price</div>
+                </div>
+                <div class="flex-item w590 row5-item">
+                    <div class="item-title">NAS Price</div>
+                </div>
             </div>
         </div>
 
