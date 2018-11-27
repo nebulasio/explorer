@@ -1,11 +1,17 @@
 package io.nebulas.explorer.service.blockchain;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.nebulas.explorer.domain.BlockSummary;
-import io.nebulas.explorer.domain.NebPendingTransaction;
-import io.nebulas.explorer.domain.NebTransaction;
+import com.google.common.collect.Sets;
+import io.nebulas.explorer.domain.*;
+import io.nebulas.explorer.enums.NebTokenEnum;
+import io.nebulas.explorer.mapper.NebContractTokenMapper;
 import io.nebulas.explorer.mapper.NebPendingTransactionMapper;
 import io.nebulas.explorer.mapper.NebTransactionMapper;
+import io.nebulas.explorer.model.vo.TransactionVo;
+import io.nebulas.explorer.util.DecodeUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,10 +19,7 @@ import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -31,13 +34,18 @@ import java.util.stream.Collectors;
 public class NebTransactionService {
     private final NebTransactionMapper nebTransactionMapper;
     private final NebPendingTransactionMapper nebPendingTransactionMapper;
+    private final NebContractTokenMapper nebContractTokenMapper;
+
+
+
+    private static final Base64.Decoder DECODER = Base64.getDecoder();
 
     //数据库很慢，比RPC还慢，暂时弃用
-    public boolean hasContractTransfer(String address, String contract){
+    public boolean hasContractTransfer(String address, String contract) {
         if (StringUtils.isEmpty(address) || StringUtils.isEmpty(contract)) {
             return false;
         }
-        return nebTransactionMapper.countTxnCntByFromAndTo(address, contract)>0;
+        return nebTransactionMapper.countTxnCntByFromAndTo(address, contract) > 0;
     }
 
     /**
@@ -133,6 +141,77 @@ public class NebTransactionService {
     }
 
     /**
+     * count address total nrc20 transfer transaction
+     *
+     * @param addressHash
+     * @return the number of nrc20 transaction
+     */
+    public long countNrc20Txn(String addressHash) {
+        if (StringUtils.isEmpty(addressHash)) {
+            return 0L;
+        }
+        return nebTransactionMapper.countNrc20TxnCntByFromAndTo(addressHash);
+    }
+
+    /**
+     * get address nrc20 transfer transaction
+     *
+     * @param addressHash:the nas address
+     * @return the list of nrc20 transaction in page
+     */
+    public List<NebTransaction> getNrc20Transactions(String addressHash) {
+
+//        //只允许官方支持的nrc20代币可以用来展示,所以查询出来的交易也只有nrc20的
+//        NebContractToken contractToken = nebContractTokenMapper.getByTokenName(NebTokenEnum.ATP.getDesc());
+//        List<NebTransaction> contractTxList = nebTransactionMapper.findTxnByFromToAndCall(addressHash,contractToken.getContract());
+//
+//        List<NebTransaction> nrc20TxList = Lists.newLinkedList();
+//
+//        //过滤掉非nrc20的数据,并且提取对应的data
+//        contractTxList.forEach(nebTransaction -> {
+//            JSONObject data = DecodeUtil.decodeData(nebTransaction.getData());
+//            if (DecodeUtil.isContractTransfer(data)){
+//                //将to的合约地址放到对应的contractAddress字段里
+//                nebTransaction.setContractAddress(nebTransaction.getTo());
+//                JSONArray args = data.getJSONArray("Args");
+//                //"Args" -> "["n1JdmmyhrrqBuESseZSbrBucnvugSewSMTE","9299123456789987654321"]"
+//                String to = args.get(0).toString();
+//                String value = args.get(1).toString();
+//                nebTransaction.setTo(to);
+//                nebTransaction.setValue(value);
+//                nrc20TxList.add(nebTransaction);
+//            }
+//        });
+
+        //只允许官方支持的nrc20代币可以用来展示,所以查询出来的交易也只有nrc20的
+        NebContractToken contractToken = nebContractTokenMapper.getByTokenName(NebTokenEnum.ATP.getDesc());
+        //搜索所有nrc20转账记录，然后提取属于自己地址的
+        List<NebTransaction> contractTxList = nebTransactionMapper.findTxnByContract(contractToken.getContract());
+
+        List<NebTransaction> nrc20TxList = Lists.newLinkedList();
+        //过滤掉非nrc20的数据,并且提取对应的data,提取属于自己地址的交易
+        contractTxList.forEach(nebTransaction -> {
+            JSONObject data = DecodeUtil.decodeData(nebTransaction.getData());
+            if (DecodeUtil.isContractTransfer(data)){
+                //将to的合约地址放到对应的contractAddress字段里
+                nebTransaction.setContractAddress(nebTransaction.getTo());
+                JSONArray args = data.getJSONArray("Args");
+                //"Args" -> "["n1JdmmyhrrqBuESseZSbrBucnvugSewSMTE","9299123456789987654321"]"
+                String to = args.get(0).toString();
+                String value = args.get(1).toString();
+                nebTransaction.setTo(to);
+                nebTransaction.setValue(value);
+                if(nebTransaction.getFrom().equals(addressHash) || nebTransaction.getTo().equals(addressHash)){
+                    nrc20TxList.add(nebTransaction);
+                }
+            }
+        });
+
+        return nrc20TxList;
+    }
+
+
+    /**
      * According to transaction hash query transaction information
      *
      * @param hash transaction hash
@@ -215,15 +294,15 @@ public class NebTransactionService {
         return nebPendingTransactionMapper.findLessThanTimestamp(timestamp, limit);
     }
 
-    public List<NebPendingTransaction> findPendingContractTransactions(String contract, int page, int pageSize){
-        if (StringUtils.isEmpty(contract)){
+    public List<NebPendingTransaction> findPendingContractTransactions(String contract, int page, int pageSize) {
+        if (StringUtils.isEmpty(contract)) {
             return Collections.emptyList();
         }
         return nebPendingTransactionMapper.findPendingContractTransactions(contract, (page - 1) * pageSize, pageSize);
     }
 
-    public List<NebTransaction> findContractTransactions(String contract, int page, int pageSize){
-        if (StringUtils.isEmpty(contract)){
+    public List<NebTransaction> findContractTransactions(String contract, int page, int pageSize) {
+        if (StringUtils.isEmpty(contract)) {
             return Collections.emptyList();
         }
         return nebTransactionMapper.findContractTransactions(contract, (page - 1) * pageSize, pageSize);

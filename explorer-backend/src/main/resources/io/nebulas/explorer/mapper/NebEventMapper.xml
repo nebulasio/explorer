@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.nebulas.explorer.mapper.NebEventMapper" >
+  <resultMap id="BaseResultMap" type="io.nebulas.explorer.domain.NebEvent" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="block_hash" property="blockHash" jdbcType="VARCHAR" />
+    <result column="block_height" property="blockHeight" jdbcType="BIGINT" />
+    <result column="tx_hash" property="txHash" jdbcType="VARCHAR" />
+    <result column="topic" property="topic" jdbcType="VARCHAR" />
+    <result column="data" property="data" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Condition_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Condition_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, block_hash, block_height, tx_hash, topic, data, create_time, update_time
+  </sql>
+  <select id="selectByCondition" resultMap="BaseResultMap" parameterType="io.nebulas.explorer.domain.NebEventCondition" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from neb_event
+    <if test="_parameter != null" >
+      <include refid="Condition_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitOffset >= 0" >
+       limit ${limitOffset} , ${limitSize}
+    </if>
+  </select>
+  <select id="selectByHash" resultType="io.nebulas.explorer.service.thirdpart.nebulas.bean.Event" parameterType="java.lang.String">
+    select topic,data from neb_event
+    where tx_hash=#{hash,jdbcType=VARCHAR};
+  </select>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from neb_event
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Long" >
+    delete from neb_event
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByCondition" parameterType="io.nebulas.explorer.domain.NebEventCondition" >
+    delete from neb_event
+    <if test="_parameter != null" >
+      <include refid="Condition_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="io.nebulas.explorer.domain.NebEvent" >
+    insert into neb_event (id, block_hash, block_height, 
+      tx_hash, topic, data, 
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{blockHash,jdbcType=VARCHAR}, #{blockHeight,jdbcType=BIGINT}, 
+      #{txHash,jdbcType=VARCHAR}, #{topic,jdbcType=VARCHAR}, #{data,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="io.nebulas.explorer.domain.NebEvent" >
+    insert into neb_event
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="blockHash != null" >
+        block_hash,
+      </if>
+      <if test="blockHeight != null" >
+        block_height,
+      </if>
+      <if test="txHash != null" >
+        tx_hash,
+      </if>
+      <if test="topic != null" >
+        topic,
+      </if>
+      <if test="data != null" >
+        data,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="blockHash != null" >
+        #{blockHash,jdbcType=VARCHAR},
+      </if>
+      <if test="blockHeight != null" >
+        #{blockHeight,jdbcType=BIGINT},
+      </if>
+      <if test="txHash != null" >
+        #{txHash,jdbcType=VARCHAR},
+      </if>
+      <if test="topic != null" >
+        #{topic,jdbcType=VARCHAR},
+      </if>
+      <if test="data != null" >
+        #{data,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByCondition" parameterType="io.nebulas.explorer.domain.NebEventCondition" resultType="java.lang.Integer" >
+    select count(*) from neb_event
+    <if test="_parameter != null" >
+      <include refid="Condition_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByConditionSelective" parameterType="map" >
+    update neb_event
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.blockHash != null" >
+        block_hash = #{record.blockHash,jdbcType=VARCHAR},
+      </if>
+      <if test="record.blockHeight != null" >
+        block_height = #{record.blockHeight,jdbcType=BIGINT},
+      </if>
+      <if test="record.txHash != null" >
+        tx_hash = #{record.txHash,jdbcType=VARCHAR},
+      </if>
+      <if test="record.topic != null" >
+        topic = #{record.topic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.data != null" >
+        data = #{record.data,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Condition_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByCondition" parameterType="map" >
+    update neb_event
+    set id = #{record.id,jdbcType=BIGINT},
+      block_hash = #{record.blockHash,jdbcType=VARCHAR},
+      block_height = #{record.blockHeight,jdbcType=BIGINT},
+      tx_hash = #{record.txHash,jdbcType=VARCHAR},
+      topic = #{record.topic,jdbcType=VARCHAR},
+      data = #{record.data,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Condition_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByIdSelective" parameterType="io.nebulas.explorer.domain.NebEvent" >
+    update neb_event
+    <set >
+      <if test="blockHash != null" >
+        block_hash = #{blockHash,jdbcType=VARCHAR},
+      </if>
+      <if test="blockHeight != null" >
+        block_height = #{blockHeight,jdbcType=BIGINT},
+      </if>
+      <if test="txHash != null" >
+        tx_hash = #{txHash,jdbcType=VARCHAR},
+      </if>
+      <if test="topic != null" >
+        topic = #{topic,jdbcType=VARCHAR},
+      </if>
+      <if test="data != null" >
+        data = #{data,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateById" parameterType="io.nebulas.explorer.domain.NebEvent" >
+    update neb_event
+    set block_hash = #{blockHash,jdbcType=VARCHAR},
+      block_height = #{blockHeight,jdbcType=BIGINT},
+      tx_hash = #{txHash,jdbcType=VARCHAR},
+      topic = #{topic,jdbcType=VARCHAR},
+      data = #{data,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

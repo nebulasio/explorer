@@ -26,4 +26,12 @@
         <include refid="Base_Column_List"/>
         from `neb_contract_token_dictionary`
     </select>
+
+    <select id="getByTokenName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from `neb_contract_token_dictionary`
+        where `token_name`=#{tokenName,jdbcType=VARCHAR}
+    </select>
+
 </mapper>

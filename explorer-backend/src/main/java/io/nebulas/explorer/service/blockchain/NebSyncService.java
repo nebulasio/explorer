@@ -3,11 +3,7 @@ package io.nebulas.explorer.service.blockchain;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import io.nebulas.explorer.domain.NebAddress;
-import io.nebulas.explorer.domain.NebBlock;
-import io.nebulas.explorer.domain.NebContractTokenBalance;
-import io.nebulas.explorer.domain.NebPendingTransaction;
-import io.nebulas.explorer.domain.NebTransaction;
+import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionTypeEnum;
 import io.nebulas.explorer.grpc.GrpcChannelService;
@@ -49,6 +45,8 @@ public class NebSyncService {
     private NebApiServiceWrapper nebApiServiceWrapper;
     @Autowired
     private ContractTokenBalanceService contractTokenBalanceService;
+    @Autowired
+    private ContractTokenService contractTokenService;
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
 
@@ -151,7 +149,7 @@ public class NebSyncService {
 
     private void syncTx(Transaction tx, Block block, int seq) {
         //sync address
-        log.error("开始同步交易: " + tx.getHash());
+        log.info("开始同步交易: " + tx.getHash());
         syncAddress(tx.getFrom(), NebAddressTypeEnum.NORMAL);
 
         NebTransactionTypeEnum typeEnum = NebTransactionTypeEnum.parse(tx.getType());
@@ -159,12 +157,23 @@ public class NebSyncService {
         if (NebTransactionTypeEnum.BINARY.equals(typeEnum)) {
             syncAddress(tx.getTo(), NebAddressTypeEnum.NORMAL);
         } else if (NebTransactionTypeEnum.CALL.equals(typeEnum)) {
-            log.error("开始处理合约调用交易: " + tx.getHash());
+            log.info("开始处理合约调用交易: " + tx.getHash());
             syncAddress(tx.getTo(), NebAddressTypeEnum.CONTRACT);
             JSONObject data = decodeData(tx.getData());
             String realReceiver = extractReceiverAddress(data);
+
             syncAddress(realReceiver, NebAddressTypeEnum.NORMAL);
             processContractBalanceInfo(tx, data);
+
+            //如果是支持的nrc20代币，则正常处理其transfer
+//            NebContractToken nebContractToken = contractTokenService.getByContract(tx.getTo());
+//            if (nebContractToken != null){
+//                tx.setContractAddress(tx.getTo());
+//                String value = extractValue(data);
+//                tx.setTo(realReceiver);
+//                tx.setValue(value);
+//            }
+
         } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
             syncAddress(tx.getContractAddress(), NebAddressTypeEnum.CONTRACT);
         }
@@ -221,6 +230,16 @@ public class NebSyncService {
                     String realReceiver = extractReceiverAddress(data);
                     syncAddress(realReceiver, NebAddressTypeEnum.NORMAL);
                     processContractBalanceInfo(txSource, data);
+
+                    //如果是支持的nrc20代币，则正常处理其transfer
+//                    NebContractToken nebContractToken = contractTokenService.getByContract(txSource.getTo());
+//                    if (nebContractToken != null){
+//                        txSource.setContractAddress(txSource.getTo());
+//                        String value = extractValue(data);
+//                        txSource.setTo(realReceiver);
+//                        txSource.setValue(value);
+//                    }
+
                 } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
                     syncAddress(txSource.getContractAddress(), NebAddressTypeEnum.CONTRACT);
                 }
@@ -309,6 +328,22 @@ public class NebSyncService {
         }
         return "";
     }
+
+    private String extractValue(JSONObject jsonObject) {
+        try {
+            String func = jsonObject.getString("Function");
+
+            if ("transfer".equals(func)) {
+                JSONArray array = jsonObject.getJSONArray("Args");
+                return array.getString(1);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return "";
+    }
+
+
 
     private void processContractBalanceInfo(Transaction tx, JSONObject data) {
         log.error("开始处理合约地址资产: " + data.toJSONString());
