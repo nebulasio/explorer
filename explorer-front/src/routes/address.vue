@@ -20,6 +20,10 @@
         content: "out";
     }
 
+    .vue-address {
+        background-color: white;
+    }
+
     .vue-address .container .table th {
         border-top: 0;
     }
@@ -33,7 +37,7 @@
     }
 
     .vue-address .tab a {
-        font-size: 13px;
+        font-size: 16px;
     }
 
     .vue-address .fail {
@@ -89,6 +93,52 @@
         margin-right: 5px;
     }
 
+    .c000 {
+        font-size:16px;
+        font-family:OpenSans-Semibold;
+        font-weight:600;
+        color:rgba(0,0,0,1);
+        line-height:20px;
+    }
+
+    .link-text-16px {
+        font-size:16px;
+        font-family:OpenSans;
+        color:rgba(0,87,255,1);
+        line-height:20px;
+    }
+
+    .nav {
+        border: none;
+    }
+
+    .nav-tabs .nav-link {
+        background: #eeeeee;
+        border: none;
+        border-top-left-radius:0;
+        border-top-right-radius:0;
+        margin-right:0;
+        font-size:16px;
+        font-family:OpenSans-Semibold;
+        font-weight:600;
+        color:rgba(0,0,0,1);
+        line-height:20px;
+    }
+
+    .nav-tabs .nav-item .active {
+        background-color: black;
+        border:none;
+        font-size:16px;
+        font-family:OpenSans-Semibold;
+        font-weight:600;
+        color:rgba(255,255,255,1);
+        line-height:20px;
+    }
+
+    .tr-dark {
+        background-color: #f9f9f9;
+    }
+
 </style>
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
@@ -116,8 +166,8 @@
                         <router-link v-bind:to='fragApi + "/address/" + contract.from' title="Creator Address">
                             {{ toShortStr(contract.from) }}
                             <div class="popover">Creator Address</div>
-                        </router-link> 
-                        at tx 
+                        </router-link>
+                        at tx
                         <router-link v-bind:to='fragApi + "/tx/" + contract.hash' title="Creator TxHash">
                             {{ toShortStr(contract.hash) }}
                             <div class="popover">Creator TxHash</div>
@@ -162,20 +212,20 @@
             <div class=tab v-show="tab == 1">
                 <div class="align-items-center row title">
                     <div class=col>
-                        <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
-                        Latest {{ txs.length }} txns from a total of
-                        <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id'>{{ obj.txCnt }} transactions </router-link>
-                        <router-link v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )</router-link>
+                        <span class="c000">
+                        Latest {{ txs.length }} txns from a total of {{ obj.txCnt }} transactions ( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )
+                        </span>
                     </div>
                     <div class=col-auto>
-                        <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All {{ obj.txCnt }} Txn</router-link>
+                        <router-link class="btn btn-link link-text-16px" v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All {{ obj.txCnt }} Txn</router-link>
                         |
-                        <router-link class="btn btn-link" v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>View All {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn</router-link>
+                        <router-link class="btn btn-link link-text-16px" v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>View All {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn</router-link>
                     </div>
                 </div>
 
                 <table class="mt20 table">
                     <tr>
+                        <th>...</th>
                         <th>TxHash</th>
                         <th>Block</th>
                         <th>Age</th>
@@ -183,10 +233,11 @@
                         <th></th>
                         <th>To</th>
                         <th>Value</th>
-                        <th class=txfee>[TxFee]</th>
+                        <th>TxFee</th>
                     </tr>
 
-                    <tr v-for="(o, i) in txs" :key="i">
+                    <tr v-for="(o, i) in txs" :key="i" v-bind:class="{'tr-dark' : isDark(i)}">
+                        <td></td>
                         <td v-if="o.status == 0" class=fail>
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                         </td>
@@ -226,12 +277,12 @@
             <div class=tab v-show="tab == 2">
                 <div class="align-items-center row title">
                     <div class=col>
-                        <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
-                        Latest {{ nrc20TxList.length }} txns from a total of
-                        <router-link v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>{{ nrc20TxCnt }} transactions </router-link>
+                        <span class="c000">
+                        Latest {{ nrc20TxList.length }} txns from a total of {{ nrc20TxCnt }} transactions
+                        </span>
                     </div>
                     <div class=col-auto>
-                        <router-link class="btn btn-link" v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>View All {{ nrc20TxCnt }} Txn</router-link>
+                        <router-link class="btn btn-link link-text-16px" v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>View All {{ nrc20TxCnt }} Txn</router-link>
                     </div>
                 </div>
 
@@ -244,10 +295,10 @@
                         <th></th>
                         <th>To</th>
                         <th>Value</th>
-                        <th class=txfee>[TxFee]</th>
+                        <th>TxFee</th>
                     </tr>
 
-                    <tr v-for="(o, i) in nrc20TxList" :key="i">
+                    <tr v-for="(o, i) in nrc20TxList" :key="i" v-bind:class="{'tr-dark' : isDark(i)}">
                         <td v-if="o.status == 0" class=fail>
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
                         </td>
@@ -456,6 +507,9 @@
             };
         },
         methods: {
+            isDark(i){
+              return (i%2===0);
+            },
             inOutClass(o) {
                 if (o.from.hash == this.$route.params.id)
                     return "out";
