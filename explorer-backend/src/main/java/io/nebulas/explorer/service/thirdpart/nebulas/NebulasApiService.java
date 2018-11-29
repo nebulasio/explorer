@@ -37,4 +37,9 @@ public interface NebulasApiService {
 
     @POST("/v1/user/call")
     Observable<NebResponse<CallContractResponse>> callContract(@Body CallContractRequest request);
+
+    @POST("/v1/user/getEventsByHash")
+    Observable<NebResponse<GetEventsByHashResponse>> getEventsByHash(@Body GetEventsByHashRequest request);
+
+
 }

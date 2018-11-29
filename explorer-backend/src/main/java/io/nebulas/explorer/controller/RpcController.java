@@ -8,6 +8,7 @@ import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.domain.extention.ContractTransaction;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionStatusEnum;
+import io.nebulas.explorer.enums.NebTransactionTypeEnum;
 import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.model.PageIterator;
 import io.nebulas.explorer.model.vo.AddressVo;
@@ -58,6 +59,7 @@ public class RpcController {
     private final NebDynastyService nebDynastyService;
     private final NebApiServiceWrapper nebApiServiceWrapper;
     private final NebStatService nebStatService;
+    private final NebEventService nebEventService;
 
     private final ContractTokenService contractTokenService;
     private final ContractTokenBalanceService contractTokenBalanceService;
@@ -166,6 +168,9 @@ public class RpcController {
 
     @RequestMapping("/tx/{txHash}")
     public JsonResult tx(@PathVariable("txHash") String txHash) {
+
+        JsonResult result = JsonResult.success();
+
         boolean isPending = false;
         NebTransaction txn = nebTransactionService.getNebTransactionByHash(txHash);
         if (null == txn) {
@@ -199,9 +204,21 @@ public class RpcController {
         vo.setFrom(fromAddress != null ? (new AddressVo().build(fromAddress)) : new AddressVo(txn.getFrom()));
 
         NebAddress toAddress = nebAddressMap.get(txn.getTo());
-        vo.setTo(toAddress != null ? (new AddressVo().build(toAddress)) : new AddressVo(txn.getTo()));
 
-        JsonResult result = JsonResult.success();
+        if (toAddress != null) {
+            vo.setTo(new AddressVo().build(toAddress));
+            NebContractToken contractToken = contractTokenService.getByContract(toAddress.getHash());
+            if (contractToken == null){
+                vo.setTokenName("");
+            }else{
+                vo.setTokenName(contractToken.getTokenName());
+            }
+        } else {
+            vo.setTo(new AddressVo(txn.getTo()));
+        }
+
+        vo.setEvents(nebEventService.findEventListByHash(txHash));
+
         result.add(vo);
         result.put("isPending", isPending);
         return result;
@@ -273,14 +290,6 @@ public class RpcController {
         return result;
     }
 
-    private static class ContractHolder {
-        public int rank;
-        public String address;
-        public String contract;
-        public BigDecimal balance;
-        public String percentage;
-    }
-
     @RequestMapping("/contract/holders")
     public JsonResult contractHolders(
             @RequestParam(value = "p", required = false, defaultValue = "1") int page,
@@ -313,15 +322,15 @@ public class RpcController {
         for (NebContractTokenBalance balance : addressBalanceList) {
             i++;
             ContractHolder holder = new ContractHolder();
-            holder.address = balance.getAddress();
-            holder.balance = balance.getBalance();
-            holder.contract = balance.getContract();
-            holder.rank = i;
-            holder.percentage = balance.getBalance()
+            holder.setAddress(balance.getAddress());
+            holder.setBalance(balance.getBalance());
+            holder.setContract(balance.getContract());
+            holder.setRank(i);
+            holder.setPercentage(balance.getBalance()
                     .divide(total, 18, RoundingMode.HALF_UP)
                     .multiply(BigDecimal.valueOf(100))
                     .stripTrailingZeros()
-                    .toPlainString();
+                    .toPlainString());
             holders.add(holder);
         }
         result.put("holders", holders);
@@ -346,7 +355,7 @@ public class RpcController {
                     .stream()
                     .map(ContractTransaction::fromNebTransaction)
                     .peek(t -> {
-                        if (t!=null) {
+                        if (t != null) {
                             t.setTokenName(token.getTokenName());
                         }
                     })
@@ -393,14 +402,6 @@ public class RpcController {
         return result;
     }
 
-    private static class ContractTokenInfo {
-        public BigDecimal total;
-        public String tokenName;
-        public String contract;
-        public long transactionCount;
-        public long pendingTransactionCount;
-        public long holderCount;
-    }
 
     @RequestMapping("/contract/{contract}")
     public JsonResult contractToken(@PathVariable("contract") String contract) {
@@ -409,19 +410,19 @@ public class RpcController {
             return JsonResult.failed();
         }
         ContractTokenInfo info = new ContractTokenInfo();
-        info.contract = token.getContract();
-        info.tokenName = token.getTokenName();
-        info.total = token.getTotal();
+        info.setContract(token.getContract());
+        info.setTokenName(token.getTokenName());
+        info.setTotal(token.getTotal());
 
         long transactionCount = nebTransactionService.countContractTransfer(contract);
-        info.transactionCount = transactionCount;
+        info.setTransactionCount(transactionCount);
 
         long holderCount = contractTokenBalanceService.countValidHolders(contract);
-        info.holderCount = holderCount;
+        info.setHolderCount(holderCount);
 
         List<ContractTransaction> transactions = new LinkedList<>();
         long pendingTransactionCount = nebTransactionService.countPendingContractTransaction(contract);
-        info.pendingTransactionCount = pendingTransactionCount;
+        info.setPendingTransactionCount(pendingTransactionCount);
         if (pendingTransactionCount > 0) {
             List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingContractTransactions(contract, 1, PAGE_SIZE);
             pendingTxnList.forEach(pTxn -> {
@@ -448,18 +449,18 @@ public class RpcController {
             });
         }
 
+        NebMarketCapitalization marketCapitalization = nebMarketCapitalizationService.getAtpLatest();
+
         JsonResult result = JsonResult.success();
         result.put("contract", info);
         result.put("txList", transactions);
+        result.put("price", marketCapitalization == null ? 0 : marketCapitalization.getPrice());
+        result.put("change24h", marketCapitalization == null ? 0 : marketCapitalization.getChange24h());
+        result.put("trends", marketCapitalization == null ? 0 : marketCapitalization.getTrends());
+
         return result;
     }
 
-    private static class ContractTokenBalance {
-        public String contract;
-        public String tokenName;
-        public String address;
-        public BigDecimal balance;
-    }
 
     @RequestMapping("/address/{hash}")
     public JsonResult address(@PathVariable("hash") String hash) {
@@ -467,6 +468,8 @@ public class RpcController {
         if (null == address || hash.equals(BAN_ADDRESS)) {
             return JsonResult.failed();
         }
+
+        JsonResult result = JsonResult.success();
 
         nebAddressService.updateAddressBalance(hash, address.getCurrentBalance().toPlainString(), address.getNonce());
 
@@ -477,18 +480,21 @@ public class RpcController {
             if (balance == null) {
                 continue;
             }
+            if (token.getContract().equals(hash)) {
+                result.put("tokenName", token.getTokenName());
+            }
+
             EXECUTOR.execute(() -> contractTokenBalanceService.updateAddressBalance(balance));
             ContractTokenBalance tokenBalance = new ContractTokenBalance();
-            tokenBalance.address = hash;
-            tokenBalance.contract = token.getContract();
-            tokenBalance.balance = balance.getBalance();
-            tokenBalance.tokenName = token.getTokenName();
+            tokenBalance.setAddress(hash);
+            tokenBalance.setContract(token.getContract());
+            tokenBalance.setBalance(balance.getBalance());
+            tokenBalance.setTokenName(token.getTokenName());
             tokenBalanceList.add(tokenBalance);
         }
 
         long pendingTxCnt = nebTransactionService.countPendingTxnCnt(address.getHash());
 
-        JsonResult result = JsonResult.success();
         result.put("address", address);
         result.put("tokens", tokenBalanceList);
         result.put("pendingTxCnt", pendingTxCnt);
@@ -528,7 +534,7 @@ public class RpcController {
 //            }
 //        }
 
-        //contract address
+        //contract address code
         if (NebAddressTypeEnum.CONTRACT.getValue() == address.getType()) {
             NebTransaction nebTx = nebTransactionService.getNebTransactionByContractAddress(address.getHash());
             if (null != nebTx) {
@@ -539,6 +545,8 @@ public class RpcController {
                 }
             }
         }
+        //todo: contract addresss是否需要添加event data
+
         return result;
     }
 
@@ -553,6 +561,13 @@ public class RpcController {
                 return JsonResult.success("type", "block").put("q", block.getHeight());
             }
             return JsonResult.success("type", "unknown").put("q", q);
+        }
+        if (q.trim().equalsIgnoreCase("atp")){
+            NebContractToken contractToken = contractTokenService.getByTokenName("atp");
+            if (contractToken == null){
+                return JsonResult.failed();
+            }
+            return JsonResult.success("type", "contract").put("q", contractToken.getContract());
         }
         if (q.length() < 64) {
             NebAddress address = nebAddressService.getNebAddressByHash(q);
@@ -644,4 +659,72 @@ public class RpcController {
         }
         return txnVoList;
     }
+
+    private List<TransactionVo> convertNrc20Txn2TxnVo(List<NebTransaction> txns) {
+        if (CollectionUtils.isEmpty(txns)) {
+            return Collections.emptyList();
+        }
+
+        Set<String> addressHashSet = Sets.newHashSet();
+        txns.forEach(txn -> {
+            addressHashSet.add(txn.getFrom());
+            addressHashSet.add(txn.getTo());
+        });
+        Map<String, NebAddress> nebAddressMap = nebAddressService.findAddressMapByAddressHash(Lists.newArrayList(addressHashSet));
+
+        //根据contractAddress去反查tokenName
+        List<TransactionVo> txnVoList = new LinkedList<>();
+        for (NebTransaction txn : txns) {
+
+            NebContractToken token = contractTokenService.getByContract(txn.getContractAddress());
+            TransactionVo vo = new TransactionVo()
+                    .build(txn)
+                    .setBlockVo(txn.getBlockHash(), txn.getBlockHeight())
+                    .setFromVo(txn.getFrom(), nebAddressMap.get(txn.getFrom()))
+                    .setToVo(txn.getTo(), nebAddressMap.get(txn.getTo()));
+            vo.setTokenName(token == null ? "" : token.getTokenName());//若对应的合约地址没有nrc20记录，则tokenName为空
+            txnVoList.add(vo);
+        }
+        return txnVoList;
+    }
+
+
+
+    @RequestMapping("/address/nrc20/{hash}/{page}")
+    public JsonResult nrc20Transactions(@PathVariable("hash") String hash, @PathVariable("page") int page) {
+        NebAddress address = nebAddressService.getNebAddressByHashRpc(hash);
+        if (null == address || hash.equals(BAN_ADDRESS)) {
+            return JsonResult.failed();
+        }
+
+        List<NebTransaction> txList = nebTransactionService.getNrc20Transactions(hash);
+        JsonResult result = JsonResult.success();
+
+        int totalRowNum = txList.size();
+        int realPageNo = page;
+        int totalPageNum = (totalRowNum - 1) / PAGE_SIZE + 1;
+
+        if (page > totalPageNum) {
+            realPageNo = totalPageNum;
+        } else if (page < 1) {
+            realPageNo = 1;
+        }
+
+        int fromIdx = (realPageNo - 1) * PAGE_SIZE;
+        int toIdx = realPageNo * PAGE_SIZE + 1;
+        if (realPageNo == totalPageNum && totalPageNum * PAGE_SIZE > totalRowNum) {
+            toIdx = totalRowNum;
+        }
+
+        List<NebTransaction> resultList = txList.subList(fromIdx, toIdx);
+
+        result.put("txnCnt", totalRowNum);
+        result.put("currentPage", page);
+        result.put("txnList", convertNrc20Txn2TxnVo(resultList));
+        result.put("totalPage", totalPageNum > 20 ? 20 : totalPageNum);
+        result.put("maxDisplayCnt", totalRowNum > 500 ? 500 : totalRowNum);
+
+        return result;
+    }
+
 }

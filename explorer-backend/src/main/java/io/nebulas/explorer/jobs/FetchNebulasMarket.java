@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import io.nebulas.explorer.domain.NebMarketCapitalization;
 import io.nebulas.explorer.service.blockchain.NebMarketCapitalizationService;
 import io.nebulas.explorer.service.thirdpart.coinmarketcap.CoinMarketCapApiService;
+import io.nebulas.explorer.service.thirdpart.gateio.GateioApiService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,7 +24,7 @@ import java.math.BigDecimal;
 public class FetchNebulasMarket {
     private NebMarketCapitalizationService nebMarketCapitalizationService;
     private CoinMarketCapApiService coinMarketCapApiService;
-
+    private GateioApiService gateioApiService;
 
     @Scheduled(cron = "0 0/5 * * * ?")
     public void fetch() {
@@ -52,6 +53,7 @@ public class FetchNebulasMarket {
             JSONObject jsonObject = jsonArray.getJSONObject(0);
 
             NebMarketCapitalization record = new NebMarketCapitalization();
+            record.setCurrencyId("NAS");
             record.setMarketCap(jsonObject.getBigDecimal("market_cap_usd"));
             record.setVolume24h(jsonObject.getBigDecimal("24h_volume_usd"));
 
@@ -62,6 +64,30 @@ public class FetchNebulasMarket {
             record.setPrice(jsonObject.getBigDecimal("price_usd"));
             record.setPriceUnit("USD");
 
+            nebMarketCapitalizationService.addMarket(record);
+        }
+
+        //fetch atp price from gate.io api
+        JSONObject jsonObject = gateioApiService.getAtpMarket().toBlocking().first();
+        if (null != jsonObject){
+            NebMarketCapitalization record = new NebMarketCapitalization();
+            //读取交易市场数据
+            record.setCurrencyId("ATP");
+
+            BigDecimal lastPrice = jsonObject.getBigDecimal("last");
+            BigDecimal atpTotalAmount = new BigDecimal("10000000000");
+
+            BigDecimal marketCap = lastPrice.multiply(atpTotalAmount);
+            record.setMarketCap(marketCap);
+            record.setVolume24h(jsonObject.getBigDecimal("baseVolume"));
+
+            BigDecimal change24HBD = jsonObject.getBigDecimal("percentChange");
+            record.setChange24h(change24HBD.abs());
+
+            record.setTrends(change24HBD.compareTo(BigDecimal.ZERO) > 0 ? 1 : 0);
+
+            record.setPrice(lastPrice);
+            record.setPriceUnit("USD");
             nebMarketCapitalizationService.addMarket(record);
         }
 

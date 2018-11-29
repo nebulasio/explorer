@@ -23,6 +23,9 @@ public class NebMarketCapitalization implements Serializable {
     private Long id;
 
     /**  */
+    private String currencyId;
+
+    /**  */
     private BigDecimal marketCap;
 
     /**  */

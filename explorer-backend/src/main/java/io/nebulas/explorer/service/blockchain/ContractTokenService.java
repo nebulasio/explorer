@@ -22,4 +22,9 @@ public class ContractTokenService {
         return nebContractTokenMapper.getByContract(contract);
     }
 
+    public  NebContractToken getByTokenName(String tokenName){
+        return nebContractTokenMapper.getByTokenName(tokenName);
+    }
+
+
 }

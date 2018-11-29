@@ -3,6 +3,7 @@
 <mapper namespace="io.nebulas.explorer.mapper.NebMarketCapitalizationMapper">
     <resultMap id="BaseResultMap" type="io.nebulas.explorer.domain.NebMarketCapitalization">
         <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="currency_id" property="currencyId" jdbcType="VARCHAR"/>
         <result column="market_cap" property="marketCap" jdbcType="DECIMAL"/>
         <result column="volume_24h" property="volume24h" jdbcType="DECIMAL"/>
         <result column="change_24h" property="change24h" jdbcType="DECIMAL"/>
@@ -12,19 +13,30 @@
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`, `market_cap`, `volume_24h`, `change_24h`,`trends`, `price`, `price_unit`, `created_at`
+        `id`, `currency_id`,`market_cap`, `volume_24h`, `change_24h`,`trends`, `price`, `price_unit`, `created_at`
     </sql>
 
     <insert id="add" parameterType="NebMarketCapitalization">
-        INSERT INTO `neb_market_capitalization` (`market_cap`, `volume_24h`, `change_24h`, `trends`, `price`, `price_unit`, `created_at`)
-        VALUES (#{marketCap,jdbcType=DECIMAL}, #{volume24h,jdbcType=DECIMAL}, #{change24h,jdbcType=DECIMAL}, #{trends,jdbcType=TINYINT}, #{price,jdbcType=DECIMAL}, #{priceUnit,jdbcType=VARCHAR}, now())
+        INSERT INTO `neb_market_capitalization` (`currency_id`,`market_cap`, `volume_24h`, `change_24h`, `trends`, `price`, `price_unit`, `created_at`)
+        VALUES (#{currencyId,jdbcType=VARCHAR},#{marketCap,jdbcType=DECIMAL}, #{volume24h,jdbcType=DECIMAL}, #{change24h,jdbcType=DECIMAL}, #{trends,jdbcType=TINYINT}, #{price,jdbcType=DECIMAL}, #{priceUnit,jdbcType=VARCHAR}, now())
     </insert>
 
     <select id="getLatest" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM neb_market_capitalization
+        WHERE currency_id = 'NAS'
         ORDER BY `id` DESC
         LIMIT 1
     </select>
+
+    <select id="getAtpLatest" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM neb_market_capitalization
+        WHERE currency_id = 'ATP'
+        ORDER BY `id` DESC
+        LIMIT 1
+    </select>
+
 </mapper>
