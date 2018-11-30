@@ -1,3 +1,15 @@
+<style>
+    div .block {
+        width: 24px;
+        height: 24px;
+    }
+
+    div .block img {
+        max-height: 24px;
+        max-width: 24px;
+        vertical-align: middle;
+    }
+</style>
 <template>
     <div class="block">
         <img :src="getDataUrl()" alt="">
