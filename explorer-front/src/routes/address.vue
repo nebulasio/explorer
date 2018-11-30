@@ -1,41 +1,5 @@
 <style>
 
-    .my-table {
-        width: 100%;
-        max-width: 100%;
-        margin-bottom: 10px;
-        background-color: transparent;
-    }
-
-    .my-table th,
-    .my-table td {
-        padding: 5px;
-        vertical-align: middle;
-        border-top: 0;
-    }
-
-    .my-table thead th {
-        vertical-align: middle;
-        border-bottom: 0;
-    }
-
-    .my-table tbody {
-        border-top: 0;
-    }
-
-    .my-table tr {
-        height:46px;
-    }
-
-    .my-table tr:nth-of-type(odd) {
-        background:rgba(247,247,247,1);
-        box-shadow:0px -1px 0px 0px rgba(243,241,241,1);
-    }
-
-    .my-table tr:nth-of-type(even) {
-        background:rgba(255,255,255,1);
-    }
-
     .vue-address td.out {
         width: 50px;
     }
@@ -177,14 +141,6 @@
         line-height: 20px;
     }
 
-    .txs tr:nth-of-type(even){
-        background-color: white;
-    }
-
-    .txs tr:nth-of-type(odd){
-        background-color: #f9f9f9;
-    }
-
     .icon40 {
         width: 40px;
         height: 40px;
@@ -270,30 +226,6 @@
         line-height: 20px;
     }
 
-    .txs th {
-        text-align: left;
-        height: 20px;
-        vertical-align: middle;
-    }
-
-    .txs tr {
-        height: 50px;
-        line-height: 1.0;
-    }
-
-    .txs th .align-right {
-        text-align: right;
-    }
-
-    .txs tr .align-right {
-        text-align: right;
-    }
-
-    .txs td {
-        padding: 5px;
-        vertical-align: middle;
-    }
-
     div .block {
         width: 24px;
         height: 24px;
@@ -318,11 +250,6 @@
 
     .base-info-key {
         width: 23%;
-        height:20px;
-        font-size:16px;
-        font-family:OpenSans;
-        color:rgba(85,85,85,1);
-        line-height:20px;
     }
 
     .base-info-value-normal {
@@ -367,19 +294,19 @@
                    v-bind:title='navTitle + " " + $route.params.id'></vue-bread>
         <div class=container v-if=obj>
 
-            <div class="overview">
+            <div class="font-size-24-bold font-color-000000" style="margin-top: 60px; margin-bottom: 30px;">
                 Overview
                 <span class=c777 v-show=obj.address.alias> | {{ obj.address.alias }}</span>
             </div>
 
-            <table class="c333 my-table">
+            <table class="explorer-table">
                 <tr>
-                    <td class="base-info-key">NAS Balance:</td>
-                    <td class="base-info-value-normal">{{ tokenAmount(obj.address.balance) }} NAS</td>
+                    <td class="base-info-key font-size-16-normal font-color-555555">NAS Balance:</td>
+                    <td class="font-size-16-normal font-color-000000">{{ tokenAmount(obj.address.balance) }} NAS</td>
                 </tr>
                 <tr v-if="isContract">
-                    <td class="base-info-key">Contract Creator:</td>
-                    <td v-if="contract.hash && contract.from" class="contract-creator base-info-value-normal">
+                    <td class="base-info-key font-size-16-normal font-color-555555">Contract Creator:</td>
+                    <td v-if="contract.hash && contract.from" class="contract-creator font-size-16-normal font-color-000000">
                         <router-link v-bind:to='fragApi + "/address/" + contract.from'
                                      title="Creator Address">
                             {{ toShortStr(contract.from) }}
@@ -395,32 +322,32 @@
                     <td v-else></td>
                 </tr>
                 <tr>
-                    <td class="base-info-key">Nonce:</td>
-                    <td class="base-info-value-normal">{{ obj.address.nonce }}</td>
+                    <td class="base-info-key font-size-16-normal font-color-555555">Nonce:</td>
+                    <td class="font-size-16-normal font-color-000000">{{ obj.address.nonce }}</td>
                 </tr>
                 <tr>
-                    <td class="base-info-key">Number Of Transactions:</td>
-                    <td class="base-info-value-num-of-tx">{{ obj.txCnt }}</td>
+                    <td class="base-info-key font-size-16-normal font-color-555555">Number Of Transactions:</td>
+                    <td class="font-size-16-normal font-color-0057FF">{{ obj.txCnt }}</td>
                 </tr>
                 <tr>
-                    <td class="base-info-key">Minted:</td>
-                    <td class="base-info-value-normal">{{ obj.mintedBlkCnt }}</td>
+                    <td class="base-info-key font-size-16-normal font-color-555555">Minted:</td>
+                    <td class="font-size-16-normal font-color-000000">{{ obj.mintedBlkCnt }}</td>
                 </tr>
                 <tr v-if="obj.tokenName">
-                    <td class="base-info-key">Token Tracker:</td>
-                    <td class="base-info-value-normal">
+                    <td class="base-info-key font-size-16-normal font-color-555555">Token Tracker:</td>
+                    <td class="font-size-16-normal font-color-000000">
                         <router-link v-bind:to='fragApi + "/contract/" + $route.params.id'>{{obj.tokenName }}
                         </router-link>
                     </td>
                 </tr>
                 <tr v-for="token in tokens" :key="token.tokenName" v-if="token.tokenName === 'ATP'">
-                    <td class="base-info-key">NRC20 Tokens:</td>
+                    <td class="base-info-key font-size-16-normal font-color-555555">NRC20 Tokens:</td>
                     <td>
                         <div id="dropdown-tokens" :class='[{"dropdown-toggle": validTokens.length > 1}]' data-toggle=dropdown>
                             <router-link v-bind:to='fragApi + "/contract/" + token.contract'>
-                                <span class="base-info-value-token-name">{{token.tokenName }}</span>
+                                <span class="font-size-16-bold font-color-0057FF">{{token.tokenName }}</span>
                             </router-link>
-                            <span class="base-info-value-normal">{{ tokenAmount(token.balance) }}</span>
+                            <span class="font-size-16-normal font-color-000000">{{ tokenAmount(token.balance) }}</span>
                         </div>
                         <div v-if="validTokens.length > 1" class="dropdown-menu">
                             <div class="dropdown-item" v-for="(token, i) in validTokens" :key=i>
@@ -442,7 +369,7 @@
             <div class=tab v-show="tab == 1">
                 <div class="align-items-center row title">
                     <div class=col>
-                        <span class="c000">
+                        <span class="font-size-16-bold font-color-000000">
                         Latest {{ txs.length }} txns from a total of {{ obj.txCnt }} transactions ( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )
                         </span>
                     </div>
@@ -457,7 +384,7 @@
                     </div>
                 </div>
 
-                <table class="mt20 my-table txs">
+                <table class="mt20 explorer-table list-table">
                     <tr style="height: 46px; background-color: #e8e8e8;">
                         <th style="width: 50px;"></th>
                         <th>TxHash</th>
@@ -540,7 +467,7 @@
                     </div>
                 </div>
 
-                <table class="mt20 my-table txs">
+                <table class="mt20 explorer-table list-table">
                     <tr style="height: 46px; background-color: #e8e8e8;">
                         <th style="width: 50px;"></th>
                         <th>TxHash</th>
