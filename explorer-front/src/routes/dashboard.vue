@@ -219,18 +219,20 @@
         left: 170px;
         width: 990px;
         height: 100px;
-        overflow: hidden;
+        /* overflow: hidden; */
         display: flex;
         flex-flow: row nowrap;
         justify-content: flex-end;
     }
 
     .vue-dashboard .realtime-block {
+        position: relative;
         width: 15px;
         height: 100px;
         margin-left: 10px;
         background-color: rgba(0, 87, 255, 1);
         transition: all 250ms linear;
+        display: none;
     }
 
     .vue-dashboard .realtime-block .blockheight {
@@ -238,6 +240,25 @@
         width: 15px;
         background-color: rgba(217, 230, 255, 1);
         transition: all 250ms linear;
+    }
+
+    .vue-dashboard .realtime-block .block-popover {
+        position: absolute;
+        left: calc(-50% + 15px);
+        top: -60px;
+        padding: 8px;
+        font-size: 12px;
+        color: white;
+        background-color: #0057FF;
+        border-radius: 2px;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        z-index: 1;
+        display: none;
+    }
+
+    .vue-dashboard .realtime-block:hover .block-popover {
+        display: block;
     }
 
     .vue-dashboard .row3 .flex-item {
@@ -380,6 +401,12 @@
         white-space:pre;
     }
 
+    @media (min-width: 1200px) {
+        .vue-dashboard .realtime-block:nth-last-of-type(-n+40) {
+            display: block;
+        }
+    }
+
     @media (max-width: 1199px) {
         .vue-dashboard .containter {
             width: 590px;
@@ -408,6 +435,10 @@
 
         .vue-dashboard .realtime-blocks {
             width: 390px;
+        }
+
+        .vue-dashboard .realtime-block:nth-last-of-type(-n+16) {
+            display: block;
         }
     }
 
@@ -452,6 +483,10 @@
                 <div class="realtime-blocks">
                     <div class="realtime-block" v-for="(block, i) in realtimeBlocks" :key="i">
                         <div class="blockheight" :style="calBlockHeight(block)"></div>
+                        <div class="block-popover">
+                            <div>Block Height: 168276</div>
+                            <div>Transac tions: 33</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -703,7 +738,7 @@
             setInterval(() => {
                 var block = {hash: '', height: Math.floor(Math.random() * 10)};
                 this.realtimeBlocks.push(block);
-            }, 15000);
+            }, 1000);
 
             $('.new-user').css({
                 "transform": "rotate(-120deg)"
