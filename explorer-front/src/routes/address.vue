@@ -355,7 +355,7 @@
                             </router-link>
                         </td>
                         <td>
-                            <img style="width:40px;height:40px" v-bind:src="inOutIcon(o)"/>
+                            <img style="width:40px;height:40px" src="../../static/img/ic_arrow_right.png"/>
                         </td>
                         <td class="tdxxxwddd txs-from-to">
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
@@ -438,7 +438,7 @@
                             </router-link>
                         </td>
                         <td>
-                            <img style="width:40px;height:40px" v-bind:src="inOutIcon(o)"/>
+                            <img style="width:40px;height:40px" src="../../static/img/ic_arrow_right.png"/>
                         </td>
                         <td class="tdxxxwddd txs-from-to">
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
@@ -570,16 +570,6 @@
             isDark(i) {
                 return (i % 2 === 0);
             },
-            inOutIcon(o) {
-                let imgPath = "/static/img/";
-                if (o.from.hash === this.$route.params.id)
-                    return imgPath + "ic_arrow_right.png";
-                else if (o.to.hash === this.$route.params.id)
-                    return imgPath + "ic_arrow_right.png";
-                else
-                    return "";
-            },
-
             statusIcon(tx, status) {
                 let imgPath = "/static/img/";
                 var inOrOut;

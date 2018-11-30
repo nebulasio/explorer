@@ -88,7 +88,7 @@
 
             <table class="mt20 explorer-table list-table">
                 <tr class="font-size-12-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
-                    <th style="width: 50px;"></th>
+                    <th></th>
                     <th>TxHash</th>
                     <th>Block</th>
                     <th>Age</th>
@@ -100,7 +100,9 @@
                 </tr>
 
                 <tr v-for="(o, i) in arr" :key="i">
-                    <td><img class="icon40" v-bind:src="statusIcon(o,o.status)"/></td>
+                    <td>
+                        <img v-if="o.status===0" class="icon40" src="../../static/img/ic_tx_failed.png"/>
+                    </td>
                     <td class="txs-hash">
                         <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
                             <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal']">{{ o.hash }}</span>
@@ -125,7 +127,7 @@
                         </router-link>
                     </td>
                     <td>
-                        <img style="width:40px;height:40px" v-bind:src="inOutIcon(o)"/>
+                        <img style="width:40px;height:40px" src="../../static/img/ic_arrow_right.png"/>
                     </td>
                     <td class="tdxxxwddd txs-from-to">
                         <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
@@ -175,45 +177,6 @@
 
                 query.p = n;
                 this.$router.push({ path: this.$route.path, query });
-            },
-            inOutIcon(o) {
-                let imgPath = "/static/img/";
-                if (o.from.hash === this.$route.query.a)
-                    return imgPath + "ic_arrow_right.png";
-                else if (o.to.hash === this.$route.query.a)
-                    return imgPath + "ic_arrow_right.png";
-                else
-                    return "";
-            },
-            statusIcon(tx, status) {
-                let imgPath = "/static/img/";
-                var inOrOut;
-                if (tx.from.hash === this.$route.query.a)
-                    inOrOut = "out";
-                else if (tx.to.hash === this.$route.query.a)
-                    inOrOut = "in";
-                else
-                    inOrOut = "";
-
-                if (status === 1) {
-                    if (inOrOut === "out") {
-                        return imgPath + "ic_tx_sent.png"
-                    } else if (inOrOut === "in") {
-                        return imgPath + "ic_tx_received.png"
-                    } else {
-                        return null
-                    }
-                } else if (status === null) {
-                    if (inOrOut === "out") {
-                        return imgPath + "ic_tx_send_pending.png"
-                    } else if (inOrOut === "in") {
-                        return imgPath + "ic_tx_receive_pending.png"
-                    } else {
-                        return null
-                    }
-                } else {
-                    return imgPath + "ic_tx_failed.png"
-                }
             },
             nthPage() {
                 this.$root.showModalLoading = true;
