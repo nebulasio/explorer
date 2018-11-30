@@ -87,7 +87,7 @@
             </div>
 
             <table class="mt20 explorer-table list-table">
-                <tr class="font-size-12-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
+                <tr class="list-header font-size-12-bold font-color-000000">
                     <th></th>
                     <th>TxHash</th>
                     <th>Block</th>

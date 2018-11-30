@@ -1,40 +1,61 @@
+<style>
+    .vue-blocks {
+        background-color: white;
+    }
+</style>
+
 <template>
     <!-- https://etherscan.io/blocks -->
     <div class=vue-blocks>
         <vue-bread v-bind:arr=breadcrumb title="Blocks"></vue-bread>
 
         <div class="container mt20">
-            <div class="align-items-center info-and-pagination row">
-                <div class=col>Showing Block (#{{ heightFrom }} to #{{ heightTo }}) out of {{ totalBlocks }} total blocks</div>
-                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
+            <div class="align-items-center info-and-pagination row" style="margin-top: 60px; margin-bottom: 30px;">
+                <div class="col font-color-000000 font-size-24-bold">Showing Block (#{{ heightFrom }} to #{{ heightTo }}) out of {{ totalBlocks }} total blocks</div>
             </div>
-            <table class="mt20 table">
-                <tr>
-                    <th>Height</th>
-                    <th class=text-right>Age</th>
-                    <th>txn</th>
-                    <th>Minted</th>
+            <table class="mt20 explorer-table list-table">
+                <tr class="list-header font-size-12-bold font-color-000000">
+                    <th style="width: 20px;"></th>
+                    <th style="width: 130px;">Height</th>
+                    <th style="width: 130px;">Age</th>
+                    <th class="text-right">txn</th>
+                    <th style="padding-left: 60px">Minted</th>
                     <th class=text-right>Gas Reward</th>
                     <th class=text-right>GasLimit</th>
                     <th class=text-right>Avg.GasPrice</th>
+                    <th style="width: 20px;"></th>
                 </tr>
                 <tr v-for="(o, i) in arr" :key="i">
+                    <td></td>
                     <td>
-                        <router-link v-bind:to='fragApi + "/block/" + o.height'>{{ o.height }}</router-link>
+                        <router-link v-bind:to='fragApi + "/block/" + o.height'>
+                            <span class="font-size-14-normal font-color-0057FF">{{ o.height }}</span>
+                        </router-link>
                     </td>
                     <td class=time>
-                        <div class=text-right>{{ timeConversion( Date.now() - o.timestamp) }} ago</div>
+                        <div class="font-color-000000 font-size-14-normal">{{ timeConversion( Date.now() - o.timestamp) }} ago</div>
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
-                    <td>
-                        <router-link v-bind:to='fragApi + "/txs?block=" + o.height'>{{ o.txnCnt }}</router-link>
+                    <td class="text-right">
+                        <router-link v-bind:to='fragApi + "/txs?block=" + o.height'>
+                            <span class="font-size-14-normal font-color-0057FF">{{ o.txnCnt }}</span>
+                        </router-link>
                     </td>
-                    <td class=monospace>
-                        <router-link v-bind:to='fragApi + "/address/" + o.miner.hash'>{{ o.miner.alias || o.miner.hash }}</router-link>
+                    <td class=monospace  style="padding-left: 60px">
+                        <router-link v-bind:to='fragApi + "/address/" + o.miner.hash'>
+                            <span class="font-size-14-normal font-color-0057FF">{{ o.miner.alias || o.miner.hash }}</span>
+                        </router-link>
                     </td>
-                    <td class=text-right>{{ toWei(o.gasReward) }}</td>
-                    <td class=text-right>{{ numberAddComma(o.gasLimit) }}</td>
-                    <td class=text-right>{{ toWei(o.avgGasPrice) }}</td>
+                    <td class=text-right>
+                        <span class="font-size-14-normal font-color-555555">{{ toWei(o.gasReward) }}</span>
+                    </td>
+                    <td class=text-right>
+                        <span class="font-size-14-normal font-color-000000">{{ numberAddComma(o.gasLimit) }}</span>
+                    </td>
+                    <td class=text-right>
+                        <span class="font-size-14-normal font-color-555555">{{ toWei(o.avgGasPrice) }}</span>
+                    </td>
+                    <td></td>
                 </tr>
             </table>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
