@@ -350,6 +350,15 @@
         line-height:20px;
     }
 
+    .text-no-content {
+        height:17px;
+        font-size:12px;
+        font-family:OpenSans-Semibold;
+        font-weight:600;
+        color:rgba(155,155,155,1);
+        line-height:17px;
+    }
+
 </style>
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
@@ -364,11 +373,11 @@
             </div>
 
             <table class="c333 my-table">
-                <tr :class='cal()'>
+                <tr>
                     <td class="base-info-key">NAS Balance:</td>
                     <td class="base-info-value-normal">{{ tokenAmount(obj.address.balance) }} NAS</td>
                 </tr>
-                <tr v-if="isContract" :class='cal()'>
+                <tr v-if="isContract">
                     <td class="base-info-key">Contract Creator:</td>
                     <td v-if="contract.hash && contract.from" class="contract-creator base-info-value-normal">
                         <router-link v-bind:to='fragApi + "/address/" + contract.from'
@@ -385,26 +394,26 @@
                     </td>
                     <td v-else></td>
                 </tr>
-                <tr :class='cal()'>
+                <tr>
                     <td class="base-info-key">Nonce:</td>
                     <td class="base-info-value-normal">{{ obj.address.nonce }}</td>
                 </tr>
-                <tr :class='cal()'>
+                <tr>
                     <td class="base-info-key">Number Of Transactions:</td>
                     <td class="base-info-value-num-of-tx">{{ obj.txCnt }}</td>
                 </tr>
-                <tr :class='cal()'>
+                <tr>
                     <td class="base-info-key">Minted:</td>
                     <td class="base-info-value-normal">{{ obj.mintedBlkCnt }}</td>
                 </tr>
-                <tr v-if="obj.tokenName" :class='cal()'>
+                <tr v-if="obj.tokenName">
                     <td class="base-info-key">Token Tracker:</td>
                     <td class="base-info-value-normal">
                         <router-link v-bind:to='fragApi + "/contract/" + $route.params.id'>{{obj.tokenName }}
                         </router-link>
                     </td>
                 </tr>
-                <tr v-for="token in tokens" :key="token.tokenName" v-if="token.tokenName == 'ATP'" :class='cal()'>
+                <tr v-for="token in tokens" :key="token.tokenName" v-if="token.tokenName === 'ATP'">
                     <td class="base-info-key">NRC20 Tokens:</td>
                     <td>
                         <div id="dropdown-tokens" :class='[{"dropdown-toggle": validTokens.length > 1}]' data-toggle=dropdown>
@@ -450,7 +459,7 @@
 
                 <table class="mt20 my-table txs">
                     <tr style="height: 46px; background-color: #e8e8e8;">
-                        <th></th>
+                        <th style="width: 50px;"></th>
                         <th>TxHash</th>
                         <th>Block</th>
                         <th>Age</th>
@@ -503,11 +512,20 @@
                         </td>
                     </tr>
                 </table>
+
+
+                <div v-if="txs.length===0" v-show="tab===1" style="left: 0;right:0;text-align:center; padding-top: 76px; padding-bottom: 80px;">
+                    <img style="width: 131px; height: 142px;" src="/static/img/no_content.png"/>
+                    <br />
+                    <div style="margin-top: 12px;">
+                        <span class="text-no-content">No Content</span>
+                    </div>
+                </div>
             </div>
 
             <!--    NRC20 Transactions
                 ============================================================ -->
-            <div class=tab v-show="tab == 2">
+            <div class=tab v-show="tab === 2">
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="c000">
@@ -522,9 +540,9 @@
                     </div>
                 </div>
 
-                <table class="mt20 table txs">
+                <table class="mt20 my-table txs">
                     <tr style="height: 46px; background-color: #e8e8e8;">
-                        <th></th>
+                        <th style="width: 50px;"></th>
                         <th>TxHash</th>
                         <th>Block</th>
                         <th>Age</th>
@@ -578,12 +596,20 @@
                         </td>
                     </tr>
                 </table>
+
+                <div v-if=isNoNrc20Tx v-show="tab===2" style="left: 0;right:0;text-align:center; padding-top: 76px; padding-bottom: 80px;">
+                    <img style="width: 131px; height: 142px;" src="/static/img/no_content.png"/>
+                    <br />
+                    <div style="margin-top: 12px;">
+                        <span class="text-no-content">No Content</span>
+                    </div>
+                </div>
             </div>
 
 
             <!-- code
              ============================================================ -->
-            <div class=tab v-show="tab == 3">
+            <div class=tab v-show="tab === 3">
                 <table class="mt20 table">
                     <tr>
                         <pre><code class=language-javascript v-html=formatCode></code></pre>
@@ -679,19 +705,10 @@
                 contract: {hash: null, from: null},
                 nrc20TxList: [],
                 nrc20TxCnt: 0,
-                baseInformationRows:0
+                isNoNrc20Tx: false
             };
         },
         methods: {
-            cal(){
-                // this.baseInformationRows++;
-                let mod = this.baseInformationRows%2;
-                if (mod===1){
-                    return "base-info-dark"
-                } else {
-                    return "base-info-light"
-                }
-            },
             isDark(i) {
                 return (i % 2 === 0);
             },
@@ -777,6 +794,7 @@
                         this.$root.showModalLoading = false;
                         this.nrc20TxList = o.txnList || [];
                         this.nrc20TxCnt = o.txnCnt;
+                        this.isNoNrc20Tx = this.nrc20TxCnt===0;
                     }, xhr => {
                         console.log(xhr);
                         this.$root.showModalLoading = false;
