@@ -1,6 +1,10 @@
 <style>
+    .text-light-gray {
+        color: #A6A6A6;
+    }
+
     .text-gray {
-        color: rgba(0, 0, 0, 0.5);
+        color: #8D8D8D;
     }
 
     .vue-dashboard {
@@ -116,7 +120,7 @@
         margin-left: 30px;
         margin-top: 25px;
         font-size: 20px;
-        font-weight: semibold;
+        font-weight: bold;
     }
 
     .row1 {
@@ -232,7 +236,8 @@
     .realtime-block .blockheight {
         display: block;
         width: 15px;
-        background-color: rgba(217, 230, 255, 1)
+        background-color: rgba(217, 230, 255, 1);
+        transition: all 250ms linear;
     }
 
     .row3 .flex-item {
@@ -243,6 +248,7 @@
         margin-top: 23px;
         margin-left: 30px;
         font-size: 28px;
+        font-weight: bold;
     }
 
     .row3 .link {
@@ -259,6 +265,119 @@
 
     .row3 .flex-item:hover .link {
         color: rgba(0, 87, 255, 1)
+    }
+
+    .user-pie {
+        display: block;
+        position: relative;
+        margin-left: 30px;
+        margin-top: 38px;
+        background-color: gray;
+        box-shadow:-10px 10px 20px 0px rgba(30,30,30,0.05);
+    }
+
+    .old-user {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 114px;
+        height: 114px;
+        background-color: rgba(89, 146, 255, 1);
+        border-style: solid;
+        border-width: 0px;
+        border-radius: 50%;
+    }
+
+    .new-user-container {
+        position: absolute;
+        left: 77px;
+        width: 77px;
+        height: 154px;
+        overflow: hidden;
+    }
+
+    .new-user {
+        position: absolute;
+        top: 0px;
+        left: -77px;
+        width: 154px;
+        height: 154px;
+        /* background-color: RGBA(0, 87, 255, 1); */
+        background-image: linear-gradient(to left, transparent 50%, #0057FF 0);
+        border-style: solid;
+        border-width: 0px;
+        border-radius: 50%;
+        transition-property: transform;
+        transition-duration: 2s;
+        transition-timing-function: ease;
+    }
+
+    .row4 .detail {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: flex-end;
+        align-items: flex-end;
+        position: absolute;
+        top: 0px;
+        right: 30px;
+    }
+
+    .row4 .user-data .data-source {
+        margin-top: 30px;
+        margin-bottom: 26px;
+    }
+
+    .row4 .title {
+        font-size: 28px;
+        margin-top: 40px;
+        font-weight: bold;
+    }
+
+    .row4 .accounts-data .data-source {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+    }
+
+    .accounts-chart {
+        position: absolute;
+        top: 0px;
+    }
+
+    .row5 .flex-item {
+        padding: 23px 30px;
+    }
+
+    .row5 .item-title {
+        margin: 0;
+    }
+
+    table {
+        margin-top: 28px;
+        width: 100%;
+        font-size: 16px;
+    }
+
+    table tr {
+        border: solid 1px;
+        border-color: #F2F6F7;
+    }
+
+    tr {
+        height: 74px;
+    }
+
+    td:first-child {
+        width: 70px;
+    }
+
+    td:last-child {
+        text-align: right;
+    }
+
+    td .time::after {
+        content:'\A ';
+        white-space:pre;
     }
 
     @media (max-width: 1199px) {
@@ -363,32 +482,78 @@
                 </div>
             </div>
             <div class="row4 flex-row-container">
-                <div class="flex-item w590 row4-item">
+                <div class="flex-item w590 row4-item user-data">
                     <div class="item-title">新用户占比</div>
-                    <div class="text-gray ml30 fs12">新用户为90日内创建星云账户者</div>
-                    <vchart :options=userData></vchart>
+                    <div class="text-light-gray ml30 fs12">新用户为90日内创建星云账户者</div>
+                    <div class="user-pie">
+                        <div class="old-user"></div>
+                        <div class="new-user-container">
+                            <div class="new-user"></div>
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
+                        <div class="title">42462</div>
+                        <div class="fs12 text-gray">New Users</div>
+                        <div class="title">132,696</div>
+                        <div class="fs12 text-gray">Old Users</div>
+                    </div>
                 </div>
-                <div class="flex-item w590 row4-item">
+                <div class="flex-item w590 row4-item accounts-data">
                     <div class="item-title">主网账户数量变化</div>
+                    <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
+                    <vchart class="accounts-chart" :options="accountsData"></vchart>
                 </div>
             </div>
             <div class="row5 flex-row-container">
                 <div class="flex-item w590 row5-item">
                     <div class="item-title">Blocks</div>
+                    <table frame=hsides rules=rows>
+                        <tr v-for="(block, i) in blocks" :key="i">
+                            <td>
+                                <img src="/static/img/icon-block.png" width="50">
+                            </td>
+                            <td>
+                                Block#
+                                <router-link to="asdf">272990</router-link>
+                                <br>
+                                <router-link to="asdf">20 transactions</router-link>
+                            </td>
+                            <td>
+                                <div class="time">5 Sec ago</div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="flex-item w590 row5-item">
                     <div class="item-title">Transactions</div>
+                    <table frame=hsides rules=rows>
+                        <tr v-for="(block, i) in blocks" :key="i">
+                            <td>
+                                <img src="/static/img/icon-tx.png" width="50">
+                            </td>
+                            <td>
+                                Tx#
+                                <router-link to="asdf">0aed7ac…93f03f4</router-link>
+                                <br>
+                                From <router-link to="asdf">0aed7ac…93f03f4</router-link> To <router-link to="asdf">0aed7ac…93f03f4</router-link>
+                            </td>
+                            <td>
+                                <div class="time">5 Sec ago</div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 <script>
     var api = require("@/assets/api"),
         utility = require("@/assets/utility"),
         BigNumber = require("bignumber.js"),
-        ECharts = require('vue-echarts/components/ECharts').default;
+        ECharts = require('vue-echarts/components/ECharts').default,
+        jQuery = require('jquery');
 
     require('echarts/lib/chart/line'),
     require('echarts/lib/chart/pie'),
@@ -401,9 +566,6 @@
         data() {
             return {
                 dailyTxData: {
-                    // legend: {
-                    //     data:['MainNet Account']
-                    // },
                     grid: { x: '10', y: '100', width: '580', height: '210', containLabel: true },
                     xAxis: {
                         data: ["08-26", "08-27", "08-28", "08-29", "08-30", "08-31", "09-01", "09-02", "09-03", "09-04"],
@@ -415,7 +577,7 @@
                         },
                         axisLabel: {
                             textStyle: {
-                                color: '#FFFFFF'
+                                color: '#B2B2B2'
                             },
                             margin: 18
                         }
@@ -427,7 +589,7 @@
                         },
                         axisLabel: {
                             textStyle: {
-                                color: '#FFFFFF'
+                                color: '#B2B2B2'
                             },
                             margin: -10,
                             formatter: function (value) {
@@ -442,10 +604,10 @@
                         }
                     },
                     series: {
-                        // name: 'MainNet Account',
                         type: 'line',
                         data: [2947, 3898, 3239, 3838, 3767, 3098, 3267, 3893, 3100, 3987],
                         symbol: 'circle',
+                        symbolSize: 5,
                         lineStyle: {
                             color: '#FFDD0D00',
                             width: 3
@@ -462,39 +624,75 @@
                         
                     }
                 },
-                userData: {
-                    grid: { x: '0', y: '0', width: '100%', height: '100%', containLabel: true },
-                    series: {
-                        // name: 'MainNet Account',
-                        type: 'pie',
-                        data: [
-                            {
-                                value: 60000,
-                                name: 'New Users',
-                                itemStyle: {
-                                    color: '#0057FF'
-                                },
-                                radius: 80
+                accountsData: {
+                    grid: { x: '10', y: '100', width: '580', height: '210', containLabel: true },
+                    xAxis: {
+                        data: ["08-26", "08-27", "08-28", "08-29", "08-30", "08-31", "09-01", "09-02", "09-03", "09-04"],
+                        axisLine: {
+                            show: false
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            textStyle: {
+                                color: '#B2B2B2'
                             },
-                            {
-                                value: 120000,
-                                name: 'Old Users',
-                                itemStyle: {
-                                    color: '#538FFF'
-                                },
-                                radius: 60
+                            margin: 18
+                        }
+                    },
+                    yAxis: {
+                        max: 500000,
+                        axisLine: {
+                            show: false
+                        },
+                        axisLabel: {
+                            textStyle: {
+                                color: '#B2B2B2'
+                            },
+                            margin: -10,
+                            formatter: function (value) {
+                                return value / 1000 + 'k';
                             }
-                        ],
-                        center: [107, 148],
-                        radius: 60,
-                        startAngle: 270,
-                        clockWise: false
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    },
+                    series: {
+                        type: 'line',
+                        data: [120000, 130000, 141000, 152000, 170000, 190000, 215000, 241000, 268000, 300000],
+                        symbol: 'emptyCircle',
+                        symbolSize: 7,
+                        lineStyle: {
+                            color: '#FFDD0D00',
+                            width: 10
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '#FFFFFF',
+                                borderWidth: 3,
+                                borderColor: '#0057FF'
+                            },
+                            emphasis: {
+                                color: '#FFFFFF',
+                                borderWidth: 3,
+                                borderColor: '#0057FF'
+                            }
+                        },
+                        areaStyle: {
+                            color: '#0057FF'
+                        }
                     },
                     tooltip: {
                         
                     }
                 },
-                realtimeBlocks:[]
+                realtimeBlocks: [],
+                blocks: [1, 1, 1, 1, 1]
             }
         },
         mounted() {
@@ -506,6 +704,10 @@
                 var block = {hash: '', height: Math.floor(Math.random() * 10)};
                 this.realtimeBlocks.push(block);
             }, 15000);
+
+            $('.new-user').css({
+                "transform": "rotate(-120deg)"
+            });
         },
         methods: {
             calBlockHeight(b) {
