@@ -56,13 +56,13 @@
         <div class=container>
             <div>
                 <router-link v-bind:to="fragApi + '/'" class=navbar-brand>
-                    <img src=/static/img/logo.png width=150 alt="">
+                    <img src=/static/img/explorer-logo.png width=150 alt="">
                 </router-link>
-                <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
+                <!-- <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
 <span class="fa fa-flask" aria-hidden=true></span>
 <span class=c777>This website is under heavy construction</span><br>
 <div>Feel free to submit issues by clicking this link 👍</div>
-                '>alpha</a>
+                '>alpha</a> -->
             </div>
 
             <button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
