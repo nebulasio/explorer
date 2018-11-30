@@ -1,18 +1,10 @@
 <style>
-    .text-light-gray {
-        color: #A6A6A6;
-    }
-
-    .text-gray {
-        color: #8D8D8D;
-    }
-
     .vue-dashboard {
         display: block;
         color: black;
     }
 
-    .black-header {
+    .vue-dashboard .black-header {
         position: absolute;
         top: 60px;
         width: 100%;
@@ -20,7 +12,7 @@
         z-index: -1;
     }
 
-    .containter {
+    .vue-dashboard .containter {
         top: -160px;
         width: 1200px;
         height: 1476px;
@@ -28,7 +20,7 @@
         margin-top: 40px;
     }
 
-    .flex-column-container {
+    .vue-dashboard .flex-column-container {
         display: -webkit-flex; /* Safari */
         display: flex;
         flex-flow: column wrap;
@@ -37,7 +29,7 @@
         flex: none;
     }
 
-    .flex-row-container {
+    .vue-dashboard .flex-row-container {
         display: -webkit-flex; /* Safari */
         display: flex;
         flex-flow: row wrap;
@@ -46,74 +38,82 @@
         flex: none;
     }
 
-    .w590 {
+    .vue-dashboard .text-light-gray {
+        color: #A6A6A6;
+    }
+
+    .vue-dashboard .text-gray {
+        color: #8D8D8D;
+    }
+
+    .vue-dashboard .w590 {
         width: 590px;
     }
 
-    .w285 {
+    .vue-dashboard .w285 {
         width: 285px;
     }
 
-    .ml30 {
+    .vue-dashboard .ml30 {
         margin-left: 30px;
     }
 
-    .fs12 {
+    .vue-dashboard .fs12 {
         font-size: 12px;
     }
 
-    .row1 {
+    .vue-dashboard .row1 {
         height: 320px;
     }
 
-    .row2 {
+    .vue-dashboard .row2 {
         height: 160px;
     }
 
-    .row3 {
+    .vue-dashboard .row3 {
         height: 110px;
     }
 
-    .row4 {
+    .vue-dashboard .row4 {
         height: 330px;
     }
 
-    .row5 {
+    .vue-dashboard .row5 {
         height: 476px;
     }
 
-    .row1-item {
+    .vue-dashboard .row1-item {
         height: 320px;
     }
 
-    .row2-item {
+    .vue-dashboard .row2-item {
         height: 160px;
     }
 
-    .row3-item {
+    .vue-dashboard .row3-item {
         height: 110px;
     }
 
-    .row4-item {
+    .vue-dashboard .row4-item {
         height: 330px;
     }
 
-    .row5-item {
+    .vue-dashboard .row5-item {
         height: 476px;
     }
 
-    .flex-item {
+    .vue-dashboard .flex-item {
         position: relative;
         background-color: white;
         box-shadow:-10px 10px 20px 0px rgba(30,30,30,0.05);
     }
 
-    .row1 .flex-item {
+    .vue-dashboard .row1 .flex-item {
         background:linear-gradient(135deg,rgba(48,58,76,1) 0%,rgba(15,19,26,1) 100%);
         box-shadow: none;
     }
 
-    .item-title {
+    .vue-dashboard .item-title {
         /* position: absolute; */
         /* left: 30px;
         top: 25px; */
@@ -123,15 +123,15 @@
         font-weight: bold;
     }
 
-    .row1 {
+    .vue-dashboard .row1 {
         color: white;
     }
 
-    .row1 .item-title {
+    .vue-dashboard .row1 .item-title {
         color: white;
     }
 
-    .daily-transactions .details {
+    .vue-dashboard .daily-transactions .details {
         position: absolute;
         top: 32px;
         right: 30px;
@@ -144,7 +144,7 @@
         color: rgba(255, 255, 255, 0.7);
     }
 
-    .daily-transactions .details *:nth-child(3) {
+    .vue-dashboard .daily-transactions .details *:nth-child(3) {
         font-size: 28px;
         color: white;
         font-weight: bolder;
@@ -152,14 +152,14 @@
         margin-top: 10px;
     }
 
-    .daily-chart {
+    .vue-dashboard .daily-chart {
         position: absolute;
         top: 0px;
         height: 320px;
         width: 590px;
     }
 
-    .nas-price .update-time {
+    .vue-dashboard .nas-price .update-time {
         position: absolute;
         top: 32px;
         right: 30px;
@@ -167,52 +167,52 @@
         color: rgba(255, 255, 255, 0.7);
     }
 
-    .nas-price .detail {
+    .vue-dashboard .nas-price .detail {
         margin-top: 44px;
         margin-left: 30px;
     }
 
-    .nas-price .detail *:nth-child(1) {
+    .vue-dashboard .nas-price .detail *:nth-child(1) {
         font-size: 28px;
     }
 
-    .nas-price .detail *:nth-child(2) {
+    .vue-dashboard .nas-price .detail *:nth-child(2) {
         font-size: 60px;
     }
 
-    .nas-price .detail *:nth-child(3) {
+    .vue-dashboard .nas-price .detail *:nth-child(3) {
         font-size: 20px;
         color: #2CEE8C;
     }
 
-    .nas-price .flex-row-container {
+    .vue-dashboard .nas-price .flex-row-container {
         margin-top: 50px;
         justify-content: flex-start;
         font-size: 12px;
         color: rgba(255, 255, 255, 0.7);
     }
 
-    .nas-price .flex-row-container div div {
+    .vue-dashboard .nas-price .flex-row-container div div {
         font-size: 28px;
         color: white;
     }
 
-    .nas-price .flex-row-container>div:first-child {
+    .vue-dashboard .nas-price .flex-row-container>div:first-child {
         margin-left: 30px;
         margin-right: 104px;
     }
 
-    .row2 {
+    .vue-dashboard .row2 {
         position: relative;
     }
 
-    .row2>div:nth-of-type(2) {
+    .vue-dashboard .row2>div:nth-of-type(2) {
         margin-left: 30px;
         font-size: 12px;
         color: rgba(0, 0, 0, 0.5);
     }
 
-    .realtime-blocks {
+    .vue-dashboard .realtime-blocks {
         /* background-color: gray; */
         position: absolute;
         top: 30px;
@@ -225,7 +225,7 @@
         justify-content: flex-end;
     }
 
-    .realtime-block {
+    .vue-dashboard .realtime-block {
         width: 15px;
         height: 100px;
         margin-left: 10px;
@@ -233,41 +233,41 @@
         transition: all 250ms linear;
     }
 
-    .realtime-block .blockheight {
+    .vue-dashboard .realtime-block .blockheight {
         display: block;
         width: 15px;
         background-color: rgba(217, 230, 255, 1);
         transition: all 250ms linear;
     }
 
-    .row3 .flex-item {
+    .vue-dashboard .row3 .flex-item {
         position: relative;
     }
 
-    .row3 .flex-item div:nth-child(1) {
+    .vue-dashboard .row3 .flex-item div:nth-child(1) {
         margin-top: 23px;
         margin-left: 30px;
         font-size: 28px;
         font-weight: bold;
     }
 
-    .row3 .link {
+    .vue-dashboard .row3 .link {
         margin-left: 30px;
         color: rgba(0, 0, 0, 0.5);
         font-size: 12px;
     }
 
-    .row3 img {
+    .vue-dashboard .row3 img {
         position: absolute;
         top: 35px;
         right: 33px;
     }
 
-    .row3 .flex-item:hover .link {
+    .vue-dashboard .row3 .flex-item:hover .link {
         color: rgba(0, 87, 255, 1)
     }
 
-    .user-pie {
+    .vue-dashboard .user-pie {
         display: block;
         position: relative;
         margin-left: 30px;
@@ -276,7 +276,7 @@
         box-shadow:-10px 10px 20px 0px rgba(30,30,30,0.05);
     }
 
-    .old-user {
+    .vue-dashboard .old-user {
         position: absolute;
         top: 20px;
         left: 20px;
@@ -288,7 +288,7 @@
         border-radius: 50%;
     }
 
-    .new-user-container {
+    .vue-dashboard .new-user-container {
         position: absolute;
         left: 77px;
         width: 77px;
@@ -296,7 +296,7 @@
         overflow: hidden;
     }
 
-    .new-user {
+    .vue-dashboard .new-user {
         position: absolute;
         top: 0px;
         left: -77px;
@@ -312,7 +312,7 @@
         transition-timing-function: ease;
     }
 
-    .row4 .detail {
+    .vue-dashboard .row4 .detail {
         display: flex;
         flex-flow: column nowrap;
         justify-content: flex-end;
@@ -322,91 +322,91 @@
         right: 30px;
     }
 
-    .row4 .user-data .data-source {
+    .vue-dashboard .row4 .user-data .data-source {
         margin-top: 30px;
         margin-bottom: 26px;
     }
 
-    .row4 .title {
+    .vue-dashboard .row4 .title {
         font-size: 28px;
         margin-top: 40px;
         font-weight: bold;
     }
 
-    .row4 .accounts-data .data-source {
+    .vue-dashboard .row4 .accounts-data .data-source {
         position: absolute;
         top: 30px;
         right: 30px;
     }
 
-    .accounts-chart {
+    .vue-dashboard .accounts-chart {
         position: absolute;
         top: 0px;
     }
 
-    .row5 .flex-item {
+    .vue-dashboard .row5 .flex-item {
         padding: 23px 30px;
     }
 
-    .row5 .item-title {
+    .vue-dashboard .row5 .item-title {
         margin: 0;
     }
 
-    table {
+    .vue-dashboard table {
         margin-top: 28px;
         width: 100%;
         font-size: 16px;
     }
 
-    table tr {
+    .vue-dashboard table tr {
         border: solid 1px;
         border-color: #F2F6F7;
     }
 
-    tr {
+    .vue-dashboard tr {
         height: 74px;
     }
 
-    td:first-child {
+    .vue-dashboard td:first-child {
         width: 70px;
     }
 
-    td:last-child {
+    .vue-dashboard td:last-child {
         text-align: right;
     }
 
-    td .time::after {
+    .vue-dashboard td .time::after {
         content:'\A ';
         white-space:pre;
     }
 
     @media (max-width: 1199px) {
-        .containter {
+        .vue-dashboard .containter {
             width: 590px;
             height: 2792px;
         }
 
-        .row1 {
+        .vue-dashboard .row1 {
             height: 660px;
         }
 
-        .row2 {
+        .vue-dashboard .row2 {
             height: 160px;
         }
 
-        .row3 {
+        .vue-dashboard .row3 {
             height: 240px;
         }
 
-        .row4 {
+        .vue-dashboard .row4 {
             height: 680px;
         }
 
-        .row5 {
+        .vue-dashboard .row5 {
             height: 972px;
         }
 
-        .realtime-blocks {
+        .vue-dashboard .realtime-blocks {
             width: 390px;
         }
     }
