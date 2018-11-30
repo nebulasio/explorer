@@ -114,11 +114,6 @@
         line-height: 20px;
     }
 
-    .icon40 {
-        width: 40px;
-        height: 40px;
-    }
-
     .txs-hash {
         max-width: 185px;
         overflow: hidden;
@@ -159,30 +154,6 @@
         color: rgba(240, 68, 52, 1);
     }
 
-    .block-normal {
-        height: 20px;
-        font-size: 14px;
-        font-family: OpenSans;
-        color: rgba(69, 96, 230, 1);
-        line-height: 20px;
-    }
-
-    .block-pending {
-        height: 20px;
-        font-size: 14px;
-        font-family: OpenSans;
-        color: rgba(0, 0, 0, 1);
-        line-height: 20px;
-    }
-
-    .age {
-        height: 20px;
-        font-size: 14px;
-        font-family: OpenSans;
-        color: rgba(85, 85, 85, 1);
-        line-height: 20px;
-    }
-
     .fromTo {
         max-width: 134px;
         height: 20px;
@@ -197,17 +168,6 @@
         font-family: OpenSans;
         color: rgba(0, 0, 0, 1);
         line-height: 20px;
-    }
-
-    div .block {
-        width: 24px;
-        height: 24px;
-    }
-
-    div .block img {
-        max-height: 24px;
-        max-width: 24px;
-        vertical-align: middle;
     }
 
     .overview {
@@ -378,32 +338,31 @@
                             </router-link>
                         </td>
                         <td class="txs-block">
-                            <router-link class="block-normal" v-if=o.block.height
-                                         v-bind:to='fragApi + "/block/" + o.block.height'>
-                                <span class="block-normal">{{ o.block.height }}</span>
+                            <router-link class="font-size-14-normal font-color-4560E6" v-if=o.block.height v-bind:to='fragApi + "/block/" + o.block.height'>
+                                <span class="font-size-14-normal font-color-4560E6">{{ o.block.height }}</span>
                             </router-link>
-                            <i class="block-pending" v-else>pending</i>
+                            <i class="font-size-14-normal font-color-000000" v-else>pending</i>
                         </td>
-                        <td class="time age">
+                        <td class="time font-color-555555 font-size-14-normal">
                             <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
                             <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                         </td>
                         <td class="tdxxxwddd txs-from-to">
-                            <vue-blockies
-                                v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
+                            <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                             <span class="fromTo" v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
                                 <span class="fromTo">{{ o.from.alias || o.from.hash }}</span>
                             </router-link>
                         </td>
                         <td>
-                            <img style="width:40px;height:40px" v-bind:src="inOutIcon(o)"/>
+                            <img style="width:40px;height:40px" src="../../static/img/ic_arrow_right.png"/>
                         </td>
                         <td class="tdxxxwddd txs-from-to">
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                             <span class="fromTo" v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
-                            <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'><span
-                                class="fromTo">{{ o.to.alias || o.to.hash }}</span></router-link>
+                            <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>
+                                <span class="fromTo">{{ o.to.alias || o.to.hash }}</span>
+                            </router-link>
                         </td>
                         <td class="amount align-right">{{ tokenAmount(o.value) }} NAS</td>
                         <td class="txfee align-right">
@@ -460,27 +419,26 @@
                                 <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal']">{{ o.hash }}</span>
                             </router-link>
                         </td>
+
                         <td class="txs-block">
-                            <router-link class="block-normal" v-if=o.block.height
-                                         v-bind:to='fragApi + "/block/" + o.block.height'>
-                                <span class="block-normal">{{ o.block.height }}</span>
+                            <router-link class="font-size-14-normal font-color-4560E6" v-if=o.block.height v-bind:to='fragApi + "/block/" + o.block.height'>
+                                <span class="font-size-14-normal font-color-4560E6">{{ o.block.height }}</span>
                             </router-link>
-                            <i class="block-pending" v-else>pending</i>
+                            <i class="font-size-14-normal font-color-000000" v-else>pending</i>
                         </td>
-                        <td class="time age">
+                        <td class="time font-color-555555 font-size-14-normal">
                             <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
                             <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                         </td>
                         <td class="tdxxxwddd txs-from-to">
-                            <vue-blockies
-                                v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
+                            <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                             <span class="fromTo" v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
                                 <span class="fromTo">{{ o.from.alias || o.from.hash }}</span>
                             </router-link>
                         </td>
                         <td>
-                            <img style="width:40px;height:40px" v-bind:src="inOutIcon(o)"/>
+                            <img style="width:40px;height:40px" src="../../static/img/ic_arrow_right.png"/>
                         </td>
                         <td class="tdxxxwddd txs-from-to">
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
@@ -612,16 +570,6 @@
             isDark(i) {
                 return (i % 2 === 0);
             },
-            inOutIcon(o) {
-                let imgPath = "/static/img/";
-                if (o.from.hash === this.$route.params.id)
-                    return imgPath + "ic_arrow_right.png";
-                else if (o.to.hash === this.$route.params.id)
-                    return imgPath + "ic_arrow_right.png";
-                else
-                    return "";
-            },
-
             statusIcon(tx, status) {
                 let imgPath = "/static/img/";
                 var inOrOut;

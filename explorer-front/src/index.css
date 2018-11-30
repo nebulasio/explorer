@@ -201,12 +201,25 @@ label {
     line-height: 1.0;
 }
 
+.list-table tr.list-header {
+    height: 46px;
+    background-color: #e8e8e8;
+}
+
 .list-table th .align-right {
     text-align: right;
 }
 
 .list-table tr .align-right {
     text-align: right;
+}
+
+.list-table th .align-left {
+    text-align: left;
+}
+
+.list-table tr .align-left {
+    text-align: left;
 }
 
 .list-table td {
@@ -274,4 +287,10 @@ label {
 
 .font-color-4560E6 {
     color:rgba(69,96,230,1);
+}
+
+/*----------------------- icons -----------------------*/
+.icon40 {
+    width: 40px;
+    height: 40px;
 }
