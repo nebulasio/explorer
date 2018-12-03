@@ -242,13 +242,13 @@
                     <td v-if="contract.hash && contract.from" class="contract-creator font-size-16-normal font-color-000000">
                         <router-link v-bind:to='fragApi + "/address/" + contract.from'
                                      title="Creator Address">
-                            {{ toShortStr(contract.from) }}
+                            <span class="font-color-0057FF">{{ toShortStr(contract.from) }}</span>
                             <div class="popover">Creator Address</div>
                         </router-link>
                         at tx
                         <router-link v-bind:to='fragApi + "/tx/" + contract.hash'
                                      title="Creator TxHash">
-                            {{ toShortStr(contract.hash) }}
+                            <span class="font-color-0057FF">{{ toShortStr(contract.hash) }}</span>
                             <div class="popover">Creator TxHash</div>
                         </router-link>
                     </td>
@@ -269,7 +269,8 @@
                 <tr v-if="obj.tokenName">
                     <td class="base-info-key font-size-16-normal font-color-555555">Token Tracker:</td>
                     <td class="font-size-16-normal font-color-000000">
-                        <router-link v-bind:to='fragApi + "/contract/" + $route.params.id'>{{obj.tokenName }}
+                        <router-link v-bind:to='fragApi + "/contract/" + $route.params.id'>
+                            <span class="font-color-0057FF">{{obj.tokenName }}</span>
                         </router-link>
                     </td>
                 </tr>
@@ -586,7 +587,7 @@
                     } else if (inOrOut === "in") {
                         return imgPath + "ic_tx_received.png"
                     } else {
-                        return null
+                        return ""
                     }
                 } else if (status === null) {
                     if (inOrOut === "out") {
@@ -594,7 +595,7 @@
                     } else if (inOrOut === "in") {
                         return imgPath + "ic_tx_receive_pending.png"
                     } else {
-                        return null
+                        return ""
                     }
                 } else {
                     return imgPath + "ic_tx_failed.png"
