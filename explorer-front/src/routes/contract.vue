@@ -105,6 +105,7 @@
     .fromTo {
         max-width: 134px;
         height: 20px;
+        margin-left: 10px;
         font-size: 14px;
         font-family: OpenSans;
         color: rgba(0, 87, 255, 1);
