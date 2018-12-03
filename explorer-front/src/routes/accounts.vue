@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div style="height: 30px;"></div>
-            <table class="explorer-table">
+            <table class="explorer-table list-table">
                 <tr class="list-header font-size-12-bold font-color-000000">
                     <th style="padding-left: 24px;">Rank</th>
                     <th>Address</th>
