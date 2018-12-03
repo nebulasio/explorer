@@ -320,7 +320,8 @@
 
                 <table class="mt20 explorer-table list-table">
                     <tr style="height: 46px; background-color: #e8e8e8;">
-                        <th style="width: 50px;"></th>
+                        <th v-if="isContract"></th>
+                        <th v-else style="width: 50px;"></th>
                         <th>TxHash</th>
                         <th>Block</th>
                         <th>Age</th>
@@ -332,7 +333,12 @@
                     </tr>
 
                     <tr v-for="(o, i) in txs" :key="i" v-bind:class="{'tr-dark' : isDark(i)}">
-                        <td><img class="icon40" v-bind:src="statusIcon(o,o.status)"/></td>
+                        <td v-if="isContract">
+                            <img v-if="o.status===0" class="icon40" src="../../static/img/ic_tx_failed.png"/>
+                        </td>
+                        <td v-else>
+                            <img class="icon40" v-bind:src="statusIcon(o,o.status)"/>
+                        </td>
                         <td class="txs-hash">
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
                                 <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal']">{{ o.hash }}</span>
