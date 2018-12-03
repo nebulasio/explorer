@@ -27,14 +27,14 @@
         text-align: center;
     }
 
-    .nav-item {
+    .page_nav-item {
         width: 34px;
         height: 34px;
         text-align: center;
         vertical-align: middle;
     }
 
-    .nav-item span {
+    .page_nav-item span {
         height: 100%;
         font-size: 15px;
         color: #555555;
@@ -42,13 +42,13 @@
         display: inline-block;
     }
 
-    .nav-item img {
+    .page_nav-item img {
         width: 16px;
         height: 16px;
         vertical-align: middle;
     }
 
-    .nav-item input {
+    .page_nav-item input {
         width: 36px;
         height: 22px;
         text-align: center;
@@ -67,7 +67,7 @@
 
             <li>
                 <a href=# aria-label=First v-on:click.prevent="$emit('first')">
-                    <div class="nav-item">
+                    <div class="page_nav-item">
                         <span></span>
                         <img src="../../static/img/ic_pagination_first.png"/>
                     </div>
@@ -76,13 +76,13 @@
 
             <li>
                 <a href=# aria-label=Previous v-on:click.prevent="$emit('prev')">
-                    <div class="nav-item">
+                    <div class="page_nav-item">
                         <span></span>
                         <img src="../../static/img/ic_pagination_previous.png"/>
                     </div>
                 </a>
             </li>
-            <div class="nav-item" style="width: auto; margin-left: 16px; margin-right: 16px;">
+            <div class="page_nav-item" style="width: auto; margin-left: 16px; margin-right: 16px;">
                 <span style="line-height: 34px;">Page</span>
                 <input style="margin-left: 10px;margin-right: 10px;" v-bind:value=current
                        v-on:keyup.enter="$emit('to', $event.target.value)">
@@ -91,7 +91,7 @@
 
             <li>
                 <a href=# aria-label=Next v-on:click.prevent="$emit('next')">
-                    <div class="nav-item">
+                    <div class="page_nav-item">
                         <span></span>
                         <img src="../../static/img/ic_pagination_next.png"/>
                     </div>
@@ -100,7 +100,7 @@
 
             <li>
                 <a href=# aria-label=Last v-on:click.prevent="$emit('last')">
-                    <div class="nav-item">
+                    <div class="page_nav-item">
                         <span></span>
                         <img src="../../static/img/ic_pagination_last.png"/>
                     </div>
