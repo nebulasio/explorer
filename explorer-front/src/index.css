@@ -313,3 +313,7 @@ label {
     width: 16px;
     height: 16px;
 }
+
+img[src=""],img:not([src]){
+    opacity:0;
+}
