@@ -45,11 +45,11 @@
         <div class=tab>
             <table class="explorer-table">
                 <tr>
-                    <td class="td-left font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">TxHash:</td>
+                    <td class="td-left font-size-16-normal font-color-555555" style="padding-left: 24px;">TxHash:</td>
                     <td class="font-size-16-normal font-color-000000">{{ tx.hash }}</td>
                 </tr>
                 <tr class="font-size-16-normal">
-                    <td class="font-color-555555 padding-left-24" style="padding-left: 24px;">TxReceipt Status:</td>
+                    <td class="font-color-555555" style="padding-left: 24px;">TxReceipt Status:</td>
                     <td v-if="tx.status === 0">
                         <img class="icon18" src="../../static/img/ic_tx_status_failed.png" />
                         <span class="font-color-F04434" style="margin-left: 10px;">fail ( {{ tx.executeError }} )</span>
@@ -64,55 +64,55 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">Block Height:</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Block Height:</td>
                     <td>
                         <template v-if=tx.isPending>
                             <span class="font-color-000000 font-size-16-normal"> pending </span>
                         </template>
                         <template v-else>
-                            <router-link v-if=tx.block v-bind:to='fragApi + "/block/" + tx.block.height'>
+                            <router-link v-if=tx.block v-bind:to='fragApi +"/block/" + tx.block.height'>
                                 <span class="font-color-0057FF font-size-16-normal">{{tx.block.height}}</span>
                             </router-link>
                         </template>
                     </td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">TimeStamp:</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">TimeStamp:</td>
                     <td class="font-size-16-normal font-color-000000">{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})
                     </td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">From:</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">From:</td>
                     <td>
-                        <router-link v-if=tx.from v-bind:to='fragApi + "/address/" + tx.from.hash'>
+                        <router-link v-if=tx.from v-bind:to='fragApi +"/address/" + tx.from.hash'>
                             <span class="font-color-0057FF font-size-16-normal">{{ tx.from.hash }}</span>
                         </router-link>
                     </td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">To:</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">To:</td>
                     <td class=monospace v-if=isTokenTransfer>
                         <span class="font-color-000000 font-size-16-normal">Contract</span>
-                        <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>
+                        <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
                             <span style="margin-left: 20px;" class="font-size-16-normal font-color-0057FF">{{ tx.to.hash }}</span>
                         </router-link>
                         <div class="token-name font-size-16-normal font-color-000000" style="margin-left: 14px;" v-if="tx.tokenName">{{ '【' + tx.tokenName + '】' }}</div>
                     </td>
                     <td v-else>
-                        <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.to.hash'>
+                        <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
                             <span class="font-color-0057FF font-size-16-normal">{{ tx.to.hash }}</span>
                         </router-link>
                     </td>
                 </tr>
                 <tr  v-if=isTokenTransfer class="font-size-16-normal">
-                    <td class="font-color-555555 padding-left-24" style="padding-left: 24px;">Token Transfered:</td>
+                    <td class="font-color-555555" style="padding-left: 24px;">Token Transfered:</td>
                     <td>
                         <span class="font-color-000000">From</span>
-                        <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + tx.from.hash'>
+                        <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.from.hash'>
                             <span class="font-color-0057FF">{{ tx.from.hash }}</span>
                         </router-link>
                         <span class="font-color-000000">To </span>
-                        <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi + "/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>
+                        <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>
                             <span class="font-color-0057FF">{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
                         </router-link>
                         <span class="font-color-000000">for {{ tokenAmount }}</span>
@@ -122,7 +122,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">Value:</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Value:</td>
                     <td class="font-size-16-normal font-color-000000">{{ nasAmount(tx.value) }} NAS</td>
                 </tr>
 
@@ -132,42 +132,42 @@
 
             <table class="explorer-table">
                 <tr>
-                    <td class="td-left font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">Gas Limit:</td>
+                    <td class="td-left font-size-16-normal font-color-555555" style="padding-left: 24px;">Gas Limit:</td>
                     <td class="font-color-000000 font-size-16-normal">{{ numberAddComma(tx.gasLimit) }}</td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">Gas Used By Txn:</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Gas Used By Txn:</td>
                     <td class="font-color-000000 font-size-16-normal">{{ tx.isPending === true ? 'pending' : numberAddComma(tx.gasUsed) }}</td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">Gas Price:</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Gas Price:</td>
                     <td class="font-color-000000 font-size-16-normal">{{ toWei(tx.gasPrice) }}</td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">Actual Tx Cost/Fee:</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Actual Tx Cost/Fee:</td>
                     <td class="font-color-000000 font-size-16-normal">{{ toWei(tx.txFee) }}</td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">Nonce:</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Nonce:</td>
                     <td class="font-color-000000 font-size-16-normal">{{ tx.nonce }}</td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">Transaction Type:</td>
-                    <td class="font-color-000000 font-size-16-normal" v-if=" tx.type === 'deploy' ">{{ txType }} ( contract address: <router-link v-if=tx.to v-bind:to='fragApi + "/address/" + tx.contractAddress'> <span class="font-color-0057FF"> {{tx.contractAddress}}</span> </router-link>)</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Transaction Type:</td>
+                    <td class="font-color-000000 font-size-16-normal" v-if=" tx.type === 'deploy'">{{ txType }} ( contract address: <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.contractAddress'> <span class="font-color-0057FF"> {{tx.contractAddress}}</span> </router-link>)</td>
                     <td class="font-color-000000 font-size-16-normal" v-else>{{ txType }}</td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">SourceType:</td>
-                    <td class="font-color-000000 font-size-16-normal" v-if=" tx.type === 'deploy' ">{{ JSON.parse(tx.data).SourceType }}</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">SourceType:</td>
+                    <td class="font-color-000000 font-size-16-normal" v-if=" tx.type === 'deploy'">{{ JSON.parse(tx.data).SourceType }}</td>
                     <td v-else></td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">Args:</td>
-                    <td class="font-color-000000 font-size-16-normal" v-if=" tx.type === 'deploy' ">{{ JSON.parse(tx.data).Args }}</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Args:</td>
+                    <td class="font-color-000000 font-size-16-normal" v-if=" tx.type === 'deploy'">{{ JSON.parse(tx.data).Args }}</td>
                     <td v-else></td>
                 </tr>
                 <tr>
-                    <td class="font-size-16-normal font-color-555555 padding-left-24" style="padding-left: 24px;">Payload Data:</td>
+                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Payload Data:</td>
                     <td v-if="tx.type === 'binary'" class=text>
                         {{ tx.data }}
                     </td>
@@ -202,19 +202,19 @@
 
     module.exports = {
         components: {
-            "vue-tab-buttons": require("@/components/vue-tab-buttons").default
+           "vue-tab-buttons": require("@/components/vue-tab-buttons").default
         },
         computed: {
 
             formatCode() {
                 var lang = prism.languages.javascript;
                 if (this.tx.data)
-                    if (this.tx.type == "deploy")
+                    if (this.tx.type =="deploy")
                         return prism.highlight(jsBeautify(JSON.parse(this.tx.data).Source), lang);
-                    else if (this.tx.type == "call")
+                    else if (this.tx.type =="call")
                         return prism.highlight(jsBeautify(this.tx.data), lang);
 
-                return "0x0";
+                return"0x0";
             },
             txType() {
                 // type=binary      【前端显示：Normal】
@@ -224,13 +224,13 @@
                 // type=delegate    【前端显示：dpos delegate】
                 if (this.tx) switch (this.tx.type) {
                     default:
-                    case "binary": return "normal";
-                    case "deploy": return "deploy contract";
-                    case "call": return "call contract";
-                    case "candidate": return "dpos candidate";
-                    case "delegate": return "dpos delegate";
+                    case"binary": return"normal";
+                    case"deploy": return"deploy contract";
+                    case"call": return"call contract";
+                    case"candidate": return"dpos candidate";
+                    case"delegate": return"dpos delegate";
                 } else
-                    return "";
+                    return"";
             },
             urlChange() {
                 this.$root.showModalLoading = true;
@@ -239,12 +239,12 @@
                     this.tx = o;
                     if (!o.tokenName || o.tokenName.length == 0) {
                         if (o.to.hash == this.atpAddress()) {
-                            this.tx.tokenName = "ATP";
+                            this.tx.tokenName ="ATP";
                         }
                     }
                 }, xhr => {
                     this.$root.showModalLoading = false;
-                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                    this.$router.replace((this.$route.params.api ?"/" + this.$route.params.api :"") +"/404!" + this.$route.fullPath);
                 });
             },
             isTokenTransfer() {
@@ -265,7 +265,7 @@
         },
         data() {
             return {
-                fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
+                fragApi: this.$route.params.api ?"/" + this.$route.params.api :"",
                 tab: 0,
                 tabButtons: ["Overview"],
                 tx: {tokenName: null},
@@ -292,7 +292,7 @@
                 return amount.div(decimals).toFormat();
             },
             atpAddress() {
-                var api = this.$route.params.api ? this.$route.params.api : "mainnet";
+                var api = this.$route.params.api ? this.$route.params.api :"mainnet";
                 return appConfig.apiPrefixes[api].atp;
             }
         }

@@ -228,6 +228,13 @@ label {
 }
 
 /*----------------------- font css -----------------------*/
+.font-size-14-bold {
+    height: 20px;
+    font-size: 14px;
+    font-family: OpenSans-Semibold;
+    line-height: 20px;
+    font-weight:600;
+}
 .font-size-14-normal {
     height: 20px;
     font-size: 14px;
@@ -287,6 +294,10 @@ label {
 
 .font-color-4560E6 {
     color:rgba(69,96,230,1);
+}
+
+.font-color-07A656 {
+    color:rgba(7,166,86,1);
 }
 
 /*----------------------- icons -----------------------*/
