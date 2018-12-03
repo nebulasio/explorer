@@ -272,6 +272,14 @@ label {
     line-height:30px;
 }
 
+.font-size-40-bold {
+    height:48px;
+    font-size:40px;
+    font-family:OpenSans-Bold;
+    font-weight:bold;
+    line-height:48px;
+}
+
 .font-color-000000 {
     color:rgba(0,0,0,1);
 }

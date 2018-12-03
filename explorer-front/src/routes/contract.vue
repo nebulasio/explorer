@@ -116,7 +116,7 @@
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
     <div class=vue-contract v-bind:triggedComputed=urlChange>
-        <vue-bread v-if=obj v-bind:arr=breadcrumb v-bind:title='obj.tokenName' subtitle="(NRC20 Token)"></vue-bread>
+        <vue-bread v-if=obj v-bind:arr=breadcrumb v-bind:title='obj.tokenName' subtitle="【 NRC20 Token 】"></vue-bread>
         <div class=container v-if=obj>
 
             <div style="margin-top: 60px;margin-bottom: 30px;">
@@ -212,17 +212,17 @@
                             <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
                             <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                         </td>
-                        <td class="tdxxxwddd txs-from-to">
+                        <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                             <vue-blockies v-bind:address='o.from'></vue-blockies>
                             <span class="fromTo" v-if="o.from === $route.params.id">{{ o.from }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.from'>
                                 <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.from }}</span>
                             </router-link>
                         </td>
-                        <td>
+                        <td style="padding: 0;">
                             <img style="width:40px;height:40px" src="../../static/img/ic_arrow_right.png"/>
                         </td>
-                        <td class="tdxxxwddd txs-from-to">
+                        <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                             <vue-blockies v-if="o.to" v-bind:address='o.to'></vue-blockies>
                             <span class="fromTo" v-if="o.to === $route.params.id">{{ o.to }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to'>

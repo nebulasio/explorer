@@ -1,6 +1,6 @@
 <style>
     .vue-bread {
-        background-color: #f8f8f8;
+        background-color: #f7f7f7;
         border-bottom: 1px solid #eee;
         overflow: auto;
         padding: 10px 0;
@@ -15,38 +15,26 @@
         margin: 0;
     }
 
-    .vue-bread ol> :last-child {
+    .vue-bread ol > :last-child {
         color: #3498db;
     }
 
     .vue-bread .title {
         display: inline;
-        font-size: 24px;
+        vertical-align: middle;
     }
 
     .vue-bread .subtitle {
         display: inline;
-        font-size: 20px;
+        vertical-align: middle;
     }
 
 </style>
 <template>
     <div class=vue-bread>
         <div class=container>
-            <div class="align-items-center row">
-                <div class="col">
-                    <div class=title>{{ title }}</div>
-                    <div class=subtitle>{{ subtitle }}</div>
-                </div>
-                <nav class=col-auto aria-label=breadcrumb>
-                    <ol class=breadcrumb>
-                        <li class=breadcrumb-item v-bind:class="{ active: i == arr.length - 1 }" v-for="(o, i) in arr" :key="i">
-                            <template v-if="i == arr.length - 1">{{ o.text }}</template>
-                            <router-link v-else v-bind:to='fragApi + o.to'>{{ o.text }}</router-link>
-                        </li>
-                    </ol>
-                </nav>
-            </div>
+            <div class="title font-size-40-bold font-color-000000">{{ title }}</div>
+            <div class="subtitle font-size-16-bold font-color-000000" style="margin-left: 20px;">{{ subtitle }}</div>
         </div>
     </div>
 </template>

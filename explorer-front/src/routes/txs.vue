@@ -120,17 +120,17 @@
                         <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
-                    <td class="tdxxxwddd txs-from-to">
+                    <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                         <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                         <span class="fromTo" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span>
                         <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
                             <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.from.hash }}</span>
                         </router-link>
                     </td>
-                    <td>
+                    <td style="padding: 0;">
                         <img style="width:40px;height:40px" src="../../static/img/ic_arrow_right.png"/>
                     </td>
-                    <td class="tdxxxwddd txs-from-to">
+                    <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                         <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                         <span class="fromTo" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span>
                         <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>
