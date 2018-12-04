@@ -386,32 +386,36 @@
         margin: 0;
     }
 
-    .vue-dashboard table {
+    .vue-dashboard .row5 table {
         margin-top: 47px;
         width: 100%;
         font-size: 16px;
     }
 
-    .vue-dashboard table tr {
+    .vue-dashboard .row5 table tr {
         border: solid 1px;
         border-color: #F2F6F7;
     }
 
-    .vue-dashboard tr {
+    .vue-dashboard .row5 tr {
         height: 74px;
     }
 
-    .vue-dashboard td:first-child {
+    .vue-dashboard .row5 td:first-child {
         width: 70px;
     }
 
-    .vue-dashboard td:last-child {
+    .vue-dashboard .row5 td:last-child {
         text-align: right;
     }
 
-    .vue-dashboard td .time::after {
+    .vue-dashboard .row5 td .time::after {
         content:'\A ';
         white-space:pre;
+    }
+
+    .vue-dashboard .row5 .flex-item .item-bg {
+        overflow: scroll;
     }
 
     @media (max-width: 575.98px) {
@@ -472,7 +476,7 @@
         <div class="container">
             <!-- ====================1==================== -->
             <div class="row row1">
-                <div class="daily-transactions flex-item col-md-12 col-lg-6 row1-item">
+                <div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
                     <div class="item-bg">
                         <div class="item-title">Daily Transactions</div>
                         <div class="details">
@@ -483,7 +487,7 @@
                         <vchart class="daily-chart" :options="dailyTxData" :autoResize='true'></vchart>
                     </div>
                 </div>
-                <div class="nas-price flex-item col-md-12 col-lg-6 row1-item">
+                <div class="nas-price flex-item col-12 col-lg-6 row1-item">
                     <div class="item-bg">
                         <div class="item-title">NAS Price</div>
                         <div class="update-time">Update time : 2 Min ago</div>
@@ -525,28 +529,28 @@
             </div>
             <!-- ===================3===================== -->
             <div class="row row3">
-                <div class="col-lg-3 col-md-6 col-sm-12 col-12 flex-item w285">
+                <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div>1,189,786</div>
                         <router-link class="link" :to='fragApi + "/blocks/"'>Block Heigth ></router-link>
                         <img src=/static/img/dashboard-1.png width=44 alt="">
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-12 col-12 flex-item w285">
+                <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div>1,189,786</div>
                         <router-link class="link" :to='fragApi + "/txs/"'>Total Transations ></router-link>
                         <img src=/static/img/dashboard-2.png width=44 alt="">
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-12 col-12 flex-item w285">
+                <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div>1,189,786</div>
                         <div class="link">Total Smart Contract</div>
                         <img src=/static/img/dashboard-3.png width=44 alt="">
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-12 col-12 flex-item w285">
+                <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div>1,189,786</div>
                         <router-link class="link" :to='fragApi + "/accounts/"'>Total Address ></router-link>
@@ -555,8 +559,8 @@
                 </div>
             </div>
             <!-- ===================4===================== -->
-            <div class="row row4 flex-row-container">
-                <div class="flex-item col-md-12 col-lg-6 row4-item user-data">
+            <div class="row row4">
+                <div class="flex-item col-12 col-lg-6 row4-item user-data">
                     <div class="item-bg item-shadow">
                         <div class="item-title">新用户占比</div>
                         <div class="subtitle text-light-gray ml30 fs12">新用户为90日内创建星云账户者</div>
@@ -575,7 +579,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex-item col-md-12 col-lg-6 row4-item accounts-data">
+                <div class="flex-item col-12 col-lg-6 row4-item accounts-data">
                     <div class="item-bg item-shadow">
                         <div class="item-title">主网账户数量变化</div>
                         <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
@@ -584,8 +588,8 @@
                 </div>
             </div>
             <!-- ===================5===================== -->
-            <div class="row row5 flex-row-container">
-                <div class="flex-item col-12 col-sm-12 col-lg-6 row5-item">
+            <div class="row row5">
+                <div class="flex-item col-12 col-lg-6 row5-item">
                     <div class="item-bg item-shadow">
                         <div class="item-title">Blocks</div>
                         <table frame=hsides rules=rows>
@@ -606,7 +610,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="flex-item col-12 col-sm-12 col-lg-6 row5-item">
+                <div class="flex-item col-12 col-lg-6 row5-item">
                     <div class="item-bg item-shadow">
                         <div class="item-title">Transactions</div>
                         <table frame=hsides rules=rows>
