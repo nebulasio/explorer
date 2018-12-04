@@ -321,6 +321,10 @@ label {
     width: 16px;
     height: 16px;
 }
+.icon24 {
+    width: 24px;
+    height: 24px;
+}
 
 img[src=""],img:not([src]){
     opacity:0;
