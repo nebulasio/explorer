@@ -229,55 +229,35 @@ label {
 
 /*----------------------- font css -----------------------*/
 .font-size-14-bold {
-    height: 20px;
     font-size: 14px;
-    font-family: OpenSans-Semibold;
-    line-height: 20px;
     font-weight:600;
 }
 .font-size-14-normal {
-    height: 20px;
     font-size: 14px;
-    font-family: OpenSans;
-    line-height: 20px;
 }
 
 .font-size-16-normal {
-    height: 20px;
     font-size: 16px;
-    font-family: OpenSans;
-    line-height: 20px;
 }
 
 .font-size-16-bold {
     font-size: 16px;
-    font-family: OpenSans-Semibold;
     font-weight: 600;
-    line-height: 20px;
 }
 
 .font-size-12-bold {
-    height:17px;
     font-size:12px;
-    font-family:OpenSans-Semibold;
     font-weight:600;
-    line-height:17px;
 }
 
 .font-size-24-bold {
-    height:30px;
     font-size:24px;
-    font-family:OpenSans-Semibold;
     font-weight:600;
-    line-height:30px;
 }
 
 .font-size-40-bold {
-    height:48px;
     font-size:40px;
-    font-family:OpenSans-Bold;
     font-weight:bold;
-    line-height:48px;
 }
 
 .font-color-000000 {
