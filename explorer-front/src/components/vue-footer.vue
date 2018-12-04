@@ -1,6 +1,8 @@
 <style>
     .vue-footer {
-        background-color: #222;
+        height: 82px;
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0px 1px 0px 0px rgba(221, 221, 221, 1);
         margin-top: 30px;
         overflow: auto;
     }
@@ -16,53 +18,60 @@
     }
 
     .vue-footer .container {
-        margin-bottom: 30px;
+        height: 82px;
     }
 
     .vue-footer .fa {
         text-align: center;
         width: 14px;
     }
+
+    .div-left {
+        float: left;
+        width: 33.33%;
+        height: 100%;
+        vertical-align: middle;
+    }
+
+    .div-middle {
+        float: left;
+        width: 33.33%;
+        height: 100%;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .div3 {
+        float: left;
+        width: 33.34%;
+        vertical-align: middle;
+    }
 </style>
 <template>
     <div class=vue-footer>
         <div class=container>
-            <h4>About</h4>
-            <div class="justify-content-center row">
-                <div class=col-1></div>
-                <div class=col-2>
-                    <div>
-                        <!-- <span class="fa fa-(nebulas?)" aria-hidden=true></span> -->
-                        <a target=_blank href=https://nebulas.io>Nebulas.io</a>
-                    </div>
-                    <div>
-                        <span class="fa fa-facebook-f" aria-hidden=true></span>
-                        <a target=_blank href=https://www.facebook.com/nebulasproject>Facebook</a>
-                    </div>
-                    <div>
-                        <span class="fa fa-slack" aria-hidden=true></span>
-                        <a target=_blank href=https://nebulasio.herokuapp.com>Slack</a>
-                    </div>
-                    <div>
-                        <span class="fa fa-twitter" aria-hidden=true></span>
-                        <a target=_blank href=https://twitter.com/nebulasio>Twitter</a>
-                    </div>
-                </div>
-                <div class=col-1></div>
-                <div class=col-3>
-                    <div>
-                        <span class="fa fa-github" aria-hidden=true></span>
-                        <a target=_blank href=https://github.com/nebulasio>Github.com/nebulasio</a>
-                    </div>
-                    <div>
-                        <span class="fa fa-github" aria-hidden=true></span>
-                        <a target=_blank href=https://github.com/nebulasio/explorer/issues>Issue</a>
-                    </div>
-                    <div>
-                        <span class="fa fa-github" aria-hidden=true></span>
-                        <a target=_blank href=https://github.com/nebulasio/explorer/commit/cf54099633db072aef15cec338a0ddaf21bb182a>Commit: cf54099</a>
-                    </div>
-                </div>
+            <div class="div-left">
+                <span style="height: 100%;display: inline-block;vertical-align: middle;"></span>
+                <img style="height: 34px; width: 156px;display: inline; vertical-align: middle;"
+                     src="../../static/img/img_footer_logo.png"/>
+            </div>
+            <div class="div-middle">
+                <span class="font-size-16-normal font-color-000000" style="line-height:82px;">
+                    Copyright &#169 2018 The Nebulas Team
+                </span>
+            </div>
+            <div class="div3" style="text-align: right">
+                <span class="font-color-000000 font-size-16-normal" style="line-height: 82px;">
+                    Submit a issue
+                </span>
+                <a target=_blank href=https://github.com/nebulasio/explorer/issues>
+                    <img class="icon24" style="vertical-align: middle;"
+                         src="../../static/img/ic_github.png"/>
+                </a>
+                <a target=_blank href=https://twitter.com/nebulasio>
+                    <img class="icon24" style="vertical-align: middle;"
+                         src="../../static/img/ic_twitter.png"/>
+                </a>
             </div>
         </div>
     </div>

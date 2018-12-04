@@ -336,7 +336,7 @@
                 </div>
 
                 <table class="mt20 explorer-table list-table">
-                    <tr style="height: 46px; background-color: #e8e8e8;">
+                    <tr class="font-size-12-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
                         <th v-if="isContract"></th>
                         <th v-else style="width: 50px;"></th>
                         <th>TxHash</th>
@@ -428,7 +428,7 @@
                 </div>
 
                 <table class="mt20 explorer-table list-table">
-                    <tr style="height: 46px; background-color: #e8e8e8;">
+                    <tr class="font-size-12-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
                         <th style="width: 50px;"></th>
                         <th>TxHash</th>
                         <th>Block</th>
