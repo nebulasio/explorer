@@ -528,14 +528,14 @@
                 <div class="col-lg-3 col-md-6 col-sm-12 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div>1,189,786</div>
-                        <router-link class="link" to="asdf">Block Heigth ></router-link>
+                        <router-link class="link" :to='fragApi + "/blocks/"'>Block Heigth ></router-link>
                         <img src=/static/img/dashboard-1.png width=44 alt="">
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-12 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div>1,189,786</div>
-                        <router-link class="link" to="asdf">Total Transations ></router-link>
+                        <router-link class="link" :to='fragApi + "/txs/"'>Total Transations ></router-link>
                         <img src=/static/img/dashboard-2.png width=44 alt="">
                     </div>
                 </div>
@@ -549,7 +549,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-12 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div>1,189,786</div>
-                        <router-link class="link" to="asdf">Total Address ></router-link>
+                        <router-link class="link" :to='fragApi + "/accounts/"'>Total Address ></router-link>
                         <img src=/static/img/dashboard-4.png width=44 alt="">
                     </div>
                 </div>
@@ -648,6 +648,7 @@
         },
         data() {
             return {
+                fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 dailyTxData: {
                     grid: { x: '10', y: '100', width: '98%', height: '210', containLabel: true },
                     xAxis: {
