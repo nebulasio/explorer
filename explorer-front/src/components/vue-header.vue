@@ -127,10 +127,10 @@
                 }
             },
             onSubmit() {
-                if (this.search.trim().toLowerCase() == 'atp') {
-                    this.showATP();
-                    return;
-                }
+                // if (this.search.trim().toLowerCase() == 'atp') {
+                //     this.showATP();
+                //     return;
+                // }
                 this.$root.showModalLoading = true;
                 api.getSearch(this.search, o => {
                     this.$root.showModalLoading = false;
@@ -142,6 +142,8 @@
                         this.$router.push(this.fragApi + "/address/" + o.q);
                     else if (o.type == "tx")
                         this.$router.push(this.fragApi + "/tx/" + o.q);
+                    else if (o.type == "contract")
+                        this.$router.push(this.fragApi + "/contract/" + o.q);
                     else {
                         this.$root.search = o.q;
                         this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/oops");
