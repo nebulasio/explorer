@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.nebulas.explorer.mapper.NasAccountMapper" >
+  <resultMap id="BaseResultMap" type="io.nebulas.explorer.domain.NasAccount" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="address_count" property="addressCount" jdbcType="INTEGER" />
+    <result column="address_increment" property="addressIncrement" jdbcType="INTEGER" />
+    <result column="contract_count" property="contractCount" jdbcType="INTEGER" />
+    <result column="contract_increment" property="contractIncrement" jdbcType="INTEGER" />
+    <result column="timestamp" property="timestamp" jdbcType="TIMESTAMP" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Condition_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Condition_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, address_count, address_increment, contract_count, contract_increment, timestamp, 
+    created_at, updated_at
+  </sql>
+  <select id="selectByCondition" resultMap="BaseResultMap" parameterType="io.nebulas.explorer.domain.NasAccountCondition" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from nas_account
+    <if test="_parameter != null" >
+      <include refid="Condition_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitOffset >= 0" >
+       limit ${limitOffset} , ${limitSize}
+    </if>
+  </select>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from nas_account
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Long" >
+    delete from nas_account
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByCondition" parameterType="io.nebulas.explorer.domain.NasAccountCondition" >
+    delete from nas_account
+    <if test="_parameter != null" >
+      <include refid="Condition_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="io.nebulas.explorer.domain.NasAccount" >
+    insert into nas_account (id, address_count, address_increment, 
+      contract_count, contract_increment, timestamp, 
+      created_at, updated_at)
+    values (#{id,jdbcType=BIGINT}, #{addressCount,jdbcType=INTEGER}, #{addressIncrement,jdbcType=INTEGER}, 
+      #{contractCount,jdbcType=INTEGER}, #{contractIncrement,jdbcType=INTEGER}, #{timestamp,jdbcType=TIMESTAMP}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="io.nebulas.explorer.domain.NasAccount" >
+    insert into nas_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="addressCount != null" >
+        address_count,
+      </if>
+      <if test="addressIncrement != null" >
+        address_increment,
+      </if>
+      <if test="contractCount != null" >
+        contract_count,
+      </if>
+      <if test="contractIncrement != null" >
+        contract_increment,
+      </if>
+      <if test="timestamp != null" >
+        timestamp,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="addressCount != null" >
+        #{addressCount,jdbcType=INTEGER},
+      </if>
+      <if test="addressIncrement != null" >
+        #{addressIncrement,jdbcType=INTEGER},
+      </if>
+      <if test="contractCount != null" >
+        #{contractCount,jdbcType=INTEGER},
+      </if>
+      <if test="contractIncrement != null" >
+        #{contractIncrement,jdbcType=INTEGER},
+      </if>
+      <if test="timestamp != null" >
+        #{timestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByCondition" parameterType="io.nebulas.explorer.domain.NasAccountCondition" resultType="java.lang.Integer" >
+    select count(*) from nas_account
+    <if test="_parameter != null" >
+      <include refid="Condition_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByConditionSelective" parameterType="map" >
+    update nas_account
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.addressCount != null" >
+        address_count = #{record.addressCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.addressIncrement != null" >
+        address_increment = #{record.addressIncrement,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractCount != null" >
+        contract_count = #{record.contractCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractIncrement != null" >
+        contract_increment = #{record.contractIncrement,jdbcType=INTEGER},
+      </if>
+      <if test="record.timestamp != null" >
+        timestamp = #{record.timestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdAt != null" >
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null" >
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Condition_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByCondition" parameterType="map" >
+    update nas_account
+    set id = #{record.id,jdbcType=BIGINT},
+      address_count = #{record.addressCount,jdbcType=INTEGER},
+      address_increment = #{record.addressIncrement,jdbcType=INTEGER},
+      contract_count = #{record.contractCount,jdbcType=INTEGER},
+      contract_increment = #{record.contractIncrement,jdbcType=INTEGER},
+      timestamp = #{record.timestamp,jdbcType=TIMESTAMP},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Condition_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByIdSelective" parameterType="io.nebulas.explorer.domain.NasAccount" >
+    update nas_account
+    <set >
+      <if test="addressCount != null" >
+        address_count = #{addressCount,jdbcType=INTEGER},
+      </if>
+      <if test="addressIncrement != null" >
+        address_increment = #{addressIncrement,jdbcType=INTEGER},
+      </if>
+      <if test="contractCount != null" >
+        contract_count = #{contractCount,jdbcType=INTEGER},
+      </if>
+      <if test="contractIncrement != null" >
+        contract_increment = #{contractIncrement,jdbcType=INTEGER},
+      </if>
+      <if test="timestamp != null" >
+        timestamp = #{timestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateById" parameterType="io.nebulas.explorer.domain.NasAccount" >
+    update nas_account
+    set address_count = #{addressCount,jdbcType=INTEGER},
+      address_increment = #{addressIncrement,jdbcType=INTEGER},
+      contract_count = #{contractCount,jdbcType=INTEGER},
+      contract_increment = #{contractIncrement,jdbcType=INTEGER},
+      timestamp = #{timestamp,jdbcType=TIMESTAMP},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByLatest" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from nas_account
+    where id = (select max(id) from nas_account)
+  </select>
+</mapper>

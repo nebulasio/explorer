@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.springframework.web.bind.annotation.*;
@@ -60,6 +61,7 @@ public class RpcController {
     private final NebApiServiceWrapper nebApiServiceWrapper;
     private final NebStatService nebStatService;
     private final NebEventService nebEventService;
+    private final NasAccountService nasAccountService;
 
     private final ContractTokenService contractTokenService;
     private final ContractTokenBalanceService contractTokenBalanceService;
@@ -227,6 +229,11 @@ public class RpcController {
     @RequestMapping("/tx/cnt_static")
     public JsonResult txStatic() {
         return JsonResult.success(nebTransactionService.countTxCntGroupMapByTimestamp(LocalDate.now().plusDays(-15).toDate(), LocalDate.now().toDate()));
+    }
+
+    @RequestMapping("/tx/cnt_today")
+    public JsonResult txToday() {
+        return JsonResult.success(nebTransactionService.countTxToday());
     }
 
     @GetMapping("/stat/data")
@@ -726,5 +733,39 @@ public class RpcController {
 
         return result;
     }
+
+    /**
+     * 返回nas主网总成交量，总合约数量，总账户数量
+     * @return
+     */
+    @RequestMapping("/nasinfo")
+    public JsonResult getNasMainnetInfo(){
+
+        JsonResult result = JsonResult.success();
+
+        NasAccount nasAccount = nasAccountService.getLatestNasAccount();
+
+        if (nasAccount == null){
+            return JsonResult.success();
+        }
+
+        long txnCnt = nebTransactionService.countPendingTxnCnt("");
+        NasAccount ninetyDayAccount = nasAccountService.getNasAccountFromNinetyDays();
+
+        long newAddressCount = nasAccount.getAddressCount() - ninetyDayAccount.getAddressCount();
+
+
+        result.put("totalAddressCount",nasAccount.getAddressCount());
+        result.put("totalContractCount",nasAccount.getContractCount());
+        result.put("txnCnt",txnCnt);
+        result.put("newAddressCount",newAddressCount);
+        result.put("oldAddressCount",ninetyDayAccount.getAddressCount());
+
+        List<NasAccount> nasAccountList = nasAccountService.getEightWeeks();
+
+        result.put("addressWeekList",nasAccountList);
+        return result;
+    }
+
 
 }
