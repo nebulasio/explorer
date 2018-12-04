@@ -1,4 +1,8 @@
 <style>
+    .vue-header .container {
+        margin-top: 5px;
+    }
+
     .vue-header a {
         color: inherit;
     }
