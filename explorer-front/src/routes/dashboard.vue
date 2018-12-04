@@ -791,10 +791,6 @@
             $('.new-user').css({
                 "transform": "rotate(-120deg)"
             });
-
-            window.onresize = () => {
-                // this.$refs.dailyChart.resize();
-            };
         },
         methods: {
             calBlockHeight(b) {

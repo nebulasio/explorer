@@ -1,11 +1,11 @@
 
 module.exports = [{
     component: require("@/routes/address").default,
-    meta: { headerActive: 3 },
+    meta: { headerActive: 2 },
     path: "/:api?/address/:id"
 }, {
     component: require("@/routes/accounts").default,
-    meta: { headerActive: 3 },
+    meta: { headerActive: 2 },
     path: "/:api?/accounts"
 }, {
     component: require("@/routes/block").default,

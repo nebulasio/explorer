@@ -23,6 +23,28 @@
         visibility: hidden;
     }
 
+    .vue-header form {
+        border: none;
+        margin-left: 80px;
+        padding: 6px 0px 6px 10px;
+        width: 360px;
+        background-color: white;
+    }
+
+    .vue-header .form-inline img {
+        margin-right: 6px;
+    }
+
+    .vue-header .form-inline input {
+        border: none;
+        flex: 1;
+    }
+
+    .vue-header .dropdown-menu {
+        font-size: 14px;
+        border-radius: 0px;
+    }
+
     @media (min-width: 992px) {
         .vue-header .navbar-nav>li>a {
             border-bottom: 2px solid transparent;
@@ -39,15 +61,12 @@
         }
     }
 
-    @media (max-width: 991px) {
+    @media (max-width: 991.98px) {
         .vue-header .form-inline {
             align-items: center;
             display: flex;
-        }
-
-        .vue-header .form-inline input {
-            flex: 1;
-            margin: 0 10px 0;
+            width: 100%;
+            margin: 10px 0px;
         }
     }
 </style>
@@ -68,8 +87,13 @@
             <button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
                 <span class=navbar-toggler-icon></span>
             </button>
-            <div class="collapse navbar-collapse" id=navbarSupportedContent>
-                <ul class="navbar-nav mr-auto">
+            <div class="collapse navbar-collapse mr-28" id=navbarSupportedContent>
+                <form class=form-inline v-on:submit.prevent=onSubmit>
+                    <img src=/static/img/icon_search.png width=16 alt="">
+                    <input class="form--control mr-sm-2" v-model=search type=search placeholder="Search by Address / Txhash / Block / Token">
+                    <!-- <button class="btn btn-outline-success" type=submit>GO</button> -->
+                </form>
+                <ul class="navbar-nav ml-auto">
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
                         <router-link v-bind:to="fragApi + '/'" class=nav-link>HOME
                             <span class=sr-only>(current)</span>
@@ -78,14 +102,17 @@
                     <li class="dropdown nav-item" v-bind:class="{ active: $route.meta.headerActive == 2 }">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>BLOCKCHAIN</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-blockchain>
-                            <router-link class=dropdown-item v-bind:to="fragApi + '/txs'">View Txns</router-link>
-                            <router-link class=dropdown-item v-bind:to="fragApi + '/txs/pending'">View Pending Txns</router-link>
-                            <router-link class=dropdown-item v-bind:to="fragApi + '/blocks'">View Blocks</router-link>
+                            <router-link class=dropdown-item v-bind:to="fragApi + '/txs'">Transactions</router-link>
+                            <router-link class=dropdown-item v-bind:to="fragApi + '/txs/pending'">Pending Transactions</router-link>
+                            <div class="dropdown-divider"></div>
+                            <router-link class=dropdown-item v-bind:to="fragApi + '/blocks'">Blocks</router-link>
+                            <div class="dropdown-divider"></div>
+                            <router-link class=dropdown-item v-bind:to="fragApi + '/accounts'">Accounts</router-link>
                         </div>
                     </li>
-                    <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
+                    <!-- <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
                         <router-link class=nav-link v-bind:to="fragApi + '/accounts'">ACCOUNT</router-link>
-                    </li>
+                    </li> -->
                     <li class="dropdown nav-item">
                         <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{ MenuMisc }}</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
@@ -96,10 +123,7 @@
                         </div>
                     </li>
                 </ul>
-                <form class=form-inline v-on:submit.prevent=onSubmit>
-                    <input class="form-control mr-sm-2" v-model=search type=search placeholder=Search>
-                    <button class="btn btn-outline-success" type=submit>GO</button>
-                </form>
+                
             </div>
         </div>
     </nav>
