@@ -15,7 +15,9 @@ import io.nebulas.explorer.util.DecodeUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -357,6 +359,19 @@ public class NebTransactionService {
         }
         return resultMap;
     }
+
+    public long countTxToday(){
+
+        List<Map<String, Object>> txCntResultList = nebTransactionMapper.countTxCntGroupByTimestamp(LocalDate.now(DateTimeZone.UTC).toDateTimeAtStartOfDay().toString(), LocalDateTime.now(DateTimeZone.UTC).toString());
+        if (txCntResultList.size() == 0){
+            return 0;
+        }
+        long todayTxCount = (long)txCntResultList.get(0).get("cnt");
+        return todayTxCount;
+    }
+
+
+
 
     /**
      * According to block height calculate transaction information
