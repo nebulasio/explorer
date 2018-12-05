@@ -463,15 +463,16 @@ public class RpcController {
             });
         }
 
-        NebMarketCapitalization marketCapitalization = nebMarketCapitalizationService.getAtpLatest();
+        NebMarketCapitalization marketCapitalization = nebMarketCapitalizationService.getNrc20Latest(token.getTokenName());
 
         JsonResult result = JsonResult.success();
         result.put("contract", info);
         result.put("txList", transactions);
-        result.put("price", marketCapitalization == null ? 0 : marketCapitalization.getPrice());
-        result.put("change24h", marketCapitalization == null ? 0 : marketCapitalization.getChange24h());
-        result.put("trends", marketCapitalization == null ? 0 : marketCapitalization.getTrends());
-
+        if (marketCapitalization != null){
+            result.put("price", marketCapitalization.getPrice());
+            result.put("change24h", marketCapitalization.getChange24h());
+            result.put("trends", marketCapitalization.getTrends());
+        }
         return result;
     }
 
@@ -577,7 +578,7 @@ public class RpcController {
             return JsonResult.success("type", "unknown").put("q", q);
         }
         NebContractToken contractToken = contractTokenService.getByTokenName(q.trim());
-        if (contractToken != null){
+        if (contractToken != null) {
             return JsonResult.success("type", "contract").put("q", contractToken.getContract());
         }
         if (q.length() < 64) {

@@ -17,6 +17,6 @@ public interface NebMarketCapitalizationMapper {
 
     NebMarketCapitalization getLatest();
 
-    NebMarketCapitalization getAtpLatest();
+    NebMarketCapitalization getNrc20Latest(String currencyId);
 
 }
