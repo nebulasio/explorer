@@ -196,6 +196,8 @@ public class NebTransactionService {
             }
         });
 
+        Collections.sort(nrc20TxList,Comparator.comparing(NebTransaction::getTimestamp).reversed());
+
         return nrc20TxList;
     }
 
