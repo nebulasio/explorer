@@ -1,6 +1,7 @@
 <style>
     .vue-header .container {
-        margin-top: 5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
 
     .vue-header a {
