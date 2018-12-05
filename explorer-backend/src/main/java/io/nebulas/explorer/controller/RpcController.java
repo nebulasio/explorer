@@ -74,9 +74,16 @@ public class RpcController {
         return JsonResult.success(nebMarketCapitalizationService.getLatest());
     }
 
-    @RequestMapping(value = "/block", method = RequestMethod.GET, params = "type=latest")
-    public JsonResult latestBlock() {
-        List<NebBlock> blkList = nebBlockService.findNebBlockOrderByHeight(1, 10);
+    @RequestMapping(value = "/block", method = RequestMethod.GET)
+    public JsonResult latestBlock(@RequestParam(value = "type") String type) {
+        List<NebBlock> blkList = new ArrayList<>();
+        if (type.equals("latest")) {
+            blkList = nebBlockService.findNebBlockOrderByHeight(1, 40);
+        } else if (type.equals("newblock")) {
+            blkList = nebBlockService.findLatestBlock();
+        } else {
+            blkList = nebBlockService.findNebBlockOrderByHeight(1, 10);
+        }
         return JsonResult.success(convertBlock2BlockVo(blkList, false));
     }
 
@@ -210,9 +217,9 @@ public class RpcController {
         if (toAddress != null) {
             vo.setTo(new AddressVo().build(toAddress));
             NebContractToken contractToken = contractTokenService.getByContract(toAddress.getHash());
-            if (contractToken == null){
+            if (contractToken == null) {
                 vo.setTokenName("");
-            }else{
+            } else {
                 vo.setTokenName(contractToken.getTokenName());
             }
         } else {
@@ -569,9 +576,9 @@ public class RpcController {
             }
             return JsonResult.success("type", "unknown").put("q", q);
         }
-        if (q.trim().equalsIgnoreCase("atp")){
+        if (q.trim().equalsIgnoreCase("atp")) {
             NebContractToken contractToken = contractTokenService.getByTokenName("atp");
-            if (contractToken == null){
+            if (contractToken == null) {
                 return JsonResult.failed();
             }
             return JsonResult.success("type", "contract").put("q", contractToken.getContract());
@@ -696,7 +703,6 @@ public class RpcController {
     }
 
 
-
     @RequestMapping("/address/nrc20/{hash}/{page}")
     public JsonResult nrc20Transactions(@PathVariable("hash") String hash, @PathVariable("page") int page) {
         NebAddress address = nebAddressService.getNebAddressByHashRpc(hash);
@@ -736,16 +742,17 @@ public class RpcController {
 
     /**
      * 返回nas主网总成交量，总合约数量，总账户数量
+     *
      * @return
      */
     @RequestMapping("/nasinfo")
-    public JsonResult getNasMainnetInfo(){
+    public JsonResult getNasMainnetInfo() {
 
         JsonResult result = JsonResult.success();
 
         NasAccount nasAccount = nasAccountService.getLatestNasAccount();
 
-        if (nasAccount == null){
+        if (nasAccount == null) {
             return JsonResult.success();
         }
 
@@ -755,15 +762,15 @@ public class RpcController {
         long newAddressCount = nasAccount.getAddressCount() - ninetyDayAccount.getAddressCount();
 
 
-        result.put("totalAddressCount",nasAccount.getAddressCount());
-        result.put("totalContractCount",nasAccount.getContractCount());
-        result.put("txnCnt",txnCnt);
-        result.put("newAddressCount",newAddressCount);
-        result.put("oldAddressCount",ninetyDayAccount.getAddressCount());
+        result.put("totalAddressCount", nasAccount.getAddressCount());
+        result.put("totalContractCount", nasAccount.getContractCount());
+        result.put("txnCnt", txnCnt);
+        result.put("newAddressCount", newAddressCount);
+        result.put("oldAddressCount", ninetyDayAccount.getAddressCount());
 
         List<NasAccount> nasAccountList = nasAccountService.getEightWeeks();
 
-        result.put("addressWeekList",nasAccountList);
+        result.put("addressWeekList", nasAccountList);
         return result;
     }
 
