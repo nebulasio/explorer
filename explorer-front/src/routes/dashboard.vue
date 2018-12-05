@@ -20,15 +20,6 @@
         margin-top: 40px;
     }
 
-    .vue-dashboard .flex-column-container {
-        display: -webkit-flex; /* Safari */
-        display: flex;
-        flex-flow: column wrap;
-        justify-content: space-between;
-        align-content: space-between;
-        flex: none;
-    }
-
     .vue-dashboard .flex-row-container {
         display: -webkit-flex; /* Safari */
         display: flex;
@@ -183,7 +174,7 @@
         color: #2CEE8C;
     }
 
-    .vue-dashboard .nas-price .flex-row-container {
+    .vue-dashboard .nas-price .market {
         position: absolute;
         margin-top: 234px;
         flex-flow: row nowrap;
@@ -192,12 +183,12 @@
         color: rgba(255, 255, 255, 0.7);
     }
 
-    .vue-dashboard .nas-price .flex-row-container div div {
+    .vue-dashboard .nas-price .market div div {
         font-size: 28px;
         color: white;
     }
 
-    .vue-dashboard .nas-price .flex-row-container>div:first-child {
+    .vue-dashboard .nas-price .market>div:first-child {
         margin-left: 30px;
         margin-right: 84px;
     }
@@ -218,8 +209,8 @@
         height: 100px;
         /* overflow: hidden; */
         display: flex;
-        flex-flow: row nowrap;
-        justify-content: flex-end;
+        flex-flow: row-reverse nowrap;
+        justify-content: flex-start;
     }
 
     .vue-dashboard .realtime-block {
@@ -227,9 +218,13 @@
         width: 15px;
         height: 100px;
         margin-left: 10px;
-        background-color: rgba(0, 87, 255, 1);
-        transition: all 250ms linear;
+        background-color: #6C9EFF;
+        transition: all 1000ms;
         display: none;
+    }
+
+    .vue-dashboard .realtime-block:first-child {
+        background-color: #0057FF;
     }
 
     .vue-dashboard .realtime-block .blockheight {
@@ -248,10 +243,24 @@
         color: white;
         background-color: #0057FF;
         border-radius: 2px;
+        box-shadow: 0 10px 30px 0 rgba(207,214,230,0.5);
         transform: translateX(-50%);
         white-space: nowrap;
         z-index: 1;
         display: none;
+    }
+
+    .vue-dashboard .realtime-block .block-popover::before {
+        content: "";
+        width: 0;
+        height: 0;
+        border-top: 8px solid #0057FF;
+        border-right: 8px solid transparent;
+        border-left: 8px solid transparent;
+        position: absolute;
+        bottom: -4px;
+        left: calc(50% - 8px);
+        z-index: 2;
     }
 
     .vue-dashboard .realtime-block:hover .block-popover {
@@ -418,8 +427,16 @@
         overflow: scroll;
     }
 
+    .vue-dashboard .row5 tr {
+        transition: all 1000ms;
+    }
+
+    .vue-dashboard .row5 tr:nth-of-type(n+6) {
+        opacity: 0;
+    }
+
     @media (max-width: 575.98px) {
-        .vue-dashboard .realtime-block:nth-last-of-type(-n+13) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+13) {
             display: block;
         }
 
@@ -430,34 +447,34 @@
 
      /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) {
-        .vue-dashboard .realtime-block:nth-last-of-type(-n+13) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+13) {
             display: block;
         }
     }
 
     /* Medium devices (tablets, 768px and up) */
     @media (min-width: 768px) {
-        .vue-dashboard .realtime-block:nth-last-of-type(-n+20) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+20) {
             display: block;
         }
     }
 
     /* Large devices (desktops, 992px and up) */
     @media (min-width: 992px) {
-        .vue-dashboard .realtime-block:nth-last-of-type(-n+30) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+30) {
             display: block;
         }
     }
 
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
-        .vue-dashboard .realtime-block:nth-last-of-type(-n+37) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+37) {
             display: block;
         }
     }
 
     @media (max-width: 575.98px) {
-        .vue-dashboard .nas-price .flex-row-container>div:first-child {
+        .vue-dashboard .nas-price .market>div:first-child {
             margin-right: 50px;
         }
     }
@@ -467,6 +484,24 @@
         .vue-dashboard .row3 .flex-item .item-bg div:nth-child(1) {
             font-size: 20px;
         }
+    }
+
+    .row2-list-enter-active {
+        transition: all 1s;
+    }
+
+    .row2-list-enter {
+        opacity: 0;
+        transform: translateX(25px);
+    }
+
+    .list-enter-active {
+        transition: all 1s;
+    }
+
+    .list-enter {
+        opacity: 0;
+        transform: translateX(100px);
     }
 
 </style>
@@ -482,9 +517,9 @@
                         <div class="details">
                             <div>Data Sources: Nebulas</div>
                             <div>Today</div>
-                            <div>6,578</div>
+                            <div>{{ todayTxCnt }}</div>
                         </div>
-                        <vchart class="daily-chart" :options="dailyTxData" :autoResize='true'></vchart>
+                        <vchart class="daily-chart" v-if="dailyTxChartOptions" :options="dailyTxChartOptions" :autoResize='true'></vchart>
                     </div>
                 </div>
                 <div class="nas-price flex-item col-12 col-lg-6 row1-item">
@@ -496,7 +531,7 @@
                             <span>1.87</span>
                             <span>(+13.97%)</span>
                         </div>
-                        <div class="flex-row-container">
+                        <div class="market flex-row-container">
                             <div>
                                 Market Cap
                                 <div>$74,008,322</div>
@@ -515,15 +550,15 @@
                     <div class="flex-item item-bg item-shadow">
                         <div class="item-title">Blocks</div>
                         <div class="subtitle fs12 text-gray">Block status</div>
-                        <div class="realtime-blocks">
-                            <div class="realtime-block" v-for="(block, i) in realtimeBlocks" :key="i">
+                        <transition-group name="row2-list" class="realtime-blocks">
+                            <div class="realtime-block" v-for="block in blocks" :key="block.height">
                                 <div class="blockheight" :style="calBlockHeight(block)"></div>
                                 <div class="block-popover">
-                                    <div>Block Height: 168276</div>
-                                    <div>Transac tions: 33</div>
+                                    <div>Block Height: {{ block.height }}</div>
+                                    <div>Transactions: {{ block.txnCnt }}</div>
                                 </div>
                             </div>
-                        </div>
+                        </transition-group>
                     </div>
                 </div>
             </div>
@@ -531,7 +566,7 @@
             <div class="row row3">
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
-                        <div>1,189,786</div>
+                        <div>{{ blockheight }}</div>
                         <router-link class="link" :to='fragApi + "/blocks/"'>Block Heigth ></router-link>
                         <img src=/static/img/dashboard-1.png width=44 alt="">
                     </div>
@@ -583,7 +618,7 @@
                     <div class="item-bg item-shadow">
                         <div class="item-title">主网账户数量变化</div>
                         <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
-                        <vchart class="accounts-chart" :options="accountsData" :autoResize='true'></vchart>
+                        <vchart class="accounts-chart" v-if="accountsChartOptions" :options="accountsChartOptions" :autoResize='true'></vchart>
                     </div>
                 </div>
             </div>
@@ -592,43 +627,43 @@
                 <div class="flex-item col-12 col-lg-6 row5-item">
                     <div class="item-bg item-shadow">
                         <div class="item-title">Blocks</div>
-                        <table frame=hsides rules=rows>
-                            <tr v-for="(block, i) in blocks" :key="i">
+                        <transition-group name="list" tag="table" frame=hsides rules=rows>
+                            <tr class="list-item" v-for="(block, i) in blocks" v-if="i < 5" :key="block.height">
                                 <td>
                                     <img src="/static/img/icon-block.png" width="50">
                                 </td>
                                 <td>
                                     Block#
-                                    <router-link to="asdf">272990</router-link>
+                                    <router-link :to='fragApi + "/block/" + block.height'>{{ block.height }}</router-link>
                                     <br>
-                                    <router-link to="asdf">20 transactions</router-link>
+                                    <router-link :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} {{ block.txnCnt > 1 ? "transactions" : "transaction" }}</router-link>
                                 </td>
                                 <td>
-                                    <div class="time">5 Sec ago</div>
+                                    <div class="time">{{ timeConversion(Date.now() - block.timestamp) }} ago</div>
                                 </td>
                             </tr>
-                        </table>
+                        </transition-group>
                     </div>
                 </div>
                 <div class="flex-item col-12 col-lg-6 row5-item">
                     <div class="item-bg item-shadow">
                         <div class="item-title">Transactions</div>
-                        <table frame=hsides rules=rows>
-                            <tr v-for="(block, i) in blocks" :key="i">
+                        <transition-group name="list" tag="table" frame=hsides rules=rows>
+                            <tr v-for="(tx, i) in txs" v-if="i < 5" :key="tx.hash">
                                 <td>
                                     <img src="/static/img/icon-tx.png" width="50">
                                 </td>
                                 <td>
                                     Tx#
-                                    <router-link to="asdf">0aed…03f4</router-link>
+                                    <router-link :to='fragApi + "/tx/" + tx.hash'>{{ shortStr(6, tx.hash) }}</router-link>
                                     <br>
-                                    From <router-link to="asdf">0aed…03f4</router-link> To <router-link to="asdf">0aed…03f4</router-link>
+                                    From <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.from.hash) }}</router-link> To <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.to.hash) }}</router-link>
                                 </td>
                                 <td>
-                                    <div class="time">5 Sec ago</div>
+                                    <div class="time">{{ timeConversion(Date.now() - tx.timestamp) }} ago</div>
                                 </td>
                             </tr>
-                        </table>
+                        </transition-group>
                     </div>
                 </div>
             </div>
@@ -643,7 +678,7 @@
         jQuery = require('jquery');
 
     require('echarts/lib/chart/line'),
-    require('echarts/lib/chart/pie'),
+    // require('echarts/lib/chart/pie'),
     require('echarts/lib/component/tooltip');
 
     module.exports = {
@@ -653,10 +688,33 @@
         data() {
             return {
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
-                dailyTxData: {
-                    grid: { x: '10', y: '100', width: '98%', height: '210', containLabel: true },
+                todayTxCnt: 0,
+                dailyTxData: null,
+                blocks: [],
+                txs: [],
+                realtimeBlocks: []
+            }
+        },
+        computed: {
+            dailyTxChartOptions() {
+                if (!this.dailyTxData) return null;
+                var arr = [],
+                    dates = [], 
+                    nums = [];
+                for (k in this.dailyTxData) {
+                    arr.push([k, this.dailyTxData[k]]);
+                }
+                arr.sort(function (a, b) { return a[0] > b[0]; });
+                for (i in arr) {
+                    dates.push(arr[i][0]);
+                    nums.push(arr[i][1]);
+                }
+                // var dates = Object.keys(this.dailyTxData);
+                // var nums = Object.values(this.dailyTxData);
+                var options = {
+                    grid: { x: '10', y: '100', width: '96%', height: '210', containLabel: true },
                     xAxis: {
-                        data: ["08-26", "08-27", "08-28", "08-29", "08-30", "08-31", "09-01", "09-02", "09-03", "09-04"],
+                        data: dates,
                         axisLine: {
                             show: false
                         },
@@ -671,7 +729,7 @@
                         }
                     },
                     yAxis: {
-                        max: 7000,
+                        // max: 7000,
                         axisLine: {
                             show: false
                         },
@@ -679,10 +737,10 @@
                             textStyle: {
                                 color: '#B2B2B2'
                             },
-                            margin: -10,
-                            formatter: function (value) {
-                                return (value+'').replace('000', 'k');
-                            }
+                            // margin: -10,
+                            // formatter: function (value) {
+                            //     return value / 1000 + 'k';
+                            // }
                         },
                         axisTick: {
                             show: false
@@ -693,7 +751,7 @@
                     },
                     series: {
                         type: 'line',
-                        data: [2947, 3898, 3239, 3838, 3767, 3098, 3267, 3893, 3100, 3987],
+                        data: nums,
                         symbol: 'circle',
                         symbolSize: 5,
                         lineStyle: {
@@ -711,8 +769,11 @@
                     tooltip: {
                         
                     }
-                },
-                accountsData: {
+                };
+                return options;
+            },
+            accountsChartOptions() {
+                var options = {
                     grid: { x: '10', y: '100', width: '98%', height: '210', containLabel: true },
                     xAxis: {
                         data: ["08-26", "08-27", "08-28", "08-29", "08-30", "08-31", "09-01", "09-02", "09-03", "09-04"],
@@ -778,28 +839,51 @@
                     tooltip: {
                         
                     }
-                },
-                realtimeBlocks: [],
-                blocks: [1, 1, 1, 1, 1]
+                };
+                return options;
+            },
+            blockheight() {
+                if (this.blocks.length > 0) return this.numberAddComma(this.blocks[0].height);
+                return '...';
             }
         },
         mounted() {
-            for (var i=0; i<40; i++) {
-                var block = {hash: '', height: Math.floor(Math.random() * 10)};
-                this.realtimeBlocks.push(block);
-            }
-            setInterval(() => {
-                var block = {hash: '', height: Math.floor(Math.random() * 10)};
-                this.realtimeBlocks.push(block);
-            }, 15000);
 
             $('.new-user').css({
                 "transform": "rotate(-120deg)"
             });
+
+            api.getTx("cnt_static", o => this.dailyTxData = o);
+
+            api.getBlock({ type: "latest" }, o => this.blocks = o);
+            api.getTx({ type: "latest" }, o => this.txs = o);
+            api.getTodayTxCnt(o => this.todayTxCnt = this.numberAddComma(o));
+
+            setInterval(() => {
+                api.getTx({ type: "latest" }, o => this.txs = o);
+                api.getTodayTxCnt(o => this.todayTxCnt = this.numberAddComma(o));
+
+                api.getBlock({ type: "newblock" }, o => {
+                    try {
+                        if (o[0].height != this.blocks[0].height) {
+                            this.blocks.splice(0, 0, o[0]);
+                        }
+                    } catch(error) {}
+                });
+            }, 5000);
         },
         methods: {
+            numberAddComma(n) {
+                return utility.numberAddComma(n);
+            },
+            timeConversion(ms) {
+                return utility.timeConversion(ms);
+            },
             calBlockHeight(b) {
-                return 'height: ' + Math.min(10, Math.max(0, b.height)) / 10.0 * 100 + 'px;';
+                return 'height: ' + (100 - Math.min(5, Math.max(0, b.txnCnt)) / 5.0 * 100) + 'px;';
+            },
+            shortStr(n, s) {
+                return utility.shortStr(n, s);
             }
         }
     }

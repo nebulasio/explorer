@@ -14,7 +14,8 @@ module.exports = {
     easyNumber:easyNumber,
     ua: ua,
     yyyymmdd: yyyymmdd,
-    getNebulasNetHost: getNebulasNetHost
+    getNebulasNetHost: getNebulasNetHost,
+    shortStr: shortStr
 };
 
 ////////////////////////////////////////////////////////////
@@ -230,4 +231,9 @@ function getNebulasNetHost(net){
     }
 
     return mainnet
+}
+
+function shortStr(n, s) {
+    if (s.length <= n * 2) return s;
+    return s.substring(0, n) + '...' + s.substring(s.length - n);
 }

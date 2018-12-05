@@ -186,6 +186,19 @@ module.exports = {
                 fail(xhr);
         }
     },
+
+    getTodayTxCnt(done, fail) {
+        ajax1("tx/cnt_today", null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
 };
 
 function ajax1(action, args, done, fail) {
