@@ -3,7 +3,13 @@
         background: rgba(255, 255, 255, 1);
         box-shadow: 0px 1px 0px 0px rgba(221, 221, 221, 1);
         margin-top: 30px;
-        vertical-align: middle;
+        font-size: 16px;
+        color: black;
+    }
+
+    .vue-footer a {
+        color: black;
+        vertical-align: bottom;
     }
 
     @media (min-width: 768px) { 
@@ -46,13 +52,15 @@
                 </div>
 
                 <div class="col-xs-12 col-md-4">
-                    <div class="font-size-16-normal font-color-000000">Copyright © 2018 The Nebulas Team</div>
+                    <div>Copyright © 2018 The Nebulas Team</div>
                 </div>
 
                 <div class="col-xs-12 col-md-4">
                     <div>
-                        <a class="font-color-000000 font-size-16-normal" target=_blank href=https://github.com/nebulasio/explorer/issues>
+                        <a target=_blank href=https://github.com/nebulasio/explorer/issues>
                             Submit a issue
+                        </a>
+                        <a target=_blank href=https://github.com/nebulasio/explorer/issues>
                             <img class="icon24" src="../../static/img/ic_github.png"/>
                         </a>
                         <a target=_blank href=https://twitter.com/nebulasio>
