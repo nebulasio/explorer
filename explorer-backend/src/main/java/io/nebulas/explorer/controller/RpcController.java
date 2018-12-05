@@ -576,11 +576,8 @@ public class RpcController {
             }
             return JsonResult.success("type", "unknown").put("q", q);
         }
-        if (q.trim().equalsIgnoreCase("atp")) {
-            NebContractToken contractToken = contractTokenService.getByTokenName("atp");
-            if (contractToken == null) {
-                return JsonResult.failed();
-            }
+        NebContractToken contractToken = contractTokenService.getByTokenName(q.trim());
+        if (contractToken != null){
             return JsonResult.success("type", "contract").put("q", contractToken.getContract());
         }
         if (q.length() < 64) {
