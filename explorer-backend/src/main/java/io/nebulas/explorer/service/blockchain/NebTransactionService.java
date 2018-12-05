@@ -163,32 +163,19 @@ public class NebTransactionService {
      */
     public List<NebTransaction> getNrc20Transactions(String addressHash) {
 
-//        //只允许官方支持的nrc20代币可以用来展示,所以查询出来的交易也只有nrc20的
-//        NebContractToken contractToken = nebContractTokenMapper.getByTokenName(NebTokenEnum.ATP.getDesc());
-//        List<NebTransaction> contractTxList = nebTransactionMapper.findTxnByFromToAndCall(addressHash,contractToken.getContract());
-//
-//        List<NebTransaction> nrc20TxList = Lists.newLinkedList();
-//
-//        //过滤掉非nrc20的数据,并且提取对应的data
-//        contractTxList.forEach(nebTransaction -> {
-//            JSONObject data = DecodeUtil.decodeData(nebTransaction.getData());
-//            if (DecodeUtil.isContractTransfer(data)){
-//                //将to的合约地址放到对应的contractAddress字段里
-//                nebTransaction.setContractAddress(nebTransaction.getTo());
-//                JSONArray args = data.getJSONArray("Args");
-//                //"Args" -> "["n1JdmmyhrrqBuESseZSbrBucnvugSewSMTE","9299123456789987654321"]"
-//                String to = args.get(0).toString();
-//                String value = args.get(1).toString();
-//                nebTransaction.setTo(to);
-//                nebTransaction.setValue(value);
-//                nrc20TxList.add(nebTransaction);
-//            }
-//        });
-
         //只允许官方支持的nrc20代币可以用来展示,所以查询出来的交易也只有nrc20的
-        NebContractToken contractToken = nebContractTokenMapper.getByTokenName(NebTokenEnum.ATP.getDesc());
+        List<NebContractToken> contractToken = nebContractTokenMapper.getAllContractTokens();
+
         //搜索所有nrc20转账记录，然后提取属于自己地址的
-        List<NebTransaction> contractTxList = nebTransactionMapper.findTxnByContract(contractToken.getContract());
+        List<NebTransaction> contractTxList = new ArrayList<>();
+        contractToken.forEach(nebContractToken -> {
+
+            List<NebTransaction> contractList = nebTransactionMapper.findTxnByContract(nebContractToken.getContract());
+            if (contractList == null || contractList.size() == 0){
+                contractList = Collections.emptyList();
+            }
+            contractTxList.addAll(nebTransactionMapper.findTxnByContract(nebContractToken.getContract()));
+        });
 
         List<NebTransaction> nrc20TxList = Lists.newLinkedList();
         //过滤掉非nrc20的数据,并且提取对应的data,提取属于自己地址的交易
