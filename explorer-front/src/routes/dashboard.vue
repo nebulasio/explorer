@@ -712,7 +712,7 @@
                 for (k in this.dailyTxData) {
                     arr.push([k, this.dailyTxData[k]]);
                 }
-                arr.sort(function (a, b) { return a[0] > b[0]; });
+                arr.sort(function (a, b) { return Date.parse(a[0]) - Date.parse(b[0]); });
                 for (i in arr) {
                     dates.push(arr[i][0]);
                     nums.push(arr[i][1]);
