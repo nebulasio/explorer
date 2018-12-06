@@ -754,7 +754,6 @@ public class RpcController {
             return JsonResult.success();
         }
 
-        long txnCnt = nebTransactionService.countPendingTxnCnt("");
         NasAccount ninetyDayAccount = nasAccountService.getNasAccountFromNinetyDays();
 
         long newAddressCount = nasAccount.getAddressCount() - ninetyDayAccount.getAddressCount();
@@ -762,7 +761,6 @@ public class RpcController {
 
         result.put("totalAddressCount", nasAccount.getAddressCount());
         result.put("totalContractCount", nasAccount.getContractCount());
-        result.put("txnCnt", txnCnt);
         result.put("newAddressCount", newAddressCount);
         result.put("oldAddressCount", ninetyDayAccount.getAddressCount());
 
