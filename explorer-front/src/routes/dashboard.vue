@@ -78,6 +78,12 @@
         margin-bottom: 30px;
     }
 
+    @media (max-width: 767.98px) {
+        .vue-dashboard .row>* {
+            margin-bottom: 15px;
+        }
+    }
+
     .vue-dashboard .item-bg {
         background-color: white;
         width: 100%;
@@ -102,8 +108,6 @@
         position: absolute;
         left: 30px;
         top: 25px;
-        /* margin-left: 30px;
-        margin-top: 25px; */
         font-size: 20px;
         font-weight: bold;
     }
@@ -506,11 +510,11 @@
             <div class="row row1">
                 <div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
                     <div class="item-bg">
-                        <div class="item-title">Daily Transactions</div>
-                        <div class="details">
+                        <div class="item-title" >Daily Transactions</div>
+                        <div class="details" v-if="dailyTxChartOptions">
                             <div>Data Sources: Nebulas</div>
-                            <div>Today</div>
-                            <div>{{ todayTxCnt }}</div>
+                            <div v-if="todayTxCnt">Today</div>
+                            <div v-if="todayTxCnt">{{ todayTxCnt }}</div>
                         </div>
                         <vchart class="daily-chart" v-if="dailyTxChartOptions" :options="dailyTxChartOptions" :autoResize='true'></vchart>
                     </div>
@@ -518,13 +522,13 @@
                 <div class="nas-price flex-item col-12 col-lg-6 row1-item">
                     <div class="item-bg">
                         <div class="item-title">NAS Price</div>
-                        <div class="update-time">Update time : {{ timeConversion(Date.now() - market.createdAt) }} ago</div>
-                        <div class="detail">
+                        <div v-if="market" class="update-time">Update time : {{ timeConversion(Date.now() - market.createdAt) }} ago</div>
+                        <div v-if="market" class="detail">
                             <span>$</span>
                             <span>{{ market.price }}</span>
                             <span :class="{'text-red': market.trends > 0}">({{ market.trends > 0 ? '+' : '-' }}{{ market.change24h }}%)</span>
                         </div>
-                        <div class="market container">
+                        <div v-if="market" class="market container">
                             <div class="row">
                                 <div class="col-6">
                                     Market Cap
@@ -561,29 +565,29 @@
             <div class="row row3">
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
-                        <div>{{ blockheight }}</div>
-                        <router-link class="link" :to='fragApi + "/blocks/"'>Block Heigth ></router-link>
+                        <div v-if="staticInfo">{{ blockheight }}</div>
+                        <router-link v-if="staticInfo" class="link" :to='fragApi + "/blocks/"'>Block Heigth ></router-link>
                         <img src=/static/img/dashboard-1.png width=44 alt="">
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
-                        <div>{{ staticInfo.txnCnt }}</div>
-                        <router-link class="link" :to='fragApi + "/txs/"'>Total Transations ></router-link>
+                        <div v-if="staticInfo">{{ numberAddComma(staticInfo.txnCnt) }}</div>
+                        <router-link v-if="staticInfo" class="link" :to='fragApi + "/txs/"'>Total Transations ></router-link>
                         <img src=/static/img/dashboard-2.png width=44 alt="">
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
-                        <div>{{ staticInfo.totalContractCount }}</div>
-                        <div class="link">Total Smart Contract</div>
+                        <div v-if="staticInfo">{{ numberAddComma(staticInfo.totalContractCount) }}</div>
+                        <div v-if="staticInfo" class="link">Total Smart Contract</div>
                         <img src=/static/img/dashboard-3.png width=44 alt="">
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
-                        <div>{{ staticInfo.totalAddressCount }}</div>
-                        <router-link class="link" :to='fragApi + "/accounts/"'>Total Address ></router-link>
+                        <div v-if="staticInfo">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
+                        <router-link v-if="staticInfo" class="link" :to='fragApi + "/accounts/"'>Total Address ></router-link>
                         <img src=/static/img/dashboard-4.png width=44 alt="">
                     </div>
                 </div>
@@ -594,13 +598,13 @@
                     <div class="item-bg item-shadow">
                         <div class="item-title">新用户占比</div>
                         <div class="subtitle text-light-gray ml30 fs12">新用户为90日内创建星云账户者</div>
-                        <div class="user-pie">
+                        <div v-if="staticInfo" class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
                                 <div class="new-user" :style='"transform: rotate(-" + staticInfo.newAddressCount / (staticInfo.newAddressCount + staticInfo.oldAddressCount) * 360 + "deg)"'></div>
                             </div>
                         </div>
-                        <div class="detail">
+                        <div v-if="staticInfo" class="detail">
                             <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
                             <div class="title">{{ staticInfo.newAddressCount }}</div>
                             <div class="fs12 text-gray">New Users</div>
@@ -612,7 +616,7 @@
                 <div class="flex-item col-12 col-lg-6 row4-item accounts-data">
                     <div class="item-bg item-shadow">
                         <div class="item-title">主网账户数量变化</div>
-                        <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
+                        <div v-if="accountsChartOptions" class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
                         <vchart class="accounts-chart" v-if="accountsChartOptions" :options="accountsChartOptions" :autoResize='true'></vchart>
                     </div>
                 </div>
@@ -689,11 +693,11 @@
         data() {
             return {
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
-                todayTxCnt: 0,
+                todayTxCnt: -1,
                 dailyTxData: null,
-                market: {},
+                market: null,
                 blocks: [],
-                staticInfo: {},
+                staticInfo: null,
                 txs: [],
                 realtimeBlocks: [],
                 realtimeBlocksInited: false
@@ -777,7 +781,7 @@
                 return options;
             },
             accountsChartOptions() {
-                if (!this.staticInfo.addressWeekList || this.staticInfo.addressWeekList.length == 0) {
+                if (!this.staticInfo || !this.staticInfo.addressWeekList || this.staticInfo.addressWeekList.length == 0) {
                     return null;
                 }
                 var arr = this.staticInfo.addressWeekList;
@@ -787,7 +791,6 @@
                 for (i in arr) {
                     nums.push(arr[i].addressCount);
                     let date = new Date(arr[i].timestamp);
-                    console.log(date.toDateString());
                     dates.push((date.getMonth() + 1).pad(2) + '-' + date.getDate().pad(2));
                 }
 
@@ -809,7 +812,7 @@
                         }
                     },
                     yAxis: {
-                        min: 240000,
+                        min: Math.floor(nums[0] / 1000) * 1000 - 1000,
                         axisLine: {
                             show: false
                         },
@@ -863,7 +866,7 @@
             },
             blockheight() {
                 if (this.blocks.length > 0) return this.numberAddComma(this.blocks[0].height);
-                return '...';
+                return '0';
             }
         },
         mounted() {
@@ -906,14 +909,12 @@
             timeConversion(ms) {
                 return utility.timeConversion(ms);
             },
-            calBlockHeight(txnCnt) {
-                return (1 - Math.min(5, Math.max(0, txnCnt)) / 5.0) * 100 + 'px';
-            },
             shortStr(n, s) {
                 return utility.shortStr(n, s);
             },
             afterEnter: function (el) {
-                $(el.firstElementChild).css('height', this.calBlockHeight(el.firstElementChild.dataset.txncnt));
+                let height = (1 - Math.min(5, Math.max(0, el.firstElementChild.dataset.txncnt)) / 5.0) * 100 + 'px';
+                $(el.firstElementChild).css('height', height);
             }
         }
     }
