@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -62,6 +63,7 @@ public class RpcController {
     private final NebStatService nebStatService;
     private final NebEventService nebEventService;
     private final NasAccountService nasAccountService;
+    private final StringRedisTemplate redisTemplate;
 
     private final ContractTokenService contractTokenService;
     private final ContractTokenBalanceService contractTokenBalanceService;
@@ -754,13 +756,13 @@ public class RpcController {
             return JsonResult.success();
         }
 
+        long txnCnt = nebTransactionService.countTotalTxnCnt();
         NasAccount ninetyDayAccount = nasAccountService.getNasAccountFromNinetyDays();
 
         long newAddressCount = nasAccount.getAddressCount() - ninetyDayAccount.getAddressCount();
-
-
         result.put("totalAddressCount", nasAccount.getAddressCount());
         result.put("totalContractCount", nasAccount.getContractCount());
+        result.put("txnCnt", txnCnt);
         result.put("newAddressCount", newAddressCount);
         result.put("oldAddressCount", ninetyDayAccount.getAddressCount());
 

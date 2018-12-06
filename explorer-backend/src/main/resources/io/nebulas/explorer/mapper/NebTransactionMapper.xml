@@ -230,4 +230,9 @@
         WHERE `timestamp` BETWEEN #{from,jdbcType=TIMESTAMP} and #{to,jdbcType=TIMESTAMP}
         GROUP BY LEFT(`timestamp`,10)
     </select>
+    <select id="countTotalTxnCnt" resultType="java.lang.Long">
+        SELECT
+          COUNT(1)
+        FROM `neb_transaction`;
+    </select>
 </mapper>

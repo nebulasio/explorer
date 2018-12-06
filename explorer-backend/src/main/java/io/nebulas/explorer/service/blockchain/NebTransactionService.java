@@ -142,6 +142,10 @@ public class NebTransactionService {
         return nebTransactionMapper.countTxnCntByBlockHeight(blockHeight);
     }
 
+    public long countTotalTxnCnt(){
+        return nebTransactionMapper.countTotalTxnCnt();
+    }
+
     /**
      * count address total nrc20 transfer transaction
      *
