@@ -322,7 +322,7 @@
                     this.$root.showModalLoading = false;
                     this.obj = o.contract;
                     this.txs = o.txList;
-                    this.tokenPrice = {price: o.price, trends: o.trends, change24h: o.change24h};
+                    this.tokenPrice =  o.price ? {price: o.price, trends: o.trends, change24h: o.change24h} : null;
                 }, xhr => {
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
