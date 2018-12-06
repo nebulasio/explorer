@@ -199,6 +199,19 @@ module.exports = {
                 fail(xhr);
         }
     },
+
+    getStaticInfo(done, fail) {
+        ajax1("nasinfo", null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
 };
 
 function ajax1(action, args, done, fail) {

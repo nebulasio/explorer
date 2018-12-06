@@ -13,10 +13,7 @@
         z-index: -1;
     }
 
-    .vue-dashboard .container {
-        /* width: 1200px; */
-        /* height: 1476px; */
-        /* margin: 0 auto; */
+    .vue-dashboard>.container {
         margin-top: 40px;
     }
 
@@ -159,6 +156,7 @@
         position: absolute;
         margin-top: 96px;
         margin-left: 30px;
+        vertical-align: bottom;
     }
 
     .vue-dashboard .nas-price .detail *:nth-child(1) {
@@ -174,6 +172,10 @@
         color: #2CEE8C;
     }
 
+    .vue-dashboard .nas-price .detail .text-red {
+        color: red;
+    }
+
     .vue-dashboard .nas-price .market {
         position: absolute;
         margin-top: 234px;
@@ -183,14 +185,13 @@
         color: rgba(255, 255, 255, 0.7);
     }
 
-    .vue-dashboard .nas-price .market div div {
+    .vue-dashboard .nas-price .market .row div div {
         font-size: 28px;
         color: white;
     }
 
-    .vue-dashboard .nas-price .market>div:first-child {
-        margin-left: 30px;
-        margin-right: 84px;
+    .vue-dashboard .nas-price .container {
+        padding: 0 30px;
     }
 
     .vue-dashboard .row2 .subtitle {
@@ -200,12 +201,10 @@
     }
 
     .vue-dashboard .realtime-blocks {
-        /* background-color: gray; */
         position: absolute;
         top: 30px;
         left: 170px;
         right: 40px;
-        /* width: 990px; */
         height: 100px;
         /* overflow: hidden; */
         display: flex;
@@ -221,6 +220,10 @@
         background-color: #6C9EFF;
         transition: all 1000ms;
         display: none;
+    }
+
+    .vue-dashboard .realtime-block .blockheight {
+        transition: all 1s;
     }
 
     .vue-dashboard .realtime-block:first-child {
@@ -473,21 +476,11 @@
         }
     }
 
-    @media (max-width: 575.98px) {
-        .vue-dashboard .nas-price .market>div:first-child {
-            margin-right: 50px;
-        }
-    }
-
     /* Large devices (desktops, 992px and up) */
     @media (min-width: 992px) and (max-width: 1199.98px) {
         .vue-dashboard .row3 .flex-item .item-bg div:nth-child(1) {
             font-size: 20px;
         }
-    }
-
-    .row2-list-enter-active {
-        transition: all 1s;
     }
 
     .row2-list-enter {
@@ -525,20 +518,22 @@
                 <div class="nas-price flex-item col-12 col-lg-6 row1-item">
                     <div class="item-bg">
                         <div class="item-title">NAS Price</div>
-                        <div class="update-time">Update time : 2 Min ago</div>
+                        <div class="update-time">Update time : {{ timeConversion(Date.now() - market.createdAt) }} ago</div>
                         <div class="detail">
                             <span>$</span>
-                            <span>1.87</span>
-                            <span>(+13.97%)</span>
+                            <span>{{ market.price }}</span>
+                            <span :class="{'text-red': market.trends > 0}">({{ market.trends > 0 ? '+' : '-' }}{{ market.change24h }}%)</span>
                         </div>
-                        <div class="market flex-row-container">
-                            <div>
-                                Market Cap
-                                <div>$74,008,322</div>
-                            </div>
-                            <div>
-                                24h Volume
-                                <div>$4,832,615</div>
+                        <div class="market container">
+                            <div class="row">
+                                <div class="col-6">
+                                    Market Cap
+                                    <div>${{ numberAddComma(market.marketCap) }}</div>
+                                </div>
+                                <div class="col-6">
+                                    24h Volume
+                                    <div>${{ numberAddComma(market.volume24h) }}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -550,9 +545,9 @@
                     <div class="flex-item item-bg item-shadow">
                         <div class="item-title">Blocks</div>
                         <div class="subtitle fs12 text-gray">Block status</div>
-                        <transition-group name="row2-list" class="realtime-blocks">
+                        <transition-group v-on:after-enter="afterEnter" name="row2-list" class="realtime-blocks">
                             <div class="realtime-block" v-for="block in blocks" :key="block.height">
-                                <div class="blockheight" :style="calBlockHeight(block)"></div>
+                                <div class="blockheight" style="height: 100%" :data-txnCnt="block.txnCnt"></div>
                                 <div class="block-popover">
                                     <div>Block Height: {{ block.height }}</div>
                                     <div>Transactions: {{ block.txnCnt }}</div>
@@ -573,21 +568,21 @@
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
-                        <div>1,189,786</div>
+                        <div>{{ staticInfo.txnCnt }}</div>
                         <router-link class="link" :to='fragApi + "/txs/"'>Total Transations ></router-link>
                         <img src=/static/img/dashboard-2.png width=44 alt="">
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
-                        <div>1,189,786</div>
+                        <div>{{ staticInfo.totalContractCount }}</div>
                         <div class="link">Total Smart Contract</div>
                         <img src=/static/img/dashboard-3.png width=44 alt="">
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
-                        <div>1,189,786</div>
+                        <div>{{ staticInfo.totalAddressCount }}</div>
                         <router-link class="link" :to='fragApi + "/accounts/"'>Total Address ></router-link>
                         <img src=/static/img/dashboard-4.png width=44 alt="">
                     </div>
@@ -602,14 +597,14 @@
                         <div class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
-                                <div class="new-user"></div>
+                                <div class="new-user" :style='"transform: rotate(-" + staticInfo.newAddressCount / (staticInfo.newAddressCount + staticInfo.oldAddressCount) * 360 + "deg)"'></div>
                             </div>
                         </div>
                         <div class="detail">
                             <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
-                            <div class="title">42462</div>
+                            <div class="title">{{ staticInfo.newAddressCount }}</div>
                             <div class="fs12 text-gray">New Users</div>
-                            <div class="title">132,696</div>
+                            <div class="title">{{ staticInfo.oldAddressCount }}</div>
                             <div class="fs12 text-gray">Old Users</div>
                         </div>
                     </div>
@@ -681,6 +676,12 @@
     // require('echarts/lib/chart/pie'),
     require('echarts/lib/component/tooltip');
 
+    Number.prototype.pad = function(size) {
+        var s = String(this);
+        while (s.length < (size || 2)) {s = "0" + s;}
+        return s;
+    }
+
     module.exports = {
         components: {
             'vchart': ECharts
@@ -690,9 +691,12 @@
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 todayTxCnt: 0,
                 dailyTxData: null,
+                market: {},
                 blocks: [],
+                staticInfo: {},
                 txs: [],
-                realtimeBlocks: []
+                realtimeBlocks: [],
+                realtimeBlocksInited: false
             }
         },
         computed: {
@@ -709,8 +713,7 @@
                     dates.push(arr[i][0]);
                     nums.push(arr[i][1]);
                 }
-                // var dates = Object.keys(this.dailyTxData);
-                // var nums = Object.values(this.dailyTxData);
+
                 var options = {
                     grid: { x: '10', y: '100', width: '96%', height: '210', containLabel: true },
                     xAxis: {
@@ -752,6 +755,7 @@
                     series: {
                         type: 'line',
                         data: nums,
+                        smooth: true,
                         symbol: 'circle',
                         symbolSize: 5,
                         lineStyle: {
@@ -773,10 +777,24 @@
                 return options;
             },
             accountsChartOptions() {
+                if (!this.staticInfo.addressWeekList || this.staticInfo.addressWeekList.length == 0) {
+                    return null;
+                }
+                var arr = this.staticInfo.addressWeekList;
+                var dates = [], 
+                    nums = [];
+                arr.sort(function (a, b) { return a.timestamp > b.timestamp; });
+                for (i in arr) {
+                    nums.push(arr[i].addressCount);
+                    let date = new Date(arr[i].timestamp);
+                    console.log(date.toDateString());
+                    dates.push((date.getMonth() + 1).pad(2) + '-' + date.getDate().pad(2));
+                }
+
                 var options = {
                     grid: { x: '10', y: '100', width: '98%', height: '210', containLabel: true },
                     xAxis: {
-                        data: ["08-26", "08-27", "08-28", "08-29", "08-30", "08-31", "09-01", "09-02", "09-03", "09-04"],
+                        data: dates,
                         axisLine: {
                             show: false
                         },
@@ -791,7 +809,7 @@
                         }
                     },
                     yAxis: {
-                        max: 500000,
+                        min: 240000,
                         axisLine: {
                             show: false
                         },
@@ -813,7 +831,8 @@
                     },
                     series: {
                         type: 'line',
-                        data: [120000, 130000, 141000, 152000, 170000, 190000, 215000, 241000, 268000, 300000],
+                        data: nums,
+                        smooth: true,
                         symbol: 'emptyCircle',
                         symbolSize: 7,
                         lineStyle: {
@@ -848,29 +867,37 @@
             }
         },
         mounted() {
-
-            $('.new-user').css({
-                "transform": "rotate(-120deg)"
-            });
-
-            api.getTx("cnt_static", o => this.dailyTxData = o);
-
-            api.getBlock({ type: "latest" }, o => this.blocks = o);
-            api.getTx({ type: "latest" }, o => this.txs = o);
-            api.getTodayTxCnt(o => this.todayTxCnt = this.numberAddComma(o));
+            api.getTx("cnt_static", o => this.dailyTxData = o);                     //近期每日交易量
+            api.getMarketCap(o => this.market = o);                                 //币价和市值
+            api.getBlock({ type: "latest" }, o => this.blocks = o);                 //最新一波 block
+            api.getTx({ type: "latest" }, o => this.txs = o);                       //最新一波 tx
+            api.getTodayTxCnt(o => this.todayTxCnt = this.numberAddComma(o));       //今日交易量
+            api.getStaticInfo(o => this.staticInfo = o);                            //合约数量、地址数量。。。
 
             setInterval(() => {
-                api.getTx({ type: "latest" }, o => this.txs = o);
-                api.getTodayTxCnt(o => this.todayTxCnt = this.numberAddComma(o));
+                this.realtimeBlocksInited = true;
+                api.getTx({ type: "latest" }, o => this.txs = o);                   //最新一波 tx
+                api.getTodayTxCnt(o => this.todayTxCnt = this.numberAddComma(o));   //今日交易量
 
-                api.getBlock({ type: "newblock" }, o => {
+                api.getBlock({ type: "newblock" }, o => {                           //获取最新一个 block
                     try {
                         if (o[0].height != this.blocks[0].height) {
                             this.blocks.splice(0, 0, o[0]);
                         }
                     } catch(error) {}
+
+                    try {
+                        if (o.data[0].height != this.blocks[0].height) {
+                            this.blocks.splice(0, 0, o.data[0]);
+                        }
+                    } catch(error) {}
                 });
-            }, 5000);
+            }, 8000);
+
+            setInterval(() => {
+                api.getMarketCap(o => this.market = o);                             //币价和市值
+                api.getStaticInfo(o => this.staticInfo = o);                        //合约数量、地址数量。。。
+            }, 60000);
         },
         methods: {
             numberAddComma(n) {
@@ -879,11 +906,14 @@
             timeConversion(ms) {
                 return utility.timeConversion(ms);
             },
-            calBlockHeight(b) {
-                return 'height: ' + (100 - Math.min(5, Math.max(0, b.txnCnt)) / 5.0 * 100) + 'px;';
+            calBlockHeight(txnCnt) {
+                return (1 - Math.min(5, Math.max(0, txnCnt)) / 5.0) * 100 + 'px';
             },
             shortStr(n, s) {
                 return utility.shortStr(n, s);
+            },
+            afterEnter: function (el) {
+                $(el.firstElementChild).css('height', this.calBlockHeight(el.firstElementChild.dataset.txncnt));
             }
         }
     }
