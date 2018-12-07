@@ -10,6 +10,7 @@ import io.nebulas.explorer.enums.NebTokenEnum;
 import io.nebulas.explorer.mapper.NebContractTokenMapper;
 import io.nebulas.explorer.mapper.NebPendingTransactionMapper;
 import io.nebulas.explorer.mapper.NebTransactionMapper;
+import io.nebulas.explorer.model.vo.Nrc20TransactionVo;
 import io.nebulas.explorer.model.vo.TransactionVo;
 import io.nebulas.explorer.util.DecodeUtil;
 import lombok.AllArgsConstructor;
@@ -165,10 +166,11 @@ public class NebTransactionService {
      * @param addressHash:the nas address
      * @return the list of nrc20 transaction in page
      */
-    public List<NebTransaction> getNrc20Transactions(String addressHash) {
+    public List<Nrc20TransactionVo> getNrc20Transactions(String addressHash) {
 
         //只允许官方支持的nrc20代币可以用来展示,所以查询出来的交易也只有nrc20的
         List<NebContractToken> contractToken = nebContractTokenMapper.getAllContractTokens();
+        Map<String, Long> contractMap = contractToken.stream().collect(Collectors.toMap(NebContractToken::getContract,NebContractToken::getTokenDecimals));
 
         //搜索所有nrc20转账记录，然后提取属于自己地址的
         List<NebTransaction> contractTxList = new ArrayList<>();
@@ -181,7 +183,7 @@ public class NebTransactionService {
             contractTxList.addAll(nebTransactionMapper.findTxnByContract(nebContractToken.getContract()));
         });
 
-        List<NebTransaction> nrc20TxList = Lists.newLinkedList();
+        List<Nrc20TransactionVo> nrc20TxList = Lists.newLinkedList();
         //过滤掉非nrc20的数据,并且提取对应的data,提取属于自己地址的交易
         contractTxList.forEach(nebTransaction -> {
             JSONObject data = DecodeUtil.decodeData(nebTransaction.getData());
@@ -194,13 +196,17 @@ public class NebTransactionService {
                 String value = args.get(1).toString();
                 nebTransaction.setTo(to);
                 nebTransaction.setValue(value);
+
                 if(nebTransaction.getFrom().equals(addressHash) || nebTransaction.getTo().equals(addressHash)){
-                    nrc20TxList.add(nebTransaction);
+                    Nrc20TransactionVo nrc20TransactionVo = new Nrc20TransactionVo();
+                    nrc20TransactionVo.buildFromNebTransaction(nebTransaction);
+                    nrc20TransactionVo.setTokenDecimals(contractMap.get(nrc20TransactionVo.getContractAddress()));
+                    nrc20TxList.add(nrc20TransactionVo);
                 }
             }
         });
 
-        Collections.sort(nrc20TxList,Comparator.comparing(NebTransaction::getTimestamp).reversed());
+        Collections.sort(nrc20TxList,Comparator.comparing(Nrc20TransactionVo::getTimestamp).reversed());
 
         return nrc20TxList;
     }
@@ -443,4 +449,5 @@ public class NebTransactionService {
     private String parseDate2Str(Date date) {
         return LocalDate.fromDateFields(date).toString("yyyy-MM-dd");
     }
+
 }

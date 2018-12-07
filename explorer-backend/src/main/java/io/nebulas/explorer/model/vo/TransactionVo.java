@@ -46,6 +46,7 @@ public class TransactionVo implements Serializable {
     private String executeError;
     private List<Event> events;
     private String tokenName;
+    private Long decimal;
 
     private static final long serialVersionUID = 1L;
     private static final Base64.Decoder DECODER = Base64.getDecoder();
@@ -96,6 +97,33 @@ public class TransactionVo implements Serializable {
         }
         this.createdAt = txn.getCreatedAt();
         this.contractAddress = txn.getContractAddress();
+        return this;
+    }
+
+    public TransactionVo build(Nrc20TransactionVo txn) {
+        this.hash = txn.getHash();
+        this.status = txn.getStatus();
+        this.value = txn.getValue();
+        this.nonce = txn.getNonce();
+        this.type = txn.getType();
+        this.gasPrice = txn.getGasPrice();
+        this.gasLimit = txn.getGasLimit();
+        this.gasUsed = txn.getGasUsed();
+        try {
+            this.data = StringUtils.isNotEmpty(txn.getData()) ? new String(DECODER.decode(txn.getData()), "UTF-8") : "";
+        } catch (Exception e) {
+            this.data = txn.getData();
+        }
+        this.timestamp = txn.getTimestamp();
+        this.currentTimestamp = new Date();
+        this.timeDiff = System.currentTimeMillis() - txn.getTimestamp().getTime();
+        if (this.timeDiff < 0) {
+            this.timeDiff = 0L;
+        }
+        this.createdAt = txn.getCreatedAt();
+        this.contractAddress = txn.getContractAddress();
+        this.executeError = txn.getExecuteError();
+        this.decimal = txn.getTokenDecimals();
         return this;
     }
 

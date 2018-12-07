@@ -25,4 +25,6 @@ public class NebContractToken implements Serializable {
     private String contract;
 
     private BigDecimal total;
+
+    private long tokenDecimals;
 }

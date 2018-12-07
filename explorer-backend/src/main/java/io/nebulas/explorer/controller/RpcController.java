@@ -13,6 +13,7 @@ import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.model.PageIterator;
 import io.nebulas.explorer.model.vo.AddressVo;
 import io.nebulas.explorer.model.vo.BlockVo;
+import io.nebulas.explorer.model.vo.Nrc20TransactionVo;
 import io.nebulas.explorer.model.vo.TransactionVo;
 import io.nebulas.explorer.service.blockchain.*;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
@@ -221,8 +222,12 @@ public class RpcController {
             NebContractToken contractToken = contractTokenService.getByContract(toAddress.getHash());
             if (contractToken == null) {
                 vo.setTokenName("");
+                vo.setDecimal(18L);
+                //result.put("decimal", "18");
             } else {
                 vo.setTokenName(contractToken.getTokenName());
+                vo.setDecimal(contractToken.getTokenDecimals());
+                //result.put("decimal", contractToken.getTokenDecimals());
             }
         } else {
             vo.setTo(new AddressVo(txn.getTo()));
@@ -232,6 +237,10 @@ public class RpcController {
 
         result.add(vo);
         result.put("isPending", isPending);
+
+
+
+
         return result;
     }
 
@@ -541,6 +550,7 @@ public class RpcController {
             txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE));
         }
         result.put("txList", convertTxn2TxnVoWithAddress(txList));
+        result.put("decimal",18);
 
 //        if (address.getUpdatedAt().before(LocalDateTime.now().plusSeconds(-5).toDate())) {
 //            GetAccountStateResponse accountState = nebApiServiceWrapper.getAccountState(address.getHash());
@@ -562,8 +572,6 @@ public class RpcController {
                 }
             }
         }
-        //todo: contract addresss是否需要添加event data
-
         return result;
     }
 
@@ -674,7 +682,7 @@ public class RpcController {
         return txnVoList;
     }
 
-    private List<TransactionVo> convertNrc20Txn2TxnVo(List<NebTransaction> txns) {
+    private List<TransactionVo> convertNrc20Txn2TxnVo(List<Nrc20TransactionVo> txns) {
         if (CollectionUtils.isEmpty(txns)) {
             return Collections.emptyList();
         }
@@ -688,7 +696,7 @@ public class RpcController {
 
         //根据contractAddress去反查tokenName
         List<TransactionVo> txnVoList = new LinkedList<>();
-        for (NebTransaction txn : txns) {
+        for (Nrc20TransactionVo txn : txns) {
 
             NebContractToken token = contractTokenService.getByContract(txn.getContractAddress());
             TransactionVo vo = new TransactionVo()
@@ -703,6 +711,9 @@ public class RpcController {
     }
 
 
+
+
+
     @RequestMapping("/address/nrc20/{hash}/{page}")
     public JsonResult nrc20Transactions(@PathVariable("hash") String hash, @PathVariable("page") int page) {
         NebAddress address = nebAddressService.getNebAddressByHashRpc(hash);
@@ -710,7 +721,7 @@ public class RpcController {
             return JsonResult.failed();
         }
 
-        List<NebTransaction> txList = nebTransactionService.getNrc20Transactions(hash);
+        List<Nrc20TransactionVo> txList = nebTransactionService.getNrc20Transactions(hash);
         JsonResult result = JsonResult.success();
 
         int totalRowNum = txList.size();
@@ -729,7 +740,7 @@ public class RpcController {
             toIdx = totalRowNum;
         }
 
-        List<NebTransaction> resultList = txList.subList(fromIdx, toIdx);
+        List<Nrc20TransactionVo> resultList = txList.subList(fromIdx, toIdx);
 
         result.put("txnCnt", totalRowNum);
         result.put("currentPage", page);
@@ -755,7 +766,6 @@ public class RpcController {
         if (nasAccount == null) {
             return JsonResult.success();
         }
-
         long txnCnt = nebTransactionService.countTotalTxnCnt();
         NasAccount ninetyDayAccount = nasAccountService.getNasAccountFromNinetyDays();
 

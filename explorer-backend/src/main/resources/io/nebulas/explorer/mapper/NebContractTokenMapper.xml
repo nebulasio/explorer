@@ -8,10 +8,11 @@
         <result column="description" property="description" jdbcType="VARCHAR"/>
         <result column="contract" property="contract" jdbcType="VARCHAR"/>
         <result column="total" property="total" jdbcType="DECIMAL"/>
+        <result column="token_decimals" property="tokenDecimals" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        `id`, `token_name`,`description`, `contract`, `total`
+        `id`, `token_name`,`description`, `contract`, `total`,`token_decimals`
     </sql>
 
     <select id="getByContract" resultMap="BaseResultMap" parameterType="java.lang.String">
