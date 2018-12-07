@@ -6,20 +6,11 @@
         padding: 10px 0;
     }
 
-    .vue-bread a {
-        color: inherit;
+    .vue-bread .row {
+        align-items: center;
     }
 
-    .vue-bread .breadcrumb {
-        background-color: initial;
-        margin: 0;
-    }
-
-    .vue-bread ol > :last-child {
-        color: #3498db;
-    }
-
-    .vue-bread .title {
+    /* .vue-bread .title {
         display: inline;
         vertical-align: middle;
     }
@@ -27,14 +18,16 @@
     .vue-bread .subtitle {
         display: inline;
         vertical-align: middle;
-    }
+    } */
 
 </style>
 <template>
     <div class=vue-bread>
         <div class=container>
-            <div class="title font-size-40-bold font-color-000000">{{ title }}</div>
-            <div class="subtitle font-size-16-bold font-color-000000" style="margin-left: 20px;">{{ subtitle }}</div>
+            <div class="row">
+                <div class="col-auto title font-size-40-bold font-color-000000">{{ title }}</div>
+                <div class="col-auto subtitle font-size-16-bold font-color-000000">{{ subtitle }}</div>
+            </div>
         </div>
     </div>
 </template>
@@ -45,6 +38,6 @@
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : ""
             };
         },
-        props: ["arr", "title", "subtitle"]
+        props: ["title", "subtitle"]
     };
 </script>

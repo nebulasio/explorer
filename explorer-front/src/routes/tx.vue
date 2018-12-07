@@ -36,7 +36,7 @@
 </style>
 <template>
     <div class="vue-tx fullfill" v-bind:triggerComputed=urlChange>
-        <div class="container">
+        <div v-if="tx" class="container">
             <div class="tab explorer-table-container">
                 <table class="explorer-table">
                     <div class="font-size-24-bold font-color-000000 table-title">
@@ -242,7 +242,7 @@
                     // }
                 }, xhr => {
                     this.$root.showModalLoading = false;
-                    this.$router.replace((this.$route.params.api ?"/" + this.$route.params.api :"") +"/404!" + this.$route.fullPath);
+                    this.$router.replace((this.$route.params.api ?"/" + this.$route.params.api :"") +"/404");
                 });
             },
             isTokenTransfer() {
@@ -255,9 +255,9 @@
                 return false;
             },
             tokenAmount() {
-                BigNumber.config({ DECIMAL_PLACES: 18 })
+                BigNumber.config({ DECIMAL_PLACES: this.tx.decimal })
                 var amount = BigNumber(JSON.parse(JSON.parse(this.tx.data).Args)[1]);
-                var decimals = BigNumber('1e+18');
+                var decimals = BigNumber('1e+' + this.tx.decimal);
                 return amount.div(decimals).toFormat();
             }
         },
@@ -266,7 +266,7 @@
                 fragApi: this.$route.params.api ?"/" + this.$route.params.api :"",
                 tab: 0,
                 tabButtons: ["Overview"],
-                tx: {tokenName: null},
+                tx: null,
                 isShowPayload: false
             };
         },

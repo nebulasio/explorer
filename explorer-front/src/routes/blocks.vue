@@ -7,9 +7,9 @@
 <template>
     <!-- https://etherscan.io/blocks -->
     <div class="vue-blocks fullfill">
-        <vue-bread v-bind:arr=breadcrumb title="Blocks"></vue-bread>
+        <vue-bread title="Blocks"></vue-bread>
 
-        <div class="container mt20 explorer-table-container">
+        <div v-if="arr" class="container mt20 explorer-table-container">
             <div class="align-items-center info-and-pagination row" style="margin-top: 60px; margin-bottom: 30px;">
                 <div class="col font-color-000000 font-size-24-bold">Showing Block (#{{ heightFrom }} to #{{ heightTo }}) out of {{ totalBlocks }} total blocks</div>
             </div>
@@ -73,11 +73,7 @@
         },
         data() {
             return {
-                arr: [],
-                breadcrumb: [
-                    { text: "Home", to: "/" },
-                    { text: "Blocks", to: "" }
-                ],
+                arr: null,
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 heightFrom: 0,
@@ -111,9 +107,9 @@
                             this.heightTo = 0;
                         }
                     }, xhr => {
-                        console.log(xhr);
+                        // console.log(xhr);
                         this.$root.showModalLoading = false;
-                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                     });
                 }
             },

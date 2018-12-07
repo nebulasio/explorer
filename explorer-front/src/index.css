@@ -88,7 +88,7 @@ td.time:hover :nth-child(2) {
 .fullfill {
     min-height: calc(100% - 67.33px - 82px);
     border-bottom: 0.5px solid rgba(221, 221, 221, 1);
-    padding-bottom: 30px;
+    padding-bottom: 50px;
 }
 
 /*  .modal

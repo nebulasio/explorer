@@ -224,8 +224,7 @@
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
     <div class="vue-address fullfill" v-bind:triggerComputed=urlChange>
-        <vue-bread v-bind:arr=breadcrumb
-                   v-bind:title='navTitle'
+        <vue-bread v-bind:title='navTitle'
                    v-bind:subtitle="$route.params.id"></vue-bread>
         <div class="container explorer-table-container" v-if=obj>
 
@@ -238,7 +237,7 @@
                     <td class="base-info-key font-size-16-normal font-color-555555">NAS Balance:
                     </td>
                     <td class="font-size-16-normal font-color-000000">
-                        {{tokenAmount(obj.address.balance) }} NAS
+                        {{tokenAmount(obj.address.balance, decimal) }} NAS
                     </td>
                 </tr>
                 <tr v-if="isContract">
@@ -294,13 +293,13 @@
                             <router-link v-bind:to='fragApi + "/contract/" + token.contract'>
                                 <span class="font-size-16-bold font-color-0057FF">{{token.tokenName }}</span>
                             </router-link>
-                            <span class="font-size-16-normal font-color-000000">{{ tokenAmount(token.balance) }}</span>
+                            <span class="font-size-16-normal font-color-000000">{{ tokenAmount(token.balance, token.decimal) }}</span>
                         </div>
                         <div v-if="validTokens.length > 1" class="dropdown-menu">
                             <div class="dropdown-item" v-for="(token, i) in validTokens" :key=i>
-                                {{ tokenAmount(token.balance) }}
+                                {{ tokenAmount(token.balance, token.decimal) }}
                                 <router-link v-bind:to='fragApi + "/contract/" + token.contract'>
-                                    {{token.tokenName }}
+                                    {{ token.tokenName }}
                                 </router-link>
                             </div>
                         </div>
@@ -389,7 +388,7 @@
                                 <span class="fromTo">{{ o.to.alias || o.to.hash }}</span>
                             </router-link>
                         </td>
-                        <td class="amount align-right">{{ tokenAmount(o.value) }} NAS</td>
+                        <td class="amount align-right">{{ tokenAmount(o.value, o.decimal) }} NAS</td>
                         <td class="txfee align-right">
                             <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
                             <i v-else>(pending)</i>
@@ -474,7 +473,7 @@
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'><span
                                 class="fromTo">{{ o.to.alias || o.to.hash }}</span></router-link>
                         </td>
-                        <td class="amount align-right">{{ tokenAmount(o.value) }} {{ o.tokenName || '' }}
+                        <td class="amount align-right">{{ tokenAmount(o.value, o.decimal) }} {{ o.tokenName || '' }}
                         </td>
                         <td class="txfee align-right">
                             <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
@@ -552,6 +551,7 @@
                     this.$root.showModalLoading = false;
                     this.minted = o.mintedBlkList;
                     this.obj = o;
+                    this.decimal = o.decimal;
                     this.tokens = o.tokens;
                     if (o.address.type == 1) {// this is a smart contract address
                         this.isContract = true;
@@ -565,7 +565,7 @@
                     this.contractCode = o.contractCode;
                 }, xhr => {
                     this.$root.showModalLoading = false;
-                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });
             },
             navTitle() {
@@ -577,17 +577,13 @@
         },
         data() {
             return {
-                breadcrumb: [
-                    {text: "Home", to: "/"},
-                    {text: "Normal Accounts", to: "/accounts"},
-                    {text: "Address", to: ""}
-                ],
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 minted: [],
                 obj: null,
                 tab: 0,
                 txs: [],
                 tokens: [],
+                decimal: null,
                 isContract: false,
                 contract: {hash: null, from: null},
                 nrc20TxList: [],
@@ -650,8 +646,8 @@
             easyNumber(n) {
                 return utility.easyNumber(n);
             },
-            tokenAmount(n) {
-                BigNumber.config({DECIMAL_PLACES: 18})
+            tokenAmount(n, decimals) {
+                BigNumber.config({DECIMAL_PLACES: decimals || 18})
                 var amount = BigNumber(n);
                 var decimals = BigNumber('1e+18');
                 return amount.div(decimals).toFormat();

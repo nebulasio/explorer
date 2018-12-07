@@ -6,7 +6,7 @@
 <template>
     <!-- https://etherscan.io/accounts  -->
     <div class="vue-accounts fullfill">
-        <vue-bread v-bind:arr=breadcrumb title="All Accounts"></vue-bread>
+        <vue-bread title="All Accounts"></vue-bread>
         <div style="height: 60px;"></div>
         <div class="container explorer-table-container">
             <div class="align-items-center info-and-pagination row">
@@ -52,10 +52,6 @@
         data() {
             return {
                 arr: [],
-                breadcrumb: [
-                    { text: "Home", to: "/" },
-                    { text: "Accounts", to: "" }
-                ],
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 totalAccounts: 0,
@@ -90,7 +86,7 @@
                     }, xhr => {
                         console.log(xhr);
                         this.$root.showModalLoading = false;
-                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                     });
                 }
             },

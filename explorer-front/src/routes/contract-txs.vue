@@ -79,7 +79,7 @@
 <template>
     <!-- https://etherscan.io/txs -->
     <div class="vue-txs fullfill">
-        <vue-bread v-bind:arr=breadcrumb v-bind:title=transactionsTitle></vue-bread>
+        <vue-bread v-bind:title=transactionsTitle></vue-bread>
 
         <div class="container mt20 explorer-table-container">
             <div class="align-items-center info-and-pagination mt20 row">
@@ -166,12 +166,6 @@
         computed: {
             transactionsTitle: function () {
                 return (this.tokenName ? this.tokenName + ' ' : '') + "Transactions";
-            },
-            breadcrumb: function () {
-                return [
-                    { text: "Home", to: "/" },
-                    { text: this.transactionsTitle, to: "" }
-                ];
             }
         },
         methods: {
@@ -199,7 +193,7 @@
                 }, xhr => {
                     console.log(xhr);
                     this.$root.showModalLoading = false;
-                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });
             },
             numberAddComma(n) {

@@ -79,7 +79,7 @@
 <template>
     <!-- https://etherscan.io/txs -->
     <div class="vue-txs fullfill">
-        <vue-bread v-bind:arr=breadcrumb title=Transactions></vue-bread>
+        <vue-bread title=Transactions></vue-bread>
 
         <div class="container mt20 explorer-table-container">
             <div class="align-items-center info-and-pagination mt20 row">
@@ -161,10 +161,6 @@
         data() {
             return {
                 arr: [],
-                breadcrumb: [
-                    { text: "Home", to: "/" },
-                    { text: "Transactions", to: "" }
-                ],
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 maxDisplayCnt: 0,
@@ -197,7 +193,7 @@
                 }, xhr => {
                     console.log(xhr);
                     this.$root.showModalLoading = false;
-                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });
             },
             numberAddComma(n) {

@@ -17,35 +17,31 @@
         content: ":";
     }
 
-    .vue-block .dynasty {
-        height: 78px;
-        overflow: hidden;
-    }
-
-    .vue-block .dynasty a {
-        display: block;
-    }
-
-    .vue-block .dynasty button {
-        background-color: darkgray;
-        border-color: none;
-    }
-
     .vue-block .card {
         border: 0;
     }
+
+    .vue-block .dynasty {
+        font-family: Monaco, Consolas, monospace;
+    }
+
+    .vue-block .dynasty a {
+        margin-bottom: 10px;
+    }
+    
 </style>
 <template>
     <!-- https://etherscan.io/block/4951841 -->
     <div class="vue-block fullfill" v-bind:triggerComputed=urlChange>
-        <div class="container">
-            <div class=mt20></div>
+        <vue-bread title='Block'
+                   v-bind:subtitle="$route.params.id"></vue-bread>
+        <div v-if="block" class="container">
             <div class="tab explorer-table-container">
                 <table class="explorer-table font-size-16-normal">
+                    <div class="font-size-24-bold font-color-000000 table-title">
+                        Overview
+                    </div>
                     <tr>
-                        <div class="font-size-24-bold font-color-000000 table-title">
-                            Overview
-                        </div>
                         <td class="font-color-555555">Height</td>
                         <td class="font-color-000000">
                             <nav aria-label="Page navigation" class=navgation-tab>
@@ -110,16 +106,15 @@
                     <tr>
                         <td class="font-color-555555" style="vertical-align: top; padding-top: 12px;">Dynasty</td>
                         <td style="vertical-align: top; padding-top: 12px;">
-                            <span class="font-color-0057FF">Show Dynasty</span>
-                            <img style="width: 12px; height: 7px;" src="../../static/img/ic_arrow_right.png" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"/>
+                            <span class="font-color-0057FF" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                Show Dynasty
+                                <img src="../../static/img/ic_arrow_right.png" width="35px"/>
+                            </span>
                             <div class="collapse" id="collapseExample">
-                                <div class="card card-body">
-                                    <template v-for="dynasty in block.dynasty">
-                                        <router-link v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>
-                                            <span class="font-size-16-bold font-color-0057FF"> {{ dynasty }}</span>
-                                        </router-link>
-                                        <br v-bind:key=dynasty>
-                                    </template>
+                                <div class="card card-body dynasty">
+                                    <router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>
+                                        <span class="font-size-16-bold font-color-0057FF"> {{ dynasty }}</span>
+                                    </router-link>
                                 </div>
                             </div>
                         </td>
@@ -140,14 +135,18 @@
 
     module.exports = {
         components: {
+            "vue-bread": require("@/components/vue-bread").default,
             "vue-tab-buttons": require("@/components/vue-tab-buttons").default
         },
         computed: {
             urlChange() {
+                this.$root.showModalLoading = true;
                 api.getBlock(this.$route.params.id, o => {
+                    this.$root.showModalLoading = false;
                     this.block = o;
                 }, xhr => {
-                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                    this.$root.showModalLoading = false;
+                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });
             }
         },

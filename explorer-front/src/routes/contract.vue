@@ -116,7 +116,7 @@
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
     <div class="vue-contract fullfill" v-bind:triggedComputed=urlChange>
-        <vue-bread v-if=obj v-bind:arr=breadcrumb v-bind:title='obj.tokenName' subtitle="【 NRC20 Token 】"></vue-bread>
+        <vue-bread v-if=obj v-bind:title='obj.tokenName' subtitle="[ NRC20 Token ]"></vue-bread>
         <div class="container explorer-table-container" v-if=obj>
 
             <table class="explorer-table font-size-16-normal">
@@ -156,7 +156,7 @@
             </table>
 
             <div style="height: 30px;"></div>
-            <vue-tab-buttons class=mt20 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
+            <vue-tab-buttons class=mt50 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
             <div class=mt20></div>
 
             <!--    Transactions
@@ -305,13 +305,6 @@
             //     }
             //     return "0x0";
             // },
-            breadcrumb() {
-                return [
-                    { text: "Home", to: "/" },
-                    { text: "Normal Accounts", to: "/accounts" },
-                    { text: this.obj.tokenName, to: "" }
-                ];
-            },
             tabButtons() {
                 return ["Transfers", "Holders"]
             },
@@ -325,7 +318,7 @@
                     this.tokenPrice =  o.price ? {price: o.price, trends: o.trends, change24h: o.change24h} : null;
                 }, xhr => {
                     this.$root.showModalLoading = false;
-                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });
             }
         },
@@ -402,7 +395,7 @@
                 }, xhr => {
                     console.log(xhr);
                     this.$root.showModalLoading = false;
-                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });
             },
             tokenAmount(n) {
