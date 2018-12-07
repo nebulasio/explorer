@@ -2,7 +2,7 @@
     .vue-footer {
         background: rgba(255, 255, 255, 1);
         box-shadow: 0px 1px 0px 0px rgba(221, 221, 221, 1);
-        margin-top: 30px;
+        /* margin-top: 30px; */
         font-size: 16px;
         color: black;
     }

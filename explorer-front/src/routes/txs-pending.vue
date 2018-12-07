@@ -1,6 +1,6 @@
 <template>
     <!-- https://etherscan.io/txsPending -->
-    <div class=vue-txs-pending>
+    <div class="vue-txs-pending fullfill">
         <vue-bread v-bind:arr=breadcrumb title="Pending Transactions"></vue-bread>
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">

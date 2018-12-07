@@ -115,16 +115,16 @@
 </style>
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
-    <div class=vue-contract v-bind:triggedComputed=urlChange>
+    <div class="vue-contract fullfill" v-bind:triggedComputed=urlChange>
         <vue-bread v-if=obj v-bind:arr=breadcrumb v-bind:title='obj.tokenName' subtitle="【 NRC20 Token 】"></vue-bread>
-        <div class=container v-if=obj>
+        <div class="container explorer-table-container" v-if=obj>
 
-            <div style="margin-top: 60px;margin-bottom: 30px;">
-                <span class="font-color-000000 font-size-24-bold">
-                    Overview
-                </span>
-            </div>
             <table class="explorer-table font-size-16-normal">
+                <div style="margin-top: 60px;margin-bottom: 30px;">
+                    <span class="font-color-000000 font-size-24-bold table-title">
+                        Overview
+                    </span>
+                </div>
                 <tr>
                     <td class="font-color-555555 td-left" style="padding-left: 24px;">Total supply:</td>
                     <td class="font-color-000000">{{ tokenAmount(obj.total) }} {{ obj.tokenName }} </td>
@@ -161,7 +161,7 @@
 
             <!--    Transactions
                 ============================================================ -->
-            <div class=tab v-show="tab === 1">
+            <div class="tab explorer-table-container" v-show="tab === 1">
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
@@ -239,7 +239,7 @@
             </div>
 
             <!-- =============== Holders =============== -->
-            <div class=tab v-show="tab === 2">
+            <div class="tab explorer-table-container" v-show="tab === 2">
                 <div class="align-items-center info-and-pagination mt20 row">
                     <div class="col font-size-16-bold font-color-000000">
                         {{ totalHolderCount }} holders found

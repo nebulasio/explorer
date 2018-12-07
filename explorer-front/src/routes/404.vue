@@ -1,27 +1,38 @@
 <style>
-    .vue-404 .img {
-        height: 600px;
-        background: url(/static/img/404.jpg) center no-repeat;
+    .vue-404 {
+        position: relative;
     }
 
-    .vue-404 .url {
-        font-size: 31px;
-        line-height: 42px;
+    .vertical-center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .vue-404>div {
         text-align: center;
+    }
+
+    .vue-404 .ohno {
+        color: black;
+        font-size: 38px;
+        font-weight: bold;
+    }
+
+    .vue-404 .msg {
+        color: #555555;
+        font-size: 18px;
+        font-weight: bold;
     }
 </style>
 <template>
-    <div class=vue-404>
-        <div class=url>
-            <template v-if=$root.urlBefore404>
-                Such page was not found:
-                <br>{{ $root.urlBefore404 }}
-            </template>
-            <template v-else>
-                <br>
-                <br>
-            </template>
+    <div class="vue-404 fullfill">
+        <div class="vertical-center">
+            <img src="/static/img/404.png" alt="" width="360px">
+            <div class="ohno">Oh no!</div>
+            <div class="msg">You’re either misspelling the URL <br> or requesting a page that’s no longer here.</div>
         </div>
-        <div class=img></div>
     </div>
 </template>

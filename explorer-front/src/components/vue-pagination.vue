@@ -10,6 +10,10 @@
         ></tag>
         */
 
+    .vue-pagination {
+        padding: 20px 0px;
+    }
+
     .vue-pagination .current {
         color: inherit;
         position: relative;

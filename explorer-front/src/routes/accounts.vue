@@ -5,10 +5,10 @@
 </style>
 <template>
     <!-- https://etherscan.io/accounts  -->
-    <div class=vue-accounts>
+    <div class="vue-accounts fullfill">
         <vue-bread v-bind:arr=breadcrumb title="All Accounts"></vue-bread>
         <div style="height: 60px;"></div>
-        <div class="container">
+        <div class="container explorer-table-container">
             <div class="align-items-center info-and-pagination row">
                 <div class="col font-color-000000 font-size-24-bold">
                     A total of {{ totalAccounts }} accounts found

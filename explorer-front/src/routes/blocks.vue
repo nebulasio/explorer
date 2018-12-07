@@ -6,10 +6,10 @@
 
 <template>
     <!-- https://etherscan.io/blocks -->
-    <div class=vue-blocks>
+    <div class="vue-blocks fullfill">
         <vue-bread v-bind:arr=breadcrumb title="Blocks"></vue-bread>
 
-        <div class="container mt20">
+        <div class="container mt20 explorer-table-container">
             <div class="align-items-center info-and-pagination row" style="margin-top: 60px; margin-bottom: 30px;">
                 <div class="col font-color-000000 font-size-24-bold">Showing Block (#{{ heightFrom }} to #{{ heightTo }}) out of {{ totalBlocks }} total blocks</div>
             </div>

@@ -81,6 +81,16 @@ td.time:hover :nth-child(2) {
     display: inline-block;
 }
 
+.vue {
+    height: 100%;
+}
+
+.fullfill {
+    min-height: calc(100% - 67.33px - 82px);
+    border-bottom: 0.5px solid rgba(221, 221, 221, 1);
+    padding-bottom: 30px;
+}
+
 /*  .modal
     ============================================================ */
 
@@ -145,11 +155,28 @@ label {
 
 /*--------------------------- tables ---------------------------*/
 
+.explorer-table-container {
+    overflow-x: scroll;
+}
+
 .explorer-table {
     width: 100%;
     max-width: 100%;
-    margin-bottom: 10px;
+    /* padding-bottom: 10px; */
     background-color: transparent;
+    overflow-x: scroll;
+}
+
+.explorer-table .table-title {
+    margin-top: 60px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 767.98px) {
+    .explorer-table .table-title {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
 }
 
 .explorer-table th,
@@ -169,24 +196,23 @@ label {
 }
 
 .explorer-table tr {
-    height:46px;
+    height: 46px;
 }
 
 .explorer-table tr:nth-of-type(odd) {
-    background:rgba(247,247,247,1);
-    box-shadow:0px -1px 0px 0px rgba(243,241,241,1);
+    background: rgba(247, 247, 247, 1);
+    box-shadow: 0px -1px 0px 0px rgba(243, 241, 241, 1);
 }
 
 .explorer-table tr:nth-of-type(even) {
-    background:rgba(255,255,255,1);
+    background: rgba(255, 255, 255, 1);
 }
 
-
-.list-table tr:nth-of-type(odd){
+.list-table tr:nth-of-type(odd) {
     background-color: white;
 }
 
-.list-table tr:nth-of-type(even){
+.list-table tr:nth-of-type(even) {
     background-color: #f9f9f9;
 }
 
@@ -228,10 +254,12 @@ label {
 }
 
 /*----------------------- font css -----------------------*/
+
 .font-size-14-bold {
     font-size: 14px;
-    font-weight:600;
+    font-weight: 600;
 }
+
 .font-size-14-normal {
     font-size: 14px;
 }
@@ -246,66 +274,71 @@ label {
 }
 
 .font-size-12-bold {
-    font-size:12px;
-    font-weight:600;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .font-size-24-bold {
-    font-size:24px;
-    font-weight:600;
+    font-size: 24px;
+    font-weight: 600;
 }
 
 .font-size-40-bold {
-    font-size:40px;
-    font-weight:bold;
+    font-size: 40px;
+    font-weight: bold;
 }
 
 .font-color-000000 {
-    color:rgba(0,0,0,1);
+    color: rgba(0, 0, 0, 1);
 }
 
 .font-color-FFFFFF {
-    color:rgba(255,255,255,1);
+    color: rgba(255, 255, 255, 1);
 }
 
 .font-color-555555 {
-    color:rgba(85,85,85,1);
+    color: rgba(85, 85, 85, 1);
 }
 
 .font-color-0057FF {
-    color:rgba(0,87,255,1);
+    color: rgba(0, 87, 255, 1);
 }
 
 .font-color-F04434 {
-    color:rgba(240,68,52,1);
+    color: rgba(240, 68, 52, 1);
 }
 
 .font-color-4560E6 {
-    color:rgba(69,96,230,1);
+    color: rgba(69, 96, 230, 1);
 }
 
 .font-color-07A656 {
-    color:rgba(7,166,86,1);
+    color: rgba(7, 166, 86, 1);
 }
 
 /*----------------------- icons -----------------------*/
+
 .icon40 {
     width: 40px;
     height: 40px;
 }
+
 .icon18 {
     width: 18px;
     height: 18px;
 }
+
 .icon16 {
     width: 16px;
     height: 16px;
 }
+
 .icon24 {
     width: 24px;
     height: 24px;
 }
 
-img[src=""],img:not([src]){
-    opacity:0;
+img[src=""],
+img:not([src]) {
+    opacity: 0;
 }

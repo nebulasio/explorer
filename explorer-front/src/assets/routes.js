@@ -16,7 +16,7 @@ module.exports = [{
     meta: { headerActive: 2 },
     path: "/:api?/blocks"
 }, {
-    component: require("@/routes/oops").default,
+    component: require("@/routes/404").default,
     path: "/:api?/oops"
 }, {
     component: require("@/routes/tx").default,

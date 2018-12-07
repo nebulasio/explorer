@@ -26,8 +26,8 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         display: inline-block;
-        line-height: 18px;
         vertical-align: bottom;
+        margin: auto 10px;
     }
     .td-left {
         width: 25%;
@@ -35,158 +35,156 @@
 
 </style>
 <template>
-    <div class=" vue-tx" v-bind:triggerComputed=urlChange>
+    <div class="vue-tx fullfill" v-bind:triggerComputed=urlChange>
         <div class="container">
-            <div style="height: 60px;"></div>
-        <div class="font-size-24-bold font-color-000000" style="margin-bottom: 30px;">
-            Overview
-        </div>
-
-        <div class=tab>
-            <table class="explorer-table">
-                <tr>
-                    <td class="td-left font-size-16-normal font-color-555555" style="padding-left: 24px;">TxHash:</td>
-                    <td class="font-size-16-normal font-color-000000">{{ tx.hash }}</td>
-                </tr>
-                <tr class="font-size-16-normal">
-                    <td class="font-color-555555" style="padding-left: 24px;">TxReceipt Status:</td>
-                    <td v-if="tx.status === 0">
-                        <img class="icon18" src="../../static/img/ic_tx_status_failed.png" />
-                        <span class="font-color-F04434" style="margin-left: 10px;">fail ( {{ tx.executeError }} )</span>
-                    </td>
-                    <td v-else-if="tx.status === 1">
-                        <img class="icon18" src="../../static/img/ic_tx_status_success.png" />
-                        <span class="font-color-4560E6" style="margin-left: 10px;">success</span>
-                    </td>
-                    <td v-else>
-                        <img class="icon18" src="../../static/img/ic_tx_status_pending.png" />
-                        <span class="font-color-000000" style="margin-left: 10px;">pending</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Block Height:</td>
-                    <td>
-                        <template v-if=tx.isPending>
-                            <span class="font-color-000000 font-size-16-normal"> pending </span>
-                        </template>
-                        <template v-else>
-                            <router-link v-if=tx.block v-bind:to='fragApi +"/block/" + tx.block.height'>
-                                <span class="font-color-0057FF font-size-16-normal">{{tx.block.height}}</span>
+            <div class="tab explorer-table-container">
+                <table class="explorer-table">
+                    <div class="font-size-24-bold font-color-000000 table-title">
+                        Overview
+                    </div>
+                    <tr>
+                        <td class="td-left font-size-16-normal font-color-555555" style="padding-left: 24px;">TxHash:</td>
+                        <td class="font-size-16-normal font-color-000000">{{ tx.hash }}</td>
+                    </tr>
+                    <tr class="font-size-16-normal">
+                        <td class="font-color-555555" style="padding-left: 24px;">TxReceipt Status:</td>
+                        <td v-if="tx.status === 0">
+                            <img class="icon18" src="../../static/img/ic_tx_status_failed.png" />
+                            <span class="font-color-F04434" style="margin-left: 10px;">fail ( {{ tx.executeError }} )</span>
+                        </td>
+                        <td v-else-if="tx.status === 1">
+                            <img class="icon18" src="../../static/img/ic_tx_status_success.png" />
+                            <span class="font-color-4560E6" style="margin-left: 10px;">success</span>
+                        </td>
+                        <td v-else>
+                            <img class="icon18" src="../../static/img/ic_tx_status_pending.png" />
+                            <span class="font-color-000000" style="margin-left: 10px;">pending</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Block Height:</td>
+                        <td>
+                            <template v-if=tx.isPending>
+                                <span class="font-color-000000 font-size-16-normal"> pending </span>
+                            </template>
+                            <template v-else>
+                                <router-link v-if=tx.block v-bind:to='fragApi +"/block/" + tx.block.height'>
+                                    <span class="font-color-0057FF font-size-16-normal">{{tx.block.height}}</span>
+                                </router-link>
+                            </template>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">TimeStamp:</td>
+                        <td class="font-size-16-normal font-color-000000">{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">From:</td>
+                        <td>
+                            <router-link v-if=tx.from v-bind:to='fragApi +"/address/" + tx.from.hash'>
+                                <span class="font-color-0057FF font-size-16-normal">{{ tx.from.hash }}</span>
                             </router-link>
-                        </template>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">TimeStamp:</td>
-                    <td class="font-size-16-normal font-color-000000">{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">From:</td>
-                    <td>
-                        <router-link v-if=tx.from v-bind:to='fragApi +"/address/" + tx.from.hash'>
-                            <span class="font-color-0057FF font-size-16-normal">{{ tx.from.hash }}</span>
-                        </router-link>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">To:</td>
-                    <td class=monospace v-if=isTokenTransfer>
-                        <span class="font-color-000000 font-size-16-normal">Contract</span>
-                        <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
-                            <span style="margin-left: 20px;" class="font-size-16-normal font-color-0057FF">{{ tx.to.hash }}</span>
-                        </router-link>
-                        <div class="token-name font-size-16-normal font-color-000000" style="margin-left: 14px;" v-if="tx.tokenName">{{ '【' + tx.tokenName + '】' }}</div>
-                    </td>
-                    <td v-else>
-                        <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
-                            <span class="font-color-0057FF font-size-16-normal">{{ tx.to.hash }}</span>
-                        </router-link>
-                    </td>
-                </tr>
-                <tr  v-if=isTokenTransfer class="font-size-16-normal">
-                    <td class="font-color-555555" style="padding-left: 24px;">Token Transfered:</td>
-                    <td>
-                        <span class="font-color-000000">From</span>
-                        <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.from.hash'>
-                            <span class="font-color-0057FF">{{ tx.from.hash }}</span>
-                        </router-link>
-                        <span class="font-color-000000">To </span>
-                        <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>
-                            <span class="font-color-0057FF">{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
-                        </router-link>
-                        <span class="font-color-000000">for {{ tokenAmount }}</span>
-                        <div class="token-name" v-if="tx.tokenName">
-                            <span class="font-color-000000">{{ (tx.tokenName) }}</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Value:</td>
-                    <td class="font-size-16-normal font-color-000000">{{ nasAmount(tx.value) }} NAS</td>
-                </tr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">To:</td>
+                        <td class=monospace v-if=isTokenTransfer>
+                            <span class="font-color-000000 font-size-16-normal">Contract</span>
+                            <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
+                                <span style="margin-left: 20px;" class="font-size-16-normal font-color-0057FF">{{ tx.to.hash }}</span>
+                            </router-link>
+                            <div class="token-name font-size-16-normal font-color-000000" style="margin-left: 14px;" v-if="tx.tokenName">{{ '【' + tx.tokenName + '】' }}</div>
+                        </td>
+                        <td v-else>
+                            <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
+                                <span class="font-color-0057FF font-size-16-normal">{{ tx.to.hash }}</span>
+                            </router-link>
+                        </td>
+                    </tr>
+                    <tr  v-if=isTokenTransfer class="font-size-16-normal">
+                        <td class="font-color-555555" style="padding-left: 24px;">Token Transfered:</td>
+                        <td>
+                            <span class="font-color-000000">From</span>
+                            <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.from.hash'>
+                                <span class="font-color-0057FF">{{ tx.from.hash }}</span>
+                            </router-link>
+                            <span class="font-color-000000">To </span>
+                            <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>
+                                <span class="font-color-0057FF">{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
+                            </router-link>
+                            <span class="font-color-000000">for {{ tokenAmount }}</span>
+                            <div class="token-name" v-if="tx.tokenName">
+                                <span class="font-color-000000">{{ (tx.tokenName) }}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Value:</td>
+                        <td class="font-size-16-normal font-color-000000">{{ nasAmount(tx.value) }} NAS</td>
+                    </tr>
 
-            </table>
+                </table>
 
-            <div class="font-size-24-bold font-color-000000" style="margin-top: 60px;margin-bottom: 30px;">Misc</div>
-
-            <table class="explorer-table">
-                <tr>
-                    <td class="td-left font-size-16-normal font-color-555555" style="padding-left: 24px;">Gas Limit:</td>
-                    <td class="font-color-000000 font-size-16-normal">{{ numberAddComma(tx.gasLimit) }}</td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Gas Used By Txn:</td>
-                    <td class="font-color-000000 font-size-16-normal">{{ tx.isPending === true ? 'pending' : numberAddComma(tx.gasUsed) }}</td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Gas Price:</td>
-                    <td class="font-color-000000 font-size-16-normal">{{ toWei(tx.gasPrice) }}</td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Actual Tx Cost/Fee:</td>
-                    <td class="font-color-000000 font-size-16-normal">{{ toWei(tx.txFee) }}</td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Nonce:</td>
-                    <td class="font-color-000000 font-size-16-normal">{{ tx.nonce }}</td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Transaction Type:</td>
-                    <td class="font-color-000000 font-size-16-normal" v-if=" tx.type === 'deploy'">{{ txType }} ( contract address: <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.contractAddress'> <span class="font-color-0057FF"> {{tx.contractAddress}}</span> </router-link>)</td>
-                    <td class="font-color-000000 font-size-16-normal" v-else>{{ txType }}</td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">SourceType:</td>
-                    <td class="font-color-000000 font-size-16-normal" v-if=" tx.type === 'deploy'">{{ JSON.parse(tx.data).SourceType }}</td>
-                    <td v-else></td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Args:</td>
-                    <td class="font-color-000000 font-size-16-normal" v-if=" tx.type === 'deploy'">{{ JSON.parse(tx.data).Args }}</td>
-                    <td v-else></td>
-                </tr>
-                <tr>
-                    <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Payload Data:</td>
-                    <td v-if="tx.type === 'binary'" class=text>
-                        {{ tx.data }}
-                    </td>
-                    <td v-else class=code>
-                        <div v-on:click="showOrHidePayload()" style="display: flex;">
-                            <span class="font-size-16-normal font-color-0057FF">View all</span>
-                            <img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowPayload ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
-                        </div>
-                    </td>
-                </tr>
-                <tr v-if="isShowPayload === true">
-                    <td></td>
-                    <td>
-                        <pre><code class=language-javascript v-html=formatCode></code></pre>
-                    </td>
-                </tr>
-            </table>
-            <div style="height: 60px;"></div>
-        </div>
+                <table class="explorer-table">
+                    <div class="font-size-24-bold font-color-000000 table-title">
+                        Misc
+                    </div>
+                    <tr>
+                        <td class="td-left font-size-16-normal font-color-555555" style="padding-left: 24px;">Gas Limit:</td>
+                        <td class="font-color-000000 font-size-16-normal">{{ numberAddComma(tx.gasLimit) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Gas Used By Txn:</td>
+                        <td class="font-color-000000 font-size-16-normal">{{ tx.isPending === true ? 'pending' : numberAddComma(tx.gasUsed) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Gas Price:</td>
+                        <td class="font-color-000000 font-size-16-normal">{{ toWei(tx.gasPrice) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Actual Tx Cost/Fee:</td>
+                        <td class="font-color-000000 font-size-16-normal">{{ toWei(tx.txFee) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Nonce:</td>
+                        <td class="font-color-000000 font-size-16-normal">{{ tx.nonce }}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Transaction Type:</td>
+                        <td class="font-color-000000 font-size-16-normal" v-if=" tx.type === 'deploy'">{{ txType }} ( contract address: <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.contractAddress'> <span class="font-color-0057FF"> {{tx.contractAddress}}</span> </router-link>)</td>
+                        <td class="font-color-000000 font-size-16-normal" v-else>{{ txType }}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">SourceType:</td>
+                        <td class="font-color-000000 font-size-16-normal" v-if=" tx.type === 'deploy'">{{ JSON.parse(tx.data).SourceType }}</td>
+                        <td v-else></td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Args:</td>
+                        <td class="font-color-000000 font-size-16-normal" v-if=" tx.type === 'deploy'">{{ JSON.parse(tx.data).Args }}</td>
+                        <td v-else></td>
+                    </tr>
+                    <tr>
+                        <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">Payload Data:</td>
+                        <td v-if="tx.type === 'binary'" class=text>
+                            {{ tx.data }}
+                        </td>
+                        <td v-else class=code>
+                            <div v-on:click="showOrHidePayload()" style="display: flex;">
+                                <span class="font-size-16-normal font-color-0057FF">View all</span>
+                                <img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowPayload ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr v-if="isShowPayload === true">
+                        <td></td>
+                        <td>
+                            <pre><code class=language-javascript v-html=formatCode></code></pre>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </template>
@@ -237,11 +235,11 @@
                 api.getTx(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;
                     this.tx = o;
-                    if (!o.tokenName || o.tokenName.length == 0) {
-                        if (o.to.hash == this.atpAddress()) {
-                            this.tx.tokenName ="ATP";
-                        }
-                    }
+                    // if (!o.tokenName || o.tokenName.length == 0) {
+                    //     if (o.to.hash == this.atpAddress()) {
+                    //         this.tx.tokenName ="ATP";
+                    //     }
+                    // }
                 }, xhr => {
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ?"/" + this.$route.params.api :"") +"/404!" + this.$route.fullPath);

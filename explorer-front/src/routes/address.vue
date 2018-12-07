@@ -223,19 +223,17 @@
 </style>
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
-    <div class=vue-address v-bind:triggerComputed=urlChange>
+    <div class="vue-address fullfill" v-bind:triggerComputed=urlChange>
         <vue-bread v-bind:arr=breadcrumb
                    v-bind:title='navTitle'
                    v-bind:subtitle="$route.params.id"></vue-bread>
-        <div class=container v-if=obj>
-
-            <div class="font-size-24-bold font-color-000000"
-                 style="margin-top: 60px; margin-bottom: 30px;">
-                Overview
-                <span class=c777 v-show=obj.address.alias> | {{ obj.address.alias }}</span>
-            </div>
+        <div class="container explorer-table-container" v-if=obj>
 
             <table class="explorer-table">
+                <div class="font-size-24-bold font-color-000000 table-title">
+                    Overview
+                    <span class=c777 v-show=obj.address.alias> | {{ obj.address.alias }}</span>
+                </div>
                 <tr>
                     <td class="base-info-key font-size-16-normal font-color-555555">NAS Balance:
                     </td>
@@ -310,12 +308,12 @@
                 </tr>
             </table>
 
-            <vue-tab-buttons class=mt20 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
+            <vue-tab-buttons class=mt50 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
             <div class=mt20></div>
 
             <!--    Transactions
                 ============================================================ -->
-            <div class=tab v-show="tab == 1">
+            <div class="tab explorer-table-container" v-show="tab == 1">
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="font-size-16-bold font-color-000000">
@@ -412,7 +410,7 @@
 
             <!--    NRC20 Transactions
                 ============================================================ -->
-            <div class=tab v-show="tab === 2">
+            <div class="tab explorer-table-container" v-show="tab === 2">
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="c000">
