@@ -555,6 +555,7 @@
                                 <div class="block-popover">
                                     <div>Block Height: {{ block.height }}</div>
                                     <div>Transactions: {{ block.txnCnt }}</div>
+                                    <div>Block Interval: 15s</div>
                                 </div>
                             </div>
                         </transition-group>

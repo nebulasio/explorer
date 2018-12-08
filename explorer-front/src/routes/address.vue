@@ -297,10 +297,10 @@
                         </div>
                         <div v-if="validTokens.length > 1" class="dropdown-menu">
                             <div class="dropdown-item" v-for="(token, i) in validTokens" :key=i>
-                                {{ tokenAmount(token.balance, token.decimal) }}
                                 <router-link v-bind:to='fragApi + "/contract/" + token.contract'>
                                     {{ token.tokenName }}
                                 </router-link>
+                                {{ tokenAmount(token.balance, token.decimal) }}
                             </div>
                         </div>
                     </td>

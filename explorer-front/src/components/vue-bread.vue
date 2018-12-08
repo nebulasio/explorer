@@ -10,15 +10,10 @@
         align-items: center;
     }
 
-    /* .vue-bread .title {
-        display: inline;
-        vertical-align: middle;
-    }
-
     .vue-bread .subtitle {
-        display: inline;
-        vertical-align: middle;
-    } */
+        max-width: 100%;
+        overflow-wrap: break-word;
+    }
 
 </style>
 <template>

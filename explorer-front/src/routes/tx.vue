@@ -36,6 +36,7 @@
 </style>
 <template>
     <div class="vue-tx fullfill" v-bind:triggerComputed=urlChange>
+        <vue-bread title='TxHash' :subtitle="$route.params.id"></vue-bread>
         <div v-if="tx" class="container">
             <div class="tab explorer-table-container">
                 <table class="explorer-table">
@@ -200,6 +201,7 @@
 
     module.exports = {
         components: {
+            "vue-bread": require("@/components/vue-bread").default,
            "vue-tab-buttons": require("@/components/vue-tab-buttons").default
         },
         computed: {

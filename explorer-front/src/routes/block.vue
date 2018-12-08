@@ -33,8 +33,7 @@
 <template>
     <!-- https://etherscan.io/block/4951841 -->
     <div class="vue-block fullfill" v-bind:triggerComputed=urlChange>
-        <vue-bread title='Block'
-                   v-bind:subtitle="$route.params.id"></vue-bread>
+        <vue-bread title='Block' :subtitle="$route.params.id"></vue-bread>
         <div v-if="block" class="container">
             <div class="tab explorer-table-container">
                 <table class="explorer-table font-size-16-normal">

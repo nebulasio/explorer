@@ -45,17 +45,12 @@
         flex: 1;
     }
 
-    .vue-header .dropdown-menu {
-        font-size: 14px;
-        border-radius: 0px;
-    }
-
     @media (min-width: 992px) {
         .vue-header .navbar-nav>li>a {
             border-bottom: 2px solid transparent;
         }
 
-        .vue-header .navbar-nav>li>a:hover,
+        /* .vue-header .navbar-nav>li>a:hover, */
         .vue-header .navbar-nav>li.active>a,
         .vue-header .navbar-nav>li.show>a {
             border-bottom-color: white;
