@@ -17,5 +17,6 @@ public class ContractTokenBalance {
     private String tokenName;
     private String address;
     private BigDecimal balance;
+    private Long decimal;
 
 }
