@@ -525,7 +525,8 @@ public class RpcController {
         result.put("txList", transactions);
         result.put("decimal", token.getTokenDecimals());
         if (marketCapitalization != null) {
-            result.put("price", marketCapitalization.getPrice());
+            //price 统一设置4位小数点
+            result.put("price", marketCapitalization.getPrice().setScale(4,BigDecimal.ROUND_DOWN));
             result.put("change24h", marketCapitalization.getChange24h());
             result.put("trends", marketCapitalization.getTrends());
         }
