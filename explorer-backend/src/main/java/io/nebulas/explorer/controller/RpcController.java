@@ -35,6 +35,7 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -771,13 +772,26 @@ public class RpcController {
         if (nasAccount == null) {
             return JsonResult.success();
         }
-        long txnCnt = nebTransactionService.countTotalTxnCnt();
+
+        //从redis中拿，减少查询频率
+        String key = "txnCnt";
+        Long totalTxnCnt = 0L;
+        String txnCnt = redisTemplate.opsForValue().get(key);
+        if (txnCnt == null || txnCnt.isEmpty()){
+            totalTxnCnt = nebTransactionService.countTotalTxnCnt();
+            redisTemplate.opsForValue().set(key,totalTxnCnt.toString());
+            redisTemplate.opsForValue().getOperations().expire(key, 15, TimeUnit.MINUTES);
+
+        }else{
+            totalTxnCnt = Long.valueOf(txnCnt);
+        }
+
         NasAccount ninetyDayAccount = nasAccountService.getNasAccountFromNinetyDays();
 
         long newAddressCount = nasAccount.getAddressCount() - ninetyDayAccount.getAddressCount();
         result.put("totalAddressCount", nasAccount.getAddressCount());
         result.put("totalContractCount", nasAccount.getContractCount());
-        result.put("txnCnt", txnCnt);
+        result.put("txnCnt", totalTxnCnt);
         result.put("newAddressCount", newAddressCount);
         result.put("oldAddressCount", ninetyDayAccount.getAddressCount());
 
