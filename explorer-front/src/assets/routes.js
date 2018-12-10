@@ -1,7 +1,7 @@
 
 module.exports = [{
     component: require("@/routes/address").default,
-    meta: { headerActive: 2 },
+    meta: { headerActive: 2, uaview: "Explorer_Address_Show" },
     path: "/:api?/address/:id"
 }, {
     component: require("@/routes/accounts").default,
@@ -20,7 +20,7 @@ module.exports = [{
     path: "/:api?/oops"
 }, {
     component: require("@/routes/tx").default,
-    meta: { headerActive: 2 },
+    meta: { headerActive: 2, uaview: "Explorer_TxnsDetails_Show" },
     path: "/:api?/tx/:id"
 }, {
     component: require("@/routes/txs").default,
@@ -45,7 +45,7 @@ module.exports = [{
     path: "/:api?/404"
 }, {
     component: require("@/routes/contract").default,
-    meta: { headerActive: 2 },
+    meta: { headerActive: 2, uaview: "Explorer_NRC20token_Show" },
     path: "/:api?/contract/:id"
 }, {
     component: require("@/routes/contract-txs").default,
@@ -53,7 +53,7 @@ module.exports = [{
     path: "/:api?/contract-txs"
 }, {
     component: require("@/routes/dashboard").default,
-    meta: { headerActive: 1 },
+    meta: { headerActive: 1, uaview: "Explorer_Home_Show" },
     path: "/:api?"
 }, {
     component: require("@/routes/404").default,

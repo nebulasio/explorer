@@ -3,16 +3,23 @@ var Vue = require("vue").default,
     VueRouter = require("vue-router").default,
     vApp = {},
     vAppConfig = require("@/assets/app-config"),
-    vRouter = new VueRouter({ routes: require("@/assets/routes") });
+    vRouter = new VueRouter({ routes: require("@/assets/routes") }),
+    gaPage = require('vue-analytics').page;
 
 require("bootstrap");
 require("bootstrap/dist/css/bootstrap.min.css");
 require("font-awesome/css/font-awesome.min.css");
 require("./index.css");
 
+const VueAnalytics = require('vue-analytics').default;
+Vue.use(VueAnalytics, {
+    id: 'UA-101203737-1'
+});
+
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 vRouter.beforeEach(onBeforeEach);
+vRouter.afterEach(onAfterEach);
 
 vApp = new Vue({
     components: {
@@ -35,6 +42,9 @@ vApp = new Vue({
 // api prefix
 
 function onBeforeEach(to, from, next) {
+    console.log(vApp.showModalLoading);
+    vApp.showModalLoading = false;
+
     var apiPrefix, first, params, path;
 
     for (first in vAppConfig.apiPrefixes) break;
@@ -59,4 +69,11 @@ function onBeforeEach(to, from, next) {
 
     sessionStorage.apiPrefix = apiPrefix;
     next(path);
+}
+
+function onAfterEach(to, from) {
+    if (to.meta && to.meta.uaview) {
+        console.log(to.meta.uaview);
+        gaPage(to.meta.uaview);
+    }
 }
