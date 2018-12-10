@@ -27,6 +27,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,6 +68,7 @@ public class RpcController {
     private final NebEventService nebEventService;
     private final NasAccountService nasAccountService;
     private final StringRedisTemplate redisTemplate;
+    private final RedisTemplate<String, String> mapRedisTemplate;
 
     private final ContractTokenService contractTokenService;
     private final ContractTokenBalanceService contractTokenBalanceService;
@@ -240,19 +243,56 @@ public class RpcController {
         result.put("isPending", isPending);
 
 
-
-
         return result;
     }
 
     @RequestMapping("/tx/cnt_static")
     public JsonResult txStatic() {
-        return JsonResult.success(nebTransactionService.countTxCntGroupMapByTimestamp(LocalDate.now().plusDays(-15).toDate(), LocalDate.now().toDate()));
+
+        String key = "txStaticMap";
+        Map<Object, Object> txStaticMap = mapRedisTemplate.opsForHash().entries("txStaticMap");
+        Map<String, Long> resultMap;
+
+        if (txStaticMap == null || txStaticMap.size() == 0) {
+            //将每天的交易数据存放进redis里
+            resultMap = nebTransactionService.countTxCntGroupMapByTimestamp(LocalDate.now().plusDays(-15).toDate(), LocalDate.now().toDate());
+            Map<String,String> redisMap = new HashMap<>();
+            resultMap.forEach((k, v) -> {
+                String dateCount = v.toString();
+                redisMap.put(k,dateCount);
+            });
+
+            mapRedisTemplate.opsForHash().putAll(key, redisMap);
+            mapRedisTemplate.opsForValue().getOperations().expire(key, 180, TimeUnit.MINUTES);
+
+        } else {
+            resultMap = new HashMap<>();
+            txStaticMap.forEach((k, v) -> {
+                String dateKey = (String) k;
+                Long dateCount = Long.valueOf((String) v);
+                resultMap.put(dateKey, dateCount);
+            });
+        }
+
+        return JsonResult.success(resultMap);
     }
 
     @RequestMapping("/tx/cnt_today")
     public JsonResult txToday() {
-        return JsonResult.success(nebTransactionService.countTxToday());
+
+        String key = "txCntToday";
+        Long todayTxnCnt = 0L;
+        String txnCnt = redisTemplate.opsForValue().get(key);
+        if (txnCnt == null || txnCnt.isEmpty()) {
+            todayTxnCnt = nebTransactionService.countTxToday();
+            redisTemplate.opsForValue().set(key, todayTxnCnt.toString());
+            redisTemplate.opsForValue().getOperations().expire(key, 15, TimeUnit.MINUTES);
+
+        } else {
+            todayTxnCnt = Long.valueOf(txnCnt);
+        }
+
+        return JsonResult.success(todayTxnCnt);
     }
 
     @GetMapping("/stat/data")
@@ -302,7 +342,7 @@ public class RpcController {
         result.put("page", page);
         result.put("addressList", voList);
         result.put("totalPage", totalPage > MAX_PAGE ? MAX_PAGE : totalPage);
-        result.put("decimal",18);
+        result.put("decimal", 18);
 
         EXECUTOR.execute(() -> {
             for (NebAddress address : addressList) {
@@ -341,7 +381,7 @@ public class RpcController {
         result.put("totalHolderCount", totalCount);
         result.put("totalPageCount", pageCount);
         result.put("page", page);
-        result.put("decimal",token.getTokenDecimals());
+        result.put("decimal", token.getTokenDecimals());
 
         BigDecimal total = token.getTotal();
         List<NebContractTokenBalance> addressBalanceList = contractTokenBalanceService.getValidAddressesByContractOrderByBalance(contract, (page - 1) * PAGE_SIZE, PAGE_SIZE);
@@ -423,7 +463,7 @@ public class RpcController {
         result.put("tokenName", token.getTokenName());
         result.put("txnCnt", txnCnt);
         result.put("currentPage", page);
-        result.put("decimal",token.getTokenDecimals());
+        result.put("decimal", token.getTokenDecimals());
 
         long totalPage = txnCnt / PAGE_SIZE + 1;
         result.put("totalPage", !isPending && totalPage > 20 ? 20 : totalPage);
@@ -483,8 +523,8 @@ public class RpcController {
         JsonResult result = JsonResult.success();
         result.put("contract", info);
         result.put("txList", transactions);
-        result.put("decimal",token.getTokenDecimals());
-        if (marketCapitalization != null){
+        result.put("decimal", token.getTokenDecimals());
+        if (marketCapitalization != null) {
             result.put("price", marketCapitalization.getPrice());
             result.put("change24h", marketCapitalization.getChange24h());
             result.put("trends", marketCapitalization.getTrends());
@@ -556,7 +596,7 @@ public class RpcController {
             txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE));
         }
         result.put("txList", convertTxn2TxnVoWithAddress(txList));
-        result.put("decimal",18);
+        result.put("decimal", 18);
 
 //        if (address.getUpdatedAt().before(LocalDateTime.now().plusSeconds(-5).toDate())) {
 //            GetAccountStateResponse accountState = nebApiServiceWrapper.getAccountState(address.getHash());
@@ -717,9 +757,6 @@ public class RpcController {
     }
 
 
-
-
-
     @RequestMapping("/address/nrc20/{hash}/{page}")
     public JsonResult nrc20Transactions(@PathVariable("hash") String hash, @PathVariable("page") int page) {
         NebAddress address = nebAddressService.getNebAddressByHashRpc(hash);
@@ -777,12 +814,12 @@ public class RpcController {
         String key = "txnCnt";
         Long totalTxnCnt = 0L;
         String txnCnt = redisTemplate.opsForValue().get(key);
-        if (txnCnt == null || txnCnt.isEmpty()){
+        if (txnCnt == null || txnCnt.isEmpty()) {
             totalTxnCnt = nebTransactionService.countTotalTxnCnt();
-            redisTemplate.opsForValue().set(key,totalTxnCnt.toString());
+            redisTemplate.opsForValue().set(key, totalTxnCnt.toString());
             redisTemplate.opsForValue().getOperations().expire(key, 15, TimeUnit.MINUTES);
 
-        }else{
+        } else {
             totalTxnCnt = Long.valueOf(txnCnt);
         }
 
