@@ -301,6 +301,7 @@ public class RpcController {
         result.put("page", page);
         result.put("addressList", voList);
         result.put("totalPage", totalPage > MAX_PAGE ? MAX_PAGE : totalPage);
+        result.put("decimal",18);
 
         EXECUTOR.execute(() -> {
             for (NebAddress address : addressList) {
@@ -339,6 +340,7 @@ public class RpcController {
         result.put("totalHolderCount", totalCount);
         result.put("totalPageCount", pageCount);
         result.put("page", page);
+        result.put("decimal",token.getTokenDecimals());
 
         BigDecimal total = token.getTotal();
         List<NebContractTokenBalance> addressBalanceList = contractTokenBalanceService.getValidAddressesByContractOrderByBalance(contract, (page - 1) * PAGE_SIZE, PAGE_SIZE);
@@ -420,6 +422,7 @@ public class RpcController {
         result.put("tokenName", token.getTokenName());
         result.put("txnCnt", txnCnt);
         result.put("currentPage", page);
+        result.put("decimal",token.getTokenDecimals());
 
         long totalPage = txnCnt / PAGE_SIZE + 1;
         result.put("totalPage", !isPending && totalPage > 20 ? 20 : totalPage);
@@ -479,6 +482,7 @@ public class RpcController {
         JsonResult result = JsonResult.success();
         result.put("contract", info);
         result.put("txList", transactions);
+        result.put("decimal",token.getTokenDecimals());
         if (marketCapitalization != null){
             result.put("price", marketCapitalization.getPrice());
             result.put("change24h", marketCapitalization.getChange24h());
@@ -516,6 +520,7 @@ public class RpcController {
             tokenBalance.setContract(token.getContract());
             tokenBalance.setBalance(balance.getBalance());
             tokenBalance.setTokenName(token.getTokenName());
+            tokenBalance.setDecimal(token.getTokenDecimals());
             tokenBalanceList.add(tokenBalance);
         }
 
