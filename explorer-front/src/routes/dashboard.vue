@@ -124,11 +124,8 @@
         position: absolute;
         top: 32px;
         right: 30px;
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: flex-end;
         align-items: baseline;
-        width: 150px;
+        text-align: right;
         font-size: 12px;
         color: rgba(255, 255, 255, 0.7);
     }
@@ -226,10 +223,6 @@
         display: none;
     }
 
-    .vue-dashboard .realtime-block .blockheight {
-        transition: all 1s;
-    }
-
     .vue-dashboard .realtime-block:first-child {
         background-color: #0057FF;
     }
@@ -238,7 +231,8 @@
         display: block;
         width: 15px;
         background-color: rgba(217, 230, 255, 1);
-        transition: all 250ms linear;
+        transition: all 500ms;
+        z-index: 3;
     }
 
     .vue-dashboard .realtime-block .block-popover {
@@ -290,7 +284,7 @@
         position: absolute;
         margin-top: 65px;
         margin-left: 30px;
-        color: rgba(0, 0, 0, 0.5);
+        color: #7F7F7F;
         font-size: 12px;
     }
 
@@ -400,6 +394,19 @@
     .vue-dashboard .row5 .item-title {
         position: absolute;
         margin: 0;
+    }
+
+    .vue-dashboard .row5 .showall {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .vue-dashboard .row5 .showall:hover {
+        color: #0057FF
     }
 
     .vue-dashboard .row5 table {
@@ -513,8 +520,8 @@
                         <div class="item-title" >Daily Transactions</div>
                         <div class="details" v-if="dailyTxChartOptions">
                             <div>Data Sources: Nebulas</div>
-                            <div v-if="todayTxCnt">Today</div>
-                            <div v-if="todayTxCnt">{{ todayTxCnt }}</div>
+                            <span v-if="todayTxCnt > 1">Today</span>
+                            <span v-if="todayTxCnt > 1">{{ todayTxCnt }}</span>
                         </div>
                         <vchart class="daily-chart" v-if="dailyTxChartOptions" :options="dailyTxChartOptions" :autoResize='true'></vchart>
                     </div>
@@ -522,7 +529,7 @@
                 <div class="nas-price flex-item col-12 col-lg-6 row1-item">
                     <div class="item-bg">
                         <div class="item-title">NAS Price</div>
-                        <div v-if="market" class="update-time">Update time : {{ timeConversion(Date.now() - market.createdAt) }} ago</div>
+                        <div v-if="market" class="update-time">Update Time : {{ timeConversion(Date.now() - market.createdAt) }} ago</div>
                         <div v-if="market" class="detail">
                             <span>$</span>
                             <span>{{ market.price }}</span>
@@ -548,7 +555,7 @@
                 <div class="col">
                     <div class="flex-item item-bg item-shadow">
                         <div class="item-title">Blocks</div>
-                        <div class="subtitle fs12 text-gray">Block status</div>
+                        <div class="subtitle fs12 text-gray">Block Status</div>
                         <transition-group v-on:after-enter="afterEnter" name="row2-list" class="realtime-blocks">
                             <div class="realtime-block" v-for="block in blocks" :key="block.height">
                                 <div class="blockheight" style="height: 100%" :data-txnCnt="block.txnCnt"></div>
@@ -581,14 +588,14 @@
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div v-if="staticInfo">{{ numberAddComma(staticInfo.totalContractCount) }}</div>
-                        <div v-if="staticInfo" class="link">Total Smart Contract</div>
+                        <div v-if="staticInfo" class="link">Total Smart Contracts</div>
                         <img src=/static/img/dashboard-3.png width=44 alt="">
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div v-if="staticInfo">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
-                        <router-link v-if="staticInfo" class="link" :to='fragApi + "/accounts/"'>Total Address ></router-link>
+                        <router-link v-if="staticInfo" class="link" :to='fragApi + "/accounts/"'>Total Addresses ></router-link>
                         <img src=/static/img/dashboard-4.png width=44 alt="">
                     </div>
                 </div>
@@ -597,8 +604,8 @@
             <div class="row row4">
                 <div class="flex-item col-12 col-lg-6 row4-item user-data">
                     <div class="item-bg item-shadow">
-                        <div class="item-title">新用户占比</div>
-                        <div class="subtitle text-light-gray ml30 fs12">新用户为90日内创建星云账户者</div>
+                        <div class="item-title">Proportion of New Users</div>
+                        <div class="subtitle text-light-gray ml30 fs12">New users refer to Nebulas accounts within 90 days</div>
                         <div v-if="staticInfo" class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
@@ -616,7 +623,7 @@
                 </div>
                 <div class="flex-item col-12 col-lg-6 row4-item accounts-data">
                     <div class="item-bg item-shadow">
-                        <div class="item-title">主网账户数量变化</div>
+                        <div class="item-title">Mainnet Accounts Quantity</div>
                         <div v-if="accountsChartOptions" class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
                         <vchart class="accounts-chart" v-if="accountsChartOptions" :options="accountsChartOptions" :autoResize='true'></vchart>
                     </div>
@@ -627,6 +634,7 @@
                 <div class="flex-item col-12 col-lg-6 row5-item">
                     <div class="item-bg item-shadow">
                         <div class="item-title">Blocks</div>
+                        <router-link :to='fragApi + "/blocks/"' class="showall">View All ></router-link>
                         <transition-group name="list" tag="table" frame=hsides rules=rows>
                             <tr class="list-item" v-for="(block, i) in blocks" v-if="i < 5" :key="block.height">
                                 <td>
@@ -648,6 +656,7 @@
                 <div class="flex-item col-12 col-lg-6 row5-item">
                     <div class="item-bg item-shadow">
                         <div class="item-title">Transactions</div>
+                        <router-link :to='fragApi + "/txs/"' class="showall">View All ></router-link>
                         <transition-group name="list" tag="table" frame=hsides rules=rows>
                             <tr v-for="(tx, i) in txs" v-if="i < 5" :key="tx.hash">
                                 <td>

@@ -240,9 +240,9 @@
                         {{tokenAmount(obj.address.balance, decimal) }} NAS
                     </td>
                 </tr>
-                <tr v-if="isContract">
-                    <td class="base-info-key font-size-16-normal font-color-555555">Contract
-                        Creator:
+                <tr v-if="isContract && contract">
+                    <td class="base-info-key font-size-16-normal font-color-555555">
+                        Contract Creator:
                     </td>
                     <td v-if="contract.hash && contract.from"
                         class="contract-creator font-size-16-normal font-color-000000">
@@ -542,7 +542,7 @@
             },
             urlChange() {
                 this.tab = 1;
-                this.contract = {hash: null, from: null};
+                this.contract = null;
                 this.isContract = false;
                 this.nrc20TxList = [];
                 this.nrc20TxCnt = 0;
@@ -585,7 +585,7 @@
                 tokens: [],
                 decimal: null,
                 isContract: false,
-                contract: {hash: null, from: null},
+                contract: null,
                 nrc20TxList: [],
                 nrc20TxCnt: 0,
                 isNoNrc20Tx: false
