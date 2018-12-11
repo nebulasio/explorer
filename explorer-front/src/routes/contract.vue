@@ -151,7 +151,11 @@
                 </tr>
                 <tr>
                     <td class="font-color-555555" style="padding-left: 24px;">Contract:</td>
-                    <td class="font-color-0057FF">{{ obj.contract }} </td>
+                    <td>
+                        <router-link v-bind:to='fragApi + "/address/" + obj.contract'>
+                            <span class="font-color-0057FF">{{ obj.contract }}</span>
+                        </router-link>
+                    </td>
                 </tr>
             </table>
 
@@ -214,8 +218,8 @@
                         </td>
                         <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                             <vue-blockies v-bind:address='o.from'></vue-blockies>
-                            <span class="fromTo" v-if="o.from === $route.params.id">{{ o.from }}</span>
-                            <router-link v-else v-bind:to='fragApi + "/address/" + o.from'>
+                            <!--<span class="fromTo" v-if="o.from === $route.params.id">{{ o.from }}</span>-->
+                            <router-link v-bind:to='fragApi + "/address/" + o.from'>
                                 <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.from }}</span>
                             </router-link>
                         </td>
@@ -224,8 +228,8 @@
                         </td>
                         <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                             <vue-blockies v-if="o.to" v-bind:address='o.to'></vue-blockies>
-                            <span class="fromTo" v-if="o.to === $route.params.id">{{ o.to }}</span>
-                            <router-link v-else v-bind:to='fragApi + "/address/" + o.to'>
+                            <!--<span class="fromTo" v-if="o.to === $route.params.id">{{ o.to }}</span>-->
+                            <router-link v-bind:to='fragApi + "/address/" + o.to'>
                                 <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.to }}</span>
                             </router-link>
                         </td>
