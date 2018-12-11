@@ -158,6 +158,18 @@ label {
     border-radius: 0px;
 }
 
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 1);
+}
+
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-left: 30px;
+    }
+}
+
 /*--------------------------- tables ---------------------------*/
 
 .explorer-table-container {
