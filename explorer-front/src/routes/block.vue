@@ -28,7 +28,7 @@
     .vue-block .dynasty a {
         margin-bottom: 10px;
     }
-    
+
 </style>
 <template>
     <!-- https://etherscan.io/block/4951841 -->
@@ -105,10 +105,12 @@
                     <tr>
                         <td class="font-color-555555" style="vertical-align: top; padding-top: 12px;">Dynasty</td>
                         <td style="vertical-align: top; padding-top: 12px;">
-                            <span class="font-color-0057FF" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                Show Dynasty
-                                <img src="../../static/img/ic_arrow_right.png" width="35px"/>
-                            </span>
+                            <div v-on:click="showOrHideDynasty()" style="display: flex;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                <span class="font-color-0057FF">
+                                    Show Dynasty
+                                </span>
+                                <img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowDynasty ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
+                            </div>
                             <div class="collapse" id="collapseExample">
                                 <div class="card card-body dynasty">
                                     <router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>
@@ -150,6 +152,9 @@
             }
         },
         methods: {
+            showOrHideDynasty(){
+                this.isShowDynasty = !this.isShowDynasty;
+            },
             timeConversion(ms) {
                 return utility.timeConversion(ms);
             },
@@ -165,7 +170,8 @@
                 block: null,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 tab: 0,
-                tabButtons: ["Overview"]
+                tabButtons: ["Overview"],
+                isShowDynasty: false
             };
         }
     };
