@@ -44,6 +44,9 @@ module.exports = [{
     component: require("@/routes/404").default,
     path: "/:api?/404"
 }, {
+    component: require("@/routes/nothing").default,
+    path: "/:api?/nothing"
+}, {
     component: require("@/routes/contract").default,
     meta: { headerActive: 2, uaview: "Explorer_NRC20token_Show" },
     path: "/:api?/contract/:id"
@@ -54,7 +57,8 @@ module.exports = [{
 }, {
     component: require("@/routes/dashboard").default,
     meta: { headerActive: 1, uaview: "Explorer_Home_Show" },
-    path: "/:api?"
+    path: "/:api?",
+    name: "home"
 }, {
     component: require("@/routes/404").default,
     name: "*",

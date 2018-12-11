@@ -352,6 +352,67 @@
         transition-timing-function: ease;
     }
 
+    .vue-dashboard .new-user-indicator {
+        position: absolute;
+        top: 20px;
+        left: 77px;
+        background: transparent;
+        fill: none;
+        stroke: none;
+    }
+
+    .vue-dashboard .new-user-indicator .line {
+        fill: none;
+        stroke: #7F7F7F;
+        stroke-width: 1px;
+        stroke-dasharray: 0, 202;
+        animation: lineMove 1s ease-out forwards;
+    }
+
+    @keyframes lineMove {
+        0%{
+            stroke-dasharray: 0, 202;
+        }
+        100%{
+            stroke-dasharray: 202, 202;
+        }
+    }
+
+    .vue-dashboard .new-user-indicator .labels {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        text-align: right;
+    }
+
+    .vue-dashboard .new-user-indicator .labels>div:first-child {
+        /* position: absolute;
+        top: 30px; */
+        margin-top: 31px;
+        font-size: 18px;
+        font-weight: bold;
+        transform: translateY(12px);
+        opacity: 0;
+        animation: label 1s ease-out 1s forwards;
+    }
+
+    .vue-dashboard .new-user-indicator .labels>div:last-child {
+        /* position: absolute;
+        top: 50px; */
+        font-size: 12px;
+        color: #555555;
+        transform: translateY(-10px);
+        opacity: 0;
+        animation: label 1s ease-out 1s forwards;
+    }
+
+    @keyframes label {
+        to {
+            transform: translateY(0px);
+            opacity: 1;
+        }
+    }
+
     .vue-dashboard .row4 .detail {
         display: flex;
         flex-flow: column nowrap;
@@ -533,7 +594,7 @@
                         <div v-if="market" class="detail">
                             <span>$</span>
                             <span>{{ market.price }}</span>
-                            <span :class="{'text-red': market.trends > 0}">({{ market.trends > 0 ? '+' : '-' }}{{ market.change24h }}%)</span>
+                            <span :class="{'text-red': market.trends <= 0}">({{ market.trends > 0 ? '+' : '-' }}{{ market.change24h }}%)</span>
                         </div>
                         <div v-if="market" class="market container">
                             <div class="row">
@@ -560,7 +621,7 @@
                             <div class="realtime-block" v-for="block in blocks" :key="block.height">
                                 <div class="blockheight" style="height: 100%" :data-txnCnt="block.txnCnt"></div>
                                 <div class="block-popover">
-                                    <div>Block Height: {{ block.height }}</div>
+                                    <div class="font-size-12-bold">{{ numberAddComma(block.height) }}</div>
                                     <div>Transactions: {{ block.txnCnt }}</div>
                                     <div>Block Interval: 15s</div>
                                 </div>
@@ -574,7 +635,7 @@
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div v-if="staticInfo">{{ blockheight }}</div>
-                        <router-link v-if="staticInfo" class="link" :to='fragApi + "/blocks/"'>Block Heigth ></router-link>
+                        <router-link v-if="staticInfo" class="link" :to='fragApi + "/blocks/"'>Block Height ></router-link>
                         <img src=/static/img/dashboard-1.png width=44 alt="">
                     </div>
                 </div>
@@ -605,18 +666,28 @@
                 <div class="flex-item col-12 col-lg-6 row4-item user-data">
                     <div class="item-bg item-shadow">
                         <div class="item-title">Proportion of New Users</div>
-                        <div class="subtitle text-light-gray ml30 fs12">New users refer to Nebulas accounts within 90 days</div>
-                        <div v-if="staticInfo" class="user-pie">
+                        <div class="subtitle text-light-gray ml30 fs12">New users refer to Nebulas accounts within 90 days.</div>
+                        <div v-show="staticInfo" class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
-                                <div class="new-user" :style='"transform: rotate(-" + staticInfo.newAddressCount / (staticInfo.newAddressCount + staticInfo.oldAddressCount) * 360 + "deg)"'></div>
+                                <div class="new-user" :style='staticInfo ? "transform: rotate(-" + staticInfo.newAddressCount / (staticInfo.newAddressCount + staticInfo.oldAddressCount) * 360 + "deg)" : ""'></div>
+                            </div>
+                            <div v-if="staticInfo" class="new-user-indicator">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" class="svg" width="195" height="114" viewbox="0 0 195 114">
+                                    <polyline points="5 87, 35 57, 195 57" class="line"/>
+                                </svg>
+                                <div class="labels">
+                                    <!-- 四舍五入并保留一位小数 -->
+                                    <div>{{ (Math.round(100 * staticInfo.newAddressCount / (staticInfo.newAddressCount + staticInfo.oldAddressCount) * 10) / 10).toFixed(1) + '%' }}</div>
+                                    <div>New Users</div>
+                                </div>
                             </div>
                         </div>
                         <div v-if="staticInfo" class="detail">
                             <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
-                            <div class="title">{{ staticInfo.newAddressCount }}</div>
+                            <div class="title">{{ numberAddComma(staticInfo.newAddressCount) }}</div>
                             <div class="fs12 text-gray">New Users</div>
-                            <div class="title">{{ staticInfo.oldAddressCount }}</div>
+                            <div class="title">{{ numberAddComma(staticInfo.oldAddressCount) }}</div>
                             <div class="fs12 text-gray">Old Users</div>
                         </div>
                     </div>
@@ -728,6 +799,7 @@
                     nums.push(arr[i][1]);
                 }
 
+                let vm = this;
                 var options = {
                     grid: { x: '10', y: '100', width: '96%', height: '210', containLabel: true },
                     xAxis: {
@@ -742,7 +814,11 @@
                             textStyle: {
                                 color: '#B2B2B2'
                             },
-                            margin: 18
+                            margin: 18,
+                            formatter: function(value) {
+                                let date = new Date(value);
+                                return date.toLocaleString('en', { month: 'short', day: 'numeric' });
+                            }
                         }
                     },
                     yAxis: {
@@ -753,11 +829,7 @@
                         axisLabel: {
                             textStyle: {
                                 color: '#B2B2B2'
-                            },
-                            // margin: -10,
-                            // formatter: function (value) {
-                            //     return value / 1000 + 'k';
-                            // }
+                            }
                         },
                         axisTick: {
                             show: false
@@ -785,7 +857,22 @@
                         }
                     },
                     tooltip: {
-                        
+                        trigger: 'item',
+                        transitionDuration: 0,
+                        position: 'top',
+                        formatter: function(params, ticket, callback) {
+                            let date = new Date(params.name);
+                            let dateStr = date.toLocaleString('en', { year: 'numeric', month: 'short', day: 'numeric' });
+                            return dateStr + '<div>Transactions: ' + vm.numberAddComma(params.value) + '</div>';
+                        },
+                        backgroundColor: '#595C63',
+                        padding: 8,
+                        extraCssText: 'border-radius: 2px;',
+                        textStyle: {
+                            fontFamily: 'consolas',
+                            fontSize: 12,
+                            lineHeight: 18
+                        }
                     }
                 };
                 return options;
@@ -800,10 +887,10 @@
                 arr.sort(function (a, b) { return a.timestamp > b.timestamp; });
                 for (i in arr) {
                     nums.push(arr[i].addressCount);
-                    let date = new Date(arr[i].timestamp);
-                    dates.push((date.getMonth() + 1).pad(2) + '-' + date.getDate().pad(2));
+                    dates.push(arr[i].timestamp);
                 }
-
+                
+                let vm = this;
                 var options = {
                     grid: { x: '10', y: '100', width: '98%', height: '210', containLabel: true },
                     xAxis: {
@@ -818,7 +905,11 @@
                             textStyle: {
                                 color: '#B2B2B2'
                             },
-                            margin: 18
+                            margin: 18,
+                            formatter: function(value) {
+                                let date = new Date(new Number(value));
+                                return date.toLocaleString('en', { month: 'short', day: 'numeric' });
+                            }
                         }
                     },
                     yAxis: {
@@ -869,7 +960,22 @@
                         }
                     },
                     tooltip: {
-                        
+                        trigger: 'item',
+                        transitionDuration: 0,
+                        position: 'top',
+                        formatter: function(params, ticket, callback) {
+                            let date = new Date(new Number(params.name));
+                            let dateStr = date.toLocaleString('en', { year: 'numeric', month: 'short', day: 'numeric' });
+                            return dateStr + '<div>Amount: ' + vm.numberAddComma(params.value) + '</div>';
+                        },
+                        backgroundColor: '#0057FF',
+                        padding: 8,
+                        extraCssText: 'border-radius: 2px;',
+                        textStyle: {
+                            fontFamily: 'consolas',
+                            fontSize: 12,
+                            lineHeight: 18
+                        }
                     }
                 };
                 return options;

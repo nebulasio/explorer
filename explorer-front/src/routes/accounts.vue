@@ -31,8 +31,8 @@
                         </router-link>
                         <span v-show=o.alias> | {{ o.alias }}</span>
                     </td>
-                    <td class="text-right font-color-000000">{{ toWei(o.balance) }}</td>
-                    <td class="text-right font-color-000000">{{ o.percentage }}%</td>
+                    <td class="text-right font-color-000000">{{ short(o.balance) }}</td>
+                    <td class="text-right font-color-000000">{{ (new Number(o.percentage)).toFixed(8) }}%</td>
                     <td class="text-right font-color-000000" style="padding-right: 24px;">{{ o.txCnt }}</td>
                 </tr>
             </table>
@@ -42,7 +42,8 @@
 </template>
 <script>
     var api = require("@/assets/api"),
-        utility = require("@/assets/utility");
+        utility = require("@/assets/utility"),
+        BigNumber = require("bignumber.js");
 
     module.exports = {
         components: {
@@ -84,7 +85,6 @@
                             this.heightTo = 0;
                         }
                     }, xhr => {
-                        console.log(xhr);
                         this.$root.showModalLoading = false;
                         this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                     });
@@ -125,6 +125,12 @@
                     path: this.$route.path,
                     query: { p: n }
                 });
+            },
+            short(n) {
+                BigNumber.config({DECIMAL_PLACES: 8})
+                var amount = BigNumber(n);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat() + ' NAS';
             }
         },
         mounted() {

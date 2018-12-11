@@ -132,13 +132,13 @@
                 <tr v-if="tokenPrice">
                     <td class="font-color-555555" style="padding-left: 24px;">Price:</td>
                     <td>
-                        <span  class="font-color-000000">${{ tokenPrice.price }}</span>
-                        <span  class="font-color-07A656">(</span>
+                        <span class="font-color-000000">${{ tokenPrice.price }}</span>
+                        <span :class='{"font-color-07A656": tokenPrice.trends === 1, "font-color-F04434": tokenPrice.trends != 1}'>(</span>
 
                         <img class="icon16" style="margin-top: -4px" v-if="tokenPrice.trends === 1" src="../../static/img/ic_exchange_rate_up.png" />
                         <img class="icon16" style="margin-top: -4px" v-else src="../../static/img/ic_exchange_rate_down.png" />
 
-                        <span  class="font-color-07A656">{{ tokenPrice.change24h + '%' }})</span>
+                        <span :class='{"font-color-07A656": tokenPrice.trends === 1, "font-color-F04434": tokenPrice.trends != 1}'>{{ tokenPrice.change24h + '%' }})</span>
                     </td>
                 </tr>
                 <tr>
@@ -397,7 +397,6 @@
                     this.totalPage = o.totalPageCount;
                     this.totalHolderCount = o.totalHolderCount;
                 }, xhr => {
-                    console.log(xhr);
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });
