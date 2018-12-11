@@ -98,7 +98,7 @@ public class RpcController {
         return JsonResult.success(convertBlock2BlockVo(blkList, false));
     }
 
-    @RequestMapping(value = "/block")
+    @RequestMapping(value = "/blocks")
     public JsonResult blocks(@RequestParam(value = "m", required = false) String miner,
                              @RequestParam(value = "p", required = false, defaultValue = "1") int page) {
         PageIterator<NebBlock> blockPageIterator;
@@ -283,14 +283,14 @@ public class RpcController {
 
     @RequestMapping("/tx/cnt_today")
     public JsonResult txToday() {
-
+        //若卡在了缓存清空的瞬间，出现了查询，会导致继续打满连接池的出现，需要继续优化，舍弃原有的查询方法
         String key = "txCntToday";
         Long todayTxnCnt = 0L;
         String txnCnt = redisTemplate.opsForValue().get(key);
         if (txnCnt == null || txnCnt.isEmpty()) {
             todayTxnCnt = nebTransactionService.countTxToday();
             redisTemplate.opsForValue().set(key, todayTxnCnt.toString());
-            redisTemplate.opsForValue().getOperations().expire(key, 15, TimeUnit.MINUTES);
+            redisTemplate.opsForValue().getOperations().expire(key, 30, TimeUnit.MINUTES);
 
         } else {
             todayTxnCnt = Long.valueOf(txnCnt);
