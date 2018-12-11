@@ -191,7 +191,6 @@
                     this.totalTxs = o.txnCnt;
                     this.tokenName = o.tokenName;
                 }, xhr => {
-                    console.log(xhr);
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });

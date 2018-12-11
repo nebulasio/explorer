@@ -42,7 +42,6 @@ vApp = new Vue({
 // api prefix
 
 function onBeforeEach(to, from, next) {
-    console.log(vApp.showModalLoading);
     vApp.showModalLoading = false;
 
     var apiPrefix, first, params, path;
@@ -73,7 +72,6 @@ function onBeforeEach(to, from, next) {
 
 function onAfterEach(to, from) {
     if (to.meta && to.meta.uaview) {
-        console.log(to.meta.uaview);
         gaPage(to.meta.uaview);
     }
 }

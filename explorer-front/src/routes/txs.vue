@@ -191,7 +191,6 @@
                     this.totalPage = o.totalPage;
                     this.totalTxs = o.txnCnt;
                 }, xhr => {
-                    console.log(xhr);
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });

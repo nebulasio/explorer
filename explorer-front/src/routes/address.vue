@@ -669,7 +669,6 @@
                         this.nrc20TxCnt = o.txnCnt;
                         this.isNoNrc20Tx = this.nrc20TxCnt === 0;
                     }, xhr => {
-                        console.log(xhr);
                         this.$root.showModalLoading = false;
                     });
                 }
