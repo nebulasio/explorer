@@ -28,6 +28,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -67,7 +68,10 @@ public class RpcController {
     private final NebStatService nebStatService;
     private final NebEventService nebEventService;
     private final NasAccountService nasAccountService;
+
+    @Qualifier("customStringTemplate")
     private final StringRedisTemplate redisTemplate;
+    @Qualifier("customRedisTemplate")
     private final RedisTemplate<String, String> mapRedisTemplate;
 
     private final ContractTokenService contractTokenService;

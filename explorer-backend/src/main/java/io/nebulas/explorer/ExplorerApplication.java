@@ -1,5 +1,6 @@
 package io.nebulas.explorer;
 
+import io.nebulas.explorer.config.RedisConfig;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.core.DeadlockConsoleHandler;
 import io.nebulas.explorer.core.DeadlockDetector;
@@ -35,7 +36,7 @@ public class ExplorerApplication {
     }
 
     @Bean
-    CommandLineRunner init(final YAMLConfig myConfig, final SysSubscribeService sysService, final DataInitTask dataInitTask) {
+    CommandLineRunner init(final YAMLConfig myConfig, final SysSubscribeService sysService, final DataInitTask dataInitTask, final RedisConfig redisConfig) {
 
         return arg -> {
             log.info("using environment: {}", myConfig.getEnvironment());
