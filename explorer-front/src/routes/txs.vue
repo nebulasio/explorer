@@ -63,39 +63,13 @@
      /*}*/
 
     .txs-from-to a {
-        max-width: 158px;
+        /*max-width: 158px;*/
     }
 
     .fromTo {
-        max-width: 158px;
+        /*max-width: 158px;*/
         margin-left: 10px;
         line-height: 24px;
-    }
-
-    .container-tip .tip{
-        background-color:transparent;
-        color:#fff;
-        display:none;
-        /*left:50%;*/
-        pointer-events:none;
-        position:absolute;
-        -webkit-transform:translateY(-120%);
-        transform:translateY(-120%);
-        z-index:1
-    }
-    .container-tip .tip .content{
-        white-space:nowrap;
-        padding:15px;
-        position:relative;
-        background-color:rgba(0,0,0,.7);
-    }
-    .container-tip .tip .arrow{ position:absolute; height:6px; bottom:-6px; left:6px; }
-    .container-tip .tip .arrow *{ display:block; border-width:5px; position:absolute; border-style:solid dashed dashed dashed; font-size:0; line-height:0; }
-    .container-tip .tip .arrow em{border-color:rgba(0,0,0,.7) transparent transparent;}
-    .container-tip .tip .arrow span{border-color:rgba(0,0,0,.7) transparent transparent;}
-
-    .container-tip:hover .tip{
-        display:block
     }
 </style>
 <template>

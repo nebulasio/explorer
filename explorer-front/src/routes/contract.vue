@@ -94,22 +94,18 @@
         padding: 0;
     }
 
-    .txs-from-to {
-        max-width: 168px;
-    }
+    /*.txs-from-to {*/
+        /*max-width: 168px;*/
+    /*}*/
 
     .txs-from-to a {
-        max-width: 134px;
+        max-width: 158px;
     }
 
     .fromTo {
-        max-width: 134px;
+        max-width: 158px;
         height: 20px;
-        margin-left: 10px;
-        font-size: 14px;
-        font-family: OpenSans;
-        color: rgba(0, 87, 255, 1);
-        line-height: 20px;
+        line-height: 24px;
     }
 
 </style>
@@ -218,18 +214,30 @@
                         </td>
                         <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                             <vue-blockies v-bind:address='o.from'></vue-blockies>
-                            <!--<span class="fromTo" v-if="o.from === $route.params.id">{{ o.from }}</span>-->
-                            <router-link v-bind:to='fragApi + "/address/" + o.from'>
+                            <span class="fromTo font-size-14-normal font-color-000000" v-if="o.from === $route.params.id">{{ o.from }}</span>
+                            <router-link v-else v-bind:to='fragApi + "/address/" + o.from'>
                                 <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.from }}</span>
                             </router-link>
                         </td>
                         <td style="padding: 0;">
-                            <img style="width:40px;height:40px" src="../../static/img/ic_arrow_right.png"/>
+                            <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
                         </td>
                         <td class="tdxxxwddd txs-from-to" style="padding: 0;">
+                            <div style="width: 10px;"></div>
+                            <div class="container-tip">
+                                <div class="tip">
+                                    <div class="content">
+                                        <div class="arrow">
+                                            <em></em>
+                                        </div>
+                                        <span class="font-size-15-normal">Contract</span>
+                                    </div>
+                                </div>
+                                <img class="icon24" v-if="o.type==='call'" src="../../static/img/ic_tx_type_contract.png" />
+                            </div>
                             <vue-blockies v-if="o.to" v-bind:address='o.to'></vue-blockies>
-                            <!--<span class="fromTo" v-if="o.to === $route.params.id">{{ o.to }}</span>-->
-                            <router-link v-bind:to='fragApi + "/address/" + o.to'>
+                            <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.to === $route.params.id">{{ o.to }}</span>
+                            <router-link v-else v-bind:to='fragApi + "/address/" + o.to'>
                                 <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.to }}</span>
                             </router-link>
                         </td>
