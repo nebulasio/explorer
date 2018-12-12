@@ -47,7 +47,7 @@
         <div class="container vertical-center">
             <div class="msg">Sorry... No search results found.</div>
             <img src="/static/img/nothing.png" alt="" width="282px">
-            <router-link :to='$route.params.api ? "/" + $route.params.api : "/"'>Back home</router-link>
+            <router-link :to='$route.params.api ? "/" + $route.params.api : "/"'>Back Home</router-link>
         </div>
     </div>
 </template>

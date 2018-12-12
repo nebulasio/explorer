@@ -47,7 +47,7 @@
         <div class="container vertical-center">
             <div class="msg">Sorry...The network is currently unavailable. Please try again later.</div>
             <img src="/static/img/404.png" alt="" width="308px">
-            <router-link :to='$route.params.api ? "/" + $route.params.api : "/"'>Back home</router-link>
+            <router-link :to='$route.params.api ? "/" + $route.params.api : "/"'>Back Home</router-link>
         </div>
     </div>
 </template>

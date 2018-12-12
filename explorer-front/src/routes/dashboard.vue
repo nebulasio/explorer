@@ -673,8 +673,8 @@
             <div class="row row4">
                 <div class="flex-item col-12 col-lg-6 row4-item user-data">
                     <div class="item-bg item-shadow">
-                        <div class="item-title">Proportion of New Users</div>
-                        <div class="subtitle text-light-gray ml30 fs12">New users refer to Nebulas accounts within 90 days.</div>
+                        <div class="item-title">Proportion of Mainnet New Users</div>
+                        <div class="subtitle text-light-gray ml30 fs12">New users refer to Nebulas mainnet accounts within 90 days..</div>
                         <div v-show="staticInfo" class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
