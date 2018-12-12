@@ -524,7 +524,7 @@
 
     @media (max-width: 767.98px) {
         .vue-dashboard .row4 .data-source {
-            display: none;
+            visibility: hidden;
         }
     }
 
