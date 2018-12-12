@@ -41,6 +41,7 @@
     }
 
     .vue-header .form-inline input {
+        outline: none;
         border: none;
         flex: 1;
     }
