@@ -192,6 +192,12 @@
         color: white;
     }
 
+    @media (max-width: 575.98px) {
+        .vue-dashboard .nas-price .market .row div div {
+            font-size: 22px;
+        }
+    }
+
     .vue-dashboard .nas-price .container {
         padding: 0 30px;
     }
@@ -512,7 +518,17 @@
         opacity: 0;
     }
 
+    @media (max-width: 410px) {
+        .vue-dashboard .row1 .data-source {
+            visibility: hidden;
+        }
+    }
+
     @media (max-width: 575.98px) {
+        /* .vue-dashboard .row1 .data-source {
+            visibility: hidden;
+        } */
+
         .vue-dashboard .realtime-block:nth-of-type(-n+13) {
             display: block;
         }
@@ -592,7 +608,7 @@
                     <div class="item-bg">
                         <div class="item-title" >Daily Transactions</div>
                         <div class="details" v-if="dailyTxChartOptions">
-                            <div>Data Sources: Nebulas</div>
+                            <div class="data-source">Data Sources: Nebulas</div>
                             <span v-if="todayTxCnt >= 0">Today</span>
                             <span v-if="todayTxCnt >= 0">{{ numberAddComma(todayTxCnt) }}</span>
                         </div>
@@ -925,7 +941,7 @@
                         }
                     },
                     yAxis: {
-                        min: Math.floor(nums[0] / 1000) * 1000 - 1000,
+                        min: Math.floor(nums[0] / 1000) * 1000 - 4000,
                         axisLine: {
                             show: false
                         },
@@ -943,7 +959,9 @@
                         },
                         splitLine: {
                             show: false
-                        }
+                        },
+                        splitNumber: 5,
+                        minInterval: 3000
                     },
                     series: {
                         type: 'line',
