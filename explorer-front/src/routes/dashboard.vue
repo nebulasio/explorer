@@ -142,7 +142,8 @@
         position: absolute;
         top: 0px;
         height: 320px;
-        width: 100%;
+        width: calc(100% - 60px);
+        margin-left: 30px;
     }
 
     .vue-dashboard .nas-price .update-time {
@@ -443,8 +444,9 @@
     .vue-dashboard .accounts-chart {
         position: absolute;
         top: 0px;
-        width: 100%;
+        width: calc(100% - 60px);
         height: 100%;
+        margin-left: 30px;
     }
 
     .vue-dashboard .row5 .item-bg {
@@ -801,7 +803,7 @@
 
                 let vm = this;
                 var options = {
-                    grid: { x: '10', y: '100', width: '96%', height: '210', containLabel: true },
+                    grid: { x: '0', y: '100', width: '100%', height: '210', containLabel: true },
                     xAxis: {
                         data: dates,
                         axisLine: {
@@ -892,7 +894,7 @@
                 
                 let vm = this;
                 var options = {
-                    grid: { x: '10', y: '100', width: '98%', height: '210', containLabel: true },
+                    grid: { x: '0', y: '100', width: '100%', height: '220', containLabel: true },
                     xAxis: {
                         data: dates,
                         axisLine: {
