@@ -58,21 +58,17 @@
         padding: 0;
     }
 
-    .txs-from-to {
-        max-width: 168px;
-    }
+    /*.txs-from-to {*/
+        /*max-width: 168px;*/
+    /*}*/
 
     .txs-from-to a {
-        max-width: 134px;
+        /*max-width: 158px;*/
     }
 
     .fromTo {
-        max-width: 134px;
+        /*max-width: 158px;*/
         height: 20px;
-        margin-left: 10px;
-        font-size: 14px;
-        font-family: OpenSans;
-        color: rgba(0, 87, 255, 1);
         line-height: 20px;
     }
 </style>
@@ -125,7 +121,7 @@
                         </router-link>
                     </td>
                     <td>
-                        <img style="width:40px;height:40px" src="../../static/img/ic_arrow_right.png"/>
+                        <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
                     </td>
                     <td class="tdxxxwddd txs-from-to">
                         <router-link v-bind:to='fragApi + "/address/" + o.to'>
