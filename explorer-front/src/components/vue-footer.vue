@@ -12,6 +12,37 @@
         vertical-align: bottom;
     }
 
+    .vue-footer a .icon24 {
+        vertical-align: middle;
+    }
+
+    .vue-footer .twitter {
+        display: inline-block;
+        background-image: url(../../static/img/ic_twitter.png);
+        background-size: 24px;
+        background-repeat: no-repeat;
+    }
+
+    .vue-footer .github {
+        margin-left: 8px;
+        display: inline-block;
+        background-image: url(../../static/img/ic_github.png);
+        background-size: 24px;
+        background-repeat: no-repeat;
+    }
+
+    .vue-footer a:hover .twitter {
+        background-image: url(../../static/img/ic_twitter_blue.png);
+    }
+
+    .vue-footer a:hover .github {
+        background-image: url(../../static/img/ic_github_blue.png);
+    }
+
+    .vue-footer a:hover {
+        color: #0057FF;
+    }
+
     @media (min-width: 768px) { 
         .vue-footer .row {
             align-items: center;
@@ -59,14 +90,12 @@
 
                 <div class="col-xs-12 col-md-4">
                     <div>
-                        <a target=_blank href=https://github.com/nebulasio/explorer/issues>
-                            Submit a issue
-                        </a>
-                        <a target=_blank href=https://github.com/nebulasio/explorer/issues>
-                            <img class="icon24" src="../../static/img/ic_github.png"/>
-                        </a>
                         <a target=_blank href=https://twitter.com/nebulasio>
-                            <img class="icon24" src="../../static/img/ic_twitter.png"/>
+                            <div class="icon24 twitter" src="../../static/img/ic_twitter.png"></div>
+                        </a>
+                        <a target=_blank href=https://github.com/nebulasio/explorer/issues>
+                            <div class="icon24 github" src="../../static/img/ic_github.png"></div>
+                            Submit a issue
                         </a>
                     </div>
                 </div>
