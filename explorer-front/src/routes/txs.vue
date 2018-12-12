@@ -58,22 +58,48 @@
         padding: 0;
     }
 
-    .txs-from-to {
-         max-width: 168px;
-     }
+    /*.txs-from-to {*/
+         /*max-width: 168px;*/
+     /*}*/
 
     .txs-from-to a {
-        max-width: 134px;
+        max-width: 158px;
     }
 
     .fromTo {
-        max-width: 134px;
+        max-width: 158px;
         margin-left: 10px;
         height: 20px;
         font-size: 14px;
         font-family: OpenSans;
         color: rgba(0, 87, 255, 1);
         line-height: 20px;
+    }
+
+    .container-tip .tip{
+        background-color:transparent;
+        color:#fff;
+        display:none;
+        /*left:50%;*/
+        pointer-events:none;
+        position:absolute;
+        -webkit-transform:translateY(-120%);
+        transform:translateY(-120%);
+        z-index:1
+    }
+    .container-tip .tip .content{
+        white-space:nowrap;
+        padding:15px;
+        position:relative;
+        background-color:rgba(0,0,0,.7);
+    }
+    .container-tip .tip .arrow{ position:absolute; height:6px; bottom:-6px; left:6px; }
+    .container-tip .tip .arrow *{ display:block; border-width:5px; position:absolute; border-style:solid dashed dashed dashed; font-size:0; line-height:0; }
+    .container-tip .tip .arrow em{border-color:rgba(0,0,0,.7) transparent transparent;}
+    .container-tip .tip .arrow span{border-color:rgba(0,0,0,.7) transparent transparent;}
+
+    .container-tip:hover .tip{
+        display:block
     }
 </style>
 <template>
@@ -128,9 +154,21 @@
                         </router-link>
                     </td>
                     <td style="padding: 0;">
-                        <img style="width:40px;height:40px" src="../../static/img/ic_arrow_right.png"/>
+                        <img style="width:16px;height:16px" src="../../static/img/ic_arrow_right.png"/>
                     </td>
                     <td class="tdxxxwddd txs-from-to" style="padding: 0;">
+                        <div style="width: 10px;"></div>
+                        <div class="container-tip">
+                            <div class="tip">
+                                <div class="content">
+                                    <div class="arrow">
+                                        <em></em>
+                                    </div>
+                                    <span class="font-size-15-normal">Contract</span>
+                                </div>
+                            </div>
+                            <img class="icon24" v-if="o.type==='call'" src="../../static/img/ic_tx_type_contract.png" />
+                        </div>
                         <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                         <span class="fromTo" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span>
                         <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>
