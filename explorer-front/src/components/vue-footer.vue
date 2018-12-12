@@ -48,11 +48,13 @@
         <div class=container>
             <div class="row">
                 <div class="col-xs-12 col-md-4">
-                    <img style="height: 34px; width: 156px;display: inline; vertical-align: middle;" src="../../static/img/img_footer_logo.png"/>
+                    <a target=_blank href=https://nebulas.io>
+                        <img style="height: 34px; width: 156px;display: inline; vertical-align: middle;" src="../../static/img/img_footer_logo.png"/>
+                    </a>
                 </div>
 
                 <div class="col-xs-12 col-md-4">
-                    <div>Copyright © 2018 The Nebulas Team</div>
+                    <div>Copyright © 2017-2018 Nebulas.io</div>
                 </div>
 
                 <div class="col-xs-12 col-md-4">
