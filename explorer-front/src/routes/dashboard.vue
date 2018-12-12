@@ -808,8 +808,7 @@
                 blocks: [],
                 staticInfo: null,
                 txs: [],
-                realtimeBlocks: [],
-                realtimeBlocksInited: false
+                realtimeBlocks: []
             }
         },
         computed: {
@@ -1024,10 +1023,7 @@
             api.getStaticInfo(o => this.staticInfo = o);                            //合约数量、地址数量。。。
 
             setInterval(() => {
-                this.realtimeBlocksInited = true;
                 api.getTx({ type: "latest" }, o => this.txs = o);                   //最新一波 tx
-                api.getTodayTxCnt(o => this.todayTxCnt = o);   //今日交易量
-
                 api.getBlock({ type: "newblock" }, o => {                           //获取最新一个 block
                     try {
                         if (o[0].height != this.blocks[0].height) {
@@ -1044,6 +1040,7 @@
             }, 8000);
 
             setInterval(() => {
+                api.getTodayTxCnt(o => this.todayTxCnt = o);                        //今日交易量
                 api.getMarketCap(o => this.market = o);                             //币价和市值
                 api.getStaticInfo(o => this.staticInfo = o);                        //合约数量、地址数量。。。
             }, 60000);
