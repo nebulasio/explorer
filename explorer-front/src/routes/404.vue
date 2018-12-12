@@ -36,6 +36,11 @@
         margin: 46px auto;
     }
 
+    .vue-404 a:hover {
+        background-color: black;
+        color: white;
+    }
+
 </style>
 <template>
     <div class="vue-404 fullfill">
