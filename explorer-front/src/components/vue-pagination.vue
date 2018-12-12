@@ -23,13 +23,13 @@
         margin-right: 4.5em;
     }
 
-    .vue-pagination .current > input {
+    /* .vue-pagination .current > input {
         left: 3.6em;
         position: absolute;
         top: .4em;
         width: 4em;
         text-align: center;
-    }
+    } */
 
     .page_nav-item {
         width: 34px;
@@ -59,11 +59,30 @@
         color: #000000;
         vertical-align: middle;
         display: inline-block;
+        outline: none;
+    }
+    
+    .page_nav-item input:focus {
+        box-shadow: none;
+        border: 1px solid black;
     }
 
     .pagination a {
         text-decoration: none;
     }
+
+    .pagination .page_nav-item .highlight {
+        display: none;
+    }
+
+    .pagination .enable-item:hover .origin {
+        display: none;
+    }
+
+    .pagination .enable-item:hover .highlight {
+        display: inline;
+    }
+
 </style>
 <template>
     <nav class=vue-pagination aria-label="Page navigation">
@@ -71,18 +90,20 @@
 
             <li>
                 <a href=# aria-label=First v-on:click.prevent="$emit(current != 1 ? 'first' : '')">
-                    <div class="page_nav-item">
+                    <div :class='{"page_nav-item": true, "enable-item": current != 1}'>
                         <span></span>
-                        <img src="../../static/img/ic_pagination_first.png"/>
+                        <img class="origin" :src="current != 1 ? '../../static/img/ic_pagination_first.png' : '../../static/img/ic_pagination_first_disable.png'"/>
+                        <img class="highlight" src="../../static/img/ic_pagination_first_highlight.png">
                     </div>
                 </a>
             </li>
 
             <li>
                 <a href=# aria-label=Previous v-on:click.prevent="$emit(current != 1 ? 'prev' : '')">
-                    <div class="page_nav-item">
+                    <div :class='{"page_nav-item": true, "enable-item": current != 1}'>
                         <span></span>
-                        <img src="../../static/img/ic_pagination_previous.png"/>
+                        <img class="origin" :src="current != 1 ? '../../static/img/ic_pagination_previous.png' : '../../static/img/ic_pagination_previous_disable.png'"/>
+                        <img class="highlight" src="../../static/img/ic_pagination_previous_highlight.png">
                     </div>
                 </a>
             </li>
@@ -95,18 +116,20 @@
 
             <li>
                 <a href=# aria-label=Next v-on:click.prevent="$emit(current != total ? 'next' : '')">
-                    <div class="page_nav-item">
+                    <div :class='{"page_nav-item": true, "enable-item": current != total}'>
                         <span></span>
-                        <img src="../../static/img/ic_pagination_next.png"/>
+                        <img class="origin" :src="current != total ? '../../static/img/ic_pagination_next.png' : '../../static/img/ic_pagination_next_disable.png'"/>
+                        <img class="highlight" src="../../static/img/ic_pagination_next_highlight.png">
                     </div>
                 </a>
             </li>
 
             <li>
                 <a href=# aria-label=Last v-on:click.prevent="$emit(current != total ? 'last' : '')">
-                    <div class="page_nav-item">
+                    <div :class='{"page_nav-item": true, "enable-item": current != total}'>
                         <span></span>
-                        <img src="../../static/img/ic_pagination_last.png"/>
+                        <img class="origin" :src="current != total ? '../../static/img/ic_pagination_last.png' : '../../static/img/ic_pagination_last_disable.png'"/>
+                        <img class="highlight" src="../../static/img/ic_pagination_last_highlight.png">
                     </div>
                 </a>
             </li>
