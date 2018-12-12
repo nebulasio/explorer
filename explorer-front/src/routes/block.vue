@@ -142,7 +142,7 @@
         computed: {
             urlChange() {
                 this.$root.showModalLoading = true;
-                api.getBlocks(this.$route.params.id, o => {
+                api.getBlock(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;
                     this.block = o;
                 }, xhr => {
