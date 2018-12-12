@@ -520,9 +520,13 @@
         .vue-dashboard .realtime-blocks {
             overflow: hidden;
         }
+
+        .vue-dashboard .row4 .new-user-indicator {
+            display: none;
+        }
     }
 
-    @media (max-width: 767.98px) {
+    @media (max-width: 1199.98px) {
         .vue-dashboard .row4 .data-source {
             visibility: hidden;
         }
@@ -674,7 +678,7 @@
                 <div class="flex-item col-12 col-lg-6 row4-item user-data">
                     <div class="item-bg item-shadow">
                         <div class="item-title">Proportion of Mainnet New Users</div>
-                        <div class="subtitle text-light-gray ml30 fs12">New users refer to Nebulas mainnet accounts within 90 days..</div>
+                        <div class="subtitle text-light-gray ml30 fs12">New users refer to Nebulas mainnet accounts within 90 days.</div>
                         <div v-show="staticInfo" class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
