@@ -281,7 +281,7 @@
         font-weight: bold;
     }
 
-    .vue-dashboard .row3 .link {
+    .vue-dashboard .row3 .link-style {
         position: absolute;
         margin-top: 65px;
         margin-left: 30px;
@@ -522,6 +522,12 @@
         }
     }
 
+    @media (max-width: 767.98px) {
+        .vue-dashboard .row4 .data-source {
+            display: none;
+        }
+    }
+
      /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) {
         .vue-dashboard .realtime-block:nth-of-type(-n+13) {
@@ -637,28 +643,28 @@
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div v-if="staticInfo">{{ blockheight }}</div>
-                        <router-link v-if="staticInfo" class="link" :to='fragApi + "/blocks/"'>Block Height ></router-link>
+                        <router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/blocks/"'>Block Height ></router-link>
                         <img src=/static/img/dashboard-1.png width=44 alt="">
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div v-if="staticInfo">{{ numberAddComma(staticInfo.txnCnt) }}</div>
-                        <router-link v-if="staticInfo" class="link" :to='fragApi + "/txs/"'>Total Transations ></router-link>
+                        <router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/txs/"'>Total Transations ></router-link>
                         <img src=/static/img/dashboard-2.png width=44 alt="">
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div v-if="staticInfo">{{ numberAddComma(staticInfo.totalContractCount) }}</div>
-                        <div v-if="staticInfo" class="link">Total Smart Contracts</div>
+                        <div v-if="staticInfo" class="link-style">Total Smart Contracts</div>
                         <img src=/static/img/dashboard-3.png width=44 alt="">
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div v-if="staticInfo">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
-                        <router-link v-if="staticInfo" class="link" :to='fragApi + "/accounts/"'>Total Addresses ></router-link>
+                        <router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/accounts/"'>Total Addresses ></router-link>
                         <img src=/static/img/dashboard-4.png width=44 alt="">
                     </div>
                 </div>
