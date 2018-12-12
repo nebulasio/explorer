@@ -248,7 +248,7 @@
         box-shadow: 0 10px 30px 0 rgba(207,214,230,0.5);
         transform: translateX(-50%);
         white-space: nowrap;
-        z-index: 1;
+        z-index: 1060;
         display: none;
     }
 
