@@ -69,11 +69,7 @@
     .fromTo {
         max-width: 158px;
         margin-left: 10px;
-        height: 20px;
-        font-size: 14px;
-        font-family: OpenSans;
-        color: rgba(0, 87, 255, 1);
-        line-height: 20px;
+        line-height: 24px;
     }
 
     .container-tip .tip{
@@ -148,13 +144,13 @@
                     </td>
                     <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                         <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
-                        <span class="fromTo" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span>
+                        <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span>
                         <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
                             <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.from.hash }}</span>
                         </router-link>
                     </td>
                     <td style="padding: 0;">
-                        <img style="width:16px;height:16px" src="../../static/img/ic_arrow_right.png"/>
+                        <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
                     </td>
                     <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                         <div style="width: 10px;"></div>
@@ -170,7 +166,7 @@
                             <img class="icon24" v-if="o.type==='call'" src="../../static/img/ic_tx_type_contract.png" />
                         </div>
                         <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
-                        <span class="fromTo" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span>
+                        <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span>
                         <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>
                             <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.to.hash }}</span>
                         </router-link>
