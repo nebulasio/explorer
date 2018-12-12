@@ -583,8 +583,8 @@
                         <div class="item-title" >Daily Transactions</div>
                         <div class="details" v-if="dailyTxChartOptions">
                             <div>Data Sources: Nebulas</div>
-                            <span v-if="todayTxCnt > 1">Today</span>
-                            <span v-if="todayTxCnt > 1">{{ todayTxCnt }}</span>
+                            <span v-if="todayTxCnt >= 0">Today</span>
+                            <span v-if="todayTxCnt >= 0">{{ numberAddComma(todayTxCnt) }}</span>
                         </div>
                         <vchart class="daily-chart" v-if="dailyTxChartOptions" :options="dailyTxChartOptions" :autoResize='true'></vchart>
                     </div>
@@ -992,13 +992,13 @@
             api.getMarketCap(o => this.market = o);                                 //币价和市值
             api.getBlock({ type: "latest" }, o => this.blocks = o);                 //最新一波 block
             api.getTx({ type: "latest" }, o => this.txs = o);                       //最新一波 tx
-            api.getTodayTxCnt(o => this.todayTxCnt = this.numberAddComma(o));       //今日交易量
+            api.getTodayTxCnt(o => this.todayTxCnt = o);                            //今日交易量
             api.getStaticInfo(o => this.staticInfo = o);                            //合约数量、地址数量。。。
 
             setInterval(() => {
                 this.realtimeBlocksInited = true;
                 api.getTx({ type: "latest" }, o => this.txs = o);                   //最新一波 tx
-                api.getTodayTxCnt(o => this.todayTxCnt = this.numberAddComma(o));   //今日交易量
+                api.getTodayTxCnt(o => this.todayTxCnt = o);   //今日交易量
 
                 api.getBlock({ type: "newblock" }, o => {                           //获取最新一个 block
                     try {
