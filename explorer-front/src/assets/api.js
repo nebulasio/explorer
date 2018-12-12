@@ -65,6 +65,23 @@ module.exports = {
         }
     },
 
+    getBlocks(t, done, fail) {
+        // wtf - webpack 对 if (typeof t == "object") 报异常
+        if (eval('typeof t == "object"'))
+            ajax1("blocks", t, d, fail);
+        else
+            ajax1("blocks/" + t, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
+
     // get api/market_cap
     getMarketCap(done, fail) {
         ajax1("market_cap", null, function (s, xhr) {
