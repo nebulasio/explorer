@@ -6,11 +6,7 @@
 
     .vertical-center {
         margin: 0 auto;
-        margin-top: 80px;
-        /* position: absolute; */
-        /* top: 50%; */
-        /* left: 50%;
-        transform: translateX(-50%); */
+        padding-top: 80px;
     }
 
     .vue-nothing img {
