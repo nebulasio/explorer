@@ -32,7 +32,7 @@
         border: none;
         margin-left: 47px;
         padding: 6px 0px 6px 10px;
-        width: 360px;
+        width: 340px;
         background-color: white;
     }
 
@@ -45,7 +45,16 @@
         flex: 1;
     }
 
+    .vue-header .navbar-nav .nav-item:nth-child(2) a img {
+        margin-top: -5px;
+    }
+
+    .vue-header .navbar-nav .nav-item:nth-child(3) a img {
+        margin-top: -1.5px;
+    }
+
     @media (min-width: 992px) {
+
         .vue-header .navbar-nav>li>a {
             border-bottom: 2px solid transparent;
         }
@@ -56,8 +65,16 @@
             border-bottom-color: white;
         }
 
+        .vue-header .navbar-nav a:hover img {
+            opacity: 0.6;
+        }
+
         .vue-header.navbar.navbar-default .navbar-nav>li>a {
             background-color: initial;
+        }
+
+        .vue-header .dropdown-menu {
+            margin-left: 30px;
         }
     }
 
@@ -100,7 +117,10 @@
                         </router-link>
                     </li>
                     <li class="dropdown nav-item" v-bind:class="{ active: $route.meta.headerActive == 2 }">
-                        <a class="nav-link dropdown-toggle" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>BLOCKCHAIN</a>
+                        <a class="nav-link" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+                            BLOCKCHAIN
+                            <img src=/static/img/icon_arrow_down.png width=12 alt="">
+                        </a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-blockchain>
                             <router-link class=dropdown-item v-bind:to="fragApi + '/txs'">Transactions</router-link>
                             <router-link class=dropdown-item v-bind:to="fragApi + '/txs/pending'">Pending Transactions</router-link>
@@ -113,14 +133,17 @@
                     <!-- <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
                         <router-link class=nav-link v-bind:to="fragApi + '/accounts'">ACCOUNT</router-link>
                     </li> -->
-                    <li class="dropdown nav-item">
-                        <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{ MenuMisc }}</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href=# role=button v-on:click.prevent=apiSwitch()>{{ MenuMisc }}
+                            <img src=/static/img/icon_switcher.png width=12 alt="">
+                        </a>
+                        <!-- <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{ MenuMisc }}</a>
                         <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
                             <a v-for="(o, i) in apiPrefixes" :key="i" class="nav-link text-dark" href=# v-on:click.prevent=apiSwitch(i)>
                                 <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': paramsApi != i }" aria-hidden=true></span>
                                 {{ o.name }}
                             </a>
-                        </div>
+                        </div> -->
                     </li>
                 </ul>
                 
@@ -143,12 +166,13 @@
             };
         },
         methods: {
-            apiSwitch(s) {
-                var api = this.$route.params.api || "";
-                if (api != s) {
-                    this.$router.replace("/" + s);
-                    location.reload();
+            apiSwitch() {
+                if (this.$route.params.api === 'testnet') {
+                    this.$router.replace("/");
+                } else {
+                    this.$router.replace("/testnet");
                 }
+                location.reload();
             },
             onSubmit() {
                 // if (this.search.trim().toLowerCase() == 'atp') {

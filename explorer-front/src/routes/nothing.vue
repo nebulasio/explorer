@@ -6,11 +6,7 @@
 
     .vertical-center {
         margin: 0 auto;
-        margin-top: 80px;
-        /* position: absolute; */
-        /* top: 50%; */
-        /* left: 50%;
-        transform: translateX(-50%); */
+        padding-top: 80px;
     }
 
     .vue-nothing img {
@@ -40,13 +36,18 @@
         margin: 46px auto;
     }
 
+    .vue-nothing a:hover {
+        background-color: black;
+        color: white;
+    }
+
 </style>
 <template>
     <div class="vue-nothing fullfill">
         <div class="container vertical-center">
             <div class="msg">Sorry... No search results found.</div>
             <img src="/static/img/nothing.png" alt="" width="282px">
-            <router-link :to='this.$route.params.api ? "/" + this.$route.params.api : ""'>Back home</router-link>
+            <router-link :to='$route.params.api ? "/" + $route.params.api : "/"'>Back home</router-link>
         </div>
     </div>
 </template>

@@ -6,11 +6,7 @@
 
     .vertical-center {
         margin: 0 auto;
-        margin-top: 80px;
-        /* position: absolute; */
-        /* top: 50%; */
-        /* left: 50%;
-        transform: translateX(-50%); */
+        padding-top: 80px;
     }
 
     .vue-404 img {
@@ -40,13 +36,18 @@
         margin: 46px auto;
     }
 
+    .vue-404 a:hover {
+        background-color: black;
+        color: white;
+    }
+
 </style>
 <template>
     <div class="vue-404 fullfill">
         <div class="container vertical-center">
             <div class="msg">Sorry...The network is currently unavailable. Please try again later.</div>
             <img src="/static/img/404.png" alt="" width="308px">
-            <router-link :to='this.$route.params.api ? "/" + this.$route.params.api : ""'>Back home</router-link>
+            <router-link :to='$route.params.api ? "/" + $route.params.api : "/"'>Back home</router-link>
         </div>
     </div>
 </template>
