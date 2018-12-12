@@ -95,7 +95,7 @@
                         </a>
                         <a target=_blank href=https://github.com/nebulasio/explorer/issues>
                             <div class="icon24 github" src="../../static/img/ic_github.png"></div>
-                            Submit a issue
+                            Submit an issue
                         </a>
                     </div>
                 </div>
