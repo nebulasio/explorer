@@ -74,7 +74,7 @@
                 else {
                     this.$root.showModalLoading = true;
 
-                    api.getBlock({ p }, o => {
+                    api.getBlocks({ p }, o => {
 
                         this.$root.showModalLoading = false;
                         this.arr = o.data;
