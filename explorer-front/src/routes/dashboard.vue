@@ -142,7 +142,8 @@
         position: absolute;
         top: 0px;
         height: 320px;
-        width: 100%;
+        width: calc(100% - 60px);
+        margin-left: 30px;
     }
 
     .vue-dashboard .nas-price .update-time {
@@ -443,8 +444,9 @@
     .vue-dashboard .accounts-chart {
         position: absolute;
         top: 0px;
-        width: 100%;
+        width: calc(100% - 60px);
         height: 100%;
+        margin-left: 30px;
     }
 
     .vue-dashboard .row5 .item-bg {
@@ -581,8 +583,8 @@
                         <div class="item-title" >Daily Transactions</div>
                         <div class="details" v-if="dailyTxChartOptions">
                             <div>Data Sources: Nebulas</div>
-                            <span v-if="todayTxCnt > 1">Today</span>
-                            <span v-if="todayTxCnt > 1">{{ todayTxCnt }}</span>
+                            <span v-if="todayTxCnt >= 0">Today</span>
+                            <span v-if="todayTxCnt >= 0">{{ numberAddComma(todayTxCnt) }}</span>
                         </div>
                         <vchart class="daily-chart" v-if="dailyTxChartOptions" :options="dailyTxChartOptions" :autoResize='true'></vchart>
                     </div>
@@ -801,7 +803,7 @@
 
                 let vm = this;
                 var options = {
-                    grid: { x: '10', y: '100', width: '96%', height: '210', containLabel: true },
+                    grid: { x: '0', y: '100', width: '100%', height: '210', containLabel: true },
                     xAxis: {
                         data: dates,
                         axisLine: {
@@ -892,7 +894,7 @@
                 
                 let vm = this;
                 var options = {
-                    grid: { x: '10', y: '100', width: '98%', height: '210', containLabel: true },
+                    grid: { x: '0', y: '100', width: '100%', height: '220', containLabel: true },
                     xAxis: {
                         data: dates,
                         axisLine: {
@@ -990,13 +992,13 @@
             api.getMarketCap(o => this.market = o);                                 //币价和市值
             api.getBlock({ type: "latest" }, o => this.blocks = o);                 //最新一波 block
             api.getTx({ type: "latest" }, o => this.txs = o);                       //最新一波 tx
-            api.getTodayTxCnt(o => this.todayTxCnt = this.numberAddComma(o));       //今日交易量
+            api.getTodayTxCnt(o => this.todayTxCnt = o);                            //今日交易量
             api.getStaticInfo(o => this.staticInfo = o);                            //合约数量、地址数量。。。
 
             setInterval(() => {
                 this.realtimeBlocksInited = true;
                 api.getTx({ type: "latest" }, o => this.txs = o);                   //最新一波 tx
-                api.getTodayTxCnt(o => this.todayTxCnt = this.numberAddComma(o));   //今日交易量
+                api.getTodayTxCnt(o => this.todayTxCnt = o);   //今日交易量
 
                 api.getBlock({ type: "newblock" }, o => {                           //获取最新一个 block
                     try {
