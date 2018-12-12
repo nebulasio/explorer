@@ -70,7 +70,7 @@
         <ul class=pagination v-bind:class='{ "justify-content-end": right }'>
 
             <li>
-                <a href=# aria-label=First v-on:click.prevent="$emit('first')">
+                <a href=# aria-label=First v-on:click.prevent="$emit(current != 1 ? 'first' : '')">
                     <div class="page_nav-item">
                         <span></span>
                         <img src="../../static/img/ic_pagination_first.png"/>
@@ -79,7 +79,7 @@
             </li>
 
             <li>
-                <a href=# aria-label=Previous v-on:click.prevent="$emit('prev')">
+                <a href=# aria-label=Previous v-on:click.prevent="$emit(current != 1 ? 'prev' : '')">
                     <div class="page_nav-item">
                         <span></span>
                         <img src="../../static/img/ic_pagination_previous.png"/>
@@ -94,7 +94,7 @@
             </div>
 
             <li>
-                <a href=# aria-label=Next v-on:click.prevent="$emit('next')">
+                <a href=# aria-label=Next v-on:click.prevent="$emit(current != total ? 'next' : '')">
                     <div class="page_nav-item">
                         <span></span>
                         <img src="../../static/img/ic_pagination_next.png"/>
@@ -103,7 +103,7 @@
             </li>
 
             <li>
-                <a href=# aria-label=Last v-on:click.prevent="$emit('last')">
+                <a href=# aria-label=Last v-on:click.prevent="$emit(current != total ? 'last' : '')">
                     <div class="page_nav-item">
                         <span></span>
                         <img src="../../static/img/ic_pagination_last.png"/>
