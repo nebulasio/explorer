@@ -245,13 +245,12 @@
     .vue-dashboard .realtime-block .block-popover {
         position: absolute;
         left: calc(-50% + 15px);
-        top: -60px;
+        top: -80px;
         padding: 8px;
         font-size: 12px;
         color: white;
         background-color: #0057FF;
         border-radius: 2px;
-        box-shadow: 0 10px 30px 0 rgba(207,214,230,0.5);
         transform: translateX(-50%);
         white-space: nowrap;
         z-index: 1060;
@@ -518,6 +517,17 @@
         opacity: 0;
     }
 
+    @media (max-width: 320px) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+5) {
+            display: block;
+            opacity: 1;
+        }
+
+        .vue-dashboard .realtime-block:nth-of-type(5) {
+            opacity: 0;
+        }
+    }
+
     @media (max-width: 410px) {
         .vue-dashboard .row1 .data-source {
             visibility: hidden;
@@ -525,16 +535,13 @@
     }
 
     @media (max-width: 575.98px) {
-        /* .vue-dashboard .row1 .data-source {
-            visibility: hidden;
-        } */
-
-        .vue-dashboard .realtime-block:nth-of-type(-n+13) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+7) {
             display: block;
+            opacity: 1;
         }
 
-        .vue-dashboard .realtime-blocks {
-            overflow: hidden;
+        .vue-dashboard .realtime-block:nth-of-type(7) {
+            opacity: 0;
         }
 
         .vue-dashboard .row4 .new-user-indicator {
@@ -550,29 +557,49 @@
 
      /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) {
-        .vue-dashboard .realtime-block:nth-of-type(-n+13) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+14) {
             display: block;
+            opacity: 1;
+        }
+
+        .vue-dashboard .realtime-block:nth-of-type(14) {
+            opacity: 0;
         }
     }
 
     /* Medium devices (tablets, 768px and up) */
     @media (min-width: 768px) {
-        .vue-dashboard .realtime-block:nth-of-type(-n+20) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+21) {
             display: block;
+            opacity: 1;
+        }
+
+        .vue-dashboard .realtime-block:nth-of-type(21) {
+            opacity: 0;
         }
     }
 
     /* Large devices (desktops, 992px and up) */
     @media (min-width: 992px) {
-        .vue-dashboard .realtime-block:nth-of-type(-n+30) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+31) {
             display: block;
+            opacity: 1;
+        }
+
+        .vue-dashboard .realtime-block:nth-of-type(31) {
+            opacity: 0;
         }
     }
 
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
-        .vue-dashboard .realtime-block:nth-of-type(-n+37) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+38) {
             display: block;
+            opacity: 1;
+        }
+
+        .vue-dashboard .realtime-block:nth-of-type(38) {
+            opacity: 0;
         }
     }
 
