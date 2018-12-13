@@ -77,7 +77,7 @@
                     </tr>
                     <tr>
                         <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">TimeStamp:</td>
-                        <td class="font-size-16-normal font-color-000000">{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})
+                        <td class="font-size-16-normal font-color-000000">{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ tx.timestamp }})
                         </td>
                     </tr>
                     <tr>
