@@ -2,8 +2,8 @@ server:
   port: 8080
 logging:
   config: classpath:logback.xml
-  level:
-    io.nebulas.explorer.mapper: debug
+#  level:
+#    io.nebulas.explorer.mapper: debug
 spring:
   application:
     name: explorer
