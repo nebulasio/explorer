@@ -269,13 +269,12 @@
     .vue-dashboard .realtime-block .block-popover {
         position: absolute;
         left: calc(-50% + 15px);
-        top: -60px;
+        top: -80px;
         padding: 8px;
         font-size: 12px;
         color: white;
         background-color: #0057FF;
         border-radius: 2px;
-        box-shadow: 0 10px 30px 0 rgba(207,214,230,0.5);
         transform: translateX(-50%);
         white-space: nowrap;
         z-index: 1060;
@@ -1086,14 +1085,16 @@
                 api.getStaticInfo(o => this.staticInfo = o);                        //合约数量、地址数量。。。
             }, 60000);
 
-            /*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/  
-            var partnerID = 'pbg91eenif2mbsoo3g1qg';
-            var atpAds = AtlasAds(partnerID);
+            if (this.$root.showAtpAds) {
+                /*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/  
+                var partnerID = 'pbg91eenif2mbsoo3g1qg';
+                var atpAds = AtlasAds(partnerID);
 
-            //获取广告 传入div containerId和广告的宽高（getAd set the containerId and dimension wide high）  
-            atpAds.getAd('#atlaspAds-bottom','nas_1200x100_001');
-            atpAds.getAd('#atlaspAds-side','nas_360x300_001');
-            atpAds.getAd('#atlaspAds-middle-mobile','nas_720x200_001');
+                //获取广告 传入div containerId和广告的宽高（getAd set the containerId and dimension wide high）  
+                atpAds.getAd('#atlaspAds-bottom','nas_1200x100_001');
+                atpAds.getAd('#atlaspAds-side','nas_360x300_001');
+                atpAds.getAd('#atlaspAds-middle-mobile','nas_720x200_001');
+            }
         },
         methods: {
             numberAddComma(n) {
