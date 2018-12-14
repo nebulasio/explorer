@@ -31,7 +31,7 @@ public class NasAccountService {
         //找90天前的account记录
         NasAccountCondition cond = new NasAccountCondition();
 
-        DateTime today = new DateTime(DateTimeZone.UTC).withTimeAtStartOfDay().toDateTime(DateTimeZone.forID("Asia/Shanghai"));
+        DateTime today = new DateTime(DateTimeZone.UTC).withTimeAtStartOfDay().toDateTime(DateTimeZone.getDefault());
         DateTime ninetyDay = today.minusDays(90);
         cond.createCriteria().andTimestampEqualTo(ninetyDay.toDate());
 
