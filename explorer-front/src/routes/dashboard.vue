@@ -78,7 +78,15 @@
         margin-bottom: 30px;
     }
 
-    .atlaspAds>*:last-child {
+    .vue-dashboard .atlaspAds-bottom>a>img {
+        margin-bottom: 30px;
+    }
+
+    .vue-dashboard #atlaspAds-middle-mobile {
+        display: none;
+    }
+
+    .vue-dashboard #atlaspAds-middle-mobile>a>img {
         margin-bottom: 30px;
     }
 
@@ -87,7 +95,15 @@
             margin-bottom: 15px;
         }
 
-        .atlaspAds>*:last-child {
+        .vue-dashboard #atlaspAds-bottom {
+            display: none;
+        }
+
+        .vue-dashboard #atlaspAds-middle-mobile {
+            display: block;
+        }
+
+        .vue-dashboard #atlaspAds-middle-mobile>a>img {
             margin-bottom: 15px;
         }
     }
@@ -747,6 +763,8 @@
                     </div>
                 </div>
             </div>
+            <!--ATP mobile中间广告位-->  
+            <div class="flex atlaspAds-bottom" id="atlaspAds-middle-mobile"></div>
             <!-- ===================5===================== -->
             <div class="row row5">
                 <div class="flex-item col-12 col-lg-6 row5-item">
@@ -795,7 +813,8 @@
                 </div>
             </div>
             <!--ATP底部广告位-->  
-            <div class="flex atlaspAds" id="atlaspAds-bottom"></div>
+            <div class="flex atlaspAds-bottom" id="atlaspAds-bottom"></div>
+            <div class="flex atlaspAds-bottom" id="atlaspAds-middle-mobile"></div>
         </div>
         <!--ATP侧边栏广告位-->  
         <div class="flex atlaspAds" id="atlaspAds-side"></div>
@@ -872,7 +891,6 @@
                         }
                     },
                     yAxis: {
-                        // max: 7000,
                         axisLine: {
                             show: false
                         },
@@ -1075,6 +1093,7 @@
             //获取广告 传入div containerId和广告的宽高（getAd set the containerId and dimension wide high）  
             atpAds.getAd('#atlaspAds-bottom','nas_1200x100_001');
             atpAds.getAd('#atlaspAds-side','nas_360x300_001');
+            atpAds.getAd('#atlaspAds-middle-mobile','nas_720x200_001');
         },
         methods: {
             numberAddComma(n) {
