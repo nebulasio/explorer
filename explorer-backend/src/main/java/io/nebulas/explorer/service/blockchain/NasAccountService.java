@@ -33,7 +33,7 @@ public class NasAccountService {
 
         DateTime today = new DateTime(DateTimeZone.UTC).withTimeAtStartOfDay().toDateTime(DateTimeZone.forID("Asia/Shanghai"));
         DateTime ninetyDay = today.minusDays(90);
-        cond.createCriteria().andTimestampEqualTo(ninetyDay.withTimeAtStartOfDay().toDate());
+        cond.createCriteria().andTimestampEqualTo(ninetyDay.toDate());
 
         List<NasAccount> nasAccount = nasAccountMapper.selectByCondition(cond);
         if (nasAccount.size() == 0) {
