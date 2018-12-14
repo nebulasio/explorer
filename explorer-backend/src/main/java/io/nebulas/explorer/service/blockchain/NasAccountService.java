@@ -5,6 +5,7 @@ import io.nebulas.explorer.domain.NasAccountCondition;
 import io.nebulas.explorer.mapper.NasAccountMapper;
 import lombok.AllArgsConstructor;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class NasAccountService {
         //找90天前的account记录
         NasAccountCondition cond = new NasAccountCondition();
 
-        DateTime today = new DateTime().withTimeAtStartOfDay();
+        DateTime today = new DateTime().toDateTime(DateTimeZone.forID("Asia/Shanghai")).withTimeAtStartOfDay();
         DateTime ninetyDay = today.minusDays(90);
         cond.createCriteria().andTimestampEqualTo(ninetyDay.withTimeAtStartOfDay().toDate());
 
