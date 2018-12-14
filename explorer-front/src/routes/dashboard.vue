@@ -78,8 +78,32 @@
         margin-bottom: 30px;
     }
 
+    .vue-dashboard .atlaspAds-bottom>a>img {
+        margin-bottom: 30px;
+    }
+
+    .vue-dashboard #atlaspAds-middle-mobile {
+        display: none;
+    }
+
+    .vue-dashboard #atlaspAds-middle-mobile>a>img {
+        margin-bottom: 30px;
+    }
+
     @media (max-width: 767.98px) {
         .vue-dashboard .row>* {
+            margin-bottom: 15px;
+        }
+
+        .vue-dashboard #atlaspAds-bottom {
+            display: none;
+        }
+
+        .vue-dashboard #atlaspAds-middle-mobile {
+            display: block;
+        }
+
+        .vue-dashboard #atlaspAds-middle-mobile>a>img {
             margin-bottom: 15px;
         }
     }
@@ -517,6 +541,13 @@
         opacity: 0;
     }
 
+    #atlaspAds-side {
+        position: fixed;
+        top: 460px;
+        left: calc((100% - 1140px) * 0.5 + 1140px + 5px);
+        width: 300px;
+    }
+
     @media (max-width: 320px) {
         .vue-dashboard .realtime-block:nth-of-type(-n+5) {
             display: block;
@@ -527,6 +558,7 @@
             opacity: 0;
         }
     }
+    
 
     @media (max-width: 410px) {
         .vue-dashboard .row1 .data-source {
@@ -552,6 +584,10 @@
     @media (max-width: 1199.98px) {
         .vue-dashboard .row4 .data-source {
             visibility: hidden;
+        }
+
+        #atlaspAds-side {
+            display: none;
         }
     }
 
@@ -755,6 +791,8 @@
                     </div>
                 </div>
             </div>
+            <!--ATP mobile中间广告位-->  
+            <div class="flex atlaspAds-bottom" id="atlaspAds-middle-mobile"></div>
             <!-- ===================5===================== -->
             <div class="row row5">
                 <div class="flex-item col-12 col-lg-6 row5-item">
@@ -802,7 +840,12 @@
                     </div>
                 </div>
             </div>
+            <!--ATP底部广告位-->  
+            <div class="flex atlaspAds-bottom" id="atlaspAds-bottom"></div>
+            <div class="flex atlaspAds-bottom" id="atlaspAds-middle-mobile"></div>
         </div>
+        <!--ATP侧边栏广告位-->  
+        <div class="flex atlaspAds" id="atlaspAds-side"></div>
     </div>
 </template>
 <script>
@@ -876,7 +919,6 @@
                         }
                     },
                     yAxis: {
-                        // max: 7000,
                         axisLine: {
                             show: false
                         },
@@ -1071,6 +1113,17 @@
                 api.getMarketCap(o => this.market = o);                             //币价和市值
                 api.getStaticInfo(o => this.staticInfo = o);                        //合约数量、地址数量。。。
             }, 60000);
+
+            if (this.$root.showAtpAds) {
+                /*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/  
+                var partnerID = 'pbg91eenif2mbsoo3g1qg';
+                var atpAds = AtlasAds(partnerID);
+
+                //获取广告 传入div containerId和广告的宽高（getAd set the containerId and dimension wide high）  
+                atpAds.getAd('#atlaspAds-bottom','nas_1200x100_001');
+                atpAds.getAd('#atlaspAds-side','nas_360x300_001');
+                atpAds.getAd('#atlaspAds-middle-mobile','nas_720x200_001');
+            }
         },
         methods: {
             numberAddComma(n) {

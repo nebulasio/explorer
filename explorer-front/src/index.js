@@ -30,7 +30,7 @@ vApp = new Vue({
     data: {
         search: "",
         showModalLoading: false,
-        urlBefore404: ""
+        showAtpAds: true
     },
     el: ".vue",
     router: vRouter
@@ -43,12 +43,11 @@ vApp = new Vue({
 function onBeforeEach(to, from, next) {
     vApp.showModalLoading = false;
 
-    var apiPrefix, first, params, path;
+    var apiPrefix, first, path;
 
     for (first in vAppConfig.apiPrefixes) break;
 
     if (to.name == "*") {
-        vApp.urlBefore404 = to.fullPath;
         path = (from.params.api ? "/" + from.params.api : "") + "/404";
     } else if (to.params.api)
         if (to.params.api in vAppConfig.apiPrefixes)
@@ -59,11 +58,11 @@ function onBeforeEach(to, from, next) {
             } else
                 apiPrefix = vAppConfig.apiPrefixes[to.params.api].url;
         else {
-            vApp.urlBefore404 = to.fullPath;
             path = (from.params.api ? "/" + from.params.api : "") + "/404";
         }
-    else
+    else {
         apiPrefix = vAppConfig.apiPrefixes[first].url;
+    }
 
     sessionStorage.apiPrefix = apiPrefix;
     next(path);

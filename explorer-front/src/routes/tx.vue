@@ -33,6 +33,41 @@
         width: 25%;
     }
 
+    .vue-tx .atlaspAds-bottom>a>img {
+        margin-top: 30px;
+    }
+
+    .vue-tx #atlaspAds-mobile {
+        display: none;
+    }
+
+    #atlaspAds-side {
+        position: fixed;
+        top: 211px;
+        left: calc((100% - 1140px) * 0.5 + 1140px + 5px);
+        width: 200px;
+    }
+
+    @media (max-width: 767.98px) {
+        .vue-tx .atlaspAds-bottom>a>img {
+            margin-top: 15px;
+        }
+
+        .vue-tx #atlaspAds-bottom {
+            display: none;
+        }
+
+        .vue-tx #atlaspAds-mobile {
+            display: block;
+        }
+    }
+
+    @media (max-width: 1199.98px) {
+        #atlaspAds-side {
+            display: none;
+        }
+    }
+
 </style>
 <template>
     <div class="vue-tx fullfill" v-bind:triggerComputed=urlChange>
@@ -186,7 +221,12 @@
                     </tr>
                 </table>
             </div>
+            <!--ATP底部广告位-->  
+            <div class="flex atlaspAds-bottom" id="atlaspAds-bottom"></div>
+            <div class="flex atlaspAds-bottom" id="atlaspAds-mobile"></div>
         </div>
+        <!--ATP侧边栏广告位-->  
+        <div class="flex atlaspAds" id="atlaspAds-side"></div>
     </div>
 </template>
 <script>
@@ -295,6 +335,17 @@
                 var api = this.$route.params.api ? this.$route.params.api :"mainnet";
                 return appConfig.apiPrefixes[api].atp;
             }
-        }
+        },
+        mounted() {
+            if (this.$root.showAtpAds) {
+                /*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/  
+                var partnerID = 'pbg91eenif2mbsoo3g1qg';
+                var atpAds = AtlasAds(partnerID);
+                //获取广告 传入div containerId和广告的宽高（getAd set the containerId and dimension wide high）  
+                atpAds.getAd('#atlaspAds-bottom','nas_1200x100_001');
+                atpAds.getAd('#atlaspAds-mobile','nas_720x200_001');
+                atpAds.getAd('#atlaspAds-side','nas_360x300_001');
+            }
+        },
     };
 </script>
