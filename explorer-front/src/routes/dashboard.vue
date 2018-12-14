@@ -541,11 +541,14 @@
         opacity: 0;
     }
 
-    #atlaspAds-side {
+    .vue-dashboard #atlaspAds-side {
         position: fixed;
         top: 460px;
         left: calc((100% - 1140px) * 0.5 + 1140px + 5px);
         width: 300px;
+        max-width: calc((100% - 1140px) * 0.5 - 25px);
+        /* height: 300px;
+        background-color: red; */
     }
 
     @media (max-width: 320px) {
@@ -1123,6 +1126,16 @@
                 atpAds.getAd('#atlaspAds-bottom', 1200, 100);
                 atpAds.getAd('#atlaspAds-side', 360, 300);
                 atpAds.getAd('#atlaspAds-middle-mobile', 720, 200);
+
+                //侧栏广告尺寸限制
+                window.onresize = function () {
+                    if (window.innerWidth >= 1480) {
+                        $('#atlaspAds-side').show();
+                    } else {
+                        $('#atlaspAds-side').hide();
+                    }
+                }
+                window.onresize();
             }
         },
         methods: {

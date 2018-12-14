@@ -41,11 +41,12 @@
         display: none;
     }
 
-    #atlaspAds-side {
+    .vue-tx #atlaspAds-side {
         position: fixed;
         top: 211px;
         left: calc((100% - 1140px) * 0.5 + 1140px + 5px);
-        width: 200px;
+        width: 300px;
+        max-width: calc((100% - 1140px) * 0.5 - 25px);
     }
 
     @media (max-width: 767.98px) {
@@ -235,7 +236,8 @@
         api = require("@/assets/api"),
         utility = require("@/assets/utility"),
         appConfig = require("@/assets/app-config"),
-        BigNumber = require("bignumber.js");
+        BigNumber = require("bignumber.js"),
+        jQuery = require('jquery');
 
     require("prismjs/themes/prism.css");
 
@@ -345,6 +347,16 @@
                 atpAds.getAd('#atlaspAds-bottom', 1200, 100);
                 atpAds.getAd('#atlaspAds-mobile', 720, 200);
                 atpAds.getAd('#atlaspAds-side', 360, 300);
+
+                //侧栏广告尺寸限制
+                window.onresize = function () {
+                    if (window.innerWidth >= 1480) {
+                        $('#atlaspAds-side').show();
+                    } else {
+                        $('#atlaspAds-side').hide();
+                    }
+                }
+                window.onresize();
             }
         },
     };
