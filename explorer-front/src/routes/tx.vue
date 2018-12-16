@@ -236,8 +236,7 @@
         api = require("@/assets/api"),
         utility = require("@/assets/utility"),
         appConfig = require("@/assets/app-config"),
-        BigNumber = require("bignumber.js"),
-        jQuery = require('jquery');
+        BigNumber = require("bignumber.js");
 
     require("prismjs/themes/prism.css");
 

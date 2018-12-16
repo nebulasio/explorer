@@ -1,3 +1,4 @@
+require('es6-promise').polyfill();
 var Vue = require("vue").default,
     VueRouter = require("vue-router").default,
     vApp = {},
@@ -5,14 +6,31 @@ var Vue = require("vue").default,
     vRouter = new VueRouter({ routes: require("@/assets/routes") }),
     gaPage = require('vue-analytics').page;
 
+// Expose jQuery to the global object
+const jQuery = require('jquery');
+window.jQuery = window.$ = jQuery;
+
 require("bootstrap");
 require("bootstrap/dist/css/bootstrap.min.css");
 require("font-awesome/css/font-awesome.min.css");
 require("./index.css");
 
+function isIE() {
+    if (!!window.ActiveXObject || "ActiveXObject" in window)
+        return true;
+    else
+        return false;
+}
+window.isIE = isIE;
+
+const isProd = process.env.NODE_ENV === 'production';
 const VueAnalytics = require('vue-analytics').default;
 Vue.use(VueAnalytics, {
-    id: 'UA-101203737-1'
+    id: 'UA-101203737-1',
+    debug: {
+        enabled: !isProd,
+        sendHitTask: isProd
+    }
 });
 
 Vue.config.productionTip = false;

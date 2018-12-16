@@ -42,8 +42,9 @@ module.exports = {
         include: [
           resolve('src'),
           resolve('test'),
-          // resolve('node_modules/vue-echarts'),
-          // resolve('node_modules/resize-detector')
+          resolve('node_modules/vue-echarts'),
+          resolve('node_modules/resize-detector'),
+          resolve('node_modules/webpack-dev-server/client')
         ]
       },
       {

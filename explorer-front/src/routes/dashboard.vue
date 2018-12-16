@@ -395,16 +395,16 @@
         fill: none;
         stroke: #7F7F7F;
         stroke-width: 1px;
-        stroke-dasharray: 0, 202;
+        stroke-dasharray: 0px, 202px;
         animation: lineMove 1s ease-out forwards;
     }
 
     @keyframes lineMove {
         0%{
-            stroke-dasharray: 0, 202;
+            stroke-dasharray: 0px, 202px;
         }
         100%{
-            stroke-dasharray: 202, 202;
+            stroke-dasharray: 202px, 202px;
         }
     }
 
@@ -530,11 +530,11 @@
     }
 
     .vue-dashboard .row5 .flex-item .item-bg {
-        overflow: scroll;
+        overflow-y: scroll;
     }
 
     .vue-dashboard .row5 tr {
-        transition: all 1000ms;
+        transition: all 1s;
     }
 
     .vue-dashboard .row5 tr:nth-of-type(n+6) {
@@ -654,10 +654,6 @@
         transform: translateX(25px);
     }
 
-    .list-enter-active {
-        transition: all 1s;
-    }
-
     .list-enter {
         opacity: 0;
         transform: translateX(100px);
@@ -713,7 +709,7 @@
                         <div class="subtitle fs12 text-gray">Block Status</div>
                         <transition-group v-on:after-enter="afterEnter" name="row2-list" class="realtime-blocks">
                             <div class="realtime-block" v-for="block in blocks" :key="block.height">
-                                <div class="blockheight" style="height: 100%" :data-txnCnt="block.txnCnt"></div>
+                                <div class="blockheight" style="height: 100%" :data-txncnt="block.txnCnt"></div>
                                 <div class="block-popover">
                                     <div class="font-size-12-bold">{{ numberAddComma(block.height) }}</div>
                                     <div>Transactions: {{ block.txnCnt }}</div>
@@ -768,7 +764,7 @@
                             </div>
                             <div v-if="staticInfo" class="new-user-indicator">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" class="svg" width="195" height="114" viewbox="0 0 195 114">
-                                    <polyline points="5 87, 35 57, 195 57" class="line"/>
+                                    <polyline points="5 87, 35 57, 195 57" class="line" id="svg-line"/>
                                 </svg>
                                 <div class="labels">
                                     <!-- 四舍五入并保留一位小数 -->
@@ -802,7 +798,7 @@
                     <div class="item-bg item-shadow">
                         <div class="item-title">Blocks</div>
                         <router-link :to='fragApi + "/blocks/"' class="showall">View All ></router-link>
-                        <transition-group name="list" tag="table" frame=hsides rules=rows>
+                        <transition-group name="list" tag="table" frame=void rules=rows>
                             <tr class="list-item" v-for="(block, i) in blocks" v-if="i < 5" :key="block.height">
                                 <td>
                                     <img src="/static/img/icon-block.png" width="50">
@@ -854,12 +850,10 @@
 <script>
     var api = require("@/assets/api"),
         utility = require("@/assets/utility"),
-        BigNumber = require("bignumber.js"),
-        ECharts = require('vue-echarts/components/ECharts').default,
-        jQuery = require('jquery');
+        BigNumber = require("bignumber.js");
 
-    require('echarts/lib/chart/line'),
-    // require('echarts/lib/chart/pie'),
+    var ECharts = require('vue-echarts/components/ECharts').default;
+    require('echarts/lib/chart/line');
     require('echarts/lib/component/tooltip');
 
     Number.prototype.pad = function(size) {
@@ -890,11 +884,11 @@
                 var arr = [],
                     dates = [], 
                     nums = [];
-                for (k in this.dailyTxData) {
+                for (var k in this.dailyTxData) {
                     arr.push([k, this.dailyTxData[k]]);
                 }
                 arr.sort(function (a, b) { return Date.parse(a[0]) - Date.parse(b[0]); });
-                for (i in arr) {
+                for (var i in arr) {
                     dates.push(arr[i][0]);
                     nums.push(arr[i][1]);
                 }
@@ -944,7 +938,7 @@
                         symbol: 'circle',
                         symbolSize: 5,
                         lineStyle: {
-                            color: '#FFDD0D00',
+                            color: '#595C63',
                             width: 3
                         },
                         itemStyle: {
@@ -952,7 +946,8 @@
                             borderWidth: 3
                         },
                         areaStyle: {
-                            color: '#595C63'
+                            color: '#595C63',
+                            opacity: 1
                         }
                     },
                     tooltip: {
@@ -984,7 +979,7 @@
                 var dates = [], 
                     nums = [];
                 arr.sort(function (a, b) { return a.timestamp > b.timestamp; });
-                for (i in arr) {
+                for (var i in arr) {
                     nums.push(arr[i].addressCount);
                     dates.push(arr[i].timestamp);
                 }
@@ -1041,8 +1036,8 @@
                         symbol: 'emptyCircle',
                         symbolSize: 7,
                         lineStyle: {
-                            color: '#FFDD0D00',
-                            width: 10
+                            color: '#0057FF',
+                            width: 3
                         },
                         itemStyle: {
                             normal: {
@@ -1057,7 +1052,8 @@
                             }
                         },
                         areaStyle: {
-                            color: '#0057FF'
+                            color: '#0057FF',
+                            opacity: 1
                         }
                     },
                     tooltip: {
@@ -1151,6 +1147,11 @@
             afterEnter: function (el) {
                 let height = (1 - Math.min(5, Math.max(0, el.firstElementChild.dataset.txncnt)) / 5.0) * 100 + 'px';
                 $(el.firstElementChild).css('height', height);
+            }
+        },
+        updated() {
+            if (window.isIE()) {
+                $('#svg-line').css('stroke-dasharray', 'none');
             }
         }
     }
