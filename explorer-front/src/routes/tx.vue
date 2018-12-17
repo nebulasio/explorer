@@ -33,6 +33,42 @@
         width: 25%;
     }
 
+    .vue-tx .atlaspAds-bottom>a>img {
+        margin-top: 30px;
+    }
+
+    .vue-tx #atlaspAds-mobile {
+        display: none;
+    }
+
+    .vue-tx #atlaspAds-side {
+        position: fixed;
+        top: 211px;
+        left: calc((100% - 1140px) * 0.5 + 1140px + 5px);
+        width: 300px;
+        max-width: calc((100% - 1140px) * 0.5 - 25px);
+    }
+
+    @media (max-width: 767.98px) {
+        .vue-tx .atlaspAds-bottom>a>img {
+            margin-top: 15px;
+        }
+
+        .vue-tx #atlaspAds-bottom {
+            display: none;
+        }
+
+        .vue-tx #atlaspAds-mobile {
+            display: block;
+        }
+    }
+
+    @media (max-width: 1199.98px) {
+        #atlaspAds-side {
+            display: none;
+        }
+    }
+
 </style>
 <template>
     <div class="vue-tx fullfill" v-bind:triggerComputed=urlChange>
@@ -77,7 +113,7 @@
                     </tr>
                     <tr>
                         <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">TimeStamp:</td>
-                        <td class="font-size-16-normal font-color-000000">{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString() }} | {{ tx.timestamp }})
+                        <td class="font-size-16-normal font-color-000000">{{ timeConversion(Date.now() - tx.timestamp) }} ago ({{ new Date(tx.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ tx.timestamp }})
                         </td>
                     </tr>
                     <tr>
@@ -172,10 +208,10 @@
                             {{ tx.data }}
                         </td>
                         <td v-else class=code>
-                            <div v-on:click="showOrHidePayload()" style="display: flex;">
+                            <a href=# v-on:click="showOrHidePayload()" style="display: flex; text-decoration: none;">
                                 <span class="font-size-16-normal font-color-0057FF">View all</span>
                                 <img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowPayload ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
-                            </div>
+                            </a>
                         </td>
                     </tr>
                     <tr v-if="isShowPayload === true">
@@ -186,7 +222,12 @@
                     </tr>
                 </table>
             </div>
+            <!--ATP底部广告位-->  
+            <div class="flex atlaspAds-bottom" id="atlaspAds-bottom"></div>
+            <div class="flex atlaspAds-bottom" id="atlaspAds-mobile"></div>
         </div>
+        <!--ATP侧边栏广告位-->  
+        <div class="flex atlaspAds" id="atlaspAds-side"></div>
     </div>
 </template>
 <script>
@@ -295,6 +336,27 @@
                 var api = this.$route.params.api ? this.$route.params.api :"mainnet";
                 return appConfig.apiPrefixes[api].atp;
             }
-        }
+        },
+        mounted() {
+            if (this.$root.showAtpAds) {
+                /*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/  
+                var atpAds = AtlasAds('pbg91eenif2mbsoo3g1qg');
+
+                //获取广告 传入div containerId和广告的宽高（getAd set the containerId and dimension wide high）  
+                atpAds.getAd('#atlaspAds-bottom', 'nas_1200x100_002');
+                atpAds.getAd('#atlaspAds-side', 'nas_360x300_002');
+                atpAds.getAd('#atlaspAds-mobile', 'nas_720x200_002');
+
+                //侧栏广告尺寸限制
+                window.onresize = function () {
+                    if (window.innerWidth >= 1480) {
+                        $('#atlaspAds-side').show();
+                    } else {
+                        $('#atlaspAds-side').hide();
+                    }
+                }
+                window.onresize();
+            }
+        },
     };
 </script>

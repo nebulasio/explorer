@@ -78,8 +78,32 @@
         margin-bottom: 30px;
     }
 
+    .vue-dashboard .atlaspAds-bottom>a>img {
+        margin-bottom: 30px;
+    }
+
+    .vue-dashboard #atlaspAds-middle-mobile {
+        display: none;
+    }
+
+    .vue-dashboard #atlaspAds-middle-mobile>a>img {
+        margin-bottom: 30px;
+    }
+
     @media (max-width: 767.98px) {
         .vue-dashboard .row>* {
+            margin-bottom: 15px;
+        }
+
+        .vue-dashboard #atlaspAds-bottom {
+            display: none;
+        }
+
+        .vue-dashboard #atlaspAds-middle-mobile {
+            display: block;
+        }
+
+        .vue-dashboard #atlaspAds-middle-mobile>a>img {
             margin-bottom: 15px;
         }
     }
@@ -192,6 +216,12 @@
         color: white;
     }
 
+    @media (max-width: 575.98px) {
+        .vue-dashboard .nas-price .market .row div div {
+            font-size: 22px;
+        }
+    }
+
     .vue-dashboard .nas-price .container {
         padding: 0 30px;
     }
@@ -239,16 +269,15 @@
     .vue-dashboard .realtime-block .block-popover {
         position: absolute;
         left: calc(-50% + 15px);
-        top: -60px;
+        top: -80px;
         padding: 8px;
         font-size: 12px;
         color: white;
         background-color: #0057FF;
         border-radius: 2px;
-        box-shadow: 0 10px 30px 0 rgba(207,214,230,0.5);
         transform: translateX(-50%);
         white-space: nowrap;
-        z-index: 1;
+        z-index: 1060;
         display: none;
     }
 
@@ -366,16 +395,16 @@
         fill: none;
         stroke: #7F7F7F;
         stroke-width: 1px;
-        stroke-dasharray: 0, 202;
+        stroke-dasharray: 0px, 202px;
         animation: lineMove 1s ease-out forwards;
     }
 
     @keyframes lineMove {
         0%{
-            stroke-dasharray: 0, 202;
+            stroke-dasharray: 0px, 202px;
         }
         100%{
-            stroke-dasharray: 202, 202;
+            stroke-dasharray: 202px, 202px;
         }
     }
 
@@ -501,58 +530,115 @@
     }
 
     .vue-dashboard .row5 .flex-item .item-bg {
-        overflow: scroll;
+        overflow-y: scroll;
     }
 
     .vue-dashboard .row5 tr {
-        transition: all 1000ms;
+        transition: all 1s;
     }
 
     .vue-dashboard .row5 tr:nth-of-type(n+6) {
         opacity: 0;
     }
 
-    @media (max-width: 575.98px) {
-        .vue-dashboard .realtime-block:nth-of-type(-n+13) {
+    .vue-dashboard #atlaspAds-side {
+        position: fixed;
+        top: 460px;
+        left: calc((100% - 1140px) * 0.5 + 1140px + 5px);
+        width: 300px;
+        max-width: calc((100% - 1140px) * 0.5 - 25px);
+        /* height: 300px;
+        background-color: red; */
+    }
+
+    @media (max-width: 320px) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+5) {
             display: block;
+            opacity: 1;
         }
 
-        .vue-dashboard .realtime-blocks {
-            overflow: hidden;
+        .vue-dashboard .realtime-block:nth-of-type(5) {
+            opacity: 0;
+        }
+    }
+    
+
+    @media (max-width: 410px) {
+        .vue-dashboard .row1 .data-source {
+            visibility: hidden;
         }
     }
 
-    @media (max-width: 767.98px) {
+    @media (max-width: 575.98px) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+7) {
+            display: block;
+            opacity: 1;
+        }
+
+        .vue-dashboard .realtime-block:nth-of-type(7) {
+            opacity: 0;
+        }
+
+        .vue-dashboard .row4 .new-user-indicator {
+            display: none;
+        }
+    }
+
+    @media (max-width: 1199.98px) {
         .vue-dashboard .row4 .data-source {
+            visibility: hidden;
+        }
+
+        #atlaspAds-side {
             display: none;
         }
     }
 
      /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) {
-        .vue-dashboard .realtime-block:nth-of-type(-n+13) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+14) {
             display: block;
+            opacity: 1;
+        }
+
+        .vue-dashboard .realtime-block:nth-of-type(14) {
+            opacity: 0;
         }
     }
 
     /* Medium devices (tablets, 768px and up) */
     @media (min-width: 768px) {
-        .vue-dashboard .realtime-block:nth-of-type(-n+20) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+21) {
             display: block;
+            opacity: 1;
+        }
+
+        .vue-dashboard .realtime-block:nth-of-type(21) {
+            opacity: 0;
         }
     }
 
     /* Large devices (desktops, 992px and up) */
     @media (min-width: 992px) {
-        .vue-dashboard .realtime-block:nth-of-type(-n+30) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+31) {
             display: block;
+            opacity: 1;
+        }
+
+        .vue-dashboard .realtime-block:nth-of-type(31) {
+            opacity: 0;
         }
     }
 
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {
-        .vue-dashboard .realtime-block:nth-of-type(-n+37) {
+        .vue-dashboard .realtime-block:nth-of-type(-n+38) {
             display: block;
+            opacity: 1;
+        }
+
+        .vue-dashboard .realtime-block:nth-of-type(38) {
+            opacity: 0;
         }
     }
 
@@ -566,10 +652,6 @@
     .row2-list-enter {
         opacity: 0;
         transform: translateX(25px);
-    }
-
-    .list-enter-active {
-        transition: all 1s;
     }
 
     .list-enter {
@@ -588,7 +670,7 @@
                     <div class="item-bg">
                         <div class="item-title" >Daily Transactions</div>
                         <div class="details" v-if="dailyTxChartOptions">
-                            <div>Data Sources: Nebulas</div>
+                            <div class="data-source">Data Sources: Nebulas</div>
                             <span v-if="todayTxCnt >= 0">Today</span>
                             <span v-if="todayTxCnt >= 0">{{ numberAddComma(todayTxCnt) }}</span>
                         </div>
@@ -627,7 +709,7 @@
                         <div class="subtitle fs12 text-gray">Block Status</div>
                         <transition-group v-on:after-enter="afterEnter" name="row2-list" class="realtime-blocks">
                             <div class="realtime-block" v-for="block in blocks" :key="block.height">
-                                <div class="blockheight" style="height: 100%" :data-txnCnt="block.txnCnt"></div>
+                                <div class="blockheight" style="height: 100%" :data-txncnt="block.txnCnt"></div>
                                 <div class="block-popover">
                                     <div class="font-size-12-bold">{{ numberAddComma(block.height) }}</div>
                                     <div>Transactions: {{ block.txnCnt }}</div>
@@ -673,8 +755,8 @@
             <div class="row row4">
                 <div class="flex-item col-12 col-lg-6 row4-item user-data">
                     <div class="item-bg item-shadow">
-                        <div class="item-title">Proportion of New Users</div>
-                        <div class="subtitle text-light-gray ml30 fs12">New users refer to Nebulas accounts within 90 days.</div>
+                        <div class="item-title">Proportion of Mainnet New Users</div>
+                        <div class="subtitle text-light-gray ml30 fs12">New users refer to Nebulas mainnet accounts within 90 days.</div>
                         <div v-show="staticInfo" class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
@@ -682,7 +764,7 @@
                             </div>
                             <div v-if="staticInfo" class="new-user-indicator">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" class="svg" width="195" height="114" viewbox="0 0 195 114">
-                                    <polyline points="5 87, 35 57, 195 57" class="line"/>
+                                    <polyline points="5 87, 35 57, 195 57" class="line" id="svg-line"/>
                                 </svg>
                                 <div class="labels">
                                     <!-- 四舍五入并保留一位小数 -->
@@ -708,6 +790,8 @@
                     </div>
                 </div>
             </div>
+            <!--ATP mobile中间广告位-->  
+            <div class="flex atlaspAds-bottom" id="atlaspAds-middle-mobile"></div>
             <!-- ===================5===================== -->
             <div class="row row5">
                 <div class="flex-item col-12 col-lg-6 row5-item">
@@ -755,18 +839,21 @@
                     </div>
                 </div>
             </div>
+            <!--ATP底部广告位-->  
+            <div class="flex atlaspAds-bottom" id="atlaspAds-bottom"></div>
+            <div class="flex atlaspAds-bottom" id="atlaspAds-middle-mobile"></div>
         </div>
+        <!--ATP侧边栏广告位-->  
+        <div class="flex atlaspAds" id="atlaspAds-side"></div>
     </div>
 </template>
 <script>
     var api = require("@/assets/api"),
         utility = require("@/assets/utility"),
-        BigNumber = require("bignumber.js"),
-        ECharts = require('vue-echarts/components/ECharts').default,
-        jQuery = require('jquery');
+        BigNumber = require("bignumber.js");
 
-    require('echarts/lib/chart/line'),
-    // require('echarts/lib/chart/pie'),
+    var ECharts = require('vue-echarts/components/ECharts').default;
+    require('echarts/lib/chart/line');
     require('echarts/lib/component/tooltip');
 
     Number.prototype.pad = function(size) {
@@ -788,8 +875,7 @@
                 blocks: [],
                 staticInfo: null,
                 txs: [],
-                realtimeBlocks: [],
-                realtimeBlocksInited: false
+                realtimeBlocks: []
             }
         },
         computed: {
@@ -798,11 +884,11 @@
                 var arr = [],
                     dates = [], 
                     nums = [];
-                for (k in this.dailyTxData) {
+                for (var k in this.dailyTxData) {
                     arr.push([k, this.dailyTxData[k]]);
                 }
                 arr.sort(function (a, b) { return Date.parse(a[0]) - Date.parse(b[0]); });
-                for (i in arr) {
+                for (var i in arr) {
                     dates.push(arr[i][0]);
                     nums.push(arr[i][1]);
                 }
@@ -826,11 +912,11 @@
                             formatter: function(value) {
                                 let date = new Date(value);
                                 return date.toLocaleString('en', { month: 'short', day: 'numeric' });
-                            }
+                            },
+                            rotate: 45
                         }
                     },
                     yAxis: {
-                        // max: 7000,
                         axisLine: {
                             show: false
                         },
@@ -853,7 +939,7 @@
                         symbol: 'circle',
                         symbolSize: 5,
                         lineStyle: {
-                            color: '#FFDD0D00',
+                            color: '#595C63',
                             width: 3
                         },
                         itemStyle: {
@@ -861,7 +947,8 @@
                             borderWidth: 3
                         },
                         areaStyle: {
-                            color: '#595C63'
+                            color: '#595C63',
+                            opacity: 1
                         }
                     },
                     tooltip: {
@@ -875,7 +962,7 @@
                         },
                         backgroundColor: '#595C63',
                         padding: 8,
-                        extraCssText: 'border-radius: 2px;',
+                        extraCssText: 'border-radius: 2px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);',
                         textStyle: {
                             fontFamily: 'consolas',
                             fontSize: 12,
@@ -893,7 +980,7 @@
                 var dates = [], 
                     nums = [];
                 arr.sort(function (a, b) { return a.timestamp > b.timestamp; });
-                for (i in arr) {
+                for (var i in arr) {
                     nums.push(arr[i].addressCount);
                     dates.push(arr[i].timestamp);
                 }
@@ -917,11 +1004,12 @@
                             formatter: function(value) {
                                 let date = new Date(new Number(value));
                                 return date.toLocaleString('en', { month: 'short', day: 'numeric' });
-                            }
+                            },
+                            rotate: 45
                         }
                     },
                     yAxis: {
-                        min: Math.floor(nums[0] / 1000) * 1000 - 1000,
+                        min: Math.floor(nums[0] / 1000) * 1000 - 4000,
                         axisLine: {
                             show: false
                         },
@@ -939,7 +1027,9 @@
                         },
                         splitLine: {
                             show: false
-                        }
+                        },
+                        splitNumber: 5,
+                        minInterval: 3000
                     },
                     series: {
                         type: 'line',
@@ -948,8 +1038,8 @@
                         symbol: 'emptyCircle',
                         symbolSize: 7,
                         lineStyle: {
-                            color: '#FFDD0D00',
-                            width: 10
+                            color: '#0057FF',
+                            width: 3
                         },
                         itemStyle: {
                             normal: {
@@ -964,7 +1054,8 @@
                             }
                         },
                         areaStyle: {
-                            color: '#0057FF'
+                            color: '#0057FF',
+                            opacity: 1
                         }
                     },
                     tooltip: {
@@ -978,7 +1069,7 @@
                         },
                         backgroundColor: '#0057FF',
                         padding: 8,
-                        extraCssText: 'border-radius: 2px;',
+                        extraCssText: 'border-radius: 2px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);',
                         textStyle: {
                             fontFamily: 'consolas',
                             fontSize: 12,
@@ -1002,10 +1093,7 @@
             api.getStaticInfo(o => this.staticInfo = o);                            //合约数量、地址数量。。。
 
             setInterval(() => {
-                this.realtimeBlocksInited = true;
                 api.getTx({ type: "latest" }, o => this.txs = o);                   //最新一波 tx
-                api.getTodayTxCnt(o => this.todayTxCnt = o);   //今日交易量
-
                 api.getBlock({ type: "newblock" }, o => {                           //获取最新一个 block
                     try {
                         if (o[0].height != this.blocks[0].height) {
@@ -1022,9 +1110,30 @@
             }, 8000);
 
             setInterval(() => {
+                api.getTodayTxCnt(o => this.todayTxCnt = o);                        //今日交易量
                 api.getMarketCap(o => this.market = o);                             //币价和市值
                 api.getStaticInfo(o => this.staticInfo = o);                        //合约数量、地址数量。。。
             }, 60000);
+
+            if (this.$root.showAtpAds) {
+                /*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/  
+                var atpAds = AtlasAds('pbg91eenif2mbsoo3g1qg');
+
+                //获取广告 传入div containerId和广告的宽高（getAd set the containerId and dimension wide high）  
+                atpAds.getAd('#atlaspAds-bottom', 'nas_1200x100_001');
+                atpAds.getAd('#atlaspAds-side', 'nas_360x300_001');
+                atpAds.getAd('#atlaspAds-middle-mobile', 'nas_720x200_001');
+
+                //侧栏广告尺寸限制
+                window.onresize = function () {
+                    if (window.innerWidth >= 1480) {
+                        $('#atlaspAds-side').show();
+                    } else {
+                        $('#atlaspAds-side').hide();
+                    }
+                }
+                window.onresize();
+            }
         },
         methods: {
             numberAddComma(n) {
@@ -1039,6 +1148,11 @@
             afterEnter: function (el) {
                 let height = (1 - Math.min(5, Math.max(0, el.firstElementChild.dataset.txncnt)) / 5.0) * 100 + 'px';
                 $(el.firstElementChild).css('height', height);
+            }
+        },
+        updated() {
+            if (window.isIE()) {
+                $('#svg-line').css('stroke-dasharray', 'none');
             }
         }
     }

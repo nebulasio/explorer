@@ -105,12 +105,12 @@
                     <tr>
                         <td class="font-color-555555" style="vertical-align: top; padding-top: 12px;">Dynasty</td>
                         <td style="vertical-align: top; padding-top: 12px;">
-                            <div v-on:click="showOrHideDynasty()" style="display: flex;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            <a href=# v-on:click="showOrHideDynasty()" style="display: flex; text-decoration: none;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                 <span class="font-color-0057FF">
                                     Show Dynasty
                                 </span>
                                 <img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowDynasty ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
-                            </div>
+                            </a>
                             <div class="collapse" id="collapseExample">
                                 <div class="card card-body dynasty">
                                     <router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>
