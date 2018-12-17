@@ -69,6 +69,7 @@
 
     .pagination a {
         text-decoration: none;
+        text-decoration-color: transparent;
     }
 
     .pagination .page_nav-item .highlight {
