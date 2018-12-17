@@ -11,7 +11,7 @@
         <div class="container explorer-table-container">
             <div class="align-items-center info-and-pagination row">
                 <div class="col font-color-000000 font-size-24-bold">
-                    A total of {{ totalAccounts }} accounts found
+                    A total of {{ numberAddComma(totalAccounts) }} accounts found
                 </div>
             </div>
             <div style="height: 30px;"></div>
