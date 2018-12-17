@@ -47,7 +47,7 @@ vApp = new Vue({
     data: {
         search: "",
         showModalLoading: false,
-        showAtpAds: false
+        showAtpAds: true
     },
     el: ".vue",
     router: vRouter
