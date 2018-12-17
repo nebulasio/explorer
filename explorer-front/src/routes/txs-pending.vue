@@ -9,7 +9,7 @@
         <vue-bread title="Pending Transactions"></vue-bread>
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info font-color-000000 font-size-24-bold">A total of {{ totalTxs }} Pending txns found</div>
+                <div class="col info font-color-000000 font-size-24-bold">A total of {{ numberAddComma(totalTxs) }} Pending txns found</div>
             </div>
             <table class="mt20 explorer-table list-table">
                 <tr class="list-header font-size-12-bold font-color-000000">
