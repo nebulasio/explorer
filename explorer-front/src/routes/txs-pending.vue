@@ -1,18 +1,22 @@
+<style>
+    .vue-txs-pending {
+        background-color: white;
+    }
+</style>
 <template>
     <!-- https://etherscan.io/txsPending -->
     <div class="vue-txs-pending fullfill">
         <vue-bread title="Pending Transactions"></vue-bread>
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class=col>A total of {{ totalTxs }} Pending txns found</div>
-                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
+                <div class="col info font-color-000000 font-size-24-bold">A total of {{ totalTxs }} Pending txns found</div>
             </div>
-            <table class="mt20 table">
-                <tr>
+            <table class="mt20 explorer-table list-table">
+                <tr class="list-header font-size-12-bold font-color-000000">
                     <th>TxHash</th>
-                    <th class=text-right>LastSeen</th>
-                    <th class=text-right>GasLimit</th>
-                    <th class=text-right>GasPrice</th>
+                    <th>LastSeen</th>
+                    <th>GasLimit</th>
+                    <th>GasPrice</th>
                     <th>From</th>
                     <th></th>
                     <th>To</th>
@@ -20,24 +24,44 @@
                 </tr>
                 <tr v-for="(o, i) in arr" :key="i">
                     <td class="tdxxxwddd monospace">
-                        <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
+                            <span class="font-color-0057FF font-size-14-normal">{{ o.hash }}</span>
+                        </router-link>
                     </td>
-                    <td class=time>
-                        <div class=text-right>{{ timeConversion(o.timeDiff) }} ago</div>
+                    <td class="time font-size-14-normal font-color-555555">
+                        <div>{{ timeConversion(o.timeDiff) }} ago</div>
                         <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
                     </td>
-                    <td class=text-right>{{ numberAddComma(o.gasLimit) }}</td>
-                    <td class=text-right>{{ toWei(o.gasPrice) }}</td>
+                    <td class="font-size-14-normal font-color-555555">{{ numberAddComma(o.gasLimit) }}</td>
+                    <td class="font-size-14-normal font-color-555555">{{ toWei(o.gasPrice) }}</td>
                     <td class=tdxxxwddd>
-                        <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>{{ o.from.alias || o.from.hash }}</router-link>
+                        <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>
+                            <span class="font-size-14-normal font-color-0057FF">{{ o.from.alias || o.from.hash }}</span>
+                        </router-link>
                     </td>
                     <td>
-                        <span class="fa fa-arrow-right" aria-hidden=true></span>
+                        <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
                     </td>
                     <td class=tdxxxwddd>
-                        <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>{{ o.to.alias || o.to.hash }}</router-link>
+                        <div style="width: 10px;"></div>
+                        <div class="container-tip">
+                            <div class="tip">
+                                <div class="content">
+                                    <div class="arrow">
+                                        <em></em>
+                                    </div>
+                                    <span class="font-size-15-normal">Contract</span>
+                                </div>
+                            </div>
+                            <img class="icon24" v-if="o.type==='call'" src="../../static/img/ic_tx_type_contract.png" />
+                        </div>
+                        <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>
+                            <span class="font-size-14-normal font-color-0057FF">{{ o.to.alias || o.to.hash }}</span>
+                        </router-link>
                     </td>
-                    <td class=text-right>{{ tokenAmount(o.value) }} NAS</td>
+                    <td class="text-right font-size-14-normal font-color-000000">
+                        {{ tokenAmount(o.value) }} NAS
+                    </td>
                 </tr>
             </table>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
