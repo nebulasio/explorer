@@ -962,7 +962,7 @@
                         },
                         backgroundColor: '#595C63',
                         padding: 8,
-                        extraCssText: 'border-radius: 2px;',
+                        extraCssText: 'border-radius: 2px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);',
                         textStyle: {
                             fontFamily: 'consolas',
                             fontSize: 12,
@@ -1069,7 +1069,7 @@
                         },
                         backgroundColor: '#0057FF',
                         padding: 8,
-                        extraCssText: 'border-radius: 2px;',
+                        extraCssText: 'border-radius: 2px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);',
                         textStyle: {
                             fontFamily: 'consolas',
                             fontSize: 12,
