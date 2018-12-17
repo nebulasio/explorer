@@ -23,14 +23,6 @@
         margin-right: 4.5em;
     }
 
-    /* .vue-pagination .current > input {
-        left: 3.6em;
-        position: absolute;
-        top: .4em;
-        width: 4em;
-        text-align: center;
-    } */
-
     .page_nav-item {
         width: 34px;
         height: 34px;
@@ -51,6 +43,7 @@
         width: 16px;
         height: 16px;
         vertical-align: middle;
+        margin-top: 9px;
     }
 
     .page_nav-item input {
@@ -93,7 +86,6 @@
             <li>
                 <a href=# aria-label=First v-on:click.prevent="$emit(current != 1 ? 'first' : '')">
                     <div :class='{"page_nav-item": true, "enable-item": current != 1}'>
-                        <span></span>
                         <img class="origin" :src="current != 1 ? '../../static/img/ic_pagination_first.png' : '../../static/img/ic_pagination_first_disable.png'"/>
                         <img class="highlight" src="../../static/img/ic_pagination_first_highlight.png">
                     </div>
@@ -103,7 +95,6 @@
             <li>
                 <a href=# aria-label=Previous v-on:click.prevent="$emit(current != 1 ? 'prev' : '')">
                     <div :class='{"page_nav-item": true, "enable-item": current != 1}'>
-                        <span></span>
                         <img class="origin" :src="current != 1 ? '../../static/img/ic_pagination_previous.png' : '../../static/img/ic_pagination_previous_disable.png'"/>
                         <img class="highlight" src="../../static/img/ic_pagination_previous_highlight.png">
                     </div>
@@ -119,7 +110,6 @@
             <li>
                 <a href=# aria-label=Next v-on:click.prevent="$emit(current != total ? 'next' : '')">
                     <div :class='{"page_nav-item": true, "enable-item": current != total}'>
-                        <span></span>
                         <img class="origin" :src="current != total ? '../../static/img/ic_pagination_next.png' : '../../static/img/ic_pagination_next_disable.png'"/>
                         <img class="highlight" src="../../static/img/ic_pagination_next_highlight.png">
                     </div>
@@ -129,74 +119,11 @@
             <li>
                 <a href=# aria-label=Last v-on:click.prevent="$emit(current != total ? 'last' : '')">
                     <div :class='{"page_nav-item": true, "enable-item": current != total}'>
-                        <span></span>
                         <img class="origin" :src="current != total ? '../../static/img/ic_pagination_last.png' : '../../static/img/ic_pagination_last_disable.png'"/>
                         <img class="highlight" src="../../static/img/ic_pagination_last_highlight.png">
                     </div>
                 </a>
             </li>
-
-
-            <!--<li v-if="current > 1" class=page-item>-->
-            <!--<a class=page-link href=# aria-label=First v-on:click.prevent="$emit('first')">-->
-            <!--<span aria-hidden=true>&laquo;</span>-->
-            <!--<span class=sr-only>First</span>-->
-            <!--</a>-->
-            <!--</li>-->
-            <!--<li v-else class="disabled page-item">-->
-            <!--<a class=page-link href=# tabindex=-1 aria-label=First>-->
-            <!--<span aria-hidden=true>&laquo;</span>-->
-            <!--<span class=sr-only>First</span>-->
-            <!--</a>-->
-            <!--</li>-->
-
-            <!--<li v-if="current > 1" class=page-item>-->
-            <!--<a class=page-link href=# aria-label=Previous v-on:click.prevent="$emit('prev')">-->
-            <!--<span aria-hidden=true>&lt;</span>-->
-            <!--<span class=sr-only>Previous</span>-->
-            <!--</a>-->
-            <!--</li>-->
-            <!--<li v-else class="disabled page-item">-->
-            <!--<a class=page-link href=# tabindex=-1 aria-label=Previous>-->
-            <!--<span aria-hidden=true>&lt;</span>-->
-            <!--<span class=sr-only>Previous</span>-->
-            <!--</a>-->
-            <!--</li>-->
-
-            <!--<li class=page-item>-->
-            <!--<div class="current page-link">-->
-            <!--<span>Page</span>-->
-            <!--<input v-bind:value=current v-on:keyup.enter="$emit('to', $event.target.value)">-->
-            <!--of-->
-            <!--<b>{{ total }}</b>-->
-            <!--</div>-->
-            <!--</li>-->
-
-            <!--<li v-if="current == total" class="disabled page-item">-->
-            <!--<a class=page-link href=# tabindex=-1 aria-label=Next>-->
-            <!--<span aria-hidden=true>&gt;</span>-->
-            <!--<span class=sr-only>Next</span>-->
-            <!--</a>-->
-            <!--</li>-->
-            <!--<li v-else class=page-item>-->
-            <!--<a class=page-link href=# aria-label=Next v-on:click.prevent="$emit('next')">-->
-            <!--<span aria-hidden=true>&gt;</span>-->
-            <!--<span class=sr-only>Next</span>-->
-            <!--</a>-->
-            <!--</li>-->
-
-            <!--<li v-if="current == total" class="disabled page-item">-->
-            <!--<a class=page-link href=# tabindex=-1 aria-label=Last>-->
-            <!--<span aria-hidden=true>&raquo;</span>-->
-            <!--<span class=sr-only>Last</span>-->
-            <!--</a>-->
-            <!--</li>-->
-            <!--<li v-else class=page-item>-->
-            <!--<a class=page-link href=# aria-label=Last v-on:click.prevent="$emit('last')">-->
-            <!--<span aria-hidden=true>&raquo;</span>-->
-            <!--<span class=sr-only>Last</span>-->
-            <!--</a>-->
-            <!--</li>-->
         </ul>
     </nav>
 </template>
