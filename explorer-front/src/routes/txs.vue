@@ -79,7 +79,7 @@
 
         <div class="container mt20 explorer-table-container">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info font-color-000000 font-size-24-bold">{{ totalTxs }} transactions found</div>
+                <div class="col info font-color-000000 font-size-24-bold">{{ numberAddComma(totalTxs) }} transactions found</div>
                 <!--(showing the last {{ maxDisplayCnt }} records)-->
             </div>
 

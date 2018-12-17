@@ -11,7 +11,7 @@
 
         <div v-if="arr" class="container mt20 explorer-table-container">
             <div class="align-items-center info-and-pagination row" style="margin-top: 60px; margin-bottom: 30px;">
-                <div class="col font-color-000000 font-size-24-bold">Showing Block (#{{ heightFrom }} to #{{ heightTo }}) out of {{ totalBlocks }} total blocks</div>
+                <div class="col font-color-000000 font-size-24-bold">Showing Block (#{{ heightFrom }} to #{{ heightTo }}) out of {{ numberAddComma(totalBlocks) }} total blocks</div>
             </div>
             <table class="mt20 explorer-table list-table">
                 <tr class="list-header font-size-12-bold font-color-000000">
