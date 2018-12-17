@@ -44,6 +44,7 @@
         color: #555555;
         vertical-align: middle;
         display: inline-block;
+        text-decoration: none;
     }
 
     .page_nav-item img {
