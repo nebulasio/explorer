@@ -912,7 +912,8 @@
                             formatter: function(value) {
                                 let date = new Date(value);
                                 return date.toLocaleString('en', { month: 'short', day: 'numeric' });
-                            }
+                            },
+                            rotate: 45
                         }
                     },
                     yAxis: {
@@ -1003,7 +1004,8 @@
                             formatter: function(value) {
                                 let date = new Date(new Number(value));
                                 return date.toLocaleString('en', { month: 'short', day: 'numeric' });
-                            }
+                            },
+                            rotate: 45
                         }
                     },
                     yAxis: {
