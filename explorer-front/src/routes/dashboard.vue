@@ -911,7 +911,7 @@
                             margin: 18,
                             formatter: function(value) {
                                 let date = new Date(value);
-                                return date.toLocaleString('en', { month: 'short', day: 'numeric' });
+                                return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                             },
                             rotate: 45
                         }
@@ -957,7 +957,7 @@
                         position: 'top',
                         formatter: function(params, ticket, callback) {
                             let date = new Date(params.name);
-                            let dateStr = date.toLocaleString('en', { year: 'numeric', month: 'short', day: 'numeric' });
+                            let dateStr = date.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' });
                             return dateStr + '<div>Transactions: ' + vm.numberAddComma(params.value) + '</div>';
                         },
                         backgroundColor: '#595C63',
@@ -1003,7 +1003,7 @@
                             margin: 18,
                             formatter: function(value) {
                                 let date = new Date(new Number(value));
-                                return date.toLocaleString('en', { month: 'short', day: 'numeric' });
+                                return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                             },
                             rotate: 45
                         }
@@ -1064,7 +1064,7 @@
                         position: 'top',
                         formatter: function(params, ticket, callback) {
                             let date = new Date(new Number(params.name));
-                            let dateStr = date.toLocaleString('en', { year: 'numeric', month: 'short', day: 'numeric' });
+                            let dateStr = date.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' });
                             return dateStr + '<div>Amount: ' + vm.numberAddComma(params.value) + '</div>';
                         },
                         backgroundColor: '#0057FF',
