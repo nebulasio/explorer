@@ -56,6 +56,7 @@ sync:
 apiHost:
   coinmarketcap: https://api.coinmarketcap.com
   nebulas: https://testnet.nebulas.io
+  gateio: https://data.gateio.io
 redis:
   host: 127.0.0.1
   port: 6379

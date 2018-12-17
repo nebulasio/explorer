@@ -70,13 +70,19 @@
     <select id="countContractTransfer" parameterType="java.lang.String" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_transaction`
-        WHERE status=1 and `type` = 'call' and `to` = #{contract,jdbcType=VARCHAR}
+        WHERE `to` = #{contract,jdbcType=VARCHAR}
     </select>
 
     <select id="countTxnCntByFromTo" parameterType="java.lang.String" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_transaction`
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
+    </select>
+
+    <select id="countNrc20TxnCntByFromAndTo" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_transaction`
+        WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR} AND type = 'call'
     </select>
 
     <select id="countTxnCntByFromAndTo" parameterType="map" resultType="java.lang.Long">
@@ -150,6 +156,23 @@
         ORDER BY `block_height` DESC,`tx_seq` DESC
         LIMIT ${offset},${limit}
     </select>
+
+    <select id="findTxnByFromToAndCall" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `from` = #{addressHash,jdbcType=VARCHAR} and `to` = #{contractAddress,jdbcType=VARCHAR} AND `type` = 'call'
+        ORDER BY `block_height` DESC,`tx_seq` DESC
+    </select>
+
+    <select id="findTxnByContract" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE (`from` = #{contractAddress,jdbcType=VARCHAR} or `to` = #{contractAddress,jdbcType=VARCHAR}) AND `type` = 'call'
+        ORDER BY `block_height` DESC,`tx_seq` DESC
+    </select>
+
 
     <select id="findTxnOrderById" parameterType="map" resultMap="BaseResultMap">
         SELECT

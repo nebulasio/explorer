@@ -11,4 +11,6 @@ public interface NebContractTokenMapper {
     NebContractToken getByContract(String contract);
 
     List<NebContractToken> getAllContractTokens();
+
+    NebContractToken getByTokenName(String tokenName);
 }

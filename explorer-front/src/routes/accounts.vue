@@ -1,35 +1,39 @@
+<style>
+    .vue-accounts {
+        background-color: white;
+    }
+</style>
 <template>
     <!-- https://etherscan.io/accounts  -->
-    <div class=vue-accounts>
-        <vue-bread v-bind:arr=breadcrumb title="All Accounts"></vue-bread>
-
-        <div class="container mt20">
+    <div class="vue-accounts fullfill">
+        <vue-bread title="All Accounts"></vue-bread>
+        <div style="height: 60px;"></div>
+        <div class="container explorer-table-container">
             <div class="align-items-center info-and-pagination row">
-                <div class=col>
+                <div class="col font-color-000000 font-size-24-bold">
                     A total of {{ totalAccounts }} accounts found
-                    <br>
-                    <!-- <em>Displaying the last %2 records only</em> -->
                 </div>
-                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
             </div>
-
-            <table class="mt20 table">
-                <tr>
-                    <th>Rank</th>
+            <div style="height: 30px;"></div>
+            <table class="explorer-table list-table">
+                <tr class="list-header font-size-12-bold font-color-000000">
+                    <th style="padding-left: 24px;">Rank</th>
                     <th>Address</th>
                     <th class=text-right>Balance</th>
                     <th class=text-right>Percentage</th>
-                    <th class=text-right>TxCount</th>
+                    <th class=text-right style="padding-right: 24px;">TxCount</th>
                 </tr>
-                <tr v-for="(o, i) in arr" :key="i">
-                    <td>{{ o.rank }}</td>
-                    <td class=monospace>
-                        <router-link v-bind:to='fragApi + "/address/" + o.hash'>{{ o.hash }}</router-link>
+                <tr v-for="(o, i) in arr" :key="i" class="font-size-14-normal">
+                    <td style="padding-left: 24px;" class="font-color-000000">{{ o.rank }}</td>
+                    <td>
+                        <router-link v-bind:to='fragApi + "/address/" + o.hash'>
+                            <span class="font-color-0057FF">{{ o.hash }}</span>
+                        </router-link>
                         <span v-show=o.alias> | {{ o.alias }}</span>
                     </td>
-                    <td class=text-right>{{ toWei(o.balance) }}</td>
-                    <td class=text-right>{{ o.percentage }}%</td>
-                    <td class=text-right>{{ o.txCnt }}</td>
+                    <td class="text-right font-color-000000">{{ short(o.balance) }}</td>
+                    <td class="text-right font-color-000000">{{ (new Number(o.percentage)).toFixed(8) }}%</td>
+                    <td class="text-right font-color-000000" style="padding-right: 24px;">{{ o.txCnt }}</td>
                 </tr>
             </table>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
@@ -38,7 +42,8 @@
 </template>
 <script>
     var api = require("@/assets/api"),
-        utility = require("@/assets/utility");
+        utility = require("@/assets/utility"),
+        BigNumber = require("bignumber.js");
 
     module.exports = {
         components: {
@@ -48,10 +53,6 @@
         data() {
             return {
                 arr: [],
-                breadcrumb: [
-                    { text: "Home", to: "/" },
-                    { text: "Accounts", to: "" }
-                ],
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 totalAccounts: 0,
@@ -84,9 +85,8 @@
                             this.heightTo = 0;
                         }
                     }, xhr => {
-                        console.log(xhr);
                         this.$root.showModalLoading = false;
-                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                     });
                 }
             },
@@ -125,6 +125,12 @@
                     path: this.$route.path,
                     query: { p: n }
                 });
+            },
+            short(n) {
+                BigNumber.config({DECIMAL_PLACES: 8})
+                var amount = BigNumber(n);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat() + ' NAS';
             }
         },
         mounted() {

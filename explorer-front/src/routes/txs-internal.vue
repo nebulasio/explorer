@@ -19,8 +19,8 @@
 </style>
 <template>
     <!-- https://etherscan.io/txsInternal -->
-    <div class=vue-txs-internal v-bind:triggerComputed=urlChange>
-        <vue-bread v-bind:arr=breadcrumb title="Contract Internal Transactions"></vue-bread>
+    <div class="vue-txs-internal fullfill" v-bind:triggerComputed=urlChange>
+        <vue-bread title="Contract Internal Transactions"></vue-bread>
 
         <div class="container mt20">
             <div class="align-items-center info-and-pagination row">
@@ -233,10 +233,6 @@
         },
         data() {
             return {
-                breadcrumb: [
-                    { text: "Home", to: "/" },
-                    { text: "Internal Transactions", to: "" }
-                ],
                 type: "all" // all, ok, error
             };
         }

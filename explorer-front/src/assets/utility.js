@@ -14,7 +14,8 @@ module.exports = {
     easyNumber:easyNumber,
     ua: ua,
     yyyymmdd: yyyymmdd,
-    getNebulasNetHost: getNebulasNetHost
+    getNebulasNetHost: getNebulasNetHost,
+    shortStr: shortStr
 };
 
 ////////////////////////////////////////////////////////////
@@ -30,6 +31,7 @@ function ajax(action, args, done, fail) {
     if (method == "get") {
         url += url.indexOf("?") == -1 ? "?" : "&";
         for (i in args) args[i] === undefined || (url += encodeURIComponent(i) + "=" + encodeURIComponent(args[i]) + "&");
+        url += "timestamp=" + Date.now();
         url = url.slice(0, -1);
         args = null;
     }
@@ -230,4 +232,9 @@ function getNebulasNetHost(net){
     }
 
     return mainnet
+}
+
+function shortStr(n, s) {
+    if (s.length <= n * 2) return s;
+    return s.substring(0, n) + '...' + s.substring(s.length - n);
 }

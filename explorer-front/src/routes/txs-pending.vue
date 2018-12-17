@@ -1,7 +1,7 @@
 <template>
     <!-- https://etherscan.io/txsPending -->
-    <div class=vue-txs-pending>
-        <vue-bread v-bind:arr=breadcrumb title="Pending Transactions"></vue-bread>
+    <div class="vue-txs-pending fullfill">
+        <vue-bread title="Pending Transactions"></vue-bread>
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
                 <div class=col>A total of {{ totalTxs }} Pending txns found</div>
@@ -57,10 +57,6 @@
         data() {
             return {
                 arr: [],
-                breadcrumb: [
-                    { text: "Home", to: "/" },
-                    { text: "Pending Transactions", to: "" }
-                ],
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 totalPage: 0,
@@ -91,9 +87,8 @@
                             this.heightTo = 0;
                         }
                     }, xhr => {
-                        console.log(xhr);
                         this.$root.showModalLoading = false;
-                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                     });
                 }
             },

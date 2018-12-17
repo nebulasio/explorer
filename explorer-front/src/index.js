@@ -1,18 +1,41 @@
-
 var Vue = require("vue").default,
     VueRouter = require("vue-router").default,
     vApp = {},
     vAppConfig = require("@/assets/app-config"),
-    vRouter = new VueRouter({ routes: require("@/assets/routes") });
+    vRouter = new VueRouter({ routes: require("@/assets/routes") }),
+    gaPage = require('vue-analytics').page;
+
+// Expose jQuery to the global object
+const jQuery = require('jquery');
+window.jQuery = window.$ = jQuery;
 
 require("bootstrap");
 require("bootstrap/dist/css/bootstrap.min.css");
 require("font-awesome/css/font-awesome.min.css");
 require("./index.css");
 
+function isIE() {
+    if (!!window.ActiveXObject || "ActiveXObject" in window)
+        return true;
+    else
+        return false;
+}
+window.isIE = isIE;
+
+const isProd = process.env.NODE_ENV === 'production';
+const VueAnalytics = require('vue-analytics').default;
+Vue.use(VueAnalytics, {
+    id: 'UA-101203737-1',
+    debug: {
+        enabled: !isProd,
+        sendHitTask: isProd
+    }
+});
+
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 vRouter.beforeEach(onBeforeEach);
+vRouter.afterEach(onAfterEach);
 
 vApp = new Vue({
     components: {
@@ -24,7 +47,7 @@ vApp = new Vue({
     data: {
         search: "",
         showModalLoading: false,
-        urlBefore404: ""
+        showAtpAds: false
     },
     el: ".vue",
     router: vRouter
@@ -35,12 +58,13 @@ vApp = new Vue({
 // api prefix
 
 function onBeforeEach(to, from, next) {
-    var apiPrefix, first, params, path;
+    vApp.showModalLoading = false;
+
+    var apiPrefix, first, path;
 
     for (first in vAppConfig.apiPrefixes) break;
 
     if (to.name == "*") {
-        vApp.urlBefore404 = to.fullPath;
         path = (from.params.api ? "/" + from.params.api : "") + "/404";
     } else if (to.params.api)
         if (to.params.api in vAppConfig.apiPrefixes)
@@ -51,12 +75,18 @@ function onBeforeEach(to, from, next) {
             } else
                 apiPrefix = vAppConfig.apiPrefixes[to.params.api].url;
         else {
-            vApp.urlBefore404 = to.fullPath;
             path = (from.params.api ? "/" + from.params.api : "") + "/404";
         }
-    else
+    else {
         apiPrefix = vAppConfig.apiPrefixes[first].url;
+    }
 
     sessionStorage.apiPrefix = apiPrefix;
     next(path);
+}
+
+function onAfterEach(to, from) {
+    if (to.meta && to.meta.uaview) {
+        gaPage(to.meta.uaview);
+    }
 }

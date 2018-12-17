@@ -1,8 +1,10 @@
 package io.nebulas.explorer.model.vo;
 
 import io.nebulas.explorer.domain.NebAddress;
+import io.nebulas.explorer.domain.NebEvent;
 import io.nebulas.explorer.domain.NebPendingTransaction;
 import io.nebulas.explorer.domain.NebTransaction;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Event;
 import lombok.Data;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +13,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Transaction View
@@ -41,6 +44,8 @@ public class TransactionVo implements Serializable {
     private Long timeDiff;
     private String contractAddress;
     private String executeError;
+    private List<Event> events;
+    private String tokenName;
 
     private static final long serialVersionUID = 1L;
     private static final Base64.Decoder DECODER = Base64.getDecoder();

@@ -45,7 +45,7 @@ module.exports = {
     // get api/block?
     // - p      - 页码, 默认 1
     // - m      - miner hash
-    // - type   - 目前只有 latest
+    // - type   - 目前只有 latest, newblock
     // get api/block/
     // - <id or hash>
     getBlock(t, done, fail) {
@@ -54,6 +54,24 @@ module.exports = {
             ajax1("block", t, d, fail);
         else
             ajax1("block/" + t, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
+
+    
+    getBlocks(t, done, fail) {
+        // wtf - webpack 对 if (typeof t == "object") 报异常
+        if (eval('typeof t == "object"'))
+            ajax1("blocks", t, d, fail);
+        else
+            ajax1("blocks/" + t, null, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -169,7 +187,49 @@ module.exports = {
             else if (typeof fail == "function")
                 fail(xhr);
         }
-    }
+    },
+
+    // get address/nrc20/{hash}/{page}
+    // - address   - address
+    // - page   - 页码, 默认 1
+    getNrc20Txs(address, page, done, fail) {
+        ajax1("address/nrc20/" + address + "/" + page, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
+
+    getTodayTxCnt(done, fail) {
+        ajax1("tx/cnt_today", null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
+
+    getStaticInfo(done, fail) {
+        ajax1("nasinfo", null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
 };
 
 function ajax1(action, args, done, fail) {

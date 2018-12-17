@@ -1,66 +1,102 @@
 <style>
     .vue-footer {
-        background-color: #222;
-        margin-top: 30px;
-        overflow: auto;
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0px 1px 0px 0px rgba(221, 221, 221, 1);
+        /* margin-top: 30px; */
+        font-size: 16px;
+        color: black;
     }
 
     .vue-footer a {
-        color: inherit;
+        color: black;
+        vertical-align: bottom;
     }
 
-    .vue-footer h4 {
-        margin-bottom: 20px;
-        padding: 20px 0 10px;
-        text-align: center;
+    .vue-footer a .icon24 {
+        vertical-align: middle;
     }
 
-    .vue-footer .container {
-        margin-bottom: 30px;
+    .vue-footer .twitter {
+        display: inline-block;
+        background-image: url(../../static/img/ic_twitter.png);
+        background-size: 24px;
+        background-repeat: no-repeat;
     }
 
-    .vue-footer .fa {
-        text-align: center;
-        width: 14px;
+    .vue-footer .github {
+        margin-left: 8px;
+        display: inline-block;
+        background-image: url(../../static/img/ic_github.png);
+        background-size: 24px;
+        background-repeat: no-repeat;
     }
+
+    .vue-footer a:hover .twitter {
+        background-image: url(../../static/img/ic_twitter_blue.png);
+    }
+
+    .vue-footer a:hover .github {
+        background-image: url(../../static/img/ic_github_blue.png);
+    }
+
+    .vue-footer a:hover {
+        color: #0057FF;
+    }
+
+    @media (min-width: 768px) { 
+        .vue-footer .row {
+            align-items: center;
+            height: 82px;
+        }
+
+        .vue-footer .row>div:nth-of-type(1) {
+            text-align: left;
+        }
+
+        .vue-footer .row>div:nth-of-type(2) {
+            text-align: center;
+        }
+
+        .vue-footer .row>div:nth-of-type(3) {
+            text-align: right;
+        }
+    }
+
+    @media (max-width: 767.98px) { 
+        .vue-footer .row {
+            align-items: center;
+            height: 182px;
+        }
+
+        .vue-footer .row>div {
+            text-align: center;
+        }
+    }
+
 </style>
 <template>
     <div class=vue-footer>
         <div class=container>
-            <h4>About</h4>
-            <div class="justify-content-center row">
-                <div class=col-1></div>
-                <div class=col-2>
-                    <div>
-                        <!-- <span class="fa fa-(nebulas?)" aria-hidden=true></span> -->
-                        <a target=_blank href=https://nebulas.io>Nebulas.io</a>
-                    </div>
-                    <div>
-                        <span class="fa fa-facebook-f" aria-hidden=true></span>
-                        <a target=_blank href=https://www.facebook.com/nebulasproject>Facebook</a>
-                    </div>
-                    <div>
-                        <span class="fa fa-slack" aria-hidden=true></span>
-                        <a target=_blank href=https://nebulasio.herokuapp.com>Slack</a>
-                    </div>
-                    <div>
-                        <span class="fa fa-twitter" aria-hidden=true></span>
-                        <a target=_blank href=https://twitter.com/nebulasio>Twitter</a>
-                    </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-4">
+                    <a target=_blank href=https://nebulas.io>
+                        <img style="height: 34px; width: 156px;display: inline; vertical-align: middle;" src="../../static/img/img_footer_logo.png"/>
+                    </a>
                 </div>
-                <div class=col-1></div>
-                <div class=col-3>
+
+                <div class="col-xs-12 col-md-4">
+                    <div>Copyright © 2017-2018 Nebulas.io</div>
+                </div>
+
+                <div class="col-xs-12 col-md-4">
                     <div>
-                        <span class="fa fa-github" aria-hidden=true></span>
-                        <a target=_blank href=https://github.com/nebulasio>Github.com/nebulasio</a>
-                    </div>
-                    <div>
-                        <span class="fa fa-github" aria-hidden=true></span>
-                        <a target=_blank href=https://github.com/nebulasio/explorer/issues>Issue</a>
-                    </div>
-                    <div>
-                        <span class="fa fa-github" aria-hidden=true></span>
-                        <a target=_blank href=https://github.com/nebulasio/explorer/commit/cf54099633db072aef15cec338a0ddaf21bb182a>Commit: cf54099</a>
+                        <a target=_blank href=https://twitter.com/nebulasio>
+                            <div class="icon24 twitter" src="../../static/img/ic_twitter.png"></div>
+                        </a>
+                        <a target=_blank href=https://github.com/nebulasio/explorer/issues>
+                            <div class="icon24 github" src="../../static/img/ic_github.png"></div>
+                            Submit an issue
+                        </a>
                     </div>
                 </div>
             </div>
