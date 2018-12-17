@@ -1117,13 +1117,12 @@
 
             if (this.$root.showAtpAds) {
                 /*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/  
-                var partnerID = 'pbg91eenif2mbsoo3g1qg';
-                var atpAds = AtlasAds(partnerID);
+                var atpAds = AtlasAds('pbg91eenif2mbsoo3g1qg');
 
                 //获取广告 传入div containerId和广告的宽高（getAd set the containerId and dimension wide high）  
-                atpAds.getAd('#atlaspAds-bottom', 1200, 100);
-                atpAds.getAd('#atlaspAds-side', 360, 300);
-                atpAds.getAd('#atlaspAds-middle-mobile', 720, 200);
+                atpAds.getAd('#atlaspAds-bottom', 'nas_1200x100_001');
+                atpAds.getAd('#atlaspAds-side', 'nas_360x300_001');
+                atpAds.getAd('#atlaspAds-middle-mobile', 'nas_720x200_001');
 
                 //侧栏广告尺寸限制
                 window.onresize = function () {
