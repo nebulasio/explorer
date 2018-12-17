@@ -1,4 +1,3 @@
-require('es6-promise').polyfill();
 var Vue = require("vue").default,
     VueRouter = require("vue-router").default,
     vApp = {},

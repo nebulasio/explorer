@@ -798,7 +798,7 @@
                     <div class="item-bg item-shadow">
                         <div class="item-title">Blocks</div>
                         <router-link :to='fragApi + "/blocks/"' class="showall">View All ></router-link>
-                        <transition-group name="list" tag="table" frame=void rules=rows>
+                        <transition-group name="list" tag="table" frame=hsides rules=rows>
                             <tr class="list-item" v-for="(block, i) in blocks" v-if="i < 5" :key="block.height">
                                 <td>
                                     <img src="/static/img/icon-block.png" width="50">
