@@ -899,7 +899,9 @@
                 blocks: [],
                 staticInfo: null,
                 txs: [],
-                realtimeBlocks: []
+                realtimeBlocks: [],
+                shortIntervalID: null,
+                longIntervalID: null
             }
         },
         computed: {
@@ -1116,7 +1118,8 @@
             api.getTodayTxCnt(o => this.todayTxCnt = o);                            //今日交易量
             api.getStaticInfo(o => this.staticInfo = o);                            //合约数量、地址数量。。。
 
-            setInterval(() => {
+            this.shortIntervalID = setInterval(() => {
+                console.log('request api');
                 api.getTx({ type: "latest" }, o => this.txs = o);                   //最新一波 tx
                 api.getBlock({ type: "newblock" }, o => {                           //获取最新一个 block
                     try {
@@ -1133,7 +1136,7 @@
                 });
             }, 8000);
 
-            setInterval(() => {
+            this.longIntervalID = setInterval(() => {
                 api.getTodayTxCnt(o => this.todayTxCnt = o);                        //今日交易量
                 api.getMarketCap(o => this.market = o);                             //币价和市值
                 api.getStaticInfo(o => this.staticInfo = o);                        //合约数量、地址数量。。。
@@ -1178,6 +1181,10 @@
             if (window.isIE()) {
                 $('#svg-line').css('stroke-dasharray', 'none');
             }
+        },
+        destroyed() {
+            clearInterval(this.shortIntervalID);
+            clearInterval(this.longIntervalID);
         }
     }
 </script>
