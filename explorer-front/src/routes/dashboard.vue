@@ -547,8 +547,6 @@
         left: calc((100% - 1140px) * 0.5 + 1140px + 5px);
         width: 300px;
         max-width: calc((100% - 1140px) * 0.5 - 25px);
-        /* height: 300px;
-        background-color: red; */
     }
 
     @media (max-width: 320px) {
@@ -581,6 +579,19 @@
 
         .vue-dashboard .row4 .new-user-indicator {
             display: none;
+        }
+
+        .vue-dashboard .row5 td:first-child {
+            width: 60px;
+        }
+
+        .vue-dashboard .row5 .fromto {
+            display: none;
+        }
+
+        .vue-dashboard .row5 td .time::after {
+            content:'';
+            white-space:pre;
         }
     }
 
@@ -827,9 +838,16 @@
                                 </td>
                                 <td>
                                     Tx#
-                                    <router-link :to='fragApi + "/tx/" + tx.hash'>{{ shortStr(6, tx.hash) }}</router-link>
+                                    <router-link :to='fragApi + "/tx/" + tx.hash'>{{ shortStr(4, tx.hash) }}</router-link>
                                     <br>
-                                    From <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.from.hash) }}</router-link> To <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.to.hash) }}</router-link>
+                                    <span class="fromto">
+                                        From
+                                        <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.from.hash) }}</router-link>    
+                                    </span>
+                                    <span class="fromto">
+                                        To
+                                        <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.to.hash) }}</router-link>
+                                    </span>
                                 </td>
                                 <td>
                                     <div class="time">{{ timeConversion(Date.now() - tx.timestamp) }} ago</div>
@@ -1009,7 +1027,7 @@
                         }
                     },
                     yAxis: {
-                        min: Math.floor(nums[0] / 1000) * 1000 - 4000,
+                        min: Math.floor(nums[0] / 1000) * 1000 - 3000,
                         axisLine: {
                             show: false
                         },
@@ -1028,7 +1046,7 @@
                         splitLine: {
                             show: false
                         },
-                        splitNumber: 5,
+                        // splitNumber: 5,
                         minInterval: 3000
                     },
                     series: {
