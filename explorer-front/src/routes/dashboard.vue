@@ -792,8 +792,8 @@
                             <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
                             <div class="title">{{ numberAddComma(staticInfo.newAddressCount) }}</div>
                             <div class="fs12 text-gray">New Users</div>
-                            <div class="title">{{ numberAddComma(staticInfo.oldAddressCount) }}</div>
-                            <div class="fs12 text-gray">Old Users</div>
+                            <div class="title">{{ numberAddComma(staticInfo.newAddressCount + staticInfo.oldAddressCount) }}</div>
+                            <div class="fs12 text-gray">Total Users</div>
                         </div>
                     </div>
                 </div>
