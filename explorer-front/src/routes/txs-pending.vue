@@ -35,6 +35,7 @@
                     <td class="font-size-14-normal font-color-555555">{{ numberAddComma(o.gasLimit) }}</td>
                     <td class="font-size-14-normal font-color-555555">{{ toWei(o.gasPrice) }}</td>
                     <td class=tdxxxwddd>
+                        <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                         <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>
                             <span class="font-size-14-normal font-color-0057FF">{{ o.from.alias || o.from.hash }}</span>
                         </router-link>
@@ -55,6 +56,7 @@
                             </div>
                             <img class="icon24" v-if="o.type==='call'" src="../../static/img/ic_tx_type_contract.png" />
                         </div>
+                        <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                         <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>
                             <span class="font-size-14-normal font-color-0057FF">{{ o.to.alias || o.to.hash }}</span>
                         </router-link>
@@ -76,7 +78,8 @@
     module.exports = {
         components: {
             "vue-bread": require("@/components/vue-bread").default,
-            "vue-pagination": require("@/components/vue-pagination").default
+            "vue-pagination": require("@/components/vue-pagination").default,
+            "vue-blockies": require("@/components/vue-blockies").default
         },
         data() {
             return {

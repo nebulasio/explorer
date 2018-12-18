@@ -2,6 +2,13 @@
     .vue-accounts {
         background-color: white;
     }
+
+    @media (min-width: 576px) {
+        .vue-accounts .tdxxxwddd>* {
+            max-width: initial;
+        }
+    }
+
 </style>
 <template>
     <!-- https://etherscan.io/accounts  -->
