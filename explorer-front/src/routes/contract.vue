@@ -123,7 +123,7 @@
                 </div>
                 <tr>
                     <td class="font-color-555555 td-left" style="padding-left: 24px;">Total supply:</td>
-                    <td class="font-color-000000">{{ tokenAmount(obj.total) }} {{ obj.tokenName }} </td>
+                    <td class="font-color-000000">{{ tokenAmount(obj.total, decimal) }} {{ obj.tokenName }} </td>
                 </tr>
                 <tr v-if="tokenPrice">
                     <td class="font-color-555555" style="padding-left: 24px;">Price:</td>
@@ -241,7 +241,7 @@
                                 <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.to }}</span>
                             </router-link>
                         </td>
-                        <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.contractValue) }} {{ obj.tokenName }}</td>
+                        <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.contractValue, decimal) }} {{ obj.tokenName }}</td>
                         <td  class="text-right font-size-14-normal font-color-555555">
                             <span v-if=o.blockHeight>{{ toWei(o.txFee) }}</span>
                             <i v-else>(pending)</i>
@@ -273,7 +273,7 @@
                                 <span class="font-size-14-normal font-color-0057FF">{{ o.address }}</span>
                             </router-link>
                         </td>
-                        <td class="text-right font-size-14-normal font-color-555555">{{ tokenAmount(o.balance) }}</td>
+                        <td class="text-right font-size-14-normal font-color-555555">{{ tokenAmount(o.balance, decimal) }}</td>
                         <td class="text-right font-size-14-normal font-color-000000" style="padding-right: 24px;">{{ o.percentage }}%</td>
                     </tr>
                 </table>
@@ -325,6 +325,7 @@
                 this.$root.showModalLoading = true;
                 api.getContract(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;
+                    this.decimal = o.decimal;
                     this.obj = o.contract;
                     this.txs = o.txList;
                     this.tokenPrice =  o.price ? {price: o.price, trends: o.trends, change24h: o.change24h} : null;
@@ -337,6 +338,7 @@
         data() {
             return {
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
+                decimal: null,
                 obj: null,
                 tab: 0,
                 txs: [],
@@ -409,10 +411,11 @@
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });
             },
-            tokenAmount(n) {
-                BigNumber.config({ DECIMAL_PLACES: 18 })
+            tokenAmount(n, decimals) {
+                decimals = decimals || 18;
+                BigNumber.config({ DECIMAL_PLACES: decimals })
                 var amount = BigNumber(n);
-                var decimals = BigNumber('1e+18');
+                var decimals = BigNumber('1e+' + decimals);
                 return amount.div(decimals).toFormat();
             }
         },

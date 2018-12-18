@@ -657,9 +657,10 @@
                 return utility.easyNumber(n);
             },
             tokenAmount(n, decimals) {
-                BigNumber.config({DECIMAL_PLACES: decimals || 18})
+                decimals = decimals || 18;
+                BigNumber.config({ DECIMAL_PLACES: decimals })
                 var amount = BigNumber(n);
-                var decimals = BigNumber('1e+18');
+                var decimals = BigNumber('1e+' + decimals);
                 return amount.div(decimals).toFormat();
             },
             toShortStr(s) {
