@@ -4,15 +4,15 @@
             v-bind:tab.sync
         ></tag>
         */
-    .nav-link {
+    .vue-tab-buttons .nav-link {
         margin-right: 5px;
     }
 
-    .nav {
+    .vue-tab-buttons .nav {
         border: none;
     }
 
-    .nav-tabs .nav-link {
+    .vue-tab-buttons .nav-tabs .nav-link {
         background: #eeeeee;
         border: none;
         border-top-left-radius: 0;
@@ -25,7 +25,7 @@
         line-height: 20px;
     }
 
-    .nav-tabs .nav-item .active {
+    .vue-tab-buttons .nav-tabs .nav-item .active {
         background-color: black;
         border: none;
         font-size: 16px;
