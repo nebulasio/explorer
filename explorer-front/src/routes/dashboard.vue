@@ -558,10 +558,14 @@
         .vue-dashboard .realtime-block:nth-of-type(5) {
             opacity: 0;
         }
+
+        .vue-dashboard .row5 .txcnt {
+            display: none;
+        }
     }
     
 
-    @media (max-width: 410px) {
+    @media (max-width: 414px) {
         .vue-dashboard .row1 .data-source {
             visibility: hidden;
         }
@@ -818,7 +822,9 @@
                                     Block#
                                     <router-link :to='fragApi + "/block/" + block.height'>{{ block.height }}</router-link>
                                     <br>
-                                    <router-link :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} {{ block.txnCnt > 1 ? "transactions" : "transaction" }}</router-link>
+                                    <span class="txcnt">
+                                        <router-link :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} {{ block.txnCnt > 1 ? "transactions" : "transaction" }}</router-link>
+                                    </span>
                                 </td>
                                 <td>
                                     <div class="time">{{ timeConversion(Date.now() - block.timestamp) }} ago</div>
