@@ -62,7 +62,7 @@
                     </tr>
                     <tr>
                         <td class="font-color-555555">TimeStamp</td>
-                        <td class="font-color-000000">{{ timeConversion(Date.now() - block.timestamp ) }} ago ({{ new Date(block.timestamp).toString() }} | {{ block.timestamp }})</td>
+                        <td class="font-color-000000">{{ timeConversion(Date.now() - block.timestamp) }} ago ({{ new Date(block.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ block.timestamp }})</td>
                     </tr>
                     <tr>
                         <td class="font-color-555555">Transactions</td>
