@@ -25,7 +25,8 @@
                 </tr>
                 <tr v-for="(o, i) in arr" :key="i" class="font-size-14-normal">
                     <td style="padding-left: 24px;" class="font-color-000000">{{ o.rank }}</td>
-                    <td>
+                    <td class="tdxxxwddd">
+                        <vue-blockies v-bind:address='o.hash'></vue-blockies>
                         <router-link v-bind:to='fragApi + "/address/" + o.hash'>
                             <span class="font-color-0057FF">{{ o.hash }}</span>
                         </router-link>
@@ -48,7 +49,8 @@
     module.exports = {
         components: {
             "vue-bread": require("@/components/vue-bread").default,
-            "vue-pagination": require("@/components/vue-pagination").default
+            "vue-pagination": require("@/components/vue-pagination").default,
+            "vue-blockies": require("@/components/vue-blockies").default
         },
         data() {
             return {
