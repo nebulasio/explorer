@@ -29,7 +29,7 @@
     .hash-normal {
         height: 20px;
         font-size: 14px;
-        font-family: OpenSans;
+        /* font-family: OpenSans; */
         color: rgba(0, 87, 255, 1);
         line-height: 20px;
     }
@@ -37,7 +37,7 @@
     .hash-failed {
         height: 20px;
         font-size: 14px;
-        font-family: OpenSans;
+        /* font-family: OpenSans; */
         line-height: 20px;
         color: rgba(240, 68, 52, 1);
     }

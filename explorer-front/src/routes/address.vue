@@ -35,7 +35,7 @@
 
     .vue-address .txfee {
         font-size: 14px;
-        font-family: OpenSans;
+        /* font-family: OpenSans; */
         color: rgba(85, 85, 85, 1);
         line-height: 20px;
     }
@@ -99,9 +99,13 @@
         margin-right: 5px;
     }
 
+    #dropdown-tokens>* {
+        vertical-align: baseline;
+    }
+
     .c000 {
         font-size: 16px;
-        font-family: OpenSans-Semibold;
+        /* font-family: OpenSans-Semibold; */
         font-weight: 600;
         color: rgba(0, 0, 0, 1);
         line-height: 20px;
@@ -109,7 +113,7 @@
 
     .link-text-16px {
         font-size: 16px;
-        font-family: OpenSans;
+        /* font-family: OpenSans; */
         color: rgba(0, 87, 255, 1);
         line-height: 20px;
     }
@@ -141,7 +145,7 @@
     .hash-normal {
         height: 20px;
         font-size: 14px;
-        font-family: OpenSans;
+        /* font-family: OpenSans; */
         color: rgba(0, 87, 255, 1);
         line-height: 20px;
     }
@@ -149,7 +153,7 @@
     .hash-failed {
         height: 20px;
         font-size: 14px;
-        font-family: OpenSans;
+        /* font-family: OpenSans; */
         line-height: 20px;
         color: rgba(240, 68, 52, 1);
     }
@@ -162,7 +166,7 @@
 
     .amount {
         font-size: 14px;
-        font-family: OpenSans;
+        /* font-family: OpenSans; */
         color: rgba(0, 0, 0, 1);
         line-height: 20px;
     }
@@ -172,7 +176,7 @@
         margin-bottom: 30px;
         height: 30px;
         font-size: 24px;
-        font-family: OpenSans-Semibold;
+        /* font-family: OpenSans-Semibold; */
         font-weight: 600;
         color: rgba(0, 0, 0, 1);
         line-height: 30px;
@@ -185,7 +189,7 @@
     .base-info-value-normal {
         height: 20px;
         font-size: 16px;
-        font-family: OpenSans;
+        /* font-family: OpenSans; */
         color: rgba(0, 0, 0, 1);
         line-height: 20px;
     }
@@ -193,7 +197,7 @@
     .base-info-value-num-of-tx {
         height: 20px;
         font-size: 16px;
-        font-family: OpenSans;
+        /* font-family: OpenSans; */
         color: rgba(0, 87, 255, 1);
         line-height: 20px;
     }
@@ -201,7 +205,7 @@
     .base-info-value-token-name {
         height: 20px;
         font-size: 16px;
-        font-family: OpenSans-Semibold;
+        /* font-family: OpenSans-Semibold; */
         font-weight: 600;
         color: rgba(0, 87, 255, 1);
         line-height: 20px;
@@ -210,10 +214,14 @@
     .text-no-content {
         height: 17px;
         font-size: 12px;
-        font-family: OpenSans-Semibold;
+        /* font-family: OpenSans-Semibold; */
         font-weight: 600;
         color: rgba(155, 155, 155, 1);
         line-height: 17px;
+    }
+
+    .vue-address .dropdown-menu {
+        min-width: initial;
     }
 
 </style>
@@ -279,24 +287,23 @@
                         </router-link>
                     </td>
                 </tr>
-                <tr v-for="token in tokens" :key="token.tokenName" v-if="token.tokenName === 'ATP'">
+                <tr v-for="token in tokens" :key="token.tokenName" v-if="token.tokenName === 'ATP' && !isContract">
                     <td class="base-info-key font-size-16-normal font-color-555555">NRC20 Tokens:
                     </td>
                     <td>
-                        <div id="dropdown-tokens"
-                             :class='[{"dropdown-toggle": validTokens.length > 1}]'
-                             data-toggle=dropdown>
+                        <div id="dropdown-tokens" data-toggle=dropdown>
+                            <span class="font-size-16-normal font-color-000000">{{ tokenAmount(token.balance, token.decimal) }}</span>
                             <router-link v-bind:to='fragApi + "/contract/" + token.contract'>
                                 <span class="font-size-16-bold font-color-0057FF">{{token.tokenName }}</span>
                             </router-link>
-                            <span class="font-size-16-normal font-color-000000">{{ tokenAmount(token.balance, token.decimal) }}</span>
+                            <img src="../../static/img/icon_arrow_down_black.png" alt="" width="12">
                         </div>
                         <div v-if="validTokens.length > 1" class="dropdown-menu">
                             <div class="dropdown-item" v-for="(token, i) in validTokens" :key=i>
-                                <router-link v-bind:to='fragApi + "/contract/" + token.contract'>
+                                {{ tokenAmount(token.balance, token.decimal) }}
+                                <router-link class="font-color-0057FF" v-bind:to='fragApi + "/contract/" + token.contract'>
                                     {{ token.tokenName }}
                                 </router-link>
-                                {{ tokenAmount(token.balance, token.decimal) }}
                             </div>
                         </div>
                     </td>
@@ -312,7 +319,7 @@
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="font-size-16-bold font-color-000000">
-                        Latest {{ txs.length }} txns from a total of {{ obj.txCnt }} transactions ( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )
+                        Latest {{ txs.length }} txns from a total of {{ numberAddComma(obj.txCnt) }} transactions ( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )
                         </span>
                     </div>
                     <div class=col-auto>
@@ -352,7 +359,7 @@
                         </td>
                         <td class="txs-hash">
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
-                                <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal']">{{ o.hash }}</span>
+                                <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal', 'monospace']">{{ o.hash }}</span>
                             </router-link>
                         </td>
                         <td class="txs-block">
@@ -371,7 +378,7 @@
                             <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                             <span class="fromTo font-size-14-normal font-color-000000" v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
-                                <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.from.alias || o.from.hash }}</span>
+                                <span class="fromTo font-size-14-normal font-color-0057FF monospace">{{ o.from.alias || o.from.hash }}</span>
                             </router-link>
                         </td>
                         <td style="padding: 0;">
@@ -393,7 +400,7 @@
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                             <span class="fromTo font-size-14-normal font-color-000000" v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>
-                                <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.to.alias || o.to.hash }}</span>
+                                <span class="fromTo font-size-14-normal font-color-0057FF monospace">{{ o.to.alias || o.to.hash }}</span>
                             </router-link>
                         </td>
                         <td class="amount align-right">{{ tokenAmount(o.value, o.decimal) }} NAS</td>
@@ -417,11 +424,11 @@
 
             <!--    NRC20 Transactions
                 ============================================================ -->
-            <div class="tab explorer-table-container" v-show="tab === 2">
+            <div class="tab explorer-table-container" v-show="tab === 2 && !isContract">
                 <div class="align-items-center row title">
                     <div class=col>
                         <span class="c000">
-                        Latest {{ nrc20TxList.length }} txns from a total of {{ nrc20TxCnt }} transactions
+                        Latest {{ nrc20TxList.length }} txns from a total of {{ numberAddComma(nrc20TxCnt) }} transactions
                         </span>
                     </div>
                     <div class=col-auto>
@@ -457,7 +464,7 @@
                             <router-link class="font-size-14-normal font-color-4560E6"
                                          v-if=o.block.height
                                          v-bind:to='fragApi + "/block/" + o.block.height'>
-                                <span class="font-size-14-normal font-color-4560E6">{{ o.block.height }}</span>
+                                <span class="font-size-14-normal font-color-4560E6 monospace">{{ o.block.height }}</span>
                             </router-link>
                             <i class="font-size-14-normal font-color-000000" v-else>pending</i>
                         </td>
@@ -469,7 +476,7 @@
                             <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                             <span class="fromTo font-size-14-normal font-color-000000" v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
-                                <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.from.alias || o.from.hash }}</span>
+                                <span class="fromTo font-size-14-normal font-color-0057FF monospace">{{ o.from.alias || o.from.hash }}</span>
                             </router-link>
                         </td>
                         <td style="padding: 0;">
@@ -480,7 +487,7 @@
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                             <span class="fromTo font-size-14-normal font-color-000000" v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>
-                                <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.to.alias || o.to.hash }}</span>
+                                <span class="fromTo font-size-14-normal font-color-0057FF monospace">{{ o.to.alias || o.to.hash }}</span>
                             </router-link>
                         </td>
                         <td class="amount align-right">{{ tokenAmount(o.value, o.decimal) }} {{ o.tokenName || '' }}
@@ -492,7 +499,7 @@
                     </tr>
                 </table>
 
-                <div v-if=isNoNrc20Tx v-show="tab===2"
+                <div v-if=isNoNrc20Tx
                      style="left: 0;right:0;text-align:center; padding-top: 76px; padding-bottom: 80px;">
                     <img style="width: 131px; height: 142px;" src="/static/img/no_content.png"/>
                     <br/>
@@ -505,7 +512,7 @@
 
             <!-- code
              ============================================================ -->
-            <div class=tab v-show="tab === 3">
+            <div class=tab v-show="tab == 2 && isContract">
                 <table class="mt20 table">
                     <tr>
                         <pre><code class=language-javascript v-html=formatCode></code></pre>
@@ -545,8 +552,8 @@
             },
             tabButtons() {
                 var buttons = ["Transactions", "NRC20 Token Txns"];
-                if (this.obj.contractCode) {
-                    buttons.push("Contract Code");
+                if (this.isContract) {
+                    buttons = ["Transactions", "Contract Code"];
                 }
                 return buttons;
             },
@@ -582,7 +589,7 @@
                 return this.isContract ? "Contract" : "Address";
             },
             validTokens() {
-                return this.tokens.filter(token => token.balance > 0);
+                return this.tokens;//.filter(token => token.balance > 0);
             }
         },
         data() {
@@ -672,7 +679,7 @@
         },
         watch: {
             tab: function (newTab, oldTaB) {
-                if (newTab == 2 && this.nrc20TxList.length == 0) {
+                if (!this.isContract && newTab == 2 && this.nrc20TxList.length == 0) {
                     this.$root.showModalLoading = true;
                     api.getNrc20Txs(this.$route.params.id, 1, o => {
                         this.$root.showModalLoading = false;

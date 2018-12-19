@@ -65,7 +65,7 @@
     .hash-normal {
         height: 20px;
         font-size: 14px;
-        font-family: OpenSans;
+        /* font-family: OpenSans; */
         color: rgba(0, 87, 255, 1);
         line-height: 20px;
     }
@@ -73,7 +73,7 @@
     .hash-failed {
         height: 20px;
         font-size: 14px;
-        font-family: OpenSans;
+        /* font-family: OpenSans; */
         line-height: 20px;
         color: rgba(240, 68, 52, 1);
     }
@@ -166,7 +166,7 @@
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
                         <span class="font-size-16-bold font-color-000000">
-                            Latest {{ txs.length }} txns from a total of {{ obj.transactionCount }} transactions ( + {{ obj.pendingTransactionCount }} PendingTxn )
+                            Latest {{ txs.length }} txns from a total of {{ numberAddComma(obj.transactionCount) }} transactions ( + {{ obj.pendingTransactionCount }} PendingTxn )
                         </span>
                     </div>
                     <div class=col-auto>
