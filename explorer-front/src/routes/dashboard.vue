@@ -816,7 +816,7 @@
                         <transition-group name="list" tag="table" frame=hsides rules=rows>
                             <tr class="list-item" v-for="(block, i) in blocks" v-if="i < 5" :key="block.height">
                                 <td>
-                                    <img src="/static/img/icon-block.png" width="50">
+                                    <img src="/static/img/icon-block.png" width="50" height="50">
                                 </td>
                                 <td>
                                     Block#
@@ -840,7 +840,7 @@
                         <transition-group name="list" tag="table" frame=hsides rules=rows>
                             <tr v-for="(tx, i) in txs" v-if="i < 5" :key="tx.hash">
                                 <td>
-                                    <img src="/static/img/icon-tx.png" width="50">
+                                    <img src="/static/img/icon-tx.png" width="50" height="50">
                                 </td>
                                 <td>
                                     Tx#
@@ -936,8 +936,9 @@
                             },
                             margin: 18,
                             formatter: function(value) {
-                                let date = new Date(value);
-                                return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+                                return vm.shortDate(value);
+                                // let date = new Date(value);
+                                // return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                             },
                             rotate: 45
                         }
@@ -1028,8 +1029,9 @@
                             },
                             margin: 18,
                             formatter: function(value) {
-                                let date = new Date(new Number(value));
-                                return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+                                return vm.shortDate(new Number(value));
+                                // let date = new Date(new Number(value));
+                                // return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                             },
                             rotate: 45
                         }
@@ -1175,6 +1177,14 @@
             afterEnter: function (el) {
                 let height = (1 - Math.min(5, Math.max(0, el.firstElementChild.dataset.txncnt)) / 5.0) * 100 + 'px';
                 $(el.firstElementChild).css('height', height);
+            },
+            shortDate(value) {
+                let date = new Date(value);
+                let str = date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+                if (str.length > 6) {
+                    str = date.getMonth() + 1 + '-' + date.getDate();
+                }
+                return str;
             }
         },
         updated() {
