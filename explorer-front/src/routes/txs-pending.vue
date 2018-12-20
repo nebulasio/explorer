@@ -30,7 +30,7 @@
                     </td>
                     <td class="time font-size-14-normal font-color-555555">
                         <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                        <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
+                        <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                     </td>
                     <td class="font-size-14-normal font-color-555555">{{ numberAddComma(o.gasLimit) }}</td>
                     <td class="font-size-14-normal font-color-555555">{{ toWei(o.gasPrice) }}</td>

@@ -34,7 +34,7 @@
                     </td>
                     <td class=time>
                         <div class="font-color-000000 font-size-14-normal">{{ timeConversion( Date.now() - o.timestamp) }} ago</div>
-                        <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
+                        <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                     </td>
                     <td class="text-right">
                         <router-link v-bind:to='fragApi + "/txs?block=" + o.height'>

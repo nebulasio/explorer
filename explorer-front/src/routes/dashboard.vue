@@ -146,7 +146,7 @@
 
     .vue-dashboard .daily-transactions .details {
         position: absolute;
-        top: 32px;
+        top: 20px;
         right: 30px;
         align-items: baseline;
         text-align: right;
@@ -154,7 +154,7 @@
         color: rgba(255, 255, 255, 0.7);
     }
 
-    .vue-dashboard .daily-transactions .details *:nth-child(3) {
+    .vue-dashboard .daily-transactions .details *:nth-child(2) {
         font-size: 28px;
         color: white;
         font-weight: bolder;
@@ -685,7 +685,7 @@
                     <div class="item-bg">
                         <div class="item-title" >Daily Transactions</div>
                         <div class="details" v-if="dailyTxChartOptions">
-                            <div class="data-source">Data Sources: Nebulas</div>
+                            <!-- <div class="data-source">Data Sources: Nebulas</div> -->
                             <span v-if="todayTxCnt >= 0">Today</span>
                             <span v-if="todayTxCnt >= 0">{{ numberAddComma(todayTxCnt) }}</span>
                         </div>

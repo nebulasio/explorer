@@ -118,7 +118,7 @@
 
                     <td class="time font-size-14-normal font-color-555555">
                         <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
-                        <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
+                        <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                     </td>
                     <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                         <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>

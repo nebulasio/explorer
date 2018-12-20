@@ -241,7 +241,7 @@
                     <td class="base-info-key font-size-16-normal font-color-555555">NAS Balance:
                     </td>
                     <td class="font-size-16-normal font-color-000000">
-                        {{tokenAmount(obj.address.balance, decimal) }} NAS
+                        {{nasAmount(obj.address.balance) }} NAS
                     </td>
                 </tr>
                 <tr v-if="isContract && contract">
@@ -370,7 +370,7 @@
                         </td>
                         <td class="time font-color-555555 font-size-14-normal">
                             <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
-                            <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
+                            <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                         </td>
                         <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                             <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
@@ -468,7 +468,7 @@
                         </td>
                         <td class="time font-color-555555 font-size-14-normal">
                             <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
-                            <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
+                            <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                         </td>
                         <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                             <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
@@ -671,6 +671,12 @@
             },
             easyNumber(n) {
                 return utility.easyNumber(n);
+            },
+            nasAmount(n) {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(n);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
             },
             tokenAmount(n, decimals) {
                 decimals = decimals || 18;
