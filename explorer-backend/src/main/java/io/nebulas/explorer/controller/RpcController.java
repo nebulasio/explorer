@@ -856,7 +856,8 @@ public class RpcController {
     public JsonResult getNasMainnetInfo() {
 
         JsonResult result = JsonResult.success();
-
+        long totalAddressCount = nebAddressService.countTotalAddressCnt();
+        long totalContractCount = nebAddressService.getTotalContractCount();
         NasAccount nasAccount = nasAccountService.getLatestNasAccount();
 
         if (nasAccount == null) {
@@ -879,8 +880,8 @@ public class RpcController {
         NasAccount ninetyDayAccount = nasAccountService.getNasAccountFromNinetyDays();
 
         long newAddressCount = nasAccount.getAddressCount() - ninetyDayAccount.getAddressCount();
-        result.put("totalAddressCount", nasAccount.getAddressCount());
-        result.put("totalContractCount", nasAccount.getContractCount());
+        result.put("totalAddressCount", totalAddressCount);
+        result.put("totalContractCount", totalContractCount);
         result.put("txnCnt", totalTxnCnt);
         result.put("newAddressCount", newAddressCount);
         result.put("oldAddressCount", ninetyDayAccount.getAddressCount());
