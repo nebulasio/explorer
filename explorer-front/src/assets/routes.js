@@ -51,6 +51,10 @@ module.exports = [{
     meta: { headerActive: 2, uaview: "Explorer_NRC20token_Show" },
     path: "/:api?/contract/:id"
 }, {
+    component: require("@/routes/contracts").default,
+    meta: { headerActive: 2 },
+    path: "/:api?/contracts"
+}, {
     component: require("@/routes/contract-txs").default,
     meta: { headerActive: 2 },
     path: "/:api?/contract-txs"
