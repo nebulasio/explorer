@@ -63,5 +63,21 @@
         <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
     </select>
 
+    <select id="getAddressListByType" resultMap="BaseResultMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_address`
+        WHERE `type`=${type}
+        ORDER BY `created_at` DESC
+        LIMIT ${offset},${limit}
+    </select>
+
+    <select id="getAddressCountByType" resultType="java.lang.Long" parameterType="map">
+        SELECT
+        count(*)
+        FROM `neb_address`
+        WHERE `type`=${type}
+    </select>
+
 
 </mapper>

@@ -52,7 +52,7 @@ page:
   hostUrl: http://localhost:8080
 sync:
   open: true
-  subscribe : true
+  subscribe: true
 apiHost:
   coinmarketcap: https://api.coinmarketcap.com
   nebulas: https://testnet.nebulas.io
@@ -63,7 +63,7 @@ redis:
   password:
   database: 2
 environment: dev
-pendingTxExpiredTime : 1
+pendingTxExpiredTime: 1
 
 ---
 spring:
@@ -72,7 +72,7 @@ spring:
     cache: false
     mode: LEGACYHTML5
 environment: dev
-pendingTxExpiredTime : 1
+pendingTxExpiredTime: 1
 
 ---
 spring:
@@ -85,9 +85,9 @@ spring:
     platform: mysql
     initialize: false
     schema: classpath:schema.sql
-    url: jdbc:mysql://nebulas.cvajxeo2mhiu.us-west-1.rds.amazonaws.com:3306/explorer_test?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
+    url: jdbc:mysql://127.0.0.1:3306/explorer_test?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
     username: explorer
-    password: NbVgE6bQ8iM,(Aty5HBs
+    password: kl@fkddfkFsa
     separator: ;
     name: expltest
     continue-on-error: false
@@ -107,17 +107,23 @@ spring:
       initializationFailTimeout: 200
       register-mbeans: false
 server:
-  port: 32736
+  port: 8080
 environment: test
 page:
   baseUrl: http://52.53.225.118
   hostUrl: http://52.53.225.118
-pendingTxExpiredTime : 1
+pendingTxExpiredTime: 1
 redis:
   host: 127.0.0.1
   port: 6379
   password:
   database: 2
+grpc:
+  host: 13.57.96.40
+  port: 8684
+  enableKeepAlive: true
+  keepAliveWithoutCalls: true
+  keepAliveTimeout: 2
 ---
 spring:
   profiles: prod
@@ -125,4 +131,4 @@ spring:
     cache: true
     mode: LEGACYHTML5
 environment: production
-pendingTxExpiredTime : 48
+pendingTxExpiredTime: 48

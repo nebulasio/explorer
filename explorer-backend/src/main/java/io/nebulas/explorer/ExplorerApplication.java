@@ -40,6 +40,7 @@ public class ExplorerApplication {
 
         return arg -> {
             log.info("using environment: {}", myConfig.getEnvironment());
+            log.info("using redis: {}", redisConfig.getConfigInfo());
 
             DeadlockDetector deadlockDetector = new DeadlockDetector(new DeadlockConsoleHandler(), 5, TimeUnit.SECONDS);
             deadlockDetector.start();

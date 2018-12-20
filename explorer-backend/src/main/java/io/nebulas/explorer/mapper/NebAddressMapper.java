@@ -33,4 +33,8 @@ public interface NebAddressMapper {
     List<NebAddress> findAddressMapByAddressHash(List<String> addressHashes);
 
     List<AddrTypeVo> countAccountGroupByType();
+
+    List<NebAddress> getAddressListByType(@Param("type") int type, @Param("offset") int offset, @Param("limit") int limit);
+
+    long getAddressCountByType(@Param("type") int type);
 }

@@ -9,10 +9,12 @@ import io.nebulas.explorer.domain.extention.ContractTransaction;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionStatusEnum;
 import io.nebulas.explorer.enums.NebTransactionTypeEnum;
+import io.nebulas.explorer.mapper.NebContractTokenMapper;
 import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.model.PageIterator;
 import io.nebulas.explorer.model.vo.AddressVo;
 import io.nebulas.explorer.model.vo.BlockVo;
+import io.nebulas.explorer.model.vo.ContractListItemVo;
 import io.nebulas.explorer.model.vo.Nrc20TransactionVo;
 import io.nebulas.explorer.model.vo.TransactionVo;
 import io.nebulas.explorer.service.blockchain.*;
@@ -80,9 +82,55 @@ public class RpcController {
     private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(20);
     private static final Base64.Decoder DECODER = Base64.getDecoder();
 
+    private static long lastUpdateTimeForContractTokens = 0;
+    private static final long HOUR_1 = 60 * 60 * 1000;
+    private static Set<String> allContractTokens = new HashSet<>(8);
+
     @RequestMapping(value = "/market_cap", method = RequestMethod.GET)
     public JsonResult marketCap() {
         return JsonResult.success(nebMarketCapitalizationService.getLatest());
+    }
+
+    @RequestMapping(value = "/contracts", method = RequestMethod.GET)
+    public JsonResult getContractList(@RequestParam(value = "p", required = false, defaultValue = "1") int page) {
+        long now = System.currentTimeMillis();
+        if (now - lastUpdateTimeForContractTokens > HOUR_1) {
+            List<NebContractToken> tokens = contractTokenService.getAllContractTokens();
+            lastUpdateTimeForContractTokens = now;
+            for (NebContractToken token : tokens) {
+                allContractTokens.add(token.getContract());
+            }
+        }
+        List<NebAddress> contractList = nebAddressService.getContractList(page, PAGE_SIZE);
+
+        List<ContractListItemVo> listItemVos = new ArrayList<>(contractList.size());
+        for (NebAddress address : contractList) {
+            ContractListItemVo vo = new ContractListItemVo();
+            vo.setHash(address.getHash());
+            vo.setAlias(address.getAlias());
+            vo.setBalance(address.getBalance());
+            vo.setCreatedAt(address.getCreatedAt());
+            vo.setContractType(
+                    allContractTokens.contains(address.getHash()) ?
+                            ContractListItemVo.ContractType.NRC20_TOKEN :
+                            ContractListItemVo.ContractType.NORMAL
+            );
+            listItemVos.add(vo);
+        }
+
+        long totalContractCount = nebAddressService.getTotalContractCount();
+        long totalPage;
+        if (totalContractCount % PAGE_SIZE == 0) {
+            totalPage = totalContractCount / 25;
+        } else {
+            totalPage = totalContractCount / 25 + 1;
+        }
+        JsonResult result = JsonResult.success();
+        result.put("contracts", listItemVos);
+        result.put("totalPage", totalPage);
+        result.put("currentPage", page);
+        result.put("total", totalContractCount);
+        return result;
     }
 
     @RequestMapping(value = "/block", method = RequestMethod.GET)
@@ -260,10 +308,10 @@ public class RpcController {
         if (txStaticMap == null || txStaticMap.size() == 0) {
             //将每天的交易数据存放进redis里
             resultMap = nebTransactionService.countTxCntGroupMapByTimestamp(LocalDate.now().plusDays(-15).toDate(), LocalDate.now().toDate());
-            Map<String,String> redisMap = new HashMap<>();
+            Map<String, String> redisMap = new HashMap<>();
             resultMap.forEach((k, v) -> {
                 String dateCount = v.toString();
-                redisMap.put(k,dateCount);
+                redisMap.put(k, dateCount);
             });
 
             mapRedisTemplate.opsForHash().putAll(key, redisMap);
@@ -530,7 +578,7 @@ public class RpcController {
         result.put("decimal", token.getTokenDecimals());
         if (marketCapitalization != null) {
             //price 统一设置4位小数点
-            result.put("price", marketCapitalization.getPrice().setScale(4,BigDecimal.ROUND_DOWN));
+            result.put("price", marketCapitalization.getPrice().setScale(4, BigDecimal.ROUND_DOWN));
             result.put("change24h", marketCapitalization.getChange24h());
             result.put("trends", marketCapitalization.getTrends());
         }
