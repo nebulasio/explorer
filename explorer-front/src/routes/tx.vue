@@ -316,6 +316,9 @@
         methods: {
             showOrHidePayload(){
                 this.isShowPayload = !this.isShowPayload;
+                setTimeout(() => {
+                    window.scrollTo(0, 10000);
+                }, 0);
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
