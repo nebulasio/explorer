@@ -74,6 +74,8 @@ vApp = new Vue({
 // api prefix
 
 function onBeforeEach(to, from, next) {
+    window.scrollTo(0, 0);
+
     vApp.showModalLoading = false;
 
     var apiPrefix, first, path;

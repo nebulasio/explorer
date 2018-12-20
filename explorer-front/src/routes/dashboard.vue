@@ -770,8 +770,8 @@
             <div class="row row4">
                 <div class="flex-item col-12 col-lg-6 row4-item user-data">
                     <div class="item-bg item-shadow">
-                        <div class="item-title">Proportion of Mainnet New Users</div>
-                        <div class="subtitle text-light-gray ml30 fs12">New users refer to Nebulas mainnet accounts within 90 days.</div>
+                        <div class="item-title">New Users Percentage</div>
+                        <div class="subtitle text-light-gray ml30 fs12">New users are accounts created within 90 days.</div>
                         <div v-show="staticInfo" class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
@@ -799,7 +799,7 @@
                 </div>
                 <div class="flex-item col-12 col-lg-6 row4-item accounts-data">
                     <div class="item-bg item-shadow">
-                        <div class="item-title">Mainnet Accounts Quantity</div>
+                        <div class="item-title">Growth of Accounts</div>
                         <!-- <div v-if="accountsChartOptions" class="fs12 text-light-gray data-source">Data Sources: Nebulas</div> -->
                         <vchart class="accounts-chart" v-if="accountsChartOptions" :options="accountsChartOptions" :autoResize='true'></vchart>
                     </div>

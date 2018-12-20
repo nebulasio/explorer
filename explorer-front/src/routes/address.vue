@@ -287,23 +287,21 @@
                         </router-link>
                     </td>
                 </tr>
-                <tr v-for="token in tokens" :key="token.tokenName" v-if="token.tokenName === 'ATP' && !isContract">
+                <tr v-if="!isContract && displayToken">
                     <td class="base-info-key font-size-16-normal font-color-555555">NRC20 Tokens:
                     </td>
                     <td>
                         <div id="dropdown-tokens" data-toggle=dropdown>
-                            <span class="font-size-16-normal font-color-000000">{{ tokenAmount(token.balance, token.decimal) }}</span>
-                            <router-link v-bind:to='fragApi + "/contract/" + token.contract'>
-                                <span class="font-size-16-bold font-color-0057FF">{{token.tokenName }}</span>
+                            <span class="font-size-16-normal font-color-000000">{{ tokenAmount(displayToken.balance, displayToken.decimal) }}</span>
+                            <router-link v-bind:to='fragApi + "/contract/" + displayToken.contract'>
+                                <span class="font-size-16-bold font-color-0057FF">{{ displayToken.tokenName }}</span>
                             </router-link>
                             <img src="../../static/img/icon_arrow_down_black.png" alt="" width="12">
                         </div>
                         <div v-if="validTokens.length > 1" class="dropdown-menu">
-                            <div class="dropdown-item" v-for="(token, i) in validTokens" :key=i>
-                                {{ tokenAmount(token.balance, token.decimal) }}
-                                <router-link class="font-color-0057FF" v-bind:to='fragApi + "/contract/" + token.contract'>
-                                    {{ token.tokenName }}
-                                </router-link>
+                            <div class="dropdown-item text-right" v-for="(token, i) in validTokens" :key=i
+                            @click='displayToken = token;'>
+                                {{ tokenAmount(token.balance, token.decimal) }} {{ token.tokenName }}
                             </div>
                         </div>
                     </td>
@@ -570,6 +568,8 @@
                     this.obj = o;
                     this.decimal = o.decimal;
                     this.tokens = o.tokens;
+                    this.txs = o.txList;
+                    this.contractCode = o.contractCode;
                     if (o.address.type == 1) {// this is a smart contract address
                         this.isContract = true;
                         api.getTransactionByContract({address: o.address.hash}, this.$route.params.api, (data) => {
@@ -578,8 +578,16 @@
                             this.obj.contractCode = base64.decode(this.contract.data);
                         })
                     }
-                    this.txs = o.txList;
-                    this.contractCode = o.contractCode;
+
+                    var token = this.tokens[0];
+                    for (var index in this.tokens) {
+                        if (this.tokens[index].tokenName === 'ATP') {
+                            token = this.tokens[index];
+                            break;
+                        }
+                    }
+                    this.displayToken = token;
+
                 }, xhr => {
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
@@ -599,7 +607,8 @@
                 obj: null,
                 tab: 0,
                 txs: [],
-                tokens: [],
+                tokens: null,
+                displayToken: null,
                 decimal: null,
                 isContract: false,
                 contract: null,

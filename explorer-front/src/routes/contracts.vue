@@ -26,7 +26,6 @@
         text-overflow: ellipsis;
         vertical-align: center;
         padding: 0;
-        white-space: nowrap;
     }
 
     .vue-contracts .contract-hash>* {

@@ -207,6 +207,7 @@ label {
     padding: 5px;
     vertical-align: middle;
     border-top: 0;
+    white-space: nowrap;
 }
 
 .explorer-table thead th {
