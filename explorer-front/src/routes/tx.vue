@@ -214,7 +214,7 @@
                             </a>
                         </td>
                     </tr>
-                    <tr v-if="isShowPayload === true">
+                    <tr v-show="isShowPayload === true">
                         <td></td>
                         <td>
                             <pre><code class=language-javascript v-html=formatCode></code></pre>
@@ -316,9 +316,9 @@
         methods: {
             showOrHidePayload(){
                 this.isShowPayload = !this.isShowPayload;
-                setTimeout(() => {
-                    window.scrollTo(0, 10000);
-                }, 0);
+                // setTimeout(() => {
+                //     window.scrollTo(0, 10000);
+                // }, 0);
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
