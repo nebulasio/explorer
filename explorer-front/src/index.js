@@ -26,6 +26,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const VueAnalytics = require('vue-analytics').default;
 Vue.use(VueAnalytics, {
     id: 'UA-101203737-1',
+    disableScriptLoader: true,
     debug: {
         enabled: !isProd,
         sendHitTask: isProd

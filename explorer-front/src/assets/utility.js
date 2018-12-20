@@ -31,7 +31,7 @@ function ajax(action, args, done, fail) {
     if (method == "get") {
         url += url.indexOf("?") == -1 ? "?" : "&";
         for (i in args) args[i] === undefined || (url += encodeURIComponent(i) + "=" + encodeURIComponent(args[i]) + "&");
-        // url += "timestamp=" + Date.now();
+        url += "timestamp=" + Date.now();
         url = url.slice(0, -1);
         args = null;
     }
