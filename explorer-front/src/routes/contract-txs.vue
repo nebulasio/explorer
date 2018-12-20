@@ -219,7 +219,7 @@
                 BigNumber.config({ DECIMAL_PLACES: 18 })
                 var amount = BigNumber(n);
                 var decimals = BigNumber('1e+18');
-                return amount.div(decimals).toFormat();
+                return amount.div(decimals).toFormat().shortAmount();
             }
         },
         mounted() {

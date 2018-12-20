@@ -26,6 +26,15 @@
         text-overflow: ellipsis;
         vertical-align: center;
         padding: 0;
+        white-space: nowrap;
+    }
+
+    .vue-contracts .contract-hash>* {
+        display: inline;
+    }
+
+    .vue-contracts .block {
+        margin-right: 10px;
     }
 
     /* @media (min-width: 768px) {
@@ -42,27 +51,28 @@
 
         <div class="container mt20 explorer-table-container">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info font-color-000000 font-size-24-bold">{{ numberAddComma(totalTxs) }} Smart Contracts found</div>
+                <div class="col info font-color-000000 font-size-24-bold">{{ numberAddComma(totalCts) }} smart contracts found</div>
                 <!--(showing the last {{ maxDisplayCnt }} records)-->
             </div>
 
             <table class="mt20 explorer-table list-table">
                 <tr class="list-header font-size-12-bold font-color-000000">
-                    <th>Address</th>
+                    <th style="padding-left: 24px;">Address</th>
                     <th class=text-right>Balance</th>
                     <th class=text-right>Type</th>
-                    <th class=text-right>Date Created</th>
+                    <th class=text-right style="padding-right: 24px;">Date Created</th>
                 </tr>
 
                 <tr v-for="(o, i) in arr" :key="i">
-                    <td class="contract-hash">
-                        <router-link v-bind:to='fragApi + "/contracyt/" + o.hash'>
+                    <td style="padding-left: 24px;" class="contract-hash">
+                        <vue-blockies v-bind:address='o.hash'></vue-blockies>
+                        <router-link v-bind:to='fragApi + "/address/" + o.hash'>
                             <span class="hash-normal, monospace">{{ o.hash }}</span>
                         </router-link>
                     </td>
-                    <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.value) }} NAS</td>
-                    <td class="text-right font-color-000000 font-size-14-normal">{{ o.type === 0 ? 'Contract' : 'Token Contract' }} </td>
-                    <td class="text-right font-size-14-normal font-color-555555">{{ new Date(o.timestamp).toLocaleDateString('en') }}</td>
+                    <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.balance) }} NAS</td>
+                    <td class="text-right font-color-000000 font-size-14-normal">{{ o.contractType === 'NORMAL' ? 'Contract' : 'Token Contract' }} </td>
+                    <td class="text-right font-size-14-normal font-color-555555" style="padding-right: 24px;">{{ new Date(o.createdAt).toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' }) }}</td>
                 </tr>
             </table>
 
@@ -89,7 +99,7 @@
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 maxDisplayCnt: 0,
                 totalPage: 0,
-                totalTxs: 0
+                totalCts: 0
             };
         },
         methods: {
@@ -102,18 +112,15 @@
             nthPage() {
                 this.$root.showModalLoading = true;
 
-                api.getTx({
-                    a: this.$route.query.a,
-                    block: this.$route.query.block,
+                api.getContracts({
                     p: this.$route.query.p || 1,
-                    isPending: this.$route.query.isPending
                 }, o => {
                     this.$root.showModalLoading = false;
-                    this.arr = o.txnList;
+                    this.arr = o.contracts;
                     this.currentPage = o.currentPage;
-                    this.maxDisplayCnt = o.maxDisplayCnt;
+                    // this.maxDisplayCnt = o.maxDisplayCnt;
                     this.totalPage = o.totalPage;
-                    this.totalTxs = o.txnCnt;
+                    this.totalCts = o.total;
                 }, xhr => {
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
@@ -150,7 +157,7 @@
                 BigNumber.config({ DECIMAL_PLACES: 18 })
                 var amount = BigNumber(n);
                 var decimals = BigNumber('1e+18');
-                return amount.div(decimals).toFormat();
+                return amount.div(decimals).toFormat().shortAmount();
             }
         },
         mounted() {

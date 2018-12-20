@@ -37,6 +37,21 @@ Vue.use(VueRouter);
 vRouter.beforeEach(onBeforeEach);
 vRouter.afterEach(onAfterEach);
 
+Number.prototype.pad = function (size) {
+    var s = String(this);
+    while (s.length < (size || 2)) { s = "0" + s; }
+    return s;
+}
+
+String.prototype.shortAmount = function () {
+    let dot_index = this.indexOf('.');
+    if (dot_index === -1) return this;
+    if (this.length - 1 - dot_index > 4) {
+        return this.slice(0, dot_index + 4 + 1);
+    }
+    return this;
+}
+
 vApp = new Vue({
     components: {
         //"vue-popmsg": require("@/components/vue-popmsg").default,
