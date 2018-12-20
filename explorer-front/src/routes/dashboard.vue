@@ -166,7 +166,7 @@
         position: absolute;
         top: 0px;
         height: 320px;
-        width: calc(100% - 60px);
+        width: calc(100% - 48px);
         margin-left: 30px;
     }
 
@@ -449,14 +449,14 @@
         justify-content: flex-end;
         align-items: flex-end;
         position: absolute;
-        top: 0px;
+        top: 74px;
         right: 30px;
     }
 
-    .vue-dashboard .row4 .user-data .data-source {
+    /* .vue-dashboard .row4 .user-data .data-source {
         margin-top: 30px;
         margin-bottom: 26px;
-    }
+    } */
 
     .vue-dashboard .row4 .title {
         font-size: 28px;
@@ -464,16 +464,16 @@
         font-weight: bold;
     }
 
-    .vue-dashboard .row4 .accounts-data .data-source {
+    /* .vue-dashboard .row4 .accounts-data .data-source {
         position: absolute;
         top: 30px;
         right: 30px;
-    }
+    } */
 
     .vue-dashboard .accounts-chart {
         position: absolute;
         top: 0px;
-        width: calc(100% - 60px);
+        width: calc(100% - 48px);
         height: 100%;
         margin-left: 30px;
     }
@@ -600,9 +600,9 @@
     }
 
     @media (max-width: 1199.98px) {
-        .vue-dashboard .row4 .data-source {
+        /* .vue-dashboard .row4 .data-source {
             visibility: hidden;
-        }
+        } */
 
         #atlaspAds-side {
             display: none;
@@ -754,7 +754,7 @@
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div v-if="staticInfo">{{ numberAddComma(staticInfo.totalContractCount) }}</div>
-                        <div v-if="staticInfo" class="link-style">Total Smart Contracts</div>
+                        <router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/contracts/"'>Total Smart Contracts ></router-link>
                         <img src=/static/img/dashboard-3.png width=44 alt="">
                     </div>
                 </div>
@@ -789,7 +789,7 @@
                             </div>
                         </div>
                         <div v-if="staticInfo" class="detail">
-                            <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
+                            <!-- <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div> -->
                             <div class="title">{{ numberAddComma(staticInfo.newAddressCount) }}</div>
                             <div class="fs12 text-gray">New Users</div>
                             <div class="title">{{ numberAddComma(staticInfo.newAddressCount + staticInfo.oldAddressCount) }}</div>
@@ -800,7 +800,7 @@
                 <div class="flex-item col-12 col-lg-6 row4-item accounts-data">
                     <div class="item-bg item-shadow">
                         <div class="item-title">Mainnet Accounts Quantity</div>
-                        <div v-if="accountsChartOptions" class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
+                        <!-- <div v-if="accountsChartOptions" class="fs12 text-light-gray data-source">Data Sources: Nebulas</div> -->
                         <vchart class="accounts-chart" v-if="accountsChartOptions" :options="accountsChartOptions" :autoResize='true'></vchart>
                     </div>
                 </div>
