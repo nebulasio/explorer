@@ -775,7 +775,7 @@
                         <div v-show="staticInfo" class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
-                                <div class="new-user" :style='staticInfo ? "transform: rotate(-" + staticInfo.newAddressCount / (staticInfo.newAddressCount + staticInfo.oldAddressCount) * 360 + "deg)" : ""'></div>
+                                <div class="new-user" :style='staticInfo ? "transform: rotate(-" + staticInfo.newAddressCount / staticInfo.totalAddressCount * 360 + "deg)" : ""'></div>
                             </div>
                             <div v-if="staticInfo" class="new-user-indicator">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" class="svg" width="195" height="114" viewbox="0 0 195 114">
@@ -783,7 +783,7 @@
                                 </svg>
                                 <div class="labels">
                                     <!-- 四舍五入并保留一位小数 -->
-                                    <div>{{ (Math.round(100 * staticInfo.newAddressCount / (staticInfo.newAddressCount + staticInfo.oldAddressCount) * 10) / 10).toFixed(1) + '%' }}</div>
+                                    <div>{{ (Math.round(100 * staticInfo.newAddressCount / staticInfo.totalAddressCount * 10) / 10).toFixed(1) + '%' }}</div>
                                     <div>New Addresses</div>
                                 </div>
                             </div>
@@ -792,7 +792,7 @@
                             <!-- <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div> -->
                             <div class="title">{{ numberAddComma(staticInfo.newAddressCount) }}</div>
                             <div class="fs12 text-gray">New Addresses</div>
-                            <div class="title">{{ numberAddComma(staticInfo.newAddressCount + staticInfo.oldAddressCount) }}</div>
+                            <div class="title">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
                             <div class="fs12 text-gray">Total Addresses</div>
                         </div>
                     </div>
