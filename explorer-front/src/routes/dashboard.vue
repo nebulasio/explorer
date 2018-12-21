@@ -747,7 +747,7 @@
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div v-if="staticInfo">{{ numberAddComma(staticInfo.txnCnt) }}</div>
-                        <router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/txs/"'>Total Transations ></router-link>
+                        <router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/txs/"'>Total Transactions ></router-link>
                         <img src=/static/img/dashboard-2.png width=44 alt="">
                     </div>
                 </div>
