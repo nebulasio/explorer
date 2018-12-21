@@ -131,7 +131,7 @@
                             <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
                                 <span style="margin-left: 20px;" class="font-size-16-normal font-color-0057FF">{{ tx.to.hash }}</span>
                             </router-link>
-                            <div class="token-name font-size-16-normal font-color-000000" style="margin-left: 14px;" v-if="tx.tokenName">{{ '【' + tx.tokenName + '】' }}</div>
+                            <div class="token-name font-size-16-normal font-color-000000" style="margin-left: 14px;" v-if="tx.tokenName">{{ '(' + tx.tokenName + ' Token)' }}</div>
                         </td>
                         <td v-else>
                             <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
