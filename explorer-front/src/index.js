@@ -71,7 +71,6 @@ vApp = new Vue({
 });
 
 setInterval(() => {
-    // console.log('vApp.timestamp');
     vApp.timestamp = Date.now();
 }, 1000);
 

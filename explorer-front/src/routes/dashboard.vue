@@ -166,7 +166,7 @@
         position: absolute;
         top: 0px;
         height: 320px;
-        width: calc(100% - 48px);
+        width: calc(100% - 45px);
         margin-left: 30px;
     }
 
@@ -908,6 +908,9 @@
                     arr.push([k, this.dailyTxData[k]]);
                 }
                 arr.sort(function (a, b) { return Date.parse(a[0]) - Date.parse(b[0]); });
+                if (arr.length > 13) {
+                    arr.splice(0, arr.length - 13);
+                }
                 for (var i in arr) {
                     dates.push(arr[i][0]);
                     nums.push(arr[i][1]);
@@ -915,7 +918,7 @@
 
                 let vm = this;
                 var options = {
-                    grid: { x: '0', y: '100', width: '100%', height: '210', containLabel: true },
+                    grid: { x: '0', y: '90', width: '100%', height: '210', containLabel: true },
                     xAxis: {
                         data: dates,
                         axisLine: {
@@ -934,7 +937,7 @@
                                 // let date = new Date(value);
                                 // return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                             },
-                            fontSize: 12
+                            fontSize: 11
                         }
                     },
                     yAxis: {
@@ -944,7 +947,9 @@
                         axisLabel: {
                             textStyle: {
                                 color: '#B2B2B2'
-                            }
+                            },
+                            margin: -5,
+                            fontSize: 11
                         },
                         axisTick: {
                             show: false
@@ -1008,7 +1013,7 @@
                 
                 let vm = this;
                 var options = {
-                    grid: { x: '0', y: '100', width: '100%', height: '220', containLabel: true },
+                    grid: { x: '0', y: '90', width: '100%', height: '220', containLabel: true },
                     xAxis: {
                         data: dates,
                         axisLine: {
@@ -1027,7 +1032,7 @@
                                 // let date = new Date(new Number(value));
                                 // return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                             },
-                            // rotate: 45
+                            fontSize: 11
                         }
                     },
                     yAxis: {
@@ -1042,7 +1047,8 @@
                             margin: -10,
                             formatter: function (value) {
                                 return value / 1000 + 'k';
-                            }
+                            },
+                            fontSize: 11
                         },
                         axisTick: {
                             show: false
