@@ -934,7 +934,7 @@
                                 // let date = new Date(value);
                                 // return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                             },
-                            rotate: 45
+                            fontSize: 12
                         }
                     },
                     yAxis: {
@@ -1027,7 +1027,7 @@
                                 // let date = new Date(new Number(value));
                                 // return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                             },
-                            rotate: 45
+                            // rotate: 45
                         }
                     },
                     yAxis: {

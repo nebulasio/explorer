@@ -42,13 +42,13 @@
                             <nav aria-label="Page navigation" class=navgation-tab>
                                 <ul class=pagination>
                                     <li>
-                                        <router-link v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label=Previous>
+                                        <router-link v-if="block.height > 1" v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label=Previous>
                                             <span class="font-color-0057FF" aria-hidden=true>&lt; Prev</span>
                                         </router-link>
                                     </li>
                                     <li>&nbsp; {{ block.height }} &nbsp;</li>
                                     <li>
-                                        <router-link v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label=Next>
+                                        <router-link v-if="$root.timestamp - block.timestamp > 15000" v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label=Next>
                                             <span class="font-color-0057FF" aria-hidden=true>Next &gt;</span>
                                         </router-link>
                                     </li>
@@ -167,7 +167,8 @@
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 tab: 0,
                 tabButtons: ["Overview"],
-                isShowDynasty: false
+                isShowDynasty: false,
+                timestamp: Date.now()
             };
         }
     };

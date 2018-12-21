@@ -63,11 +63,17 @@ vApp = new Vue({
     data: {
         search: "",
         showModalLoading: false,
-        showAtpAds: true
+        showAtpAds: true,
+        timestamp: Date.now()
     },
     el: ".vue",
     router: vRouter
 });
+
+setInterval(() => {
+    // console.log('vApp.timestamp');
+    vApp.timestamp = Date.now();
+}, 1000);
 
 ////////////////////////////////////////////////////////////
 //
