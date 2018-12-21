@@ -19,7 +19,6 @@
         border-top-right-radius: 0;
         margin-right: 0;
         font-size: 16px;
-        font-family: OpenSans-Semibold;
         font-weight: 600;
         color: rgba(0, 0, 0, 1);
         line-height: 20px;
@@ -29,7 +28,6 @@
         background-color: black;
         border: none;
         font-size: 16px;
-        font-family: OpenSans-Semibold;
         font-weight: 600;
         color: rgba(255, 255, 255, 1);
         line-height: 20px;
