@@ -48,8 +48,9 @@ public class NasAccountService {
 
         NasAccountCondition cond = new NasAccountCondition();
         DateTime today = new DateTime().withTimeAtStartOfDay();
-        DateTime eightWeek = today.minusDays(56);
-        cond.createCriteria().andTimestampBetween(eightWeek.toDate(), today.toDate());
+        DateTime endDay = today.minusDays(1);
+        DateTime startDay = endDay.minusDays(56);
+        cond.createCriteria().andTimestampBetween(startDay.toDate(), today.toDate());
         List<NasAccount> nasAccountList = nasAccountMapper.selectByCondition(cond);
         if (nasAccountList.size() == 0) {
             return Collections.emptyList();
