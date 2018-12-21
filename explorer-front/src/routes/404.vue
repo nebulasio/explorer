@@ -28,7 +28,6 @@
     .vue-404 a {
         display: block;
         color: black;
-        text-decoration: none;
         font-size: 16px;
         width: 160px;
         border:1px solid rgba(0,0,0,1);
@@ -39,6 +38,7 @@
     .vue-404 a:hover {
         background-color: black;
         color: white;
+        text-decoration: none;
     }
 
 </style>
