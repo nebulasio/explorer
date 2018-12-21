@@ -86,6 +86,9 @@ public class RpcController {
     private static final long HOUR_1 = 60 * 60 * 1000;
     private static Set<String> allContractTokens = new HashSet<>(8);
 
+    private final byte[] lock1 = new byte[0];
+    private final byte[] lock2 = new byte[0];
+
     @RequestMapping(value = "/market_cap", method = RequestMethod.GET)
     public JsonResult marketCap() {
         return JsonResult.success(nebMarketCapitalizationService.getLatest());
@@ -317,18 +320,32 @@ public class RpcController {
 
         if (txStaticMap == null || txStaticMap.size() == 0) {
             //将每天的交易数据存放进redis里
-            log.info("Tracing: Start to count last 15 days transactions : " + System.currentTimeMillis());
-            resultMap = nebTransactionService.countTxCntGroupMapByTimestamp(LocalDate.now().plusDays(-15).toDate(), LocalDate.now().toDate());
-            log.info("Tracing: End count last 15 days transactions : " + System.currentTimeMillis());
-            Map<String, String> redisMap = new HashMap<>();
-            resultMap.forEach((k, v) -> {
-                String dateCount = v.toString();
-                redisMap.put(k, dateCount);
-            });
+            synchronized (lock2) {
+                txStaticMap = mapRedisTemplate.opsForHash().entries("txStaticMap");
+                if (txStaticMap == null || txStaticMap.size() == 0) {
+                    log.info("Tracing: Start to count last 15 days transactions : " + System.currentTimeMillis());
+                    resultMap = nebTransactionService.countTxCntGroupMapByTimestamp(LocalDate.now().plusDays(-15).toDate(), LocalDate.now().toDate());
+                    log.info("Tracing: End count last 15 days transactions : " + System.currentTimeMillis());
+                    Map<String, String> redisMap = new HashMap<>();
+                    resultMap.forEach((k, v) -> {
+                        String dateCount = v.toString();
+                        redisMap.put(k, dateCount);
+                    });
 
-            mapRedisTemplate.opsForHash().putAll(key, redisMap);
-            mapRedisTemplate.opsForValue().getOperations().expire(key, 180, TimeUnit.MINUTES);
-            log.info("Tracing: End api cnt_static : " + System.currentTimeMillis());
+                    mapRedisTemplate.opsForHash().putAll(key, redisMap);
+                    mapRedisTemplate.opsForValue().getOperations().expire(key, 180, TimeUnit.MINUTES);
+                    log.info("Tracing: End api cnt_static : " + System.currentTimeMillis());
+                } else {
+                    log.info("Tracing: count last 15 days transactions : Get it from redis!");
+                    resultMap = new HashMap<>();
+                    txStaticMap.forEach((k, v) -> {
+                        String dateKey = (String) k;
+                        Long dateCount = Long.valueOf((String) v);
+                        resultMap.put(dateKey, dateCount);
+                    });
+                    log.info("Tracing: End api cnt_static : " + System.currentTimeMillis());
+                }
+            }
         } else {
             log.info("Tracing: count last 15 days transactions : Get it from redis!");
             resultMap = new HashMap<>();
@@ -348,19 +365,28 @@ public class RpcController {
         log.info("Tracing: Start api cnt_today : " + System.currentTimeMillis());
         //若卡在了缓存清空的瞬间，出现了查询，会导致继续打满连接池的出现，需要继续优化，舍弃原有的查询方法
         String key = "txCntToday";
-        Long todayTxnCnt = 0L;
+        long todayTxnCnt = 0L;
         String txnCnt = redisTemplate.opsForValue().get(key);
-        if (txnCnt == null || txnCnt.isEmpty()) {
-            log.info("Tracing: Start to count transactions of today : " + System.currentTimeMillis());
-            todayTxnCnt = nebTransactionService.countTxToday();
-            log.info("Tracing: End count transactions of today : " + System.currentTimeMillis());
-            redisTemplate.opsForValue().set(key, todayTxnCnt.toString());
-            redisTemplate.opsForValue().getOperations().expire(key, 30, TimeUnit.MINUTES);
+        if (txnCnt!=null && !txnCnt.isEmpty()) {
+            log.info("Tracing: count transactions of today : Get it from redis!");
+            todayTxnCnt = Long.parseLong(txnCnt);
             log.info("Tracing: End api cnt_today : " + System.currentTimeMillis());
         } else {
-            log.info("Tracing: count transactions of today : Get it from redis!");
-            todayTxnCnt = Long.valueOf(txnCnt);
-            log.info("Tracing: End api cnt_today : " + System.currentTimeMillis());
+            synchronized (lock1) {
+                txnCnt = redisTemplate.opsForValue().get(key);
+                if (txnCnt == null || txnCnt.isEmpty()) {
+                    log.info("Tracing: Start to count transactions of today : " + System.currentTimeMillis());
+                    todayTxnCnt = nebTransactionService.countTxToday();
+                    log.info("Tracing: End count transactions of today : " + System.currentTimeMillis());
+                    redisTemplate.opsForValue().set(key, Long.toString(todayTxnCnt));
+                    redisTemplate.opsForValue().getOperations().expire(key, 30, TimeUnit.MINUTES);
+                    log.info("Tracing: End api cnt_today : " + System.currentTimeMillis());
+                } else {
+                    log.info("Tracing: count transactions of today : Get it from redis!");
+                    todayTxnCnt = Long.parseLong(txnCnt);
+                    log.info("Tracing: End api cnt_today : " + System.currentTimeMillis());
+                }
+            }
         }
         return JsonResult.success(todayTxnCnt);
     }
