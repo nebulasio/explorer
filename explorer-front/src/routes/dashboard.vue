@@ -940,6 +940,7 @@
                         }
                     },
                     yAxis: {
+                        // min: 'dataMin',
                         axisLine: {
                             show: false
                         },
@@ -1052,9 +1053,9 @@
                         splitLine: {
                             show: false
                         },
-                        // splitNumber: 5,
-                        maxInterval: 2000,
-                        // minInterval: 3000
+                        splitNumber: 5,
+                        // maxInterval: 3000,
+                        minInterval: 2000
                     },
                     series: {
                         type: 'line',
