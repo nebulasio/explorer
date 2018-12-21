@@ -176,12 +176,12 @@
                 location.reload();
             },
             onSubmit() {
-                // if (this.search.trim().toLowerCase() == 'atp') {
-                //     this.showATP();
-                //     return;
-                // }
+                if (this.search.trim().length === 0) {
+                    this.search = "";
+                    return;
+                }
                 this.$root.showModalLoading = true;
-                api.getSearch(this.search, o => {
+                api.getSearch(this.search.trim(), o => {
                     this.$root.showModalLoading = false;
                     this.search = "";
 
