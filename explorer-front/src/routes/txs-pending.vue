@@ -9,64 +9,66 @@
         <vue-bread title="Pending Transactions"></vue-bread>
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info font-color-000000 font-size-24-bold">A total of {{ numberAddComma(totalTxs) }} Pending txns found</div>
+                <div class="col info font-color-000000 font-size-24-bold">{{ numberAddComma(totalTxs) }} Pending txns found</div>
             </div>
-            <table class="mt20 explorer-table list-table">
-                <tr class="list-header font-size-12-bold font-color-000000">
-                    <th>TxHash</th>
-                    <th>LastSeen</th>
-                    <th>GasLimit</th>
-                    <th>GasPrice</th>
-                    <th>From</th>
-                    <th></th>
-                    <th>To</th>
-                    <th class=text-right>Value</th>
-                </tr>
-                <tr v-for="(o, i) in arr" :key="i">
-                    <td class="tdxxxwddd monospace">
-                        <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
-                            <span class="font-color-0057FF font-size-14-normal">{{ o.hash }}</span>
-                        </router-link>
-                    </td>
-                    <td class="time font-size-14-normal font-color-555555">
-                        <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                        <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
-                    </td>
-                    <td class="font-size-14-normal font-color-555555">{{ numberAddComma(o.gasLimit) }}</td>
-                    <td class="font-size-14-normal font-color-555555">{{ toWei(o.gasPrice) }}</td>
-                    <td class=tdxxxwddd>
-                        <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
-                        <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>
-                            <span class="font-size-14-normal font-color-0057FF">{{ o.from.alias || o.from.hash }}</span>
-                        </router-link>
-                    </td>
-                    <td>
-                        <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
-                    </td>
-                    <td class=tdxxxwddd>
-                        <div style="width: 10px;"></div>
-                        <div class="container-tip">
-                            <div class="tip">
-                                <div class="content">
-                                    <div class="arrow">
-                                        <em></em>
+            <div class="explorer-table-container">
+                <table v-if="arr.length" class="mt20 explorer-table list-table">
+                    <tr class="list-header font-size-12-bold font-color-000000">
+                        <th>TxHash</th>
+                        <th>LastSeen</th>
+                        <th>GasLimit</th>
+                        <th>GasPrice</th>
+                        <th>From</th>
+                        <th></th>
+                        <th>To</th>
+                        <th class=text-right>Value</th>
+                    </tr>
+                    <tr v-for="(o, i) in arr" :key="i">
+                        <td class="tdxxxwddd monospace">
+                            <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
+                                <span class="font-color-0057FF font-size-14-normal">{{ o.hash }}</span>
+                            </router-link>
+                        </td>
+                        <td class="time font-size-14-normal font-color-555555">
+                            <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                            <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                        </td>
+                        <td class="font-size-14-normal font-color-555555">{{ numberAddComma(o.gasLimit) }}</td>
+                        <td class="font-size-14-normal font-color-555555">{{ toWei(o.gasPrice) }}</td>
+                        <td class=tdxxxwddd>
+                            <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
+                            <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>
+                                <span class="font-size-14-normal font-color-0057FF">{{ o.from.alias || o.from.hash }}</span>
+                            </router-link>
+                        </td>
+                        <td>
+                            <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
+                        </td>
+                        <td class=tdxxxwddd>
+                            <div style="width: 10px;"></div>
+                            <div class="container-tip">
+                                <div class="tip">
+                                    <div class="content">
+                                        <div class="arrow">
+                                            <em></em>
+                                        </div>
+                                        <span class="font-size-15-normal">Contract</span>
                                     </div>
-                                    <span class="font-size-15-normal">Contract</span>
                                 </div>
+                                <img class="icon24" v-if="o.type==='call'" src="../../static/img/ic_tx_type_contract.png" />
                             </div>
-                            <img class="icon24" v-if="o.type==='call'" src="../../static/img/ic_tx_type_contract.png" />
-                        </div>
-                        <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
-                        <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>
-                            <span class="font-size-14-normal font-color-0057FF">{{ o.to.alias || o.to.hash }}</span>
-                        </router-link>
-                    </td>
-                    <td class="text-right font-size-14-normal font-color-000000">
-                        {{ tokenAmount(o.value) }} NAS
-                    </td>
-                </tr>
-            </table>
-            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
+                            <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
+                            <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>
+                                <span class="font-size-14-normal font-color-0057FF">{{ o.to.alias || o.to.hash }}</span>
+                            </router-link>
+                        </td>
+                        <td class="text-right font-size-14-normal font-color-000000">
+                            {{ tokenAmount(o.value) }} NAS
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <vue-pagination v-if="arr.length" v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
         </div>
     </div>
 </template>

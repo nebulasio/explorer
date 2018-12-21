@@ -168,6 +168,12 @@ label {
     color: rgba(255, 255, 255, 1);
 }
 
+@media (max-width: 768px) {
+    .justify-content-end {
+        justify-content: center!important;
+    }
+}
+
 @media (min-width: 992px) {
     .navbar-expand-lg .navbar-nav .nav-link {
         padding-right: 0px;
@@ -190,13 +196,13 @@ label {
     overflow-x: scroll;
 }
 
-.explorer-table .table-title {
+.table-title {
     margin-top: 60px;
     margin-bottom: 30px;
 }
 
 @media (max-width: 767.98px) {
-    .explorer-table .table-title {
+    .table-title {
         margin-top: 30px;
         margin-bottom: 30px;
     }

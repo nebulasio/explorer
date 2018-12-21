@@ -48,32 +48,34 @@
     <div class="vue-contracts fullfill">
         <vue-bread title="Smart Contracts"></vue-bread>
 
-        <div class="container mt20 explorer-table-container">
+        <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
                 <div class="col info font-color-000000 font-size-24-bold">{{ numberAddComma(totalCts) }} smart contracts found</div>
                 <!--(showing the last {{ maxDisplayCnt }} records)-->
             </div>
 
-            <table class="mt20 explorer-table list-table">
-                <tr class="list-header font-size-12-bold font-color-000000">
-                    <th style="padding-left: 24px;">Address</th>
-                    <th class=text-right>Balance</th>
-                    <th class=text-right>Type</th>
-                    <th class=text-right style="padding-right: 24px;">Date Created</th>
-                </tr>
+            <div class="explorer-table-container">
+                <table class="mt20 explorer-table list-table">
+                    <tr class="list-header font-size-12-bold font-color-000000">
+                        <th style="padding-left: 24px;">Address</th>
+                        <th class=text-right>Balance</th>
+                        <th class=text-right>Type</th>
+                        <th class=text-right style="padding-right: 24px;">Date Created</th>
+                    </tr>
 
-                <tr v-for="(o, i) in arr" :key="i">
-                    <td style="padding-left: 24px;" class="contract-hash">
-                        <vue-blockies v-bind:address='o.hash'></vue-blockies>
-                        <router-link v-bind:to='fragApi + "/address/" + o.hash'>
-                            <span class="hash-normal, monospace">{{ o.hash }}</span>
-                        </router-link>
-                    </td>
-                    <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.balance) }} NAS</td>
-                    <td class="text-right font-color-000000 font-size-14-normal">{{ o.contractType === 'NORMAL' ? 'Contract' : 'Token Contract' }} </td>
-                    <td class="text-right font-size-14-normal font-color-555555" style="padding-right: 24px;">{{ new Date(o.createdAt).toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' }) }}</td>
-                </tr>
-            </table>
+                    <tr v-for="(o, i) in arr" :key="i">
+                        <td style="padding-left: 24px;" class="contract-hash">
+                            <vue-blockies v-bind:address='o.hash'></vue-blockies>
+                            <router-link v-bind:to='fragApi + "/address/" + o.hash'>
+                                <span class="hash-normal, monospace">{{ o.hash }}</span>
+                            </router-link>
+                        </td>
+                        <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.balance) }} NAS</td>
+                        <td class="text-right font-color-000000 font-size-14-normal">{{ o.contractType === 'NORMAL' ? 'Contract' : 'Token Contract' }} </td>
+                        <td class="text-right font-size-14-normal font-color-555555" style="padding-right: 24px;">{{ new Date(o.createdAt).toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' }) }}</td>
+                    </tr>
+                </table>
+            </div>
 
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
                 v-on:prev=onPrev v-on:to=onTo></vue-pagination>

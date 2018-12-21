@@ -77,78 +77,80 @@
     <div class="vue-txs fullfill">
         <vue-bread title=Transactions></vue-bread>
 
-        <div class="container mt20 explorer-table-container">
+        <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
                 <div class="col info font-color-000000 font-size-24-bold">{{ numberAddComma(totalTxs) }} transactions found</div>
                 <!--(showing the last {{ maxDisplayCnt }} records)-->
             </div>
 
-            <table class="mt20 explorer-table list-table">
-                <tr class="list-header font-size-12-bold font-color-000000">
-                    <th></th>
-                    <th>TxHash</th>
-                    <th>Block</th>
-                    <th>Age</th>
-                    <th>From</th>
-                    <th></th>
-                    <th>To</th>
-                    <th class=text-right>Value</th>
-                    <th class=text-right>TxFee</th>
-                </tr>
+            <div class="explorer-table-container">
+                <table class="mt20 explorer-table list-table">
+                    <tr class="list-header font-size-12-bold font-color-000000">
+                        <th></th>
+                        <th>TxHash</th>
+                        <th>Block</th>
+                        <th>Age</th>
+                        <th>From</th>
+                        <th></th>
+                        <th>To</th>
+                        <th class=text-right>Value</th>
+                        <th class=text-right>TxFee</th>
+                    </tr>
 
-                <tr v-for="(o, i) in arr" :key="i">
-                    <td>
-                        <img v-if="o.status===0" class="icon40" src="../../static/img/ic_tx_failed.png"/>
-                    </td>
-                    <td class="txs-hash">
-                        <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
-                            <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal', 'monospace']">{{ o.hash }}</span>
-                        </router-link>
-                    </td>
+                    <tr v-for="(o, i) in arr" :key="i">
+                        <td>
+                            <img v-if="o.status===0" class="icon40" src="../../static/img/ic_tx_failed.png"/>
+                        </td>
+                        <td class="txs-hash">
+                            <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
+                                <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal', 'monospace']">{{ o.hash }}</span>
+                            </router-link>
+                        </td>
 
-                    <td class="txs-block">
-                        <router-link class="font-size-14-normal font-color-4560E6" v-if=o.block.height v-bind:to='fragApi + "/block/" + o.block.height'>
-                            <span class="font-size-14-normal font-color-4560E6">{{ o.block.height }}</span>
-                        </router-link>
-                        <i class="font-size-14-normal font-color-000000" v-else>pending</i>
-                    </td>
-                    <td class="time font-size-14-normal font-color-555555">
-                        <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
-                        <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
-                    </td>
-                    <td class="tdxxxwddd txs-from-to" style="padding: 0;">
-                        <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
-                        <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span>
-                        <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
-                            <span class="fromTo font-size-14-normal font-color-0057FF monospace">{{ o.from.hash }}</span>
-                        </router-link>
-                    </td>
-                    <td style="padding: 0;">
-                        <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
-                    </td>
-                    <td class="tdxxxwddd txs-from-to" style="padding: 0;">
-                        <div style="width: 10px;"></div>
-                        <div class="container-tip">
-                            <div class="tip">
-                                <div class="content">
-                                    <div class="arrow">
-                                        <em></em>
+                        <td class="txs-block">
+                            <router-link class="font-size-14-normal font-color-4560E6" v-if=o.block.height v-bind:to='fragApi + "/block/" + o.block.height'>
+                                <span class="font-size-14-normal font-color-4560E6">{{ o.block.height }}</span>
+                            </router-link>
+                            <i class="font-size-14-normal font-color-000000" v-else>pending</i>
+                        </td>
+                        <td class="time font-size-14-normal font-color-555555">
+                            <div>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
+                            <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                        </td>
+                        <td class="tdxxxwddd txs-from-to" style="padding: 0;">
+                            <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
+                            <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span>
+                            <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
+                                <span class="fromTo font-size-14-normal font-color-0057FF monospace">{{ o.from.hash }}</span>
+                            </router-link>
+                        </td>
+                        <td style="padding: 0;">
+                            <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
+                        </td>
+                        <td class="tdxxxwddd txs-from-to" style="padding: 0;">
+                            <div style="width: 10px;"></div>
+                            <div class="container-tip">
+                                <div class="tip">
+                                    <div class="content">
+                                        <div class="arrow">
+                                            <em></em>
+                                        </div>
+                                        <span class="font-size-15-normal">Contract</span>
                                     </div>
-                                    <span class="font-size-15-normal">Contract</span>
                                 </div>
+                                <img class="icon24" v-if="o.type==='call'" src="../../static/img/ic_tx_type_contract.png" />
                             </div>
-                            <img class="icon24" v-if="o.type==='call'" src="../../static/img/ic_tx_type_contract.png" />
-                        </div>
-                        <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
-                        <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span>
-                        <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>
-                            <span class="fromTo font-size-14-normal font-color-0057FF monospace">{{ o.to.hash }}</span>
-                        </router-link>
-                    </td>
-                    <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.value) }} NAS</td>
-                    <td class="text-right font-size-14-normal font-color-555555">{{ toWei(o.txFee) }}</td>
-                </tr>
-            </table>
+                            <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
+                            <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span>
+                            <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>
+                                <span class="fromTo font-size-14-normal font-color-0057FF monospace">{{ o.to.hash }}</span>
+                            </router-link>
+                        </td>
+                        <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.value) }} NAS</td>
+                        <td class="text-right font-size-14-normal font-color-555555">{{ toWei(o.txFee) }}</td>
+                    </tr>
+                </table>
+            </div>
 
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
                 v-on:prev=onPrev v-on:to=onTo></vue-pagination>

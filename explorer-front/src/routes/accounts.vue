@@ -15,35 +15,37 @@
     <div class="vue-accounts fullfill">
         <vue-bread title="All Accounts"></vue-bread>
         <div style="height: 60px;"></div>
-        <div class="container explorer-table-container">
+        <div class="container">
             <div class="align-items-center info-and-pagination row">
                 <div class="col font-color-000000 font-size-24-bold">
-                    A total of {{ numberAddComma(totalAccounts) }} accounts found
+                    {{ numberAddComma(totalAccounts) }} accounts found
                 </div>
             </div>
             <div style="height: 30px;"></div>
-            <table class="explorer-table list-table">
-                <tr class="list-header font-size-12-bold font-color-000000">
-                    <th style="padding-left: 24px;">Rank</th>
-                    <th>Address</th>
-                    <th class=text-right>Balance</th>
-                    <th class=text-right>Percentage</th>
-                    <th class=text-right style="padding-right: 24px;">TxCount</th>
-                </tr>
-                <tr v-for="(o, i) in arr" :key="i" class="font-size-14-normal">
-                    <td style="padding-left: 24px;" class="font-color-000000">{{ o.rank }}</td>
-                    <td class="tdxxxwddd">
-                        <vue-blockies v-bind:address='o.hash'></vue-blockies>
-                        <router-link v-bind:to='fragApi + "/address/" + o.hash'>
-                            <span class="font-color-0057FF monospace">{{ o.hash }}</span>
-                        </router-link>
-                        <span v-show=o.alias> | {{ o.alias }}</span>
-                    </td>
-                    <td class="text-right font-color-000000">{{ short(o.balance) }}</td>
-                    <td class="text-right font-color-000000">{{ (new Number(o.percentage)).toFixed(8) }}%</td>
-                    <td class="text-right font-color-000000" style="padding-right: 24px;">{{ o.txCnt }}</td>
-                </tr>
-            </table>
+            <div class="explorer-table-container">
+                <table class="explorer-table list-table">
+                    <tr class="list-header font-size-12-bold font-color-000000">
+                        <th style="padding-left: 24px;">Rank</th>
+                        <th>Address</th>
+                        <th class=text-right>Balance</th>
+                        <th class=text-right>Percentage</th>
+                        <th class=text-right style="padding-right: 24px;">TxCount</th>
+                    </tr>
+                    <tr v-for="(o, i) in arr" :key="i" class="font-size-14-normal">
+                        <td style="padding-left: 24px;" class="font-color-000000">{{ o.rank }}</td>
+                        <td class="tdxxxwddd">
+                            <vue-blockies v-bind:address='o.hash'></vue-blockies>
+                            <router-link v-bind:to='fragApi + "/address/" + o.hash'>
+                                <span class="font-color-0057FF monospace">{{ o.hash }}</span>
+                            </router-link>
+                            <span v-show=o.alias> | {{ o.alias }}</span>
+                        </td>
+                        <td class="text-right font-color-000000">{{ short(o.balance) }}</td>
+                        <td class="text-right font-color-000000">{{ new Number(o.percentage).toFixed(8) }}%</td>
+                        <td class="text-right font-color-000000" style="padding-right: 24px;">{{ o.txCnt }}</td>
+                    </tr>
+                </table>
+            </div>
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
         </div>
     </div>
