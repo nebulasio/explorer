@@ -344,9 +344,13 @@ public class NebTransactionService {
      * @return transaction count map
      */
     public Map<String, Long> countTxCntGroupMapByTimestamp(Date from, Date to) {
+        long day60 = 60*24*60*60*1000L;
+        if (to.getTime() - from.getTime() > day60) {
+            return new HashMap<>();
+        }
         List<Date> txCntResultList = nebTransactionMapper.getTxTimeList(parseDate2Str(from), parseDate2Str(to));
 
-        Map<String, Long> txCntMap = new HashMap<>(32);
+        Map<String, Long> txCntMap = new HashMap<>(60);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (Date date : txCntResultList) {
             String key = dateFormat.format(date);

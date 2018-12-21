@@ -310,14 +310,16 @@ public class RpcController {
 
     @RequestMapping("/tx/cnt_static")
     public JsonResult txStatic() {
-
+        log.info("Tracing: Start api cnt_static : " + System.currentTimeMillis());
         String key = "txStaticMap";
         Map<Object, Object> txStaticMap = mapRedisTemplate.opsForHash().entries("txStaticMap");
         Map<String, Long> resultMap;
 
         if (txStaticMap == null || txStaticMap.size() == 0) {
             //将每天的交易数据存放进redis里
+            log.info("Tracing: Start to count last 15 days transactions : " + System.currentTimeMillis());
             resultMap = nebTransactionService.countTxCntGroupMapByTimestamp(LocalDate.now().plusDays(-15).toDate(), LocalDate.now().toDate());
+            log.info("Tracing: End count last 15 days transactions : " + System.currentTimeMillis());
             Map<String, String> redisMap = new HashMap<>();
             resultMap.forEach((k, v) -> {
                 String dateCount = v.toString();
@@ -326,14 +328,16 @@ public class RpcController {
 
             mapRedisTemplate.opsForHash().putAll(key, redisMap);
             mapRedisTemplate.opsForValue().getOperations().expire(key, 180, TimeUnit.MINUTES);
-
+            log.info("Tracing: End api cnt_static : " + System.currentTimeMillis());
         } else {
+            log.info("Tracing: count last 15 days transactions : Get it from redis!");
             resultMap = new HashMap<>();
             txStaticMap.forEach((k, v) -> {
                 String dateKey = (String) k;
                 Long dateCount = Long.valueOf((String) v);
                 resultMap.put(dateKey, dateCount);
             });
+            log.info("Tracing: End api cnt_static : " + System.currentTimeMillis());
         }
 
         return JsonResult.success(resultMap);
@@ -341,19 +345,23 @@ public class RpcController {
 
     @RequestMapping("/tx/cnt_today")
     public JsonResult txToday() {
+        log.info("Tracing: Start api cnt_today : " + System.currentTimeMillis());
         //若卡在了缓存清空的瞬间，出现了查询，会导致继续打满连接池的出现，需要继续优化，舍弃原有的查询方法
         String key = "txCntToday";
         Long todayTxnCnt = 0L;
         String txnCnt = redisTemplate.opsForValue().get(key);
         if (txnCnt == null || txnCnt.isEmpty()) {
+            log.info("Tracing: Start to count transactions of today : " + System.currentTimeMillis());
             todayTxnCnt = nebTransactionService.countTxToday();
+            log.info("Tracing: End count transactions of today : " + System.currentTimeMillis());
             redisTemplate.opsForValue().set(key, todayTxnCnt.toString());
             redisTemplate.opsForValue().getOperations().expire(key, 30, TimeUnit.MINUTES);
-
+            log.info("Tracing: End api cnt_today : " + System.currentTimeMillis());
         } else {
+            log.info("Tracing: count transactions of today : Get it from redis!");
             todayTxnCnt = Long.valueOf(txnCnt);
+            log.info("Tracing: End api cnt_today : " + System.currentTimeMillis());
         }
-
         return JsonResult.success(todayTxnCnt);
     }
 
