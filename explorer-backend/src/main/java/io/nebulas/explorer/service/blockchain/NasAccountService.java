@@ -47,10 +47,10 @@ public class NasAccountService {
     public List<NasAccount> getEightWeeks() {
 
         NasAccountCondition cond = new NasAccountCondition();
-        DateTime today = new DateTime().withTimeAtStartOfDay();
+        DateTime today = new DateTime().withTimeAtStartOfDay().toDateTime(DateTimeZone.getDefault());
         DateTime endDay = today.minusDays(1);
         DateTime startDay = endDay.minusDays(56);
-        cond.createCriteria().andTimestampBetween(startDay.toDate(), today.toDate());
+        cond.createCriteria().andTimestampBetween(startDay.toDate(), endDay.toDate());
         List<NasAccount> nasAccountList = nasAccountMapper.selectByCondition(cond);
         if (nasAccountList.size() == 0) {
             return Collections.emptyList();
