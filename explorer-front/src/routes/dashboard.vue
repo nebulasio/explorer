@@ -770,8 +770,8 @@
             <div class="row row4">
                 <div class="flex-item col-12 col-lg-6 row4-item user-data">
                     <div class="item-bg item-shadow">
-                        <div class="item-title">New Users Percentage</div>
-                        <div class="subtitle text-light-gray ml30 fs12">New users are accounts created within 90 days.</div>
+                        <div class="item-title">New Addresses Percentage</div>
+                        <div class="subtitle text-light-gray ml30 fs12">New addresses are addresses created within 90 days.</div>
                         <div v-show="staticInfo" class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
@@ -784,22 +784,22 @@
                                 <div class="labels">
                                     <!-- 四舍五入并保留一位小数 -->
                                     <div>{{ (Math.round(100 * staticInfo.newAddressCount / (staticInfo.newAddressCount + staticInfo.oldAddressCount) * 10) / 10).toFixed(1) + '%' }}</div>
-                                    <div>New Users</div>
+                                    <div>New Addresses</div>
                                 </div>
                             </div>
                         </div>
                         <div v-if="staticInfo" class="detail">
                             <!-- <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div> -->
                             <div class="title">{{ numberAddComma(staticInfo.newAddressCount) }}</div>
-                            <div class="fs12 text-gray">New Users</div>
+                            <div class="fs12 text-gray">New Addresses</div>
                             <div class="title">{{ numberAddComma(staticInfo.newAddressCount + staticInfo.oldAddressCount) }}</div>
-                            <div class="fs12 text-gray">Total Users</div>
+                            <div class="fs12 text-gray">Total Addresses</div>
                         </div>
                     </div>
                 </div>
                 <div class="flex-item col-12 col-lg-6 row4-item accounts-data">
                     <div class="item-bg item-shadow">
-                        <div class="item-title">Growth of Accounts</div>
+                        <div class="item-title">Growth of Addresses</div>
                         <!-- <div v-if="accountsChartOptions" class="fs12 text-light-gray data-source">Data Sources: Nebulas</div> -->
                         <vchart class="accounts-chart" v-if="accountsChartOptions" :options="accountsChartOptions" :autoResize='true'></vchart>
                     </div>
