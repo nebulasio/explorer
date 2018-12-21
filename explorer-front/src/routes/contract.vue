@@ -416,7 +416,7 @@
                 BigNumber.config({ DECIMAL_PLACES: decimals })
                 var amount = BigNumber(n);
                 var decimals = BigNumber('1e+' + decimals);
-                return amount.div(decimals).toFormat();
+                return amount.div(decimals).toFormat().shortAmount();
             }
         },
         watch: {
