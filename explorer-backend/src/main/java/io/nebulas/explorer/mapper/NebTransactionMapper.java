@@ -5,6 +5,7 @@ import io.nebulas.explorer.domain.NebTransaction;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -63,4 +64,6 @@ public interface NebTransactionMapper {
     List<Map<String, String>> countTxnCntMapByTo(List<String> addressHashes);
 
     List<Map<String, Object>> countTxCntGroupByTimestamp(@Param("from") String from, @Param("to") String to);
+
+    List<Date> getTxTimeList(@Param("from") String from, @Param("to") String to);
 }

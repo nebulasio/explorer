@@ -22,6 +22,7 @@ import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -343,9 +344,18 @@ public class NebTransactionService {
      * @return transaction count map
      */
     public Map<String, Long> countTxCntGroupMapByTimestamp(Date from, Date to) {
-        List<Map<String, Object>> txCntResultList = nebTransactionMapper.countTxCntGroupByTimestamp(parseDate2Str(from), parseDate2Str(to));
-        Map<String, Long> txCntMap = txCntResultList.stream()
-                .collect(Collectors.toMap(k -> k.get("ts").toString(), v -> Long.valueOf(v.get("cnt").toString())));
+        List<Date> txCntResultList = nebTransactionMapper.getTxTimeList(parseDate2Str(from), parseDate2Str(to));
+
+        Map<String, Long> txCntMap = new HashMap<>(32);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        for (Date date : txCntResultList) {
+            String key = dateFormat.format(date);
+            if (txCntMap.containsKey(key)) {
+                txCntMap.put(key, txCntMap.get(key)+1);
+            } else {
+                txCntMap.put(key, 1L);
+            }
+        }
 
         Map<String, Long> resultMap = Maps.newLinkedHashMap();
         LocalDate fromLocalDate = LocalDate.fromDateFields(from);
@@ -361,11 +371,11 @@ public class NebTransactionService {
 
     public long countTxToday(){
 
-        List<Map<String, Object>> txCntResultList = nebTransactionMapper.countTxCntGroupByTimestamp(LocalDate.now(DateTimeZone.UTC).toDateTimeAtStartOfDay().toString(), LocalDateTime.now(DateTimeZone.UTC).toString());
+        List<Date> txCntResultList = nebTransactionMapper.getTxTimeList(LocalDate.now(DateTimeZone.UTC).toDateTimeAtStartOfDay().toString(), LocalDateTime.now(DateTimeZone.UTC).toString());
         if (txCntResultList.size() == 0){
             return 0;
         }
-        long todayTxCount = (long)txCntResultList.get(0).get("cnt");
+        long todayTxCount = txCntResultList.size();
         return todayTxCount;
     }
 

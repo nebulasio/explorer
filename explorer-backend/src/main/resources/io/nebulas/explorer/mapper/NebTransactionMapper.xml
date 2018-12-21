@@ -230,6 +230,14 @@
         WHERE `timestamp` BETWEEN #{from,jdbcType=TIMESTAMP} and #{to,jdbcType=TIMESTAMP}
         GROUP BY LEFT(`timestamp`,10)
     </select>
+
+    <select id="getTxTimeList" parameterType="map" resultType="java.util.Date">
+        SELECT
+          `timestamp`
+        FROM `neb_transaction`
+        WHERE `timestamp` BETWEEN #{from,jdbcType=TIMESTAMP} and #{to,jdbcType=TIMESTAMP}
+    </select>
+
     <select id="countTotalTxnCnt" resultType="java.lang.Long">
         SELECT
           COUNT(1)
