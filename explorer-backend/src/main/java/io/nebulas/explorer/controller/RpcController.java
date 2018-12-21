@@ -199,6 +199,7 @@ public class RpcController {
                                    @RequestParam(value = "a", required = false) String address,
                                    @RequestParam(value = "p", required = false, defaultValue = "1") int page,
                                    @RequestParam(value = "isPending", required = false, defaultValue = "false") Boolean isPending) {
+        log.info("Tracing: RpcController: Start to get transaction list : " + System.currentTimeMillis());
         String type;
         if (null != block) {
             type = "block";
@@ -214,9 +215,17 @@ public class RpcController {
             if (page > 20) {
                 page = 20;
             }
+            log.info("Tracing: RpcController: Start to count total of transaction : " + System.currentTimeMillis());
             txnCnt = nebTransactionService.countTxnCnt(block, address);
+            log.info("Tracing: RpcController: End count total of transaction : " + System.currentTimeMillis());
+
+            log.info("Tracing: RpcController: Start to get list of transaction : page " + page + " : " + System.currentTimeMillis());
             List<NebTransaction> txnList = nebTransactionService.findTxnByCondition(block, address, page, PAGE_SIZE);
+            log.info("Tracing: RpcController: End list of transaction : " + System.currentTimeMillis());
+
+            log.info("Tracing: RpcController: Start to convert to VO : " + System.currentTimeMillis());
             result.put("txnList", convertTxn2TxnVoWithAddress(txnList));
+            log.info("Tracing: RpcController: End convert to VO : " + System.currentTimeMillis());
 
         } else {
             txnCnt = nebTransactionService.countPendingTxnCnt(address);
@@ -231,6 +240,7 @@ public class RpcController {
         long totalPage = txnCnt / PAGE_SIZE + 1;
         result.put("totalPage", !isPending && totalPage > 20 ? 20 : totalPage);
         result.put("maxDisplayCnt", txnCnt > 500 ? 500 : txnCnt);
+        log.info("Tracing: RpcController: End get transaction list : " + System.currentTimeMillis());
         return result;
     }
 
