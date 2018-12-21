@@ -472,9 +472,9 @@
 
     .vue-dashboard .accounts-chart {
         position: absolute;
-        top: 0px;
-        width: calc(100% - 48px);
-        height: 100%;
+        top: 90px;
+        width: calc(100% - 30px);
+        height: 240px;
         margin-left: 30px;
     }
 
@@ -937,7 +937,6 @@
                                 // let date = new Date(value);
                                 // return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                             },
-                            // fontSize: 11
                         }
                     },
                     yAxis: {
@@ -949,7 +948,6 @@
                                 color: '#B2B2B2'
                             },
                             // margin: 30,
-                            // fontSize: 11
                         },
                         axisTick: {
                             show: false
@@ -1013,7 +1011,7 @@
                 
                 let vm = this;
                 var options = {
-                    grid: { x: '0', y: '90', width: '100%', height: '220', containLabel: true },
+                    grid: { left: '20', bottom: '50', right: '17', top: '10', containLabel: false },
                     xAxis: {
                         data: dates,
                         axisLine: {
@@ -1031,12 +1029,11 @@
                                 return vm.shortDate(new Number(value));
                                 // let date = new Date(new Number(value));
                                 // return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
-                            },
-                            fontSize: 11
+                            }
                         }
                     },
                     yAxis: {
-                        min: Math.floor(nums[0] / 1000) * 1000 - 3000,
+                        min: 250000,//Math.floor(nums[0] / 1000) * 1000 - 3000,
                         axisLine: {
                             show: false
                         },
@@ -1047,8 +1044,7 @@
                             margin: -10,
                             formatter: function (value) {
                                 return value / 1000 + 'k';
-                            },
-                            fontSize: 11
+                            }
                         },
                         axisTick: {
                             show: false
@@ -1057,7 +1053,8 @@
                             show: false
                         },
                         // splitNumber: 5,
-                        minInterval: 3000
+                        maxInterval: 2000,
+                        // minInterval: 3000
                     },
                     series: {
                         type: 'line',
