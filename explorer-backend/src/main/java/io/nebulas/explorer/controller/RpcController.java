@@ -342,22 +342,25 @@ public class RpcController {
 
     private Integer getTxCountByDay(DateTime day) {
         log.info("Tracing: Start getTxCountByDay : " + System.currentTimeMillis());
-        log.info("Tracing: Start to find in neb_tx_count_by_day : " + System.currentTimeMillis());
-        NebTxCountByDay countByDay = nebTxCountByDayService.getByDay(day.toDate());
-        log.info("Tracing: End find in neb_tx_count_by_day : " + System.currentTimeMillis());
-        if (countByDay == null) {
-            log.info("Tracing: Record in neb_tx_count_by_day not exist! Start to count with neb_transaction : " + System.currentTimeMillis());
-            countByDay = new NebTxCountByDay();
-            countByDay.setDay(day.toDate());
-            int count = nebTransactionService.countTxCountByDate(day.toDate());
-            countByDay.setCount(count);
-            final NebTxCountByDay newRecord = countByDay;
-            log.info("Tracing: Record in neb_tx_count_by_day not exist! End count with neb_transaction : " + System.currentTimeMillis());
-            DB_UPDATE_EXECUTOR.submit(() -> {
-                log.info("Tracing: Record in neb_tx_count_by_day not exist! Start to insert new record : " + System.currentTimeMillis() + " : " + Thread.currentThread().getName());
-                nebTxCountByDayService.insert(newRecord);
-                log.info("Tracing: Record in neb_tx_count_by_day not exist! End insert new record : " + System.currentTimeMillis() + " : " + Thread.currentThread().getName());
-            });
+        NebTxCountByDay countByDay;
+        synchronized (lock1) {
+            log.info("Tracing: Start to find in neb_tx_count_by_day : " + System.currentTimeMillis());
+            countByDay = nebTxCountByDayService.getByDay(day.toDate());
+            log.info("Tracing: End find in neb_tx_count_by_day : " + System.currentTimeMillis());
+            if (countByDay == null) {
+                log.info("Tracing: Record in neb_tx_count_by_day not exist! Start to count with neb_transaction : " + System.currentTimeMillis());
+                countByDay = new NebTxCountByDay();
+                countByDay.setDay(day.toDate());
+                int count = nebTransactionService.countTxCountByDate(day.toDate());
+                countByDay.setCount(count);
+                final NebTxCountByDay newRecord = countByDay;
+                log.info("Tracing: Record in neb_tx_count_by_day not exist! End count with neb_transaction : " + System.currentTimeMillis());
+                DB_UPDATE_EXECUTOR.submit(() -> {
+                    log.info("Tracing: Record in neb_tx_count_by_day not exist! Start to insert new record : " + System.currentTimeMillis() + " : " + Thread.currentThread().getName());
+                    nebTxCountByDayService.insert(newRecord);
+                    log.info("Tracing: Record in neb_tx_count_by_day not exist! End insert new record : " + System.currentTimeMillis() + " : " + Thread.currentThread().getName());
+                });
+            }
         }
         log.info("Tracing: End getTxCountByDay : " + System.currentTimeMillis());
         return countByDay.getCount();
