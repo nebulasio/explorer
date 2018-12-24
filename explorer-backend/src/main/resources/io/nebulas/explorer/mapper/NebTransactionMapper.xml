@@ -88,7 +88,7 @@
     <select id="countTxByDay" parameterType="map" resultType="java.lang.Byte">
         SELECT `status`
         FROM `neb_transaction`
-        WHERE `timestamp`>=#{dayStart,jdbcType=TIMESTAMP} and `timestamp`<#{dayEnd,jdbcType=TIMESTAMP}
+        WHERE `timestamp`<![CDATA[ >= ]]>#{dayStart,jdbcType=TIMESTAMP} and `timestamp`<![CDATA[ < ]]>#{dayEnd,jdbcType=TIMESTAMP}
     </select>
 
     <select id="countTxnCntByFromAndTo" parameterType="map" resultType="java.lang.Long">
@@ -226,22 +226,6 @@
         WHERE `to` in
         <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
         GROUP BY `to`
-    </select>
-
-    <select id="countTxCntGroupByTimestamp" parameterType="map" resultType="java.util.Map">
-        SELECT
-          LEFT(`timestamp`,10) AS `ts`,
-          COUNT(1) AS `cnt`
-        FROM `neb_transaction`
-        WHERE `timestamp` BETWEEN #{from,jdbcType=TIMESTAMP} and #{to,jdbcType=TIMESTAMP}
-        GROUP BY LEFT(`timestamp`,10)
-    </select>
-
-    <select id="getTxTimeList" parameterType="map" resultType="java.util.Date">
-        SELECT
-          `timestamp`
-        FROM `neb_transaction`
-        WHERE `timestamp` BETWEEN #{from,jdbcType=TIMESTAMP} and #{to,jdbcType=TIMESTAMP}
     </select>
 
     <select id="countTotalTxnCnt" resultType="java.lang.Long">
