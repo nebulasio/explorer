@@ -236,7 +236,7 @@
                                             <span class="font-size-15-normal">Contract</span>
                                         </div>
                                     </div>
-                                    <img class="icon24" v-if="o.type==='call'" src="../../static/img/ic_tx_type_contract.png" />
+                                    <img class="icon24" v-if="o.type==='call'" src="../../static/img/icon_tx_type_contract.png" />
                                 </div>
                                 <vue-blockies v-if="o.to" v-bind:address='o.to'></vue-blockies>
                                 <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.to === $route.params.id">{{ o.to }}</span>

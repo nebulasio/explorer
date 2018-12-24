@@ -301,7 +301,7 @@
                         <div v-if="validTokens.length > 1" class="dropdown-menu">
                             <div class="dropdown-item text-right" v-for="(token, i) in validTokens" :key=i
                             @click='displayToken = token;'>
-                                {{ tokenAmount(token.balance, token.decimal) }} {{ token.tokenName }}
+                                {{ tokenAmount(token.balance, token.decimal).short4digi() }} {{ token.tokenName }}
                             </div>
                         </div>
                     </td>
@@ -394,7 +394,7 @@
                                             <span class="font-size-15-normal">Contract</span>
                                         </div>
                                     </div>
-                                    <img class="icon24" v-if="o.type==='call'" src="../../static/img/ic_tx_type_contract.png" />
+                                    <img class="icon24" v-if="o.type==='call'" src="../../static/img/icon_tx_type_contract.png" />
                                 </div>
                                 <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                                 <span class="fromTo font-size-14-normal font-color-000000" v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>

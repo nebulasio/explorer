@@ -81,7 +81,7 @@
             <div class="align-items-center info-and-pagination mt20 row">
                 <div class="col info font-color-000000 font-size-24-bold">
                     {{ numberAddComma(totalTxs) }} transactions found
-                    <span v-if="totalTxs > 10000" class="font-color-555555 font-size-16-normal" style="vertical-align: text-bottom;">(showing the last 500 records)</span>
+                    <span v-if="totalTxs > 500" class="font-color-555555 font-size-16-normal" style="vertical-align: text-bottom;">(showing the last 500 records)</span>
                 </div>
             </div>
 
@@ -140,7 +140,7 @@
                                         <span class="font-size-15-normal">Contract</span>
                                     </div>
                                 </div>
-                                <img class="icon24" v-if="o.type==='call'" src="../../static/img/ic_tx_type_contract.png" />
+                                <img class="icon24" v-if="o.type==='call'" src="../../static/img/icon_tx_type_contract.png"/>
                             </div>
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                             <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span>
