@@ -1,5 +1,6 @@
 package io.nebulas.explorer.service.blockchain;
 
+import io.nebulas.explorer.domain.NebTxCountByDay;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.model.vo.StatVo;
 import org.joda.time.LocalDate;
@@ -17,17 +18,16 @@ import java.util.Map;
 public class NebStatService {
 
     @Autowired
-    private NebTransactionService nebTransactionService;
-    @Autowired
     private NebAddressService nebAddressService;
+    @Autowired
+    private NebTxCountByDayService nebTxCountByDayService;
 
     public StatVo stat() {
         Date yesterdayDate = LocalDate.now().plusDays(-1).toDate();
-        String yesterday = LocalDate.fromDateFields(yesterdayDate).toString("yyyy-MM-dd");
-        Map<String, Long> txMap = nebTransactionService.countTxCntGroupMapByTimestamp(yesterdayDate, LocalDate.now().toDate());
+        NebTxCountByDay txCountByDay = nebTxCountByDayService.getByDay(yesterdayDate);
         Map<NebAddressTypeEnum, Long> addrMap = nebAddressService.countAccountGroupByType();
         return StatVo.builder()
-                .dailyTxCount(txMap.containsKey(yesterday) ? txMap.get(yesterday) : new Long(0))
+                .dailyTxCount(txCountByDay==null ? 0L : (long) txCountByDay.getCount())
                 .contractCount(addrMap.get(NebAddressTypeEnum.CONTRACT) == null ? new Long(0) : addrMap.get(NebAddressTypeEnum.CONTRACT))
                 .addrCount(addrMap.get(NebAddressTypeEnum.NORMAL) == null ? new Long(0) : addrMap.get(NebAddressTypeEnum.NORMAL))
                 .build();
