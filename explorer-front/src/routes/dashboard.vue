@@ -1119,7 +1119,6 @@
             api.getStaticInfo(o => this.staticInfo = o);                            //合约数量、地址数量。。。
 
             this.shortIntervalID = setInterval(() => {
-                console.log('request api');
                 api.getTx({ type: "latest" }, o => this.txs = o);                   //最新一波 tx
                 api.getBlock({ type: "newblock" }, o => {                           //获取最新一个 block
                     try {

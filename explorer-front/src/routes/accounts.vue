@@ -13,12 +13,13 @@
 <template>
     <!-- https://etherscan.io/accounts  -->
     <div class="vue-accounts fullfill">
-        <vue-bread title="All Accounts"></vue-bread>
+        <vue-bread title="Top Accounts By NAS Balance"></vue-bread>
         <div style="height: 60px;"></div>
         <div class="container">
             <div class="align-items-center info-and-pagination row">
                 <div class="col font-color-000000 font-size-24-bold">
-                    {{ numberAddComma(totalAccounts) }} accounts found
+                    {{ numberAddComma(totalAccounts) }} accounts found 
+                <span v-if="totalAccounts > 10000" class="font-color-555555 font-size-16-normal" style="vertical-align: text-bottom;">(showing the last 10,000 top accounts)</span>
                 </div>
             </div>
             <div style="height: 30px;"></div>
@@ -42,7 +43,7 @@
                         </td>
                         <td class="text-right font-color-000000">{{ short(o.balance) }}</td>
                         <td class="text-right font-color-000000">{{ new Number(o.percentage).toFixed(8) }}%</td>
-                        <td class="text-right font-color-000000" style="padding-right: 24px;">{{ o.txCnt }}</td>
+                        <td class="text-right font-color-000000" style="padding-right: 24px;">{{ numberAddComma(o.txCnt) }}</td>
                     </tr>
                 </table>
             </div>

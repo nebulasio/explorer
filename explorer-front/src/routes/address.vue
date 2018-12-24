@@ -255,7 +255,7 @@
                             <span class="font-color-0057FF">{{ toShortStr(contract.from) }}</span>
                             <div class="popover">Creator Address</div>
                         </router-link>
-                        at tx
+                        at txn
                         <router-link v-bind:to='fragApi + "/tx/" + contract.hash'
                                      title="Creator TxHash">
                             <span class="font-color-0057FF">{{ toShortStr(contract.hash) }}</span>
@@ -317,18 +317,18 @@
                 <div v-if="txs.length" class="align-items-center row title">
                     <div class=col>
                         <span class="font-size-16-bold font-color-000000">
-                        Latest {{ txs.length }} txns from total {{ numberAddComma(obj.txCnt) }} transactions ( + {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn )
+                        Latest {{ txs.length }} {{ txs.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(obj.txCnt) }} {{ obj.txCnt > 1 ? 'transactions' : 'transaction' }} ( + {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} {{ obj.pendingTxCnt > 1 ? 'PendingTxns' : 'PendingTxn' }} )
                         </span>
                     </div>
                     <div class=col-auto>
                         <router-link class="btn btn-link link-text-16px"
                                      v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All
-                            {{obj.txCnt }} Txn
+                            {{ obj.txCnt }} {{ obj.txCnt > 1 ? 'Txns' : 'Txn' }}
                         </router-link>
                         |
                         <router-link class="btn btn-link link-text-16px"
                                      v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>
-                            View All {{ obj.pendingTxCnt == 0? 0 : obj.pendingTxCnt }} PendingTxn
+                            View All {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} {{ obj.pendingTxCnt > 1 ? 'PendingTxns' : 'PendingTxn' }}
                         </router-link>
                     </div>
                 </div>
@@ -428,13 +428,13 @@
                 <div v-if="nrc20TxList.length" class="align-items-center row title">
                     <div class=col>
                         <span class="c000">
-                        Latest {{ nrc20TxList.length }} txns from total {{ numberAddComma(nrc20TxCnt) }} transactions
+                        Latest {{ nrc20TxList.length }} {{ nrc20TxList.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(nrc20TxCnt) }} {{ nrc20TxCnt > 1 ? 'transactions' : 'transaction' }}
                         </span>
                     </div>
                     <div class=col-auto>
                         <router-link class="btn btn-link link-text-16px"
-                                     v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>View
-                            All {{ nrc20TxCnt }} Txn
+                                     v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>
+                                     View All {{ nrc20TxCnt }} {{ nrc20TxCnt > 1 ? 'Txns' : 'Txn'}}
                         </router-link>
                     </div>
                 </div>

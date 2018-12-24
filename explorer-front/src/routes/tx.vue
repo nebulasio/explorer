@@ -88,15 +88,15 @@
                             <td class="font-color-555555" style="padding-left: 24px;">TxReceipt Status:</td>
                             <td v-if="tx.status === 0">
                                 <img class="icon18" src="../../static/img/ic_tx_status_failed.png" />
-                                <span class="font-color-F04434" style="margin-left: 10px;">fail ( {{ tx.executeError }} )</span>
+                                <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ tx.executeError }} )</span>
                             </td>
                             <td v-else-if="tx.status === 1">
                                 <img class="icon18" src="../../static/img/ic_tx_status_success.png" />
-                                <span class="font-color-4560E6" style="margin-left: 10px;">success</span>
+                                <span class="font-color-4560E6" style="margin-left: 10px;">Success</span>
                             </td>
                             <td v-else>
                                 <img class="icon18" src="../../static/img/ic_tx_status_pending.png" />
-                                <span class="font-color-000000" style="margin-left: 10px;">pending</span>
+                                <span class="font-color-000000" style="margin-left: 10px;">Pending</span>
                             </td>
                         </tr>
                         <tr>
@@ -127,12 +127,12 @@
                         </tr>
                         <tr>
                             <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">To:</td>
-                            <td class=monospace v-if=isTokenTransfer>
+                            <td class=monospace v-if="tx.type == 'call'">
                                 <span class="font-color-000000 font-size-16-normal">Contract</span>
                                 <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
                                     <span style="margin-left: 20px;" class="font-size-16-normal font-color-0057FF">{{ tx.to.hash }}</span>
                                 </router-link>
-                                <div class="token-name font-size-16-normal font-color-000000" style="margin-left: 14px;" v-if="tx.tokenName">{{ '(' + tx.tokenName + ' Token)' }}</div>
+                                <div class="token-name font-size-16-normal font-color-000000" style="margin-left: 14px;" v-if="isTokenTransfer && tx.tokenName">{{ '(' + tx.tokenName + ' Token)' }}</div>
                             </td>
                             <td v-else>
                                 <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
@@ -213,7 +213,7 @@
                             <td v-else class=code>
                                 <a href=# v-on:click.prevent="showOrHidePayload()" style="display: flex; text-decoration: none;">
                                     <span class="font-size-16-normal font-color-0057FF">View all</span>
-                                    <img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowPayload ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
+                                    <img style="margin-left: 12px; margin-top: 4.5px;" class="icon16" v-bind:src="isShowPayload ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
                                 </a>
                             </td>
                         </tr>
