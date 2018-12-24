@@ -338,7 +338,7 @@ public class NebTransactionService {
     }
 
     public int countTxCountByDate(Date day){
-        DateTime dateTime = new DateTime(day.toInstant());
+        DateTime dateTime = new DateTime(day.getTime());
         DateTime dayStart = dateTime.withTimeAtStartOfDay();
         DateTime dayEnd = dayStart.plusDays(1).minusSeconds(1);
         List<Byte> list = nebTransactionMapper.countTxByDay(dayStart, dayEnd);
