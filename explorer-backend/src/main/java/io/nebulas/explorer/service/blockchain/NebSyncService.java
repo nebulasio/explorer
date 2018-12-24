@@ -7,6 +7,7 @@ import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionTypeEnum;
 import io.nebulas.explorer.grpc.GrpcChannelService;
+import io.nebulas.explorer.service.redis.RedisService;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
@@ -47,6 +48,8 @@ public class NebSyncService {
     private ContractTokenBalanceService contractTokenBalanceService;
     @Autowired
     private ContractTokenService contractTokenService;
+    @Autowired
+    private RedisService redisService;
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
 
@@ -106,6 +109,11 @@ public class NebSyncService {
     private void syncBlock(Block block, boolean isLib) {
         if (null == block) {
             return;
+        }
+
+        if (!isLib) {
+            //交易数量累加到redis - tx_today_yyyy-MM-dd
+            redisService.plusCount(block);
         }
 
         syncAddresses(Arrays.asList(block.getMiner(), block.getCoinbase()));

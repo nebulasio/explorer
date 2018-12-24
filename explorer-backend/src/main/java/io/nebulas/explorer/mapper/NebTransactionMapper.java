@@ -4,6 +4,7 @@ import io.nebulas.explorer.domain.BlockSummary;
 import io.nebulas.explorer.domain.NebTransaction;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.joda.time.DateTime;
 
 import java.util.Date;
 import java.util.List;
@@ -37,6 +38,8 @@ public interface NebTransactionMapper {
 
     long countNrc20TxnCntByFromAndTo(String addressHash);
 
+    List<Byte> countTxByDay(@Param("from") DateTime dayStart, @Param("from") DateTime dayEnd);
+
     NebTransaction getByHash(String hash);
 
     NebTransaction getByContractAddress(String contractAddress);
@@ -62,8 +65,4 @@ public interface NebTransactionMapper {
     List<Map<String, String>> countTxnCntMapByFrom(List<String> addressHashes);
 
     List<Map<String, String>> countTxnCntMapByTo(List<String> addressHashes);
-
-    List<Map<String, Object>> countTxCntGroupByTimestamp(@Param("from") String from, @Param("to") String to);
-
-    List<Date> getTxTimeList(@Param("from") String from, @Param("to") String to);
 }

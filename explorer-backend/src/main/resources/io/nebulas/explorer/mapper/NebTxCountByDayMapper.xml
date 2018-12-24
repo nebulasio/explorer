@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.nebulas.explorer.mapper.NebTxCountByDayMapper">
+        <resultMap id="ResultMap" type="io.nebulas.explorer.domain.NebTxCountByDay">
+                <id column="id" property="id" jdbcType="INTEGER" />
+                <result column="day" property="day" jdbcType="DATE" />
+                <result column="count" property="count" jdbcType="BIGINT" />
+        </resultMap>
+
+        <sql id="columns">
+            id, `day`, `count`
+        </sql>
+
+        <select id="getByDay" resultMap="ResultMap" parameterType="java.util.Date">
+                select
+                <include refid="columns" />
+                from neb_tx_count_by_day
+                where `day`=#{day,jdbcType=DATE}
+        </select>
+
+        <insert id="insert" parameterType="NebTxCountByDay">
+                insert into neb_tx_count_by_day (`day`, `count`)
+                values (#{day,jdbcType=DATE}, #{count,jdbcType=INTEGER})
+        </insert>
+
+        <update id="update" parameterType="NebTxCountByDay">
+                update neb_tx_count_by_day
+                set `count`=#{count,jdbcType=INTEGER}
+                where `day`=#{day,jdbcType=DATE}
+        </update>
+</mapper>

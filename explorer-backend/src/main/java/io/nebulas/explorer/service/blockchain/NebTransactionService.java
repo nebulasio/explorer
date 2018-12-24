@@ -16,6 +16,7 @@ import io.nebulas.explorer.util.DecodeUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -336,55 +337,13 @@ public class NebTransactionService {
         return nebTransactionMapper.findTxnOrderById((page - 1) * pageSize, pageSize);
     }
 
-    /**
-     * calculate transaction count between date
-     *
-     * @param from begin date
-     * @param to   end date
-     * @return transaction count map
-     */
-    public Map<String, Long> countTxCntGroupMapByTimestamp(Date from, Date to) {
-        long day60 = 60*24*60*60*1000L;
-        if (to.getTime() - from.getTime() > day60) {
-            return new HashMap<>();
-        }
-        List<Date> txCntResultList = nebTransactionMapper.getTxTimeList(parseDate2Str(from), parseDate2Str(to));
-
-        Map<String, Long> txCntMap = new HashMap<>(60);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        for (Date date : txCntResultList) {
-            String key = dateFormat.format(date);
-            if (txCntMap.containsKey(key)) {
-                txCntMap.put(key, txCntMap.get(key)+1);
-            } else {
-                txCntMap.put(key, 1L);
-            }
-        }
-
-        Map<String, Long> resultMap = Maps.newLinkedHashMap();
-        LocalDate fromLocalDate = LocalDate.fromDateFields(from);
-        LocalDate toLocalDate = LocalDate.fromDateFields(to);
-        while (fromLocalDate.isBefore(toLocalDate)) {
-            String dateStr = fromLocalDate.toString("yyyy-MM-dd");
-            Long cnt = txCntMap.get(dateStr);
-            resultMap.put(dateStr, (null != cnt ? cnt : 0));
-            fromLocalDate = fromLocalDate.plusDays(1);
-        }
-        return resultMap;
+    public int countTxCountByDate(Date day){
+        DateTime dateTime = new DateTime(day.toInstant());
+        DateTime dayStart = dateTime.withTimeAtStartOfDay();
+        DateTime dayEnd = dayStart.plusDays(1).minusSeconds(1);
+        List<Byte> list = nebTransactionMapper.countTxByDay(dayStart, dayEnd);
+        return list.size();
     }
-
-    public long countTxToday(){
-
-        List<Date> txCntResultList = nebTransactionMapper.getTxTimeList(LocalDate.now(DateTimeZone.UTC).toDateTimeAtStartOfDay().toString(), LocalDateTime.now(DateTimeZone.UTC).toString());
-        if (txCntResultList.size() == 0){
-            return 0;
-        }
-        long todayTxCount = txCntResultList.size();
-        return todayTxCount;
-    }
-
-
-
 
     /**
      * According to block height calculate transaction information

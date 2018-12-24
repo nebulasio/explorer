@@ -85,6 +85,12 @@
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR} AND type = 'call'
     </select>
 
+    <select id="countTxByDay" parameterType="map" resultType="java.lang.Byte">
+        SELECT `status`
+        FROM `neb_transaction`
+        WHERE `timestamp`>=#{dayStart,jdbcType=TIMESTAMP} and `timestamp`<#{dayEnd,jdbcType=TIMESTAMP}
+    </select>
+
     <select id="countTxnCntByFromAndTo" parameterType="map" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_transaction`
