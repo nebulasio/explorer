@@ -86,9 +86,9 @@
     </select>
 
     <select id="countTxByDay" parameterType="map" resultType="java.lang.Byte">
-        SELECT `status`
+        SELECT `hash`
         FROM `neb_transaction`
-        WHERE `timestamp`<![CDATA[ >= ]]>#{dayStart,jdbcType=TIMESTAMP} and `timestamp`<![CDATA[ < ]]>#{dayEnd,jdbcType=TIMESTAMP}
+        WHERE `timestamp` between #{dayStart,jdbcType=TIMESTAMP} and #{dayEnd,jdbcType=TIMESTAMP}
     </select>
 
     <select id="countTxnCntByFromAndTo" parameterType="map" resultType="java.lang.Long">
