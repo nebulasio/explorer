@@ -23,8 +23,8 @@ public class RedisService {
     private final NebTxCountByDayMapper nebTxCountByDayMapper;
 
     public void plusCount(Block block) {
-        DateTime today = DateTime.now(DateTimeZone.UTC).withTimeAtStartOfDay().toDateTime(DateTimeZone.getDefault());
-        DateTime blockTime = new DateTime(block.getTimestamp(), DateTimeZone.UTC).withTimeAtStartOfDay().toDateTime(DateTimeZone.getDefault());
+        DateTime today = DateTime.now(DateTimeZone.UTC).withTimeAtStartOfDay();
+        DateTime blockTime = new DateTime(block.getTimestamp(), DateTimeZone.UTC).withTimeAtStartOfDay();
         String format = today.toString("yyyy-MM-dd");
         String blockTimeFormat = blockTime.toString("yyyy-MM-dd");
         if (!format.equals(blockTimeFormat)) {
