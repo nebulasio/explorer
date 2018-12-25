@@ -317,7 +317,7 @@ public class RpcController {
     @RequestMapping("/tx/cnt_static")
     public JsonResult txStatic() {
         log.info("Tracing: Start api cnt_static : " + System.currentTimeMillis());
-        DateTime to = DateTime.now(DateTimeZone.UTC).withTimeAtStartOfDay().toDateTime(DateTimeZone.getDefault());
+        DateTime to = DateTime.now(DateTimeZone.UTC).withTimeAtStartOfDay();
         DateTime from = to.minusDays(15);
         Map<String, Integer> result = new HashMap<>(15);
         while (from.isBefore(to)) {
@@ -369,7 +369,7 @@ public class RpcController {
     @RequestMapping("/tx/cnt_today")
     public JsonResult txToday() {
         log.info("Tracing: Start api cnt_today : " + System.currentTimeMillis());
-        DateTime today = DateTime.now(DateTimeZone.UTC).withTimeAtStartOfDay().toDateTime(DateTimeZone.getDefault());
+        DateTime today = DateTime.now(DateTimeZone.UTC).withTimeAtStartOfDay();
         String format = today.toString("yyyy-MM-dd");
         String redisKey = "tx_today_" + format;
         String cache = redisTemplate.opsForValue().get(redisKey);
