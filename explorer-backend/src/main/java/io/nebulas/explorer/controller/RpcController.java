@@ -210,26 +210,36 @@ public class RpcController {
         }
 
         JsonResult result = JsonResult.success();
-        long txnCnt;
+        long txnCnt = 0L;
         if (!isPending) {
             if (page > 20) {
                 page = 20;
             }
-            String keyTotalCountInRedis = "tx_count_total";
-            String cacheInRedis = redisTemplate.opsForValue().get(keyTotalCountInRedis);
-            if (cacheInRedis == null) {
-                synchronized (lockForTxCountTotal) {
-                    String cacheInSync = redisTemplate.opsForValue().get(keyTotalCountInRedis);
-                    if (cacheInSync == null) {
-                        txnCnt = nebTransactionService.countTxnCnt(block, address);
-                        redisTemplate.opsForValue().set(keyTotalCountInRedis, Long.toString(txnCnt));
-                        redisTemplate.opsForValue().getOperations().expire(keyTotalCountInRedis, 24, TimeUnit.HOURS);
-                    } else {
-                        txnCnt = Long.parseLong(cacheInSync);
-                    }
-                }
+
+            if (type.equals("block")) {
+                txnCnt = nebTransactionService.countTxnCntByBlockHeight(block);
+            } else if (type.equals("address")) {
+                long countSend = nebTransactionService.countTxByFrom(address);
+                long countReceive = nebTransactionService.countTxByTo(address);
+                long countToSelf = nebTransactionService.countTxByFromAndTo(address);
+                txnCnt = countSend + countReceive - countToSelf;
             } else {
-                txnCnt = Long.parseLong(cacheInRedis);
+                String keyTotalCountInRedis = "tx_count_total";
+                String cacheInRedis = redisTemplate.opsForValue().get(keyTotalCountInRedis);
+                if (cacheInRedis == null) {
+                    synchronized (lockForTxCountTotal) {
+                        String cacheInSync = redisTemplate.opsForValue().get(keyTotalCountInRedis);
+                        if (cacheInSync == null) {
+                            txnCnt = nebTransactionService.countTxnCnt(block, address);
+                            redisTemplate.opsForValue().set(keyTotalCountInRedis, Long.toString(txnCnt));
+                            redisTemplate.opsForValue().getOperations().expire(keyTotalCountInRedis, 24, TimeUnit.HOURS);
+                        } else {
+                            txnCnt = Long.parseLong(cacheInSync);
+                        }
+                    }
+                } else {
+                    txnCnt = Long.parseLong(cacheInRedis);
+                }
             }
 
             List<NebTransaction> txnList = nebTransactionService.findTxnByCondition(block, address, page, PAGE_SIZE);
