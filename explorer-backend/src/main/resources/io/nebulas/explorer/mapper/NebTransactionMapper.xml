@@ -85,8 +85,8 @@
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR} AND type = 'call'
     </select>
 
-    <select id="countTxByDay" parameterType="map" resultType="java.lang.Byte">
-        SELECT `hash`
+    <select id="countTxByDay" parameterType="map" resultType="java.lang.Integer">
+        SELECT count(*)
         FROM `neb_transaction`
         WHERE `timestamp` between #{dayStart,jdbcType=TIMESTAMP} and #{dayEnd,jdbcType=TIMESTAMP}
     </select>

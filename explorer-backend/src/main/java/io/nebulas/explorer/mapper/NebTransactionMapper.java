@@ -38,7 +38,7 @@ public interface NebTransactionMapper {
 
     long countNrc20TxnCntByFromAndTo(String addressHash);
 
-    List<String> countTxByDay(@Param("dayStart") String dayStart, @Param("dayEnd") String dayEnd);
+    int countTxByDay(@Param("dayStart") String dayStart, @Param("dayEnd") String dayEnd);
 
     NebTransaction getByHash(String hash);
 
