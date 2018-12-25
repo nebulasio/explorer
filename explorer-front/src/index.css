@@ -162,6 +162,16 @@ label {
 .dropdown-menu {
     font-size: 14px;
     border-radius: 0px;
+    border: none;
+    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item:hover {
+    color: #0057FF;
+}
+
+.dropdown-item:active {
+    color: #ffffff;
 }
 
 .navbar-dark .navbar-nav .nav-link {

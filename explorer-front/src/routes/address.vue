@@ -222,7 +222,9 @@
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
     <div class="vue-address fullfill" v-bind:triggerComputed=urlChange>
         <vue-bread v-bind:title='navTitle'
-                   v-bind:subtitle="$route.params.id"></vue-bread>
+                   v-bind:subtitle="$route.params.id"
+                   v-bind:blockies="$route.params.id">
+        </vue-bread>
         <div class="container explorer-table-container" v-if=obj>
 
             <table class="explorer-table">

@@ -42,8 +42,9 @@
                                 <span class="font-size-14-normal font-color-0057FF">{{ numberAddComma(o.txnCnt) }}</span>
                             </router-link>
                         </td>
-                        <td class=monospace  style="padding-left: 60px">
+                        <td class="monospace" style="padding-left: 60px">
                             <router-link v-bind:to='fragApi + "/address/" + o.miner.hash'>
+                                <vue-blockies class="d-inline" v-bind:address='o.miner.alias || o.miner.hash'></vue-blockies>
                                 <span class="font-size-14-normal font-color-0057FF">{{ o.miner.alias || o.miner.hash }}</span>
                             </router-link>
                         </td>
@@ -71,7 +72,8 @@
     module.exports = {
         components: {
             "vue-bread": require("@/components/vue-bread").default,
-            "vue-pagination": require("@/components/vue-pagination").default
+            "vue-pagination": require("@/components/vue-pagination").default,
+            "vue-blockies": require("@/components/vue-blockies").default
         },
         data() {
             return {
