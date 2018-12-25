@@ -1,6 +1,5 @@
 package io.nebulas.explorer.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -8,8 +7,6 @@ import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.domain.extention.ContractTransaction;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionStatusEnum;
-import io.nebulas.explorer.enums.NebTransactionTypeEnum;
-import io.nebulas.explorer.mapper.NebContractTokenMapper;
 import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.model.PageIterator;
 import io.nebulas.explorer.model.vo.AddressVo;
@@ -28,9 +25,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -38,12 +33,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -90,8 +83,9 @@ public class RpcController {
     private static final long HOUR_1 = 60 * 60 * 1000;
     private static Set<String> allContractTokens = new HashSet<>(8);
 
-    private final byte[] lock1 = new byte[0];
-    private final byte[] lock2 = new byte[0];
+    private final byte[] lockForTxCountByDay = new byte[0];
+    private final byte[] lockForTxCountToday = new byte[0];
+    private final byte[] lockForTxCountTotal = new byte[0];
 
     @RequestMapping(value = "/market_cap", method = RequestMethod.GET)
     public JsonResult marketCap() {
@@ -206,7 +200,6 @@ public class RpcController {
                                    @RequestParam(value = "a", required = false) String address,
                                    @RequestParam(value = "p", required = false, defaultValue = "1") int page,
                                    @RequestParam(value = "isPending", required = false, defaultValue = "false") Boolean isPending) {
-        log.info("Tracing: RpcController: Start to get transaction list : " + System.currentTimeMillis());
         String type;
         if (null != block) {
             type = "block";
@@ -222,26 +215,25 @@ public class RpcController {
             if (page > 20) {
                 page = 20;
             }
-            log.info("Tracing: RpcController: Start to count total of transaction : " + System.currentTimeMillis());
             String keyTotalCountInRedis = "tx_count_total";
             String cacheInRedis = redisTemplate.opsForValue().get(keyTotalCountInRedis);
-            if (cacheInRedis==null){
-                txnCnt = nebTransactionService.countTxnCnt(block, address);
-                redisTemplate.opsForValue().set(keyTotalCountInRedis, Long.toString(txnCnt));
-                redisTemplate.opsForValue().getOperations().expire(keyTotalCountInRedis, 24, TimeUnit.HOURS);
+            if (cacheInRedis == null) {
+                synchronized (lockForTxCountTotal) {
+                    String cacheInSync = redisTemplate.opsForValue().get(keyTotalCountInRedis);
+                    if (cacheInSync == null) {
+                        txnCnt = nebTransactionService.countTxnCnt(block, address);
+                        redisTemplate.opsForValue().set(keyTotalCountInRedis, Long.toString(txnCnt));
+                        redisTemplate.opsForValue().getOperations().expire(keyTotalCountInRedis, 24, TimeUnit.HOURS);
+                    } else {
+                        txnCnt = Long.parseLong(cacheInSync);
+                    }
+                }
             } else {
                 txnCnt = Long.parseLong(cacheInRedis);
             }
-            log.info("Tracing: RpcController: End count total of transaction : " + System.currentTimeMillis());
 
-            log.info("Tracing: RpcController: Start to get list of transaction : page " + page + " : " + System.currentTimeMillis());
             List<NebTransaction> txnList = nebTransactionService.findTxnByCondition(block, address, page, PAGE_SIZE);
-            log.info("Tracing: RpcController: End list of transaction : " + System.currentTimeMillis());
-
-            log.info("Tracing: RpcController: Start to convert to VO : " + System.currentTimeMillis());
             result.put("txnList", convertTxn2TxnVoWithAddress(txnList));
-            log.info("Tracing: RpcController: End convert to VO : " + System.currentTimeMillis());
-
         } else {
             txnCnt = nebTransactionService.countPendingTxnCnt(address);
             List<NebPendingTransaction> pendingTxnList = nebTransactionService.findPendingTxnByCondition(address, page, PAGE_SIZE);
@@ -255,7 +247,6 @@ public class RpcController {
         long totalPage = txnCnt / PAGE_SIZE + 1;
         result.put("totalPage", !isPending && totalPage > 20 ? 20 : totalPage);
         result.put("maxDisplayCnt", txnCnt > 500 ? 500 : txnCnt);
-        log.info("Tracing: RpcController: End get transaction list : " + System.currentTimeMillis());
         return result;
     }
 
@@ -324,7 +315,6 @@ public class RpcController {
 
     @RequestMapping("/tx/cnt_static")
     public JsonResult txStatic() {
-        log.info("Tracing: Start api cnt_static : " + System.currentTimeMillis());
         DateTime to = DateTime.now(DateTimeZone.UTC).withTimeAtStartOfDay();
         DateTime from = to.minusDays(15);
         Map<String, Integer> result = new HashMap<>(15);
@@ -344,55 +334,48 @@ public class RpcController {
             from = from.plusDays(1);
         }
 
-        log.info("Tracing: End api cnt_static : " + System.currentTimeMillis());
         return JsonResult.success(result);
     }
 
     private Integer getTxCountByDay(DateTime day) {
-        log.info("Tracing: Start getTxCountByDay : " + System.currentTimeMillis());
         NebTxCountByDay countByDay;
-        synchronized (lock1) {
-            log.info("Tracing: Start to find in neb_tx_count_by_day : " + System.currentTimeMillis());
+        synchronized (lockForTxCountByDay) {
             countByDay = nebTxCountByDayService.getByDay(day.toDate());
-            log.info("Tracing: End find in neb_tx_count_by_day : " + System.currentTimeMillis());
             if (countByDay == null) {
-                log.info("Tracing: Record in neb_tx_count_by_day not exist! Start to count with neb_transaction : " + System.currentTimeMillis());
                 countByDay = new NebTxCountByDay();
                 countByDay.setDay(day.toDate());
                 int count = nebTransactionService.countTxCountByDate(day.toDate());
                 countByDay.setCount(count);
                 final NebTxCountByDay newRecord = countByDay;
-                log.info("Tracing: Record in neb_tx_count_by_day not exist! End count with neb_transaction : " + System.currentTimeMillis());
                 DB_UPDATE_EXECUTOR.submit(() -> {
-                    log.info("Tracing: Record in neb_tx_count_by_day not exist! Start to insert new record : " + System.currentTimeMillis() + " : " + Thread.currentThread().getName());
                     nebTxCountByDayService.insert(newRecord);
-                    log.info("Tracing: Record in neb_tx_count_by_day not exist! End insert new record : " + System.currentTimeMillis() + " : " + Thread.currentThread().getName());
                 });
             }
         }
-        log.info("Tracing: End getTxCountByDay : " + System.currentTimeMillis());
         return countByDay.getCount();
     }
 
     @RequestMapping("/tx/cnt_today")
     public JsonResult txToday() {
-        log.info("Tracing: Start api cnt_today : " + System.currentTimeMillis());
         DateTime today = DateTime.now(DateTimeZone.UTC).withTimeAtStartOfDay();
         String format = today.toString("yyyy-MM-dd");
         String redisKey = "tx_today_" + format;
         String cache = redisTemplate.opsForValue().get(redisKey);
         int count = 0;
         if (cache != null) {
-            log.info("Tracing: count transactions of today : Get it from redis!");
             count = Integer.parseInt(cache);
         } else {
-            log.info("Tracing: Start to count transactions of today : " + System.currentTimeMillis());
-            count = nebTransactionService.countTxCountByDate(today.toDate());
-            redisTemplate.opsForValue().set(redisKey, Integer.toString(count));
-            log.info("Tracing: End api cnt_today : " + System.currentTimeMillis());
+            synchronized (lockForTxCountToday) {
+                String cacheInSync = redisTemplate.opsForValue().get(redisKey);
+                if (cacheInSync == null) {
+                    count = nebTransactionService.countTxCountByDate(today.toDate());
+                    redisTemplate.opsForValue().set(redisKey, Integer.toString(count));
+                } else {
+                    count = Integer.parseInt(cacheInSync);
+                }
+            }
         }
 
-        log.info("Tracing: End api cnt_today : " + System.currentTimeMillis());
         return JsonResult.success(count);
     }
 
