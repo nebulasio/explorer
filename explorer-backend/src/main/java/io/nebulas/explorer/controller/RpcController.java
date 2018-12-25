@@ -216,13 +216,16 @@ public class RpcController {
                 page = 20;
             }
 
+            List<NebTransaction> txnList;
             if (type.equals("block")) {
                 txnCnt = nebTransactionService.countTxnCntByBlockHeight(block);
+                txnList = nebTransactionService.findTxnByBlockHeight(block);
             } else if (type.equals("address")) {
                 long countSend = nebTransactionService.countTxByFrom(address);
                 long countReceive = nebTransactionService.countTxByTo(address);
                 long countToSelf = nebTransactionService.countTxByFromAndTo(address);
                 txnCnt = countSend + countReceive - countToSelf;
+                txnList = nebTransactionService.findTxnByCondition(block, address, page, PAGE_SIZE);
             } else {
                 String keyTotalCountInRedis = "tx_count_total";
                 String cacheInRedis = redisTemplate.opsForValue().get(keyTotalCountInRedis);
@@ -240,9 +243,10 @@ public class RpcController {
                 } else {
                     txnCnt = Long.parseLong(cacheInRedis);
                 }
+                txnList = nebTransactionService.findTxnByCondition(block, address, page, PAGE_SIZE);
             }
 
-            List<NebTransaction> txnList = nebTransactionService.findTxnByCondition(block, address, page, PAGE_SIZE);
+
             result.put("txnList", convertTxn2TxnVoWithAddress(txnList));
         } else {
             txnCnt = nebTransactionService.countPendingTxnCnt(address);
