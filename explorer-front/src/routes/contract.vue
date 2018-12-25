@@ -248,11 +248,11 @@
 
                 <div v-if="txs.length" class="align-items-center justify-content-end row title mt20">
                     <div class=col-auto>
-                        <router-link class="btn btn-link link-text-16px" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id'>
+                        <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id'>
                             <span class="font-color-0057FF font-size-16-normal">View All {{ obj.transactionCount }} {{ obj.transactionCount > 1 ? 'Txns' : 'Txn' }}</span>
                         </router-link>
                         |
-                        <router-link class="btn btn-link link-text-16px" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id + "&isPending=true" '>
+                        <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id + "&isPending=true" '>
                             <span class="font-color-0057FF font-size-16-normal">View All {{ obj.pendingTransactionCount }} {{ obj.pendingTransactionCount > 1 ? 'PendingTxns' : 'PendingTxn' }}</span>
                         </router-link>
                     </div>

@@ -314,14 +314,14 @@
                         </span>
                     </div>
                     <div class=col-auto>
-                        <router-link class="btn btn-link link-text-16px"
-                                     v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All
-                            {{ obj.txCnt }} {{ obj.txCnt > 1 ? 'Txns' : 'Txn' }}
+                        <router-link class="btn btn-link"
+                                     v-bind:to='fragApi + "/txs?a=" + $route.params.id'>
+                            <span class="font-color-0057FF font-size-16-normal">View All {{ obj.txCnt }} {{ obj.txCnt > 1 ? 'Txns' : 'Txn' }}</span>
                         </router-link>
                         |
-                        <router-link class="btn btn-link link-text-16px"
+                        <router-link class="btn btn-link"
                                      v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>
-                            View All {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} {{ obj.pendingTxCnt > 1 ? 'PendingTxns' : 'PendingTxn' }}
+                            <span class="font-color-0057FF font-size-16-normal">View All {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} {{ obj.pendingTxCnt > 1 ? 'PendingTxns' : 'PendingTxn' }}</span>
                         </router-link>
                     </div>
                 </div>
@@ -399,14 +399,14 @@
 
                 <div v-if="txs.length" class="align-items-center justify-content-end row title mt20">
                     <div class=col-auto>
-                        <router-link class="btn btn-link link-text-16px"
-                                     v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All
-                            {{ obj.txCnt }} {{ obj.txCnt > 1 ? 'Txns' : 'Txn' }}
+                        <router-link class="btn btn-link"
+                                     v-bind:to='fragApi + "/txs?a=" + $route.params.id'>
+                            <span class="font-color-0057FF font-size-16-normal">View All {{ obj.txCnt }} {{ obj.txCnt > 1 ? 'Txns' : 'Txn' }}</span>
                         </router-link>
                         |
-                        <router-link class="btn btn-link link-text-16px"
+                        <router-link class="btn btn-link"
                                      v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>
-                            View All {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} {{ obj.pendingTxCnt > 1 ? 'PendingTxns' : 'PendingTxn' }}
+                            <span class="font-color-0057FF font-size-16-normal">View All {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} {{ obj.pendingTxCnt > 1 ? 'PendingTxns' : 'PendingTxn' }}</span>
                         </router-link>
                     </div>
                 </div>
@@ -431,9 +431,9 @@
                         </span>
                     </div>
                     <div class=col-auto>
-                        <router-link class="btn btn-link link-text-16px"
+                        <router-link class="btn btn-link"
                                      v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>
-                                     View All {{ nrc20TxCnt }} {{ nrc20TxCnt > 1 ? 'Txns' : 'Txn'}}
+                            <span class="font-color-0057FF font-size-16-normal">View All {{ nrc20TxCnt }} {{ nrc20TxCnt > 1 ? 'Txns' : 'Txn'}}</span>
                         </router-link>
                     </div>
                 </div>
@@ -498,6 +498,15 @@
                             </td>
                         </tr>
                     </table>
+                </div>
+
+                <div v-if="nrc20TxList.length" class="align-items-center justify-content-end row title mt20">
+                    <div class=col-auto>
+                        <router-link class="btn btn-link"
+                                     v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>
+                            <span class="font-color-0057FF font-size-16-normal">View All {{ nrc20TxCnt }} {{ nrc20TxCnt > 1 ? 'Txns' : 'Txn'}}</span>
+                        </router-link>
+                    </div>
                 </div>
 
                 <div v-if=isNoNrc20Tx
