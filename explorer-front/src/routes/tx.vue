@@ -88,7 +88,7 @@
                             <td class="font-color-555555" style="padding-left: 24px;">TxReceipt Status:</td>
                             <td v-if="tx.status === 0">
                                 <img class="icon18" src="../../static/img/ic_tx_status_failed.png" />
-                                <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ tx.executeError }} )</span>
+                                <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ errMsg }} )</span>
                             </td>
                             <td v-else-if="tx.status === 1">
                                 <img class="icon18" src="../../static/img/ic_tx_status_success.png" />
@@ -306,6 +306,15 @@
                 var amount = BigNumber(JSON.parse(JSON.parse(this.tx.data).Args)[1]);
                 var decimals = BigNumber('1e+' + this.tx.decimal);
                 return amount.div(decimals).toFormat();
+            },
+            errMsg() {
+                if (this.tx.executeError === 'insufficient balance') {
+                    return 'Insufficient Balance';
+                } else if (this.tx.executeError === 'insufficient gas') {
+                    return 'Out of Gas';
+                } else {
+                    return 'Contract Execution Failed';
+                }
             }
         },
         data() {
