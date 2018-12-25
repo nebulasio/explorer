@@ -46,16 +46,7 @@ Number.prototype.pad = function (size) {
 
 String.prototype.shortAmount = function () {
     let dot_index = this.indexOf('.');
-    if (dot_index === -1) return this;
-    if (this.length - 1 - dot_index > 4) {
-        return this.slice(0, dot_index + 4 + 1);
-    }
-    return this;
-}
-
-String.prototype.short4digi = function () {
-    let dot_index = this.indexOf('.');
-    if (dot_index === -1) return this;
+    if (dot_index === -1) return this + '.0000';
     if (this.length - 1 - dot_index > 4) {
         return this.slice(0, dot_index + 4 + 1);
     } else if (this.length - 1 - dot_index < 4) {

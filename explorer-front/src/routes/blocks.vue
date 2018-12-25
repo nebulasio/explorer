@@ -39,7 +39,7 @@
                         </td>
                         <td class="text-right">
                             <router-link v-bind:to='fragApi + "/txs?block=" + o.height'>
-                                <span class="font-size-14-normal font-color-0057FF">{{ o.txnCnt }}</span>
+                                <span class="font-size-14-normal font-color-0057FF">{{ numberAddComma(o.txnCnt) }}</span>
                             </router-link>
                         </td>
                         <td class=monospace  style="padding-left: 60px">

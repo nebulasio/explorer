@@ -32,18 +32,18 @@
                         <th class=text-right>Percentage</th>
                         <th class=text-right style="padding-right: 24px;">TxCount</th>
                     </tr>
-                    <tr v-for="(o, i) in arr" :key="i" class="font-size-14-normal">
+                    <tr v-for="(o, i) in arr" :key="i" class="font-size-14-normal monospace">
                         <td style="padding-left: 24px;" class="font-color-000000">{{ o.rank }}</td>
                         <td class="tdxxxwddd">
                             <vue-blockies v-bind:address='o.hash'></vue-blockies>
                             <router-link v-bind:to='fragApi + "/address/" + o.hash'>
-                                <span class="font-color-0057FF monospace">{{ o.hash }}</span>
+                                <span class="font-color-0057FF">{{ o.hash }}</span>
                             </router-link>
                             <span v-show=o.alias> | {{ o.alias }}</span>
                         </td>
-                        <td class="text-right font-color-000000">{{ short(o.balance) }}</td>
-                        <td class="text-right font-color-000000">{{ new Number(o.percentage).toFixed(8) }}%</td>
-                        <td class="text-right font-color-000000" style="padding-right: 24px;">{{ numberAddComma(o.txCnt) }}</td>
+                        <td class="text-right font-color-555555">{{ nasAmount(o.balance) }}</td>
+                        <td class="text-right font-color-555555">{{ new Number(o.percentage).toFixed(4) }}%</td>
+                        <td class="text-right font-color-555555" style="padding-right: 24px;">{{ numberAddComma(o.txCnt) }}</td>
                     </tr>
                 </table>
             </div>
@@ -138,11 +138,11 @@
                     query: { p: n }
                 });
             },
-            short(n) {
+            nasAmount(n) {
                 BigNumber.config({DECIMAL_PLACES: 8})
                 var amount = BigNumber(n);
                 var decimals = BigNumber('1e+18');
-                return amount.div(decimals).toFormat() + ' NAS';
+                return amount.div(decimals).toFormat().shortAmount() + ' NAS';
             }
         },
         mounted() {

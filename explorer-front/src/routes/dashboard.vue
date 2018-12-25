@@ -115,7 +115,7 @@
     }
 
     .vue-dashboard .item-shadow {
-        box-shadow:-10px 10px 20px 0px rgba(30,30,30,0.05);
+        box-shadow:10px 10px 20px 0px rgba(30,30,30,0.05);
     }
 
     .vue-dashboard .row1 .flex-item {

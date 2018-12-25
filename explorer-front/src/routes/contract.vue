@@ -168,7 +168,7 @@
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
                         <span class="font-size-16-bold font-color-000000">
-                            Latest {{ txs.length }} txns from total {{ numberAddComma(obj.transactionCount) }} transactions ( + {{ obj.pendingTransactionCount }} PendingTxn )
+                            Latest {{ txs.length }} {{ txs.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(obj.transactionCount) }} {{ obj.transactionCount > 1 ? 'transactions' : 'transaction' }} ( + {{ numberAddComma(obj.pendingTransactionCount) }} {{ obj.pendingTransactionCount > 1 ? 'PendingTxns' : 'PendingTxn' }} )
                         </span>
                     </div>
                     <div class=col-auto>
@@ -196,7 +196,7 @@
                             <th class="text-right">[TxFee]</th>
                         </tr>
 
-                        <tr v-for="o in txs" v-if="o" :key="o.hash">
+                        <tr class="monospace" v-for="o in txs" v-if="o" :key="o.hash">
                             <td>
                                 <img v-if="o.status===0" class="icon40" src="../../static/img/ic_tx_failed.png"/>
                             </td>
@@ -228,14 +228,7 @@
                             <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                                 <div style="width: 10px;"></div>
                                 <div class="container-tip">
-                                    <div class="tip">
-                                        <div class="content">
-                                            <div class="arrow">
-                                                <em></em>
-                                            </div>
-                                            <span class="font-size-15-normal">Contract</span>
-                                        </div>
-                                    </div>
+                                    <span class="tip font-size-15-normal shadow">Smart Contract</span>
                                     <img class="icon24" v-if="o.type==='call'" src="../../static/img/icon_tx_type_contract.png" />
                                 </div>
                                 <vue-blockies v-if="o.to" v-bind:address='o.to'></vue-blockies>
@@ -244,7 +237,7 @@
                                     <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.to }}</span>
                                 </router-link>
                             </td>
-                            <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.contractValue, decimal) }} {{ obj.tokenName }}</td>
+                            <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.contractValue, decimal).shortAmount() }} {{ obj.tokenName }}</td>
                             <td  class="text-right font-size-14-normal font-color-555555">
                                 <span v-if=o.blockHeight>{{ toWei(o.txFee) }}</span>
                                 <i v-else>(pending)</i>
@@ -255,11 +248,11 @@
 
                 <div v-if="txs.length" class="align-items-center justify-content-end row title mt20">
                     <div class=col-auto>
-                        <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id'>
+                        <router-link class="btn btn-link link-text-16px" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id'>
                             <span class="font-color-0057FF font-size-16-normal">View All {{ obj.transactionCount }} {{ obj.transactionCount > 1 ? 'Txns' : 'Txn' }}</span>
                         </router-link>
                         |
-                        <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id + "&isPending=true" '>
+                        <router-link class="btn btn-link link-text-16px" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id + "&isPending=true" '>
                             <span class="font-color-0057FF font-size-16-normal">View All {{ obj.pendingTransactionCount }} {{ obj.pendingTransactionCount > 1 ? 'PendingTxns' : 'PendingTxn' }}</span>
                         </router-link>
                     </div>
@@ -283,15 +276,15 @@
                             <th class="text-right" style="padding-right: 24px;">Percentage</th>
                         </tr>
 
-                        <tr v-for="o in holders" :key="o.address">
+                        <tr class="monospace" v-for="o in holders" :key="o.address">
                             <td class="font-color-000000 font-size-14-bold" style="padding-left: 24px;">{{ o.rank }}</td>
                             <td class="tdxxxwddd">
                                 <router-link style="max-width: 400px;" v-bind:to='fragApi + "/address/" + o.address'>
-                                    <span class="font-size-14-normal font-color-0057FF monospace">{{ o.address }}</span>
+                                    <span class="font-size-14-normal font-color-0057FF">{{ o.address }}</span>
                                 </router-link>
                             </td>
-                            <td class="text-right font-size-14-normal font-color-555555">{{ tokenAmount(o.balance, decimal) }}</td>
-                            <td class="text-right font-size-14-normal font-color-000000" style="padding-right: 24px;">{{ new Number(o.percentage).toFixed(8) }}%</td>
+                            <td class="text-right font-size-14-normal font-color-555555">{{ tokenAmount(o.balance, decimal).shortAmount() }}</td>
+                            <td class="text-right font-size-14-normal font-color-555555" style="padding-right: 24px;">{{ new Number(o.percentage).toFixed(4) }}%</td>
                         </tr>
                     </table>
                 </div>
@@ -434,7 +427,7 @@
                 BigNumber.config({ DECIMAL_PLACES: decimals })
                 var amount = BigNumber(n);
                 var decimals = BigNumber('1e+' + decimals);
-                return amount.div(decimals).toFormat().shortAmount();
+                return amount.div(decimals).toFormat();
             }
         },
         watch: {

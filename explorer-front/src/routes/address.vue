@@ -111,13 +111,6 @@
         line-height: 20px;
     }
 
-    .link-text-16px {
-        font-size: 16px;
-        /* font-family: OpenSans; */
-        color: rgba(0, 87, 255, 1);
-        line-height: 20px;
-    }
-
     .txs-hash {
         max-width: 185px;
         overflow: hidden;
@@ -301,7 +294,7 @@
                         <div v-if="validTokens.length > 1" class="dropdown-menu">
                             <div class="dropdown-item text-right" v-for="(token, i) in validTokens" :key=i
                             @click='displayToken = token;'>
-                                {{ tokenAmount(token.balance, token.decimal).short4digi() }} {{ token.tokenName }}
+                                {{ tokenAmount(token.balance, token.decimal) }} {{ token.tokenName }}
                             </div>
                         </div>
                     </td>
@@ -386,14 +379,7 @@
                             <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                                 <div style="width: 10px;"></div>
                                 <div class="container-tip">
-                                    <div class="tip">
-                                        <div class="content">
-                                            <div class="arrow">
-                                                <em></em>
-                                            </div>
-                                            <span class="font-size-15-normal">Contract</span>
-                                        </div>
-                                    </div>
+                                    <span class="tip font-size-15-normal shadow">Smart Contract</span>
                                     <img class="icon24" v-if="o.type==='call'" src="../../static/img/icon_tx_type_contract.png" />
                                 </div>
                                 <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
@@ -411,6 +397,19 @@
                     </table>
                 </div>
 
+                <div v-if="txs.length" class="align-items-center justify-content-end row title mt20">
+                    <div class=col-auto>
+                        <router-link class="btn btn-link link-text-16px"
+                                     v-bind:to='fragApi + "/txs?a=" + $route.params.id'>View All
+                            {{ obj.txCnt }} {{ obj.txCnt > 1 ? 'Txns' : 'Txn' }}
+                        </router-link>
+                        |
+                        <router-link class="btn btn-link link-text-16px"
+                                     v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>
+                            View All {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} {{ obj.pendingTxCnt > 1 ? 'PendingTxns' : 'PendingTxn' }}
+                        </router-link>
+                    </div>
+                </div>
 
                 <div v-if="txs.length===0" v-show="tab===1"
                      style="left: 0;right:0;text-align:center; padding-top: 76px; padding-bottom: 80px;">

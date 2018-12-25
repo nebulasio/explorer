@@ -132,15 +132,8 @@
                         <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                             <div style="width: 10px;"></div>
                             <div class="container-tip">
-                                <div class="tip">
-                                    <div class="content">
-                                        <div class="arrow">
-                                            <em></em>
-                                        </div>
-                                        <span class="font-size-15-normal">Contract</span>
-                                    </div>
-                                </div>
-                                <img class="icon24" v-if="o.type==='call'" src="../../static/img/icon_tx_type_contract.png"/>
+                                <span class="tip font-size-15-normal shadow">Smart Contract</span>
+                                <img class="icon24" v-if="o.type==='call'" src="../../static/img/icon_tx_type_contract.png" />
                             </div>
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                             <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span>

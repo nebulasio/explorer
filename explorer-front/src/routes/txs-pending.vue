@@ -9,7 +9,7 @@
         <vue-bread title="Pending Transactions"></vue-bread>
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info font-color-000000 font-size-24-bold">{{ numberAddComma(totalTxs) }} Pending txns found</div>
+                <div class="col info font-color-000000 font-size-24-bold">{{ numberAddComma(totalTxs) }} Pending {{ totalTxs > 1 ? 'txns' : 'txn' }} found</div>
             </div>
             <div class="explorer-table-container">
                 <table v-if="arr.length" class="mt20 explorer-table list-table">
@@ -47,14 +47,7 @@
                         <td class=tdxxxwddd>
                             <div style="width: 10px;"></div>
                             <div class="container-tip">
-                                <div class="tip">
-                                    <div class="content">
-                                        <div class="arrow">
-                                            <em></em>
-                                        </div>
-                                        <span class="font-size-15-normal">Contract</span>
-                                    </div>
-                                </div>
+                                <span class="tip font-size-15-normal shadow">Smart Contract</span>
                                 <img class="icon24" v-if="o.type==='call'" src="../../static/img/icon_tx_type_contract.png" />
                             </div>
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>

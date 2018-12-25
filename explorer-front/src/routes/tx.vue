@@ -211,9 +211,9 @@
                                 {{ tx.data }}
                             </td>
                             <td v-else class=code>
-                                <a href=# v-on:click.prevent="showOrHidePayload()" style="display: flex; text-decoration: none;">
-                                    <span class="font-size-16-normal font-color-0057FF">View all</span>
-                                    <img style="margin-left: 12px; margin-top: 4.5px;" class="icon16" v-bind:src="isShowPayload ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
+                                <a href=# v-on:click.prevent="showOrHidePayload()" style="text-decoration: none;">
+                                    <span class="align-middle font-size-16-normal font-color-0057FF">View all</span>
+                                    <img style="margin-left: 12px;" class="icon16" v-bind:src="isShowPayload ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
                                 </a>
                             </td>
                         </tr>

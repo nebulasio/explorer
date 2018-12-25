@@ -46,6 +46,15 @@
         flex: 1;
     }
 
+    .vue-header .dropdown-menu {
+        border: none;
+        box-shadow:0px 6px 10px 0px rgba(0,0,0,0.1);
+    }
+
+    .vue-header .dropdown-item:hover {
+        color: #0057FF;
+    }
+
     .vue-header .navbar-nav .nav-item:nth-child(2) a img {
         margin-top: -5px;
     }
