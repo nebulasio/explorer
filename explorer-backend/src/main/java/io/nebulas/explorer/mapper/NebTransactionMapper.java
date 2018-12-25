@@ -28,6 +28,12 @@ public interface NebTransactionMapper {
 
     long countTxnCntByFromTo(String addressHash);
 
+    long countTxnByFrom(String addressHash);
+
+    long countTxnByTo(String addressHash);
+
+    long countTxnByFromAndTo(String addressHash);
+
     long countContractTransfer(String contract);
 
     long countTxnCntByFromAndTo(@Param("from") String from, @Param("to") String to);

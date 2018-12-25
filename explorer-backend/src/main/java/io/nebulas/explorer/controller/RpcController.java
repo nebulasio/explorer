@@ -655,7 +655,17 @@ public class RpcController {
         result.put("address", address);
         result.put("tokens", tokenBalanceList);
         result.put("pendingTxCnt", pendingTxCnt);
-        result.put("txCnt", nebTransactionService.countTxnCntByFromTo(address.getHash()));
+
+        String countSendStr = address.getNonce();
+        long countSend = 0;
+        try {
+            countSend = Long.parseLong(countSendStr);
+        } catch (Exception e) {
+        }
+        long countReceive = nebTransactionService.countTxByTo(address.getHash());
+        long countSelfToSelf = nebTransactionService.countTxByFromAndTo(address.getHash());
+
+        result.put("txCnt", countSend + countReceive - countSelfToSelf);
         result.put("mintedBlkCnt", nebBlockService.countBlockCntByMiner(address.getHash()));
 
         List<NebBlock> blkList = nebBlockService.findNebBlockByMiner(address.getHash(), 1, PAGE_SIZE);

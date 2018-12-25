@@ -79,6 +79,24 @@
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
     </select>
 
+    <select id="countTxnByFrom" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_transaction`
+        WHERE `from` = #{addressHash,jdbcType=VARCHAR}
+    </select>
+
+    <select id="countTxnByTo" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_transaction`
+        WHERE `to` = #{addressHash,jdbcType=VARCHAR}
+    </select>
+
+    <select id="countTxnByFromAndTo" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM `neb_transaction`
+        WHERE `from` = #{addressHash,jdbcType=VARCHAR} and `to` = #{addressHash,jdbcType=VARCHAR}
+    </select>
+
     <select id="countNrc20TxnCntByFromAndTo" parameterType="java.lang.String" resultType="java.lang.Long">
         SELECT count(1)
         FROM `neb_transaction`

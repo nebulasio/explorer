@@ -124,6 +124,27 @@ public class NebTransactionService {
         return nebTransactionMapper.countTxnCntByFromTo(addressHash);
     }
 
+    public long countTxByFrom(String address) {
+        if (StringUtils.isEmpty(address)) {
+            return 0L;
+        }
+        return nebTransactionMapper.countTxnByFrom(address);
+    }
+
+    public long countTxByTo(String address) {
+        if (StringUtils.isEmpty(address)) {
+            return 0L;
+        }
+        return nebTransactionMapper.countTxnByTo(address);
+    }
+
+    public long countTxByFromAndTo(String address) {
+        if (StringUtils.isEmpty(address)) {
+            return 0L;
+        }
+        return nebTransactionMapper.countTxnByFromAndTo(address);
+    }
+
     /**
      * according address hash to query pending transaction total count
      *
