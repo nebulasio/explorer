@@ -102,7 +102,7 @@
                         <tr>
                             <td class="font-color-555555" style="vertical-align: top; padding-top: 12px;">Dynasty</td>
                             <td style="vertical-align: top; padding-top: 12px;">
-                                <a href=# v-on:click="showOrHideDynasty()" style="display: flex; text-decoration: none;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                <a class="d-flex align-items-center" href=# v-on:click="showOrHideDynasty()" style="text-decoration: none;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                     <span class="font-color-0057FF">
                                         Show Dynasty
                                     </span>
