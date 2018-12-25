@@ -223,7 +223,15 @@ public class RpcController {
                 page = 20;
             }
             log.info("Tracing: RpcController: Start to count total of transaction : " + System.currentTimeMillis());
-            txnCnt = nebTransactionService.countTxnCnt(block, address);
+            String keyTotalCountInRedis = "tx_count_total";
+            String cacheInRedis = redisTemplate.opsForValue().get(keyTotalCountInRedis);
+            if (cacheInRedis==null){
+                txnCnt = nebTransactionService.countTxnCnt(block, address);
+                redisTemplate.opsForValue().set(keyTotalCountInRedis, Long.toString(txnCnt));
+                redisTemplate.opsForValue().getOperations().expire(keyTotalCountInRedis, 24, TimeUnit.HOURS);
+            } else {
+                txnCnt = Long.parseLong(cacheInRedis);
+            }
             log.info("Tracing: RpcController: End count total of transaction : " + System.currentTimeMillis());
 
             log.info("Tracing: RpcController: Start to get list of transaction : page " + page + " : " + System.currentTimeMillis());
