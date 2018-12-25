@@ -379,7 +379,7 @@ public class RpcController {
             count = Integer.parseInt(cache);
         } else {
             log.info("Tracing: Start to count transactions of today : " + System.currentTimeMillis());
-            count = getTxCountByDay(today);
+            count = nebTransactionService.countTxCountByDate(today.toDate());
             redisTemplate.opsForValue().set(redisKey, Integer.toString(count));
             log.info("Tracing: End api cnt_today : " + System.currentTimeMillis());
         }

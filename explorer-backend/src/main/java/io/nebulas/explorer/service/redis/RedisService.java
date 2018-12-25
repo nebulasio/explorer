@@ -25,10 +25,6 @@ public class RedisService {
     @Qualifier("customStringTemplate")
     private final StringRedisTemplate redisTemplate;
 
-    private final NebTxCountByDayMapper nebTxCountByDayMapper;
-
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-
     public void plusCount(Block block) {
         log.info("Tracing: RedisService: Start to plusCount of block : " + block.getHeight());
         DateTime today = DateTime.now(DateTimeZone.UTC).withTimeAtStartOfDay();
@@ -46,11 +42,7 @@ public class RedisService {
         int txCountInBlock = block.getTransactions().size();
         log.info("Tracing: RedisService: cache in redis : " + cache);
         log.info("Tracing: RedisService: txCountInBlock : " + txCountInBlock);
-        NebTxCountByDay nebTxCountByDay = null;
         if (cache == null) {
-            nebTxCountByDay = new NebTxCountByDay();
-            nebTxCountByDay.setDay(today.toDate());
-            nebTxCountByDay.setCount(txCountInBlock);
             redisTemplate.opsForValue().set(redisKey, txCountInBlock + "");
             DateTime yesterday = today.minusDays(1);
             String yesterdayFormat = yesterday.toString("yyyy-MM-dd");
@@ -61,19 +53,7 @@ public class RedisService {
                 int cachedCount = Integer.parseInt(cache);
                 int countNow = cachedCount + txCountInBlock;
                 redisTemplate.opsForValue().set(redisKey, Integer.toString(countNow));
-                nebTxCountByDay = new NebTxCountByDay();
-                nebTxCountByDay.setDay(today.toDate());
-                nebTxCountByDay.setCount(countNow);
             }
-        }
-        log.info("Tracing: RedisService: before db update : " + (nebTxCountByDay == null ? "null" : nebTxCountByDay.toString()));
-        if (nebTxCountByDay != null) {
-            final NebTxCountByDay finalObj = nebTxCountByDay;
-            executorService.submit(() -> {
-                log.info("Tracing: RedisService: db update : " + finalObj.toString() + "; Thread: " + Thread.currentThread().getName());
-                nebTxCountByDayMapper.update(finalObj);
-            });
-
         }
     }
 }
