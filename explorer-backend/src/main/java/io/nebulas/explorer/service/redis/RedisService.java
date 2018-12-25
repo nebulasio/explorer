@@ -32,7 +32,7 @@ public class RedisService {
     public void plusCount(Block block) {
         log.info("Tracing: RedisService: Start to plusCount of block : " + block.getHeight());
         DateTime today = DateTime.now(DateTimeZone.UTC).withTimeAtStartOfDay();
-        DateTime blockTime = new DateTime(block.getTimestamp(), DateTimeZone.UTC).withTimeAtStartOfDay();
+        DateTime blockTime = new DateTime(block.getTimestamp()*1000, DateTimeZone.UTC).withTimeAtStartOfDay();
         String format = today.toString("yyyy-MM-dd");
         String blockTimeFormat = blockTime.toString("yyyy-MM-dd");
         log.info("Tracing: RedisService: Start to compare date between : Today - " + format + "; BlockDate - " + blockTimeFormat);
