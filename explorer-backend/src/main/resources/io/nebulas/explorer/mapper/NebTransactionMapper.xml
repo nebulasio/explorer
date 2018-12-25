@@ -177,7 +177,7 @@
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} or `to` = #{addressHash,jdbcType=VARCHAR}
-        ORDER BY `block_height` DESC,`tx_seq` DESC
+--         ORDER BY `block_height` DESC,`tx_seq` DESC
         LIMIT ${offset},${limit}
     </select>
 
@@ -186,7 +186,7 @@
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
         WHERE `from` = #{addressHash,jdbcType=VARCHAR} and `to` = #{contractAddress,jdbcType=VARCHAR} AND `type` = 'call'
-        ORDER BY `block_height` DESC,`tx_seq` DESC
+--         ORDER BY `block_height` DESC,`tx_seq` DESC
     </select>
 
     <select id="findTxnByContract" parameterType="map" resultMap="BaseResultMap">
@@ -194,7 +194,7 @@
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
         WHERE (`from` = #{contractAddress,jdbcType=VARCHAR} or `to` = #{contractAddress,jdbcType=VARCHAR}) AND `type` = 'call'
-        ORDER BY `block_height` DESC,`tx_seq` DESC
+--         ORDER BY `block_height` DESC,`tx_seq` DESC
     </select>
 
 
