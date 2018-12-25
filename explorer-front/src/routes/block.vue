@@ -111,7 +111,7 @@
                                 <div class="collapse" id="collapseExample">
                                     <div class="card card-body dynasty">
                                         <router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>
-                                            <span class="font-size-16-bold font-color-0057FF monospace"> {{ dynasty }}</span>
+                                            <span class="font-size-16-bold font-color-0057FF"> {{ dynasty }}</span>
                                         </router-link>
                                     </div>
                                 </div>

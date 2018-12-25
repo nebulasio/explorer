@@ -196,7 +196,7 @@
                             <th class="text-right">[TxFee]</th>
                         </tr>
 
-                        <tr class="monospace" v-for="o in txs" v-if="o" :key="o.hash">
+                        <tr v-for="o in txs" v-if="o" :key="o.hash">
                             <td>
                                 <img v-if="o.status===0" class="icon40" src="../../static/img/ic_tx_failed.png"/>
                             </td>
@@ -227,9 +227,9 @@
                             </td>
                             <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                                 <div style="width: 10px;"></div>
-                                <div class="container-tip">
+                                <div v-if="o.type==='call'" class="container-tip">
                                     <span class="tip font-size-15-normal shadow">Smart Contract</span>
-                                    <img class="icon24" v-if="o.type==='call'" src="../../static/img/icon_tx_type_contract.png" />
+                                    <img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
                                 </div>
                                 <vue-blockies v-if="o.to" v-bind:address='o.to'></vue-blockies>
                                 <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.to === $route.params.id">{{ o.to }}</span>
@@ -276,7 +276,7 @@
                             <th class="text-right" style="padding-right: 24px;">Percentage</th>
                         </tr>
 
-                        <tr class="monospace" v-for="o in holders" :key="o.address">
+                        <tr v-for="o in holders" :key="o.address">
                             <td class="font-color-000000 font-size-14-bold" style="padding-left: 24px;">{{ o.rank }}</td>
                             <td class="tdxxxwddd">
                                 <router-link style="max-width: 400px;" v-bind:to='fragApi + "/address/" + o.address'>

@@ -24,7 +24,7 @@
                         <th class=text-right>Value</th>
                     </tr>
                     <tr v-for="(o, i) in arr" :key="i">
-                        <td class="tdxxxwddd monospace">
+                        <td class="tdxxxwddd">
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
                                 <span class="font-color-0057FF font-size-14-normal">{{ o.hash }}</span>
                             </router-link>
@@ -46,9 +46,9 @@
                         </td>
                         <td class=tdxxxwddd>
                             <div style="width: 10px;"></div>
-                            <div class="container-tip">
+                            <div v-if="o.type==='call'" class="container-tip">
                                 <span class="tip font-size-15-normal shadow">Smart Contract</span>
-                                <img class="icon24" v-if="o.type==='call'" src="../../static/img/icon_tx_type_contract.png" />
+                                <img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
                             </div>
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                             <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>

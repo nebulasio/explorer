@@ -429,3 +429,7 @@ img:not([src]) {
 .container-tip:hover .tip {
     display: block;
 }
+
+.container-tip img {
+    margin-right: 10px;
+}

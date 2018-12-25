@@ -127,7 +127,7 @@
                         </tr>
                         <tr>
                             <td class="font-size-16-normal font-color-555555" style="padding-left: 24px;">To:</td>
-                            <td class=monospace v-if="tx.type == 'call'">
+                            <td v-if="tx.type == 'call'">
                                 <span class="font-color-000000 font-size-16-normal">Contract</span>
                                 <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
                                     <span style="margin-left: 20px;" class="font-size-16-normal font-color-0057FF">{{ tx.to.hash }}</span>

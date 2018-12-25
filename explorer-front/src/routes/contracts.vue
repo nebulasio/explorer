@@ -67,7 +67,7 @@
                         <td style="padding-left: 24px;" class="contract-hash">
                             <vue-blockies v-bind:address='o.hash'></vue-blockies>
                             <router-link v-bind:to='fragApi + "/address/" + o.hash'>
-                                <span class="hash-normal, monospace">{{ o.hash }}</span>
+                                <span class="hash-normal">{{ o.hash }}</span>
                             </router-link>
                         </td>
                         <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.balance) }} NAS</td>

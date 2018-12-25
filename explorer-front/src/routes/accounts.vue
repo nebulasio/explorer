@@ -32,7 +32,7 @@
                         <th class=text-right>Percentage</th>
                         <th class=text-right style="padding-right: 24px;">TxCount</th>
                     </tr>
-                    <tr v-for="(o, i) in arr" :key="i" class="font-size-14-normal monospace">
+                    <tr v-for="(o, i) in arr" :key="i" class="font-size-14-normal">
                         <td style="padding-left: 24px;" class="font-color-000000">{{ o.rank }}</td>
                         <td class="tdxxxwddd">
                             <vue-blockies v-bind:address='o.hash'></vue-blockies>
