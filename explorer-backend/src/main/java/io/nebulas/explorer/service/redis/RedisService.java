@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import io.nebulas.explorer.domain.NebTxCountByDay;
 import io.nebulas.explorer.mapper.NebTxCountByDayMapper;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class RedisService {
@@ -22,11 +27,15 @@ public class RedisService {
 
     private final NebTxCountByDayMapper nebTxCountByDayMapper;
 
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
     public void plusCount(Block block) {
+        log.info("Tracing: RedisService: Start to plusCount of block : " + block.getHeight());
         DateTime today = DateTime.now(DateTimeZone.UTC).withTimeAtStartOfDay();
         DateTime blockTime = new DateTime(block.getTimestamp(), DateTimeZone.UTC).withTimeAtStartOfDay();
         String format = today.toString("yyyy-MM-dd");
         String blockTimeFormat = blockTime.toString("yyyy-MM-dd");
+        log.info("Tracing: RedisService: Start to compare date between : Today - " + format + "; BlockDate - " + blockTimeFormat);
         if (!format.equals(blockTimeFormat)) {
             return;
         }
@@ -35,6 +44,8 @@ public class RedisService {
         String cache = redisTemplate.opsForValue().get(redisKey);
 
         int txCountInBlock = block.getTransactions().size();
+        log.info("Tracing: RedisService: cache in redis : " + cache);
+        log.info("Tracing: RedisService: txCountInBlock : " + txCountInBlock);
         NebTxCountByDay nebTxCountByDay = null;
         if (cache == null) {
             nebTxCountByDay = new NebTxCountByDay();
@@ -55,8 +66,14 @@ public class RedisService {
                 nebTxCountByDay.setCount(countNow);
             }
         }
+        log.info("Tracing: RedisService: before db update : " + (nebTxCountByDay == null ? "null" : nebTxCountByDay.toString()));
         if (nebTxCountByDay != null) {
-            nebTxCountByDayMapper.update(nebTxCountByDay);
+            final NebTxCountByDay finalObj = nebTxCountByDay;
+            executorService.submit(() -> {
+                log.info("Tracing: RedisService: db update : " + finalObj.toString() + "; Thread: " + Thread.currentThread().getName());
+                nebTxCountByDayMapper.update(finalObj);
+            });
+
         }
     }
 }
