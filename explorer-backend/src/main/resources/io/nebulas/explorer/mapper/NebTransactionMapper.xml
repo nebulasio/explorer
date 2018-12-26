@@ -185,11 +185,11 @@
     </select>
 
     <select id="findTxListByAddress" parameterType="map" resultMap="BaseResultMap">
-        <![CDATA[(
+        (
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
-        WHERE `timestamp` < #{lastTimestamp,jdbcType=TIMESTAMP} and `from` = #{address,jdbcType=VARCHAR}
+        WHERE `timestamp` <![CDATA[<]]> #{lastTimestamp,jdbcType=TIMESTAMP} and `from` = #{address,jdbcType=VARCHAR}
         ORDER BY `timestamp` DESC
         LIMIT ${limit}
         )
@@ -198,12 +198,11 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
-        WHERE `timestamp` < #{lastTimestamp,jdbcType=TIMESTAMP} and `to` = #{address,jdbcType=VARCHAR}
+        WHERE `timestamp` <![CDATA[<]]> #{lastTimestamp,jdbcType=TIMESTAMP} and `to` = #{address,jdbcType=VARCHAR}
         ORDER BY `timestamp` DESC
         LIMIT ${limit}
         )
         ORDER BY `timestamp` DESC LIMIT ${limit}
-        ]]>
     </select>
 
     <select id="findTxnByFromToAndCall" parameterType="map" resultMap="BaseResultMap">
