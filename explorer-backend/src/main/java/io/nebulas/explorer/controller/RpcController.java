@@ -259,7 +259,12 @@ public class RpcController {
         result.put("txnCnt", txnCnt);
         result.put("currentPage", page);
 
-        long totalPage = txnCnt / PAGE_SIZE + 1;
+        long remainder = txnCnt % PAGE_SIZE;
+        long totalPage = txnCnt / PAGE_SIZE;
+        if (remainder != 0) {
+            totalPage++;
+        }
+
         result.put("totalPage", !isPending && totalPage > 20 ? 20 : totalPage);
         result.put("maxDisplayCnt", txnCnt > 500 ? 500 : txnCnt);
         return result;
