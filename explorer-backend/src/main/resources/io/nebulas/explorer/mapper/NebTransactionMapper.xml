@@ -184,6 +184,28 @@
         LIMIT ${offset},${limit}
     </select>
 
+    <select id="findTxListByAddress" parameterType="map" resultMap="BaseResultMap">
+        <![CDATA[(
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `timestamp` < #{lastTimestamp,jdbcType=TIMESTAMP} and `from` = #{addressHash,jdbcType=VARCHAR}
+        ORDER BY `timestamp` DESC
+        LIMIT ${limit}
+        )
+        union
+        (
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `timestamp` < #{lastTimestamp,jdbcType=TIMESTAMP} and `to` = #{addressHash,jdbcType=VARCHAR}
+        ORDER BY `timestamp` DESC
+        LIMIT ${limit}
+        )
+        ORDER BY `timestamp` DESC LIMIT ${limit}
+        ]]>
+    </select>
+
     <select id="findTxnByFromToAndCall" parameterType="map" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>

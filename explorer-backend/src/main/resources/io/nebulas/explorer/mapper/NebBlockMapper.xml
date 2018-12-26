@@ -37,7 +37,7 @@
     </update>
 
     <select id="count" resultType="java.lang.Long">
-        select count(1)
+        select max(height)
         from neb_block
     </select>
 

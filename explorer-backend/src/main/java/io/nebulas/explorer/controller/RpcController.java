@@ -199,6 +199,7 @@ public class RpcController {
     public JsonResult transactions(@RequestParam(value = "block", required = false) Long block,
                                    @RequestParam(value = "a", required = false) String address,
                                    @RequestParam(value = "p", required = false, defaultValue = "1") int page,
+                                   @RequestParam(value = "p", required = false, defaultValue = "0") long lastTimestamp,
                                    @RequestParam(value = "isPending", required = false, defaultValue = "false") Boolean isPending) {
         String type;
         if (null != block) {
@@ -221,11 +222,17 @@ public class RpcController {
                 txnCnt = nebTransactionService.countTxnCntByBlockHeight(block);
                 txnList = nebTransactionService.findTxnByBlockHeight(block);
             } else if (type.equals("address")) {
+                Date lastDate;
+                if (lastTimestamp==0){
+                    lastDate = new Date();
+                } else {
+                    lastDate = new Date(lastTimestamp);
+                }
                 long countSend = nebTransactionService.countTxByFrom(address);
                 long countReceive = nebTransactionService.countTxByTo(address);
                 long countToSelf = nebTransactionService.countTxByFromAndTo(address);
                 txnCnt = countSend + countReceive - countToSelf;
-                txnList = nebTransactionService.findTxnByCondition(block, address, page, PAGE_SIZE);
+                txnList = nebTransactionService.findTxsByAddress(address, lastDate, PAGE_SIZE);
             } else {
                 String keyTotalCountInRedis = "tx_count_total";
                 String cacheInRedis = redisTemplate.opsForValue().get(keyTotalCountInRedis);

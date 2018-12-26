@@ -302,6 +302,10 @@ public class NebTransactionService {
         return nebTransactionMapper.findTxnByCondition(blockHeight, addressHash, (page - 1) * pageSize, pageSize);
     }
 
+    public List<NebTransaction> findTxsByAddress(String address, Date lastTimestamp, int pageSize){
+        return nebTransactionMapper.findTxListByAddress(address, lastTimestamp, pageSize);
+    }
+
     /**
      * According to condition query pending transaction information
      *
