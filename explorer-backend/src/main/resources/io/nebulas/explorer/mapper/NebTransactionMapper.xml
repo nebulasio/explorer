@@ -189,7 +189,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
-        WHERE `timestamp` < #{lastTimestamp,jdbcType=TIMESTAMP} and `from` = #{addressHash,jdbcType=VARCHAR}
+        WHERE `timestamp` < #{lastTimestamp,jdbcType=TIMESTAMP} and `from` = #{address,jdbcType=VARCHAR}
         ORDER BY `timestamp` DESC
         LIMIT ${limit}
         )
@@ -198,7 +198,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
-        WHERE `timestamp` < #{lastTimestamp,jdbcType=TIMESTAMP} and `to` = #{addressHash,jdbcType=VARCHAR}
+        WHERE `timestamp` < #{lastTimestamp,jdbcType=TIMESTAMP} and `to` = #{address,jdbcType=VARCHAR}
         ORDER BY `timestamp` DESC
         LIMIT ${limit}
         )
