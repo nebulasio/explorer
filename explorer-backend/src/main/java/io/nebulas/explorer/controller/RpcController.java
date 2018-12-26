@@ -199,7 +199,7 @@ public class RpcController {
     public JsonResult transactions(@RequestParam(value = "block", required = false) Long block,
                                    @RequestParam(value = "a", required = false) String address,
                                    @RequestParam(value = "p", required = false, defaultValue = "1") int page,
-                                   @RequestParam(value = "p", required = false, defaultValue = "0") long lastTimestamp,
+                                   @RequestParam(value = "lastTime", required = false, defaultValue = "0") long lastTimestamp,
                                    @RequestParam(value = "isPending", required = false, defaultValue = "false") Boolean isPending) {
         String type;
         if (null != block) {
@@ -223,7 +223,7 @@ public class RpcController {
                 txnList = nebTransactionService.findTxnByBlockHeight(block);
             } else if (type.equals("address")) {
                 Date lastDate;
-                if (lastTimestamp==0){
+                if (lastTimestamp == 0) {
                     lastDate = new Date();
                 } else {
                     lastDate = new Date(lastTimestamp);
