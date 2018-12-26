@@ -29,7 +29,7 @@
         vertical-align: bottom;
         margin: auto 10px;
     }
-    .td-left {
+    .vue-tx .td-left {
         width: 25%;
     }
 
@@ -86,17 +86,17 @@
                         </tr>
                         <tr class="font-size-16-normal">
                             <td class="font-color-555555" style="padding-left: 24px;">TxReceipt Status:</td>
-                            <td v-if="tx.status === 0">
+                            <td class="d-flex align-items-center" v-if="tx.status === 0" style="height: inherit">
                                 <img class="icon18" src="../../static/img/ic_tx_status_failed.png" />
                                 <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ errMsg }} )</span>
                             </td>
-                            <td v-else-if="tx.status === 1">
+                            <td class="d-flex align-items-center" v-else-if="tx.status === 1" style="height: inherit">
                                 <img class="icon18" src="../../static/img/ic_tx_status_success.png" />
-                                <span class="font-color-4560E6" style="margin-left: 10px;">Success</span>
+                                <span class="font-color-07A656" style="margin-left: 10px;">Success</span>
                             </td>
-                            <td v-else>
+                            <td class="d-flex align-items-center" v-else style="height: inherit">
                                 <img class="icon18" src="../../static/img/ic_tx_status_pending.png" />
-                                <span class="font-color-000000" style="margin-left: 10px;">Pending</span>
+                                <span class="font-color-F8BB08" style="margin-left: 10px;">Pending</span>
                             </td>
                         </tr>
                         <tr>
@@ -219,7 +219,7 @@
                         </tr>
                         <tr v-show="isShowPayload === true">
                             <td></td>
-                            <td>
+                            <td style="max-width: 10px;">
                                 <pre><code class=language-javascript v-html=formatCode></code></pre>
                             </td>
                         </tr>

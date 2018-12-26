@@ -10,8 +10,11 @@
         <vue-bread title="Blocks"></vue-bread>
 
         <div v-if="arr" class="container mt20">
-            <div class="align-items-center info-and-pagination row" style="margin-top: 60px; margin-bottom: 30px;">
-                <div class="col font-color-000000 font-size-24-bold">Showing Block (#{{ heightFrom }} to #{{ heightTo }}) out of total {{ numberAddComma(totalBlocks) }} blocks</div>
+            <div class="align-items-center info-and-pagination mt20 row">
+                <div class="col info font-color-000000 font-size-24-bold">
+                    {{ numberAddComma(totalBlocks) }} blocks found
+                    <!-- <span v-if="totalTxs > 500" class="font-color-555555 font-size-16-normal" style="vertical-align: text-bottom;">(showing the last 500 records)</span> -->
+                </div>
             </div>
             <div class="explorer-table-container">
                 <table class="mt20 explorer-table list-table">

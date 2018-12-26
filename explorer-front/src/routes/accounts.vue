@@ -14,17 +14,15 @@
     <!-- https://etherscan.io/accounts  -->
     <div class="vue-accounts fullfill">
         <vue-bread title="Top Accounts By NAS Balance"></vue-bread>
-        <div style="height: 60px;"></div>
-        <div class="container">
+        <div class="mt20 container">
             <div class="align-items-center info-and-pagination row">
                 <div class="col font-color-000000 font-size-24-bold">
                     {{ numberAddComma(totalAccounts) }} accounts found 
                 <span v-if="totalAccounts > 10000" class="font-color-555555 font-size-16-normal" style="vertical-align: text-bottom;">(showing the last 10,000 top accounts)</span>
-                </div>
             </div>
-            <div style="height: 30px;"></div>
+            </div>
             <div class="explorer-table-container">
-                <table class="explorer-table list-table">
+                <table class="mt20 explorer-table list-table">
                     <tr class="list-header font-size-12-bold font-color-000000">
                         <th style="padding-left: 24px;">Rank</th>
                         <th>Address</th>

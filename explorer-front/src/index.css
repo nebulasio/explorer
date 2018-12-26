@@ -360,6 +360,10 @@ label {
     color: rgba(7, 166, 86, 1);
 }
 
+.font-color-F8BB08 {
+    color: #F8BB08;
+}
+
 .link-text-16px {
     font-size: 16px;
     color: #0057FF;

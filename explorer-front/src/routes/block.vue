@@ -49,7 +49,7 @@
                                         </li>
                                         <li>&nbsp; {{ block.height }} &nbsp;</li>
                                         <li>
-                                            <router-link v-if="$root.timestamp - block.timestamp > 15000" v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label=Next>
+                                            <router-link v-if="$root.timestamp - block.timestamp > 16000" v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label=Next>
                                                 <span class="font-color-0057FF" aria-hidden=true>Next &gt;</span>
                                             </router-link>
                                         </li>

@@ -58,7 +58,7 @@
     .vue-contract .tdxxxwddd img {
       margin-right: 5px;
     }
-    .td-left {
+    .vue-contract .td-left {
         width: 20%;
     }
 
