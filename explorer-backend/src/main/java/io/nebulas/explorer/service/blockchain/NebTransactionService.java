@@ -308,7 +308,7 @@ public class NebTransactionService {
         if (page == 1) {
             lastTimestamp = new Date();
         } else {
-            lastTimestamp = nebTransactionMapper.findLastTimestampByAddress(address, new Date(), page * pageSize);
+            lastTimestamp = nebTransactionMapper.findLastTimestampByAddress(address, new Date(), (page-1) * pageSize);
             if (lastTimestamp == null) {
                 lastTimestamp = new Date();
             }

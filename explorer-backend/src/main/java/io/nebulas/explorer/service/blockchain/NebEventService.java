@@ -36,8 +36,11 @@ public class NebEventService {
         if (eventList.size() == 0){
             //再去rpc上查询一次，依旧没有的话返回空数组
             GetEventsByHashResponse response = nebApiServiceWrapper.getEventsByHash(hash);
+            if (response==null){
+                return Collections.emptyList();
+            }
             eventList = response.getEvents();
-            if(eventList.size() == 0){
+            if(eventList==null || eventList.size() == 0){
                 return Collections.emptyList();
             }
         }

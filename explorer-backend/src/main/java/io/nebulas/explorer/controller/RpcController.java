@@ -222,12 +222,6 @@ public class RpcController {
                 txnCnt = nebTransactionService.countTxnCntByBlockHeight(block);
                 txnList = nebTransactionService.findTxnByBlockHeight(block);
             } else if (type.equals("address")) {
-//                Date lastDate;
-//                if (lastTimestamp == 0) {
-//                    lastDate = new Date();
-//                } else {
-//                    lastDate = new Date(lastTimestamp);
-//                }
                 long countSend = nebTransactionService.countTxByFrom(address);
                 long countReceive = nebTransactionService.countTxByTo(address);
                 long countToSelf = nebTransactionService.countTxByFromAndTo(address);
