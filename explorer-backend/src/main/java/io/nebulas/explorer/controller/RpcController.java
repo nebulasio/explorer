@@ -706,10 +706,10 @@ public class RpcController {
                 }
             });
             if (pendingTxnList.size() < PAGE_SIZE) {
-                txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE - pendingTxnList.size()));
+                txList.addAll(nebTransactionService.findTxsByAddress(address.getHash(), new Date(), PAGE_SIZE - pendingTxnList.size()));
             }
         } else {
-            txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE));
+            txList.addAll(nebTransactionService.findTxsByAddress(address.getHash(), new Date(), PAGE_SIZE));
         }
         result.put("txList", convertTxn2TxnVoWithAddress(txList));
         result.put("decimal", 18);
