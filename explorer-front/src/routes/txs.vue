@@ -75,12 +75,12 @@
 <template>
     <!-- https://etherscan.io/txs -->
     <div class="vue-txs fullfill">
-        <vue-bread title=Transactions :subtitle='$route.query.a' :blockies='$route.query.a'></vue-bread>
+        <vue-bread title=Transactions :subtitle='$route.query.block ? ("Block #" + $route.query.block) : $route.query.a' :blockies='$route.query.a'></vue-bread>
 
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
                 <div class="col info font-color-000000 font-size-24-bold">
-                    {{ (totalTxs > 0 && !$route.query.a) ? 'More than' : '' }} {{ numberAddComma(totalTxs) }} transactions found
+                    {{ (totalTxs > 0 && !$route.query.a && !$route.query.block) ? 'More than' : '' }} {{ numberAddComma(totalTxs) }} transactions found
                     <span v-if="totalTxs > 500" class="font-color-555555 font-size-16-normal" style="vertical-align: text-bottom;">(showing the last 500 records)</span>
                 </div>
             </div>
