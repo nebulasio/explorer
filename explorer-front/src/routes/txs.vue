@@ -110,7 +110,7 @@
                         </td>
 
                         <td class="txs-block">
-                            <router-link class="font-size-14-normal font-color-4560E6" v-if=o.block.height v-bind:to='fragApi + "/block/" + o.block.height'>
+                            <router-link class="font-size-14-normal font-color-4560E6" v-if='o.block && o.block.height' v-bind:to='fragApi + "/block/" + o.block.height'>
                                 <span class="font-size-14-normal font-color-4560E6">{{ o.block.height }}</span>
                             </router-link>
                             <i class="font-size-14-normal font-color-000000" v-else>pending</i>
