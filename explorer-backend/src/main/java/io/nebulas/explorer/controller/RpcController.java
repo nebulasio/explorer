@@ -222,17 +222,17 @@ public class RpcController {
                 txnCnt = nebTransactionService.countTxnCntByBlockHeight(block);
                 txnList = nebTransactionService.findTxnByBlockHeight(block);
             } else if (type.equals("address")) {
-                Date lastDate;
-                if (lastTimestamp == 0) {
-                    lastDate = new Date();
-                } else {
-                    lastDate = new Date(lastTimestamp);
-                }
+//                Date lastDate;
+//                if (lastTimestamp == 0) {
+//                    lastDate = new Date();
+//                } else {
+//                    lastDate = new Date(lastTimestamp);
+//                }
                 long countSend = nebTransactionService.countTxByFrom(address);
                 long countReceive = nebTransactionService.countTxByTo(address);
                 long countToSelf = nebTransactionService.countTxByFromAndTo(address);
                 txnCnt = countSend + countReceive - countToSelf;
-                txnList = nebTransactionService.findTxsByAddress(address, lastDate, PAGE_SIZE);
+                txnList = nebTransactionService.findTxsByAddress(address, page, PAGE_SIZE);
             } else {
                 String keyTotalCountInRedis = "tx_count_total";
                 String cacheInRedis = redisTemplate.opsForValue().get(keyTotalCountInRedis);
@@ -706,10 +706,10 @@ public class RpcController {
                 }
             });
             if (pendingTxnList.size() < PAGE_SIZE) {
-                txList.addAll(nebTransactionService.findTxsByAddress(address.getHash(), new Date(), PAGE_SIZE - pendingTxnList.size()));
+                txList.addAll(nebTransactionService.findTxsByAddress(address.getHash(), 1, PAGE_SIZE - pendingTxnList.size()));
             }
         } else {
-            txList.addAll(nebTransactionService.findTxsByAddress(address.getHash(), new Date(), PAGE_SIZE));
+            txList.addAll(nebTransactionService.findTxsByAddress(address.getHash(), 1, PAGE_SIZE));
         }
         result.put("txList", convertTxn2TxnVoWithAddress(txList));
         result.put("decimal", 18);

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
 import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.enums.NebTokenEnum;
 import io.nebulas.explorer.mapper.NebContractTokenMapper;
@@ -14,6 +15,7 @@ import io.nebulas.explorer.model.vo.Nrc20TransactionVo;
 import io.nebulas.explorer.model.vo.TransactionVo;
 import io.nebulas.explorer.util.DecodeUtil;
 import lombok.AllArgsConstructor;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -40,7 +42,6 @@ public class NebTransactionService {
     private final NebTransactionMapper nebTransactionMapper;
     private final NebPendingTransactionMapper nebPendingTransactionMapper;
     private final NebContractTokenMapper nebContractTokenMapper;
-
 
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
@@ -166,7 +167,7 @@ public class NebTransactionService {
         return nebTransactionMapper.countTxnCntByBlockHeight(blockHeight);
     }
 
-    public long countTotalTxnCnt(){
+    public long countTotalTxnCnt() {
         return nebTransactionMapper.countTotalTxnCnt();
     }
 
@@ -193,14 +194,14 @@ public class NebTransactionService {
 
         //只允许官方支持的nrc20代币可以用来展示,所以查询出来的交易也只有nrc20的
         List<NebContractToken> contractToken = nebContractTokenMapper.getAllContractTokens();
-        Map<String, Long> contractMap = contractToken.stream().collect(Collectors.toMap(NebContractToken::getContract,NebContractToken::getTokenDecimals));
+        Map<String, Long> contractMap = contractToken.stream().collect(Collectors.toMap(NebContractToken::getContract, NebContractToken::getTokenDecimals));
 
         //搜索所有nrc20转账记录，然后提取属于自己地址的
         List<NebTransaction> contractTxList = new ArrayList<>();
         contractToken.forEach(nebContractToken -> {
 
             List<NebTransaction> contractList = nebTransactionMapper.findTxnByContract(nebContractToken.getContract());
-            if (contractList == null || contractList.size() == 0){
+            if (contractList == null || contractList.size() == 0) {
                 contractList = Collections.emptyList();
             }
             contractTxList.addAll(nebTransactionMapper.findTxnByContract(nebContractToken.getContract()));
@@ -210,7 +211,7 @@ public class NebTransactionService {
         //过滤掉非nrc20的数据,并且提取对应的data,提取属于自己地址的交易
         contractTxList.forEach(nebTransaction -> {
             JSONObject data = DecodeUtil.decodeData(nebTransaction.getData());
-            if (DecodeUtil.isContractTransfer(data)){
+            if (DecodeUtil.isContractTransfer(data)) {
                 //将to的合约地址放到对应的contractAddress字段里
                 nebTransaction.setContractAddress(nebTransaction.getTo());
                 JSONArray args = data.getJSONArray("Args");
@@ -220,7 +221,7 @@ public class NebTransactionService {
                 nebTransaction.setTo(to);
                 nebTransaction.setValue(value);
 
-                if(nebTransaction.getFrom().equals(addressHash) || nebTransaction.getTo().equals(addressHash)){
+                if (nebTransaction.getFrom().equals(addressHash) || nebTransaction.getTo().equals(addressHash)) {
                     Nrc20TransactionVo nrc20TransactionVo = new Nrc20TransactionVo();
                     nrc20TransactionVo.buildFromNebTransaction(nebTransaction);
                     nrc20TransactionVo.setTokenDecimals(contractMap.get(nrc20TransactionVo.getContractAddress()));
@@ -229,7 +230,7 @@ public class NebTransactionService {
             }
         });
 
-        Collections.sort(nrc20TxList,Comparator.comparing(Nrc20TransactionVo::getTimestamp).reversed());
+        Collections.sort(nrc20TxList, Comparator.comparing(Nrc20TransactionVo::getTimestamp).reversed());
 
         return nrc20TxList;
     }
@@ -302,7 +303,16 @@ public class NebTransactionService {
         return nebTransactionMapper.findTxnByCondition(blockHeight, addressHash, (page - 1) * pageSize, pageSize);
     }
 
-    public List<NebTransaction> findTxsByAddress(String address, Date lastTimestamp, int pageSize){
+    public List<NebTransaction> findTxsByAddress(String address, int page, int pageSize) {
+        Date lastTimestamp;
+        if (page == 1) {
+            lastTimestamp = new Date();
+        } else {
+            lastTimestamp = nebTransactionMapper.findLastTimestampByAddress(address, new Date(), page * pageSize);
+            if (lastTimestamp == null) {
+                lastTimestamp = new Date();
+            }
+        }
         return nebTransactionMapper.findTxListByAddress(address, lastTimestamp, pageSize);
     }
 
@@ -362,7 +372,7 @@ public class NebTransactionService {
         return nebTransactionMapper.findTxnOrderById((page - 1) * pageSize, pageSize);
     }
 
-    public int countTxCountByDate(Date day){
+    public int countTxCountByDate(Date day) {
         DateTime dateTime = new DateTime(day.getTime());
         DateTime dayStart = dateTime.withTimeAtStartOfDay();
         DateTime dayEnd = dayStart.plusDays(1).minusSeconds(1);

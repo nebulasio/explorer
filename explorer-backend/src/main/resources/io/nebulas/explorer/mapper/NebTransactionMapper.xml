@@ -205,6 +205,27 @@
         ORDER BY `timestamp` DESC LIMIT ${limit}
     </select>
 
+    <select id="findLastTimestampByAddress" parameterType="map" resultType="java.util.Date">
+        (
+        SELECT
+        `timestamp`
+        FROM `neb_transaction`
+        WHERE `timestamp` <![CDATA[<]]> #{now,jdbcType=TIMESTAMP} and `from` = #{address,jdbcType=VARCHAR}
+        ORDER BY `timestamp` DESC
+        LIMIT ${limit}
+        )
+        union
+        (
+        SELECT
+        `timestamp`
+        FROM `neb_transaction`
+        WHERE `timestamp` <![CDATA[<]]> #{now,jdbcType=TIMESTAMP} and `to` = #{address,jdbcType=VARCHAR}
+        ORDER BY `timestamp` DESC
+        LIMIT ${limit}
+        )
+        ORDER BY `timestamp` ASC LIMIT 1
+    </select>
+
     <select id="findTxnByFromToAndCall" parameterType="map" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
