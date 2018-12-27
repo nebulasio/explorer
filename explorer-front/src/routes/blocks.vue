@@ -37,7 +37,7 @@
                             </router-link>
                         </td>
                         <td class=time>
-                            <div class="font-color-000000 font-size-14-normal">{{ timeConversion( Date.now() - o.timestamp) }} ago</div>
+                            <div class="font-color-000000 font-size-14-normal">{{ timeConversion(o.timeDiff) }} ago</div>
                             <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                         </td>
                         <td class="text-right">

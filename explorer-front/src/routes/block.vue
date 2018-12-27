@@ -59,7 +59,7 @@
                         </tr>
                         <tr>
                             <td class="font-color-555555">TimeStamp</td>
-                            <td class="font-color-000000">{{ timeConversion(Date.now() - block.timestamp) }} ago ({{ new Date(block.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ block.timestamp }})</td>
+                            <td class="font-color-000000">{{ timeConversion(Date.now() - block.localTimestamp + block.timeDiff) }} ago ({{ new Date(block.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ block.timestamp }})</td>
                         </tr>
                         <tr>
                             <td class="font-color-555555">Transactions</td>
@@ -142,6 +142,9 @@
                 this.$root.showModalLoading = true;
                 api.getBlock(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;
+                    if (!o.localTimestamp) {
+                        o.localTimestamp = Date.now();
+                    }
                     this.block = o;
                 }, xhr => {
                     this.$root.showModalLoading = false;

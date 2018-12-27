@@ -55,6 +55,17 @@ String.prototype.shortAmount = function () {
     return this;
 }
 
+Array.prototype.addLocalTimestamp = function () {
+    if (this instanceof Array) {
+        for (var index in this) {
+            if (!this[index].localTimestamp) {
+                this[index].localTimestamp = Date.now();
+            }
+        }
+    }
+    return this;
+}
+
 vApp = new Vue({
     components: {
         //"vue-popmsg": require("@/components/vue-popmsg").default,

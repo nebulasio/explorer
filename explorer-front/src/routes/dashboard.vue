@@ -393,7 +393,7 @@
 
     .vue-dashboard .new-user-indicator .line {
         fill: none;
-        stroke: #7F7F7F;
+        stroke: #000000;
         stroke-width: 1px;
         stroke-dasharray: 0px, 202px;
         animation: lineMove 1s ease-out forwards;
@@ -827,7 +827,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <div class="time">{{ timeConversion(Date.now() - block.timestamp) }} ago</div>
+                                    <div class="time">{{ timeConversion(Date.now() - block.localTimestamp + block.timeDiff) }} ago</div>
                                 </td>
                             </tr>
                         </transition-group>
@@ -856,7 +856,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <div class="time">{{ timeConversion(Date.now() - tx.timestamp) }} ago</div>
+                                    <div class="time">{{ timeConversion(Date.now() - tx.localTimestamp + tx.timeDiff) }} ago</div>
                                 </td>
                             </tr>
                         </transition-group>
@@ -893,7 +893,6 @@
                 blocks: [],
                 staticInfo: null,
                 txs: [],
-                realtimeBlocks: [],
                 shortIntervalID: null,
                 longIntervalID: null
             }
@@ -1113,14 +1112,15 @@
         mounted() {
             api.getTx("cnt_static", o => this.dailyTxData = o);                     //近期每日交易量
             api.getMarketCap(o => this.market = o);                                 //币价和市值
-            api.getBlock({ type: "latest" }, o => this.blocks = o);                 //最新一波 block
-            api.getTx({ type: "latest" }, o => this.txs = o);                       //最新一波 tx
+            api.getBlock({ type: "latest" }, o => this.blocks = o.addLocalTimestamp());                 //最新一波 block
+            api.getTx({ type: "latest" }, o => this.txs = o.addLocalTimestamp());                       //最新一波 tx
             api.getTodayTxCnt(o => this.todayTxCnt = o);                            //今日交易量
             api.getStaticInfo(o => this.staticInfo = o);                            //合约数量、地址数量。。。
 
             this.shortIntervalID = setInterval(() => {
-                api.getTx({ type: "latest" }, o => this.txs = o);                   //最新一波 tx
+                api.getTx({ type: "latest" }, o => this.txs = o.addLocalTimestamp());                   //最新一波 tx
                 api.getBlock({ type: "newblock" }, o => {                           //获取最新一个 block
+                    o = o.addLocalTimestamp();                       
                     try {
                         if (o[0].height != this.blocks[0].height) {
                             this.blocks.splice(0, 0, o[0]);
@@ -1133,7 +1133,7 @@
                         }
                     } catch(error) {}
                 });
-            }, 8000);
+            }, 5000);
 
             this.longIntervalID = setInterval(() => {
                 api.getTodayTxCnt(o => this.todayTxCnt = o);                        //今日交易量
@@ -1166,6 +1166,7 @@
                 return utility.numberAddComma(n);
             },
             timeConversion(ms) {
+                // console.log(ms);
                 return utility.timeConversion(ms);
             },
             shortStr(n, s) {
@@ -1182,7 +1183,15 @@
                     str = date.getMonth() + 1 + '-' + date.getDate();
                 }
                 return str;
-            }
+            },
+            // addLocalTimestamp(a) {
+            //     for (var index in a) {
+            //         if (!a[index].localTimestamp) {
+            //             a[index].localTimestamp = Date.now();
+            //         }
+            //     }
+            //     return a;
+            // }
         },
         updated() {
             if (window.isIE()) {
