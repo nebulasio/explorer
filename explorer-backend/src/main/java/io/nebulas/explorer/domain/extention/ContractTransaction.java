@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Base64;
+import java.util.Date;
 
 import io.nebulas.explorer.domain.NebTransaction;
 
@@ -21,6 +22,8 @@ public class ContractTransaction extends NebTransaction {
     private String decodedData;
     private String contractFunction;
     private String tokenName;
+    private Date currentTimestamp;
+    private Long timeDiff;
 
     public String getContractTo() {
         return contractTo;
@@ -62,6 +65,22 @@ public class ContractTransaction extends NebTransaction {
         this.tokenName = tokenName;
     }
 
+    public Date getCurrentTimestamp() {
+        return currentTimestamp;
+    }
+
+    public void setCurrentTimestamp(Date currentTimestamp) {
+        this.currentTimestamp = currentTimestamp;
+    }
+
+    public Long getTimeDiff() {
+        return timeDiff;
+    }
+
+    public void setTimeDiff(Long timeDiff) {
+        this.timeDiff = timeDiff;
+    }
+
     public static ContractTransaction fromNebTransaction(NebTransaction nebTransaction) {
         ContractTransaction tx = new ContractTransaction();
         try {
@@ -75,6 +94,8 @@ public class ContractTransaction extends NebTransaction {
     }
 
     public void parseContractArgs() {
+        this.currentTimestamp = new Date();
+        this.timeDiff = System.currentTimeMillis() - this.getTimestamp().getTime();
         String originData = getData();
         if (StringUtils.isEmpty(originData)) {
             return;
