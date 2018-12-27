@@ -378,7 +378,7 @@
         border-width: 0px;
         border-radius: 50%;
         transition-property: transform;
-        transition-duration: 2s;
+        transition-duration: 0.5s;
         transition-timing-function: ease;
     }
 
@@ -396,7 +396,7 @@
         stroke: #000000;
         stroke-width: 1px;
         stroke-dasharray: 0px, 202px;
-        animation: lineMove 1s ease-out forwards;
+        animation: lineMove 1s ease-out 0.5s forwards;
     }
 
     @keyframes lineMove {
@@ -423,7 +423,7 @@
         font-weight: bold;
         transform: translateY(12px);
         opacity: 0;
-        animation: label 1s ease-out 1s forwards;
+        animation: label 1s ease-out 1.5s forwards;
     }
 
     .vue-dashboard .new-user-indicator .labels>div:last-child {
@@ -433,7 +433,7 @@
         color: #555555;
         transform: translateY(-10px);
         opacity: 0;
-        animation: label 1s ease-out 1s forwards;
+        animation: label 1s ease-out 1.5s forwards;
     }
 
     @keyframes label {
@@ -775,7 +775,9 @@
                         <div v-show="staticInfo" class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
-                                <div class="new-user" :style='staticInfo ? "transform: rotate(-" + staticInfo.newAddressCount / staticInfo.totalAddressCount * 360 + "deg)" : ""'></div>
+                                <transition name="new-user-pie">
+                                    <div class="new-user" :style='staticInfo ? "transform: rotate(-" + staticInfo.newAddressCount / staticInfo.totalAddressCount * 360 + "deg)" : ""'></div>
+                                </transition>
                             </div>
                             <div v-if="staticInfo" class="new-user-indicator">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" class="svg" width="195" height="114" viewbox="0 0 195 114">
@@ -933,8 +935,6 @@
                             margin: 18,
                             formatter: function(value) {
                                 return vm.shortDate(value);
-                                // let date = new Date(value);
-                                // return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                             },
                         }
                     },
@@ -1027,8 +1027,6 @@
                             margin: 18,
                             formatter: function(value) {
                                 return vm.shortDate(new Number(value));
-                                // let date = new Date(new Number(value));
-                                // return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                             }
                         }
                     },
@@ -1177,21 +1175,20 @@
                 $(el.firstElementChild).css('height', height);
             },
             shortDate(value) {
+                if (!value || value === 'undefined') {
+                    return '';
+                }
                 let date = new Date(value);
+                if (isNaN(date.getMonth())) {
+                    return '';
+                }
                 let str = date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                 if (str.length > 6) {
                     str = date.getMonth() + 1 + '-' + date.getDate();
                 }
+                console.log(str);
                 return str;
-            },
-            // addLocalTimestamp(a) {
-            //     for (var index in a) {
-            //         if (!a[index].localTimestamp) {
-            //             a[index].localTimestamp = Date.now();
-            //         }
-            //     }
-            //     return a;
-            // }
+            }
         },
         updated() {
             if (window.isIE()) {
