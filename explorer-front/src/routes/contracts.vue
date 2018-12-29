@@ -50,13 +50,13 @@
 
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info font-color-000000 font-size-24-bold">{{ numberAddComma(totalCts) }} smart contracts found</div>
+                <div class="col info font-color-000000 font-24 font-bold">{{ numberAddComma(totalCts) }} smart contracts found</div>
                 <!--(showing the last {{ maxDisplayCnt }} records)-->
             </div>
 
             <div class="explorer-table-container">
                 <table class="mt20 explorer-table list-table">
-                    <tr class="list-header font-size-12-bold font-color-000000">
+                    <tr class="list-header font-12 font-bold font-color-000000">
                         <th style="padding-left: 24px;">Address</th>
                         <th class=text-right>Balance</th>
                         <th class=text-right>Type</th>
@@ -70,9 +70,9 @@
                                 <span class="hash-normal">{{ o.hash }}</span>
                             </router-link>
                         </td>
-                        <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.balance) }} NAS</td>
-                        <td class="text-right font-color-000000 font-size-14-normal">{{ o.contractType === 'NORMAL' ? 'Contract' : 'Token Contract' }} </td>
-                        <td class="text-right font-size-14-normal font-color-555555" style="padding-right: 24px;">{{ new Date(o.createdAt).toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' }) }}</td>
+                        <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.balance) }} NAS</td>
+                        <td class="text-right font-color-000000 font-14">{{ o.contractType === 'NORMAL' ? 'Contract' : 'Token Contract' }} </td>
+                        <td class="text-right font-14 font-color-555555" style="padding-right: 24px;">{{ new Date(o.createdAt).toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' }) }}</td>
                     </tr>
                 </table>
             </div>

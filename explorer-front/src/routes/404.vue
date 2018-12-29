@@ -13,16 +13,9 @@
         margin-top: 50px;
     }
 
-    .vue-404 .ohno {
-        color: black;
-        font-size: 38px;
-        font-weight: bold;
-    }
-
     .vue-404 .msg {
         color: #555555;
         font-size: 18px;
-        font-weight: bold;
     }
 
     .vue-404 a {
@@ -45,7 +38,7 @@
 <template>
     <div class="vue-404 fullfill">
         <div class="container vertical-center">
-            <div class="msg">Sorry...The network is currently unavailable. Please try again later.</div>
+            <div class="msg font-bold">Sorry...The network is currently unavailable. Please try again later.</div>
             <img src="/static/img/404.png" alt="" width="308px">
             <router-link :to='$route.params.api ? "/" + $route.params.api : "/"'>Back Home</router-link>
         </div>

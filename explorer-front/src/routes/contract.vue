@@ -116,9 +116,9 @@
         <div class="container" v-if=obj>
 
             <div class="explorer-table-container">
-                <table class="explorer-table font-size-16-normal">
+                <table class="explorer-table font-16">
                     <div style="margin-top: 60px;margin-bottom: 30px;">
-                        <span class="font-color-000000 font-size-24-bold table-title">
+                        <span class="font-color-000000 font-24 font-bold table-title">
                             Overview
                         </span>
                     </div>
@@ -167,24 +167,24 @@
                 <div v-if="txs.length" class="align-items-center row title">
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
-                        <span class="font-size-16-bold font-color-000000">
+                        <span class="font-16 font-bold font-color-000000">
                             Latest {{ txs.length }} {{ txs.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(obj.transactionCount) }} {{ obj.transactionCount > 1 ? 'transactions' : 'transaction' }} ( + {{ numberAddComma(obj.pendingTransactionCount) }} {{ obj.pendingTransactionCount > 1 ? 'PendingTxns' : 'PendingTxn' }} )
                         </span>
                     </div>
                     <div class=col-auto>
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id'>
-                            <span class="font-color-0057FF font-size-16-normal">View All {{ obj.transactionCount }} {{ obj.transactionCount > 1 ? 'Txns' : 'Txn' }}</span>
+                            <span class="font-color-0057FF font-16">View All {{ obj.transactionCount }} {{ obj.transactionCount > 1 ? 'Txns' : 'Txn' }}</span>
                         </router-link>
                         |
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id + "&isPending=true" '>
-                            <span class="font-color-0057FF font-size-16-normal">View All {{ obj.pendingTransactionCount }} {{ obj.pendingTransactionCount > 1 ? 'PendingTxns' : 'PendingTxn' }}</span>
+                            <span class="font-color-0057FF font-16">View All {{ obj.pendingTransactionCount }} {{ obj.pendingTransactionCount > 1 ? 'PendingTxns' : 'PendingTxn' }}</span>
                         </router-link>
                     </div>
                 </div>
 
                 <div class="explorer-table-container">
                     <table v-if="txs.length" class="mt20 explorer-table list-table">
-                        <tr class="font-color-000000 font-size-12-bold" style="height: 46px; background-color: #e8e8e8;">
+                        <tr class="font-color-000000 font-12 font-bold" style="height: 46px; background-color: #e8e8e8;">
                             <th></th>
                             <th>TxHash</th>
                             <th>Block</th>
@@ -206,20 +206,20 @@
                                 </router-link>
                             </td>
                             <td class="txs-block">
-                                <router-link class="font-size-14-normal font-color-4560E6" v-if=o.blockHeight v-bind:to='fragApi + "/block/" + o.blockHeight'>
-                                    <span class="font-size-14-normal font-color-4560E6">{{ o.blockHeight }}</span>
+                                <router-link class="font-14 font-color-4560E6" v-if=o.blockHeight v-bind:to='fragApi + "/block/" + o.blockHeight'>
+                                    <span class="font-14 font-color-4560E6">{{ o.blockHeight }}</span>
                                 </router-link>
-                                <i class="font-size-14-normal font-color-000000" v-else>pending</i>
+                                <i class="font-14 font-color-000000" v-else>pending</i>
                             </td>
-                            <td class="time font-size-14-normal font-color-555555">
+                            <td class="time font-14 font-color-555555">
                                 <div>{{ timeConversion(o.timeDiff) }} ago</div>
                                 <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                             </td>
                             <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                                 <vue-blockies v-bind:address='o.from'></vue-blockies>
-                                <span class="fromTo font-size-14-normal font-color-000000" v-if="o.from === $route.params.id">{{ o.from }}</span>
+                                <span class="fromTo font-14 font-color-000000" v-if="o.from === $route.params.id">{{ o.from }}</span>
                                 <router-link v-else v-bind:to='fragApi + "/address/" + o.from'>
-                                    <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.from }}</span>
+                                    <span class="fromTo font-14 font-color-0057FF">{{ o.from }}</span>
                                 </router-link>
                             </td>
                             <td style="padding: 0;">
@@ -228,17 +228,17 @@
                             <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                                 <div style="width: 10px;"></div>
                                 <div v-if="o.type==='call'" class="container-tip">
-                                    <span class="tip font-size-15-normal shadow">Smart Contract</span>
+                                    <span class="tip font-15 shadow">Smart Contract</span>
                                     <img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
                                 </div>
                                 <vue-blockies v-if="o.to" v-bind:address='o.to'></vue-blockies>
-                                <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.to === $route.params.id">{{ o.to }}</span>
+                                <span class="fromTo font-color-000000 font-14" v-if="o.to === $route.params.id">{{ o.to }}</span>
                                 <router-link v-else v-bind:to='fragApi + "/address/" + o.to'>
-                                    <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.to }}</span>
+                                    <span class="fromTo font-14 font-color-0057FF">{{ o.to }}</span>
                                 </router-link>
                             </td>
-                            <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.contractValue, decimal).shortAmount() }} {{ obj.tokenName }}</td>
-                            <td  class="text-right font-size-14-normal font-color-555555">
+                            <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.contractValue, decimal).shortAmount() }} {{ obj.tokenName }}</td>
+                            <td  class="text-right font-14 font-color-555555">
                                 <span v-if=o.blockHeight>{{ toWei(o.txFee) }}</span>
                                 <i v-else>(pending)</i>
                             </td>
@@ -249,11 +249,11 @@
                 <div v-if="txs.length" class="align-items-center justify-content-end row title mt20">
                     <div class=col-auto>
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id'>
-                            <span class="font-color-0057FF font-size-16-normal">View All {{ obj.transactionCount }} {{ obj.transactionCount > 1 ? 'Txns' : 'Txn' }}</span>
+                            <span class="font-color-0057FF font-16">View All {{ obj.transactionCount }} {{ obj.transactionCount > 1 ? 'Txns' : 'Txn' }}</span>
                         </router-link>
                         |
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id + "&isPending=true" '>
-                            <span class="font-color-0057FF font-size-16-normal">View All {{ obj.pendingTransactionCount }} {{ obj.pendingTransactionCount > 1 ? 'PendingTxns' : 'PendingTxn' }}</span>
+                            <span class="font-color-0057FF font-16">View All {{ obj.pendingTransactionCount }} {{ obj.pendingTransactionCount > 1 ? 'PendingTxns' : 'PendingTxn' }}</span>
                         </router-link>
                     </div>
                 </div>
@@ -262,14 +262,14 @@
             <!-- =============== Holders =============== -->
             <div class="tab" v-show="tab === 2">
                 <div class="align-items-center info-and-pagination mt20 row">
-                    <div class="col font-size-16-bold font-color-000000">
+                    <div class="col font-16 font-bold font-color-000000">
                         {{ numberAddComma(totalHolderCount) }} holders found
                     </div>
                 </div>
 
                 <div class="explorer-table-container">
                     <table v-if="holders.length" class="mt20 explorer-table list-table">
-                        <tr class="list-header font-size-12-bold font-color-000000">
+                        <tr class="list-header font-12 font-bold font-color-000000">
                             <th style="padding-left: 24px; width: 100px;">Rank</th>
                             <th style="width: 30%">Address</th>
                             <th class="text-right">Quantity</th>
@@ -277,14 +277,14 @@
                         </tr>
 
                         <tr v-for="o in holders" :key="o.address">
-                            <td class="font-color-000000 font-size-14-bold" style="padding-left: 24px;">{{ o.rank }}</td>
+                            <td class="font-color-000000 font-14 font-bold" style="padding-left: 24px;">{{ o.rank }}</td>
                             <td class="tdxxxwddd">
                                 <router-link style="max-width: 400px;" v-bind:to='fragApi + "/address/" + o.address'>
-                                    <span class="font-size-14-normal font-color-0057FF">{{ o.address }}</span>
+                                    <span class="font-14 font-color-0057FF">{{ o.address }}</span>
                                 </router-link>
                             </td>
-                            <td class="text-right font-size-14-normal font-color-555555">{{ tokenAmount(o.balance, decimal).shortAmount() }}</td>
-                            <td class="text-right font-size-14-normal font-color-555555" style="padding-right: 24px;">{{ new Number(o.percentage).toFixed(4) }}%</td>
+                            <td class="text-right font-14 font-color-555555">{{ tokenAmount(o.balance, decimal).shortAmount() }}</td>
+                            <td class="text-right font-14 font-color-555555" style="padding-right: 24px;">{{ new Number(o.percentage).toFixed(4) }}%</td>
                         </tr>
                     </table>
                 </div>

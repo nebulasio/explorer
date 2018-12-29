@@ -20,8 +20,8 @@
     <div class=vue-bread>
         <div class=container>
             <div class="row align-items-center">
-                <div class="col-auto title font-size-40-bold font-color-000000">{{ title }}</div>
-                <div class="col-auto subtitle font-size-16-bold font-color-000000 align-baseline">
+                <div class="col-auto title font-40 font-bold font-color-000000">{{ title }}</div>
+                <div class="col-auto subtitle font-16 font-bold font-color-000000 align-baseline">
                     <vue-blockies class="d-inline mr-1 align-text-bottom" v-if="blockies" v-bind:address='blockies'></vue-blockies>
                     {{ subtitle }}
                 </div>

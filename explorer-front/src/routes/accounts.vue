@@ -16,21 +16,21 @@
         <vue-bread title="Top Accounts By NAS Balance"></vue-bread>
         <div class="mt20 container">
             <div class="align-items-center info-and-pagination row">
-                <div class="col font-color-000000 font-size-24-bold">
+                <div class="col-auto pr-0 font-color-000000 font-24 font-bold">
                     {{ numberAddComma(totalAccounts) }} accounts found 
-                <span v-if="totalAccounts > 10000" class="font-color-555555 font-size-16-normal" style="vertical-align: text-bottom;">(showing the last 10,000 top accounts)</span>
-            </div>
+                </div>
+                <span v-if="totalAccounts > 10000" class="col-auto font-color-555555 font-16">(showing the last 10,000 top accounts)</span>
             </div>
             <div class="explorer-table-container">
                 <table class="mt20 explorer-table list-table">
-                    <tr class="list-header font-size-12-bold font-color-000000">
+                    <tr class="list-header font-12 font-bold font-color-000000">
                         <th style="padding-left: 24px;">Rank</th>
                         <th>Address</th>
                         <th class=text-right>Balance</th>
                         <th class=text-right>Percentage</th>
                         <th class=text-right style="padding-right: 24px;">TxCount</th>
                     </tr>
-                    <tr v-for="(o, i) in arr" :key="i" class="font-size-14-normal">
+                    <tr v-for="(o, i) in arr" :key="i" class="font-14">
                         <td style="padding-left: 24px;" class="font-color-000000">{{ o.rank }}</td>
                         <td class="tdxxxwddd">
                             <vue-blockies v-bind:address='o.hash'></vue-blockies>

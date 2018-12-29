@@ -46,10 +46,6 @@
         margin-left: 30px;
     }
 
-    .vue-dashboard .fs12 {
-        font-size: 12px;
-    }
-
     .vue-dashboard .row1 .flex-item {
         height: 320px;
     }
@@ -82,10 +78,6 @@
         margin-bottom: 30px;
     }
 
-    .vue-dashboard #atlaspAds-middle-mobile {
-        display: none;
-    }
-
     .vue-dashboard #atlaspAds-middle-mobile>a>img {
         margin-bottom: 30px;
     }
@@ -97,10 +89,6 @@
 
         .vue-dashboard #atlaspAds-bottom {
             display: none;
-        }
-
-        .vue-dashboard #atlaspAds-middle-mobile {
-            display: block;
         }
 
         .vue-dashboard #atlaspAds-middle-mobile>a>img {
@@ -133,7 +121,7 @@
         left: 30px;
         top: 25px;
         font-size: 20px;
-        font-weight: bold;
+        font-weight: 600;
     }
 
     .vue-dashboard .row1 {
@@ -157,7 +145,7 @@
     .vue-dashboard .daily-transactions .details *:nth-child(2) {
         font-size: 28px;
         color: white;
-        font-weight: bolder;
+        font-weight: 400;
         margin-left: 10px;
         margin-top: 10px;
     }
@@ -307,7 +295,7 @@
         margin-top: 23px;
         margin-left: 30px;
         font-size: 28px;
-        font-weight: bold;
+        font-weight: 600;
     }
 
     .vue-dashboard .row3 .link-style {
@@ -332,16 +320,10 @@
         position: relative;
     }
 
-    .vue-dashboard .row4 .subtitle {
-        position: absolute;
-        margin-left: 30px;
-        margin-top: 56px;
-    }
-
     .vue-dashboard .user-pie {
         display: block;
         position: absolute;
-        margin-left: 30px;
+        margin-left: 50px;
         margin-top: 108px;
         background-color: gray;
         box-shadow:-10px 10px 20px 0px rgba(30,30,30,0.05);
@@ -350,7 +332,7 @@
     .vue-dashboard .old-user {
         position: absolute;
         top: 20px;
-        left: 20px;
+        /* left: 20px; */
         width: 114px;
         height: 114px;
         background-color: rgba(89, 146, 255, 1);
@@ -361,7 +343,7 @@
 
     .vue-dashboard .new-user-container {
         position: absolute;
-        left: 77px;
+        left: 57px;
         width: 77px;
         height: 154px;
         overflow: hidden;
@@ -385,7 +367,7 @@
     .vue-dashboard .new-user-indicator {
         position: absolute;
         top: 20px;
-        left: 77px;
+        left: 57px;
         background: transparent;
         fill: none;
         stroke: none;
@@ -394,7 +376,7 @@
     .vue-dashboard .new-user-indicator .line {
         fill: none;
         stroke: #000000;
-        stroke-width: 1px;
+        stroke-width: 0.5px;
         stroke-dasharray: 0px, 202px;
         animation: lineMove 1s ease-out 0.5s forwards;
     }
@@ -416,19 +398,15 @@
     }
 
     .vue-dashboard .new-user-indicator .labels>div:first-child {
-        /* position: absolute;
-        top: 30px; */
         margin-top: 31px;
         font-size: 18px;
-        font-weight: bold;
+        font-weight: 400;
         transform: translateY(12px);
         opacity: 0;
         animation: label 1s ease-out 1.5s forwards;
     }
 
     .vue-dashboard .new-user-indicator .labels>div:last-child {
-        /* position: absolute;
-        top: 50px; */
         font-size: 12px;
         color: #555555;
         transform: translateY(-10px);
@@ -461,7 +439,7 @@
     .vue-dashboard .row4 .title {
         font-size: 28px;
         margin-top: 40px;
-        font-weight: bold;
+        font-weight: 600;
     }
 
     /* .vue-dashboard .row4 .accounts-data .data-source {
@@ -493,7 +471,7 @@
         top: 30px;
         right: 30px;
         font-size: 12px;
-        font-weight: bold;
+        font-weight: 400;
         color: #555;
     }
 
@@ -581,31 +559,18 @@
             opacity: 0;
         }
 
-        .vue-dashboard .row4 .new-user-indicator {
-            display: none;
+        .vue-dashboard .user-pie {
+            margin-left: 30px;
+            margin-top: 128px;
         }
 
         .vue-dashboard .row5 td:first-child {
             width: 60px;
         }
 
-        .vue-dashboard .row5 .fromto {
-            display: none;
-        }
-
         .vue-dashboard .row5 td .time::after {
             content:'';
             white-space:pre;
-        }
-    }
-
-    @media (max-width: 1199.98px) {
-        /* .vue-dashboard .row4 .data-source {
-            visibility: hidden;
-        } */
-
-        #atlaspAds-side {
-            display: none;
         }
     }
 
@@ -721,12 +686,12 @@
                 <div class="col">
                     <div class="flex-item item-bg item-shadow">
                         <div class="item-title">Blocks</div>
-                        <div class="subtitle fs12 text-gray">Block Status</div>
+                        <div class="subtitle font-12 text-gray">Block Status</div>
                         <transition-group v-on:after-enter="afterEnter" name="row2-list" class="realtime-blocks">
                             <div class="realtime-block" v-for="block in blocks" :key="block.height">
                                 <div class="blockheight" style="height: 100%" :data-txncnt="block.txnCnt"></div>
                                 <div class="block-popover">
-                                    <div class="font-size-12-bold">{{ numberAddComma(block.height) }}</div>
+                                    <div class="font-12 font-bold">{{ numberAddComma(block.height) }}</div>
                                     <div>Transactions: {{ block.txnCnt }}</div>
                                     <div>Block Interval: 15s</div>
                                 </div>
@@ -770,8 +735,14 @@
             <div class="row row4">
                 <div class="flex-item col-12 col-lg-6 row4-item user-data">
                     <div class="item-bg item-shadow">
-                        <div class="item-title">New Addresses Percentage</div>
-                        <div class="subtitle text-light-gray ml30 fs12">New addresses are addresses created within 90 days.</div>
+                        <div class="item-title">
+                            New Addresses Percentage
+                            <div class="text-light-gray font-12 font-regular">New addresses are addresses created within 90 days.</div>
+                            <div v-if="staticInfo" class="mt20 d-sm-none">
+                                <span class="font-16 font-color-7F7F7F">New Addresses</span>
+                                <span class="font-20">{{ (Math.round(100 * staticInfo.newAddressCount / staticInfo.totalAddressCount * 10) / 10).toFixed(1) + '%' }}</span>
+                            </div>
+                        </div>
                         <div v-show="staticInfo" class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
@@ -779,7 +750,7 @@
                                     <div class="new-user" :style='staticInfo ? "transform: rotate(-" + staticInfo.newAddressCount / staticInfo.totalAddressCount * 360 + "deg)" : ""'></div>
                                 </transition>
                             </div>
-                            <div v-if="staticInfo" class="new-user-indicator">
+                            <div v-if="staticInfo" class="new-user-indicator d-none d-sm-block">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" class="svg" width="195" height="114" viewbox="0 0 195 114">
                                     <polyline points="5 87, 35 57, 195 57" class="line" id="svg-line"/>
                                 </svg>
@@ -791,24 +762,24 @@
                             </div>
                         </div>
                         <div v-if="staticInfo" class="detail">
-                            <!-- <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div> -->
+                            <!-- <div class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
                             <div class="title">{{ numberAddComma(staticInfo.newAddressCount) }}</div>
-                            <div class="fs12 text-gray">New Addresses</div>
+                            <div class="font-12 text-gray">New Addresses</div>
                             <div class="title">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
-                            <div class="fs12 text-gray">Total Addresses</div>
+                            <div class="font-12 text-gray">Total Addresses</div>
                         </div>
                     </div>
                 </div>
                 <div class="flex-item col-12 col-lg-6 row4-item accounts-data">
                     <div class="item-bg item-shadow">
                         <div class="item-title">Growth of Addresses</div>
-                        <!-- <div v-if="accountsChartOptions" class="fs12 text-light-gray data-source">Data Sources: Nebulas</div> -->
+                        <!-- <div v-if="accountsChartOptions" class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
                         <vchart class="accounts-chart" v-if="accountsChartOptions" :options="accountsChartOptions" :autoResize='true'></vchart>
                     </div>
                 </div>
             </div>
             <!--ATP mobile中间广告位-->  
-            <div class="flex atlaspAds-bottom" id="atlaspAds-middle-mobile"></div>
+            <div class="flex atlaspAds-bottom d-md-none" id="atlaspAds-middle-mobile"></div>
             <!-- ===================5===================== -->
             <div class="row row5">
                 <div class="flex-item col-12 col-lg-6 row5-item">
@@ -848,11 +819,11 @@
                                     Tx#
                                     <router-link :to='fragApi + "/tx/" + tx.hash'>{{ shortStr(4, tx.hash) }}</router-link>
                                     <br>
-                                    <span class="fromto">
+                                    <span class="fromto d-none d-sm-inline">
                                         From
                                         <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.from.hash) }}</router-link>    
                                     </span>
-                                    <span class="fromto">
+                                    <span class="fromto d-none d-sm-inline">
                                         To
                                         <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.to.hash) }}</router-link>
                                     </span>
@@ -866,11 +837,10 @@
                 </div>
             </div>
             <!--ATP底部广告位-->  
-            <div class="flex atlaspAds-bottom" id="atlaspAds-bottom"></div>
-            <div class="flex atlaspAds-bottom" id="atlaspAds-middle-mobile"></div>
+            <div class="flex atlaspAds-bottom d-none d-md-block" id="atlaspAds-bottom"></div>
         </div>
         <!--ATP侧边栏广告位-->  
-        <div class="flex atlaspAds" id="atlaspAds-side"></div>
+        <div class="flex atlaspAds d-none d-xl-block" id="atlaspAds-side"></div>
     </div>
 </template>
 <script>
@@ -1011,7 +981,7 @@
                 
                 let vm = this;
                 var options = {
-                    grid: { left: '20', bottom: '50', right: '17', top: '10', containLabel: false },
+                    grid: { left: '30', bottom: '50', right: '17', top: '10', containLabel: false },
                     xAxis: {
                         data: dates,
                         axisLine: {
@@ -1039,7 +1009,7 @@
                             textStyle: {
                                 color: '#B2B2B2'
                             },
-                            margin: -10,
+                            margin: 0,
                             formatter: function (value) {
                                 return value / 1000 + 'k';
                             }
@@ -1164,7 +1134,6 @@
                 return utility.numberAddComma(n);
             },
             timeConversion(ms) {
-                // console.log(ms);
                 return utility.timeConversion(ms);
             },
             shortStr(n, s) {
@@ -1186,7 +1155,6 @@
                 if (str.length > 6) {
                     str = date.getMonth() + 1 + '-' + date.getDate();
                 }
-                console.log(str);
                 return str;
             }
         },

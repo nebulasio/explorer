@@ -73,6 +73,11 @@
         }
     }
 
+    .vue-footer .safe-bottom {
+        /* margin-bottom: 30px; */
+        height: env(safe-area-inset-bottom);
+    }
+
 </style>
 <template>
     <div class=vue-footer>
@@ -100,6 +105,7 @@
                     </div>
                 </div>
             </div>
+            <div class="safe-bottom"></div>
         </div>
     </div>
 </template>

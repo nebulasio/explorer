@@ -79,15 +79,15 @@
 
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info font-color-000000 font-size-24-bold">
+                <span class="col-auto pr-0 info font-color-000000 font-24 font-bold">
                     {{ (totalTxs > 0 && !$route.query.a && !$route.query.block) ? 'More than' : '' }} {{ totalTxs > 1000000  ? (Math.floor(totalTxs / 1000000) +  (Math.floor(totalTxs / 1000000) > 2 ? ' millions' : ' million')) : numberAddComma(totalTxs) }} transactions found
-                    <span v-if="totalTxs > 500" class="font-color-555555 font-size-16-normal" style="vertical-align: text-bottom;">(showing the last 500 records)</span>
-                </div>
+                </span>
+                <span v-if="totalTxs > 500" class="col-auto font-color-555555 font-16">(showing the last 500 records)</span>
             </div>
 
             <div class="explorer-table-container">
                 <table class="mt20 explorer-table list-table">
-                    <tr class="list-header font-size-12-bold font-color-000000">
+                    <tr class="list-header font-12 font-bold font-color-000000">
                         <th></th>
                         <th>TxHash</th>
                         <th>Block</th>
@@ -110,20 +110,20 @@
                         </td>
 
                         <td class="txs-block">
-                            <router-link class="font-size-14-normal font-color-4560E6" v-if='o.block && o.block.height' v-bind:to='fragApi + "/block/" + o.block.height'>
-                                <span class="font-size-14-normal font-color-4560E6">{{ o.block.height }}</span>
+                            <router-link class="font-14 font-color-4560E6" v-if='o.block && o.block.height' v-bind:to='fragApi + "/block/" + o.block.height'>
+                                <span class="font-14 font-color-4560E6">{{ o.block.height }}</span>
                             </router-link>
-                            <i class="font-size-14-normal font-color-000000" v-else>pending</i>
+                            <i class="font-14 font-color-000000" v-else>pending</i>
                         </td>
-                        <td class="time font-size-14-normal font-color-555555">
+                        <td class="time font-14 font-color-555555">
                             <div>{{ timeConversion(o.timeDiff) }} ago</div>
                             <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                         </td>
                         <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                             <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
-                            <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span>
+                            <span class="fromTo font-color-000000 font-14" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
-                                <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.from.hash }}</span>
+                                <span class="fromTo font-14 font-color-0057FF">{{ o.from.hash }}</span>
                             </router-link>
                         </td>
                         <td style="padding: 0;">
@@ -132,17 +132,17 @@
                         <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                             <div style="width: 10px;"></div>
                             <div v-if="o.type==='call'" class="container-tip">
-                                <span class="tip font-size-15-normal shadow">Smart Contract</span>
+                                <span class="tip font-15 shadow">Smart Contract</span>
                                 <img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
                             </div>
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
-                            <span class="fromTo font-color-000000 font-size-14-normal" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span>
+                            <span class="fromTo font-color-000000 font-14" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span>
                             <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>
-                                <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.to.hash }}</span>
+                                <span class="fromTo font-14 font-color-0057FF">{{ o.to.hash }}</span>
                             </router-link>
                         </td>
-                        <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.value) }} NAS</td>
-                        <td class="text-right font-size-14-normal font-color-555555">{{ toWei(o.txFee) }}</td>
+                        <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.value) }} NAS</td>
+                        <td class="text-right font-14 font-color-555555">{{ toWei(o.txFee) }}</td>
                     </tr>
                 </table>
             </div>

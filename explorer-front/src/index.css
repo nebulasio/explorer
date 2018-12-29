@@ -6,6 +6,7 @@ body {
     height: 100%;
     color: #777;
     background-color: #f2f2f2;
+    font-family: open sans, helvetica neue, Helvetica, arial, sans-serif;
     font-size: 13px;
 }
 
@@ -153,7 +154,7 @@ ul {
 }
 
 label {
-    font-weight: normal;
+    font-weight: 400;
 }
 
 .tooltip-inner {
@@ -295,41 +296,40 @@ label {
 
 /*----------------------- font css -----------------------*/
 
-.font-size-14-bold {
-    font-size: 14px;
+.font-regular {
+    font-weight: 400;
+}
+
+.font-bold {
     font-weight: 600;
 }
 
-.font-size-14-normal {
-    font-size: 14px;
+.font-12 {
+    font-size: 12px;
 }
 
-.font-size-16-normal {
-    font-size: 16px;
+.font-14 {
+    font-size: 14px
 }
 
-.font-size-15-normal {
+.font-15 {
     font-size: 15px;
 }
 
-.font-size-16-bold {
+.font-16 {
     font-size: 16px;
-    font-weight: 600;
 }
 
-.font-size-12-bold {
-    font-size: 12px;
-    font-weight: 600;
+.font-18 {
+    font-size: 18px;
 }
 
-.font-size-24-bold {
+.font-24 {
     font-size: 24px;
-    font-weight: 600;
 }
 
-.font-size-40-bold {
+.font-40 {
     font-size: 40px;
-    font-weight: bold;
 }
 
 .font-color-000000 {
@@ -362,6 +362,10 @@ label {
 
 .font-color-F8BB08 {
     color: #F8BB08;
+}
+
+.font-color-7F7F7F {
+    color: #7F7F7F;
 }
 
 .link-text-16px {

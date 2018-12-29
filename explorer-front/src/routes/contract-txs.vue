@@ -79,12 +79,12 @@
 
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info font-color-000000 font-size-24-bold">{{ numberAddComma(totalTxs) }} transactions found</div>
+                <div class="col info font-color-000000 font-24 font-bold">{{ numberAddComma(totalTxs) }} transactions found</div>
             </div>
 
             <div class="explorer-table-container">
                 <table v-if="arr.length" class="mt20 explorer-table list-table">
-                    <tr class="list-header font-size-12-bold font-color-000000">
+                    <tr class="list-header font-12 font-bold font-color-000000">
                         <th></th>
                         <th>TxHash</th>
                         <th>Block</th>
@@ -107,19 +107,19 @@
                         </td>
 
                         <td class="txs-block">
-                            <router-link class="font-size-14-normal font-color-4560E6" v-if=o.blockHeight v-bind:to='fragApi + "/block/" + o.blockHeight'>
-                                <span class="font-size-14-normal font-color-4560E6">{{ o.blockHeight }}</span>
+                            <router-link class="font-14 font-color-4560E6" v-if=o.blockHeight v-bind:to='fragApi + "/block/" + o.blockHeight'>
+                                <span class="font-14 font-color-4560E6">{{ o.blockHeight }}</span>
                             </router-link>
-                            <i class="font-size-14-normal font-color-000000" v-else>pending</i>
+                            <i class="font-14 font-color-000000" v-else>pending</i>
                         </td>
-                        <td class="time font-size-14-normal font-color-555555">
+                        <td class="time font-14 font-color-555555">
                             <div>{{ timeConversion(o.timeDiff) }} ago</div>
                             <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                         </td>
                         <td class="tdxxxwddd txs-from-to">
                             <vue-blockies v-bind:address='o.from'></vue-blockies>
                             <router-link v-bind:to='fragApi + "/address/" + o.from'>
-                                <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.from }}</span>
+                                <span class="fromTo font-14 font-color-0057FF">{{ o.from }}</span>
                             </router-link>
                         </td>
                         <td>
@@ -128,11 +128,11 @@
                         <td class="tdxxxwddd txs-from-to">
                             <vue-blockies v-bind:address='o.to'></vue-blockies>
                             <router-link v-bind:to='fragApi + "/address/" + o.to'>
-                                <span class="fromTo font-size-14-normal font-color-0057FF">{{ o.to }}</span>
+                                <span class="fromTo font-14 font-color-0057FF">{{ o.to }}</span>
                             </router-link>
                         </td>
-                        <td class="text-right font-color-000000 font-size-14-normal">{{ tokenAmount(o.contractValue) }} {{ o.tokenName }}</td>
-                        <td class="text-right font-size-14-normal font-color-555555">{{ toWei(o.txFee) }}</td>
+                        <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.contractValue) }} {{ o.tokenName }}</td>
+                        <td class="text-right font-14 font-color-555555">{{ toWei(o.txFee) }}</td>
                     </tr>
                 </table>
             </div>

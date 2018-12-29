@@ -32,11 +32,11 @@
         <vue-bread title='Block' :subtitle="$route.params.id"></vue-bread>
         <div v-if="block" class="container">
             <div class="tab explorer-table-container">
-                <div class="font-size-24-bold font-color-000000 table-title">
+                <div class="font-24 font-bold font-color-000000 table-title">
                     Overview
                 </div>
                 <div class="explorer-table-container">
-                    <table class="explorer-table font-size-16-normal">
+                    <table class="explorer-table font-16">
                         <tr>
                             <td class="font-color-555555">Height</td>
                             <td class="font-color-000000">
@@ -111,7 +111,7 @@
                                 <div class="collapse" id="collapseExample">
                                     <div class="card card-body dynasty">
                                         <router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>
-                                            <span class="font-size-16-bold font-color-0057FF"> {{ dynasty }}</span>
+                                            <span class="font-16 font-bold font-color-0057FF"> {{ dynasty }}</span>
                                         </router-link>
                                     </div>
                                 </div>

@@ -13,16 +13,9 @@
         margin-top: 50px;
     }
 
-    .vue-nothing .ohno {
-        color: black;
-        font-size: 38px;
-        font-weight: bold;
-    }
-
     .vue-nothing .msg {
         color: #555555;
         font-size: 18px;
-        font-weight: bold;
     }
 
     .vue-nothing a {
@@ -46,7 +39,7 @@
 <template>
     <div class="vue-nothing fullfill">
         <div class="container vertical-center">
-            <div class="msg">Sorry... No search results found.</div>
+            <div class="msg font-bold">Sorry... No search results found.</div>
             <img src="/static/img/nothing.png" alt="" width="282px">
             <router-link :to='$route.params.api ? "/" + $route.params.api : "/"'>Back Home</router-link>
         </div>
