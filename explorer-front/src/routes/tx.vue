@@ -36,7 +36,7 @@
     .vue-tx .mobile-detail {
         display: none;
         color: black;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 600;
         word-wrap: break-word;
         padding-bottom: 12px;

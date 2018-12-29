@@ -739,7 +739,7 @@
                             New Addresses Percentage
                             <div class="text-light-gray font-12 font-regular">New addresses are addresses created within 90 days.</div>
                             <div v-if="staticInfo" class="mt20 d-sm-none">
-                                <span class="font-16 font-color-7F7F7F">New Addresses</span>
+                                <span class="font-12 font-color-7F7F7F">New Addresses</span>
                                 <span class="font-20">{{ (Math.round(100 * staticInfo.newAddressCount / staticInfo.totalAddressCount * 10) / 10).toFixed(1) + '%' }}</span>
                             </div>
                         </div>
