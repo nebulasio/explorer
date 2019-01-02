@@ -74,7 +74,6 @@
     }
 
     .vue-footer .safe-bottom {
-        /* margin-bottom: 30px; */
         height: env(safe-area-inset-bottom);
     }
 
