@@ -840,7 +840,7 @@
             <div class="flex atlaspAds-bottom d-none d-md-block" id="atlaspAds-bottom"></div>
         </div>
         <!--ATP侧边栏广告位-->  
-        <div class="flex atlaspAds d-none d-xl-block" id="atlaspAds-side"></div>
+        <div class="flex atlaspAds" id="atlaspAds-side"></div>
     </div>
 </template>
 <script>
