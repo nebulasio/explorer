@@ -2,6 +2,10 @@
     .vue-blocks {
         background-color: white;
     }
+
+    .vue-blocks .block {
+        margin-right: 8px;
+    }
 </style>
 
 <template>

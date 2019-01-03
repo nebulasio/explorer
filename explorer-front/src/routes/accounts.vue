@@ -3,6 +3,10 @@
         background-color: white;
     }
 
+    .vue-accounts .block {
+        margin-right: 8px;
+    }
+
     @media (min-width: 576px) {
         .vue-accounts .tdxxxwddd>* {
             max-width: initial;

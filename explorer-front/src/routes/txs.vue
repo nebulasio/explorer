@@ -68,8 +68,12 @@
 
     .fromTo {
         /*max-width: 158px;*/
-        margin-left: 10px;
+        /* margin-left: 10px; */
         line-height: 24px;
+    }
+
+    .vue-txs .block {
+        margin-right: 8px;
     }
 </style>
 <template>
@@ -96,7 +100,7 @@
                         <th></th>
                         <th>To</th>
                         <th class=text-right>Value</th>
-                        <th class=text-right>TxFee</th>
+                        <th class="text-right pr-3">TxFee</th>
                     </tr>
 
                     <tr v-for="(o, i) in arr" :key="i">
@@ -117,32 +121,32 @@
                         </td>
                         <td class="time font-14 font-color-555555">
                             <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                            <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                            <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                         </td>
-                        <td class="tdxxxwddd txs-from-to" style="padding: 0;">
+                        <td class="tdxxxwddd txs-from-to">
                             <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
-                            <span class="fromTo font-color-000000 font-14" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span>
-                            <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
+                            <!-- <span class="fromTo font-color-000000 font-14" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span> -->
+                            <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>
                                 <span class="fromTo font-14 font-color-0057FF">{{ o.from.hash }}</span>
                             </router-link>
                         </td>
-                        <td style="padding: 0;">
+                        <td style="padding: 10px;">
                             <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
-                        </td>
-                        <td class="tdxxxwddd txs-from-to" style="padding: 0;">
                             <div style="width: 10px;"></div>
+                        </td>
+                        <td class="tdxxxwddd txs-from-to">
                             <div v-if="o.type==='call'" class="container-tip">
-                                <span class="tip font-15 shadow">Smart Contract</span>
+                                <span class="tip down-arrow-tip font-15 shadow">Smart Contract</span>
                                 <img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
                             </div>
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
-                            <span class="fromTo font-color-000000 font-14" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span>
-                            <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>
+                            <!-- <span class="fromTo font-color-000000 font-14" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span> -->
+                            <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>
                                 <span class="fromTo font-14 font-color-0057FF">{{ o.to.hash }}</span>
                             </router-link>
                         </td>
                         <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.value) }} NAS</td>
-                        <td class="text-right font-14 font-color-555555">{{ toWei(o.txFee) }}</td>
+                        <td class="text-right font-14 font-color-555555 pr-3">{{ toWei(o.txFee) }}</td>
                     </tr>
                 </table>
             </div>

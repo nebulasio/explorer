@@ -181,7 +181,8 @@
                             </router-link>
                             <span class="font-color-000000">for {{ tokenAmount }}</span>
                             <div class="token-name" v-if="tx.tokenName">
-                                <span class="font-color-000000">{{ (tx.tokenName) }}</span>
+                                <a class="font-color-0057FF" href=# @click="search(tx.tokenName)">{{ tx.tokenName }}</a>
+                                <!-- <span class="font-color-000000">{{ (tx.tokenName) }}</span> -->
                             </div>
                         </td>
                     </tr>
@@ -266,7 +267,8 @@
                         </router-link>
                         <span class="font-color-000000">for {{ tokenAmount }}</span>
                         <div class="token-name" v-if="tx.tokenName">
-                            <span class="font-color-000000">{{ (tx.tokenName) }}</span>
+                            <a class="font-color-000000" href=# @click="search(tx.tokenName)">{{ tx.tokenName }}</a>
+                            <!-- <span class="font-color-000000">{{ (tx.tokenName) }}</span> -->
                         </div>
                     </div>
                 </div>
@@ -419,7 +421,7 @@
             },
             errMsg() {
                 if (this.tx.executeError === 'insufficient balance') {
-                    return 'Insufficient Balance';
+                    return 'Insufficient Balance of Transfer Address';
                 } else if (this.tx.executeError === 'insufficient gas') {
                     return 'Out of Gas';
                 } else {
@@ -461,6 +463,31 @@
             atpAddress() {
                 var api = this.$route.params.api ? this.$route.params.api :"mainnet";
                 return appConfig.apiPrefixes[api].atp;
+            },
+            search(keyword) {
+                if (keyword.trim().length === 0) {
+                    return;
+                }
+                this.$root.showModalLoading = true;
+                api.getSearch(keyword.trim(), o => {
+                    this.$root.showModalLoading = false;
+                    this.search = "";
+
+                    if (o.type == "block")
+                        this.$router.push(this.fragApi + "/block/" + o.q);
+                    else if (o.type == "address")
+                        this.$router.push(this.fragApi + "/address/" + o.q);
+                    else if (o.type == "tx")
+                        this.$router.push(this.fragApi + "/tx/" + o.q);
+                    else if (o.type == "contract")
+                        this.$router.push(this.fragApi + "/contract/" + o.q);
+                    else {
+                        this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/nothing");
+                    }
+                }, () => {
+                    this.$root.showModalLoading = false;
+                    this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/oops");
+                });
             }
         },
         mounted() {
@@ -475,7 +502,7 @@
 
                 //侧栏广告尺寸限制
                 window.onresize = function () {
-                    if (window.innerWidth >= 1480) {
+                    if (window.innerWidth >= 1600) {
                         $('#atlaspAds-side').show();
                     } else {
                         $('#atlaspAds-side').hide();

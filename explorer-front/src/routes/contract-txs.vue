@@ -26,7 +26,8 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .hash-normal {
+
+    .vue-txs .hash-normal {
         height: 20px;
         font-size: 14px;
         /* font-family: OpenSans; */
@@ -34,7 +35,7 @@
         line-height: 20px;
     }
 
-    .hash-failed {
+    .vue-txs .hash-failed {
         height: 20px;
         font-size: 14px;
         /* font-family: OpenSans; */
@@ -42,7 +43,7 @@
         color: rgba(240, 68, 52, 1);
     }
 
-    .txs-hash {
+    .vue-txs .txs-hash {
         max-width: 185px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -50,7 +51,7 @@
         padding: 0;
     }
 
-    .txs-block {
+    .vue-txs .txs-block {
         max-width: 120px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -62,14 +63,18 @@
         /*max-width: 168px;*/
     /*}*/
 
-    .txs-from-to a {
-        /*max-width: 158px;*/
-    }
+    /* .txs-from-to a {
+        max-width: 158px;
+    } */
 
-    .fromTo {
+    .vue-txs .fromTo {
         /*max-width: 158px;*/
         height: 20px;
         line-height: 20px;
+    }
+
+    .vue-txs .block {
+        margin-right: 8px;
     }
 </style>
 <template>
@@ -85,7 +90,7 @@
             <div class="explorer-table-container">
                 <table v-if="arr.length" class="mt20 explorer-table list-table">
                     <tr class="list-header font-12 font-bold font-color-000000">
-                        <th></th>
+                        <th class="pl-2"></th>
                         <th>TxHash</th>
                         <th>Block</th>
                         <th>Age</th>
@@ -93,11 +98,11 @@
                         <th></th>
                         <th>To</th>
                         <th class=text-right>Value</th>
-                        <th class=text-right>TxFee</th>
+                        <th class="text-right pr-3">TxFee</th>
                     </tr>
 
                     <tr v-for="(o, i) in arr" :key="i">
-                        <td>
+                        <td class="pl-2">
                             <img v-if="o.status===0" class="icon40" src="../../static/img/ic_tx_failed.png"/>
                         </td>
                         <td class="txs-hash">
@@ -114,7 +119,7 @@
                         </td>
                         <td class="time font-14 font-color-555555">
                             <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                            <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                            <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                         </td>
                         <td class="tdxxxwddd txs-from-to">
                             <vue-blockies v-bind:address='o.from'></vue-blockies>
@@ -132,7 +137,7 @@
                             </router-link>
                         </td>
                         <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.contractValue) }} {{ o.tokenName }}</td>
-                        <td class="text-right font-14 font-color-555555">{{ toWei(o.txFee) }}</td>
+                        <td class="text-right font-14 font-color-555555 pr-3">{{ toWei(o.txFee) }}</td>
                     </tr>
                 </table>
             </div>

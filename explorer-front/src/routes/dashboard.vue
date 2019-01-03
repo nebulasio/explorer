@@ -1120,7 +1120,7 @@
 
                 //侧栏广告尺寸限制
                 window.onresize = function () {
-                    if (window.innerWidth >= 1480) {
+                    if (window.innerWidth >= 1600) {
                         $('#atlaspAds-side').show();
                     } else {
                         $('#atlaspAds-side').hide();

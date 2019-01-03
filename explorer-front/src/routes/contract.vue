@@ -55,14 +55,11 @@
       padding: .75rem 0.4rem;
     }
 
-    .vue-contract .tdxxxwddd img {
-      margin-right: 5px;
-    }
     .vue-contract .td-left {
         width: 20%;
     }
 
-    .hash-normal {
+    .vue-contract .hash-normal {
         height: 20px;
         font-size: 14px;
         /* font-family: OpenSans; */
@@ -70,7 +67,7 @@
         line-height: 20px;
     }
 
-    .hash-failed {
+    .vue-contract .hash-failed {
         height: 20px;
         font-size: 14px;
         /* font-family: OpenSans; */
@@ -78,15 +75,14 @@
         color: rgba(240, 68, 52, 1);
     }
 
-    .txs-hash {
+    .vue-contract .txs-hash {
         max-width: 185px;
         overflow: hidden;
         text-overflow: ellipsis;
         vertical-align: center;
-        padding: 0;
     }
 
-    .txs-block {
+    .vue-contract .txs-block {
         max-width: 120px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -98,14 +94,22 @@
         /*max-width: 168px;*/
     /*}*/
 
-    .txs-from-to a {
+    .vue-contract .txs-from-to a {
         max-width: 158px;
     }
 
-    .fromTo {
+    .vue-contract .fromTo {
         max-width: 158px;
         height: 20px;
         line-height: 24px;
+    }
+
+    .vue-contract .block {
+        margin-right: 8px;
+    }
+
+    .vue-contract .pl-16 {
+        padding-left: 16px;
     }
 
 </style>
@@ -123,11 +127,11 @@
                         </span>
                     </div>
                     <tr>
-                        <td class="font-color-555555 td-left" style="padding-left: 24px;">Total supply:</td>
+                        <td class="font-color-555555 td-left pl-16">Total supply:</td>
                         <td class="font-color-000000">{{ tokenAmount(obj.total, decimal) }} {{ obj.tokenName }} </td>
                     </tr>
                     <tr v-if="tokenPrice">
-                        <td class="font-color-555555" style="padding-left: 24px;">Price:</td>
+                        <td class="font-color-555555 pl-16">Price:</td>
                         <td>
                             <span class="font-color-000000">${{ tokenPrice.price }}</span>
                             <span :class='{"font-color-07A656": tokenPrice.trends === 1, "font-color-F04434": tokenPrice.trends != 1}'>(</span>
@@ -139,15 +143,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="font-color-555555" style="padding-left: 24px;">Holders:</td>
+                        <td class="font-color-555555 pl-16">Holders:</td>
                         <td class="font-color-000000">{{ numberAddComma(obj.holderCount) }} addresses</td>
                     </tr>
                     <tr>
-                        <td class="font-color-555555" style="padding-left: 24px;">Transfers:</td>
+                        <td class="font-color-555555 pl-16">Transfers:</td>
                         <td class="font-color-000000">{{ numberAddComma(obj.transactionCount) }}</td>
                     </tr>
                     <tr>
-                        <td class="font-color-555555" style="padding-left: 24px;">Contract:</td>
+                        <td class="font-color-555555 pl-16">Contract:</td>
                         <td>
                             <router-link v-bind:to='fragApi + "/address/" + obj.contract'>
                                 <span class="font-color-0057FF">{{ obj.contract }}</span>
@@ -193,7 +197,7 @@
                             <th></th>
                             <th>To</th>
                             <th class="text-right">Value</th>
-                            <th class="text-right">[TxFee]</th>
+                            <th class="text-right pr-3">[TxFee]</th>
                         </tr>
 
                         <tr v-for="o in txs" v-if="o" :key="o.hash">
@@ -213,22 +217,21 @@
                             </td>
                             <td class="time font-14 font-color-555555">
                                 <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                                <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                                <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                             </td>
-                            <td class="tdxxxwddd txs-from-to" style="padding: 0;">
+                            <td class="tdxxxwddd txs-from-to">
                                 <vue-blockies v-bind:address='o.from'></vue-blockies>
                                 <span class="fromTo font-14 font-color-000000" v-if="o.from === $route.params.id">{{ o.from }}</span>
                                 <router-link v-else v-bind:to='fragApi + "/address/" + o.from'>
                                     <span class="fromTo font-14 font-color-0057FF">{{ o.from }}</span>
                                 </router-link>
                             </td>
-                            <td style="padding: 0;">
+                            <td style="padding:10px;">
                                 <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
                             </td>
-                            <td class="tdxxxwddd txs-from-to" style="padding: 0;">
-                                <div style="width: 10px;"></div>
+                            <td class="tdxxxwddd txs-from-to">
                                 <div v-if="o.type==='call'" class="container-tip">
-                                    <span class="tip font-15 shadow">Smart Contract</span>
+                                    <span class="tip down-arrow-tip font-15 shadow">Smart Contract</span>
                                     <img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
                                 </div>
                                 <vue-blockies v-if="o.to" v-bind:address='o.to'></vue-blockies>
@@ -238,7 +241,7 @@
                                 </router-link>
                             </td>
                             <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.contractValue, decimal).shortAmount() }} {{ obj.tokenName }}</td>
-                            <td  class="text-right font-14 font-color-555555">
+                            <td  class="text-right font-14 font-color-555555 pr-3">
                                 <span v-if=o.blockHeight>{{ toWei(o.txFee) }}</span>
                                 <i v-else>(pending)</i>
                             </td>
@@ -277,7 +280,7 @@
                         </tr>
 
                         <tr v-for="o in holders" :key="o.address">
-                            <td class="font-color-000000 font-14 font-bold" style="padding-left: 24px;">{{ o.rank }}</td>
+                            <td class="font-color-000000 font-14 font-bold pl-16">{{ o.rank }}</td>
                             <td class="tdxxxwddd">
                                 <router-link style="max-width: 400px;" v-bind:to='fragApi + "/address/" + o.address'>
                                     <span class="font-14 font-color-0057FF">{{ o.address }}</span>

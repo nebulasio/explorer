@@ -2,6 +2,10 @@
     .vue-txs-pending {
         background-color: white;
     }
+
+    .vue-txs-pending .block {
+        margin-right: 8px;
+    }
 </style>
 <template>
     <!-- https://etherscan.io/txsPending -->
@@ -14,24 +18,24 @@
             <div class="explorer-table-container">
                 <table v-if="arr.length" class="mt20 explorer-table list-table">
                     <tr class="list-header font-12 font-bold font-color-000000">
-                        <th>TxHash</th>
+                        <th class="pl-3">TxHash</th>
                         <th>LastSeen</th>
                         <th>GasLimit</th>
                         <th>GasPrice</th>
                         <th>From</th>
                         <th></th>
                         <th>To</th>
-                        <th class=text-right>Value</th>
+                        <th class="text-right pr-3">Value</th>
                     </tr>
                     <tr v-for="(o, i) in arr" :key="i">
-                        <td class="tdxxxwddd">
+                        <td class="tdxxxwddd pl-3">
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
                                 <span class="font-color-0057FF font-14">{{ o.hash }}</span>
                             </router-link>
                         </td>
                         <td class="time font-14 font-color-555555">
                             <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                            <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                            <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                         </td>
                         <td class="font-14 font-color-555555">{{ numberAddComma(o.gasLimit) }}</td>
                         <td class="font-14 font-color-555555">{{ toWei(o.gasPrice) }}</td>
@@ -44,10 +48,9 @@
                         <td>
                             <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
                         </td>
-                        <td class=tdxxxwddd>
-                            <div style="width: 10px;"></div>
+                        <td class=tdxxxwddd>    
                             <div v-if="o.type==='call'" class="container-tip">
-                                <span class="tip font-15 shadow">Smart Contract</span>
+                                <span class="tip down-arrow-tip font-15 shadow">Smart Contract</span>
                                 <img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
                             </div>
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
@@ -55,7 +58,7 @@
                                 <span class="font-14 font-color-0057FF">{{ o.to.alias || o.to.hash }}</span>
                             </router-link>
                         </td>
-                        <td class="text-right font-14 font-color-000000">
+                        <td class="text-right font-14 font-color-000000 pr-3">
                             {{ tokenAmount(o.value) }} NAS
                         </td>
                     </tr>

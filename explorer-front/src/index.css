@@ -422,7 +422,7 @@ img:not([src]) {
     display: none;
 }
 
-.container-tip .tip::before {
+.down-arrow-tip::before {
     content: "";
     width: 0;
     height: 0;
@@ -440,5 +440,9 @@ img:not([src]) {
 }
 
 .container-tip img {
-    margin-right: 10px;
+    margin-right: 8px;
+}
+
+.time .down-arrow-tip::before {
+    left: calc(50% - 12px);
 }
