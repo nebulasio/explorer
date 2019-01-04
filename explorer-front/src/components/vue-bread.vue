@@ -1,62 +1,44 @@
 <style>
     .vue-bread {
-        background-color: #f8f8f8;
+        background-color: #f7f7f7;
         border-bottom: 1px solid #eee;
         overflow: auto;
         padding: 10px 0;
     }
 
-    .vue-bread a {
-        color: inherit;
-    }
-
-    .vue-bread .breadcrumb {
-        background-color: initial;
-        margin: 0;
-    }
-
-    .vue-bread ol> :last-child {
-        color: #3498db;
-    }
-
-    .vue-bread .title {
-        display: inline;
-        font-size: 24px;
+    .vue-bread .row {
+        align-items: center;
     }
 
     .vue-bread .subtitle {
-        display: inline;
-        font-size: 20px;
+        max-width: 100%;
+        overflow-wrap: break-word;
     }
 
 </style>
 <template>
     <div class=vue-bread>
         <div class=container>
-            <div class="align-items-center row">
-                <div class="col">
-                    <div class=title>{{ title }}</div>
-                    <div class=subtitle>{{ subtitle }}</div>
+            <div class="row align-items-center">
+                <div class="col-auto title font-40 font-bold font-color-000000">{{ title }}</div>
+                <div class="col-auto subtitle font-16 font-bold font-color-000000 align-baseline">
+                    <vue-blockies class="d-inline mr-1 align-text-bottom" v-if="blockies" v-bind:address='blockies'></vue-blockies>
+                    {{ subtitle }}
                 </div>
-                <nav class=col-auto aria-label=breadcrumb>
-                    <ol class=breadcrumb>
-                        <li class=breadcrumb-item v-bind:class="{ active: i == arr.length - 1 }" v-for="(o, i) in arr" :key="i">
-                            <template v-if="i == arr.length - 1">{{ o.text }}</template>
-                            <router-link v-else v-bind:to='fragApi + o.to'>{{ o.text }}</router-link>
-                        </li>
-                    </ol>
-                </nav>
             </div>
         </div>
     </div>
 </template>
 <script>
     module.exports = {
+        components: {
+            "vue-blockies": require("@/components/vue-blockies").default
+        },
         data() {
             return {
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : ""
             };
         },
-        props: ["arr", "title", "subtitle"]
+        props: ["title", "subtitle", "blockies"]
     };
 </script>

@@ -1,4 +1,7 @@
 <style>
+    .vue-txs {
+        background-color: white;
+    }
     .vue-txs .tip a {
         color: rgb(76, 32, 133);
     }
@@ -23,72 +26,123 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+    .vue-txs .hash-normal {
+        height: 20px;
+        font-size: 14px;
+        /* font-family: OpenSans; */
+        color: rgba(0, 87, 255, 1);
+        line-height: 20px;
+    }
+
+    .vue-txs .hash-failed {
+        height: 20px;
+        font-size: 14px;
+        /* font-family: OpenSans; */
+        line-height: 20px;
+        color: rgba(240, 68, 52, 1);
+    }
+
+    .vue-txs .txs-hash {
+        max-width: 185px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: center;
+        padding: 0;
+    }
+
+    .vue-txs .txs-block {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: center;
+        padding: 0;
+    }
+
+    /*.txs-from-to {*/
+        /*max-width: 168px;*/
+    /*}*/
+
+    /* .txs-from-to a {
+        max-width: 158px;
+    } */
+
+    .vue-txs .fromTo {
+        /*max-width: 158px;*/
+        height: 20px;
+        line-height: 20px;
+    }
+
+    .vue-txs .block {
+        margin-right: 8px;
+    }
 </style>
 <template>
     <!-- https://etherscan.io/txs -->
-    <div class=vue-txs>
-        <vue-bread v-bind:arr=breadcrumb v-bind:title=transactionsTitle></vue-bread>
+    <div class="vue-txs fullfill">
+        <vue-bread v-bind:title=transactionsTitle></vue-bread>
 
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info">{{ totalTxs }} transactions found</div>
-                <vue-pagination class=col-auto v-bind:current=currentPage v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
-                    v-on:prev=onPrev v-on:to=onTo></vue-pagination>
+                <div class="col info font-color-000000 font-24 font-bold">{{ numberAddComma(totalTxs) }} transactions found</div>
             </div>
 
-            <table class="mt20 table">
-                <tr>
-                    <th>TxHash</th>
-                    <th>Block</th>
-                    <th class=text-right>Age</th>
-                    <th>From</th>
-                    <th></th>
-                    <th>To</th>
-                    <th class=text-right>Value</th>
-                    <th class=text-right>TxFee</th>
-                </tr>
+            <div class="explorer-table-container">
+                <table v-if="arr.length" class="mt20 explorer-table list-table">
+                    <tr class="list-header font-12 font-bold font-color-000000">
+                        <th class="pl-2"></th>
+                        <th>TxHash</th>
+                        <th>Block</th>
+                        <th>Age</th>
+                        <th>From</th>
+                        <th></th>
+                        <th>To</th>
+                        <th class=text-right>Value</th>
+                        <th class="text-right pr-3">TxFee</th>
+                    </tr>
 
-                <tr v-for="(o, i) in arr" :key="i">
-                    <td v-if="o.status == 0" class=fail>
-                        <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
-                    </td>
-                    <td class=tdxxxwddd v-if="o.status != 0">
-                        <router-link v-bind:to='fragApi + "/tx/" + o.hash'>{{ o.hash }}</router-link>
-                    </td>
+                    <tr v-for="(o, i) in arr" :key="i">
+                        <td class="pl-2">
+                            <img v-if="o.status===0" class="icon40" src="../../static/img/ic_tx_failed.png"/>
+                        </td>
+                        <td class="txs-hash">
+                            <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
+                                <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal', 'monospace']">{{ o.hash }}</span>
+                            </router-link>
+                        </td>
 
-                    <td>
-                        <router-link v-bind:to='fragApi + "/block/" + o.blockHeight'>{{ o.blockHeight }}</router-link>
-                    </td>
-                    <!-- 
-                    <td>
-                        <template v-if=txs.isPending>
-                            <span> pending </span>
-                        </template>
-                        <template v-else>
-                            <router-link v-if=o.block v-bind:to='fragApi + "/block/" + o.blockHeight'>{{o.blockHeight}}</router-link>
-                        </template>
-                         <router-link v-bind:to='fragApi + "/block/" + o.blockHeight'>{{ o.blockHeight }}</router-link> 
-                    </td>
-                    -->
-                    <td class=time>
-                        <div class=text-right>{{ timeConversion(Date.now() - o.timestamp) }} ago</div>
-                        <div>{{ new Date(o.timestamp).toString() }} | {{ o.timestamp }}</div>
-                    </td>
-                    <td class=tdxxxwddd>
-                        <router-link v-bind:to='fragApi + "/address/" + o.from'>{{ o.from }}</router-link>
-                    </td>
-                    <td>
-                        <span class="fa fa-arrow-right" aria-hidden=true></span>
-                    </td>
-                    <td class=tdxxxwddd>
-                        <router-link v-bind:to='fragApi + "/address/" + o.to'>{{ o.to }}</router-link>
-                    </td>
-                    <td class=text-right>{{ tokenAmount(o.contractValue) }} {{ o.tokenName }}</td>
-                    <td class=text-right>{{ toWei(o.txFee) }}</td>
-                </tr>
-            </table>
+                        <td class="txs-block">
+                            <router-link class="font-14 font-color-4560E6" v-if=o.blockHeight v-bind:to='fragApi + "/block/" + o.blockHeight'>
+                                <span class="font-14 font-color-4560E6">{{ o.blockHeight }}</span>
+                            </router-link>
+                            <i class="font-14 font-color-000000" v-else>pending</i>
+                        </td>
+                        <td class="time font-14 font-color-555555">
+                            <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                            <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                        </td>
+                        <td class="tdxxxwddd txs-from-to">
+                            <vue-blockies v-bind:address='o.from'></vue-blockies>
+                            <router-link v-bind:to='fragApi + "/address/" + o.from'>
+                                <span class="fromTo font-14 font-color-0057FF monospace">{{ o.from }}</span>
+                            </router-link>
+                        </td>
+                        <td>
+                            <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
+                        </td>
+                        <td class="tdxxxwddd txs-from-to">
+                            <vue-blockies v-bind:address='o.to'></vue-blockies>
+                            <router-link v-bind:to='fragApi + "/address/" + o.to'>
+                                <span class="fromTo font-14 font-color-0057FF monospace">{{ o.to }}</span>
+                            </router-link>
+                        </td>
+                        <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.contractValue) }} {{ o.tokenName }}</td>
+                        <td class="text-right font-14 font-color-555555 pr-3">{{ toWei(o.txFee) }}</td>
+                    </tr>
+                </table>
+            </div>
 
-            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
+            <vue-pagination v-if="arr.length" v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
                 v-on:prev=onPrev v-on:to=onTo></vue-pagination>
         </div>
     </div>
@@ -101,6 +155,7 @@
     module.exports = {
         components: {
             "vue-bread": require("@/components/vue-bread").default,
+            "vue-blockies": require("@/components/vue-blockies").default,
             "vue-pagination": require("@/components/vue-pagination").default
         },
         data() {
@@ -117,12 +172,6 @@
         computed: {
             transactionsTitle: function () {
                 return (this.tokenName ? this.tokenName + ' ' : '') + "Transactions";
-            },
-            breadcrumb: function () {
-                return [
-                    { text: "Home", to: "/" },
-                    { text: this.transactionsTitle, to: "" }
-                ];
             }
         },
         methods: {
@@ -148,9 +197,8 @@
                     this.totalTxs = o.txnCnt;
                     this.tokenName = o.tokenName;
                 }, xhr => {
-                    console.log(xhr);
                     this.$root.showModalLoading = false;
-                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404!" + this.$route.fullPath);
+                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });
             },
             numberAddComma(n) {
@@ -181,7 +229,7 @@
                 BigNumber.config({ DECIMAL_PLACES: 18 })
                 var amount = BigNumber(n);
                 var decimals = BigNumber('1e+18');
-                return amount.div(decimals).toFormat();
+                return amount.div(decimals).toFormat().shortAmount();
             }
         },
         mounted() {

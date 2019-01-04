@@ -1,27 +1,46 @@
 <style>
-    .vue-404 .img {
-        height: 600px;
-        background: url(/static/img/404.jpg) center no-repeat;
-    }
-
-    .vue-404 .url {
-        font-size: 31px;
-        line-height: 42px;
+    .vue-404 {
+        position: relative;
         text-align: center;
     }
+
+    .vertical-center {
+        margin: 0 auto;
+        padding-top: 80px;
+    }
+
+    .vue-404 img {
+        margin-top: 50px;
+    }
+
+    .vue-404 .msg {
+        color: #555555;
+        font-size: 18px;
+    }
+
+    .vue-404 a {
+        display: block;
+        color: black;
+        font-size: 16px;
+        width: 160px;
+        border:1px solid rgba(0,0,0,1);
+        padding: 7px 7px;
+        margin: 46px auto;
+    }
+
+    .vue-404 a:hover {
+        background-color: black;
+        color: white;
+        text-decoration: none;
+    }
+
 </style>
 <template>
-    <div class=vue-404>
-        <div class=url>
-            <template v-if=$root.urlBefore404>
-                Such page was not found:
-                <br>{{ $root.urlBefore404 }}
-            </template>
-            <template v-else>
-                <br>
-                <br>
-            </template>
+    <div class="vue-404 fullfill">
+        <div class="container vertical-center">
+            <div class="msg font-bold">Sorry...The network is currently unavailable. Please try again later.</div>
+            <img src="/static/img/404.png" alt="" width="308px">
+            <router-link :to='$route.params.api ? "/" + $route.params.api : "/"'>Back Home</router-link>
         </div>
-        <div class=img></div>
     </div>
 </template>
