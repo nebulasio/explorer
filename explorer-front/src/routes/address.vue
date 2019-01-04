@@ -376,7 +376,7 @@
                 <div v-if="txs.length" class="align-items-center row title">
                     <div class=col>
                         <span class="font-16 font-bold font-color-000000">
-                        Latest {{ txs.length }} {{ txs.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(obj.txCnt) }} {{ obj.txCnt > 1 ? 'transactions' : 'transaction' }} ( + {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} Pending {{ obj.pendingTxCnt > 1 ? 'Txns' : 'Txn' }} )
+                        Latest {{ txs.length }} {{ txs.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(obj.txCnt) }} {{ obj.txCnt > 1 ? 'transactions' : 'transaction' }} {{ obj.pendingTxCnt == 0 ? '' : '( + ' + obj.pendingTxCnt + ' Pending ' + (obj.pendingTxCnt > 1 ? 'Txns )' : 'Txn )') }}
                         </span>
                     </div>
                     <div class=col-auto>

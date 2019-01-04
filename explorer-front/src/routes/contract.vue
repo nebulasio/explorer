@@ -204,7 +204,7 @@
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
                         <span class="font-16 font-bold font-color-000000">
-                            Latest {{ txs.length }} {{ txs.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(obj.transactionCount) }} {{ obj.transactionCount > 1 ? 'transactions' : 'transaction' }} ( + {{ numberAddComma(obj.pendingTransactionCount) }} Pending {{ obj.pendingTransactionCount > 1 ? 'Txns' : 'Txn' }} )
+                            Latest {{ txs.length }} {{ txs.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(obj.transactionCount) }} {{ obj.transactionCount > 1 ? 'transactions' : 'transaction' }} {{ obj.pendingTransactionCount == 0 ? '' : '( + ' + obj.pendingTransactionCount + ' Pending ' + (obj.pendingTransactionCount > 1 ? 'Txns )' : 'Txn )') }}
                         </span>
                     </div>
                     <div class=col-auto>
