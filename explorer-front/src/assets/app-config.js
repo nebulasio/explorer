@@ -7,10 +7,10 @@ module.exports = {
         // first item is default
         mainnet: {
             name: "Mainnet",
-            url: "http://54.70.225.59:8081/api/", // 旭存
+            // url: "http://54.70.225.59:8081/api/", // 旭存
             // url: "http://172.16.15.124:8080/api/", // xihao
             // url: "http://39.96.38.130:8081/api/", //aliyun
-            // url: "https://explorer.nebulas.io/main/api/", //正式
+            url: "https://explorer-test.nebulas.io/main/api/", //正式
             atp: "n1zUNqeBPvsyrw5zxp9mKcDdLTjuaEL7s39"
         },
         testnet: {
