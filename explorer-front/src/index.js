@@ -87,7 +87,7 @@ vApp = new Vue({
     data: {
         search: "",
         showModalLoading: false,
-        showAtpAds: true,
+        showAtpAds: false,
         timestamp: Date.now()
     },
     el: ".vue",
