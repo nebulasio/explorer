@@ -93,7 +93,7 @@
         <div class=container>
             <div>
                 <router-link v-bind:to="fragApi + '/'" class=navbar-brand>
-                    <img src=/static/img/logo_beta.png width=210 alt="">
+                    <img src="/static/img/logo_beta.png?v=20190104" width=210 alt="">
                 </router-link>
                 <!-- <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
 <span class="fa fa-flask" aria-hidden=true></span>
