@@ -419,7 +419,7 @@
                             </td>
                             <td class="txs-hash">
                                 <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
-                                    <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal']">{{ o.hash }}</span>
+                                    <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal', 'monospace']">{{ o.hash }}</span>
                                 </router-link>
                             </td>
                             <td class="txs-block">
@@ -434,7 +434,7 @@
                                 <div>{{ timeConversion(o.timeDiff) }} ago</div>
                                 <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                             </td>
-                            <td class="tdxxxwddd txs-from-to">
+                            <td class="tdxxxwddd txs-from-to monospace">
                                 <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                                 <span class="fromTo font-14 font-color-000000" v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
                                 <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
@@ -444,7 +444,7 @@
                             <td style="padding: 10px;">
                                 <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
                             </td>
-                            <td class="tdxxxwddd txs-from-to">
+                            <td class="tdxxxwddd txs-from-to monospace">
                                 <div v-if="o.type==='call'" class="container-tip">
                                     <span class="tip down-arrow-tip font-15 shadow">Smart Contract</span>
                                     <img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
@@ -525,7 +525,7 @@
                             <td><img class="icon40" v-bind:src="statusIcon(o,o.status)"/></td>
                             <td class="txs-hash">
                                 <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
-                                    <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal']">{{ o.hash }}</span>
+                                    <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal', 'monospace']">{{ o.hash }}</span>
                                 </router-link>
                             </td>
 
@@ -541,7 +541,7 @@
                                 <div>{{ timeConversion(o.timeDiff) }} ago</div>
                                 <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                             </td>
-                            <td class="tdxxxwddd txs-from-to">
+                            <td class="tdxxxwddd txs-from-to monospace">
                                 <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                                 <span class="fromTo font-14 font-color-000000" v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
                                 <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
@@ -551,7 +551,7 @@
                             <td style="padding: 10px;">
                                 <img class="icon16" src="../../static/img/ic_arrow_right.png"/>
                             </td>
-                            <td class="tdxxxwddd txs-from-to">
+                            <td class="tdxxxwddd txs-from-to monospace">
                                 <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                                 <span class="fromTo font-14 font-color-000000" v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
                                 <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>

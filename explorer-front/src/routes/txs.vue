@@ -109,7 +109,7 @@
                         </td>
                         <td class="txs-hash">
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
-                                <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal']">{{ o.hash }}</span>
+                                <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal', 'monospace']">{{ o.hash }}</span>
                             </router-link>
                         </td>
 
@@ -127,7 +127,7 @@
                             <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                             <!-- <span class="fromTo font-color-000000 font-14" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span> -->
                             <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>
-                                <span class="fromTo font-14 font-color-0057FF">{{ o.from.hash }}</span>
+                                <span class="fromTo font-14 font-color-0057FF monospace">{{ o.from.hash }}</span>
                             </router-link>
                         </td>
                         <td style="padding: 10px;">
@@ -142,7 +142,7 @@
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                             <!-- <span class="fromTo font-color-000000 font-14" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span> -->
                             <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>
-                                <span class="fromTo font-14 font-color-0057FF">{{ o.to.hash }}</span>
+                                <span class="fromTo font-14 font-color-0057FF monospace">{{ o.to.hash }}</span>
                             </router-link>
                         </td>
                         <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.value) }} NAS</td>

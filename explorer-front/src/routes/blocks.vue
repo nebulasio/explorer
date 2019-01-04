@@ -52,7 +52,7 @@
                         <td style="padding-left: 60px">
                             <router-link v-bind:to='fragApi + "/address/" + o.miner.hash'>
                                 <vue-blockies class="d-inline" v-bind:address='o.miner.alias || o.miner.hash'></vue-blockies>
-                                <span class="font-14 font-color-0057FF">{{ o.miner.alias || o.miner.hash }}</span>
+                                <span class="font-14 font-color-0057FF monospace">{{ o.miner.alias || o.miner.hash }}</span>
                             </router-link>
                         </td>
                         <td class=text-right>

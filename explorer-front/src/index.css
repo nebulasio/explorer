@@ -46,7 +46,7 @@ ul {
 }
 
 .monospace {
-    font-family: consolas, menlo, monaco, lucida console, liberation mono, dejavu sans mono, bitstream vera sans mono, courier new, monospace;
+    font-family: menlo, consolas, monaco, lucida console, liberation mono, dejavu sans mono, bitstream vera sans mono, courier new, monospace;
 }
 
 td.time {

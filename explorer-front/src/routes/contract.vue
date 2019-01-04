@@ -240,7 +240,7 @@
                             </td>
                             <td class="txs-hash">
                                 <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
-                                    <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal']">{{ o.hash }}</span>
+                                    <span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal', 'monospace']">{{ o.hash }}</span>
                                 </router-link>
                             </td>
                             <td class="txs-block">
@@ -257,7 +257,7 @@
                                 <vue-blockies v-bind:address='o.from'></vue-blockies>
                                 <span class="fromTo font-14 font-color-000000" v-if="o.from === $route.params.id">{{ o.from }}</span>
                                 <router-link v-else v-bind:to='fragApi + "/address/" + o.from'>
-                                    <span class="fromTo font-14 font-color-0057FF">{{ o.from }}</span>
+                                    <span class="fromTo font-14 font-color-0057FF monospace">{{ o.from }}</span>
                                 </router-link>
                             </td>
                             <td style="padding:10px;">
@@ -269,9 +269,9 @@
                                     <img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
                                 </div>
                                 <vue-blockies v-if="o.to" v-bind:address='o.to'></vue-blockies>
-                                <span class="fromTo font-color-000000 font-14" v-if="o.to === $route.params.id">{{ o.to }}</span>
+                                <span class="fromTo font-color-000000 font-14 monospace" v-if="o.to === $route.params.id">{{ o.to }}</span>
                                 <router-link v-else v-bind:to='fragApi + "/address/" + o.to'>
-                                    <span class="fromTo font-14 font-color-0057FF">{{ o.to }}</span>
+                                    <span class="fromTo font-14 font-color-0057FF monospace">{{ o.to }}</span>
                                 </router-link>
                             </td>
                             <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.contractValue, decimal).shortAmount() }} {{ obj.tokenName }}</td>
@@ -319,7 +319,7 @@
                             <td class="font-color-000000 font-14 font-bold" style="padding-left: 24px;">{{ o.rank }}</td>
                             <td class="tdxxxwddd">
                                 <router-link style="max-width: 400px;" v-bind:to='fragApi + "/address/" + o.address'>
-                                    <span class="font-14 font-color-0057FF">{{ o.address }}</span>
+                                    <span class="font-14 font-color-0057FF monospace">{{ o.address }}</span>
                                 </router-link>
                             </td>
                             <td class="text-right font-14 font-color-555555">{{ tokenAmount(o.balance, decimal).shortAmount() }}</td>
