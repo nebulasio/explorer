@@ -282,7 +282,7 @@
                     </td>
                     <td class="font-16 font-color-000000">
                         <router-link v-bind:to='fragApi + "/token/" + $route.params.id'>
-                            <span class="font-color-0057FF">{{obj.tokenName }}</span>
+                            <span class="font-color-0057FF">{{ obj.tokenName }}</span>
                         </router-link>
                     </td>
                 </tr>

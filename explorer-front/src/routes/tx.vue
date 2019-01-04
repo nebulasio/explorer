@@ -182,7 +182,6 @@
                             <span class="font-color-000000">for {{ tokenAmount }}</span>
                             <div class="token-name" v-if="tx.tokenName">
                                 <a class="font-color-0057FF" href=# @click="search(tx.tokenName)">{{ tx.tokenName }}</a>
-                                <!-- <span class="font-color-000000">{{ (tx.tokenName) }}</span> -->
                             </div>
                         </td>
                     </tr>
@@ -267,8 +266,7 @@
                         </router-link>
                         <span class="font-color-000000">for {{ tokenAmount }}</span>
                         <div class="token-name" v-if="tx.tokenName">
-                            <a class="font-color-000000" href=# @click="search(tx.tokenName)">{{ tx.tokenName }}</a>
-                            <!-- <span class="font-color-000000">{{ (tx.tokenName) }}</span> -->
+                            <a class="font-color-0057FF" href=# @click="search(tx.tokenName)">{{ tx.tokenName }}</a>
                         </div>
                     </div>
                 </div>
