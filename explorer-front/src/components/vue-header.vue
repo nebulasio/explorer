@@ -192,7 +192,7 @@
                     else if (o.type == "tx")
                         this.$router.push(this.fragApi + "/tx/" + o.q);
                     else if (o.type == "contract")
-                        this.$router.push(this.fragApi + "/contract/" + o.q);
+                        this.$router.push(this.fragApi + "/token/" + o.q);
                     else {
                         this.$root.search = o.q;
                         this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/nothing");
@@ -210,7 +210,7 @@
             },
             showATP() {
                 // 搜索框进入 ATP 的临时方案！！！
-                this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/contract/" + this.atpAddress());
+                this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/token/" + this.atpAddress());
             }
         },
         mounted() {

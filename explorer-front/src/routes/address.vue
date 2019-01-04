@@ -281,7 +281,7 @@
                     <td class="base-info-key font-16 font-color-555555 pl-16">Token Tracker:
                     </td>
                     <td class="font-16 font-color-000000">
-                        <router-link v-bind:to='fragApi + "/contract/" + $route.params.id'>
+                        <router-link v-bind:to='fragApi + "/token/" + $route.params.id'>
                             <span class="font-color-0057FF">{{obj.tokenName }}</span>
                         </router-link>
                     </td>
@@ -292,7 +292,7 @@
                     <td>
                         <div id="dropdown-tokens" data-toggle=dropdown>
                             <span class="font-16 font-color-000000">{{ tokenAmount(displayToken.balance, displayToken.decimal) }}</span>
-                            <router-link v-bind:to='fragApi + "/contract/" + displayToken.contract'>
+                            <router-link v-bind:to='fragApi + "/token/" + displayToken.contract'>
                                 <span class="font-16 font-bold font-color-0057FF">{{ displayToken.tokenName }}</span>
                             </router-link>
                             <img src="../../static/img/icon_arrow_down_black.png" alt="" width="12">

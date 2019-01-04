@@ -480,7 +480,7 @@
                     else if (o.type == "tx")
                         this.$router.push(this.fragApi + "/tx/" + o.q);
                     else if (o.type == "contract")
-                        this.$router.push(this.fragApi + "/contract/" + o.q);
+                        this.$router.push(this.fragApi + "/token/" + o.q);
                     else {
                         this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/nothing");
                     }
