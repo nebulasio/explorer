@@ -284,7 +284,7 @@
                         </tr>
 
                         <tr v-for="o in holders" :key="o.address">
-                            <td class="font-color-000000 font-14 font-bold pl-16">{{ o.rank }}</td>
+                            <td class="font-color-000000 font-14 font-bold" style="padding-left: 24px;">{{ o.rank }}</td>
                             <td class="tdxxxwddd">
                                 <router-link style="max-width: 400px;" v-bind:to='fragApi + "/address/" + o.address'>
                                     <span class="font-14 font-color-0057FF">{{ o.address }}</span>
