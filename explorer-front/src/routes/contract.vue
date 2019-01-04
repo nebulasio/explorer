@@ -172,17 +172,19 @@
                     <div class=col>
                         <span class="c333 fa fa-sort-amount-desc" aria-hidden=true></span>
                         <span class="font-16 font-bold font-color-000000">
-                            Latest {{ txs.length }} {{ txs.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(obj.transactionCount) }} {{ obj.transactionCount > 1 ? 'transactions' : 'transaction' }} ( + {{ numberAddComma(obj.pendingTransactionCount) }} {{ obj.pendingTransactionCount > 1 ? 'PendingTxns' : 'PendingTxn' }} )
+                            Latest {{ txs.length }} {{ txs.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(obj.transactionCount) }} {{ obj.transactionCount > 1 ? 'transactions' : 'transaction' }} ( + {{ numberAddComma(obj.pendingTransactionCount) }} Pending {{ obj.pendingTransactionCount > 1 ? 'Txns' : 'Txn' }} )
                         </span>
                     </div>
                     <div class=col-auto>
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id'>
                             <span class="font-color-0057FF font-16">View All {{ obj.transactionCount }} {{ obj.transactionCount > 1 ? 'Txns' : 'Txn' }}</span>
                         </router-link>
-                        |
-                        <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id + "&isPending=true" '>
-                            <span class="font-color-0057FF font-16">View All {{ obj.pendingTransactionCount }} {{ obj.pendingTransactionCount > 1 ? 'PendingTxns' : 'PendingTxn' }}</span>
-                        </router-link>
+                        <span v-if="obj.pendingTransactionCount > 0">
+                            |
+                            <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id + "&isPending=true" '>
+                                <span class="font-color-0057FF font-16">View All {{ obj.pendingTransactionCount }} Pending {{ obj.pendingTransactionCount > 1 ? 'Txns' : 'Txn' }}</span>
+                            </router-link>
+                        </span>
                     </div>
                 </div>
 
@@ -254,10 +256,12 @@
                         <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id'>
                             <span class="font-color-0057FF font-16">View All {{ obj.transactionCount }} {{ obj.transactionCount > 1 ? 'Txns' : 'Txn' }}</span>
                         </router-link>
-                        |
-                        <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id + "&isPending=true" '>
-                            <span class="font-color-0057FF font-16">View All {{ obj.pendingTransactionCount }} {{ obj.pendingTransactionCount > 1 ? 'PendingTxns' : 'PendingTxn' }}</span>
-                        </router-link>
+                        <span v-if="obj.pendingTransactionCount > 0">
+                            |
+                            <router-link class="btn btn-link" v-bind:to='fragApi + "/contract-txs?contract=" + $route.params.id + "&isPending=true" '>
+                                <span class="font-color-0057FF font-16">View All {{ obj.pendingTransactionCount }} Pending {{ obj.pendingTransactionCount > 1 ? 'Txns' : 'Txn' }}</span>
+                            </router-link>
+                        </span>
                     </div>
                 </div>
             </div>

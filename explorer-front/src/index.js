@@ -55,6 +55,17 @@ String.prototype.shortAmount = function () {
     return this;
 }
 
+String.prototype.padDecimal = function () {
+    let dot_index = this.indexOf('.');
+    if (dot_index === -1) return this + '.0000';
+    if (this.length - 1 - dot_index > 4) {
+        return this;
+    } else if (this.length - 1 - dot_index < 4) {
+        return this.padEnd(5 + dot_index, '0');
+    }
+    return this;
+}
+
 Array.prototype.addLocalTimestamp = function () {
     if (this instanceof Array) {
         for (var index in this) {

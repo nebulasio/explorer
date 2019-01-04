@@ -48,7 +48,7 @@
     <div class="vue-contracts fullfill">
         <vue-bread title="Smart Contracts"></vue-bread>
 
-        <div class="container mt20">
+        <div v-if="arr" class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
                 <div class="col info font-color-000000 font-24 font-bold">{{ numberAddComma(totalCts) }} smart contracts found</div>
                 <!--(showing the last {{ maxDisplayCnt }} records)-->
@@ -95,7 +95,7 @@
         },
         data() {
             return {
-                arr: [],
+                arr: null,
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 maxDisplayCnt: 0,

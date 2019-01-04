@@ -18,7 +18,7 @@
     <!-- https://etherscan.io/accounts  -->
     <div class="vue-accounts fullfill">
         <vue-bread title="Top Accounts By NAS Balance"></vue-bread>
-        <div class="mt20 container">
+        <div v-if="arr && arr.length" class="mt20 container">
             <div class="align-items-center info-and-pagination row">
                 <div class="col-auto pr-0 font-color-000000 font-24 font-bold">
                     {{ numberAddComma(totalAccounts) }} accounts found 

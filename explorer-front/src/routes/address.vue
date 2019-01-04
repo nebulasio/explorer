@@ -693,13 +693,10 @@
                 return utility.easyNumber(n);
             },
             nasAmount(n) {
-                if (n == 0) {
-                    return '0'.shortAmount();
-                }
                 BigNumber.config({ DECIMAL_PLACES: 18 })
                 var amount = BigNumber(n);
                 var decimals = BigNumber('1e+18');
-                return amount.div(decimals).toFormat();
+                return amount.div(decimals).toFormat().padDecimal();
             },
             tokenAmount(n, decimals) {
                 decimals = decimals || 18;

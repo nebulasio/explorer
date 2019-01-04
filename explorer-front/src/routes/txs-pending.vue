@@ -11,12 +11,12 @@
     <!-- https://etherscan.io/txsPending -->
     <div class="vue-txs-pending fullfill">
         <vue-bread title="Pending Transactions"></vue-bread>
-        <div class="container mt20">
+        <div v-if="arr && arr.length" class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
                 <div class="col info font-color-000000 font-24 font-bold">{{ numberAddComma(totalTxs) }} Pending {{ totalTxs > 1 ? 'txns' : 'txn' }} found</div>
             </div>
             <div class="explorer-table-container">
-                <table v-if="arr.length" class="mt20 explorer-table list-table">
+                <table class="mt20 explorer-table list-table">
                     <tr class="list-header font-12 font-bold font-color-000000">
                         <th class="pl-3">TxHash</th>
                         <th>LastSeen</th>
@@ -64,8 +64,9 @@
                     </tr>
                 </table>
             </div>
-            <vue-pagination v-if="arr.length" v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
+            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
         </div>
+        <vue-nothing v-if="arr && arr.length === 0" title="0 pending txn found"></vue-nothing>
     </div>
 </template>
 <script>
@@ -77,11 +78,12 @@
         components: {
             "vue-bread": require("@/components/vue-bread").default,
             "vue-pagination": require("@/components/vue-pagination").default,
-            "vue-blockies": require("@/components/vue-blockies").default
+            "vue-blockies": require("@/components/vue-blockies").default,
+            "vue-nothing": require("@/components/vue-nothing").default
         },
         data() {
             return {
-                arr: [],
+                arr: null,
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 totalPage: 0,

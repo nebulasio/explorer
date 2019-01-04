@@ -79,9 +79,9 @@
 <template>
     <!-- https://etherscan.io/txs -->
     <div class="vue-txs fullfill">
-        <vue-bread title=Transactions :subtitle='$route.query.block ? ("Block #" + $route.query.block) : $route.query.a' :blockies='$route.query.a'></vue-bread>
+        <vue-bread :title='"Transactions" + (($route.query.a || $route.query.block) ? " Of" : "")' :subtitle='$route.query.block ? ("Block #" + $route.query.block) : $route.query.a' :blockies='$route.query.a'></vue-bread>
 
-        <div class="container mt20">
+        <div v-if="arr && arr.length" class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
                 <span class="col-auto pr-0 info font-color-000000 font-24 font-bold">
                     {{ (totalTxs > 0 && !$route.query.a && !$route.query.block) ? 'More than' : '' }} {{ totalTxs > 1000000  ? (Math.floor(totalTxs / 1000000) +  (Math.floor(totalTxs / 1000000) > 2 ? ' millions' : ' million')) : numberAddComma(totalTxs) }} transactions found
@@ -154,6 +154,7 @@
             <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
                 v-on:prev=onPrev v-on:to=onTo></vue-pagination>
         </div>
+        <vue-nothing v-if="arr && arr.length === 0" title="0 transaction found"></vue-nothing>
     </div>
 </template>
 <script>
@@ -165,11 +166,12 @@
         components: {
             "vue-bread": require("@/components/vue-bread").default,
             "vue-pagination": require("@/components/vue-pagination").default,
-            "vue-blockies": require("@/components/vue-blockies").default
+            "vue-blockies": require("@/components/vue-blockies").default,
+            "vue-nothing": require("@/components/vue-nothing").default
         },
         data() {
             return {
-                arr: [],
+                arr: null,
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
                 maxDisplayCnt: 0,
