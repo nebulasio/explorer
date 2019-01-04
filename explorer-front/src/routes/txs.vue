@@ -79,7 +79,7 @@
 <template>
     <!-- https://etherscan.io/txs -->
     <div class="vue-txs fullfill">
-        <vue-bread :title='"Transactions" + (($route.query.a || $route.query.block) ? " Of" : "")' :subtitle='$route.query.block ? ("Block #" + $route.query.block) : $route.query.a' :blockies='$route.query.a'></vue-bread>
+        <vue-bread :title='"Transactions" + (($route.query.a || $route.query.block) ? " of" : "")' :subtitle='$route.query.block ? ("Block #" + $route.query.block) : $route.query.a' :blockies='$route.query.a'></vue-bread>
 
         <div v-if="arr && arr.length" class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
