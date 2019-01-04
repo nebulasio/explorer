@@ -119,7 +119,7 @@ redis:
   password:
   database: 2
 grpc:
-  host: 13.57.96.40
+  host: 47.92.203.173
   port: 8684
   enableKeepAlive: true
   keepAliveWithoutCalls: true
