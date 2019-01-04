@@ -230,17 +230,16 @@
                    v-bind:blockies="$route.params.id">
         </vue-bread>
         <div class="container explorer-table-container" v-if=obj>
-
-            <table class="explorer-table">
-                <div class="font-24 font-bold font-color-000000 table-title">
-                    Overview
-                    <span class=c777 v-show=obj.address.alias> | {{ obj.address.alias }}</span>
-                </div>
+            <div class="font-24 font-bold font-color-000000 table-title">
+                Overview
+                <span class=c777 v-show=obj.address.alias> | {{ obj.address.alias }}</span>
+            </div>
+            <table class="explorer-table d-none d-md-table">
                 <tr>
                     <td class="base-info-key font-16 font-color-555555 pl-16">NAS Balance:
                     </td>
                     <td class="font-16 font-color-000000">
-                        {{nasAmount(obj.address.balance) }} NAS
+                        {{ nasAmount(obj.address.balance) }} NAS
                     </td>
                 </tr>
                 <tr v-if="isContract && contract">
@@ -306,6 +305,67 @@
                     </td>
                 </tr>
             </table>
+
+            <div class="mobile-detail d-md-none">
+                <div>
+                    NAS Balance:
+                    <div class="detail">{{ nasAmount(obj.address.balance) }} NAS</div>
+                </div>
+                <div v-if="isContract && contract">
+                    Contract Creator:
+                    <div v-if="contract.hash && contract.from" class="detail contract-creator font-color-000000">
+                        <router-link v-bind:to='fragApi + "/address/" + contract.from'
+                                     title="Creator Address">
+                            <span class="font-color-0057FF">{{ toShortStr(contract.from) }}</span>
+                            <div class="popover">Creator Address</div>
+                        </router-link>
+                        at txn
+                        <router-link v-bind:to='fragApi + "/tx/" + contract.hash'
+                                     title="Creator TxHash">
+                            <span class="font-color-0057FF">{{ toShortStr(contract.hash) }}</span>
+                            <div class="popover">Creator TxHash</div>
+                        </router-link>
+                    </div>
+                </div>
+                <div>
+                    Nonce:
+                    <div class="detail">{{ obj.address.nonce }}</div>
+                </div>
+                <div>
+                    Number Of Transactions:
+                    <div class="detail">{{ obj.txCnt }}</div>
+                </div>
+                <div>
+                    Minted:
+                    <div class="detail">{{ obj.mintedBlkCnt }}</div>
+                </div>
+                <div v-if="obj.tokenName">
+                    Token Tracker:
+                    <div class="detail">
+                        <router-link v-bind:to='fragApi + "/token/" + $route.params.id'>
+                            <span class="font-color-0057FF">{{ obj.tokenName }}</span>
+                        </router-link>
+                    </div>
+                </div>
+                <div v-if="!isContract && displayToken">
+                    NRC20 Tokens:
+                    <div class="detail">
+                        <div id="dropdown-tokens" data-toggle=dropdown>
+                            <span class="font-color-000000">{{ tokenAmount(displayToken.balance, displayToken.decimal) }}</span>
+                            <router-link v-bind:to='fragApi + "/token/" + displayToken.contract'>
+                                <span class="font-bold font-color-0057FF">{{ displayToken.tokenName }}</span>
+                            </router-link>
+                            <img src="../../static/img/icon_arrow_down_black.png" alt="" width="12">
+                        </div>
+                        <div v-if="validTokens.length > 1" class="dropdown-menu">
+                            <div class="dropdown-item text-right" v-for="(token, i) in validTokens" :key=i
+                            @click='displayToken = token;'>
+                                {{ tokenAmount(token.balance, token.decimal) }} {{ token.tokenName }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <vue-tab-buttons class=mt50 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
             <div class=mt20></div>

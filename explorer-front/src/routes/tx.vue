@@ -33,23 +33,6 @@
         width: 25%;
     }
 
-    .vue-tx .mobile-detail {
-        display: none;
-        color: black;
-        font-size: 16px;
-        font-weight: 600;
-        word-wrap: break-word;
-        padding-bottom: 12px;
-    }
-
-    .vue-tx .mobile-detail>* {
-        margin-bottom: 24px;
-    }
-
-    .vue-tx .mobile-detail .detail {
-        font-weight: 400;
-    }
-
     .vue-tx .atlaspAds-bottom>a>img {
         margin-top: 30px;
     }
@@ -67,13 +50,6 @@
     }
 
     @media (max-width: 767.98px) {
-        .vue-tx .desktop-detail {
-            display: none;
-        }
-
-        .vue-tx .mobile-detail {
-            display: block;
-        }
 
         .vue-tx .atpAddress {
             margin: auto 0px;
@@ -106,7 +82,7 @@
             <div class="font-24 font-bold font-color-000000 table-title">
                 Overview
             </div>
-            <div class="desktop-detail explorer-table-container">
+            <div class="explorer-table-container d-none d-md-block">
                 <table class="explorer-table">
                     <tr>
                         <td class="td-left font-16 font-color-555555" style="padding-left: 24px;">TxHash:</td>
@@ -193,7 +169,7 @@
                 </table>
             </div>
 
-            <div class="mobile-detail">
+            <div class="mobile-detail d-md-none">
                 <div>
                     TxHash:
                     <div class="detail">{{ tx.hash }}</div>

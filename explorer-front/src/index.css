@@ -446,3 +446,25 @@ img:not([src]) {
 .time .down-arrow-tip::before {
     left: calc(50% - 12px);
 }
+
+/*-----------------mobile detail-------------------*/
+
+.mobile-detail {
+    color: black;
+    font-size: 16px;
+    font-weight: 600;
+    word-wrap: break-word;
+    padding-bottom: 12px;
+}
+
+.mobile-detail>* {
+    margin-bottom: 24px;
+}
+
+.mobile-detail>*:last-child {
+    margin-bottom: 0px;
+}
+
+.mobile-detail .detail {
+    font-weight: 400;
+}

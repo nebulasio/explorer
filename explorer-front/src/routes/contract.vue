@@ -120,15 +120,13 @@
         <div class="container" v-if=obj>
 
             <div class="explorer-table-container">
-                <table class="explorer-table font-16">
-                    <div style="margin-top: 60px;margin-bottom: 30px;">
-                        <span class="font-color-000000 font-24 font-bold table-title">
-                            Overview
-                        </span>
-                    </div>
+                <div class="font-color-000000 font-24 font-bold table-title">
+                    Overview
+                </div>
+                <table class="explorer-table font-16 d-none d-md-table">
                     <tr>
                         <td class="font-color-555555 td-left pl-16">Total supply:</td>
-                        <td class="font-color-000000">{{ tokenAmount(obj.total, decimal) }} {{ obj.tokenName }} </td>
+                        <td class="font-color-000000">{{ tokenAmount(obj.total, decimal) }} {{ obj.tokenName }}</td>
                     </tr>
                     <tr v-if="tokenPrice">
                         <td class="font-color-555555 pl-16">Price:</td>
@@ -159,9 +157,43 @@
                         </td>
                     </tr>
                 </table>
+
+                <div class="mobile-detail d-md-none">
+                    <div>
+                        Total supply:
+                        <div class="detail">{{ tokenAmount(obj.total, decimal) }} {{ obj.tokenName }}</div>
+                    </div>
+                    <div>
+                        Price:
+                        <div class="detail">
+                            <span class="font-color-000000">${{ tokenPrice.price }}</span>
+                            <span :class='{"font-color-07A656": tokenPrice.trends === 1, "font-color-F04434": tokenPrice.trends != 1}'>(</span>
+
+                            <img class="icon16" style="margin-top: -4px" v-if="tokenPrice.trends === 1" src="../../static/img/ic_exchange_rate_up.png" />
+                            <img class="icon16" style="margin-top: -4px" v-else src="../../static/img/ic_exchange_rate_down.png" />
+
+                            <span :class='{"font-color-07A656": tokenPrice.trends === 1, "font-color-F04434": tokenPrice.trends != 1}'>{{ tokenPrice.change24h + '%' }})</span>
+                        </div>
+                    </div>
+                    <div>
+                        Holders:
+                        <div class="detail">{{ numberAddComma(obj.holderCount) }} addresses</div>
+                    </div>
+                    <div>
+                        Transfers:
+                        <div class="detail">{{ numberAddComma(obj.transactionCount) }}</div>
+                    </div>
+                    <div>
+                        Contract:
+                        <div class="detail">
+                            <router-link v-bind:to='fragApi + "/address/" + obj.contract'>
+                                <span class="font-color-0057FF">{{ obj.contract }}</span>
+                            </router-link>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div style="height: 30px;"></div>
             <vue-tab-buttons class=mt50 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
             <div class=mt20></div>
 
