@@ -36,7 +36,7 @@
         <vue-bread title='Block' :subtitle="$route.params.id"></vue-bread>
         <div v-if="block" class="container">
             <div class="font-24 font-bold font-color-000000 table-title">
-                Overview!
+                Overview
             </div>
 
             <div class="explorer-table-container d-none d-md-block">
