@@ -13,6 +13,10 @@
         vertical-align: top;
     }
 
+    .vue-block tr>td:first-child {
+        padding-left: 24px;
+    }
+
     .vue-block tr>td:first-child::after {
         content: ":";
     }
