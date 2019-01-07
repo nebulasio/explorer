@@ -138,6 +138,7 @@ function shuffle(array) {
 // https://stackoverflow.com/questions/19700283/how-to-convert-time-milliseconds-to-hours-min-sec-format-in-javascript
 // Nofi
 function timeConversion(millisec) {
+    millisec = Math.max(millisec, 0);
     var seconds = (millisec / 1000).toFixed(0),
         minutes = (millisec / (1000 * 60)).toFixed(0),
         hours = (millisec / (1000 * 60 * 60)).toFixed(0),
@@ -145,18 +146,19 @@ function timeConversion(millisec) {
         years = (millisec / (1000 * 60 * 60 * 24 * 365)).toFixed(0);
 
     if (seconds < 60)
-        return seconds + " Sec";
+        return seconds + (seconds > 1 ? " Secs" : " Sec");
     else if (minutes < 60)
-        return minutes + " Min";
+        return minutes + (minutes > 1 ? " Mins" : " Min");
     else if (hours < 24)
-        return hours + " Hrs";
+        return hours + (hours > 1 ? " Hrs" : " Hr");
     else if (days < 365)
-        return days + " Days";
+        return days + (days > 1 ? " Days" : " Day");
     else
-        return years + " Years";
+        return years + (years > 1 ? " Years" : " Year");
 }
 
 function timeConversionSec(millisec) {
+    millisec = Math.max(millisec, 0);
     return (millisec / 1000).toFixed(1) + " Sec";
 }
 

@@ -46,10 +46,6 @@
         margin-left: 30px;
     }
 
-    .vue-dashboard .fs12 {
-        font-size: 12px;
-    }
-
     .vue-dashboard .row1 .flex-item {
         height: 320px;
     }
@@ -82,10 +78,6 @@
         margin-bottom: 30px;
     }
 
-    .vue-dashboard #atlaspAds-middle-mobile {
-        display: none;
-    }
-
     .vue-dashboard #atlaspAds-middle-mobile>a>img {
         margin-bottom: 30px;
     }
@@ -97,10 +89,6 @@
 
         .vue-dashboard #atlaspAds-bottom {
             display: none;
-        }
-
-        .vue-dashboard #atlaspAds-middle-mobile {
-            display: block;
         }
 
         .vue-dashboard #atlaspAds-middle-mobile>a>img {
@@ -115,7 +103,7 @@
     }
 
     .vue-dashboard .item-shadow {
-        box-shadow:-10px 10px 20px 0px rgba(30,30,30,0.05);
+        box-shadow:10px 10px 20px 0px rgba(30,30,30,0.05);
     }
 
     .vue-dashboard .row1 .flex-item {
@@ -133,7 +121,7 @@
         left: 30px;
         top: 25px;
         font-size: 20px;
-        font-weight: bold;
+        font-weight: 600;
     }
 
     .vue-dashboard .row1 {
@@ -146,7 +134,7 @@
 
     .vue-dashboard .daily-transactions .details {
         position: absolute;
-        top: 32px;
+        top: 20px;
         right: 30px;
         align-items: baseline;
         text-align: right;
@@ -154,19 +142,19 @@
         color: rgba(255, 255, 255, 0.7);
     }
 
-    .vue-dashboard .daily-transactions .details *:nth-child(3) {
+    .vue-dashboard .daily-transactions .details *:nth-child(2) {
         font-size: 28px;
         color: white;
-        font-weight: bolder;
+        font-weight: 400;
         margin-left: 10px;
         margin-top: 10px;
     }
 
     .vue-dashboard .daily-chart {
         position: absolute;
-        top: 0px;
-        height: 320px;
-        width: calc(100% - 60px);
+        top: 90px;
+        height: 230px;
+        width: calc(100% - 30px);
         margin-left: 30px;
     }
 
@@ -307,7 +295,7 @@
         margin-top: 23px;
         margin-left: 30px;
         font-size: 28px;
-        font-weight: bold;
+        font-weight: 600;
     }
 
     .vue-dashboard .row3 .link-style {
@@ -332,16 +320,10 @@
         position: relative;
     }
 
-    .vue-dashboard .row4 .subtitle {
-        position: absolute;
-        margin-left: 30px;
-        margin-top: 56px;
-    }
-
     .vue-dashboard .user-pie {
         display: block;
         position: absolute;
-        margin-left: 30px;
+        margin-left: 50px;
         margin-top: 108px;
         background-color: gray;
         box-shadow:-10px 10px 20px 0px rgba(30,30,30,0.05);
@@ -350,7 +332,7 @@
     .vue-dashboard .old-user {
         position: absolute;
         top: 20px;
-        left: 20px;
+        /* left: 20px; */
         width: 114px;
         height: 114px;
         background-color: rgba(89, 146, 255, 1);
@@ -361,7 +343,7 @@
 
     .vue-dashboard .new-user-container {
         position: absolute;
-        left: 77px;
+        left: 57px;
         width: 77px;
         height: 154px;
         overflow: hidden;
@@ -378,14 +360,14 @@
         border-width: 0px;
         border-radius: 50%;
         transition-property: transform;
-        transition-duration: 2s;
+        transition-duration: 0.5s;
         transition-timing-function: ease;
     }
 
     .vue-dashboard .new-user-indicator {
         position: absolute;
         top: 20px;
-        left: 77px;
+        left: 57px;
         background: transparent;
         fill: none;
         stroke: none;
@@ -393,10 +375,10 @@
 
     .vue-dashboard .new-user-indicator .line {
         fill: none;
-        stroke: #7F7F7F;
-        stroke-width: 1px;
+        stroke: #000000;
+        stroke-width: 0.5px;
         stroke-dasharray: 0px, 202px;
-        animation: lineMove 1s ease-out forwards;
+        animation: lineMove 1s ease-out 0.5s forwards;
     }
 
     @keyframes lineMove {
@@ -416,24 +398,20 @@
     }
 
     .vue-dashboard .new-user-indicator .labels>div:first-child {
-        /* position: absolute;
-        top: 30px; */
         margin-top: 31px;
         font-size: 18px;
-        font-weight: bold;
+        font-weight: 400;
         transform: translateY(12px);
         opacity: 0;
-        animation: label 1s ease-out 1s forwards;
+        animation: label 1s ease-out 1.5s forwards;
     }
 
     .vue-dashboard .new-user-indicator .labels>div:last-child {
-        /* position: absolute;
-        top: 50px; */
         font-size: 12px;
         color: #555555;
         transform: translateY(-10px);
         opacity: 0;
-        animation: label 1s ease-out 1s forwards;
+        animation: label 1s ease-out 1.5s forwards;
     }
 
     @keyframes label {
@@ -449,32 +427,32 @@
         justify-content: flex-end;
         align-items: flex-end;
         position: absolute;
-        top: 0px;
+        top: 74px;
         right: 30px;
     }
 
-    .vue-dashboard .row4 .user-data .data-source {
+    /* .vue-dashboard .row4 .user-data .data-source {
         margin-top: 30px;
         margin-bottom: 26px;
-    }
+    } */
 
     .vue-dashboard .row4 .title {
         font-size: 28px;
         margin-top: 40px;
-        font-weight: bold;
+        font-weight: 600;
     }
 
-    .vue-dashboard .row4 .accounts-data .data-source {
+    /* .vue-dashboard .row4 .accounts-data .data-source {
         position: absolute;
         top: 30px;
         right: 30px;
-    }
+    } */
 
     .vue-dashboard .accounts-chart {
         position: absolute;
-        top: 0px;
-        width: calc(100% - 60px);
-        height: 100%;
+        top: 90px;
+        width: calc(100% - 30px);
+        height: 240px;
         margin-left: 30px;
     }
 
@@ -493,7 +471,7 @@
         top: 30px;
         right: 30px;
         font-size: 12px;
-        font-weight: bold;
+        font-weight: 400;
         color: #555;
     }
 
@@ -547,8 +525,6 @@
         left: calc((100% - 1140px) * 0.5 + 1140px + 5px);
         width: 300px;
         max-width: calc((100% - 1140px) * 0.5 - 25px);
-        /* height: 300px;
-        background-color: red; */
     }
 
     @media (max-width: 320px) {
@@ -560,10 +536,14 @@
         .vue-dashboard .realtime-block:nth-of-type(5) {
             opacity: 0;
         }
+
+        .vue-dashboard .row5 .txcnt {
+            display: none;
+        }
     }
     
 
-    @media (max-width: 410px) {
+    @media (max-width: 414px) {
         .vue-dashboard .row1 .data-source {
             visibility: hidden;
         }
@@ -579,18 +559,18 @@
             opacity: 0;
         }
 
-        .vue-dashboard .row4 .new-user-indicator {
-            display: none;
-        }
-    }
-
-    @media (max-width: 1199.98px) {
-        .vue-dashboard .row4 .data-source {
-            visibility: hidden;
+        .vue-dashboard .user-pie {
+            margin-left: 30px;
+            margin-top: 128px;
         }
 
-        #atlaspAds-side {
-            display: none;
+        .vue-dashboard .row5 td:first-child {
+            width: 60px;
+        }
+
+        .vue-dashboard .row5 td .time::after {
+            content:'';
+            white-space:pre;
         }
     }
 
@@ -670,7 +650,7 @@
                     <div class="item-bg">
                         <div class="item-title" >Daily Transactions</div>
                         <div class="details" v-if="dailyTxChartOptions">
-                            <div class="data-source">Data Sources: Nebulas</div>
+                            <!-- <div class="data-source">Data Sources: Nebulas</div> -->
                             <span v-if="todayTxCnt >= 0">Today</span>
                             <span v-if="todayTxCnt >= 0">{{ numberAddComma(todayTxCnt) }}</span>
                         </div>
@@ -706,12 +686,12 @@
                 <div class="col">
                     <div class="flex-item item-bg item-shadow">
                         <div class="item-title">Blocks</div>
-                        <div class="subtitle fs12 text-gray">Block Status</div>
+                        <div class="subtitle font-12 text-gray">Block Status</div>
                         <transition-group v-on:after-enter="afterEnter" name="row2-list" class="realtime-blocks">
                             <div class="realtime-block" v-for="block in blocks" :key="block.height">
                                 <div class="blockheight" style="height: 100%" :data-txncnt="block.txnCnt"></div>
                                 <div class="block-popover">
-                                    <div class="font-size-12-bold">{{ numberAddComma(block.height) }}</div>
+                                    <div class="font-12 font-bold">{{ numberAddComma(block.height) }}</div>
                                     <div>Transactions: {{ block.txnCnt }}</div>
                                     <div>Block Interval: 15s</div>
                                 </div>
@@ -732,14 +712,14 @@
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div v-if="staticInfo">{{ numberAddComma(staticInfo.txnCnt) }}</div>
-                        <router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/txs/"'>Total Transations ></router-link>
+                        <router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/txs/"'>Total Transactions ></router-link>
                         <img src=/static/img/dashboard-2.png width=44 alt="">
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-12 flex-item w285">
                     <div class="item-bg item-shadow">
                         <div v-if="staticInfo">{{ numberAddComma(staticInfo.totalContractCount) }}</div>
-                        <div v-if="staticInfo" class="link-style">Total Smart Contracts</div>
+                        <router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/contracts/"'>Total Smart Contracts ></router-link>
                         <img src=/static/img/dashboard-3.png width=44 alt="">
                     </div>
                 </div>
@@ -755,43 +735,51 @@
             <div class="row row4">
                 <div class="flex-item col-12 col-lg-6 row4-item user-data">
                     <div class="item-bg item-shadow">
-                        <div class="item-title">Proportion of Mainnet New Users</div>
-                        <div class="subtitle text-light-gray ml30 fs12">New users refer to Nebulas mainnet accounts within 90 days.</div>
+                        <div class="item-title">
+                            New Addresses Percentage
+                            <div class="text-light-gray font-12 font-regular">New addresses are addresses created within 90 days.</div>
+                            <div v-if="staticInfo" class="mt20 d-sm-none">
+                                <span class="font-12 font-color-7F7F7F">New Addresses</span>
+                                <span class="font-20">{{ (Math.round(100 * staticInfo.newAddressCount / staticInfo.totalAddressCount * 10) / 10).toFixed(1) + '%' }}</span>
+                            </div>
+                        </div>
                         <div v-show="staticInfo" class="user-pie">
                             <div class="old-user"></div>
                             <div class="new-user-container">
-                                <div class="new-user" :style='staticInfo ? "transform: rotate(-" + staticInfo.newAddressCount / (staticInfo.newAddressCount + staticInfo.oldAddressCount) * 360 + "deg)" : ""'></div>
+                                <transition name="new-user-pie">
+                                    <div class="new-user" :style='staticInfo ? "transform: rotate(-" + staticInfo.newAddressCount / staticInfo.totalAddressCount * 360 + "deg)" : ""'></div>
+                                </transition>
                             </div>
-                            <div v-if="staticInfo" class="new-user-indicator">
+                            <div v-if="staticInfo" class="new-user-indicator d-none d-sm-block">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" class="svg" width="195" height="114" viewbox="0 0 195 114">
                                     <polyline points="5 87, 35 57, 195 57" class="line" id="svg-line"/>
                                 </svg>
                                 <div class="labels">
                                     <!-- 四舍五入并保留一位小数 -->
-                                    <div>{{ (Math.round(100 * staticInfo.newAddressCount / (staticInfo.newAddressCount + staticInfo.oldAddressCount) * 10) / 10).toFixed(1) + '%' }}</div>
-                                    <div>New Users</div>
+                                    <div>{{ (Math.round(100 * staticInfo.newAddressCount / staticInfo.totalAddressCount * 10) / 10).toFixed(1) + '%' }}</div>
+                                    <div>New Addresses</div>
                                 </div>
                             </div>
                         </div>
                         <div v-if="staticInfo" class="detail">
-                            <div class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
+                            <!-- <div class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
                             <div class="title">{{ numberAddComma(staticInfo.newAddressCount) }}</div>
-                            <div class="fs12 text-gray">New Users</div>
-                            <div class="title">{{ numberAddComma(staticInfo.oldAddressCount) }}</div>
-                            <div class="fs12 text-gray">Old Users</div>
+                            <div class="font-12 text-gray">New Addresses</div>
+                            <div class="title">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
+                            <div class="font-12 text-gray">Total Addresses</div>
                         </div>
                     </div>
                 </div>
                 <div class="flex-item col-12 col-lg-6 row4-item accounts-data">
                     <div class="item-bg item-shadow">
-                        <div class="item-title">Mainnet Accounts Quantity</div>
-                        <div v-if="accountsChartOptions" class="fs12 text-light-gray data-source">Data Sources: Nebulas</div>
+                        <div class="item-title">Growth of Addresses</div>
+                        <!-- <div v-if="accountsChartOptions" class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
                         <vchart class="accounts-chart" v-if="accountsChartOptions" :options="accountsChartOptions" :autoResize='true'></vchart>
                     </div>
                 </div>
             </div>
             <!--ATP mobile中间广告位-->  
-            <div class="flex atlaspAds-bottom" id="atlaspAds-middle-mobile"></div>
+            <div class="flex atlaspAds-bottom d-md-none" id="atlaspAds-middle-mobile"></div>
             <!-- ===================5===================== -->
             <div class="row row5">
                 <div class="flex-item col-12 col-lg-6 row5-item">
@@ -801,16 +789,18 @@
                         <transition-group name="list" tag="table" frame=hsides rules=rows>
                             <tr class="list-item" v-for="(block, i) in blocks" v-if="i < 5" :key="block.height">
                                 <td>
-                                    <img src="/static/img/icon-block.png" width="50">
+                                    <img src="/static/img/icon-block.png" width="50" height="50">
                                 </td>
                                 <td>
                                     Block#
                                     <router-link :to='fragApi + "/block/" + block.height'>{{ block.height }}</router-link>
                                     <br>
-                                    <router-link :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} {{ block.txnCnt > 1 ? "transactions" : "transaction" }}</router-link>
+                                    <span class="txcnt">
+                                        <router-link :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} {{ block.txnCnt > 1 ? "transactions" : "transaction" }}</router-link>
+                                    </span>
                                 </td>
                                 <td>
-                                    <div class="time">{{ timeConversion(Date.now() - block.timestamp) }} ago</div>
+                                    <div class="time">{{ timeConversion(Date.now() - block.localTimestamp + block.timeDiff) }} ago</div>
                                 </td>
                             </tr>
                         </transition-group>
@@ -823,16 +813,23 @@
                         <transition-group name="list" tag="table" frame=hsides rules=rows>
                             <tr v-for="(tx, i) in txs" v-if="i < 5" :key="tx.hash">
                                 <td>
-                                    <img src="/static/img/icon-tx.png" width="50">
+                                    <img src="/static/img/icon-tx.png" width="50" height="50">
                                 </td>
                                 <td>
                                     Tx#
-                                    <router-link :to='fragApi + "/tx/" + tx.hash'>{{ shortStr(6, tx.hash) }}</router-link>
+                                    <router-link :to='fragApi + "/tx/" + tx.hash'>{{ shortStr(4, tx.hash) }}</router-link>
                                     <br>
-                                    From <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.from.hash) }}</router-link> To <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.to.hash) }}</router-link>
+                                    <span class="fromto d-none d-sm-inline">
+                                        From
+                                        <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.from.hash) }}</router-link>    
+                                    </span>
+                                    <span class="fromto d-none d-sm-inline">
+                                        To
+                                        <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.to.hash) }}</router-link>
+                                    </span>
                                 </td>
                                 <td>
-                                    <div class="time">{{ timeConversion(Date.now() - tx.timestamp) }} ago</div>
+                                    <div class="time">{{ timeConversion(Date.now() - tx.localTimestamp + tx.timeDiff) }} ago</div>
                                 </td>
                             </tr>
                         </transition-group>
@@ -840,8 +837,7 @@
                 </div>
             </div>
             <!--ATP底部广告位-->  
-            <div class="flex atlaspAds-bottom" id="atlaspAds-bottom"></div>
-            <div class="flex atlaspAds-bottom" id="atlaspAds-middle-mobile"></div>
+            <div class="flex atlaspAds-bottom d-none d-md-block" id="atlaspAds-bottom"></div>
         </div>
         <!--ATP侧边栏广告位-->  
         <div class="flex atlaspAds" id="atlaspAds-side"></div>
@@ -856,12 +852,6 @@
     require('echarts/lib/chart/line');
     require('echarts/lib/component/tooltip');
 
-    Number.prototype.pad = function(size) {
-        var s = String(this);
-        while (s.length < (size || 2)) {s = "0" + s;}
-        return s;
-    }
-
     module.exports = {
         components: {
             'vchart': ECharts
@@ -875,7 +865,8 @@
                 blocks: [],
                 staticInfo: null,
                 txs: [],
-                realtimeBlocks: []
+                shortIntervalID: null,
+                longIntervalID: null
             }
         },
         computed: {
@@ -888,6 +879,9 @@
                     arr.push([k, this.dailyTxData[k]]);
                 }
                 arr.sort(function (a, b) { return Date.parse(a[0]) - Date.parse(b[0]); });
+                // if (arr.length > 13) {
+                //     arr.splice(0, arr.length - 13);
+                // }
                 for (var i in arr) {
                     dates.push(arr[i][0]);
                     nums.push(arr[i][1]);
@@ -895,7 +889,7 @@
 
                 let vm = this;
                 var options = {
-                    grid: { x: '0', y: '100', width: '100%', height: '210', containLabel: true },
+                    grid: { left: '40', bottom: '50', right: '17', top: '10', containLabel: false },
                     xAxis: {
                         data: dates,
                         axisLine: {
@@ -910,20 +904,20 @@
                             },
                             margin: 18,
                             formatter: function(value) {
-                                let date = new Date(value);
-                                return date.toLocaleString('en', { month: 'short', day: 'numeric' });
+                                return vm.shortDate(value);
                             },
-                            rotate: 45
                         }
                     },
                     yAxis: {
+                        // min: 'dataMin',
                         axisLine: {
                             show: false
                         },
                         axisLabel: {
                             textStyle: {
                                 color: '#B2B2B2'
-                            }
+                            },
+                            // margin: 30,
                         },
                         axisTick: {
                             show: false
@@ -957,7 +951,7 @@
                         position: 'top',
                         formatter: function(params, ticket, callback) {
                             let date = new Date(params.name);
-                            let dateStr = date.toLocaleString('en', { year: 'numeric', month: 'short', day: 'numeric' });
+                            let dateStr = date.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' });
                             return dateStr + '<div>Transactions: ' + vm.numberAddComma(params.value) + '</div>';
                         },
                         backgroundColor: '#595C63',
@@ -987,7 +981,7 @@
                 
                 let vm = this;
                 var options = {
-                    grid: { x: '0', y: '100', width: '100%', height: '220', containLabel: true },
+                    grid: { left: '30', bottom: '50', right: '17', top: '10', containLabel: false },
                     xAxis: {
                         data: dates,
                         axisLine: {
@@ -1002,10 +996,8 @@
                             },
                             margin: 18,
                             formatter: function(value) {
-                                let date = new Date(new Number(value));
-                                return date.toLocaleString('en', { month: 'short', day: 'numeric' });
-                            },
-                            rotate: 45
+                                return vm.shortDate(new Number(value));
+                            }
                         }
                     },
                     yAxis: {
@@ -1017,7 +1009,7 @@
                             textStyle: {
                                 color: '#B2B2B2'
                             },
-                            margin: -10,
+                            margin: 0,
                             formatter: function (value) {
                                 return value / 1000 + 'k';
                             }
@@ -1028,7 +1020,8 @@
                         splitLine: {
                             show: false
                         },
-                        splitNumber: 5,
+                        // splitNumber: 5,
+                        // maxInterval: 3000,
                         minInterval: 3000
                     },
                     series: {
@@ -1064,7 +1057,7 @@
                         position: 'top',
                         formatter: function(params, ticket, callback) {
                             let date = new Date(new Number(params.name));
-                            let dateStr = date.toLocaleString('en', { year: 'numeric', month: 'short', day: 'numeric' });
+                            let dateStr = date.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' });
                             return dateStr + '<div>Amount: ' + vm.numberAddComma(params.value) + '</div>';
                         },
                         backgroundColor: '#0057FF',
@@ -1087,14 +1080,15 @@
         mounted() {
             api.getTx("cnt_static", o => this.dailyTxData = o);                     //近期每日交易量
             api.getMarketCap(o => this.market = o);                                 //币价和市值
-            api.getBlock({ type: "latest" }, o => this.blocks = o);                 //最新一波 block
-            api.getTx({ type: "latest" }, o => this.txs = o);                       //最新一波 tx
+            api.getBlock({ type: "latest" }, o => this.blocks = o.addLocalTimestamp());                 //最新一波 block
+            api.getTx({ type: "latest" }, o => this.txs = o.addLocalTimestamp());                       //最新一波 tx
             api.getTodayTxCnt(o => this.todayTxCnt = o);                            //今日交易量
             api.getStaticInfo(o => this.staticInfo = o);                            //合约数量、地址数量。。。
 
-            setInterval(() => {
-                api.getTx({ type: "latest" }, o => this.txs = o);                   //最新一波 tx
+            this.shortIntervalID = setInterval(() => {
+                api.getTx({ type: "latest" }, o => this.txs = o.addLocalTimestamp());                   //最新一波 tx
                 api.getBlock({ type: "newblock" }, o => {                           //获取最新一个 block
+                    o = o.addLocalTimestamp();                       
                     try {
                         if (o[0].height != this.blocks[0].height) {
                             this.blocks.splice(0, 0, o[0]);
@@ -1107,9 +1101,9 @@
                         }
                     } catch(error) {}
                 });
-            }, 8000);
+            }, 5000);
 
-            setInterval(() => {
+            this.longIntervalID = setInterval(() => {
                 api.getTodayTxCnt(o => this.todayTxCnt = o);                        //今日交易量
                 api.getMarketCap(o => this.market = o);                             //币价和市值
                 api.getStaticInfo(o => this.staticInfo = o);                        //合约数量、地址数量。。。
@@ -1126,7 +1120,7 @@
 
                 //侧栏广告尺寸限制
                 window.onresize = function () {
-                    if (window.innerWidth >= 1480) {
+                    if (window.innerWidth >= 1600) {
                         $('#atlaspAds-side').show();
                     } else {
                         $('#atlaspAds-side').hide();
@@ -1148,12 +1142,30 @@
             afterEnter: function (el) {
                 let height = (1 - Math.min(5, Math.max(0, el.firstElementChild.dataset.txncnt)) / 5.0) * 100 + 'px';
                 $(el.firstElementChild).css('height', height);
+            },
+            shortDate(value) {
+                if (!value || value === 'undefined') {
+                    return '';
+                }
+                let date = new Date(value);
+                if (isNaN(date.getMonth())) {
+                    return '';
+                }
+                let str = date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+                if (str.length > 6) {
+                    str = date.getMonth() + 1 + '-' + date.getDate();
+                }
+                return str;
             }
         },
         updated() {
             if (window.isIE()) {
                 $('#svg-line').css('stroke-dasharray', 'none');
             }
+        },
+        destroyed() {
+            clearInterval(this.shortIntervalID);
+            clearInterval(this.longIntervalID);
         }
     }
 </script>

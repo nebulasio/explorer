@@ -98,4 +98,14 @@
         ORDER BY height DESC
         LIMIT ${limit}
     </select>
+
+    <select id="findLatestBlock" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_block`
+        WHERE height = (
+        SELECT max(height) from `neb_block`
+        )
+    </select>
+
 </mapper>

@@ -32,6 +32,8 @@ public interface NebTransactionMapper {
 
     long countTxnCntByBlockHeight(Long blockHeight);
 
+    long countTotalTxnCnt();
+
     long countNrc20TxnCntByFromAndTo(String addressHash);
 
     NebTransaction getByHash(String hash);

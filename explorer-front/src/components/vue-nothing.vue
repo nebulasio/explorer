@@ -37,11 +37,16 @@
 
 </style>
 <template>
-    <div class="vue-nothing fullfill">
+    <div class="vue-nothing">
         <div class="container vertical-center">
-            <div class="msg font-bold">Sorry... No search results found.</div>
+            <div class="msg font-bold">{{ title || 'Sorry... No search results found.' }}</div>
             <img src="/static/img/nothing.png" alt="" width="282px">
             <router-link :to='$route.params.api ? "/" + $route.params.api : "/"'>Back Home</router-link>
         </div>
     </div>
 </template>
+<script>
+    module.exports = {
+        props: ['title']
+    }
+</script>

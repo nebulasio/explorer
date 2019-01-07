@@ -182,4 +182,9 @@ public class NebBlockService {
         return nebBlockMapper.findUnLibBlockLessThanHeight(height, limit);
     }
 
+
+    public List<NebBlock> findLatestBlock(){
+        return nebBlockMapper.findLatestBlock();
+    }
+
 }

@@ -230,6 +230,19 @@ module.exports = {
                 fail(xhr);
         }
     },
+
+    getContracts(t, done, fail) {
+        ajax1("contracts", t, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
 };
 
 function ajax1(action, args, done, fail) {

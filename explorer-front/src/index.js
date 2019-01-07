@@ -26,6 +26,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const VueAnalytics = require('vue-analytics').default;
 Vue.use(VueAnalytics, {
     id: 'UA-101203737-1',
+    customResourceURL: 'https://www.google-analytics.com/analytics.js',
     debug: {
         enabled: !isProd,
         sendHitTask: isProd
@@ -37,6 +38,45 @@ Vue.use(VueRouter);
 vRouter.beforeEach(onBeforeEach);
 vRouter.afterEach(onAfterEach);
 
+Number.prototype.pad = function (size) {
+    var s = String(this);
+    while (s.length < (size || 2)) { s = "0" + s; }
+    return s;
+}
+
+String.prototype.shortAmount = function () {
+    let dot_index = this.indexOf('.');
+    if (dot_index === -1) return this + '.0000';
+    if (this.length - 1 - dot_index > 4) {
+        return this.slice(0, dot_index + 4 + 1);
+    } else if (this.length - 1 - dot_index < 4) {
+        return this.padEnd(5 + dot_index, '0');
+    }
+    return this;
+}
+
+String.prototype.padDecimal = function () {
+    let dot_index = this.indexOf('.');
+    if (dot_index === -1) return this + '.0000';
+    if (this.length - 1 - dot_index > 4) {
+        return this;
+    } else if (this.length - 1 - dot_index < 4) {
+        return this.padEnd(5 + dot_index, '0');
+    }
+    return this;
+}
+
+Array.prototype.addLocalTimestamp = function () {
+    if (this instanceof Array) {
+        for (var index in this) {
+            if (!this[index].localTimestamp) {
+                this[index].localTimestamp = Date.now();
+            }
+        }
+    }
+    return this;
+}
+
 vApp = new Vue({
     components: {
         //"vue-popmsg": require("@/components/vue-popmsg").default,
@@ -47,17 +87,24 @@ vApp = new Vue({
     data: {
         search: "",
         showModalLoading: false,
-        showAtpAds: false
+        showAtpAds: false,
+        timestamp: Date.now()
     },
     el: ".vue",
     router: vRouter
 });
+
+setInterval(() => {
+    vApp.timestamp = Date.now();
+}, 1000);
 
 ////////////////////////////////////////////////////////////
 //
 // api prefix
 
 function onBeforeEach(to, from, next) {
+    window.scrollTo(0, 0);
+
     vApp.showModalLoading = false;
 
     var apiPrefix, first, path;

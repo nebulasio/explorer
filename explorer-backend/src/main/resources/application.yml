@@ -61,6 +61,7 @@ redis:
   host: 127.0.0.1
   port: 6379
   password:
+  database: 2
 environment: dev
 pendingTxExpiredTime : 1
 
@@ -112,7 +113,11 @@ page:
   baseUrl: http://52.53.225.118
   hostUrl: http://52.53.225.118
 pendingTxExpiredTime : 1
-
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password:
+  database: 2
 ---
 spring:
   profiles: prod

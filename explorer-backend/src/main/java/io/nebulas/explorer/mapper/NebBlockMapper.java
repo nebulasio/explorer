@@ -39,4 +39,7 @@ public interface NebBlockMapper {
     List<NebBlock> findNebBlockBetweenHeight(@Param("fromHeight") Long fromHeight, @Param("toHeight") Long toHeight);
 
     List<NebBlock> findUnLibBlockLessThanHeight(@Param("height") long height, @Param("limit") int limit);
+
+    List<NebBlock> findLatestBlock();
+
 }

@@ -13,6 +13,7 @@ import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.model.PageIterator;
 import io.nebulas.explorer.model.vo.AddressVo;
 import io.nebulas.explorer.model.vo.BlockVo;
+import io.nebulas.explorer.model.vo.Nrc20TransactionVo;
 import io.nebulas.explorer.model.vo.TransactionVo;
 import io.nebulas.explorer.service.blockchain.*;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
@@ -23,8 +24,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -32,6 +38,7 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -60,6 +67,12 @@ public class RpcController {
     private final NebApiServiceWrapper nebApiServiceWrapper;
     private final NebStatService nebStatService;
     private final NebEventService nebEventService;
+    private final NasAccountService nasAccountService;
+
+    @Qualifier("customStringTemplate")
+    private final StringRedisTemplate redisTemplate;
+    @Qualifier("customRedisTemplate")
+    private final RedisTemplate<String, String> mapRedisTemplate;
 
     private final ContractTokenService contractTokenService;
     private final ContractTokenBalanceService contractTokenBalanceService;
@@ -72,13 +85,20 @@ public class RpcController {
         return JsonResult.success(nebMarketCapitalizationService.getLatest());
     }
 
-    @RequestMapping(value = "/block", method = RequestMethod.GET, params = "type=latest")
-    public JsonResult latestBlock() {
-        List<NebBlock> blkList = nebBlockService.findNebBlockOrderByHeight(1, 10);
+    @RequestMapping(value = "/block", method = RequestMethod.GET)
+    public JsonResult latestBlock(@RequestParam(value = "type") String type) {
+        List<NebBlock> blkList = new ArrayList<>();
+        if (type.equals("latest")) {
+            blkList = nebBlockService.findNebBlockOrderByHeight(1, 40);
+        } else if (type.equals("newblock")) {
+            blkList = nebBlockService.findLatestBlock();
+        } else {
+            blkList = nebBlockService.findNebBlockOrderByHeight(1, 10);
+        }
         return JsonResult.success(convertBlock2BlockVo(blkList, false));
     }
 
-    @RequestMapping(value = "/block")
+    @RequestMapping(value = "/blocks")
     public JsonResult blocks(@RequestParam(value = "m", required = false) String miner,
                              @RequestParam(value = "p", required = false, defaultValue = "1") int page) {
         PageIterator<NebBlock> blockPageIterator;
@@ -208,10 +228,14 @@ public class RpcController {
         if (toAddress != null) {
             vo.setTo(new AddressVo().build(toAddress));
             NebContractToken contractToken = contractTokenService.getByContract(toAddress.getHash());
-            if (contractToken == null){
+            if (contractToken == null) {
                 vo.setTokenName("");
-            }else{
+                vo.setDecimal(18L);
+                //result.put("decimal", "18");
+            } else {
                 vo.setTokenName(contractToken.getTokenName());
+                vo.setDecimal(contractToken.getTokenDecimals());
+                //result.put("decimal", contractToken.getTokenDecimals());
             }
         } else {
             vo.setTo(new AddressVo(txn.getTo()));
@@ -221,12 +245,58 @@ public class RpcController {
 
         result.add(vo);
         result.put("isPending", isPending);
+
+
         return result;
     }
 
     @RequestMapping("/tx/cnt_static")
     public JsonResult txStatic() {
-        return JsonResult.success(nebTransactionService.countTxCntGroupMapByTimestamp(LocalDate.now().plusDays(-15).toDate(), LocalDate.now().toDate()));
+
+        String key = "txStaticMap";
+        Map<Object, Object> txStaticMap = mapRedisTemplate.opsForHash().entries("txStaticMap");
+        Map<String, Long> resultMap;
+
+        if (txStaticMap == null || txStaticMap.size() == 0) {
+            //将每天的交易数据存放进redis里
+            resultMap = nebTransactionService.countTxCntGroupMapByTimestamp(LocalDate.now().plusDays(-15).toDate(), LocalDate.now().toDate());
+            Map<String,String> redisMap = new HashMap<>();
+            resultMap.forEach((k, v) -> {
+                String dateCount = v.toString();
+                redisMap.put(k,dateCount);
+            });
+
+            mapRedisTemplate.opsForHash().putAll(key, redisMap);
+            mapRedisTemplate.opsForValue().getOperations().expire(key, 180, TimeUnit.MINUTES);
+
+        } else {
+            resultMap = new HashMap<>();
+            txStaticMap.forEach((k, v) -> {
+                String dateKey = (String) k;
+                Long dateCount = Long.valueOf((String) v);
+                resultMap.put(dateKey, dateCount);
+            });
+        }
+
+        return JsonResult.success(resultMap);
+    }
+
+    @RequestMapping("/tx/cnt_today")
+    public JsonResult txToday() {
+        //若卡在了缓存清空的瞬间，出现了查询，会导致继续打满连接池的出现，需要继续优化，舍弃原有的查询方法
+        String key = "txCntToday";
+        Long todayTxnCnt = 0L;
+        String txnCnt = redisTemplate.opsForValue().get(key);
+        if (txnCnt == null || txnCnt.isEmpty()) {
+            todayTxnCnt = nebTransactionService.countTxToday();
+            redisTemplate.opsForValue().set(key, todayTxnCnt.toString());
+            redisTemplate.opsForValue().getOperations().expire(key, 30, TimeUnit.MINUTES);
+
+        } else {
+            todayTxnCnt = Long.valueOf(txnCnt);
+        }
+
+        return JsonResult.success(todayTxnCnt);
     }
 
     @GetMapping("/stat/data")
@@ -276,6 +346,7 @@ public class RpcController {
         result.put("page", page);
         result.put("addressList", voList);
         result.put("totalPage", totalPage > MAX_PAGE ? MAX_PAGE : totalPage);
+        result.put("decimal", 18);
 
         EXECUTOR.execute(() -> {
             for (NebAddress address : addressList) {
@@ -314,6 +385,7 @@ public class RpcController {
         result.put("totalHolderCount", totalCount);
         result.put("totalPageCount", pageCount);
         result.put("page", page);
+        result.put("decimal", token.getTokenDecimals());
 
         BigDecimal total = token.getTotal();
         List<NebContractTokenBalance> addressBalanceList = contractTokenBalanceService.getValidAddressesByContractOrderByBalance(contract, (page - 1) * PAGE_SIZE, PAGE_SIZE);
@@ -395,6 +467,7 @@ public class RpcController {
         result.put("tokenName", token.getTokenName());
         result.put("txnCnt", txnCnt);
         result.put("currentPage", page);
+        result.put("decimal", token.getTokenDecimals());
 
         long totalPage = txnCnt / PAGE_SIZE + 1;
         result.put("totalPage", !isPending && totalPage > 20 ? 20 : totalPage);
@@ -449,15 +522,18 @@ public class RpcController {
             });
         }
 
-        NebMarketCapitalization marketCapitalization = nebMarketCapitalizationService.getAtpLatest();
+        NebMarketCapitalization marketCapitalization = nebMarketCapitalizationService.getNrc20Latest(token.getTokenName());
 
         JsonResult result = JsonResult.success();
         result.put("contract", info);
         result.put("txList", transactions);
-        result.put("price", marketCapitalization == null ? 0 : marketCapitalization.getPrice());
-        result.put("change24h", marketCapitalization == null ? 0 : marketCapitalization.getChange24h());
-        result.put("trends", marketCapitalization == null ? 0 : marketCapitalization.getTrends());
-
+        result.put("decimal", token.getTokenDecimals());
+        if (marketCapitalization != null) {
+            //price 统一设置4位小数点
+            result.put("price", marketCapitalization.getPrice().setScale(4,BigDecimal.ROUND_DOWN));
+            result.put("change24h", marketCapitalization.getChange24h());
+            result.put("trends", marketCapitalization.getTrends());
+        }
         return result;
     }
 
@@ -490,6 +566,7 @@ public class RpcController {
             tokenBalance.setContract(token.getContract());
             tokenBalance.setBalance(balance.getBalance());
             tokenBalance.setTokenName(token.getTokenName());
+            tokenBalance.setDecimal(token.getTokenDecimals());
             tokenBalanceList.add(tokenBalance);
         }
 
@@ -524,6 +601,7 @@ public class RpcController {
             txList.addAll(nebTransactionService.findTxnByFromTo(address.getHash(), 1, PAGE_SIZE));
         }
         result.put("txList", convertTxn2TxnVoWithAddress(txList));
+        result.put("decimal", 18);
 
 //        if (address.getUpdatedAt().before(LocalDateTime.now().plusSeconds(-5).toDate())) {
 //            GetAccountStateResponse accountState = nebApiServiceWrapper.getAccountState(address.getHash());
@@ -545,8 +623,6 @@ public class RpcController {
                 }
             }
         }
-        //todo: contract addresss是否需要添加event data
-
         return result;
     }
 
@@ -562,11 +638,8 @@ public class RpcController {
             }
             return JsonResult.success("type", "unknown").put("q", q);
         }
-        if (q.trim().equalsIgnoreCase("atp")){
-            NebContractToken contractToken = contractTokenService.getByTokenName("atp");
-            if (contractToken == null){
-                return JsonResult.failed();
-            }
+        NebContractToken contractToken = contractTokenService.getByTokenName(q.trim());
+        if (contractToken != null) {
             return JsonResult.success("type", "contract").put("q", contractToken.getContract());
         }
         if (q.length() < 64) {
@@ -660,7 +733,7 @@ public class RpcController {
         return txnVoList;
     }
 
-    private List<TransactionVo> convertNrc20Txn2TxnVo(List<NebTransaction> txns) {
+    private List<TransactionVo> convertNrc20Txn2TxnVo(List<Nrc20TransactionVo> txns) {
         if (CollectionUtils.isEmpty(txns)) {
             return Collections.emptyList();
         }
@@ -674,7 +747,7 @@ public class RpcController {
 
         //根据contractAddress去反查tokenName
         List<TransactionVo> txnVoList = new LinkedList<>();
-        for (NebTransaction txn : txns) {
+        for (Nrc20TransactionVo txn : txns) {
 
             NebContractToken token = contractTokenService.getByContract(txn.getContractAddress());
             TransactionVo vo = new TransactionVo()
@@ -689,7 +762,6 @@ public class RpcController {
     }
 
 
-
     @RequestMapping("/address/nrc20/{hash}/{page}")
     public JsonResult nrc20Transactions(@PathVariable("hash") String hash, @PathVariable("page") int page) {
         NebAddress address = nebAddressService.getNebAddressByHashRpc(hash);
@@ -697,7 +769,7 @@ public class RpcController {
             return JsonResult.failed();
         }
 
-        List<NebTransaction> txList = nebTransactionService.getNrc20Transactions(hash);
+        List<Nrc20TransactionVo> txList = nebTransactionService.getNrc20Transactions(hash);
         JsonResult result = JsonResult.success();
 
         int totalRowNum = txList.size();
@@ -716,7 +788,7 @@ public class RpcController {
             toIdx = totalRowNum;
         }
 
-        List<NebTransaction> resultList = txList.subList(fromIdx, toIdx);
+        List<Nrc20TransactionVo> resultList = txList.subList(fromIdx, toIdx);
 
         result.put("txnCnt", totalRowNum);
         result.put("currentPage", page);
@@ -726,5 +798,50 @@ public class RpcController {
 
         return result;
     }
+
+    /**
+     * 返回nas主网总成交量，总合约数量，总账户数量
+     *
+     * @return
+     */
+    @RequestMapping("/nasinfo")
+    public JsonResult getNasMainnetInfo() {
+
+        JsonResult result = JsonResult.success();
+
+        NasAccount nasAccount = nasAccountService.getLatestNasAccount();
+
+        if (nasAccount == null) {
+            return JsonResult.success();
+        }
+
+        //从redis中拿，减少查询频率
+        String key = "txnCnt";
+        Long totalTxnCnt = 0L;
+        String txnCnt = redisTemplate.opsForValue().get(key);
+        if (txnCnt == null || txnCnt.isEmpty()) {
+            totalTxnCnt = nebTransactionService.countTotalTxnCnt();
+            redisTemplate.opsForValue().set(key, totalTxnCnt.toString());
+            redisTemplate.opsForValue().getOperations().expire(key, 15, TimeUnit.MINUTES);
+
+        } else {
+            totalTxnCnt = Long.valueOf(txnCnt);
+        }
+
+        NasAccount ninetyDayAccount = nasAccountService.getNasAccountFromNinetyDays();
+
+        long newAddressCount = nasAccount.getAddressCount() - ninetyDayAccount.getAddressCount();
+        result.put("totalAddressCount", nasAccount.getAddressCount());
+        result.put("totalContractCount", nasAccount.getContractCount());
+        result.put("txnCnt", totalTxnCnt);
+        result.put("newAddressCount", newAddressCount);
+        result.put("oldAddressCount", ninetyDayAccount.getAddressCount());
+
+        List<NasAccount> nasAccountList = nasAccountService.getEightWeeks();
+
+        result.put("addressWeekList", nasAccountList);
+        return result;
+    }
+
 
 }

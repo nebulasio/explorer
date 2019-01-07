@@ -32,7 +32,7 @@
         border: none;
         margin-left: 47px;
         padding: 6px 0px 6px 10px;
-        width: 340px;
+        width: 350px;
         background-color: white;
     }
 
@@ -93,7 +93,7 @@
         <div class=container>
             <div>
                 <router-link v-bind:to="fragApi + '/'" class=navbar-brand>
-                    <img src=/static/img/logo_beta.png width=210 alt="">
+                    <img src="/static/img/logo_beta.png?v=20190104" width=210 alt="">
                 </router-link>
                 <!-- <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
 <span class="fa fa-flask" aria-hidden=true></span>
@@ -176,12 +176,12 @@
                 location.reload();
             },
             onSubmit() {
-                // if (this.search.trim().toLowerCase() == 'atp') {
-                //     this.showATP();
-                //     return;
-                // }
+                if (this.search.trim().length === 0) {
+                    this.search = "";
+                    return;
+                }
                 this.$root.showModalLoading = true;
-                api.getSearch(this.search, o => {
+                api.getSearch(this.search.trim(), o => {
                     this.$root.showModalLoading = false;
                     this.search = "";
 
@@ -192,7 +192,7 @@
                     else if (o.type == "tx")
                         this.$router.push(this.fragApi + "/tx/" + o.q);
                     else if (o.type == "contract")
-                        this.$router.push(this.fragApi + "/contract/" + o.q);
+                        this.$router.push(this.fragApi + "/token/" + o.q);
                     else {
                         this.$root.search = o.q;
                         this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/nothing");
@@ -210,7 +210,7 @@
             },
             showATP() {
                 // 搜索框进入 ATP 的临时方案！！！
-                this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/contract/" + this.atpAddress());
+                this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/token/" + this.atpAddress());
             }
         },
         mounted() {
