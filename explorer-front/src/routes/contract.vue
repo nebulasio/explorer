@@ -163,7 +163,7 @@
                         Total supply:
                         <div class="detail">{{ tokenAmount(obj.total, decimal) }} {{ obj.tokenName }}</div>
                     </div>
-                    <div>
+                    <div v-if="tokenPrice">
                         Price:
                         <div class="detail">
                             <span class="font-color-000000">${{ tokenPrice.price }}</span>
