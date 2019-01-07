@@ -889,7 +889,7 @@
 
                 let vm = this;
                 var options = {
-                    grid: { left: '40', bottom: '50', right: '17', top: '10', containLabel: false },
+                    grid: { left: '40', bottom: '50', right: '0', top: '10', containLabel: false },
                     xAxis: {
                         data: dates,
                         axisLine: {
@@ -973,7 +973,12 @@
                 var arr = this.staticInfo.addressWeekList;
                 var dates = [], 
                     nums = [];
+
                 arr.sort(function (a, b) { return a.timestamp > b.timestamp; });
+                if (arr.length > 8) {
+                    arr.splice(0, arr.length - 8);
+                }
+
                 for (var i in arr) {
                     nums.push(arr[i].addressCount);
                     dates.push(arr[i].timestamp);
@@ -981,7 +986,7 @@
                 
                 let vm = this;
                 var options = {
-                    grid: { left: '30', bottom: '50', right: '17', top: '10', containLabel: false },
+                    grid: { left: '30', bottom: '50', right: '0', top: '10', containLabel: false },
                     xAxis: {
                         data: dates,
                         axisLine: {
