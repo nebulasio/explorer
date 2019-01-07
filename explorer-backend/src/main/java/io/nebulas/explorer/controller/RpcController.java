@@ -87,11 +87,6 @@ public class RpcController {
     private final byte[] lockForTxCountToday = new byte[0];
     private final byte[] lockForTxCountTotal = new byte[0];
 
-    @RequestMapping(value = "/jenkins", method = RequestMethod.GET)
-    public JsonResult testJenkins(){
-        return JsonResult.success("Hello from jenkins");
-    }
-
     @RequestMapping(value = "/market_cap", method = RequestMethod.GET)
     public JsonResult marketCap() {
         return JsonResult.success(nebMarketCapitalizationService.getLatest());
