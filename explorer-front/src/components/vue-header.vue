@@ -87,6 +87,13 @@
             margin: 10px 0px;
         }
     }
+
+    @media (max-width: 767.98px) {
+        input {
+            font-size: 16px;
+        }
+    }
+
 </style>
 <template>
     <nav class="bg-black navbar navbar-expand-lg navbar-dark vue-header">
@@ -95,11 +102,6 @@
                 <router-link v-bind:to="fragApi + '/'" class=navbar-brand>
                     <img src="/static/img/logo_beta.png?v=20190104" width=210 alt="">
                 </router-link>
-                <!-- <a href=https://github.com/nebulasio/explorer/issues target=_blank class=dev-version data-toggle=tooltip data-placement=bottom data-html=true title='
-<span class="fa fa-flask" aria-hidden=true></span>
-<span class=c777>This website is under heavy construction</span><br>
-<div>Feel free to submit issues by clicking this link 👍</div>
-                '>alpha</a> -->
             </div>
 
             <button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
@@ -108,8 +110,7 @@
             <div class="collapse navbar-collapse mr-28" id=navbarSupportedContent>
                 <form class=form-inline v-on:submit.prevent=onSubmit>
                     <img src=/static/img/icon_search.png width=16 alt="">
-                    <input class="form--control mr-sm-2" v-model=search type=search placeholder="Search by Address / Txhash / Block / Token">
-                    <!-- <button class="btn btn-outline-success" type=submit>GO</button> -->
+                    <input class="mr-sm-2 font-12" v-model=search type=search placeholder="Search by Address / Txhash / Block / Token">
                 </form>
                 <ul class="navbar-nav ml-auto">
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
@@ -138,13 +139,6 @@
                         <a class="nav-link" href=# role=button v-on:click.prevent=apiSwitch()>{{ MenuMisc }}
                             <img src=/static/img/icon_switcher.png width=12 alt="">
                         </a>
-                        <!-- <a class="nav-link dropdown-toggle" href=# id=header-dropdown-misc role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>{{ MenuMisc }}</a>
-                        <div class=dropdown-menu aria-labelledby=header-dropdown-misc>
-                            <a v-for="(o, i) in apiPrefixes" :key="i" class="nav-link text-dark" href=# v-on:click.prevent=apiSwitch(i)>
-                                <span class="fa fa-check" v-bind:class="{ 'visibility-hidden': paramsApi != i }" aria-hidden=true></span>
-                                {{ o.name }}
-                            </a>
-                        </div> -->
                     </li>
                 </ul>
                 
@@ -163,7 +157,7 @@
                 fragApi: "",
                 paramsApi: "",
                 search: "",
-                MenuMisc:"MISC"
+                MenuMisc:"MAINNET"
             };
         },
         methods: {
@@ -231,7 +225,11 @@
             this.fragApi = paramsApi ? "/" + paramsApi : "";
             this.paramsApi = paramsApi;
 
-            require("jquery")("[data-toggle=tooltip]").tooltip();
+            if (!!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+                console.log('avoid auto zoom');
+                // avoid auto zoom under iOS Safari when font size is less than 16px
+                require('jquery')('.vue-header input').css('font-size', '16px');
+            }
         }
     };
 </script>
