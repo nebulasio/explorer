@@ -817,15 +817,15 @@
                                 </td>
                                 <td>
                                     Tx#
-                                    <router-link :to='fragApi + "/tx/" + tx.hash'>{{ shortStr(4, tx.hash) }}</router-link>
+                                    <router-link :to='fragApi + "/tx/" + tx.hash' class="monospace">{{ shortStr(4, tx.hash) }}</router-link>
                                     <br>
                                     <span class="fromto d-none d-sm-inline">
                                         From
-                                        <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.from.hash) }}</router-link>    
+                                        <router-link :to='fragApi + "/address/" + tx.from.hash' class="monospace">{{ shortStr(4, tx.from.hash) }}</router-link>    
                                     </span>
                                     <span class="fromto d-none d-sm-inline">
                                         To
-                                        <router-link :to='fragApi + "/address/" + tx.from.hash'>{{ shortStr(4, tx.to.hash) }}</router-link>
+                                        <router-link :to='fragApi + "/address/" + tx.from.hash' class="monospace">{{ shortStr(4, tx.to.hash) }}</router-link>
                                     </span>
                                 </td>
                                 <td>
