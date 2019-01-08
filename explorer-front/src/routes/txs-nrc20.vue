@@ -121,8 +121,10 @@
                         </td>
 
                         <td class="time font-14 font-color-555555">
-                            <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                            <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                            <div>
+                                <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                                <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                            </div>
                         </td>
                         <td class="tdxxxwddd txs-from-to">
                             <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>

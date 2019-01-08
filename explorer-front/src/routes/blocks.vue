@@ -41,8 +41,10 @@
                             </router-link>
                         </td>
                         <td class=time>
-                            <div class="font-color-000000 font-14">{{ timeConversion(o.timeDiff) }} ago</div>
-                            <div>{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                            <div>
+                                <div class="font-color-000000 font-14">{{ timeConversion(o.timeDiff) }} ago</div>
+                                <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                            </div>
                         </td>
                         <td class="text-right">
                             <router-link v-bind:to='fragApi + "/txs?block=" + o.height'>

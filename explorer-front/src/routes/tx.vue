@@ -118,8 +118,7 @@
                     </tr>
                     <tr>
                         <td class="font-16 font-color-555555" style="padding-left: 24px;">TimeStamp:</td>
-                        <td class="font-16 font-color-000000">{{ timeConversion(tx.timeDiff) }} ago ({{ new Date(tx.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ tx.timestamp }})
-                        </td>
+                        <td class="font-16 font-color-000000">{{ timeConversion(tx.timeDiff) }} ago ({{ new Date(tx.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ tx.timestamp }})</td>
                     </tr>
                     <tr>
                         <td class="font-16 font-color-555555" style="padding-left: 24px;">From:</td>

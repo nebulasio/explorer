@@ -34,8 +34,10 @@
                             </router-link>
                         </td>
                         <td class="time font-14 font-color-555555">
-                            <div>{{ timeConversion(o.timeDiff) }} ago</div>
-                            <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                            <div>
+                                <div>{{ timeConversion(o.timeDiff) }} ago</div>
+                                <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                            </div>
                         </td>
                         <td class="font-14 font-color-555555">{{ numberAddComma(o.gasLimit) }}</td>
                         <td class="font-14 font-color-555555">{{ toWei(o.gasPrice) }}</td>
