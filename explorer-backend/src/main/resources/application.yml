@@ -2,6 +2,8 @@ server:
   port: 8080
 logging:
   config: classpath:logback.xml
+flyway:
+  baseline-on-migrate: true
 spring:
   application:
     name: explorer
@@ -42,7 +44,7 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 300
 grpc:
-  host: 13.57.96.40
+  host: 47.92.203.173
   port: 8684
   enableKeepAlive: true
   keepAliveWithoutCalls: true
@@ -68,9 +70,18 @@ pendingTxExpiredTime: 1
 ---
 spring:
   profiles: dev
+  datasource:
+    url: jdbc:mysql://172.16.15.150:3306/explorer_test?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
+    username: root
+    password: root@mysql
   thymeleaf:
     cache: false
     mode: LEGACYHTML5
+redis:
+  host: 172.16.15.150
+  port: 6379
+  password:
+  database: 2
 environment: dev
 pendingTxExpiredTime: 1
 

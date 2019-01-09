@@ -66,6 +66,16 @@ public class NebAddressService {
         return nebAddressMapper.addAddress(address.getHash(), address.getNonce(), address.getType(), address.getCurrentBalance()) > 0;
     }
 
+    public void addNebContract(NebAddress contractAddress) {
+        nebAddressMapper.addContract(
+                contractAddress.getHash(),
+                contractAddress.getNonce(),
+                contractAddress.getCurrentBalance(),
+                contractAddress.getCreator(),
+                contractAddress.getDeployTxHash()
+        );
+    }
+
     /**
      * update address current_balance property
      *

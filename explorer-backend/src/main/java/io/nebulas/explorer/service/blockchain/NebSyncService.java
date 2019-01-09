@@ -183,7 +183,7 @@ public class NebSyncService {
 //            }
 
         } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
-            syncAddress(tx.getContractAddress(), NebAddressTypeEnum.CONTRACT);
+            createContractAddress(tx.getContractAddress(), tx.getFrom(), tx.getHash());
         }
 
         NebPendingTransaction nebPendingTransaction = nebTransactionService.getNebPendingTransactionByHash(tx.getHash());
@@ -249,7 +249,8 @@ public class NebSyncService {
 //                    }
 
                 } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
-                    syncAddress(txSource.getContractAddress(), NebAddressTypeEnum.CONTRACT);
+                    //pending的交易理论上不需要处理deploy的合约地址，在上链之后再处理，参见#syncTx方法
+//                    syncAddress(txSource.getContractAddress(), NebAddressTypeEnum.CONTRACT);
                 }
 
                 log.info("get pending tx by hash {}", hash);
@@ -284,17 +285,27 @@ public class NebSyncService {
         nebTransactionService.deleteNebPendingTransaction(hash);
     }
 
+    private void createContractAddress(String contractAddress, String creator, String deployTxHash) {
+        NebAddress address = nebAddressService.getNebAddressByHashRpc(contractAddress);
+        if (address==null){
+            return;
+        }
+        address.setCreator(creator);
+        address.setDeployTxHash(deployTxHash);
+        nebAddressService.addNebContract(address);
+    }
+
     private void syncAddress(String hash, NebAddressTypeEnum type) {
         if (StringUtils.isEmpty(hash)) {
             return;
         }
         try {
-            NebAddress addr = nebAddressService.getNebAddressByHash(hash);
-            if (addr == null) {
-                addr = nebAddressService.getNebAddressByHashRpc(hash);
-                if (null != addr) {
-                    nebAddressService.addNebAddress(addr);
-                }
+            NebAddress address = nebAddressService.getNebAddressByHash(hash);
+            NebAddress addressFromRPC = nebAddressService.getNebAddressByHashRpc(hash);
+            if (address == null) {
+                nebAddressService.addNebAddress(addressFromRPC);
+            } else {
+                nebAddressService.updateAddressBalance(hash, addressFromRPC.getBalance(), addressFromRPC.getNonce());
             }
         } catch (Throwable e) {
             log.error("add address error", e);

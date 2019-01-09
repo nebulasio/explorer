@@ -136,7 +136,8 @@ public class DataConsensusJob {
                         String realReceiver = extractReceiverAddress(tx.getData());
                         addAddr(realReceiver);
                     } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
-                        addAddr(tx.getContractAddress());
+//                        addAddr(tx.getContractAddress());
+                        createContractAddress(tx.getContractAddress(), tx.getFrom(), tx.getHash());
                     }
 
                     NebTransaction nebTx = BlockHelper.buildNebTransaction(tx, blk, seq, convertData(typeEnum, tx.getData()));
@@ -180,6 +181,16 @@ public class DataConsensusJob {
 
         List<String> dynastyList = nebApiServiceWrapper.getDynasty(blk.getHeight());
         nebDynastyService.batchAddNebDynasty(blk.getHeight(), dynastyList);
+    }
+
+    private void createContractAddress(String contractAddress, String creator, String deployTxHash) {
+        NebAddress address = nebAddressService.getNebAddressByHashRpc(contractAddress);
+        if (address==null){
+            return;
+        }
+        address.setCreator(creator);
+        address.setDeployTxHash(deployTxHash);
+        nebAddressService.addNebContract(address);
     }
 
     private void addAddr(String hash) {

@@ -116,6 +116,8 @@ public class RpcController {
                             ContractListItemVo.ContractType.NRC20_TOKEN :
                             ContractListItemVo.ContractType.NORMAL
             );
+            vo.setCreator(address.getCreator());
+            vo.setDeployTxHash(address.getDeployTxHash());
             listItemVos.add(vo);
         }
 

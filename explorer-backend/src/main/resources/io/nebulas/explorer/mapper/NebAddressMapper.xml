@@ -10,9 +10,11 @@
         <result column="current_balance" property="currentBalance" jdbcType="DECIMAL"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
         <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="deploy_tx_hash" property="deployTxHash" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`, `hash`,`nonce`, `type`, `alias`,`current_balance`, `created_at`, `updated_at`
+        `id`, `hash`,`nonce`, `type`, `alias`,`current_balance`, `created_at`, `updated_at`, `creator`, `deploy_tx_hash`
     </sql>
 
     <!--<insert id="add" parameterType="map" useGeneratedKeys="false">-->
@@ -21,6 +23,11 @@
 
     <insert id="addAddress" parameterType="map" useGeneratedKeys="false">
         INSERT ignore INTO `neb_address` (`hash`,`nonce`, `type`, `current_balance`) VALUES (#{hash}, #{nonce}, #{type}, #{balance})
+    </insert>
+
+    <insert id="addContract" parameterType="map" useGeneratedKeys="false">
+        INSERT ignore INTO `neb_address` (`hash`,`nonce`, `type`, `current_balance`, `creator`, `deploy_tx_hash`)
+        VALUES (#{hash}, #{nonce}, 1, #{balance}, #{creator}, #{deployTxHash})
     </insert>
 
     <update id="update" parameterType="map">

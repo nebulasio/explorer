@@ -13,6 +13,8 @@ public class ContractListItemVo {
     private String balance;
     private Date createdAt;
     private ContractType contractType;
+    private String creator;
+    private String deployTxHash;
 
     public enum ContractType {
         NRC20_TOKEN, NORMAL
