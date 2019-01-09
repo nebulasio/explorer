@@ -158,6 +158,18 @@
         margin-left: 30px;
     }
 
+    .vue-dashboard .daily-echart-down-arrow {
+        width: 0;
+        height: 0;
+        border-top: 4px solid #595C63;
+        border-right: 4px solid transparent;
+        border-left: 4px solid transparent;
+        position: absolute;
+        bottom: -4px;
+        left: calc(50% - 4px);
+        z-index: 1060;
+    }
+
     .vue-dashboard .nas-price .update-time {
         position: absolute;
         top: 32px;
@@ -454,6 +466,18 @@
         width: calc(100% - 30px);
         height: 240px;
         margin-left: 30px;
+    }
+
+    .vue-dashboard .account-echart-down-arrow {
+        width: 0;
+        height: 0;
+        border-top: 4px solid #0057FF;
+        border-right: 4px solid transparent;
+        border-left: 4px solid transparent;
+        position: absolute;
+        bottom: -4px;
+        left: calc(50% - 4px);
+        z-index: 1060;
     }
 
     .vue-dashboard .row5 .item-bg {
@@ -817,15 +841,21 @@
                                 </td>
                                 <td>
                                     Tx#
-                                    <router-link :to='fragApi + "/tx/" + tx.hash' class="monospace">{{ shortStr(4, tx.hash) }}</router-link>
+                                    <router-link :to='fragApi + "/tx/" + tx.hash'>
+                                        <span class="monospace">{{ tx.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.hash.slice(-4) }}</span>
+                                    </router-link>
                                     <br>
                                     <span class="fromto d-none d-sm-inline">
                                         From
-                                        <router-link :to='fragApi + "/address/" + tx.from.hash' class="monospace">{{ shortStr(4, tx.from.hash) }}</router-link>    
+                                        <router-link :to='fragApi + "/address/" + tx.from.hash'>
+                                            <span class="monospace">{{ tx.from.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.from.hash.slice(-4) }}</span>
+                                        </router-link>    
                                     </span>
                                     <span class="fromto d-none d-sm-inline">
                                         To
-                                        <router-link :to='fragApi + "/address/" + tx.from.hash' class="monospace">{{ shortStr(4, tx.to.hash) }}</router-link>
+                                        <router-link :to='fragApi + "/address/" + tx.from.hash'>
+                                            <span class="monospace">{{ tx.to.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.to.hash.slice(-4) }}</span>
+                                        </router-link>
                                     </span>
                                 </td>
                                 <td>
@@ -952,13 +982,13 @@
                         formatter: function(params, ticket, callback) {
                             let date = new Date(params.name);
                             let dateStr = date.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' });
-                            return dateStr + '<div>Transactions: ' + vm.numberAddComma(params.value) + '</div>';
+                            return dateStr + '<div>Transactions: ' + vm.numberAddComma(params.value) + '</div><div class=daily-echart-down-arrow></div>';
                         },
                         backgroundColor: '#595C63',
                         padding: 8,
                         extraCssText: 'border-radius: 2px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);',
                         textStyle: {
-                            fontFamily: 'consolas',
+                            fontFamily: 'menlo, consolas',
                             fontSize: 12,
                             lineHeight: 18
                         }
@@ -1063,13 +1093,13 @@
                         formatter: function(params, ticket, callback) {
                             let date = new Date(new Number(params.name));
                             let dateStr = date.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' });
-                            return dateStr + '<div>Amount: ' + vm.numberAddComma(params.value) + '</div>';
+                            return dateStr + '<div>Amount: ' + vm.numberAddComma(params.value) + '</div><div class=account-echart-down-arrow></div>';
                         },
                         backgroundColor: '#0057FF',
                         padding: 8,
                         extraCssText: 'border-radius: 2px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);',
                         textStyle: {
-                            fontFamily: 'consolas',
+                            fontFamily: 'menlo, consolas',
                             fontSize: 12,
                             lineHeight: 18
                         }
@@ -1140,9 +1170,6 @@
             },
             timeConversion(ms) {
                 return utility.timeConversion(ms);
-            },
-            shortStr(n, s) {
-                return utility.shortStr(n, s);
             },
             afterEnter: function (el) {
                 let height = (1 - Math.min(5, Math.max(0, el.firstElementChild.dataset.txncnt)) / 5.0) * 100 + 'px';
