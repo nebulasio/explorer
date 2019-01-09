@@ -40,10 +40,6 @@
         line-height: 20px;
     }
 
-    .vue-address .tab a {
-        font-size: 16px;
-    }
-
     .vue-address .fail {
         background: url(../../static/img/warning_icon.png) no-repeat 0 10px;
         padding-left: 28px;
@@ -227,6 +223,7 @@
     <div class="vue-address fullfill" v-bind:triggerComputed=urlChange>
         <vue-bread v-bind:title='navTitle'
                    v-bind:subtitle="$route.params.id"
+                   v-bind:subtitlemonospaced="!!$route.params.id"
                    v-bind:blockies="$route.params.id">
         </vue-bread>
         <div class="container explorer-table-container" v-if=obj>
@@ -421,10 +418,10 @@
                                 </router-link>
                             </td>
                             <td class="txs-block">
-                                <router-link class="font-14 font-color-4560E6"
+                                <router-link class="font-14"
                                             v-if=o.block.height
                                             v-bind:to='fragApi + "/block/" + o.block.height'>
-                                    <span class="font-14 font-color-4560E6">{{ o.block.height }}</span>
+                                    <span>{{ o.block.height }}</span>
                                 </router-link>
                                 <i class="font-14 font-color-000000" v-else>pending</i>
                             </td>
@@ -528,10 +525,10 @@
                             </td>
 
                             <td class="txs-block">
-                                <router-link class="font-14 font-color-4560E6"
+                                <router-link class="font-14"
                                             v-if=o.block.height
                                             v-bind:to='fragApi + "/block/" + o.block.height'>
-                                    <span class="font-14 font-color-4560E6">{{ o.block.height }}</span>
+                                    <span>{{ o.block.height }}</span>
                                 </router-link>
                                 <i class="font-14 font-color-000000" v-else>pending</i>
                             </td>

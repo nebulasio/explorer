@@ -77,7 +77,7 @@
 </style>
 <template>
     <div class="vue-tx fullfill" v-bind:triggerComputed=urlChange>
-        <vue-bread title='TxHash' :subtitle="$route.params.id"></vue-bread>
+        <vue-bread title='TxHash' :subtitle="$route.params.id" :subtitlemonospaced="$route.params.id"></vue-bread>
         <div v-if="tx" class="container">
             <div class="font-24 font-bold font-color-000000 table-title">
                 Overview

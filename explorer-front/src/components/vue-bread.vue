@@ -21,7 +21,7 @@
         <div class=container>
             <div class="row align-items-center">
                 <div class="col-auto title font-40 font-bold font-color-000000">{{ title }}</div>
-                <div class="col-auto subtitle font-16 font-bold font-color-000000 align-baseline" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                <div :class="['col-auto subtitle font-16 font-bold font-color-000000 align-baseline', subtitlemonospaced ? 'monospace' : '']" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                     <vue-blockies class="d-inline mr-1 align-text-bottom" v-if="blockies" v-bind:address='blockies'></vue-blockies>
                     {{ subtitle }}
                 </div>
@@ -39,6 +39,6 @@
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : ""
             };
         },
-        props: ["title", "subtitle", "blockies"]
+        props: ["title", "subtitle", "subtitlemonospaced", "blockies"]
     };
 </script>

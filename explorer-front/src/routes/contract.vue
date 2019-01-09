@@ -35,10 +35,6 @@
         color: silver;
     }
 
-    .vue-contract .tab a {
-        font-size: 13px;
-    }
-
     .vue-contract .fail {
         background: url(../../static/img/warning_icon.png)no-repeat 0 10px;
         padding-left: 28px;
@@ -242,8 +238,8 @@
                                 </router-link>
                             </td>
                             <td class="txs-block">
-                                <router-link class="font-14 font-color-4560E6" v-if=o.blockHeight v-bind:to='fragApi + "/block/" + o.blockHeight'>
-                                    <span class="font-14 font-color-4560E6">{{ o.blockHeight }}</span>
+                                <router-link class="font-14" v-if=o.blockHeight v-bind:to='fragApi + "/block/" + o.blockHeight'>
+                                    <span>{{ o.blockHeight }}</span>
                                 </router-link>
                                 <i class="font-14 font-color-000000" v-else>pending</i>
                             </td>
