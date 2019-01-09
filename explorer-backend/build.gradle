@@ -82,9 +82,10 @@ dependencyManagement {
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('org.mybatis.spring.boot:mybatis-spring-boot-starter')
+    compile('org.springframework.boot:spring-boot-starter')
     compile('com.zaxxer:HikariCP')
-    implementation('org.springframework.boot:spring-boot-starter-jdbc')
-    implementation('org.flywaydb:flyway-core')
+    compile('org.springframework.boot:spring-boot-starter-jdbc')
+    compile('org.flywaydb:flyway-core')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-configuration-processor')
