@@ -142,7 +142,8 @@ td.time:hover :nth-child(2) {
 /*  overrides - bootstrap
     ============================================================ */
 
-a, a:hover, 
+a,
+a:hover,
 .btn-link,
 .page-link {
     color: #0057FF;
@@ -210,8 +211,9 @@ label {
 
 @media (max-width: 767.98px) {
     .table-title {
-        margin-top: 30px;
-        margin-bottom: 30px;
+        margin-top: 25px;
+        margin-bottom: 22px;
+        font-size: 20px !important;
     }
 }
 
@@ -301,6 +303,10 @@ label {
 
 .font-12 {
     font-size: 12px;
+}
+
+.font-13 {
+    font-size: 13px;
 }
 
 .font-14 {

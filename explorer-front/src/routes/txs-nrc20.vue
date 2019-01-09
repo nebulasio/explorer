@@ -57,14 +57,6 @@
         vertical-align: middle;
     }
 
-    /*.txs-from-to {*/
-        /*max-width: 168px;*/
-    /*}*/
-
-    /* .vue-txs-nrc20 .txs-from-to a {
-        max-width: 134px;
-    } */
-
     .vue-txs-nrc20 .fromTo {
         /*max-width: 134px;*/
         height: 20px;
@@ -75,6 +67,12 @@
         margin-right: 8px;
     }
 
+    @media (max-width: 767.98px) {
+        .vue-txs-nrc20 .title {
+            font-size: 20px;
+        }
+    }
+
 </style>
 <template>
     <!-- https://etherscan.io/txs -->
@@ -83,8 +81,8 @@
 
         <div class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info font-color-000000 font-24 font-bold">
-                    {{ totalTxs }} transactions found (showing the last {{ maxDisplayCnt }} records)
+                <div class="col info font-color-000000 font-24 font-bold title">
+                    {{ totalTxs }} transactions found
                 </div>
             </div>
 

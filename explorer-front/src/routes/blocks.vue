@@ -6,6 +6,12 @@
     .vue-blocks .block {
         margin-right: 8px;
     }
+
+    @media (max-width: 767.98px) {
+        .vue-blocks .title {
+            font-size: 20px;
+        }
+    }
 </style>
 
 <template>
@@ -15,7 +21,7 @@
 
         <div v-if="arr" class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info font-color-000000 font-24 font-bold">
+                <div class="col info font-color-000000 font-24 font-bold title">
                     {{ numberAddComma(totalBlocks) }} blocks found
                     <!-- <span v-if="totalTxs > 500" class="font-color-555555 font-16" style="vertical-align: text-bottom;">(showing the last 500 records)</span> -->
                 </div>
@@ -26,8 +32,8 @@
                         <th style="width: 20px;"></th>
                         <th style="width: 130px;">Height</th>
                         <th style="width: 130px;">Age</th>
-                        <th class="text-right">txn</th>
-                        <th style="padding-left: 60px">Minted</th>
+                        <th style="padding-left: 20px">txn</th>
+                        <th style="padding-left: 30px">Minted</th>
                         <th class=text-right>Gas Reward</th>
                         <th class=text-right>GasLimit</th>
                         <th class=text-right>Avg.GasPrice</th>
@@ -46,12 +52,12 @@
                                 <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
                             </div>
                         </td>
-                        <td class="text-right">
+                        <td style="padding-left: 20px">
                             <router-link v-bind:to='fragApi + "/txs?block=" + o.height'>
                                 <span class="font-14">{{ numberAddComma(o.txnCnt) }}</span>
                             </router-link>
                         </td>
-                        <td style="padding-left: 60px">
+                        <td style="padding-left: 30px">
                             <router-link v-bind:to='fragApi + "/address/" + o.miner.hash'>
                                 <vue-blockies class="d-inline" v-bind:address='o.miner.alias || o.miner.hash'></vue-blockies>
                                 <span class="font-14 monospace">{{ o.miner.alias || o.miner.hash }}</span>

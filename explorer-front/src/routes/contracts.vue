@@ -12,35 +12,27 @@
         border-top-color: #ddd;
     }
 
-    .vue-contracts .hash-normal {
-        height: 20px;
-        font-size: 14px;
-        /* font-family: OpenSans; */
-        color: rgba(0, 87, 255, 1);
-        line-height: 20px;
-    }
-
-    .vue-contracts .contract-hash {
+    .vue-contracts .hash {
         max-width: 200px;
         overflow: hidden;
         text-overflow: ellipsis;
         vertical-align: center;
-        padding: 0;
+        white-space: nowrap;
     }
 
-    .vue-contracts .contract-hash>* {
+    .vue-contracts .hash>* {
         display: inline;
     }
 
     .vue-contracts .block {
-        margin-right: 10px;
+        margin-right: 8px;
     }
 
-    /* @media (min-width: 768px) {
-        .vue-contracts .contract-hash {
-            max-width: initial;
+    @media (max-width: 767.98px) {
+        .vue-contracts .title {
+            font-size: 20px;
         }
-    } */
+    }
 
 </style>
 <template>
@@ -50,29 +42,34 @@
 
         <div v-if="arr" class="container mt20">
             <div class="align-items-center info-and-pagination mt20 row">
-                <div class="col info font-color-000000 font-24 font-bold">{{ numberAddComma(totalCts) }} smart contracts found</div>
+                <div class="col info font-color-000000 font-24 font-bold title">{{ numberAddComma(totalCts) }} smart contracts found</div>
                 <!--(showing the last {{ maxDisplayCnt }} records)-->
             </div>
 
-            <div class="explorer-table-container">
+            <div class="explorer-table-container font-14">
                 <table class="mt20 explorer-table list-table">
                     <tr class="list-header font-12 font-bold font-color-000000">
-                        <th style="padding-left: 24px;">Address</th>
-                        <th class=text-right>Balance</th>
-                        <th class=text-right>Type</th>
+                        <th style="padding-left: 24px;">Smart Contract</th>
+                        <th>Creator Address</th>
+                        <th>Type</th>
                         <th class=text-right style="padding-right: 24px;">Date Created</th>
                     </tr>
 
                     <tr v-for="(o, i) in arr" :key="i">
-                        <td style="padding-left: 24px;" class="contract-hash">
+                        <td style="padding-left: 24px;" class="hash">
                             <vue-blockies v-bind:address='o.hash'></vue-blockies>
                             <router-link v-bind:to='fragApi + "/address/" + o.hash'>
                                 <span class="hash-normal monospace">{{ o.hash }}</span>
                             </router-link>
                         </td>
-                        <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.balance) }} NAS</td>
-                        <td class="text-right font-color-000000 font-14">{{ o.contractType === 'NORMAL' ? 'Contract' : 'Token Contract' }} </td>
-                        <td class="text-right font-14 font-color-555555" style="padding-right: 24px;">{{ new Date(o.createdAt).toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' }) }}</td>
+                        <td class="hash">
+                            <vue-blockies v-bind:address='o.creator'></vue-blockies>
+                            <router-link v-bind:to='fragApi + "/address/" + o.hash'>
+                                <span class="hash-normal monospace">{{ o.creator }}</span>
+                            </router-link>
+                        </td>
+                        <td class="font-color-000000">{{ o.contractType === 'NORMAL' ? 'Contract' : 'Token Contract' }} </td>
+                        <td class="text-right font-color-555555" style="padding-right: 24px;">{{ new Date(o.createdAt).toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' }) }}</td>
                     </tr>
                 </table>
             </div>

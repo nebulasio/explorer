@@ -13,17 +13,23 @@
         }
     }
 
+    @media (max-width: 767.98px) {
+        .vue-accounts .title {
+            font-size: 20px;
+        }
+    }
+
 </style>
 <template>
     <!-- https://etherscan.io/accounts  -->
     <div class="vue-accounts fullfill">
         <vue-bread title="Top Accounts By NAS Balance"></vue-bread>
         <div v-if="arr && arr.length" class="mt20 container">
-            <div class="align-items-center info-and-pagination row">
-                <div class="col-auto pr-0 font-color-000000 font-24 font-bold">
+            <div class="d-block d-md-flex flex-row align-items-center mt20">
+                <div class="col-auto pl-0 pr-2 info font-color-000000 font-24 font-bold title">
                     {{ numberAddComma(totalAccounts) }} accounts found 
                 </div>
-                <span v-if="totalAccounts > 10000" class="col-auto font-color-555555 font-16">(showing the last 10,000 top accounts)</span>
+                <span v-if="totalAccounts > 10000" class="col-auto pl-0 font-color-555555 font-16 align-text-bottom subtitle">(showing the last 10,000 top accounts)</span>
             </div>
             <div class="explorer-table-container">
                 <table class="mt20 explorer-table list-table">

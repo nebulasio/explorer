@@ -239,25 +239,23 @@
                         {{ nasAmount(obj.address.balance) }} NAS
                     </td>
                 </tr>
-                <tr v-if="isContract && contract">
+                <tr v-if="creator && deployTxHash">
                     <td class="base-info-key font-16 font-color-555555 pl-16">
                         Contract Creator:
                     </td>
-                    <td v-if="contract.hash && contract.from"
-                        class="contract-creator font-16 font-color-000000">
-                        <router-link v-bind:to='fragApi + "/address/" + contract.from'
+                    <td class="contract-creator font-16 font-color-000000">
+                        <router-link v-bind:to='fragApi + "/address/" + creator'
                                      title="Creator Address">
-                            <span>{{ toShortStr(contract.from) }}</span>
+                            <span>{{ toShortStr(creator) }}</span>
                             <div class="popover down-arrow-tip">Creator Address</div>
                         </router-link>
                         at txn
-                        <router-link v-bind:to='fragApi + "/tx/" + contract.hash'
+                        <router-link v-bind:to='fragApi + "/tx/" + deployTxHash'
                                      title="Creator TxHash">
-                            <span>{{ toShortStr(contract.hash) }}</span>
+                            <span>{{ toShortStr(deployTxHash) }}</span>
                             <div class="popover down-arrow-tip">Creator TxHash</div>
                         </router-link>
                     </td>
-                    <td v-else></td>
                 </tr>
                 <tr>
                     <td class="base-info-key font-16 font-color-555555 pl-16">Nonce:</td>
@@ -308,18 +306,18 @@
                     NAS Balance:
                     <div class="detail">{{ nasAmount(obj.address.balance) }} NAS</div>
                 </div>
-                <div v-if="isContract && contract">
+                <div v-if="creator && deployTxHash">
                     Contract Creator:
-                    <div v-if="contract.hash && contract.from" class="detail contract-creator font-color-000000">
-                        <router-link v-bind:to='fragApi + "/address/" + contract.from'
+                    <div class="detail contract-creator font-color-000000">
+                        <router-link v-bind:to='fragApi + "/address/" + creator'
                                      title="Creator Address">
-                            <span>{{ toShortStr(contract.from) }}</span>
+                            <span>{{ toShortStr(creator) }}</span>
                             <!-- <div class="popover">Creator Address</div> -->
                         </router-link>
                         at txn
-                        <router-link v-bind:to='fragApi + "/tx/" + contract.hash'
+                        <router-link v-bind:to='fragApi + "/tx/" + deployTxHash'
                                      title="Creator TxHash">
-                            <span>{{ toShortStr(contract.hash) }}</span>
+                            <span>{{ toShortStr(deployTxHash) }}</span>
                             <!-- <div class="popover">Creator TxHash</div> -->
                         </router-link>
                     </div>
@@ -617,8 +615,8 @@
             formatCode() {
                 var lang = prism.languages.javascript;
 
-                if (this.obj.contractCode) {
-                    var code = JSON.parse(this.obj.contractCode);
+                if (this.contractCode) {
+                    var code = JSON.parse(this.contractCode);
                     if (code.Source) {
                         return prism.highlight(jsBeautify(code.Source), lang);
                     }
@@ -647,12 +645,18 @@
                     this.tokens = o.tokens;
                     this.txs = o.txList;
                     this.contractCode = o.contractCode;
+                    this.creator = o.creator;
+                    this.deployTxHash = o.deployTxHash;
+                    this.isContract = o.address.type == 1;
                     if (o.address.type == 1) {// this is a smart contract address
-                        this.isContract = true;
                         api.getTransactionByContract({address: o.address.hash}, this.$route.params.api, (data) => {
                             var data = JSON.parse(data);
-                            this.contract = data.result ? data.result : {};
-                            this.obj.contractCode = base64.decode(this.contract.data);
+                            if (data && data.result && data.result.data) {
+                                this.contract = data.result;
+                                this.creator = this.contract.from;
+                                this.deployTxHash = this.contract.hash;
+                                this.contractCode = base64.decode(data.result.data);
+                            }
                         })
                     }
 
@@ -689,6 +693,9 @@
                 decimal: null,
                 isContract: false,
                 contract: null,
+                creator: null,
+                deployTxHash: null,
+                contractCode: null,
                 nrc20TxList: [],
                 nrc20TxCnt: 0,
                 isNoNrc20Tx: false

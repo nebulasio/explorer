@@ -820,7 +820,8 @@
                                     <router-link :to='fragApi + "/block/" + block.height' class="monospace">{{ block.height }}</router-link>
                                     <br>
                                     <span class="txcnt monospace">
-                                        <router-link :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} {{ block.txnCnt > 1 ? "transactions" : "transaction" }}</router-link>
+                                        <router-link v-if="block.txnCnt" :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} {{ block.txnCnt > 1 ? "transactions" : "transaction" }}</router-link>
+                                        <span v-else>0 transaction</span>
                                     </span>
                                 </td>
                                 <td>

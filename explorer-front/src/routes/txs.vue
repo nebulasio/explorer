@@ -6,10 +6,6 @@
         color: rgb(76, 32, 133);
     }
 
-    .vue-txs .info-and-pagination .info a {
-        color: inherit;
-    }
-
     .vue-txs td,
     .vue-txs th {
         border-top-color: #ddd;
@@ -26,7 +22,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .hash-normal {
+    .vue-txs .hash-normal {
         height: 20px;
         font-size: 14px;
         /* font-family: OpenSans; */
@@ -34,7 +30,7 @@
         line-height: 20px;
     }
 
-    .hash-failed {
+    .vue-txs .hash-failed {
         height: 20px;
         font-size: 14px;
         /* font-family: OpenSans; */
@@ -42,7 +38,7 @@
         color: rgba(240, 68, 52, 1);
     }
 
-    .txs-hash {
+    .vue-txs .txs-hash {
         max-width: 185px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -50,7 +46,7 @@
         padding: 0;
     }
 
-    .txs-block {
+    .vue-txs .txs-block {
         max-width: 120px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -58,23 +54,20 @@
         padding: 0;
     }
 
-    /*.txs-from-to {*/
-         /*max-width: 168px;*/
-     /*}*/
-
-    .txs-from-to a {
-        /*max-width: 158px;*/
-    }
-
-    .fromTo {
-        /*max-width: 158px;*/
-        /* margin-left: 10px; */
+    .vue-txs .fromTo {
         line-height: 24px;
     }
 
     .vue-txs .block {
         margin-right: 8px;
     }
+
+    @media (max-width: 767.98px) {
+        .vue-txs .title {
+            font-size: 20px;
+        }
+    }
+
 </style>
 <template>
     <!-- https://etherscan.io/txs -->
@@ -82,11 +75,11 @@
         <vue-bread :title='"Transactions" + (($route.query.a || $route.query.block) ? " of" : "")' :subtitle='$route.query.block ? ("Block #" + $route.query.block) : $route.query.a' :subtitlemonospaced='!!$route.query.a' :blockies='$route.query.a'></vue-bread>
 
         <div v-if="arr && arr.length" class="container mt20">
-            <div class="align-items-center info-and-pagination mt20 row">
-                <span class="col-auto pr-0 info font-color-000000 font-24 font-bold">
+            <div class="d-block d-md-flex flex-row align-items-center mt20">
+                <span class="col-auto pl-0 pr-2 info font-color-000000 font-24 font-bold title">
                     {{ (totalTxs > 0 && !$route.query.a && !$route.query.block) ? 'More than' : '' }} {{ totalTxs > 1000000  ? (Math.floor(totalTxs / 1000000) +  (Math.floor(totalTxs / 1000000) > 2 ? ' millions' : ' million')) : numberAddComma(totalTxs) }} transactions found
                 </span>
-                <span v-if="totalTxs > 500" class="col-auto font-color-555555 font-16">(showing the last 500 records)</span>
+                <span v-if="totalTxs > 500" class="col-auto pl-0 font-color-555555 font-16 align-text-bottom subtitle">(showing the last 500 records)</span>
             </div>
 
             <div class="explorer-table-container">
