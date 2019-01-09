@@ -250,14 +250,14 @@
                         class="contract-creator font-16 font-color-000000">
                         <router-link v-bind:to='fragApi + "/address/" + contract.from'
                                      title="Creator Address">
-                            <span class="font-color-0057FF">{{ toShortStr(contract.from) }}</span>
-                            <div class="popover">Creator Address</div>
+                            <span>{{ toShortStr(contract.from) }}</span>
+                            <div class="popover down-arrow-tip">Creator Address</div>
                         </router-link>
                         at txn
                         <router-link v-bind:to='fragApi + "/tx/" + contract.hash'
                                      title="Creator TxHash">
-                            <span class="font-color-0057FF">{{ toShortStr(contract.hash) }}</span>
-                            <div class="popover">Creator TxHash</div>
+                            <span>{{ toShortStr(contract.hash) }}</span>
+                            <div class="popover down-arrow-tip">Creator TxHash</div>
                         </router-link>
                     </td>
                     <td v-else></td>
@@ -281,7 +281,7 @@
                     </td>
                     <td class="font-16 font-color-000000">
                         <router-link v-bind:to='fragApi + "/token/" + $route.params.id'>
-                            <span class="font-color-0057FF">{{ obj.tokenName }}</span>
+                            <span>{{ obj.tokenName }}</span>
                         </router-link>
                     </td>
                 </tr>
@@ -292,7 +292,7 @@
                         <div id="dropdown-tokens" data-toggle=dropdown>
                             <span class="font-16 font-color-000000">{{ tokenAmount(displayToken.balance, displayToken.decimal) }}</span>
                             <router-link v-bind:to='fragApi + "/token/" + displayToken.contract'>
-                                <span class="font-16 font-bold font-color-0057FF">{{ displayToken.tokenName }}</span>
+                                <span class="font-16 font-bold">{{ displayToken.tokenName }}</span>
                             </router-link>
                             <img src="../../static/img/icon_arrow_down_black.png" alt="" width="12">
                         </div>
@@ -316,14 +316,14 @@
                     <div v-if="contract.hash && contract.from" class="detail contract-creator font-color-000000">
                         <router-link v-bind:to='fragApi + "/address/" + contract.from'
                                      title="Creator Address">
-                            <span class="font-color-0057FF">{{ toShortStr(contract.from) }}</span>
-                            <div class="popover">Creator Address</div>
+                            <span>{{ toShortStr(contract.from) }}</span>
+                            <!-- <div class="popover">Creator Address</div> -->
                         </router-link>
                         at txn
                         <router-link v-bind:to='fragApi + "/tx/" + contract.hash'
                                      title="Creator TxHash">
-                            <span class="font-color-0057FF">{{ toShortStr(contract.hash) }}</span>
-                            <div class="popover">Creator TxHash</div>
+                            <span>{{ toShortStr(contract.hash) }}</span>
+                            <!-- <div class="popover">Creator TxHash</div> -->
                         </router-link>
                     </div>
                 </div>
@@ -343,7 +343,7 @@
                     Token Tracker:
                     <div class="detail">
                         <router-link v-bind:to='fragApi + "/token/" + $route.params.id'>
-                            <span class="font-color-0057FF">{{ obj.tokenName }}</span>
+                            <span>{{ obj.tokenName }}</span>
                         </router-link>
                     </div>
                 </div>
@@ -353,7 +353,7 @@
                         <div id="dropdown-tokens" data-toggle=dropdown>
                             <span class="font-color-000000">{{ tokenAmount(displayToken.balance, displayToken.decimal) }}</span>
                             <router-link v-bind:to='fragApi + "/token/" + displayToken.contract'>
-                                <span class="font-bold font-color-0057FF">{{ displayToken.tokenName }}</span>
+                                <span class="font-bold">{{ displayToken.tokenName }}</span>
                             </router-link>
                             <img src="../../static/img/icon_arrow_down_black.png" alt="" width="12">
                         </div>
@@ -373,22 +373,20 @@
             <!--    Transactions
                 ============================================================ -->
             <div class="tab" v-show="tab == 1">
-                <div v-if="txs.length" class="align-items-center row title">
-                    <div class=col>
-                        <span class="font-16 font-bold font-color-000000">
+                <div v-if="txs.length" class="d-block d-md-flex flex-row align-items-center">
+                    <div class="col mr-auto px-0 font-16 font-bold font-color-000000">
                         Latest {{ txs.length }} {{ txs.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(obj.txCnt) }} {{ obj.txCnt > 1 ? 'transactions' : 'transaction' }} {{ obj.pendingTxCnt == 0 ? '' : '( + ' + obj.pendingTxCnt + ' Pending ' + (obj.pendingTxCnt > 1 ? 'Txns )' : 'Txn )') }}
-                        </span>
                     </div>
-                    <div class=col-auto>
-                        <router-link class="btn btn-link"
+                    <div class="col-auto px-0">
+                        <router-link class="d-block d-md-inline-block align-middle mt-1 mt-md-0"
                                      v-bind:to='fragApi + "/txs?a=" + $route.params.id'>
-                            <span class="font-color-0057FF font-16">View All {{ obj.txCnt }} {{ obj.txCnt > 1 ? 'Txns' : 'Txn' }}</span>
+                            <span class="font-16">View All {{ obj.txCnt }} {{ obj.txCnt > 1 ? 'Txns' : 'Txn' }}</span>
                         </router-link>
                         <span v-if="obj.pendingTxCnt != 0">
-                            |
-                            <router-link class="btn btn-link"
+                            <span class="d-none d-md-inline-block px-2">|</span>
+                            <router-link class="d-block d-md-inline-block align-middle mt-1 mt-md-0"
                                         v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>
-                                <span class="font-color-0057FF font-16">View All {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} Pending {{ obj.pendingTxCnt > 1 ? 'Txns' : 'Txn' }}</span>
+                                <span class="font-16">View All {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} Pending {{ obj.pendingTxCnt > 1 ? 'Txns' : 'Txn' }}</span>
                             </router-link>
                         </span>
                     </div>
@@ -440,7 +438,7 @@
                                 <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                                 <span class="fromTo font-14 font-color-000000" v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
                                 <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
-                                    <span class="fromTo font-14 font-color-0057FF">{{ o.from.alias || o.from.hash }}</span>
+                                    <span class="fromTo font-14">{{ o.from.alias || o.from.hash }}</span>
                                 </router-link>
                             </td>
                             <td style="padding: 10px;">
@@ -454,7 +452,7 @@
                                 <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                                 <span class="fromTo font-14 font-color-000000" v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
                                 <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>
-                                    <span class="fromTo font-14 font-color-0057FF">{{ o.to.alias || o.to.hash }}</span>
+                                    <span class="fromTo font-14 ">{{ o.to.alias || o.to.hash }}</span>
                                 </router-link>
                             </td>
                             <td class="amount align-right">{{ tokenAmount(o.value, o.decimal) }} NAS</td>
@@ -466,17 +464,17 @@
                     </table>
                 </div>
 
-                <div v-if="txs.length" class="align-items-center justify-content-end row title mt20">
-                    <div class=col-auto>
-                        <router-link class="btn btn-link"
+                <div v-if="txs.length" class="d-block d-md-flex flex-row align-items-center justify-content-end mt20">
+                    <div class="col-auto px-0">
+                        <router-link class="d-block d-md-inline-block align-middle mt-1 mt-md-0"
                                      v-bind:to='fragApi + "/txs?a=" + $route.params.id'>
-                            <span class="font-color-0057FF font-16">View All {{ obj.txCnt }} {{ obj.txCnt > 1 ? 'Txns' : 'Txn' }}</span>
+                            <span class="font-16">View All {{ obj.txCnt }} {{ obj.txCnt > 1 ? 'Txns' : 'Txn' }}</span>
                         </router-link>
                         <span v-if="obj.pendingTxCnt != 0">
-                            |
-                            <router-link class="btn btn-link"
+                            <span class="d-none d-md-inline-block px-2">|</span>
+                            <router-link class="d-block d-md-inline-block align-middle mt-1 mt-md-0"
                                         v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>
-                                <span class="font-color-0057FF font-16">View All {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} Pending {{ obj.pendingTxCnt > 1 ? 'Txns' : 'Txn' }}</span>
+                                <span class="font-16">View All {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} Pending {{ obj.pendingTxCnt > 1 ? 'Txns' : 'Txn' }}</span>
                             </router-link>
                         </span>
                     </div>
@@ -495,16 +493,14 @@
             <!--    NRC20 Transactions
                 ============================================================ -->
             <div class="tab" v-show="tab === 2 && !isContract">
-                <div v-if="nrc20TxList.length" class="align-items-center row title">
-                    <div class=col>
-                        <span class="c000">
+                <div v-if="nrc20TxList.length" class="d-block d-md-flex flex-row align-items-center">
+                    <div class="col mr-auto px-0 font-16 font-bold font-color-000000">
                         Latest {{ nrc20TxList.length }} {{ nrc20TxList.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(nrc20TxCnt) }} {{ nrc20TxCnt > 1 ? 'transactions' : 'transaction' }}
-                        </span>
                     </div>
-                    <div class=col-auto>
-                        <router-link class="btn btn-link"
+                    <div class="col-auto px-0">
+                        <router-link class="d-block d-md-inline-block align-middle mt-1 mt-md-0"
                                      v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>
-                            <span class="font-color-0057FF font-16">View All {{ nrc20TxCnt }} {{ nrc20TxCnt > 1 ? 'Txns' : 'Txn'}}</span>
+                            <span class="font-16">View All {{ nrc20TxCnt }} {{ nrc20TxCnt > 1 ? 'Txns' : 'Txn'}}</span>
                         </router-link>
                     </div>
                 </div>
@@ -549,7 +545,7 @@
                                 <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                                 <span class="fromTo font-14 font-color-000000" v-if="o.from.hash == $route.params.id">{{ o.from.alias || o.from.hash }}</span>
                                 <router-link v-else v-bind:to='fragApi + "/address/" + o.from.hash'>
-                                    <span class="fromTo font-14 font-color-0057FF">{{ o.from.alias || o.from.hash }}</span>
+                                    <span class="fromTo font-14 ">{{ o.from.alias || o.from.hash }}</span>
                                 </router-link>
                             </td>
                             <td style="padding: 10px;">
@@ -559,7 +555,7 @@
                                 <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                                 <span class="fromTo font-14 font-color-000000" v-if="o.to.hash == $route.params.id">{{ o.to.alias || o.to.hash }}</span>
                                 <router-link v-else v-bind:to='fragApi + "/address/" + o.to.hash'>
-                                    <span class="fromTo font-14 font-color-0057FF">{{ o.to.alias || o.to.hash }}</span>
+                                    <span class="fromTo font-14 ">{{ o.to.alias || o.to.hash }}</span>
                                 </router-link>
                             </td>
                             <td class="amount align-right">{{ tokenAmount(o.value, o.decimal) }} {{ o.tokenName || '' }}
@@ -572,11 +568,11 @@
                     </table>
                 </div>
 
-                <div v-if="nrc20TxList.length" class="align-items-center justify-content-end row title mt20">
-                    <div class=col-auto>
-                        <router-link class="btn btn-link"
+                <div v-if="nrc20TxList.length" class="d-block d-md-flex flex-row align-items-center justify-content-end mt20">
+                    <div class="col-auto px-0">
+                        <router-link class="d-block d-md-inline-block align-middle mt-1 mt-md-0"
                                      v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>
-                            <span class="font-color-0057FF font-16">View All {{ nrc20TxCnt }} {{ nrc20TxCnt > 1 ? 'Txns' : 'Txn'}}</span>
+                            <span class="font-16">View All {{ nrc20TxCnt }} {{ nrc20TxCnt > 1 ? 'Txns' : 'Txn'}}</span>
                         </router-link>
                     </div>
                 </div>

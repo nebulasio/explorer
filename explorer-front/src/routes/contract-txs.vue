@@ -126,7 +126,7 @@
                         <td class="tdxxxwddd txs-from-to">
                             <vue-blockies v-bind:address='o.from'></vue-blockies>
                             <router-link v-bind:to='fragApi + "/address/" + o.from'>
-                                <span class="fromTo font-14 font-color-0057FF monospace">{{ o.from }}</span>
+                                <span class="fromTo font-14  monospace">{{ o.from }}</span>
                             </router-link>
                         </td>
                         <td>
@@ -135,7 +135,7 @@
                         <td class="tdxxxwddd txs-from-to">
                             <vue-blockies v-bind:address='o.to'></vue-blockies>
                             <router-link v-bind:to='fragApi + "/address/" + o.to'>
-                                <span class="fromTo font-14 font-color-0057FF monospace">{{ o.to }}</span>
+                                <span class="fromTo font-14  monospace">{{ o.to }}</span>
                             </router-link>
                         </td>
                         <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.contractValue) }} {{ o.tokenName }}</td>

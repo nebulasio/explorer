@@ -30,7 +30,7 @@
                     <tr v-for="(o, i) in arr" :key="i">
                         <td class="tdxxxwddd pl-3">
                             <router-link v-bind:to='fragApi + "/tx/" + o.hash'>
-                                <span class="font-color-0057FF font-14 monospace">{{ o.hash }}</span>
+                                <span class="font-14 monospace">{{ o.hash }}</span>
                             </router-link>
                         </td>
                         <td class="time font-14 font-color-555555">
@@ -44,7 +44,7 @@
                         <td class=tdxxxwddd>
                             <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
                             <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>
-                                <span class="font-14 font-color-0057FF monospace">{{ o.from.alias || o.from.hash }}</span>
+                                <span class="font-14  monospace">{{ o.from.alias || o.from.hash }}</span>
                             </router-link>
                         </td>
                         <td>
@@ -57,7 +57,7 @@
                             </div>
                             <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
                             <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>
-                                <span class="font-14 font-color-0057FF monospace">{{ o.to.alias || o.to.hash }}</span>
+                                <span class="font-14  monospace">{{ o.to.alias || o.to.hash }}</span>
                             </router-link>
                         </td>
                         <td class="text-right font-14 font-color-000000 pr-3">

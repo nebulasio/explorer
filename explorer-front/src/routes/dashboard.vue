@@ -793,9 +793,9 @@
                                 </td>
                                 <td>
                                     Block#
-                                    <router-link :to='fragApi + "/block/" + block.height'>{{ block.height }}</router-link>
+                                    <router-link :to='fragApi + "/block/" + block.height' class="monospace">{{ block.height }}</router-link>
                                     <br>
-                                    <span class="txcnt">
+                                    <span class="txcnt monospace">
                                         <router-link :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} {{ block.txnCnt > 1 ? "transactions" : "transaction" }}</router-link>
                                     </span>
                                 </td>

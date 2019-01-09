@@ -111,7 +111,7 @@
                             </template>
                             <template v-else>
                                 <router-link v-if=tx.block v-bind:to='fragApi +"/block/" + tx.block.height'>
-                                    <span class="font-color-0057FF font-16">{{tx.block.height}}</span>
+                                    <span class="font-16">{{tx.block.height}}</span>
                                 </router-link>
                             </template>
                         </td>
@@ -124,7 +124,7 @@
                         <td class="font-16 font-color-555555" style="padding-left: 24px;">From:</td>
                         <td>
                             <router-link v-if=tx.from v-bind:to='fragApi +"/address/" + tx.from.hash'>
-                                <span class="font-color-0057FF font-16">{{ tx.from.hash }}</span>
+                                <span class="font-16">{{ tx.from.hash }}</span>
                             </router-link>
                         </td>
                     </tr>
@@ -133,13 +133,13 @@
                         <td v-if="tx.type == 'call'">
                             <span class="font-color-000000 font-16">Contract</span>
                             <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
-                                <span style="margin-left: 20px;" class="font-16 font-color-0057FF">{{ tx.to.hash }}</span>
+                                <span style="margin-left: 20px;" class="font-16 ">{{ tx.to.hash }}</span>
                             </router-link>
                             <div class="token-name font-16 font-color-000000" style="margin-left: 14px;" v-if="isTokenTransfer && tx.tokenName">{{ '(' + tx.tokenName + ' Token)' }}</div>
                         </td>
                         <td v-else>
                             <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
-                                <span class="font-color-0057FF font-16">{{ tx.to.hash }}</span>
+                                <span class="font-16">{{ tx.to.hash }}</span>
                             </router-link>
                         </td>
                     </tr>
@@ -148,15 +148,15 @@
                         <td>
                             <span class="font-color-000000">From</span>
                             <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.from.hash'>
-                                <span class="font-color-0057FF">{{ tx.from.hash }}</span>
+                                <span>{{ tx.from.hash }}</span>
                             </router-link>
                             <span class="font-color-000000">To </span>
                             <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>
-                                <span class="font-color-0057FF">{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
+                                <span>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
                             </router-link>
                             <span class="font-color-000000">for {{ tokenAmount }}</span>
                             <div class="token-name" v-if="tx.tokenName">
-                                <a class="font-color-0057FF" href=# @click="search(tx.tokenName)">{{ tx.tokenName }}</a>
+                                <a href=# @click="search(tx.tokenName)">{{ tx.tokenName }}</a>
                             </div>
                         </td>
                     </tr>
@@ -196,7 +196,7 @@
                         </template>
                         <template v-else>
                             <router-link v-if=tx.block v-bind:to='fragApi +"/block/" + tx.block.height'>
-                                <span class="font-color-0057FF">{{tx.block.height}}</span>
+                                <span>{{tx.block.height}}</span>
                             </router-link>
                         </template>
                     </div>
@@ -209,7 +209,7 @@
                     From:
                     <div class="detail">
                         <router-link v-if=tx.from v-bind:to='fragApi +"/address/" + tx.from.hash'>
-                            <span class="font-color-0057FF">{{ tx.from.hash }}</span>
+                            <span>{{ tx.from.hash }}</span>
                         </router-link>
                     </div>
                 </div>
@@ -218,13 +218,13 @@
                     <div v-if="tx.type == 'call'" class="detail">
                         <span class="font-color-000000" style="margin-right: 20px;">Contract</span>
                         <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash' style="margin-right: 14px;">
-                            <span class="font-color-0057FF">{{ tx.to.hash }}</span>
+                            <span>{{ tx.to.hash }}</span>
                         </router-link>
                         <div class="token-name font-color-000000" v-if="isTokenTransfer && tx.tokenName">{{ '(' + tx.tokenName + ' Token)' }}</div>
                     </div>
                     <div v-else class="detail">
                         <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
-                            <span class="font-color-0057FF">{{ tx.to.hash }}</span>
+                            <span>{{ tx.to.hash }}</span>
                         </router-link>
                     </div>
                 </div>
@@ -233,15 +233,15 @@
                     <div class="detail">
                         <span class="font-color-000000">From</span>
                         <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.from.hash'>
-                            <span class="font-color-0057FF">{{ tx.from.hash }}</span>
+                            <span>{{ tx.from.hash }}</span>
                         </router-link>
                         <span class="font-color-000000">To </span>
                         <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>
-                            <span class="font-color-0057FF">{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
+                            <span>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
                         </router-link>
                         <span class="font-color-000000">for {{ tokenAmount }}</span>
                         <div class="token-name" v-if="tx.tokenName">
-                            <a class="font-color-0057FF" href=# @click="search(tx.tokenName)">{{ tx.tokenName }}</a>
+                            <a href=# @click="search(tx.tokenName)">{{ tx.tokenName }}</a>
                         </div>
                     </div>
                 </div>
@@ -278,7 +278,7 @@
                     </tr>
                     <tr>
                         <td class="font-16 font-color-555555" style="padding-left: 24px;">Transaction Type:</td>
-                        <td class="font-color-000000 font-16" v-if=" tx.type === 'deploy'">{{ txType }} ( contract address: <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.contractAddress'> <span class="font-color-0057FF"> {{tx.contractAddress}}</span> </router-link>)</td>
+                        <td class="font-color-000000 font-16" v-if=" tx.type === 'deploy'">{{ txType }} ( contract address: <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.contractAddress'> <span> {{tx.contractAddress}}</span> </router-link>)</td>
                         <td class="font-color-000000 font-16" v-else>{{ txType }}</td>
                     </tr>
                     <tr>
@@ -298,7 +298,7 @@
                         </td>
                         <td v-else class=code>
                             <a href=# v-on:click.prevent="showOrHidePayload()" style="text-decoration: none;">
-                                <span class="align-middle font-16 font-color-0057FF">View all</span>
+                                <span class="align-middle font-16 ">View all</span>
                                 <img style="margin-left: 12px;" class="icon16" v-bind:src="isShowPayload ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
                             </a>
                         </td>

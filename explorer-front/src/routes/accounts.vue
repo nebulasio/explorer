@@ -39,7 +39,7 @@
                         <td class="tdxxxwddd">
                             <vue-blockies v-bind:address='o.hash'></vue-blockies>
                             <router-link v-bind:to='fragApi + "/address/" + o.hash'>
-                                <span class="font-color-0057FF monospace">{{ o.hash }}</span>
+                                <span class="monospace">{{ o.hash }}</span>
                             </router-link>
                             <span v-show=o.alias> | {{ o.alias }}</span>
                         </td>

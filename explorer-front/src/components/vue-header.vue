@@ -226,7 +226,6 @@
             this.paramsApi = paramsApi;
 
             if (!!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
-                console.log('avoid auto zoom');
                 // avoid auto zoom under iOS Safari when font size is less than 16px
                 require('jquery')('.vue-header input').css('font-size', '16px');
             }

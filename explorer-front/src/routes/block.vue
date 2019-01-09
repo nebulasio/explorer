@@ -48,13 +48,13 @@
                                 <ul class=pagination>
                                     <li>
                                         <router-link v-if="block.height > 1" v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label=Previous>
-                                            <span class="font-color-0057FF" aria-hidden=true>&lt; Prev</span>
+                                            <span aria-hidden=true>&lt; Prev</span>
                                         </router-link>
                                     </li>
                                     <li>&nbsp; {{ block.height }} &nbsp;</li>
                                     <li>
                                         <router-link v-if="$root.timestamp - block.timestamp > 16000" v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label=Next>
-                                            <span class="font-color-0057FF" aria-hidden=true>Next &gt;</span>
+                                            <span aria-hidden=true>Next &gt;</span>
                                         </router-link>
                                     </li>
                                 </ul>
@@ -69,7 +69,7 @@
                         <td class="font-color-555555">Transactions</td>
                         <td class="font-color-000000">
                             <router-link v-bind:to='fragApi + "/txs?block=" + block.height'>
-                                <span class="font-color-0057FF">{{ block.blkSummary.txCnt }}</span>
+                                <span>{{ block.blkSummary.txCnt }}</span>
                             </router-link>
                             tx in this block
                         </td>
@@ -82,7 +82,7 @@
                         <td class="font-color-555555">Parent Hash</td>
                         <td>
                             <router-link v-bind:to='fragApi + "/block/" + block.parentHash'>
-                                <span class="font-color-0057FF">{{ block.parentHash }}</span>
+                                <span>{{ block.parentHash }}</span>
                             </router-link>
                         </td>
                     </tr>
@@ -90,7 +90,7 @@
                         <td class="font-color-555555">Minted</td>
                         <td>
                             <router-link v-bind:to='fragApi + "/address/" + block.miner.hash'>
-                                <span class="font-color-0057FF">{{ block.miner.hash }}</span>
+                                <span>{{ block.miner.hash }}</span>
                             </router-link>
                             <span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
                         </td>
@@ -99,7 +99,7 @@
                         <td class="font-color-555555">Coinbase</td>
                         <td>
                             <router-link v-bind:to='fragApi + "/address/" + block.coinbase'>
-                                <span class="font-color-0057FF">{{ block.coinbase }}</span>
+                                <span>{{ block.coinbase }}</span>
                             </router-link>
                         </td>
                     </tr>
@@ -107,7 +107,7 @@
                         <td class="font-color-555555" style="vertical-align: top; padding-top: 12px;">Dynasty</td>
                         <td style="vertical-align: top; padding-top: 12px;">
                             <a class="d-flex align-items-center" href=# v-on:click="showOrHideDynasty()" style="text-decoration: none;" data-toggle="collapse" data-target="#collapse-mobile" aria-expanded="false" aria-controls="collapseExample">
-                                <span class="font-color-0057FF">
+                                <span>
                                     Show Dynasty
                                 </span>
                                 <img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowDynasty ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
@@ -115,7 +115,7 @@
                             <div class="collapse" id="collapse-mobile">
                                 <div class="card card-body dynasty">
                                     <router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>
-                                        <span class="font-16 font-bold font-color-0057FF monospace"> {{ dynasty }}</span>
+                                        <span class="font-16 font-bold  monospace"> {{ dynasty }}</span>
                                     </router-link>
                                 </div>
                             </div>
@@ -136,13 +136,13 @@
                             <ul class=pagination>
                                 <li>
                                     <router-link v-if="block.height > 1" v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label=Previous>
-                                        <span class="font-color-0057FF" aria-hidden=true>&lt; Prev</span>
+                                        <span aria-hidden=true>&lt; Prev</span>
                                     </router-link>
                                 </li>
                                 <li>&nbsp; {{ block.height }} &nbsp;</li>
                                 <li>
                                     <router-link v-if="$root.timestamp - block.timestamp > 16000" v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label=Next>
-                                        <span class="font-color-0057FF" aria-hidden=true>Next &gt;</span>
+                                        <span aria-hidden=true>Next &gt;</span>
                                     </router-link>
                                 </li>
                             </ul>
@@ -157,7 +157,7 @@
                     Transactions:
                     <div class="detail">
                         <router-link v-bind:to='fragApi + "/txs?block=" + block.height'>
-                            <span class="font-color-0057FF">{{ block.blkSummary.txCnt }}</span>
+                            <span>{{ block.blkSummary.txCnt }}</span>
                         </router-link>
                         tx in this block
                     </div>
@@ -170,7 +170,7 @@
                     Parent Hash:
                     <div class="detail">
                         <router-link v-bind:to='fragApi + "/block/" + block.parentHash'>
-                            <span class="font-color-0057FF">{{ block.parentHash }}</span>
+                            <span>{{ block.parentHash }}</span>
                         </router-link>
                     </div>
                 </div>
@@ -178,7 +178,7 @@
                     Minted:
                     <div class="detail">
                         <router-link v-bind:to='fragApi + "/address/" + block.miner.hash'>
-                            <span class="font-color-0057FF">{{ block.miner.hash }}</span>
+                            <span>{{ block.miner.hash }}</span>
                         </router-link>
                         <span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
                     </div>
@@ -187,7 +187,7 @@
                     Coinbase:
                     <div class="detail">
                         <router-link v-bind:to='fragApi + "/address/" + block.coinbase'>
-                            <span class="font-color-0057FF">{{ block.coinbase }}</span>
+                            <span>{{ block.coinbase }}</span>
                         </router-link>
                     </div>
                 </div>
@@ -195,7 +195,7 @@
                     Dynasty:
                     <div class="detail">
                         <a class="d-flex align-items-center" href=# v-on:click="showOrHideDynasty()" style="text-decoration: none;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                            <span class="font-color-0057FF">
+                            <span>
                                 Show Dynasty
                             </span>
                             <img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowDynasty ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
@@ -203,7 +203,7 @@
                         <div class="collapse" id="collapseExample">
                             <div class="card card-body dynasty">
                                 <router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>
-                                    <span class="font-16 font-bold font-color-0057FF"> {{ dynasty }}</span>
+                                    <span class="font-16 font-bold "> {{ dynasty }}</span>
                                 </router-link>
                             </div>
                         </div>

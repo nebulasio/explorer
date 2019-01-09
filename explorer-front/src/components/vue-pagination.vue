@@ -81,7 +81,7 @@
 </style>
 <template>
     <nav class=vue-pagination aria-label="Page navigation">
-        <ul class=pagination v-bind:class='{ "justify-content-end": right }'>
+        <ul class=pagination v-bind:class='{ "justify-content-center justify-content-md-end": right }'>
 
             <li>
                 <a href=# aria-label=First v-on:click.prevent="$emit(current != 1 ? 'first' : '')">
