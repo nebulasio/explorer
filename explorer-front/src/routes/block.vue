@@ -76,13 +76,13 @@
                     </tr>
                     <tr>
                         <td class="font-color-555555">Hash</td>
-                        <td class="font-color-000000">{{ block.hash }}</td>
+                        <td class="font-color-000000 monospace">{{ block.hash }}</td>
                     </tr>
                     <tr>
                         <td class="font-color-555555">Parent Hash</td>
                         <td>
                             <router-link v-bind:to='fragApi + "/block/" + block.parentHash'>
-                                <span>{{ block.parentHash }}</span>
+                                <span class="monospace">{{ block.parentHash }}</span>
                             </router-link>
                         </td>
                     </tr>
@@ -90,7 +90,7 @@
                         <td class="font-color-555555">Minted</td>
                         <td>
                             <router-link v-bind:to='fragApi + "/address/" + block.miner.hash'>
-                                <span>{{ block.miner.hash }}</span>
+                                <span class="monospace">{{ block.miner.hash }}</span>
                             </router-link>
                             <span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
                         </td>
@@ -99,7 +99,7 @@
                         <td class="font-color-555555">Coinbase</td>
                         <td>
                             <router-link v-bind:to='fragApi + "/address/" + block.coinbase'>
-                                <span>{{ block.coinbase }}</span>
+                                <span class="monospace">{{ block.coinbase }}</span>
                             </router-link>
                         </td>
                     </tr>
@@ -164,13 +164,13 @@
                 </div>
                 <div>
                     Hash:
-                    <div class="detail">{{ block.hash }}</div>
+                    <div class="detail monospace">{{ block.hash }}</div>
                 </div>
                 <div>
                     Parent Hash:
                     <div class="detail">
                         <router-link v-bind:to='fragApi + "/block/" + block.parentHash'>
-                            <span>{{ block.parentHash }}</span>
+                            <span class="monospace">{{ block.parentHash }}</span>
                         </router-link>
                     </div>
                 </div>
@@ -178,7 +178,7 @@
                     Minted:
                     <div class="detail">
                         <router-link v-bind:to='fragApi + "/address/" + block.miner.hash'>
-                            <span>{{ block.miner.hash }}</span>
+                            <span class="monospace">{{ block.miner.hash }}</span>
                         </router-link>
                         <span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
                     </div>
@@ -187,7 +187,7 @@
                     Coinbase:
                     <div class="detail">
                         <router-link v-bind:to='fragApi + "/address/" + block.coinbase'>
-                            <span>{{ block.coinbase }}</span>
+                            <span class="monospace">{{ block.coinbase }}</span>
                         </router-link>
                     </div>
                 </div>

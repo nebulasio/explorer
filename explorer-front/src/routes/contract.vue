@@ -148,7 +148,7 @@
                         <td class="font-color-555555 pl-16">Contract:</td>
                         <td>
                             <router-link v-bind:to='fragApi + "/address/" + obj.contract'>
-                                <span>{{ obj.contract }}</span>
+                                <span class="monospace">{{ obj.contract }}</span>
                             </router-link>
                         </td>
                     </tr>
@@ -183,7 +183,7 @@
                         Contract:
                         <div class="detail">
                             <router-link v-bind:to='fragApi + "/address/" + obj.contract'>
-                                <span>{{ obj.contract }}</span>
+                                <span class="monospace">{{ obj.contract }}</span>
                             </router-link>
                         </div>
                     </div>

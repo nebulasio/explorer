@@ -86,7 +86,7 @@
                 <table class="explorer-table">
                     <tr>
                         <td class="td-left font-16 font-color-555555" style="padding-left: 24px;">TxHash:</td>
-                        <td class="font-16 font-color-000000">{{ tx.hash }}</td>
+                        <td class="font-16 font-color-000000 monospace">{{ tx.hash }}</td>
                     </tr>
                     <tr class="font-16">
                         <td class="font-color-555555" style="padding-left: 24px;">TxReceipt Status:</td>
@@ -124,22 +124,22 @@
                         <td class="font-16 font-color-555555" style="padding-left: 24px;">From:</td>
                         <td>
                             <router-link v-if=tx.from v-bind:to='fragApi +"/address/" + tx.from.hash'>
-                                <span class="font-16">{{ tx.from.hash }}</span>
+                                <span class="font-16 monospace">{{ tx.from.hash }}</span>
                             </router-link>
                         </td>
                     </tr>
                     <tr>
                         <td class="font-16 font-color-555555" style="padding-left: 24px;">To:</td>
-                        <td v-if="tx.type == 'call'">
+                        <td v-if="tx.type === 'call'">
                             <span class="font-color-000000 font-16">Contract</span>
                             <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
-                                <span style="margin-left: 20px;" class="font-16 ">{{ tx.to.hash }}</span>
+                                <span style="margin-left: 20px;" class="font-16 monospace">{{ tx.to.hash }}</span>
                             </router-link>
                             <div class="token-name font-16 font-color-000000" style="margin-left: 14px;" v-if="isTokenTransfer && tx.tokenName">{{ '(' + tx.tokenName + ' Token)' }}</div>
                         </td>
                         <td v-else>
                             <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
-                                <span class="font-16">{{ tx.to.hash }}</span>
+                                <span class="font-16 monospace">{{ tx.to.hash }}</span>
                             </router-link>
                         </td>
                     </tr>
@@ -148,11 +148,11 @@
                         <td>
                             <span class="font-color-000000">From</span>
                             <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.from.hash'>
-                                <span>{{ tx.from.hash }}</span>
+                                <span class="monospace">{{ tx.from.hash }}</span>
                             </router-link>
                             <span class="font-color-000000">To </span>
                             <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>
-                                <span>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
+                                <span class="monospace">{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
                             </router-link>
                             <span class="font-color-000000">for {{ tokenAmount }}</span>
                             <div class="token-name" v-if="tx.tokenName">
@@ -171,7 +171,7 @@
             <div class="mobile-detail d-md-none">
                 <div>
                     TxHash:
-                    <div class="detail">{{ tx.hash }}</div>
+                    <div class="detail monospace">{{ tx.hash }}</div>
                 </div>
                 <div>
                     TxReceipt Status:
@@ -209,7 +209,7 @@
                     From:
                     <div class="detail">
                         <router-link v-if=tx.from v-bind:to='fragApi +"/address/" + tx.from.hash'>
-                            <span>{{ tx.from.hash }}</span>
+                            <span class="monospace">{{ tx.from.hash }}</span>
                         </router-link>
                     </div>
                 </div>
@@ -218,13 +218,13 @@
                     <div v-if="tx.type == 'call'" class="detail">
                         <span class="font-color-000000" style="margin-right: 20px;">Contract</span>
                         <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash' style="margin-right: 14px;">
-                            <span>{{ tx.to.hash }}</span>
+                            <span class="monospace">{{ tx.to.hash }}</span>
                         </router-link>
                         <div class="token-name font-color-000000" v-if="isTokenTransfer && tx.tokenName">{{ '(' + tx.tokenName + ' Token)' }}</div>
                     </div>
                     <div v-else class="detail">
                         <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
-                            <span>{{ tx.to.hash }}</span>
+                            <span class="monospace">{{ tx.to.hash }}</span>
                         </router-link>
                     </div>
                 </div>
@@ -233,11 +233,11 @@
                     <div class="detail">
                         <span class="font-color-000000">From</span>
                         <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.from.hash'>
-                            <span>{{ tx.from.hash }}</span>
+                            <span class="monospace">{{ tx.from.hash }}</span>
                         </router-link>
                         <span class="font-color-000000">To </span>
-                        <router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>
-                            <span>{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
+                        <router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>
+                            <span class="monospace">{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
                         </router-link>
                         <span class="font-color-000000">for {{ tokenAmount }}</span>
                         <div class="token-name" v-if="tx.tokenName">
@@ -306,7 +306,7 @@
                     <tr v-show="isShowPayload === true">
                         <td></td>
                         <td style="max-width: 10px;">
-                            <pre><code class=language-javascript v-html=formatCode></code></pre>
+                            <pre><code class="language-javascript" v-html=formatCode></code></pre>
                         </td>
                     </tr>
                 </table>
