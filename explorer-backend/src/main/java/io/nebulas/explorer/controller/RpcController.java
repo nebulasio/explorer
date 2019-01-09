@@ -735,7 +735,7 @@ public class RpcController {
                     result.put("deployTxHash", addressFromDB.getDeployTxHash());
                 }
             }
-            NebTransaction nebTx = nebTransactionService.getNebTransactionByContractAddress(address.getHash());
+            NebTransaction nebTx = nebTransactionService.getDeployTransactionByContractAddress(address.getHash());
             if (null != nebTx) {
                 try {
                     result.put("contractCode", StringUtils.isNotEmpty(nebTx.getData()) ? new String(DECODER.decode(nebTx.getData()), "UTF-8") : "");

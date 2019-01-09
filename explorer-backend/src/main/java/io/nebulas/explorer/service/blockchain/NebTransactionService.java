@@ -264,6 +264,19 @@ public class NebTransactionService {
     }
 
     /**
+     * 根据合约地址获取部署该合约的交易
+     *
+     * @param contractAddress contractAddress hash
+     * @return transaction information
+     */
+    public NebTransaction getDeployTransactionByContractAddress(String contractAddress) {
+        if (StringUtils.isEmpty(contractAddress)) {
+            return null;
+        }
+        return nebTransactionMapper.getDeployTransactionByContractAddress(contractAddress);
+    }
+
+    /**
      * According to pending transaction hash query pending transaction information
      *
      * @param hash pending transaction hash
