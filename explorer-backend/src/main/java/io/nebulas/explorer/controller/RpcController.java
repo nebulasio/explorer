@@ -726,6 +726,15 @@ public class RpcController {
 
         //contract address code
         if (NebAddressTypeEnum.CONTRACT.getValue() == address.getType()) {
+            NebAddress addressFromDB = nebAddressService.getNebAddressByHash(hash);
+            if (addressFromDB!=null) {
+                if (addressFromDB.getCreator() != null && !addressFromDB.getCreator().isEmpty()) {
+                    result.put("creator", addressFromDB.getCreator());
+                }
+                if (addressFromDB.getDeployTxHash() != null && !addressFromDB.getDeployTxHash().isEmpty()) {
+                    result.put("deployTxHash", addressFromDB.getDeployTxHash());
+                }
+            }
             NebTransaction nebTx = nebTransactionService.getNebTransactionByContractAddress(address.getHash());
             if (null != nebTx) {
                 try {
