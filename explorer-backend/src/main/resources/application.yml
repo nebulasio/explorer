@@ -129,6 +129,10 @@ redis:
   port: 6379
   password:
   database: 2
+apiHost:
+  coinmarketcap: https://api.coinmarketcap.com
+  nebulas: http://47.92.203.173:8685
+  gateio: https://data.gateio.io
 grpc:
   host: 47.92.203.173
   port: 8684
