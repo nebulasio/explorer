@@ -91,7 +91,7 @@
                     <tr class="font-16">
                         <td class="font-color-555555" style="padding-left: 24px;">TxReceipt Status:</td>
                         <td class="d-flex align-items-center" v-if="tx.status === 0" style="height: inherit">
-                            <img class="icon18" src="../../static/img/ic_tx_status_failed.png" />
+                            <img class="icon18" src="../../static/img/ic_tx_status_failed.png?v=20190110" />
                             <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ errMsg }} )</span>
                         </td>
                         <td class="d-flex align-items-center" v-else-if="tx.status === 1" style="height: inherit">
@@ -176,7 +176,7 @@
                 <div>
                     TxReceipt Status:
                     <td class="detail d-flex align-items-center" v-if="tx.status === 0" style="height: inherit">
-                            <img class="icon18" src="../../static/img/ic_tx_status_failed.png" />
+                            <img class="icon18" src="../../static/img/ic_tx_status_failed.png?v=20190110" />
                             <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ errMsg }} )</span>
                         </td>
                         <td class="detail d-flex align-items-center" v-else-if="tx.status === 1" style="height: inherit">
