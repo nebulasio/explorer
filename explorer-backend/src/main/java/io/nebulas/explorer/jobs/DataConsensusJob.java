@@ -1,5 +1,6 @@
 package io.nebulas.explorer.jobs;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.nebulas.explorer.config.YAMLConfig;
@@ -137,6 +138,7 @@ public class DataConsensusJob {
                         addAddr(realReceiver);
                     } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
 //                        addAddr(tx.getContractAddress());
+                        log.info("DataConsensusJob: 交易类型为deploy, 准备插入智能合约地址: {}, creator: {}, deployTxHash: {}", tx.getContractAddress(), tx.getFrom(), tx.getHash());
                         createContractAddress(tx.getContractAddress(), tx.getFrom(), tx.getHash());
                     }
 
@@ -186,11 +188,13 @@ public class DataConsensusJob {
     private void createContractAddress(String contractAddress, String creator, String deployTxHash) {
         NebAddress address = nebAddressService.getNebAddressByHashRpc(contractAddress);
         if (address==null){
+            log.info("DataConsensusJob: 未查到智能合约地址(not found on chain / network error): {}", contractAddress);
             return;
         }
         address.setCreator(creator);
         address.setDeployTxHash(deployTxHash);
         nebAddressService.addNebContract(address);
+        log.info("DataConsensusJob: 智能合约地址成功: {}", JSON.toJSONString(address));
     }
 
     private void addAddr(String hash) {

@@ -1,5 +1,6 @@
 package io.nebulas.explorer.service.blockchain;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
@@ -110,7 +111,7 @@ public class NebSyncService {
         if (null == block) {
             return;
         }
-
+        log.info("start to sync block: height({}), hash({})", block.getHeight(), block.getHash());
         if (!isLib) {
             //交易数量累加到redis - tx_today_yyyy-MM-dd
             redisService.plusCount(block);
@@ -183,6 +184,7 @@ public class NebSyncService {
 //            }
 
         } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
+            log.info("交易类型为deploy, 准备插入智能合约地址: {}, creator: {}, deployTxHash: {}", tx.getContractAddress(), tx.getFrom(), tx.getHash());
             createContractAddress(tx.getContractAddress(), tx.getFrom(), tx.getHash());
         }
 
@@ -288,11 +290,13 @@ public class NebSyncService {
     private void createContractAddress(String contractAddress, String creator, String deployTxHash) {
         NebAddress address = nebAddressService.getNebAddressByHashRpc(contractAddress);
         if (address==null){
+            log.info("未查到智能合约地址(not found on chain / network error): {}", contractAddress);
             return;
         }
         address.setCreator(creator);
         address.setDeployTxHash(deployTxHash);
         nebAddressService.addNebContract(address);
+        log.info("智能合约地址成功: {}", JSON.toJSONString(address));
     }
 
     private void syncAddress(String hash, NebAddressTypeEnum type) {
