@@ -55,7 +55,6 @@
             };
         },
         mounted() {
-            console.log(window.innerWidth);
             if (window.innerWidth == 320) {
                 require('jquery')('.vue-bread .bread-title').css('font-size', '20px');
                 require('jquery')('.vue-bread .bread-subtitle').css('font-size', '12px');

@@ -52,7 +52,7 @@
                         <th style="padding-left: 24px;">Smart Contract</th>
                         <th>Creator Address</th>
                         <th>Type</th>
-                        <th class=text-right style="padding-right: 24px;">Date Created</th>
+                        <th class=text-right style="padding-right: 24px; width: 120px">Date Created</th>
                     </tr>
 
                     <tr v-for="(o, i) in arr" :key="i">

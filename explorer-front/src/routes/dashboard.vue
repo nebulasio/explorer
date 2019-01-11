@@ -1037,7 +1037,7 @@
                         }
                     },
                     yAxis: {
-                        min: Math.floor(nums[0] / 1000) * 1000 - 4000,
+                        min: Math.floor(nums[0] / 1000) * 1000 - 1000,
                         axisLine: {
                             show: false
                         },
@@ -1058,7 +1058,7 @@
                         },
                         // splitNumber: 5,
                         // maxInterval: 3000,
-                        minInterval: 3000
+                        minInterval: 1000
                     },
                     series: {
                         type: 'line',
