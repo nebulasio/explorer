@@ -194,7 +194,7 @@ public class DataConsensusJob {
         address.setCreator(creator);
         address.setDeployTxHash(deployTxHash);
         nebAddressService.addNebContract(address);
-        log.info("DataConsensusJob: 智能合约地址成功: {}", JSON.toJSONString(address));
+        log.info("DataConsensusJob: 智能合约地址保存成功: {}", JSON.toJSONString(address));
     }
 
     private void addAddr(String hash) {

@@ -296,7 +296,7 @@ public class NebSyncService {
         address.setCreator(creator);
         address.setDeployTxHash(deployTxHash);
         nebAddressService.addNebContract(address);
-        log.info("智能合约地址成功: {}", JSON.toJSONString(address));
+        log.info("智能合约地址保存成功: {}", JSON.toJSONString(address));
     }
 
     private void syncAddress(String hash, NebAddressTypeEnum type) {

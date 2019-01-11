@@ -106,6 +106,15 @@ public class RpcController {
 
         List<ContractListItemVo> listItemVos = new ArrayList<>(contractList.size());
         for (NebAddress address : contractList) {
+            if (address.getCreator() == null || address.getDeployTxHash() == null ||
+                    address.getCreator().isEmpty() || address.getDeployTxHash().isEmpty()) {
+                NebTransaction transaction = nebTransactionService.getDeployTransactionByContractAddress(address.getHash());
+                if (transaction != null) {
+                    address.setCreator(transaction.getFrom());
+                    address.setDeployTxHash(transaction.getHash());
+                    DB_UPDATE_EXECUTOR.execute(()-> nebAddressService.updateNebContractCreator(address));
+                }
+            }
             ContractListItemVo vo = new ContractListItemVo();
             vo.setHash(address.getHash());
             vo.setAlias(address.getAlias());
@@ -727,7 +736,7 @@ public class RpcController {
         //contract address code
         if (NebAddressTypeEnum.CONTRACT.getValue() == address.getType()) {
             NebAddress addressFromDB = nebAddressService.getNebAddressByHash(hash);
-            if (addressFromDB!=null) {
+            if (addressFromDB != null) {
                 if (addressFromDB.getCreator() != null && !addressFromDB.getCreator().isEmpty()) {
                     result.put("creator", addressFromDB.getCreator());
                 }

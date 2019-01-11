@@ -29,6 +29,10 @@ public interface NebAddressMapper {
                         @Param("creator") String creator,
                         @Param("deployTxHash") String deployTxHash);
 
+    Integer updateContractCreator(@Param("hash") String hash,
+                        @Param("creator") String creator,
+                        @Param("deployTxHash") String deployTxHash);
+
     Integer update(@Param("hash") String hash, @Param("balance") BigDecimal balance, @Param("nonce") String nonce);
 
     long countTotalAddressCnt();

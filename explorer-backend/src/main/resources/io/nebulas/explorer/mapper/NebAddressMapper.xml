@@ -30,6 +30,12 @@
         VALUES (#{hash}, #{nonce}, 1, #{balance}, #{creator}, #{deployTxHash})
     </insert>
 
+    <insert id="updateContractCreator" parameterType="map" useGeneratedKeys="false">
+        update `neb_address`
+        set `creator`=#{creator}, `deploy_tx_hash`=#{deployTxHash}
+        where `hash` = #{hash,jdbcType=VARCHAR}
+    </insert>
+
     <update id="update" parameterType="map">
         UPDATE `neb_address`
         SET `current_balance` = #{balance,jdbcType=DECIMAL}, `nonce` = #{nonce,jdbcType=VARCHAR}

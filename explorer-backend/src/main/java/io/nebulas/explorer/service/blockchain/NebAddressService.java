@@ -76,6 +76,14 @@ public class NebAddressService {
         );
     }
 
+    public void updateNebContractCreator(NebAddress contractAddress) {
+        nebAddressMapper.updateContractCreator(
+                contractAddress.getHash(),
+                contractAddress.getCreator(),
+                contractAddress.getDeployTxHash()
+        );
+    }
+
     /**
      * update address current_balance property
      *
