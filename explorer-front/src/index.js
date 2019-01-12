@@ -85,9 +85,12 @@ vApp = new Vue({
         "vue-modal": require("@/components/vue-modal").default
     },
     data: {
+        timestamp: Date.now(),
         showModalLoading: false,
         showAtpAds: true,
-        timestamp: Date.now()
+        testnetDipStarted: true,
+        testnetGotDipWinners: true,
+        showTestnetDipOnMainnet: true
     },
     el: ".vue",
     router: vRouter

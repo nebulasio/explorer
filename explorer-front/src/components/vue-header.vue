@@ -30,7 +30,7 @@
 
     .vue-header form {
         border: none;
-        margin-left: 47px;
+        margin-left: 20px;
         padding: 6px 0px 6px 10px;
         width: 350px;
         background-color: white;
@@ -137,9 +137,9 @@
                             <router-link class=dropdown-item v-bind:to="fragApi + '/accounts'">Accounts</router-link>
                         </div>
                     </li>
-                    <!-- <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
-                        <router-link class=nav-link v-bind:to="fragApi + '/accounts'">ACCOUNT</router-link>
-                    </li> -->
+                    <li v-if="$route.params.api == 'testnet' && $root.testnetGotDipWinners" class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
+                        <router-link class=nav-link v-bind:to="fragApi + '/dip-leaderboard'">Dip Winners</router-link>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href=# role=button v-on:click.prevent=apiSwitch()>{{ MenuMisc }}
                             <img src=/static/img/icon_switcher.png width=12 alt="">

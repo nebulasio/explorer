@@ -325,8 +325,28 @@ label {
     font-size: 18px;
 }
 
+.font-20 {
+    font-size: 20px;
+}
+
+.font-22 {
+    font-size: 22px;
+}
+
 .font-24 {
     font-size: 24px;
+}
+
+.font-26 {
+    font-size: 26px;
+}
+
+.font-30 {
+    font-size: 30px;
+}
+
+.font-36 {
+    font-size: 36px;
 }
 
 .font-40 {
@@ -367,6 +387,14 @@ label {
 
 .font-color-7F7F7F {
     color: #7F7F7F;
+}
+
+.font-color-00FFFF {
+    color: #00FFFF;
+}
+
+.font-color-4C4C4C {
+    color: #4C4C4C;
 }
 
 .link-text-16px {
