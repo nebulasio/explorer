@@ -459,7 +459,7 @@
                     }
                 }, () => {
                     this.$root.showModalLoading = false;
-                    this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/oops");
+                    this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });
             }
         },

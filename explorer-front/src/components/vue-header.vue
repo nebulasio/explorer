@@ -200,7 +200,7 @@
                     this.$root.search = this.search;
                     this.$root.showModalLoading = false;
                     this.search = "";
-                    this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/oops");
+                    this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
                 });
             },
             atpAddress() {

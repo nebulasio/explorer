@@ -16,9 +16,6 @@ module.exports = [{
     meta: { headerActive: 2 },
     path: "/:api?/blocks"
 }, {
-    component: require("@/routes/404").default,
-    path: "/:api?/oops"
-}, {
     component: require("@/routes/tx").default,
     meta: { headerActive: 2, uaview: "Explorer_TxnsDetails_Show" },
     path: "/:api?/tx/:id"

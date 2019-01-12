@@ -85,7 +85,6 @@ vApp = new Vue({
         "vue-modal": require("@/components/vue-modal").default
     },
     data: {
-        search: "",
         showModalLoading: false,
         showAtpAds: true,
         timestamp: Date.now()
