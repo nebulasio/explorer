@@ -1,4 +1,4 @@
-create table if not exists young.neb_dip_award
+create table if not exists explorer_test.neb_dip_award
 (
   id           int auto_increment primary key,
   contract     varchar(40)                         not null
