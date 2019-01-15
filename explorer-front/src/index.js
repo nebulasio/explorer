@@ -66,16 +66,20 @@ String.prototype.padDecimal = function () {
     return this;
 }
 
-Array.prototype.addLocalTimestamp = function () {
-    if (this instanceof Array) {
-        for (var index in this) {
-            if (!this[index].localTimestamp) {
-                this[index].localTimestamp = Date.now();
-            }
-        }
+String.prototype.shortHash = function () {
+    if (this.length > 12) {
+        return this.slice(0, 6) + '...' + this.slice(-6);
     }
     return this;
 }
+
+Date.prototype.getWeekNumber = function () {
+    var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
+    var dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
+};
 
 vApp = new Vue({
     components: {

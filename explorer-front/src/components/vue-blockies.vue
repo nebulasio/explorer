@@ -21,6 +21,7 @@ module.exports = {
     props: ['address'],
     methods:{
         getDataUrl() {
+            if (!this.address) return;
             var icon = blockies.create({
                 seed: this.address.toLowerCase()
             })

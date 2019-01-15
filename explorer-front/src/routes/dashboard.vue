@@ -1125,15 +1125,15 @@
         mounted() {
             api.getTx("cnt_static", o => this.dailyTxData = o);                     //近期每日交易量
             api.getMarketCap(o => this.market = o);                                 //币价和市值
-            api.getBlock({ type: "latest" }, o => this.blocks = o.addLocalTimestamp());                 //最新一波 block
-            api.getTx({ type: "latest" }, o => this.txs = o.addLocalTimestamp());                       //最新一波 tx
+            api.getBlock({ type: "latest" }, o => this.blocks = this.addLocalTimestamp(o));                 //最新一波 block
+            api.getTx({ type: "latest" }, o => this.txs = this.addLocalTimestamp(o));                       //最新一波 tx
             api.getTodayTxCnt(o => this.todayTxCnt = o);                            //今日交易量
             api.getStaticInfo(o => this.staticInfo = o);                            //合约数量、地址数量。。。
 
             this.shortIntervalID = setInterval(() => {
-                api.getTx({ type: "latest" }, o => this.txs = o.addLocalTimestamp());                   //最新一波 tx
+                api.getTx({ type: "latest" }, o => this.txs = this.addLocalTimestamp(o));                   //最新一波 tx
                 api.getBlock({ type: "newblock" }, o => {                           //获取最新一个 block
-                    o = o.addLocalTimestamp();                       
+                    this.addLocalTimestamp(o);                       
                     try {
                         if (o[0].height != this.blocks[0].height) {
                             this.blocks.splice(0, 0, o[0]);
@@ -1198,6 +1198,16 @@
                     str = date.getMonth() + 1 + '-' + date.getDate();
                 }
                 return str;
+            },
+            addLocalTimestamp(n) {
+                if (n instanceof Array) {
+                    for (var index in n) {
+                        if (!n[index].localTimestamp) {
+                            n[index].localTimestamp = Date.now();
+                        }
+                    }
+                }
+                return n;
             }
         },
         updated() {

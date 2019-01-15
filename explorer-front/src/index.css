@@ -397,6 +397,14 @@ label {
     color: #4C4C4C;
 }
 
+.font-color-666666 {
+    color: #666666;
+}
+
+.font-color-333333 {
+    color: #333333;
+}
+
 .link-text-16px {
     font-size: 16px;
     color: #0057FF;

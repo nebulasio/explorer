@@ -1,5 +1,5 @@
 <style scoped>
-    .vue-txs {
+    .dip-leaderboard {
         background-color: white;
         padding-top: 100px;
     }
@@ -53,7 +53,7 @@
 
     .banner {
         position: relative;
-        padding: 50px 0 39px 50px;
+        padding: 50px 20px 39px 50px;
         background: url(/static/img/dip_list_banner_bg.jpg) no-repeat bottom;
         background-size: cover;
     }
@@ -76,25 +76,110 @@
     }
 
     .explorer-table-container {
-        margin-top: 30px;
+        margin-top: 50px;
+    }
+
+    .week-label {
+        margin-top: 80px;
+        margin-right: 30px;
+        width: 300px;
+        padding: 11px 13px 11px 24px;
+        box-shadow:0px 10px 20px 0px rgba(30,30,30,0.05);
+        border:1px solid rgba(230,232,242,1);
+        cursor: pointer;
+    }
+
+    #week-selector {
+        position: absolute;
+        margin-top: 20px;
+        width: 300px;
+        height: 340px;
+        box-shadow:0px 10px 20px 0px rgba(30,30,30,0.05);
+        transition: none;
+        outline: none;
+    }
+
+    @media (max-width: 767.98px) {
+        .dip-leaderboard {
+            padding-top: 15px;
+        }
+
+        .banner {
+            padding: 15px 15px;
+        }
+
+        .week-label {
+            margin-top: 30px;
+        }
+
+        #week-selector {
+            margin-top: 0px;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(30,30,30,0.3)
+        }
+
+        .explorer-table-container {
+            margin-top: 20px;
+        }
+
+        .title {
+            font-size: 20px;
+        }
+
+        .update {
+            font-size: 10px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+        }
+
+        .date {
+            font-size: 10px;
+        }
+
+        .join {
+            font-size: 10px;
+        }
+
+        .nova {
+            font-size: 10px;
+        }
     }
 
 </style>
 <template>
-    <div class="vue-txs fullfill">
+    <div class="dip-leaderboard fullfill">
         <div class="container">
             <div class="banner font-color-FFFFFF">
-                <div class="font-36 font-bold">Native Developer Incentive Protocol Awards</div>
-                <div class="font-16" style="margin-top: 11px">*The DIP ranking automatically update every Monday.</div>
-                <div class="font-22 font-bold" style="margin-top: 29px">Testnet Developer Incentive Program is in progress</div>
-                <div class="font-16" style="margin-top: 4px">Event Period：Jan 21- Mar 31, 2019</div>
+                <img class="nova-logo d-none d-xl-block" src="/static/img/nova_logo.png" width="169px" alt="nova">
+                <div class="title font-36 font-bold">Native Developer Incentive Protocol Awards</div>
+                <div class="update font-16" style="margin-top: 11px; color: rgba(255, 255, 255, 0.7)">*The DIP ranking automatically update every Monday.</div>
+                <div class="subtitle font-22 font-bold" style="margin-top: 29px">Testnet Developer Incentive Program is in progress</div>
+                <div class="date font-16" style="margin-top: 4px">Event Period：Jan 21- Mar 31, 2019</div>
                 <a class="join font-color-00FFFF font-16 d-inline-block mr-3" style="margin-top: 21px; border: 1px #00FFFF solid; padding: 6px 30px;" href="https://medium.com/nebulasio/nebulas-testnet-developer-incentive-program-dip-event-guide-26a0d69ec76d" target="blank">Join now</a>
                 <a class="nova font-color-00FFFF font-16" href="https://nebulas.io/nova.html" target="blank">Lean about NOVA ></a>
-                <img class="nova-logo" src="/static/img/nova_logo.png" width="169px" alt="nova">
             </div>
 
+            <div class="week-label d-inline-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#week-selector" aria-expanded="false" aria-controls="week-selector" @click="weekLabelClick($event)">
+                <span class="font-color-000000 font-14 p-0 mr-auto">{{ weekText }}</span>
+                <img class="p-0" src="/static/img/ic_payload_arrow_down.png" alt="" width="16px">
+            </div>
+            <div id="week-selector" class="collapse">
+                <vue-week-selector class="test" :beginDate=beginDate v-model="beginDate" tabindex=0 @blur=dismissWeekSelector @change="dismissWeekSelector"></vue-week-selector>
+            </div>
+            <span v-if="totalContract && totalAward" class="font-14 font-color-666666 d-block d-md-inline mt-4 mt-md-0">
+                <span class="font-bold font-color-333333">{{ totalContract }}</span>
+                contracts get a reward of
+                <span class="font-bold font-color-333333">{{ tokenAmount(totalAward) }}</span>
+                NAS
+            </span>
+
             <div v-if="arr && arr.length" class="explorer-table-container">
-                <table class="mt20 explorer-table list-table">
+                <table class="explorer-table list-table">
                     <tr class="list-header font-12 font-bold font-color-000000">
                         <th class="px-3 text-center">Rank</th>
                         <th>Contract</th>
@@ -114,33 +199,30 @@
                                 <span class="tip down-arrow-tip font-15 shadow">Smart Contract</span>
                                 <img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
                             </div>
-                            <vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
-                            <!-- <span class="fromTo font-color-000000 font-14" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span> -->
-                            <router-link v-bind:to='fragApi + "/address/" + o.to.hash'>
-                                <span class="fromTo font-14  monospace">{{ o.to.hash }}</span>
+                            <vue-blockies v-bind:address='o.contract'></vue-blockies>
+                            <router-link v-bind:to='fragApi + "/address/" + o.contract'>
+                                <span class="fromTo font-14  monospace">{{ o.contract }}</span>
                             </router-link>
                         </td>
                         <td class="tdxxxwddd txs-from-to">
-                            <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
-                            <!-- <span class="fromTo font-color-000000 font-14" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span> -->
-                            <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>
-                                <span class="fromTo font-14  monospace">{{ o.from.hash }}</span>
+                            <vue-blockies v-bind:address='o.creator'></vue-blockies>
+                            <router-link v-bind:to='fragApi + "/address/" + o.creator'>
+                                <span class="fromTo font-14  monospace">{{ o.creator }}</span>
                             </router-link>
                         </td>
                         <td>
-                            122.0000 NAS
+                            {{ tokenAmount(o.award) }} NAS
                         </td>
                         <td class="tdxxxwddd txs-from-to">
-                            <vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
-                            <!-- <span class="fromTo font-color-000000 font-14" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span> -->
-                            <router-link v-bind:to='fragApi + "/address/" + o.from.hash'>
-                                <span class="fromTo font-14  monospace">{{ o.from.hash }}</span>
+                            <vue-blockies v-bind:address='o.txHash'></vue-blockies>
+                            <router-link v-bind:to='fragApi + "/address/" + o.txHash'>
+                                <span class="fromTo font-14  monospace">{{ o.txHash }}</span>
                             </router-link>
                         </td>
                         <td class="time font-14 font-color-555555 text-right pr-3">
                             <div>
                                 <!-- <div>{{ timeConversion(o.timeDiff) }} ago</div> -->
-                                <div>{{ timeFormatter(o.timestamp) }}</div>
+                                <div>{{ timeFormatter(o.txTimestamp) }}</div>
                                 <!-- <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div> -->
                             </div>
                         </td>
@@ -148,7 +230,7 @@
                 </table>
             </div>
 
-            <vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
+            <vue-pagination v-if="arr && arr.length" v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
                 v-on:prev=onPrev v-on:to=onTo></vue-pagination>
         </div>
         <vue-nothing v-if="arr && arr.length === 0" title="0 transaction found"></vue-nothing>
@@ -157,24 +239,34 @@
 <script>
     var api = require("@/assets/api"),
         utility = require("@/assets/utility"),
-        BigNumber = require("bignumber.js");
+        BigNumber = require("bignumber.js"),
+        weekNumber = require("@/assets/utility").weekNumber;
 
     module.exports = {
         components: {
             "vue-bread": require("@/components/vue-bread").default,
             "vue-pagination": require("@/components/vue-pagination").default,
             "vue-blockies": require("@/components/vue-blockies").default,
-            "vue-nothing": require("@/components/vue-nothing").default
+            "vue-nothing": require("@/components/vue-nothing").default,
+            "vue-week-selector": require("@/components/vue-week-selector").default
         },
         data() {
             return {
                 arr: null,
                 currentPage: 0,
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
-                maxDisplayCnt: 0,
                 totalPage: 0,
-                totalTxs: 0
+                totalContract: 0,
+                totalAward: 0,
+                beginDate: new Date('21 Jan 2019 GMT+0800')
             };
+        },
+        computed: {
+            weekText: function () {
+                let endDate = new Date(this.beginDate.getTime() + 6 * 24 * 60 * 60 * 1000);
+                let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                return months[this.beginDate.getMonth()] + ' ' + this.beginDate.getDate().pad(2) + ' ' + this.beginDate.getFullYear() + ' - ' + months[endDate.getMonth()] + ' ' + endDate.getDate().pad(2) + ' ' + endDate.getFullYear() + ' UTC+8';
+            }
         },
         methods: {
             nav(n) {
@@ -185,19 +277,18 @@
             },
             nthPage() {
                 this.$root.showModalLoading = true;
-
-                api.getTx({
-                    a: this.$route.query.a,
-                    block: this.$route.query.block,
-                    p: this.$route.query.p || 1,
-                    isPending: this.$route.query.isPending
+                api.getDipList({
+                    page: this.$route.query.p || 1,
+                    pageSize: 10,
+                    week: weekNumber(this.beginDate),
+                    year: this.beginDate.getFullYear()
                 }, o => {
                     this.$root.showModalLoading = false;
-                    this.arr = o.txnList;
+                    this.arr = o.contracts;
                     this.currentPage = o.currentPage;
-                    this.maxDisplayCnt = o.maxDisplayCnt;
                     this.totalPage = o.totalPage;
-                    this.totalTxs = o.txnCnt;
+                    this.totalContract = o.total;
+                    this.totalAward = o.totalAward;
                 }, xhr => {
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
@@ -239,6 +330,20 @@
             timeFormatter(n) {
                 var options = { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
                 return new Date(n).toLocaleDateString('en', options);
+            },
+            dismissWeekSelector() {
+                $('#week-selector').collapse('hide');
+                $('.week-label').css('pointer-events', 'initial');
+            },
+            weekLabelClick(event) {
+                this.$nextTick(function () {
+                    
+                });
+
+                setTimeout(() => {
+                    $('.vue-week-selector').focus();
+                    $('.week-label').css('pointer-events', 'none');
+                }, 100);
             }
         },
         mounted() {
@@ -247,6 +352,9 @@
         watch: {
             $route() {
                 this.nthPage();
+            },
+            beginDate() {
+                this.nav(1);
             }
         }
     };
