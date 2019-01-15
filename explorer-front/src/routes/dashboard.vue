@@ -929,7 +929,7 @@
 
                 let vm = this;
                 var options = {
-                    grid: { left: '40', bottom: '50', right: '0', top: '10', containLabel: false },
+                    grid: { left: '40', bottom: '50', right: '17', top: '10', containLabel: false },
                     xAxis: {
                         data: dates,
                         axisLine: {
@@ -1026,7 +1026,7 @@
                 
                 let vm = this;
                 var options = {
-                    grid: { left: '30', bottom: '50', right: '0', top: '10', containLabel: false },
+                    grid: { left: '30', bottom: '50', right: '17', top: '10', containLabel: false },
                     xAxis: {
                         data: dates,
                         axisLine: {
