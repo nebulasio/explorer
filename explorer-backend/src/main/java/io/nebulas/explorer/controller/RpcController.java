@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -747,7 +748,7 @@ public class RpcController {
             NebTransaction nebTx = nebTransactionService.getDeployTransactionByContractAddress(address.getHash());
             if (null != nebTx) {
                 try {
-                    result.put("contractCode", StringUtils.isNotEmpty(nebTx.getData()) ? new String(DECODER.decode(nebTx.getData()), "UTF-8") : "");
+                    result.put("contractCode", StringUtils.isNotEmpty(nebTx.getData()) ? new String(DECODER.decode(nebTx.getData()), StandardCharsets.UTF_8) : "");
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                 }

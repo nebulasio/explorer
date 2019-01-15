@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.nebulas.explorer.mapper.NebDipAwardMapper">
+        <resultMap id="BaseResultMap" type="io.nebulas.explorer.domain.NebDipAward">
+                <id column="id" property="id" jdbcType="BIGINT" />
+                <result column="contract" property="contract" jdbcType="VARCHAR" />
+                <result column="creator" property="creator" jdbcType="VARCHAR" />
+                <result column="award" property="award" jdbcType="VARCHAR" />
+                <result column="tx_hash" property="txHash" jdbcType="VARCHAR" />
+                <result column="tx_timestamp" property="txTimestamp" jdbcType="TIMESTAMP" />
+                <result column="year" property="year" jdbcType="INTEGER" />
+                <result column="week" property="week" jdbcType="INTEGER" />
+                <result column="start_height" property="startHeight" jdbcType="INTEGER" />
+                <result column="end_height" property="endHeight" jdbcType="INTEGER" />
+                <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+        </resultMap>
+
+        <sql id="Base_Column_List">
+          `id`, `contract`,`creator`, `award`, `tx_hash`,`tx_timestamp`, `year`, `week`, `start_height`, `end_height`, `created_at`
+        </sql>
+
+        <insert id="insert" parameterType="map" useGeneratedKeys="false">
+          INSERT ignore INTO `neb_dip_award` (`contract`,`creator`, `award`, `tx_hash`,`tx_timestamp`, `year`, `week`, `start_height`, `end_height`)
+          VALUES (#{contract}, #{creator}, #{award}, #{txHash}, #{txTimestamp}, #{year}, #{week}, #{startHeight}, #{endHeight})
+        </insert>
+
+</mapper>

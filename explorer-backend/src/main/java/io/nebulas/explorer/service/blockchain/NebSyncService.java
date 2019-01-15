@@ -4,16 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import io.nebulas.explorer.domain.*;
-import io.nebulas.explorer.enums.NebAddressTypeEnum;
-import io.nebulas.explorer.enums.NebTransactionTypeEnum;
-import io.nebulas.explorer.grpc.GrpcChannelService;
-import io.nebulas.explorer.service.redis.RedisService;
-import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
-import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +13,20 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+
+import io.nebulas.explorer.domain.NebAddress;
+import io.nebulas.explorer.domain.NebBlock;
+import io.nebulas.explorer.domain.NebContractTokenBalance;
+import io.nebulas.explorer.domain.NebPendingTransaction;
+import io.nebulas.explorer.domain.NebTransaction;
+import io.nebulas.explorer.enums.NebAddressTypeEnum;
+import io.nebulas.explorer.enums.NebTransactionTypeEnum;
+import io.nebulas.explorer.grpc.GrpcChannelService;
+import io.nebulas.explorer.service.redis.RedisService;
+import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Desc:
@@ -51,33 +55,10 @@ public class NebSyncService {
     private ContractTokenService contractTokenService;
     @Autowired
     private RedisService redisService;
+    @Autowired
+    private NebDipAwardService nebDipAwardService;
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
-
-
-    public void testSyncContractTransactions(String hash){
-        try {
-            Block block = nebApiServiceWrapper.getBlockByHash(hash, true);
-            if (block == null) {
-                log.error("block with hash {} not found", hash);
-                return;
-            }
-            log.info("get block by hash {}", block.getHash());
-            List<Transaction> txs = block.getTransactions();
-            for (Transaction tx: txs) {
-                NebTransactionTypeEnum typeEnum = NebTransactionTypeEnum.parse(tx.getType());
-                if (NebTransactionTypeEnum.CALL.equals(typeEnum)) {
-                    log.info("开始处理合约调用交易: " + tx.getHash());
-                    JSONObject data = decodeData(tx.getData());
-                    processContractBalanceInfo(tx, data);
-                }
-            }
-        } catch (Exception e) {
-            log.error("no block yet", e);
-        }
-    }
-
-
 
     public void syncBlockByHash(String hash, boolean isLib) {
         try {
@@ -160,6 +141,9 @@ public class NebSyncService {
         //sync address
         log.info("开始同步交易: " + tx.getHash());
         syncAddress(tx.getFrom(), NebAddressTypeEnum.NORMAL);
+
+        // TODO: 2019/1/14 处理DIP交易
+        nebDipAwardService.process(tx);
 
         NebTransactionTypeEnum typeEnum = NebTransactionTypeEnum.parse(tx.getType());
 

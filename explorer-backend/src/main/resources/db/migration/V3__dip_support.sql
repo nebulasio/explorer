@@ -5,7 +5,7 @@ create table if not exists explorer_test.neb_dip_award
   comment '中奖合约地址',
   creator      varchar(40)                         not null
   comment '中奖合约的创建者',
-  award        bigint default '0'                  null
+  award        varchar(64)                         null
   comment '奖金',
   tx_hash      varchar(64)                         null
   comment '发放奖金的交易Hash',
@@ -16,6 +16,12 @@ create table if not exists explorer_test.neb_dip_award
   comment '年份',
   week         int                                 null
   comment 'week of year (第几周的奖励)',
+  start_height  int                                null
+  comment 'start height of block',
+  end_height  int                                  null
+  comment 'end height of block',
+  created_at   timestamp default current_timestamp not null
+  comment '插入时间',
   constraint neb_dip_award_id_uindex unique (id),
   index neb_dip_award_value_index (award),
   index neb_dip_award_week_year_index (week, year)

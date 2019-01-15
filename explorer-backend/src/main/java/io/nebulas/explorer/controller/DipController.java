@@ -7,14 +7,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.service.blockchain.NebAddressService;
 import lombok.AllArgsConstructor;
@@ -71,6 +67,7 @@ public class DipController {
         JsonResult result =  JsonResult.success();
         result.put("total", total);
         result.put("totalPage", 2);
+        result.put("totalAward", 10009434);
         result.put("currentPage", page);
         result.put("contracts", contracts);
         return result;
