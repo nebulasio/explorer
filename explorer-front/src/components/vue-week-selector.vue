@@ -28,7 +28,7 @@
         border-right:1px solid rgba(230,232,242,1);
     }
 
-    .months-container a {
+    .months-container .updown {
         height: 36px;
         line-height: 36px;
         text-align: center;
@@ -96,15 +96,15 @@
         </div>
         <div class="flex-fill d-flex align-items-stretch">
             <div class="months-container d-flex flex-column">
-                <a href=# @click="scrollUp">
+                <div class="updown" @click.prevent="scrollUp">
                     <img src="/static/img/date_up.png" width="16px" alt="">
-                </a>
+                </div>
                 <div class="months full-fill">
                     <div v-for="(month, index) in months" :key="index" :class="['month', index === selectedMonth ? 'selected' : '' ]" @click="selectedMonth = index">{{ month }}</div>
                 </div>
-                <a href=# @click="scrollDown">
+                <div class="updown" @click.prevent="scrollDown">
                     <img src="/static/img/date_down.png" width="16px" alt="">
-                </a>
+                </div>
             </div>
             <div class="weeks flex-fill">
                 <div 

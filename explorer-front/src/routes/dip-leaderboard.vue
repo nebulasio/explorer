@@ -84,9 +84,13 @@
         margin-right: 30px;
         width: 300px;
         padding: 11px 13px 11px 24px;
-        box-shadow:0px 10px 20px 0px rgba(30,30,30,0.05);
         border:1px solid rgba(230,232,242,1);
         cursor: pointer;
+        transition: box-shadow 500ms;
+    }
+
+    .week-label:hover {
+        box-shadow:0px 10px 20px 0px rgba(30,30,30,0.05);
     }
 
     #week-selector {
@@ -343,7 +347,7 @@
                 setTimeout(() => {
                     $('.vue-week-selector').focus();
                     $('.week-label').css('pointer-events', 'none');
-                }, 100);
+                }, 0);
             }
         },
         mounted() {

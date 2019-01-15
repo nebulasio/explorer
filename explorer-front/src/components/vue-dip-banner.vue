@@ -118,7 +118,8 @@
                 <div v-for="(item, index) in list" :key="index" class="text-center mt-5 mt-md-0">
                     <img :src="'/static/img/dip_medal_' + index + '.png'" width="107px" alt="winner medal">
                     <div class="font-26 font-bold" style="margin-top: 12px; margin-bottom: 0px;">{{ tokenAmount(item.award) }} NAS</div>
-                    <div class="font-color-4C4C4C font-16">{{ item.contract.shortHash() }}</div>
+                    <!-- <div class="font-color-4C4C4C font-16">{{ item.contract.shortHash() }}</div> -->
+                    <router-link class="font-color-4C4C4C font-16" v-bind:to='fragApi + "/address/" + item.contract'>{{ item.contract.shortHash() }}</router-link>
                 </div>
             </div>
             <router-link class="viewall font-color-000000 font-16 mx-auto" v-bind:to="fragApi + '/dip-leaderboard'">View All Winners</router-link>
