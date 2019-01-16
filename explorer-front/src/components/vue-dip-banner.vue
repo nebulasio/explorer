@@ -95,10 +95,10 @@
         <div v-if="$route.params.api != 'testnet'" class="clickable mainnet-dip-banner d-flex" @click=join>
             <img class="nova-logo d-none d-md-block" src="/static/img/nova_logo.png?v=20190116" alt="nova logo">
             <div class="detail flex-fill">
-                <div class="title font-color-FFFFFF font-30 font-bold">Testnet Developer Incentive Program is in progress</div>
+                <div class="title font-color-FFFFFF font-30 font-bold">Testnet Developer Incentive Program is in Progress</div>
                 <div class="sub-detail d-block d-md-flex align-items-center" style="margin-top: 24px;">
                     <div class="date font-color-00FFFF font-16 font-bold" style="margin-right: 18px;">Jan 21 - Mar 31 2019</div>
-                    <div class="join font-color-00FFFF font-16 mr-auto d-inline-block mt-3 mt-md-0" style="border: 1px #00FFFF solid; padding: 6px 30px;">Join now</div>
+                    <div class="join font-color-00FFFF font-16 mr-auto d-inline-block mt-3 mt-md-0" style="border: 1px #00FFFF solid; padding: 6px 30px;">Join Now</div>
                     <div class="mainnet-date font-color-FFFFFF font-14">Mainnet DIP will release by end of March</div>
                 </div>
             </div>
@@ -108,7 +108,7 @@
             <div class="font-color-000000 font-16" style="margin-top: 6px;">Top 3 Contracts ( Jan 21 - Jan 28 2019 UTC+8 )</div>
             <div class="top3-notyet d-flex flex-column align-items-center justify-content-center">
                 <div class="date font-color-000000 font-30 font-bold">Open on Jan 28, 2019</div>
-                <a class="join font-color-0057FF font-20 font-bold mt-2 mt-md-4" href="https://medium.com/nebulasio/nebulas-testnet-developer-incentive-program-dip-event-guide-26a0d69ec76d" target="blank">Join now ></a>
+                <a class="join font-color-0057FF font-20 font-bold mt-2 mt-md-4" href="https://medium.com/nebulasio/nebulas-testnet-developer-incentive-program-dip-event-guide-26a0d69ec76d" target="blank">Join Now ></a>
             </div>
         </div>
         <div v-if="$route.params.api == 'testnet' && $root.testnetGotDipWinners" class="testnet-dip-banner-winners font-color-000000" style="padding: 28px 33px 40px 33px;">
@@ -154,7 +154,12 @@ module.exports = {
             if (this.$root.testnetGotDipWinners) {
                 this.$router.push("/testnet/dip-leaderboard");
             } else {
-                window.open('https://medium.com/nebulasio/nebulas-testnet-developer-incentive-program-dip-event-guide-26a0d69ec76d', '_blank');
+                let lang = (navigator.languages && navigator.languages.length) ? navigator.languages[0] : navigator.userLanguage || navigator.language || navigator.browserLanguage || 'en';
+                if (lang.indexOf('zh') >= 0) {
+                    window.open('https://blog.nebulas.io/2019/01/09/nebulas-testnet-developer-incentive-protocol-dip-event-guide', '_blank');
+                } else {
+                    window.open('https://medium.com/nebulasio/nebulas-testnet-developer-incentive-program-dip-event-guide-26a0d69ec76d', '_blank');
+                }
             }
         },
         tokenAmount(n) {
