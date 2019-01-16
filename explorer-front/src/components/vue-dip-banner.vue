@@ -151,7 +151,11 @@ module.exports = {
     },
     methods:{
         join: function () {
-            window.open('https://medium.com/nebulasio/nebulas-testnet-developer-incentive-program-dip-event-guide-26a0d69ec76d', '_blank');
+            if (this.$root.testnetGotDipWinners) {
+                this.$router.push("/testnet/dip-leaderboard");
+            } else {
+                window.open('https://medium.com/nebulasio/nebulas-testnet-developer-incentive-program-dip-event-guide-26a0d69ec76d', '_blank');
+            }
         },
         tokenAmount(n) {
             BigNumber.config({ DECIMAL_PLACES: 18 })
