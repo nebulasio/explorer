@@ -26,12 +26,11 @@ spring:
       pool-name: explorer
       maximum-pool-size: 30
       allow-pool-suspension: true
-      login-timeout: 100
       connection-init-sql: SELECT 1
       connection-test-query: SELECT 1
       connection-timeout: 5000
       validation-timeout: 3000
-      minimum-idle: 1
+      minimum-idle: 10
       auto-commit: false
       initializationFailTimeout: 200
       register-mbeans: false
@@ -71,7 +70,7 @@ pendingTxExpiredTime: 1
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://172.16.15.150:3306/explorer_test?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
+    url: jdbc:mysql://172.16.15.150:3306/explorer_private?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
     username: root
     password: root@mysql
   thymeleaf:
@@ -84,6 +83,18 @@ redis:
   database: 2
 environment: dev
 pendingTxExpiredTime: 1
+grpc:
+  host: 47.92.203.173
+  port: 9684
+  enableKeepAlive: true
+  keepAliveWithoutCalls: true
+  keepAliveTimeout: 2
+
+#apiHost:
+#  coinmarketcap: https://api.coinmarketcap.com
+## 测试私链，用于测试DIP交易的解析
+#  nebulas: http://47.92.203.173:9685
+#  gateio: https://data.gateio.io
 
 ---
 spring:

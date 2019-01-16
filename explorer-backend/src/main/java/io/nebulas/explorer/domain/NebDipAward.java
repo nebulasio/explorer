@@ -1,5 +1,6 @@
 package io.nebulas.explorer.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class NebDipAward {
+public class NebDipAward implements Serializable {
     private int id;
     private String contract;
     private String creator;

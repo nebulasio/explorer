@@ -24,4 +24,27 @@
           VALUES (#{contract}, #{creator}, #{award}, #{txHash}, #{txTimestamp}, #{year}, #{week}, #{startHeight}, #{endHeight})
         </insert>
 
+        <select id="queryByWeek" parameterType="map" resultMap="BaseResultMap">
+                select
+                <include refid="Base_Column_List" />
+                from neb_dip_award
+                where `week`=#{week} and `year`=#{weekYear}
+                order by `award` desc
+                limit #{offset}, #{limit}
+        </select>
+
+        <select id="queryTotalAwardByWeek" parameterType="map" resultType="java.lang.Long">
+                select
+                sum(`award`)
+                from neb_dip_award
+                where `week`=#{week} and `year`=#{weekYear}
+        </select>
+
+        <select id="countByWeek" parameterType="map" resultType="java.lang.Integer">
+                select
+                count(*)
+                from neb_dip_award
+                where `week`=#{week} and `year`=#{weekYear}
+        </select>
+
 </mapper>

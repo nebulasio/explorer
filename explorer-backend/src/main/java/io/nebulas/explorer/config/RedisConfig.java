@@ -19,6 +19,7 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -78,6 +79,7 @@ public class RedisConfig {
         jackson2JsonRedisSerializer.setObjectMapper(om);
         //序列化 值时使用此序列化方法
         template.setValueSerializer(jackson2JsonRedisSerializer);
+        template.setKeySerializer(new StringRedisSerializer());
         template.afterPropertiesSet();
         return template;
     }

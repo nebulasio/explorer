@@ -143,7 +143,7 @@ public class NebSyncService {
         syncAddress(tx.getFrom(), NebAddressTypeEnum.NORMAL);
 
         // TODO: 2019/1/14 处理DIP交易
-        nebDipAwardService.process(tx);
+        nebDipAwardService.parseDipTransaction(tx);
 
         NebTransactionTypeEnum typeEnum = NebTransactionTypeEnum.parse(tx.getType());
 

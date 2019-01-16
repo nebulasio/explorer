@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 import io.nebulas.explorer.domain.NebDipAward;
 import io.nebulas.explorer.mapper.NebDipAwardMapper;
@@ -14,7 +15,7 @@ import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+@Slf4j(topic = "subscribe")
 @AllArgsConstructor
 @Service
 public class NebDipAwardService {
@@ -29,7 +30,7 @@ public class NebDipAwardService {
 
     private static final Base64.Decoder BASE64_DECODER = Base64.getDecoder();
 
-    public void process(Transaction transaction) {
+    public void parseDipTransaction(Transaction transaction) {
         if (!transaction.getType().equals(TYPE_DIP)) {
             return;
         }
@@ -65,6 +66,18 @@ public class NebDipAwardService {
         dipAward.setEndHeight(endHeight);
         nebDipAwardMapper.insert(dipAward);
         log.info("DIP发奖交易插入成功: {}", dipAward.toString());
+    }
+
+    public List<NebDipAward> getDipAwardByWeek(int week, int weekYear, int page, int pageSize) {
+        return nebDipAwardMapper.queryByWeek(week, weekYear, (page-1)*pageSize, pageSize);
+    }
+
+    public long getTotalAwardByWeek(int week, int weekYear) {
+        return nebDipAwardMapper.queryTotalAwardByWeek(week, weekYear);
+    }
+
+    public int getCountByWeek(int week, int weekYear) {
+        return nebDipAwardMapper.countByWeek(week, weekYear);
     }
 
 }
