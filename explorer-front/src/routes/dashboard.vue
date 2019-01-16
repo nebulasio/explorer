@@ -821,7 +821,7 @@
                         <transition-group name="list" tag="table" frame=hsides rules=rows>
                             <tr class="list-item" v-for="(block, i) in blocks" v-if="i < 5" :key="block.height">
                                 <td>
-                                    <img src="/static/img/icon-block.png" width="50" height="50">
+                                    <img src="/static/img/icon-block.png?v=20190116" width="50" height="50">
                                 </td>
                                 <td>
                                     Block#
@@ -846,7 +846,7 @@
                         <transition-group name="list" tag="table" frame=hsides rules=rows>
                             <tr v-for="(tx, i) in txs" v-if="i < 5" :key="tx.hash">
                                 <td>
-                                    <img src="/static/img/icon-tx.png" width="50" height="50">
+                                    <img src="/static/img/icon-tx.png?v=20190116" width="50" height="50">
                                 </td>
                                 <td>
                                     Tx#

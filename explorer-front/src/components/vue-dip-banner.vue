@@ -4,7 +4,7 @@
     }
 
     .mainnet-dip-banner {
-        background: url(/static/img/dip_home_banner_bg.jpg) no-repeat bottom;
+        background: url(/static/img/dip_home_banner_bg.jpg?v=20190116) no-repeat bottom;
         background-size: cover;
     }
 
@@ -55,7 +55,7 @@
 
     @media (max-width: 767.98px) {
         .mainnet-dip-banner {
-            background: url(/static/img/dip_home_banner_bg.jpg) no-repeat right;
+            background: url(/static/img/dip_home_banner_bg.jpg?v=20190116) no-repeat right;
             background-size: cover;
         }
         
@@ -93,7 +93,7 @@
 <template>
     <div class="vue-dip-banner">
         <div v-if="$route.params.api != 'testnet'" class="clickable mainnet-dip-banner d-flex" @click=join>
-            <img class="nova-logo d-none d-md-block" src="/static/img/nova_logo.png" alt="nova logo">
+            <img class="nova-logo d-none d-md-block" src="/static/img/nova_logo.png?v=20190116" alt="nova logo">
             <div class="detail flex-fill">
                 <div class="title font-color-FFFFFF font-30 font-bold">Testnet Developer Incentive Program is in progress</div>
                 <div class="sub-detail d-block d-md-flex align-items-center" style="margin-top: 24px;">
@@ -116,7 +116,7 @@
             <div class="font-16" style="margin-top: 6px;">{{ subtitle }}</div>
             <div class="top3 d-flex flex-column flex-md-row justify-content-around mt mt-md-5" style="amargin-top: 40px;">
                 <div v-for="(item, index) in list" :key="index" class="text-center mt-5 mt-md-0">
-                    <img :src="'/static/img/dip_medal_' + index + '.png'" width="107px" alt="winner medal">
+                    <img :src="'/static/img/dip_medal_' + index + '.png?v=20190116'" width="107px" alt="winner medal">
                     <div class="font-26 font-bold" style="margin-top: 12px; margin-bottom: 0px;">{{ tokenAmount(item.award) }} NAS</div>
                     <!-- <div class="font-color-4C4C4C font-16">{{ item.contract.shortHash() }}</div> -->
                     <router-link class="font-color-4C4C4C font-16" v-bind:to='fragApi + "/address/" + item.contract'>{{ item.contract.shortHash() }}</router-link>

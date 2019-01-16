@@ -54,7 +54,7 @@
     .banner {
         position: relative;
         padding: 50px 20px 39px 50px;
-        background: url(/static/img/dip_list_banner_bg.jpg) no-repeat bottom;
+        background: url(/static/img/dip_list_banner_bg.jpg?v=20190116) no-repeat bottom;
         background-size: cover;
     }
 
@@ -159,7 +159,7 @@
     <div class="dip-leaderboard fullfill">
         <div class="container">
             <div class="banner font-color-FFFFFF">
-                <img class="nova-logo d-none d-xl-block" src="/static/img/nova_logo.png" width="169px" alt="nova">
+                <img class="nova-logo d-none d-xl-block" src="/static/img/nova_logo.png?v=20190116" width="169px" alt="nova">
                 <div class="title font-36 font-bold">Native Developer Incentive Protocol Awards</div>
                 <div class="update font-16" style="margin-top: 11px; color: rgba(255, 255, 255, 0.7)">*The DIP ranking automatically update every Monday.</div>
                 <div class="subtitle font-22 font-bold" style="margin-top: 29px">Testnet Developer Incentive Program is in progress</div>

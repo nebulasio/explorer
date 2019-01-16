@@ -39,7 +39,7 @@
     <div class="vue-404 fullfill">
         <div class="container vertical-center">
             <div class="msg font-bold">Sorry...The network is currently unavailable. Please try again later.</div>
-            <img src="/static/img/404.png" alt="" width="308px">
+            <img src="/static/img/404.png?v=20190116" alt="" width="308px">
             <router-link :to='$route.params.api ? "/" + $route.params.api : "/"'>Back Home</router-link>
         </div>
     </div>
