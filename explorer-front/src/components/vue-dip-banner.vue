@@ -108,7 +108,7 @@
             <div class="font-color-000000 font-16" style="margin-top: 6px;">Top 3 Contracts ( Jan 21 - Jan 28 2019 UTC+8 )</div>
             <div class="top3-notyet d-flex flex-column align-items-center justify-content-center">
                 <div class="date font-color-000000 font-30 font-bold">Open on Jan 28, 2019</div>
-                <a class="join font-color-0057FF font-20 font-bold mt-2 mt-md-4" href="https://medium.com/nebulasio/nebulas-testnet-developer-incentive-program-dip-event-guide-26a0d69ec76d" target="blank">Join Now ></a>
+                <a class="join font-color-0057FF font-20 font-bold mt-2 mt-md-4" href=# @click=join>Join Now ></a>
             </div>
         </div>
         <div v-if="$route.params.api == 'testnet' && $root.testnetGotDipWinners" class="testnet-dip-banner-winners font-color-000000" style="padding: 28px 33px 40px 33px;">
