@@ -162,9 +162,9 @@
                 <img class="nova-logo d-none d-xl-block" src="/static/img/nova_logo.png?v=20190116" width="169px" alt="nova">
                 <div class="title font-36 font-bold">Native Developer Incentive Protocol Awards</div>
                 <div class="update font-16" style="margin-top: 11px; color: rgba(255, 255, 255, 0.7)">*The DIP ranking automatically update every Monday.</div>
-                <div class="subtitle font-22 font-bold" style="margin-top: 29px">Testnet Developer Incentive Program is in progress</div>
+                <div class="subtitle font-22 font-bold" style="margin-top: 29px">Testnet Developer Incentive Program is in Progress</div>
                 <div class="date font-16" style="margin-top: 4px">Event Period：Jan 21- Mar 31, 2019</div>
-                <a class="join font-color-00FFFF font-16 d-inline-block mr-3" style="margin-top: 21px; border: 1px #00FFFF solid; padding: 6px 30px;" href="https://medium.com/nebulasio/nebulas-testnet-developer-incentive-program-dip-event-guide-26a0d69ec76d" target="blank">Join now</a>
+                <a class="join font-color-00FFFF font-16 d-inline-block mr-3" style="margin-top: 21px; border: 1px #00FFFF solid; padding: 6px 30px;" href="https://medium.com/nebulasio/nebulas-testnet-developer-incentive-program-dip-event-guide-26a0d69ec76d" target="blank">Join Now</a>
                 <a class="nova font-color-00FFFF font-16" href="https://nebulas.io/nova.html" target="blank">Lean about NOVA ></a>
             </div>
 
