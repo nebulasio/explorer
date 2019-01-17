@@ -283,7 +283,7 @@
                 this.$root.showModalLoading = true;
                 api.getDipList({
                     page: this.$route.query.p || 1,
-                    pageSize: 10,
+                    pageSize: 25,
                     week: weekNumber(this.beginDate),
                     year: this.beginDate.getFullYear()
                 }, o => {
