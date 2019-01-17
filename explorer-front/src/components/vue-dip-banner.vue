@@ -153,6 +153,7 @@ module.exports = {
         join: function () {
             if (this.$root.testnetGotDipWinners) {
                 this.$router.push("/testnet/dip-leaderboard");
+                location.reload();
             } else {
                 let lang = (navigator.languages && navigator.languages.length) ? navigator.languages[0] : navigator.userLanguage || navigator.language || navigator.browserLanguage || 'en';
                 if (lang.indexOf('zh') >= 0) {

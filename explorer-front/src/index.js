@@ -93,7 +93,7 @@ vApp = new Vue({
         showModalLoading: false,
         showAtpAds: true,
         testnetDipStarted: true,
-        testnetGotDipWinners: false
+        testnetGotDipWinners: true
     },
     el: ".vue",
     router: vRouter
