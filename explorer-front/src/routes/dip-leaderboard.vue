@@ -54,7 +54,7 @@
     .banner {
         position: relative;
         padding: 50px 20px 39px 50px;
-        background: url(/static/img/dip_list_banner_bg.jpg?v=20190116) no-repeat bottom;
+        background: url(/static/img/dip_list_banner_bg.jpg?v=20190117) no-repeat bottom;
         background-size: cover;
     }
 

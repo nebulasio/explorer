@@ -34,7 +34,7 @@
         height: 230px;
         margin-top: 21px;
         width: 100%;
-        background: url(/static/img/dip_warmup_bg.png) no-repeat center;
+        background: url(/static/img/dip_warmup_bg.jpg) no-repeat center;
         background-size: contain;
     }
 

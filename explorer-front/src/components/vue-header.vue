@@ -105,7 +105,7 @@
         <div class=container>
             <div>
                 <router-link v-bind:to="fragApi + '/'" class=navbar-brand>
-                    <img src="/static/img/logo_beta.png?v=20190104" width=210 alt="">
+                    <img src="/static/img/logo_beta.png?v=20190117" width=210 alt="">
                 </router-link>
             </div>
 

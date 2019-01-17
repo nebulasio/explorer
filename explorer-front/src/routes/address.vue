@@ -477,7 +477,7 @@
 
                 <div v-if="txs.length===0" v-show="tab===1"
                      style="left: 0;right:0;text-align:center; padding-top: 76px; padding-bottom: 80px;">
-                    <img style="width: 131px; height: 142px;" src="/static/img/no_content.png"/>
+                    <img style="width: 131px; height: 142px;" src="/static/img/no_content.png?v=20190117"/>
                     <br/>
                     <div style="margin-top: 12px;">
                         <span class="text-no-content">No Content</span>
@@ -574,7 +574,7 @@
 
                 <div v-if=isNoNrc20Tx
                      style="left: 0;right:0;text-align:center; padding-top: 76px; padding-bottom: 80px;">
-                    <img style="width: 131px; height: 142px;" src="/static/img/no_content.png"/>
+                    <img style="width: 131px; height: 142px;" src="/static/img/no_content.png?v=20190117"/>
                     <br/>
                     <div style="margin-top: 12px;">
                         <span class="text-no-content">No Content</span>
