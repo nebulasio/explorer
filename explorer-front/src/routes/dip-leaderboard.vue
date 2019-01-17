@@ -165,7 +165,7 @@
                 <div class="subtitle font-22 font-bold" style="margin-top: 29px">Testnet Developer Incentive Program is in Progress</div>
                 <div class="date font-16" style="margin-top: 4px">Event Period：Jan 21- Mar 31, 2019</div>
                 <a class="join font-color-00FFFF font-16 d-inline-block mr-3" style="margin-top: 21px; border: 1px #00FFFF solid; padding: 6px 30px;" href="https://medium.com/nebulasio/nebulas-testnet-developer-incentive-program-dip-event-guide-26a0d69ec76d" target="blank">Join Now</a>
-                <a class="nova font-color-00FFFF font-16" href="https://nebulas.io/nova.html" target="blank">Lean about NOVA ></a>
+                <a class="nova font-color-00FFFF font-16" href="https://nebulas.io/nova.html" target="blank">Learn about NOVA ></a>
             </div>
 
             <div class="week-label d-inline-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#week-selector" aria-expanded="false" aria-controls="week-selector" @click="weekLabelClick($event)">
@@ -187,7 +187,7 @@
                     <tr class="list-header font-12 font-bold font-color-000000">
                         <th class="px-3 text-center">Rank</th>
                         <th>Contract</th>
-                        <th>Contract Address</th>
+                        <th>Creator Address</th>
                         <th>Awards</th>
                         <th>Txhash</th>
                         <th class="text-right pr-3">Age</th>
@@ -218,7 +218,7 @@
                             {{ tokenAmount(o.award) }} NAS
                         </td>
                         <td class="tdxxxwddd txs-from-to">
-                            <vue-blockies v-bind:address='o.txHash'></vue-blockies>
+                            <!-- <vue-blockies v-bind:address='o.txHash'></vue-blockies> -->
                             <router-link v-bind:to='fragApi + "/address/" + o.txHash'>
                                 <span class="fromTo font-14  monospace">{{ o.txHash }}</span>
                             </router-link>

@@ -98,7 +98,7 @@
                 <div class="title font-color-FFFFFF font-30 font-bold">Testnet Developer Incentive Program is in Progress</div>
                 <div class="sub-detail d-block d-md-flex align-items-center" style="margin-top: 24px;">
                     <div class="date font-color-00FFFF font-16 font-bold" style="margin-right: 18px;">Jan 21 - Mar 31 2019</div>
-                    <div class="join font-color-00FFFF font-16 mr-auto d-inline-block mt-3 mt-md-0" style="border: 1px #00FFFF solid; padding: 6px 30px;">Join Now</div>
+                    <div class="join font-color-00FFFF font-16 mr-auto d-inline-block mt-3 mt-md-0" style="border: 1px #00FFFF solid; padding: 6px 30px;">{{ $root.testnetGotDipWinners? 'View DIP Winners' : 'Join Now' }}</div>
                     <div class="mainnet-date font-color-FFFFFF font-14">Mainnet DIP will release by end of March</div>
                 </div>
             </div>
