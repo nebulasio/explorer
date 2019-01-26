@@ -50,7 +50,7 @@
                 <table class="mt20 explorer-table list-table">
                     <tr class="list-header font-12 font-bold font-color-000000">
                         <th style="padding-left: 24px;">Smart Contract</th>
-                        <th>Creator Address</th>
+                        <th v-if="$route.params.api === 'testnet'">Creator Address</th>
                         <th>Type</th>
                         <th class=text-right style="padding-right: 24px; width: 120px">Date Created</th>
                     </tr>
@@ -62,7 +62,7 @@
                                 <span class="hash-normal monospace">{{ o.hash }}</span>
                             </router-link>
                         </td>
-                        <td class="hash">
+                        <td class="hash" v-if="$route.params.api === 'testnet'">
                             <vue-blockies v-bind:address='o.creator'></vue-blockies>
                             <router-link v-bind:to='fragApi + "/address/" + o.hash'>
                                 <span class="hash-normal monospace">{{ o.creator }}</span>
