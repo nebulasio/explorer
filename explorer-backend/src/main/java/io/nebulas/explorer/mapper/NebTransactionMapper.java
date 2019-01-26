@@ -60,9 +60,7 @@ public interface NebTransactionMapper {
 
     List<NebTransaction> findTxnByFromTo(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
 
-    List<NebTransaction> findTxListByAddress(@Param("address") String address, @Param("lastTimestamp") Date lastTimestamp, @Param("limit") int limit);
-
-    Date findLastTimestampByAddress(@Param("address") String address, @Param("now") Date now, @Param("limit") int limit);
+    List<NebTransaction> find500TxListByAddress(@Param("address") String address);
 
     List<NebTransaction> findTxnOrderById(@Param("offset") int offset, @Param("limit") int limit);
 

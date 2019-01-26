@@ -70,7 +70,7 @@ pendingTxExpiredTime: 1
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://172.16.15.150:3306/explorer_private?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
+    url: jdbc:mysql://172.16.15.150:3306/explorer_test?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
     username: root
     password: root@mysql
   thymeleaf:

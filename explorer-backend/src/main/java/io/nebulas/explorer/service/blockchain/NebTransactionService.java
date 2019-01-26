@@ -317,16 +317,8 @@ public class NebTransactionService {
     }
 
     public List<NebTransaction> findTxsByAddress(String address, int page, int pageSize) {
-        Date lastTimestamp;
-        if (page == 1) {
-            lastTimestamp = new Date();
-        } else {
-            lastTimestamp = nebTransactionMapper.findLastTimestampByAddress(address, new Date(), (page-1) * pageSize);
-            if (lastTimestamp == null) {
-                lastTimestamp = new Date();
-            }
-        }
-        return nebTransactionMapper.findTxListByAddress(address, lastTimestamp, pageSize);
+        List<NebTransaction> last500tx = nebTransactionMapper.find500TxListByAddress(address);
+        return getPagination(last500tx, page, pageSize);
     }
 
     /**
@@ -467,8 +459,25 @@ public class NebTransactionService {
 
     }
 
-    private String parseDate2Str(Date date) {
-        return LocalDate.fromDateFields(date).toString("yyyy-MM-dd");
+    private List<NebTransaction> getPagination(List<NebTransaction> source, int page, int pageSize) {
+        if (page <= 0) {
+            page = 1;
+        }
+        int realSize = pageSize;
+        int start = (page - 1) * pageSize;
+        if (start >= source.size()) {
+            return Collections.emptyList();
+        }
+        if (start + realSize > source.size()) {
+            realSize = source.size() - start;
+        }
+        List<NebTransaction> result;
+        try {
+            result = source.subList(start, start + realSize);
+        } catch (Exception e) {
+            result = Collections.emptyList();
+        }
+        return result;
     }
 
 }

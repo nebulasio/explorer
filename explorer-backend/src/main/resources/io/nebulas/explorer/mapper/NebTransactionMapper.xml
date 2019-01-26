@@ -193,49 +193,13 @@
         LIMIT ${offset},${limit}
     </select>
 
-    <select id="findTxListByAddress" parameterType="map" resultMap="BaseResultMap">
-        (
-        SELECT
+    <select id="find500TxListByAddress" parameterType="map" resultMap="BaseResultMap">
+        select
         <include refid="Base_Column_List"/>
-        FROM `neb_transaction`
-        WHERE `timestamp` <![CDATA[<]]> #{lastTimestamp,jdbcType=TIMESTAMP} and `from` = #{address,jdbcType=VARCHAR}
-        ORDER BY `timestamp` DESC
-        LIMIT ${limit}
-        )
-        union
-        (
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM `neb_transaction`
-        WHERE `timestamp` <![CDATA[<]]> #{lastTimestamp,jdbcType=TIMESTAMP} and `to` = #{address,jdbcType=VARCHAR}
-        ORDER BY `timestamp` DESC
-        LIMIT ${limit}
-        )
-        ORDER BY `timestamp` DESC LIMIT ${limit}
-    </select>
-
-    <select id="findLastTimestampByAddress" parameterType="map" resultType="java.util.Date">
-        select t.`timestamp` from (
-            (
-            SELECT
-            `timestamp`
-            FROM `neb_transaction`
-            WHERE `timestamp` <![CDATA[<]]> #{now,jdbcType=TIMESTAMP} and `from` = #{address,jdbcType=VARCHAR}
-            ORDER BY `timestamp` DESC
-            LIMIT ${limit}
-            )
-            union
-            (
-            SELECT
-            `timestamp`
-            FROM `neb_transaction`
-            WHERE `timestamp` <![CDATA[<]]> #{now,jdbcType=TIMESTAMP} and `to` = #{address,jdbcType=VARCHAR}
-            ORDER BY `timestamp` DESC
-            LIMIT ${limit}
-            )
-            ORDER BY `timestamp` DESC LIMIT ${limit}
-        ) as t
-        ORDER BY t.`timestamp` ASC LIMIT 1
+        from neb_transaction
+        where `timestamp` is not null
+        and (`from`=#{address,jdbcType=VARCHAR} or `to`=#{address,jdbcType=VARCHAR})
+        order by `timestamp` desc limit 500;
     </select>
 
     <select id="findTxnByFromToAndCall" parameterType="map" resultMap="BaseResultMap">
