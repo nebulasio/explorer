@@ -29,7 +29,7 @@
                 <include refid="Base_Column_List" />
                 from neb_dip_award
                 where `week`=#{week} and `year`=#{weekYear}
-                order by `award` desc
+                order by convert(`award`,decimal(50,0)) desc
                 limit #{offset}, #{limit}
         </select>
 
