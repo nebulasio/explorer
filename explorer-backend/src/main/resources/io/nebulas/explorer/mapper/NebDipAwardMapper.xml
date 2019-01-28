@@ -34,8 +34,7 @@
         </select>
 
         <select id="queryTotalAwardByWeek" parameterType="map" resultType="java.lang.Long">
-                select
-                ifnull(sum(`award`), 0)
+                select convert(sum(award), decimal(50,0))
                 from neb_dip_award
                 where `week`=#{week} and `year`=#{weekYear}
         </select>
