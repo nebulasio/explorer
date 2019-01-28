@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -178,6 +179,7 @@ public class DipController {
 
         List<NebDipAward> contracts = nebDipAwardService.getDipAwardByWeek(week, year, page, pageSize);
         String totalAward = nebDipAwardService.getTotalAwardByWeek(week, year);
+        BigDecimal decimalTotalAward = new BigDecimal(totalAward);
         int totalCount = nebDipAwardService.getCountByWeek(week, year);
 
         int totalPage = totalCount / pageSize;
@@ -187,7 +189,7 @@ public class DipController {
         JsonResult result = JsonResult.success();
         result.put("total", totalCount);
         result.put("totalPage", totalPage);
-        result.put("totalAward", totalAward);
+        result.put("totalAward", decimalTotalAward);
         result.put("currentPage", page);
         result.put("contracts", contracts);
         return result;
