@@ -245,7 +245,7 @@ module.exports = {
     },
 
     getDipList(t, done, fail) {
-        ajax1("dip/list_test", t, d, fail);
+        ajax1("dip/list", t, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
