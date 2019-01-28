@@ -957,7 +957,7 @@
                             textStyle: {
                                 color: '#B2B2B2'
                             },
-                            // margin: 30,
+                            margin: 0,
                         },
                         axisTick: {
                             show: false
