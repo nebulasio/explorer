@@ -48,7 +48,7 @@
 
     .vue-header input::placeholder {
         font-size: 13px;
-        line-height: 24px;
+        line-height: 20px;
     }
 
     .vue-header .navbar-nav .nav-item:nth-child(2) a img {
