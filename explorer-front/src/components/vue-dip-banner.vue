@@ -54,18 +54,28 @@
     }
 
     @media (max-width: 767.98px) {
+        .top3-notyet {
+            height: 170px;
+        }
+
+        .top3-notyet * {
+            font-size: 18px;
+        }
+    }
+
+    @media (max-width: 1199.98px) {
         .mainnet-dip-banner {
             background: url(/static/img/dip_home_banner_bg.jpg?v=20190116) no-repeat right;
             background-size: cover;
         }
         
         .mainnet-dip-banner .detail {
-            background:linear-gradient(50deg,rgba(48,35,174,1) 0%,rgba(139,57,180,0) 100%);
+            background:linear-gradient(to left,rgba(48,35,174,1) 0%,rgba(139,57,180,0) 100%);
         }
 
         .mainnet-dip-banner .title {
             margin-top: 0px;
-            font-size: 20px;
+            font-size: 26px;
         }
 
         .mainnet-dip-banner .detail {
@@ -78,14 +88,6 @@
             margin-top: 24px;
             font-size: 10px;
         }
-
-        .top3-notyet {
-            height: 170px;
-        }
-
-        .top3-notyet * {
-            font-size: 18px;
-        }
     }
 
 </style>
@@ -96,9 +98,9 @@
             <img class="nova-logo d-none d-md-block" src="/static/img/nova_logo.png?v=20190116" alt="nova logo">
             <div class="detail flex-fill">
                 <div class="title font-color-FFFFFF font-30 font-bold">Testnet Developer Incentive Program is in Progress</div>
-                <div class="sub-detail d-block d-md-flex align-items-center" style="margin-top: 24px;">
+                <div class="sub-detail d-block d-xl-flex align-items-center" style="margin-top: 24px;">
                     <div class="date font-color-00FFFF font-16 font-bold" style="margin-right: 18px;">Jan 21 - Mar 31 2019</div>
-                    <div class="join font-color-00FFFF font-16 mr-auto d-inline-block mt-3 mt-md-0" style="border: 1px #00FFFF solid; padding: 6px 30px;">{{ $root.testnetGotDipWinners? 'View DIP Winners' : 'Join Now' }}</div>
+                    <div class="join font-color-00FFFF font-16 mr-auto d-inline-block mt-3 mt-xl-0" style="border: 1px #00FFFF solid; padding: 6px 30px;">{{ $root.testnetGotDipWinners? 'View DIP Winners' : 'Join Now' }}</div>
                     <div class="mainnet-date font-color-FFFFFF font-14">Mainnet DIP will release by end of March</div>
                 </div>
             </div>
