@@ -28,7 +28,7 @@
                 select
                 <include refid="Base_Column_List" />
                 from neb_dip_award
-                where `week`=#{week} and `year`=#{weekYear} and contract is not null and contract!=''
+                where `week`=#{week} and `year`=#{weekYear}
                 order by `award` desc
                 limit #{offset}, #{limit}
         </select>
