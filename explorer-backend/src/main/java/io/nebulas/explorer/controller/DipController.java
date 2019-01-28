@@ -177,7 +177,7 @@ public class DipController {
 //        //Use Redis(待确定是否使用Redis) - End
 
         List<NebDipAward> contracts = nebDipAwardService.getDipAwardByWeek(week, year, page, pageSize);
-        long totalAward = nebDipAwardService.getTotalAwardByWeek(week, year);
+        String totalAward = nebDipAwardService.getTotalAwardByWeek(week, year);
         int totalCount = nebDipAwardService.getCountByWeek(week, year);
 
         int totalPage = totalCount / pageSize;

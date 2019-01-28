@@ -17,7 +17,7 @@ public interface NebDipAwardMapper {
                                          @Param("offset") int offset,
                                          @Param("limit") int limit);
 
-    public long queryTotalAwardByWeek(@Param("week") int week,
+    public String queryTotalAwardByWeek(@Param("week") int week,
                                       @Param("weekYear") int weekYear);
 
     public int countByWeek(@Param("week") int week,

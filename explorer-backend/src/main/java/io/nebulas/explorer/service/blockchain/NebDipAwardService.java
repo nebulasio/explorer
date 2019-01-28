@@ -72,7 +72,7 @@ public class NebDipAwardService {
         return nebDipAwardMapper.queryByWeek(week, weekYear, (page-1)*pageSize, pageSize);
     }
 
-    public long getTotalAwardByWeek(int week, int weekYear) {
+    public String getTotalAwardByWeek(int week, int weekYear) {
         return nebDipAwardMapper.queryTotalAwardByWeek(week, weekYear);
     }
 
