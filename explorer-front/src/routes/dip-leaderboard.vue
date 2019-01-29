@@ -195,8 +195,8 @@
 
                     <tr v-for="(o, i) in arr" :key="i">
                         <td class="px-3 text-center">
-                            <img v-if="i < 3" :src="'../../static/img/dip_list_' + i + '.png'" width="26px"/>
-                            <div v-else class="">{{ i + 1 }}</div>
+                            <img v-if="o.rank < 3" :src="'../../static/img/dip_list_' + o.rank + '.png'" width="26px"/>
+                            <div v-else class="">{{ o.rank + 1 }}</div>
                         </td>
                         <td class="tdxxxwddd txs-from-to">
                             <div class="container-tip">
