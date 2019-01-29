@@ -219,7 +219,7 @@
                         </td>
                         <td class="tdxxxwddd txs-from-to">
                             <!-- <vue-blockies v-bind:address='o.txHash'></vue-blockies> -->
-                            <router-link v-bind:to='fragApi + "/address/" + o.txHash'>
+                            <router-link v-bind:to='fragApi + "/tx/" + o.txHash'>
                                 <span class="fromTo font-14  monospace">{{ o.txHash }}</span>
                             </router-link>
                         </td>
