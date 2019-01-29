@@ -344,7 +344,7 @@
                     else if (this.tx.type =="call")
                         return prism.highlight(jsBeautify(this.tx.data), lang);
 
-                return"0x0";
+                return "";
             },
             txType() {
                 // type=binary      【前端显示：Normal】
