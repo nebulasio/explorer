@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -179,12 +180,18 @@ public class DipController {
 //        //Use Redis(待确定是否使用Redis) - End
 
         List<NebDipAward> contracts = nebDipAwardService.getDipAwardByWeek(week, year, page, pageSize);
+        if(contracts==null){
+            contracts = Collections.emptyList();
+        }
         List<NebDipAwardWithRank> contractsWithRank = new ArrayList<>(contracts.size());
         for (int i=0; i<contracts.size(); i++){
             NebDipAwardWithRank awardWithRank = new NebDipAwardWithRank(contracts.get(i), (page-1)*pageSize+i);
             contractsWithRank.add(awardWithRank);
         }
         String totalAward = nebDipAwardService.getTotalAwardByWeek(week, year);
+        if(totalAward==null || totalAward.equals("")){
+            totalAward = "0";
+        }
         BigDecimal decimalTotalAward = new BigDecimal(totalAward);
         int totalCount = nebDipAwardService.getCountByWeek(week, year);
 
