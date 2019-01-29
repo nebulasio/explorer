@@ -34,6 +34,11 @@ public class NebDipAwardService {
         if (!transaction.getType().equals(TYPE_DIP)) {
             return;
         }
+        String txHash = transaction.getHash();
+        Integer existId = nebDipAwardMapper.queryByTxHash(txHash);
+        if (existId != null && existId != 0) {
+            return;
+        }
         log.info("开始解析DIP发奖交易: {}", transaction.getHash());
         String data = "";
         String contract = "";
@@ -59,7 +64,7 @@ public class NebDipAwardService {
         dipAward.setCreator(transaction.getTo());
         dipAward.setAward(transaction.getValue());
         dipAward.setTxHash(transaction.getHash());
-        dipAward.setTxTimestamp(new Date(transaction.getTimestamp()*1000));
+        dipAward.setTxTimestamp(new Date(transaction.getTimestamp() * 1000));
         dipAward.setWeek(week);
         dipAward.setYear(year);
         dipAward.setStartHeight(startHeight);
@@ -69,7 +74,7 @@ public class NebDipAwardService {
     }
 
     public List<NebDipAward> getDipAwardByWeek(int week, int weekYear, int page, int pageSize) {
-        return nebDipAwardMapper.queryByWeek(week, weekYear, (page-1)*pageSize, pageSize);
+        return nebDipAwardMapper.queryByWeek(week, weekYear, (page - 1) * pageSize, pageSize);
     }
 
     public String getTotalAwardByWeek(int week, int weekYear) {

@@ -24,6 +24,13 @@
           VALUES (#{contract}, #{creator}, #{award}, #{txHash}, #{txTimestamp}, #{year}, #{week}, #{startHeight}, #{endHeight})
         </insert>
 
+        <select id="queryByTxHash" parameterType="map" resultType="java.lang.Integer">
+                select
+                `id`
+                from neb_dip_award
+                where tx_hash=#{txHash}
+        </select>
+
         <select id="queryByWeek" parameterType="map" resultMap="BaseResultMap">
                 select
                 <include refid="Base_Column_List" />
