@@ -12,6 +12,8 @@ public interface NebDipAwardMapper {
 
     public int insert(NebDipAward award);
 
+    public Integer queryByTxHash(@Param("txHash") String txHash);
+
     public List<NebDipAward> queryByWeek(@Param("week") int week,
                                          @Param("weekYear") int weekYear,
                                          @Param("offset") int offset,
