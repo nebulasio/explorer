@@ -28,7 +28,7 @@
                 select
                 <include refid="Base_Column_List" />
                 from neb_dip_award
-                where `week`=#{week} and `year`=#{weekYear}
+                where `week`=#{week} and `year`=#{weekYear} and `contract` is not null and `contract`!=''
                 order by convert(`award`,decimal(50,0)) desc
                 limit #{offset}, #{limit}
         </select>
@@ -36,14 +36,14 @@
         <select id="queryTotalAwardByWeek" parameterType="map" resultType="java.lang.String">
                 select convert(sum(award), decimal(50,0))
                 from neb_dip_award
-                where `week`=#{week} and `year`=#{weekYear}
+                where `week`=#{week} and `year`=#{weekYear} and `contract` is not null and `contract`!=''
         </select>
 
         <select id="countByWeek" parameterType="map" resultType="java.lang.Integer">
                 select
                 count(*)
                 from neb_dip_award
-                where `week`=#{week} and `year`=#{weekYear}
+                where `week`=#{week} and `year`=#{weekYear} and `contract` is not null and `contract`!=''
         </select>
 
 </mapper>

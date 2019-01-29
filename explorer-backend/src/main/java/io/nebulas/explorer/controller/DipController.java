@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -178,6 +179,11 @@ public class DipController {
 //        //Use Redis(待确定是否使用Redis) - End
 
         List<NebDipAward> contracts = nebDipAwardService.getDipAwardByWeek(week, year, page, pageSize);
+        List<NebDipAwardWithRank> contractsWithRank = new ArrayList<>(contracts.size());
+        for (int i=0; i<contracts.size(); i++){
+            NebDipAwardWithRank awardWithRank = new NebDipAwardWithRank(contracts.get(i), (page-1)*pageSize+i);
+            contractsWithRank.add(awardWithRank);
+        }
         String totalAward = nebDipAwardService.getTotalAwardByWeek(week, year);
         BigDecimal decimalTotalAward = new BigDecimal(totalAward);
         int totalCount = nebDipAwardService.getCountByWeek(week, year);
@@ -191,7 +197,7 @@ public class DipController {
         result.put("totalPage", totalPage);
         result.put("totalAward", decimalTotalAward);
         result.put("currentPage", page);
-        result.put("contracts", contracts);
+        result.put("contracts", contractsWithRank);
         return result;
     }
 
@@ -203,6 +209,28 @@ public class DipController {
         public Date txTimestamp;
         public int week;
         public int year;
+    }
+
+    static class NebDipAwardWithRank extends NebDipAward{
+        /**
+         * 排名（前端代码已经写好，从0开始）
+         */
+        public int rank;
+
+        public NebDipAwardWithRank(NebDipAward origin, int rank){
+            setId(origin.getId());
+            setAward(origin.getAward());
+            setCreator(origin.getCreator());
+            setContract(origin.getContract());
+            setTxHash(origin.getTxHash());
+            setTxTimestamp(origin.getTxTimestamp());
+            setStartHeight(origin.getStartHeight());
+            setEndHeight(origin.getEndHeight());
+            setYear(origin.getYear());
+            setWeek(origin.getWeek());
+            setCreatedAt(origin.getCreatedAt());
+            this.rank = rank;
+        }
     }
 
 }
