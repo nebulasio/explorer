@@ -359,6 +359,7 @@
             },
             beginDate() {
                 this.nav(1);
+                this.nthPage();
             }
         }
     };
