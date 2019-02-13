@@ -137,7 +137,7 @@ module.exports = {
         return {
             list: null,
             fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
-            now: moment().utc(),
+            now: moment().utc(8),
             timer: null
         }
     },
@@ -147,7 +147,7 @@ module.exports = {
         },
         subtitle() {
             let lastMonday = moment(this.now).weekday(-7);
-            let lastSunday = moment(this.now).weekday(-1);
+            let lastSunday = moment(lastMonday).add(6, 'days');
             return "Top 3 Contracts ( " + lastMonday.format("MMM DD") + " - " + lastSunday.format("MMM DD YYYY") + " UTC+8 )";
         }
     },
