@@ -35,6 +35,7 @@
     }
 
     .months {
+        max-height: 232px;
         overflow: scroll;
     }
 
@@ -109,7 +110,7 @@
             <div class="weeks flex-fill">
                 <div 
                     v-for="(date, index) in weeks[selectedMonth]" :key="index" 
-                    :class="['week', date - beginDate == 0 ? 'selected' : '']" 
+                    :class="['week', isSameDay(date, beginDate) ? 'selected' : '']" 
                     @click="$emit('change', date);">
                     {{ weekIndex(date) }}&nbsp;&nbsp;{{ formatDate(date) }}
                 </div>
@@ -118,6 +119,7 @@
     </div>
 </template>
 <script>
+var moment = require("@/assets/utility").moment;
 export default {
     model: {
         event: 'change'
@@ -146,8 +148,8 @@ export default {
             return '[Week ' + found + ']';
         },
         formatDate(n) {
-            let m = new Date(n.getTime() + 6 * 24 * 60 * 60 * 1000);
-            return this.months[n.getMonth()] + ' ' + n.getDate().pad(2) + ' - ' + this.months[m.getMonth()] + ' ' + m.getDate().pad(2);
+            let m = moment(n).add(6, 'days');
+            return n.format("MMM DD") + " - " + m.format("MMM DD");
         },
         scrollUp() {
             $('.vue-week-selector .months').animate({
@@ -158,26 +160,26 @@ export default {
             $('.vue-week-selector .months').animate({
                 scrollTop: $(".vue-week-selector .month:first-child").offset().top
             }, 1000);
+        },
+        isSameDay(a, b) {
+            return a.isSame(b, 'day');
         }
     },
     mounted() {
-        let firstDay = "21 Jan 2019 GMT+0800";
-        var timestamp = Date.parse(firstDay);
-        var date = new Date(timestamp);
+        var date = moment(new Date("21 Jan 2019 GMT+0800"));
         // console.log(date);
 
         var month = 0, weeks = [];
-        while (date.getFullYear() === 2019) {
-            if (date.getMonth() != month) {
+        while (date.year() === 2019) {
+            if (date.month() != month) {
                 this.weeks.push(weeks);
-                month = date.getMonth();
-                weeks = [date];
+                month = date.month();
+                weeks = [moment(date)];
             } else {
-                weeks.push(date);
+                weeks.push(moment(date));
             }
 
-            timestamp = timestamp + 7 * 24 * 60 * 60 * 1000;
-            date = new Date(timestamp);
+            date.add(7, 'days');
         }
         this.weeks.push(weeks);
     },

@@ -173,7 +173,7 @@
                 <img class="p-0" src="/static/img/ic_payload_arrow_down.png" alt="" width="16px">
             </div>
             <div id="week-selector" class="collapse">
-                <vue-week-selector class="test" :beginDate=beginDate v-model="beginDate" tabindex=0 @blur=dismissWeekSelector @change="dismissWeekSelector"></vue-week-selector>
+                <vue-week-selector class="test" :beginDate=beginDate v-model=beginDate tabindex=0 @blur=dismissWeekSelector @change="dismissWeekSelector"></vue-week-selector>
             </div>
             <span v-if="totalContract && totalAward" class="font-14 font-color-666666 d-block d-md-inline mt-4 mt-md-0">
                 <span class="font-bold font-color-333333">{{ totalContract }}</span>
@@ -244,7 +244,7 @@
     var api = require("@/assets/api"),
         utility = require("@/assets/utility"),
         BigNumber = require("bignumber.js"),
-        weekNumber = require("@/assets/utility").weekNumber;
+        moment = require("@/assets/utility").moment;
 
     module.exports = {
         components: {
@@ -262,14 +262,13 @@
                 totalPage: 0,
                 totalContract: 0,
                 totalAward: 0,
-                beginDate: new Date('21 Jan 2019 GMT+0800')
+                beginDate: moment().utc(8).weekday(-7)
             };
         },
         computed: {
             weekText: function () {
-                let endDate = new Date(this.beginDate.getTime() + 6 * 24 * 60 * 60 * 1000);
-                let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                return months[this.beginDate.getMonth()] + ' ' + this.beginDate.getDate().pad(2) + ' ' + this.beginDate.getFullYear() + ' - ' + months[endDate.getMonth()] + ' ' + endDate.getDate().pad(2) + ' ' + endDate.getFullYear() + ' UTC+8';
+                let endDate = moment(this.beginDate).add(6, 'days');
+                return this.beginDate.format("MMM DD") + " - " + endDate.format("MMM DD YYYY") + " UTC+8 )";
             }
         },
         methods: {
@@ -284,8 +283,8 @@
                 api.getDipList({
                     page: this.$route.query.p || 1,
                     pageSize: 10,
-                    week: weekNumber(this.beginDate),
-                    year: this.beginDate.getFullYear()
+                    week: this.beginDate.week(),
+                    year: this.beginDate.year()
                 }, o => {
                     this.$root.showModalLoading = false;
                     this.arr = o.contracts;
