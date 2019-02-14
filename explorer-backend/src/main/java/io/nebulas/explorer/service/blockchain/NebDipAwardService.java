@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.nebulas.explorer.domain.NebDipAward;
 import io.nebulas.explorer.mapper.NebDipAwardMapper;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ public class NebDipAwardService {
 
     private static final Base64.Decoder BASE64_DECODER = Base64.getDecoder();
 
-    public void parseDipTransaction(Transaction transaction) {
+    public void parseDipTransaction(Transaction transaction, Block block) {
         if (!transaction.getType().equals(TYPE_DIP)) {
             return;
         }
@@ -64,7 +65,7 @@ public class NebDipAwardService {
         dipAward.setCreator(transaction.getTo());
         dipAward.setAward(transaction.getValue());
         dipAward.setTxHash(transaction.getHash());
-        dipAward.setTxTimestamp(new Date(transaction.getTimestamp() * 1000));
+        dipAward.setTxTimestamp(new Date(block.getTimestamp() * 1000));
         dipAward.setWeek(week);
         dipAward.setYear(year);
         dipAward.setStartHeight(startHeight);

@@ -142,8 +142,8 @@ public class NebSyncService {
         log.info("开始同步交易: " + tx.getHash());
         syncAddress(tx.getFrom(), NebAddressTypeEnum.NORMAL);
 
-        // TODO: 2019/1/14 处理DIP交易
-        nebDipAwardService.parseDipTransaction(tx);
+        //处理DIP交易
+        nebDipAwardService.parseDipTransaction(tx, block);
 
         NebTransactionTypeEnum typeEnum = NebTransactionTypeEnum.parse(tx.getType());
 
