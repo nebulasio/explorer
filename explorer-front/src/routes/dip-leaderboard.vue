@@ -268,7 +268,7 @@
         computed: {
             weekText: function () {
                 let endDate = moment(this.beginDate).add(6, 'days');
-                return this.beginDate.format("MMM DD") + " - " + endDate.format("MMM DD YYYY") + " UTC+8 )";
+                return this.beginDate.format("MMM DD") + " - " + endDate.format("MMM DD YYYY") + " UTC+8";
             }
         },
         methods: {
@@ -331,8 +331,7 @@
                 return amount.div(decimals).toFormat().shortAmount();
             },
             timeFormatter(n) {
-                var options = { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-                return new Date(n).toLocaleDateString('en', options);
+                return moment(n).format('MMM DD, YYYY, HH:mm:ss');
             },
             dismissWeekSelector() {
                 $('#week-selector').collapse('hide');
