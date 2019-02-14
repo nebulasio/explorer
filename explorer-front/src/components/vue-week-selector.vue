@@ -63,20 +63,24 @@
     }
 
     .week {
+        color: lightgray;
         width: 100%;
         height: 39px;
         line-height: 39px;
         padding-left: 20px;
+    }
+
+    .valid-week {
         color: black;
         cursor: pointer;
     }
 
-    .week:hover {
+    .valid-week:hover {
         color: white;
         background-color: lightgray;
     }
 
-    .week.selected, .week.selected:hover {
+    .valid-week.selected, .valid-week.selected:hover {
         color: white;
         background-color: #0057FF;
     }
@@ -108,10 +112,9 @@
                 </div>
             </div>
             <div class="weeks flex-fill">
-                <div 
-                    v-for="(date, index) in weeks[selectedMonth]" :key="index" 
-                    :class="['week', isSameDay(date, beginDate) ? 'selected' : '']" 
-                    @click="$emit('change', date);">
+                <div v-for="(date, index) in weeks[selectedMonth]" :key="index" 
+                    :class="['week', isValidWeek(date) ? 'valid-week' : '', isSameDay(date, beginDate) ? 'selected' : '']" 
+                    @click="isValidWeek(date) ? $emit('change', date) : $emit('')">
                     {{ weekIndex(date) }}&nbsp;&nbsp;{{ formatDate(date) }}
                 </div>
             </div>
@@ -160,6 +163,9 @@ export default {
             $('.vue-week-selector .months').animate({
                 scrollTop: $(".vue-week-selector .month:first-child").offset().top
             }, 1000);
+        },
+        isValidWeek(date) {
+            return moment().isAfter(moment(date).add(6, 'days'), 'day');
         },
         isSameDay(a, b) {
             return a.isSame(b, 'day');
