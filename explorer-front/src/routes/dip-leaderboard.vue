@@ -262,7 +262,8 @@
                 totalPage: 0,
                 totalContract: 0,
                 totalAward: 0,
-                beginDate: moment().utc(8).weekday(-7)
+                beginDate: moment().utc(8).weekday(-7),
+                firstFetch: true
             };
         },
         computed: {
@@ -286,12 +287,22 @@
                     week: this.beginDate.week(),
                     year: this.beginDate.year()
                 }, o => {
-                    this.$root.showModalLoading = false;
-                    this.arr = o.contracts;
-                    this.currentPage = o.currentPage;
-                    this.totalPage = o.totalPage;
-                    this.totalContract = o.total;
-                    this.totalAward = o.totalAward;
+                    if (o.contracts && o.contracts.length > 0) {
+                        this.$root.showModalLoading = false;
+                        this.arr = o.contracts;
+                        this.currentPage = o.currentPage;
+                        this.totalPage = o.totalPage;
+                        this.totalContract = o.total;
+                        this.totalAward = o.totalAward;
+                        this.firstFetch = false;
+                    } else if (this.firstFetch) {
+                        this.beginDate = moment(this.beginDate).subtract(7, 'days');
+                    } else {
+                        this.$root.showModalLoading = false;
+                        this.arr = [];
+                        this.totalContract = 0;
+                        this.totalAward = 0;
+                    }
                 }, xhr => {
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");

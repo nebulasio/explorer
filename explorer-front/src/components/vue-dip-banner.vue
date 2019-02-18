@@ -116,14 +116,15 @@
         <div v-if="$route.params.api == 'testnet' && $root.testnetGotDipWinners" class="testnet-dip-banner-winners font-color-000000" style="padding: 28px 33px 40px 33px;">
             <div class="font-20 font-bold">Testnet Developer Incentive Program ( Jan 21 - Mar 31 2019 )</div>
             <div class="font-16" style="margin-top: 6px;">{{ subtitle }}</div>
-            <div class="top3 d-flex flex-column flex-md-row justify-content-around mt mt-md-5" style="amargin-top: 40px;">
-                <div v-for="(item, index) in list" :key="index" class="text-center mt-5 mt-md-0">
+            <div v-if="list && list.length > 0" class="top3 d-flex flex-column flex-md-row justify-content-around mt mt-md-5" style="amargin-top: 40px;">
+                <div v-for="(item, index) in list" :key="index" class="text-center mt-5 mt-md-0 col-12 col-md-4">
                     <img :src="'/static/img/dip_medal_' + index + '.png?v=20190116'" width="107px" alt="winner medal">
                     <div class="font-26 font-bold" style="margin-top: 12px; margin-bottom: 0px;">{{ tokenAmount(item.award) }} NAS</div>
                     <!-- <div class="font-color-4C4C4C font-16">{{ item.contract.shortHash() }}</div> -->
                     <router-link class="font-color-4C4C4C font-16" v-bind:to='fragApi + "/address/" + item.contract'>{{ item.contract.shortHash() }}</router-link>
                 </div>
             </div>
+            <div v-else class="top3-notyet"></div>
             <router-link class="viewall font-color-000000 font-16 mx-auto" v-bind:to="fragApi + '/dip-leaderboard'">View All Winners</router-link>
         </div>
     </div>
@@ -146,6 +147,9 @@ module.exports = {
             return this.now.week();
         },
         subtitle() {
+            if (!this.list || this.list.length === 0) {
+                return "Top 3 Contracts";
+            }
             let lastMonday = moment(this.now).weekday(-7);
             let lastSunday = moment(lastMonday).add(6, 'days');
             return "Top 3 Contracts ( " + lastMonday.format("MMM DD") + " - " + lastSunday.format("MMM DD YYYY") + " UTC+8 )";
@@ -180,6 +184,9 @@ module.exports = {
                     year: this.now.year()
                 }, o => {
                     this.list = o.contracts;
+                    if (this.list.length === 0) {
+                        this.now = moment(this.now).subtract(7, 'days');
+                    }
                 });
             }
         }
@@ -189,7 +196,7 @@ module.exports = {
 
         if (this.$route.params.api == 'testnet' && this.$root.testnetGotDipWinners) {
             this.timer = setInterval(() => {
-                this.now = moment().utc();
+                this.now = moment().utc(8);
             }, 600000);
         }
     },
