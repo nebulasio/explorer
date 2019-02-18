@@ -882,23 +882,30 @@ public class RpcController {
         List<Nrc20TransactionVo> txList = nebTransactionService.getNrc20Transactions(hash);
         JsonResult result = JsonResult.success();
 
+        if (page <= 0) {
+            page = 1;
+        }
+        int realSize = PAGE_SIZE;
+        int start = (page - 1) * PAGE_SIZE;
+        List<Nrc20TransactionVo> resultList;
+        if (start >= txList.size()) {
+            resultList = Collections.emptyList();
+        } else {
+            if (start + realSize > txList.size()) {
+                realSize = txList.size() - start;
+            }
+            try {
+                resultList = txList.subList(start, start + realSize);
+            } catch (Exception e) {
+                resultList = Collections.emptyList();
+            }
+        }
+
         int totalRowNum = txList.size();
-        int realPageNo = page;
-        int totalPageNum = (totalRowNum - 1) / PAGE_SIZE + 1;
-
-        if (page > totalPageNum) {
-            realPageNo = totalPageNum;
-        } else if (page < 1) {
-            realPageNo = 1;
+        int totalPageNum = totalRowNum / PAGE_SIZE;
+        if (totalRowNum % PAGE_SIZE != 0) {
+            totalPageNum++;
         }
-
-        int fromIdx = (realPageNo - 1) * PAGE_SIZE;
-        int toIdx = realPageNo * PAGE_SIZE + 1;
-        if (realPageNo == totalPageNum && totalPageNum * PAGE_SIZE > totalRowNum) {
-            toIdx = totalRowNum;
-        }
-
-        List<Nrc20TransactionVo> resultList = txList.subList(fromIdx, toIdx);
 
         result.put("txnCnt", totalRowNum);
         result.put("currentPage", page);
