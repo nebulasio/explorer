@@ -158,7 +158,7 @@
 <template>
     <div class="dip-leaderboard fullfill">
         <div class="container">
-            <div class="banner font-color-FFFFFF">
+            <!-- <div class="banner font-color-FFFFFF">
                 <img class="nova-logo d-none d-xl-block" src="/static/img/nova_logo.png?v=20190116" width="169px" alt="nova">
                 <div class="title font-36 font-bold">Native Developer Incentive Protocol Awards</div>
                 <div class="update font-16" style="margin-top: 11px; color: rgba(255, 255, 255, 0.7)">*The DIP ranking automatically update every Monday.</div>
@@ -166,6 +166,11 @@
                 <div class="date font-16" style="margin-top: 4px">Event Period：Jan 21- Mar 31, 2019</div>
                 <a class="join font-color-00FFFF font-16 d-inline-block mr-3" style="margin-top: 21px; border: 1px #00FFFF solid; padding: 6px 30px;" href="https://medium.com/nebulasio/nebulas-testnet-developer-incentive-program-dip-event-guide-26a0d69ec76d" target="blank">Join Now</a>
                 <a class="nova font-color-00FFFF font-16" href="https://nebulas.io/nova.html" target="blank">Learn about NOVA ></a>
+            </div> -->
+
+            <div class="top font-color-000000">
+                <div class="title font-40 font-bold">Native Developer Incentive Protocol Awards</div>
+                <div class="update font-16 mt-3">*The DIP ranking automatically update every Monday.</div>
             </div>
 
             <div class="week-label d-inline-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#week-selector" aria-expanded="false" aria-controls="week-selector" @click="weekLabelClick($event)">

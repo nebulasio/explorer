@@ -94,7 +94,7 @@
 
 <template>
     <div class="vue-dip-banner">
-        <div v-if="$route.params.api != 'testnet'" class="clickable mainnet-dip-banner d-flex" @click=join>
+        <!-- <div v-if="$route.params.api != 'testnet'" class="clickable mainnet-dip-banner d-flex" @click=join>
             <img class="nova-logo d-none d-md-block" src="/static/img/nova_logo.png?v=20190116" alt="nova logo">
             <div class="detail flex-fill">
                 <div class="title font-color-FFFFFF font-30 font-bold">Testnet Developer Incentive Program is in Progress</div>
@@ -104,7 +104,7 @@
                     <div class="mainnet-date font-color-FFFFFF font-14">Mainnet DIP will release by end of March</div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div v-if="$route.params.api == 'testnet' && !$root.testnetGotDipWinners" class="testnet-dip-banner position-relative" style="padding: 28px 33px 22px 33px;">
             <div class="font-color-000000 font-20 font-bold">Testnet Developer Incentive Program ( Jan 21 - Mar 31 2019 )</div>
             <div class="font-color-000000 font-16" style="margin-top: 6px;">Top 3 Contracts ( Jan 21 - Jan 28 2019 UTC+8 )</div>
@@ -114,7 +114,7 @@
             </div>
         </div>
         <div v-if="$route.params.api == 'testnet' && $root.testnetGotDipWinners" class="testnet-dip-banner-winners font-color-000000" style="padding: 28px 33px 40px 33px;">
-            <div class="font-20 font-bold">Testnet Developer Incentive Program ( Jan 21 - Mar 31 2019 )</div>
+            <div class="font-20 font-bold">Native Developer Incentive Protocol Awards</div>
             <div class="font-16" style="margin-top: 6px;">{{ subtitle }}</div>
             <div v-if="list && list.length > 0" class="top3 d-flex flex-column flex-md-row justify-content-around mt mt-md-5" style="amargin-top: 40px;">
                 <div v-for="(item, index) in list" :key="index" class="text-center mt-5 mt-md-0 col-12 col-md-4">
