@@ -819,7 +819,7 @@
                         <div class="item-title">Blocks</div>
                         <router-link :to='fragApi + "/blocks/"' class="showall">View All ></router-link>
                         <transition-group name="list" tag="table" frame=hsides rules=rows>
-                            <tr class="list-item" v-for="(block, i) in blocks" v-if="i < 5" :key="block.height">
+                            <tr class="list-item" v-for="block in blocks.slice(0, 6)" :key="block.height">
                                 <td>
                                     <img src="/static/img/icon-block.png?v=20190116" width="50" height="50">
                                 </td>
@@ -844,7 +844,7 @@
                         <div class="item-title">Transactions</div>
                         <router-link :to='fragApi + "/txs/"' class="showall">View All ></router-link>
                         <transition-group name="list" tag="table" frame=hsides rules=rows>
-                            <tr v-for="(tx, i) in txs" v-if="i < 5" :key="tx.hash">
+                            <tr v-for="tx in txs.slice(0, 6)" :key="tx.hash">
                                 <td>
                                     <img src="/static/img/icon-tx.png?v=20190116" width="50" height="50">
                                 </td>
