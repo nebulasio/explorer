@@ -59,13 +59,16 @@ public class ContractTokenBalanceService {
 
     public NebContractTokenBalance getFromRPC(String address, String contract) {
         CallContractResponse response = nebApiServiceWrapper.callContractBalance(address, contract);
-        if (response == null) {
+        if (response == null || response.getResult()==null) {
             return null;
         }
         String balance = response.getResult().trim().replace("\"", "");
         NebContractTokenBalance addressBalance = new NebContractTokenBalance();
         addressBalance.setAddress(address);
         Date now = new Date();
+        if(balance.isEmpty()){
+            balance = "0";
+        }
         return NebContractTokenBalance.builder()
                 .address(address)
                 .contract(contract)
