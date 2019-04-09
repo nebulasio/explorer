@@ -25,7 +25,7 @@ window.isIE = isIE;
 const isProd = process.env.NODE_ENV === 'production';
 const VueAnalytics = require('vue-analytics').default;
 Vue.use(VueAnalytics, {
-    id: 'UA-101203737-1',
+    id: 'UA-101203737-4',
     customResourceURL: 'https://www.google-analytics.com/analytics.js',
     debug: {
         enabled: !isProd,
