@@ -168,7 +168,8 @@
                 maxDisplayCnt: 0,
                 totalPage: 0,
                 totalTxs: 0,
-                tokenName: null
+                tokenName: null,
+                decimal: 18
             };
         },
         computed: {
@@ -198,6 +199,7 @@
                     this.totalPage = o.totalPage;
                     this.totalTxs = o.txnCnt;
                     this.tokenName = o.tokenName;
+                    this.decimal = o.decimal;
                 }, xhr => {
                     this.$root.showModalLoading = false;
                     this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
@@ -228,9 +230,9 @@
                 return utility.toWei(n);
             },
             tokenAmount(n) {
-                BigNumber.config({ DECIMAL_PLACES: 18 })
+                BigNumber.config({ DECIMAL_PLACES: this.decimal })
                 var amount = BigNumber(n);
-                var decimals = BigNumber('1e+18');
+                var decimals = BigNumber('1e+' + this.decimal);
                 return amount.div(decimals).toFormat().shortAmount();
             }
         },
