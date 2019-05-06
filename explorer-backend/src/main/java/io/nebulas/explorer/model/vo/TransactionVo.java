@@ -96,6 +96,12 @@ public class TransactionVo implements Serializable {
         this.gasLimit = txn.getGasLimit();
         try {
             this.data = StringUtils.isNotEmpty(txn.getData()) ? new String(DECODER.decode(txn.getData()), "UTF-8") : "";
+            if (StringUtils.isNotEmpty(this.data) && "protocol".equals(this.data)){
+                //IR transaction
+                JSONObject json = JSON.parseObject(this.data);
+                String realDataBase64 = json.getString("Data");
+                this.data = new String(DECODER.decode(realDataBase64), StandardCharsets.UTF_8);
+            }
         } catch (Exception e) {
             this.data = txn.getData();
         }
