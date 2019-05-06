@@ -1,5 +1,8 @@
 package io.nebulas.explorer.model.vo;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebEvent;
 import io.nebulas.explorer.domain.NebPendingTransaction;
@@ -11,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -61,7 +65,13 @@ public class TransactionVo implements Serializable {
         this.gasLimit = txn.getGasLimit();
         this.gasUsed = txn.getGasUsed();
         try {
-            this.data = StringUtils.isNotEmpty(txn.getData()) ? new String(DECODER.decode(txn.getData()), "UTF-8") : "";
+            this.data = StringUtils.isNotEmpty(txn.getData()) ? new String(DECODER.decode(txn.getData()), StandardCharsets.UTF_8) : "";
+            if (StringUtils.isNotEmpty(this.data) && "protocol".equals(this.data)){
+                //IR transaction
+                JSONObject json = JSON.parseObject(this.data);
+                String realDataBase64 = json.getString("Data");
+                this.data = new String(DECODER.decode(realDataBase64), StandardCharsets.UTF_8);
+            }
         } catch (Exception e) {
             this.data = txn.getData();
         }
