@@ -325,7 +325,8 @@
         api = require("@/assets/api"),
         utility = require("@/assets/utility"),
         appConfig = require("@/assets/app-config"),
-        BigNumber = require("bignumber.js");
+        BigNumber = require("bignumber.js"),
+        base64 = require("js-base64").Base64;
 
     require("prismjs/themes/prism.css");
 
@@ -338,12 +339,21 @@
 
             formatCode() {
                 var lang = prism.languages.javascript;
-                if (this.tx.data)
-                    if (this.tx.type =="deploy")
+                console.log(Object.keys(prism.languages))
+                if (this.tx.data) {
+                    if (this.tx.type === "deploy"){
                         return prism.highlight(jsBeautify(JSON.parse(this.tx.data).Source), lang);
-                    else if (this.tx.type =="call")
+                    } else if (this.tx.type === "call") {
                         return prism.highlight(jsBeautify(this.tx.data), lang);
-
+                    } else if (this.tx.type === "protocol") {
+                        var data = JSON.parse(this.tx.data);
+                        var code = base64.decode(data.Data);
+                        var beginIndex = code.indexOf('//');
+                        var endIndex = code.lastIndexOf('}');
+                        code = code.substring(beginIndex, endIndex + 1);
+                        return prism.highlight(code, lang);
+                    }
+                }
                 return "";
             },
             txType() {
@@ -359,6 +369,7 @@
                     case"call": return"call contract";
                     case"candidate": return"dpos candidate";
                     case"delegate": return"dpos delegate";
+                    case"protocol": return"protocol";
                 } else
                     return"";
             },
