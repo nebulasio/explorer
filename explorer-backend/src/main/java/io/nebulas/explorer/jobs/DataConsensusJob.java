@@ -1,5 +1,6 @@
 package io.nebulas.explorer.jobs;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.nebulas.explorer.config.YAMLConfig;
@@ -136,7 +137,9 @@ public class DataConsensusJob {
                         String realReceiver = extractReceiverAddress(tx.getData());
                         addAddr(realReceiver);
                     } else if (NebTransactionTypeEnum.DEPLOY.equals(typeEnum)) {
-                        addAddr(tx.getContractAddress());
+//                        addAddr(tx.getContractAddress());
+                        log.info("DataConsensusJob: 交易类型为deploy, 准备插入智能合约地址: {}, creator: {}, deployTxHash: {}", tx.getContractAddress(), tx.getFrom(), tx.getHash());
+                        createContractAddress(tx.getContractAddress(), tx.getFrom(), tx.getHash());
                     }
 
                     NebTransaction nebTx = BlockHelper.buildNebTransaction(tx, blk, seq, convertData(typeEnum, tx.getData()));
@@ -180,6 +183,18 @@ public class DataConsensusJob {
 
         List<String> dynastyList = nebApiServiceWrapper.getDynasty(blk.getHeight());
         nebDynastyService.batchAddNebDynasty(blk.getHeight(), dynastyList);
+    }
+
+    private void createContractAddress(String contractAddress, String creator, String deployTxHash) {
+        NebAddress address = nebAddressService.getNebAddressByHashRpc(contractAddress);
+        if (address==null){
+            log.info("DataConsensusJob: 未查到智能合约地址(not found on chain / network error): {}", contractAddress);
+            return;
+        }
+        address.setCreator(creator);
+        address.setDeployTxHash(deployTxHash);
+        nebAddressService.addNebContract(address);
+        log.info("DataConsensusJob: 智能合约地址保存成功: {}", JSON.toJSONString(address));
     }
 
     private void addAddr(String hash) {

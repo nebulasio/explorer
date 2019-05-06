@@ -2,6 +2,8 @@ server:
   port: 8080
 logging:
   config: classpath:logback.xml
+flyway:
+  baseline-on-migrate: true
 spring:
   application:
     name: explorer
@@ -24,12 +26,11 @@ spring:
       pool-name: explorer
       maximum-pool-size: 30
       allow-pool-suspension: true
-      login-timeout: 100
       connection-init-sql: SELECT 1
       connection-test-query: SELECT 1
       connection-timeout: 5000
       validation-timeout: 3000
-      minimum-idle: 1
+      minimum-idle: 10
       auto-commit: false
       initializationFailTimeout: 200
       register-mbeans: false
@@ -42,7 +43,7 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 300
 grpc:
-  host: 13.57.96.40
+  host: 47.92.203.173
   port: 8684
   enableKeepAlive: true
   keepAliveWithoutCalls: true
@@ -68,11 +69,32 @@ pendingTxExpiredTime: 1
 ---
 spring:
   profiles: dev
+  datasource:
+    url: jdbc:mysql://172.16.15.150:3306/explorer_test?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
+    username: root
+    password: root@mysql
   thymeleaf:
     cache: false
     mode: LEGACYHTML5
+redis:
+  host: 172.16.15.150
+  port: 6379
+  password:
+  database: 2
 environment: dev
 pendingTxExpiredTime: 1
+grpc:
+  host: 47.92.203.173
+  port: 9684
+  enableKeepAlive: true
+  keepAliveWithoutCalls: true
+  keepAliveTimeout: 2
+
+#apiHost:
+#  coinmarketcap: https://api.coinmarketcap.com
+## 测试私链，用于测试DIP交易的解析
+#  nebulas: http://47.92.203.173:9685
+#  gateio: https://data.gateio.io
 
 ---
 spring:
@@ -118,6 +140,10 @@ redis:
   port: 6379
   password:
   database: 2
+apiHost:
+  coinmarketcap: https://api.coinmarketcap.com
+  nebulas: http://47.92.203.173:8685
+  gateio: https://data.gateio.io
 grpc:
   host: 47.92.203.173
   port: 8684

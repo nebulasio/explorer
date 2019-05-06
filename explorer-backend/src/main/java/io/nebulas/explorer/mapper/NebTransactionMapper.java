@@ -50,6 +50,8 @@ public interface NebTransactionMapper {
 
     NebTransaction getByContractAddress(String contractAddress);
 
+    NebTransaction getDeployTransactionByContractAddress(String contractAddress);
+
     List<NebTransaction> findTxnByBlockHeight(Long blockHeight);
 
     List<NebTransaction> findTxnByCondition(@Param("blockHeight") Long blockHeight, @Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
@@ -58,9 +60,7 @@ public interface NebTransactionMapper {
 
     List<NebTransaction> findTxnByFromTo(@Param("addressHash") String addressHash, @Param("offset") int offset, @Param("limit") int limit);
 
-    List<NebTransaction> findTxListByAddress(@Param("address") String address, @Param("lastTimestamp") Date lastTimestamp, @Param("limit") int limit);
-
-    Date findLastTimestampByAddress(@Param("address") String address, @Param("now") Date now, @Param("limit") int limit);
+    List<NebTransaction> find500TxListByAddress(@Param("address") String address);
 
     List<NebTransaction> findTxnOrderById(@Param("offset") int offset, @Param("limit") int limit);
 

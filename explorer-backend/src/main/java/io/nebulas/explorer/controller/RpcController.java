@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -106,6 +107,15 @@ public class RpcController {
 
         List<ContractListItemVo> listItemVos = new ArrayList<>(contractList.size());
         for (NebAddress address : contractList) {
+            if (address.getCreator() == null || address.getDeployTxHash() == null ||
+                    address.getCreator().isEmpty() || address.getDeployTxHash().isEmpty()) {
+                NebTransaction transaction = nebTransactionService.getDeployTransactionByContractAddress(address.getHash());
+                if (transaction != null) {
+                    address.setCreator(transaction.getFrom());
+                    address.setDeployTxHash(transaction.getHash());
+                    DB_UPDATE_EXECUTOR.execute(()-> nebAddressService.updateNebContractCreator(address));
+                }
+            }
             ContractListItemVo vo = new ContractListItemVo();
             vo.setHash(address.getHash());
             vo.setAlias(address.getAlias());
@@ -116,6 +126,8 @@ public class RpcController {
                             ContractListItemVo.ContractType.NRC20_TOKEN :
                             ContractListItemVo.ContractType.NORMAL
             );
+            vo.setCreator(address.getCreator());
+            vo.setDeployTxHash(address.getDeployTxHash());
             listItemVos.add(vo);
         }
 
@@ -724,10 +736,19 @@ public class RpcController {
 
         //contract address code
         if (NebAddressTypeEnum.CONTRACT.getValue() == address.getType()) {
-            NebTransaction nebTx = nebTransactionService.getNebTransactionByContractAddress(address.getHash());
+            NebAddress addressFromDB = nebAddressService.getNebAddressByHash(hash);
+            if (addressFromDB != null) {
+                if (addressFromDB.getCreator() != null && !addressFromDB.getCreator().isEmpty()) {
+                    result.put("creator", addressFromDB.getCreator());
+                }
+                if (addressFromDB.getDeployTxHash() != null && !addressFromDB.getDeployTxHash().isEmpty()) {
+                    result.put("deployTxHash", addressFromDB.getDeployTxHash());
+                }
+            }
+            NebTransaction nebTx = nebTransactionService.getDeployTransactionByContractAddress(address.getHash());
             if (null != nebTx) {
                 try {
-                    result.put("contractCode", StringUtils.isNotEmpty(nebTx.getData()) ? new String(DECODER.decode(nebTx.getData()), "UTF-8") : "");
+                    result.put("contractCode", StringUtils.isNotEmpty(nebTx.getData()) ? new String(DECODER.decode(nebTx.getData()), StandardCharsets.UTF_8) : "");
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                 }

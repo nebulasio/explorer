@@ -57,6 +57,16 @@ public class NebAddress implements Serializable {
 
     private Date updatedAt;
 
+    /**
+     * 合约创建者
+     */
+    private String creator;
+
+    /**
+     * 部署合约的交易Hash
+     */
+    private String deployTxHash;
+
     private static final long serialVersionUID = 1L;
 
     public NebAddress(String hash) {
