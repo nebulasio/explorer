@@ -197,8 +197,8 @@
         select
         <include refid="Base_Column_List"/>
         from neb_transaction
-        where `timestamp` is not null
-        and (`from`=#{address,jdbcType=VARCHAR} or `to`=#{address,jdbcType=VARCHAR})
+        where
+        (`from`=#{address,jdbcType=VARCHAR} or `to`=#{address,jdbcType=VARCHAR})
         order by `timestamp` desc limit 500;
     </select>
 
