@@ -1,4 +1,4 @@
-create table if not exists explorer_test.neb_dip_award
+create table if not exists neb_dip_award
 (
   id           int auto_increment primary key,
   contract     varchar(40)                         not null
@@ -24,7 +24,8 @@ create table if not exists explorer_test.neb_dip_award
   comment '插入时间',
   constraint neb_dip_award_id_uindex unique (id),
   index neb_dip_award_value_index (award),
-  index neb_dip_award_week_year_index (week, year)
+  index neb_dip_award_week_year_index (week, year),
+  index neb_dip_award_hash_index (tx_hash)
 ) default charset='utf8' comment 'DIP发奖记录';
 
 

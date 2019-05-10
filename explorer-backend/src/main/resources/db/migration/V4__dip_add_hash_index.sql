@@ -1,1 +1,0 @@
-CREATE INDEX neb_dip_award_hash_index ON neb_dip_award (tx_hash);
