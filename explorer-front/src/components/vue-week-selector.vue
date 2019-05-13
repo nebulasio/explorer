@@ -67,7 +67,7 @@
         width: 100%;
         height: 39px;
         line-height: 39px;
-        padding-left: 20px;
+        padding-left: 50px;
     }
 
     .valid-week {
@@ -115,7 +115,7 @@
                 <div v-for="(date, index) in weeks[selectedMonth]" :key="index" 
                     :class="['week', isValidWeek(date) ? 'valid-week' : '', isSameDay(date, beginDate) ? 'selected' : '']" 
                     @click="isValidWeek(date) ? $emit('change', date) : $emit('')">
-                    {{ weekIndex(date) }}&nbsp;&nbsp;{{ formatDate(date) }}
+                    {{ formatDate(date) }}
                 </div>
             </div>
         </div>
