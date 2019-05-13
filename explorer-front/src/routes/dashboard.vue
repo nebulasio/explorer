@@ -706,7 +706,7 @@
                 </div>
             </div>
             <!-- ====================dip program==================== -->
-            <div v-if="$root.testnetDipStarted && $route.params.api == 'testnet'" class="row">
+            <div v-if="($root.mainnetDipStarted && $route.params.api !== 'testnet') || ($root.testnetDipStarted && $route.params.api === 'testnet')" class="row">
                 <div class="col">
                     <div class="flex-item item-bg item-shadow">
                         <vue-dip-banner></vue-dip-banner>

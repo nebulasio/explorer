@@ -105,6 +105,29 @@
                 </div>
             </div>
         </div> -->
+        <!-- <div v-if="$route.params.api !== 'testnet' && !$root.mainnetGotDipWinners" class="testnet-dip-banner position-relative" style="padding: 28px 33px 22px 33px;">
+            <div class="font-color-000000 font-20 font-bold">Mainnet Developer Incentive Program ( Jan 21 - Mar 31 2019 )</div>
+            <div class="font-color-000000 font-16" style="margin-top: 6px;">Top 3 Contracts ( Jan 21 - Jan 28 2019 UTC+8 )</div>
+            <div class="top3-notyet d-flex flex-column align-items-center justify-content-center">
+                <div class="date font-color-000000 font-30 font-bold">Open on Jan 28, 2019</div>
+                <a class="join font-color-0057FF font-20 font-bold mt-2 mt-md-4" href=# @click=join>Join Now ></a>
+            </div>
+        </div> -->
+        <div v-if="$route.params.api !== 'testnet' && $root.mainnetGotDipWinners" class="testnet-dip-banner-winners font-color-000000" style="padding: 28px 33px 40px 33px;">
+            <div class="font-20 font-bold">Native Developer Incentive Protocol Awards</div>
+            <div class="font-16" style="margin-top: 6px;">{{ subtitle }}</div>
+            <div v-if="list && list.length > 0" class="top3 d-flex flex-column flex-md-row justify-content-around mt mt-md-5" style="amargin-top: 40px;">
+                <div v-for="(item, index) in list" :key="index" class="text-center mt-5 mt-md-0 col-12 col-md-4">
+                    <img :src="'/static/img/dip_medal_' + index + '.png?v=20190116'" width="107px" alt="winner medal">
+                    <div class="font-26 font-bold" style="margin-top: 12px; margin-bottom: 0px;">{{ tokenAmount(item.award) }} NAS</div>
+                    <!-- <div class="font-color-4C4C4C font-16">{{ item.contract.shortHash() }}</div> -->
+                    <router-link class="font-color-4C4C4C font-16" v-bind:to='fragApi + "/address/" + item.contract'>{{ item.contract.shortHash() }}</router-link>
+                </div>
+            </div>
+            <div v-else class="top3-notyet"></div>
+            <router-link class="viewall font-color-000000 font-16 mx-auto" v-bind:to="fragApi + '/dip-leaderboard'">View All Winners</router-link>
+        </div>
+
         <div v-if="$route.params.api == 'testnet' && !$root.testnetGotDipWinners" class="testnet-dip-banner position-relative" style="padding: 28px 33px 22px 33px;">
             <div class="font-color-000000 font-20 font-bold">Testnet Developer Incentive Program ( Jan 21 - Mar 31 2019 )</div>
             <div class="font-color-000000 font-16" style="margin-top: 6px;">Top 3 Contracts ( Jan 21 - Jan 28 2019 UTC+8 )</div>
@@ -157,7 +180,10 @@ module.exports = {
     },
     methods:{
         join: function () {
-            if (this.$root.testnetGotDipWinners) {
+            if (this.$route.params.api !== 'testnet' && this.$root.mainnetGotDipWinners) {
+                this.$router.push("/dip-leaderboard");
+                location.reload();
+            } else if (this.$route.params.api === 'testnet' && this.$root.testnetGotDipWinners) {
                 this.$router.push("/testnet/dip-leaderboard");
                 location.reload();
             } else {
@@ -176,7 +202,7 @@ module.exports = {
             return amount.div(decimals).toFormat().shortAmount();
         },
         getWinners() {
-            if (this.$route.params.api == 'testnet' && this.$root.testnetGotDipWinners) {
+            if ((this.$route.params.api !== 'testnet' && this.$root.mainnetGotDipWinners) || (this.$route.params.api === 'testnet' && this.$root.testnetGotDipWinners)) {
                 api.getDipList({
                     page: 1,
                     pageSize: 3,
@@ -194,7 +220,7 @@ module.exports = {
     mounted() {
         this.getWinners();
 
-        if (this.$route.params.api == 'testnet' && this.$root.testnetGotDipWinners) {
+        if (this.$root.mainnetGotDipWinners || this.$root.testnetGotDipWinners) {
             this.timer = setInterval(() => {
                 this.now = moment().utc(8);
             }, 600000);
