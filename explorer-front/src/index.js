@@ -92,6 +92,8 @@ vApp = new Vue({
         timestamp: Date.now(),
         showModalLoading: false,
         showAtpAds: true,
+        mainnetDipStarted: true,
+        mainnetGotDipWinners: true,
         testnetDipStarted: true,
         testnetGotDipWinners: true
     },
