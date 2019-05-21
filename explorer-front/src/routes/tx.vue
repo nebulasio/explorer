@@ -162,7 +162,8 @@
                     </tr>
                     <tr>
                         <td class="font-16 font-color-555555" style="padding-left: 24px;">Value:</td>
-                        <td class="font-16 font-color-000000">{{ nasAmount(tx.value) }} NAS</td>
+                        <td v-if=isNatVoteTransfer class="font-16 font-color-000000">{{ natAmount }} NAT</td>
+                        <td v-else class="font-16 font-color-000000">{{ nasAmount(tx.value) }} NAS</td>
                     </tr>
 
                 </table>
@@ -247,7 +248,8 @@
                 </div>
                 <div>
                     Value:
-                    <div class="detail">{{ nasAmount(tx.value) }} NAS</div>
+                    <div v-if=isNatVoteTransfer class="detail">{{ natAmount }} NAT</div>
+                    <div v-else class="detail">{{ nasAmount(tx.value) }} NAS</div>
                 </div>
             </div>
 
@@ -339,7 +341,7 @@
 
             formatCode() {
                 var lang = prism.languages.javascript;
-                console.log(Object.keys(prism.languages))
+                // console.log(Object.keys(prism.languages))
                 if (this.tx.data) {
                     if (this.tx.type === "deploy"){
                         return prism.highlight(jsBeautify(JSON.parse(this.tx.data).Source), lang);
@@ -390,7 +392,7 @@
             },
             isTokenTransfer() {
                 try {
-                    if (this.tx.type == 'call' && JSON.parse(this.tx.data).Function == 'transfer' && JSON.parse(JSON.parse(this.tx.data).Args).length >= 2) {
+                    if (this.tx.type === 'call' && JSON.parse(this.tx.data).Function === 'transfer' && JSON.parse(JSON.parse(this.tx.data).Args).length >= 2) {
                         return true;
                     }
                 } catch (error) {
@@ -401,6 +403,21 @@
                 BigNumber.config({ DECIMAL_PLACES: this.tx.decimal })
                 var amount = BigNumber(JSON.parse(JSON.parse(this.tx.data).Args)[1]);
                 var decimals = BigNumber('1e+' + this.tx.decimal);
+                return amount.div(decimals).toFormat();
+            },
+            isNatVoteTransfer() {
+                try {
+                    if (this.tx.type === 'call' && this.tx.to.hash === 'n1pADU7jnrvpPzcWusGkaizZoWgUywMRGMY' && JSON.parse(this.tx.data).Function === 'vote' && JSON.parse(JSON.parse(this.tx.data).Args).length >= 4) {
+                        return true;
+                    }
+                } catch (error) {
+                }
+                return false;
+            },
+            natAmount() {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(JSON.parse(JSON.parse(this.tx.data).Args)[3]);
+                var decimals = BigNumber('1e+18');
                 return amount.div(decimals).toFormat();
             },
             errMsg() {

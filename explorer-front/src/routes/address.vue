@@ -450,7 +450,8 @@
                                     <span class="fromTo font-14 ">{{ o.to.alias || o.to.hash }}</span>
                                 </router-link>
                             </td>
-                            <td class="amount align-right">{{ tokenAmount(o.value, o.decimal) }} NAS</td>
+                            <td v-if=isNatVoteTransfer(o) class="amount align-right">{{ natAmount(o) }} NAT</td>
+                            <td v-else class="amount align-right">{{ tokenAmount(o.value, o.decimal) }} NAS</td>
                             <td class="txfee align-right pr-3">
                                 <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
                                 <i v-else>(pending)</i>
@@ -774,7 +775,22 @@
                     return s.substring(0, 17) + '...';
                 }
                 return s;
-            }
+            },
+            isNatVoteTransfer(tx) {
+                try {
+                    if (tx.type === 'call' && tx.to.hash === 'n1pADU7jnrvpPzcWusGkaizZoWgUywMRGMY' && JSON.parse(tx.data).Function === 'vote' && JSON.parse(JSON.parse(tx.data).Args).length >= 4) {
+                        return true;
+                    }
+                } catch (error) {
+                }
+                return false;
+            },
+            natAmount(tx) {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(JSON.parse(JSON.parse(tx.data).Args)[3]);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
+            },
         },
         watch: {
             tab: function (newTab, oldTaB) {
