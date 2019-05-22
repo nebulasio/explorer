@@ -140,7 +140,8 @@
                                 <span class="fromTo font-14  monospace">{{ o.to.hash }}</span>
                             </router-link>
                         </td>
-                        <td class="text-right font-color-000000 font-14">{{ tokenAmount(o.value) }} NAS</td>
+                        <td v-if=isNatVoteTransfer(o) class="text-right font-color-000000 font-14">{{ natAmount(o) }} NAT</td>
+                        <td v-else class="text-right font-color-000000 font-14">{{ tokenAmount(o.value) }} NAS</td>
                         <td class="text-right font-14 font-color-555555 pr-3">{{ toWei(o.txFee) }}</td>
                     </tr>
                 </table>
@@ -233,7 +234,22 @@
                 var amount = BigNumber(n);
                 var decimals = BigNumber('1e+18');
                 return amount.div(decimals).toFormat().shortAmount();
-            }
+            },
+            isNatVoteTransfer(tx) {
+                try {
+                    if (tx.type === 'call' && tx.to.hash === 'n1pADU7jnrvpPzcWusGkaizZoWgUywMRGMY' && JSON.parse(tx.data).Function === 'vote' && JSON.parse(JSON.parse(tx.data).Args).length >= 4) {
+                        return true;
+                    }
+                } catch (error) {
+                }
+                return false;
+            },
+            natAmount(tx) {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(JSON.parse(JSON.parse(tx.data).Args)[3]);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
+            },
         },
         mounted() {
             this.nthPage();
