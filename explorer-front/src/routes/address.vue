@@ -663,7 +663,7 @@
 
                     var token = this.tokens[0];
                     for (var index in this.tokens) {
-                        if (this.tokens[index].tokenName === 'ATP') {
+                        if (this.tokens[index].tokenName === 'NAT') {
                             token = this.tokens[index];
                             break;
                         }
@@ -679,7 +679,15 @@
                 return this.isContract ? "Contract" : "Address";
             },
             validTokens() {
-                return this.tokens;//.filter(token => token.balance > 0);
+                let tokens = [...this.tokens];
+                return tokens.sort((a, b) => {
+                    if (a.tokenName === 'NAT' || b.tokenName === 'NAT') {
+                        return a.tokenName === 'NAT' ? -1 : 1;
+                    } else if (a.tokenName === 'ATP' || b.tokenName === 'ATP') {
+                        return a.tokenName === 'ATP' ? 1 : -1;
+                    }
+                    return a.tokenName < b.tokenName;
+                });
             }
         },
         data() {
