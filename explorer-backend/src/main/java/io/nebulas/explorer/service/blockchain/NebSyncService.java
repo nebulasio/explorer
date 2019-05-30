@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import io.nebulas.explorer.domain.NebAddress;
 import io.nebulas.explorer.domain.NebBlock;
@@ -22,9 +24,12 @@ import io.nebulas.explorer.domain.NebTransaction;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionTypeEnum;
 import io.nebulas.explorer.grpc.GrpcChannelService;
+import io.nebulas.explorer.service.NatSyncService;
 import io.nebulas.explorer.service.redis.RedisService;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Event;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetEventsByHashResponse;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,6 +62,8 @@ public class NebSyncService {
     private RedisService redisService;
     @Autowired
     private NebDipAwardService nebDipAwardService;
+    @Autowired
+    private NatSyncService natSyncService;
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
 
@@ -121,6 +128,9 @@ public class NebSyncService {
         List<Transaction> txs = block.getTransactions();
         if (isLib) {
             nebTransactionService.deleteNebTransactionByBlkHeight(block.getHeight());
+        }
+        if (!isLib) {
+            natSyncService.sync(block.getHeight(), txs);
         }
         int i = 0;
         for (Transaction tx : txs) {
@@ -394,5 +404,7 @@ public class NebSyncService {
         }
         return new JSONObject();
     }
+
+
 
 }
