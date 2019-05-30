@@ -1,6 +1,6 @@
 create table if not exists nat_record
 (
-  id        INTEGER,
+  id        INTEGER NOT NULL AUTO_INCREMENT,
   address   varchar(64) not null,
   block     INTEGER,
   txHash    varchar(128),
