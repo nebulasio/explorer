@@ -584,6 +584,57 @@
             </div>
 
 
+            <!--    NAT Changes
+                ============================================================ -->
+            <div class="tab" v-show="tab === 3 && !isContract">
+                <div class="explorer-table-container">
+                    <table v-if="natChangeList.length" class="mt20 explorer-table list-table">
+                        <tr class="font-12 font-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
+                            <th style="width: 100px;"></th>
+                            <th>Value</th>
+                            <th>Age</th>
+                            <th>Block</th>
+                            <th>Source</th>
+                        </tr>
+                        <tr v-for="(o, i) in natChangeList" :key="i">
+                            <td class="text-center"><img src="/static/img/icon_nat_in.png" width="14px"/></td>
+                            <td class="amount">{{ tokenAmount(o.amount, 18) }} NAT</td>
+                            <td class="time font-color-555555 font-14">
+                                <div>
+                                    <div>{{ timeConversion(new Date() - o.timestamp) }} ago</div>
+                                    <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                                </div>
+                            </td>
+                            <td class="txs-block">
+                                <router-link class="font-14"
+                                            v-if=o.block
+                                            v-bind:to='fragApi + "/block/" + o.block'>
+                                    <span>{{ o.block }}</span>
+                                </router-link>
+                                <i class="font-14 font-color-000000" v-else>pending</i>
+                            </td>
+                            <td class="font-14">
+                                <div v-if="o.source === 1">NR Airdrop</div>
+                                <div v-if="o.source === 2">NAS Pledge</div>
+                                <router-link v-if="o.source === 3" v-bind:to='fragApi + "/tx/" + o.txHash'>
+                                    <span>NAT Vote</span>
+                                </router-link>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div v-if=isNoNatChanges
+                     style="left: 0;right:0;text-align:center; padding-top: 76px; padding-bottom: 80px;">
+                    <img style="width: 131px; height: 142px;" src="/static/img/no_content.png?v=20190117"/>
+                    <br/>
+                    <div style="margin-top: 12px;">
+                        <span class="text-no-content">No Content</span>
+                    </div>
+                </div>
+            </div>
+
+
             <!-- code
              ============================================================ -->
             <div class=tab v-show="tab == 2 && isContract">
@@ -625,7 +676,7 @@
                 return "0x0";
             },
             tabButtons() {
-                var buttons = ["Transactions", "NRC20 Token Txns"];
+                var buttons = ["Transactions", "NRC20 Token Txns", "NAT"];
                 if (this.isContract) {
                     buttons = ["Transactions", "Contract Code"];
                 }
@@ -707,7 +758,9 @@
                 contractCode: null,
                 nrc20TxList: [],
                 nrc20TxCnt: 0,
-                isNoNrc20Tx: false
+                isNoNrc20Tx: false,
+                natChangeList: [],
+                isNoNatChanges: false
             };
         },
         methods: {
@@ -801,14 +854,23 @@
             },
         },
         watch: {
-            tab: function (newTab, oldTaB) {
-                if (!this.isContract && newTab == 2 && this.nrc20TxList.length == 0) {
+            tab: function (newTab, oldTab) {
+                if (!this.isContract && newTab == 2 && this.nrc20TxList.length === 0) {
                     this.$root.showModalLoading = true;
                     api.getNrc20Txs(this.$route.params.id, 1, o => {
                         this.$root.showModalLoading = false;
                         this.nrc20TxList = o.txnList || [];
                         this.nrc20TxCnt = o.txnCnt;
                         this.isNoNrc20Tx = this.nrc20TxCnt === 0;
+                    }, xhr => {
+                        this.$root.showModalLoading = false;
+                    });
+                } else if (!this.isContract && newTab == 3 && this.natChangeList.length === 0) {
+                    this.$root.showModalLoading = true;
+                    api.getNatChanges(this.$route.params.id, 1, 1000, o => {
+                        this.$root.showModalLoading = false;
+                        this.natChangeList = o || [];
+                        this.isNoNatChanges = this.natChangeList.length === 0;
                     }, xhr => {
                         this.$root.showModalLoading = false;
                     });
