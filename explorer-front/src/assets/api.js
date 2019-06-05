@@ -205,6 +205,22 @@ module.exports = {
         }
     },
 
+    // get nat/list
+    // - address   - address
+    // - page   - 页码, 默认 1
+    getNatChanges(address, page, size, done, fail) {
+        ajax1("nat/list?address=" + address + '&page=' + page + '&pageSize=' + size, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
+
     getTodayTxCnt(done, fail) {
         ajax1("tx/cnt_today", null, d, fail);
 
