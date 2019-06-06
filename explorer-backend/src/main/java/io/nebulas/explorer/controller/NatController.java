@@ -31,7 +31,7 @@ public class NatController {
         if (page < 1) {
             page = 1;
         }
-        List<NatRecord> records = natService.list((page - 1) * pageSize, pageSize, address);
+        List<NatRecord> records = natService.list(page, pageSize, address);
         long total = natService.total(address);
         long totalPage = total / pageSize;
         if (total % pageSize != 0) {
