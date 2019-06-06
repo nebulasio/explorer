@@ -733,7 +733,7 @@
                 return this.isContract ? "Contract" : "Address";
             },
             validTokens() {
-                let tokens = [...this.tokens];
+                let tokens = this.tokens.filter(item => {return item.balance !== 0 || item.tokenName === 'NAT'});
                 return tokens.sort((a, b) => {
                     if (a.tokenName === 'NAT' || b.tokenName === 'NAT') {
                         return a.tokenName === 'NAT' ? -1 : 1;
