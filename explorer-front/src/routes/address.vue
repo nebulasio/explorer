@@ -597,7 +597,7 @@
                             <th>Source</th>
                         </tr>
                         <tr v-for="(o, i) in natChangeList" :key="i">
-                            <td class="text-center"><img src="/static/img/icon_nat_in.png" width="14px"/></td>
+                            <td class="text-center"><img :src="natIcon(o)" width="14px"/></td>
                             <td class="amount">{{ tokenAmount(o.amount, 18) }} NAT</td>
                             <td class="time font-color-555555 font-14">
                                 <div>
@@ -623,6 +623,9 @@
                         </tr>
                     </table>
                 </div>
+
+                <vue-pagination v-if="natChangeList.length" v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
+                v-on:prev=onPrev v-on:to=onTo></vue-pagination>
 
                 <div v-if=isNoNatChanges
                      style="left: 0;right:0;text-align:center; padding-top: 76px; padding-bottom: 80px;">
@@ -760,7 +763,9 @@
                 nrc20TxCnt: 0,
                 isNoNrc20Tx: false,
                 natChangeList: [],
-                isNoNatChanges: false
+                isNoNatChanges: false,
+                totalPage: 0,
+                currentPage: 0
             };
         },
         methods: {
@@ -827,7 +832,7 @@
             tokenAmount(n, decimals) {
                 decimals = decimals || 18;
                 BigNumber.config({ DECIMAL_PLACES: decimals })
-                var amount = BigNumber(n);
+                var amount = BigNumber(n).abs();
                 var decimals = BigNumber('1e+' + decimals);
                 return amount.div(decimals).toFormat().shortAmount();
             },
@@ -852,6 +857,44 @@
                 var decimals = BigNumber('1e+18');
                 return amount.div(decimals).toFormat();
             },
+            natIcon(data) {
+                if (data.amount.startsWith('-')) {
+                    return "/static/img/icon_nat_out.png";
+                }
+                return "/static/img/icon_nat_in.png";
+            },
+            nav(n) {
+                this.$root.showModalLoading = true;
+
+                api.getNatChanges(this.$route.params.id, n || 1, 25, o => {
+                    this.$root.showModalLoading = false;
+                    this.natChangeList = o.list || [];
+                    this.isNoNatChanges = this.natChangeList.length === 0;
+                    this.totalPage = o.totalPage;
+                    this.currentPage = o.currentPage;
+                }, xhr => {
+                    this.$root.showModalLoading = false;
+                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
+                });
+            },
+            numberAddComma(n) {
+                return utility.numberAddComma(n);
+            },
+            onFirst() {
+                this.nav(1);
+            },
+            onLast() {
+                this.nav(this.totalPage);
+            },
+            onNext() {
+                this.nav(this.currentPage + 1);
+            },
+            onPrev() {
+                this.nav(this.currentPage - 1);
+            },
+            onTo(n) {
+                this.nav(n);
+            },
         },
         watch: {
             tab: function (newTab, oldTab) {
@@ -866,14 +909,7 @@
                         this.$root.showModalLoading = false;
                     });
                 } else if (!this.isContract && newTab == 3 && this.natChangeList.length === 0) {
-                    this.$root.showModalLoading = true;
-                    api.getNatChanges(this.$route.params.id, 1, 1000, o => {
-                        this.$root.showModalLoading = false;
-                        this.natChangeList = o || [];
-                        this.isNoNatChanges = this.natChangeList.length === 0;
-                    }, xhr => {
-                        this.$root.showModalLoading = false;
-                    });
+                    this.nav(1);
                 }
             }
         }
