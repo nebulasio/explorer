@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import io.nebulas.explorer.domain.NatRecord;
-import io.nebulas.explorer.mapper.NatRecordMapper;
 import io.nebulas.explorer.model.JsonResult;
+import io.nebulas.explorer.service.blockchain.NatService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +22,7 @@ public class NatController {
     private static final int DEFAULT_PAGE_SIZE = 20;
 
     @Autowired
-    private NatRecordMapper natRecordMapper;
+    private NatService natService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public JsonResult list(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
@@ -31,7 +31,17 @@ public class NatController {
         if (page < 1) {
             page = 1;
         }
-        List<NatRecord> records = natRecordMapper.getByAddress(address, (page - 1) * pageSize, pageSize);
-        return JsonResult.success(records);
+        List<NatRecord> records = natService.list((page - 1) * pageSize, pageSize, address);
+        long total = natService.total(address);
+        long totalPage = total / pageSize;
+        if (total % pageSize != 0) {
+            totalPage++;
+        }
+        JsonResult result = JsonResult.success();
+        result.put("list", records);
+        result.put("total", total);
+        result.put("totalPage", totalPage);
+        result.put("currentPage", page);
+        return result;
     }
 }

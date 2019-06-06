@@ -22,4 +22,6 @@ public interface NatRecordMapper {
     @Select("select * from nat_record where address=#{address} order by `timestamp` desc limit #{offset}, #{limit}")
     List<NatRecord> getByAddress(@Param("address") String address, @Param("offset") int offset, @Param("limit") int limit);
 
+    @Select("select count(*) from nat_record where address=#{address}")
+    long countByAddress(@Param("address") String address);
 }
