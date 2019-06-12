@@ -594,10 +594,10 @@
                             <th>Value</th>
                             <th>Age</th>
                             <th>Block</th>
-                            <th>Source</th>
+                            <th style="width: 25%;">Source</th>
                         </tr>
                         <tr v-for="(o, i) in natChangeList" :key="i">
-                            <td class="text-center"><img :src="natIcon(o)" width="14px"/></td>
+                            <td class="text-center"><img :src="natIcon(o)" width="30px"/></td>
                             <td class="amount">{{ tokenAmount(o.amount, 18) }} NAT</td>
                             <td class="time font-color-555555 font-14">
                                 <div>
@@ -614,11 +614,14 @@
                                 <i class="font-14 font-color-000000" v-else>pending</i>
                             </td>
                             <td class="font-14">
-                                <div v-if="o.source === 1">NR Airdrop</div>
-                                <div v-if="o.source === 2">NAS Pledge</div>
-                                <router-link v-if="o.source === 3" v-bind:to='fragApi + "/tx/" + o.txHash'>
+                                <div v-if="o.source === 1">NR incentive</div>
+                                <div v-if="o.source === 2">Pledge rewards</div>
+                                <div v-if="o.source === 3">
                                     <span>NAT Vote</span>
-                                </router-link>
+                                    <router-link v-bind:to='fragApi + "/tx/" + o.txHash' class="ml-2">
+                                        <span>tx# {{o.txHash.slice(0, 6) + '...' + o.txHash.slice(o.txHash.length - 6)}}</span>
+                                    </router-link>
+                                </div>
                             </td>
                         </tr>
                     </table>
@@ -691,6 +694,11 @@
                 this.isContract = false;
                 this.nrc20TxList = [];
                 this.nrc20TxCnt = 0;
+                this.natChangeList = [];
+                this.isNoNatChanges = false;
+                this.totalPage = 0;
+                this.currentPage = 0;
+
                 this.$root.showModalLoading = true;
                 api.getAddress(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;
