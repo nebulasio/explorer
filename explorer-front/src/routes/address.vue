@@ -365,8 +365,7 @@
             <vue-tab-buttons class=mt50 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
             <div class=mt20></div>
 
-            <!--    Transactions
-                ============================================================ -->
+            <!-- ============================ Transactions ================================ -->
             <div class="tab" v-show="tab == 1">
                 <div v-if="txs.length" class="d-block d-md-flex flex-row align-items-center">
                     <div class="col mr-auto px-0 font-16 font-bold font-color-000000">
@@ -486,8 +485,7 @@
                 </div>
             </div>
 
-            <!--    NRC20 Transactions
-                ============================================================ -->
+            <!-- ============================ NRC20 Transactions ================================ -->
             <div class="tab" v-show="tab === 2 && !isContract">
                 <div v-if="nrc20TxList.length" class="d-block d-md-flex flex-row align-items-center">
                     <div class="col mr-auto px-0 font-16 font-bold font-color-000000">
@@ -584,8 +582,7 @@
             </div>
 
 
-            <!--    NAT Changes
-                ============================================================ -->
+            <!-- =========================== NAT Changes ================================= -->
             <div class="tab" v-show="tab === 3 && !isContract">
                 <div class="explorer-table-container">
                     <table v-if="natChangeList.length" class="mt20 explorer-table list-table">
@@ -614,8 +611,8 @@
                                 <i class="font-14 font-color-000000" v-else>pending</i>
                             </td>
                             <td class="font-14">
-                                <div v-if="o.source === 1">NR incentive</div>
-                                <div v-if="o.source === 2">Pledge rewards</div>
+                                <div v-if="o.source === 1">NR Incentive</div>
+                                <div v-if="o.source === 2">Pledge Rewards</div>
                                 <div v-if="o.source === 3">
                                     <span>NAT Vote</span>
                                     <router-link v-bind:to='fragApi + "/tx/" + o.txHash' class="ml-2">
@@ -641,8 +638,7 @@
             </div>
 
 
-            <!-- code
-             ============================================================ -->
+            <!-- ============================== code ============================== -->
             <div class=tab v-show="tab == 2 && isContract">
                 <table class="mt20 table">
                     <tr>
@@ -683,6 +679,9 @@
             },
             tabButtons() {
                 var buttons = ["Transactions", "NRC20 Token Txns", "NAT"];
+                if (this.$route.params.api === 'testnet') {
+                    buttons = ["Transactions", "NRC20 Token Txns"];
+                }
                 if (this.isContract) {
                     buttons = ["Transactions", "Contract Code"];
                 }
