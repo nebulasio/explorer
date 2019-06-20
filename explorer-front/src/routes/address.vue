@@ -291,7 +291,7 @@
                             </router-link>
                             <img src="../../static/img/icon_arrow_down_black.png" alt="" width="12">
                         </div>
-                        <div v-if="validTokens.length > 1" class="dropdown-menu">
+                        <div v-if="validTokens.length > 0" class="dropdown-menu">
                             <div class="dropdown-item text-right" v-for="(token, i) in validTokens" :key=i
                             @click='displayToken = token;'>
                                 {{ tokenAmount(token.balance, token.decimal) }} {{ token.tokenName }}
