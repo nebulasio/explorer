@@ -226,7 +226,7 @@
                    v-bind:subtitlemonospaced="!!$route.params.id"
                    v-bind:blockies="$route.params.id">
         </vue-bread>
-        <div class="container explorer-table-container" v-if=obj>
+        <div v-if=obj class="container explorer-table-container">
             <div class="font-24 font-bold font-color-000000 table-title">
                 Overview
                 <span class=c777 v-show=obj.address.alias> | {{ obj.address.alias }}</span>
@@ -291,7 +291,7 @@
                             </router-link>
                             <img src="../../static/img/icon_arrow_down_black.png" alt="" width="12">
                         </div>
-                        <div v-if="validTokens.length > 0" class="dropdown-menu">
+                        <div class="dropdown-menu">
                             <div class="dropdown-item text-right" v-for="(token, i) in validTokens" :key=i
                             @click='displayToken = token;'>
                                 {{ tokenAmount(token.balance, token.decimal) }} {{ token.tokenName }}
@@ -352,7 +352,7 @@
                             </router-link>
                             <img src="../../static/img/icon_arrow_down_black.png" alt="" width="12">
                         </div>
-                        <div v-if="validTokens.length > 1" class="dropdown-menu">
+                        <div class="dropdown-menu">
                             <div class="dropdown-item text-right" v-for="(token, i) in validTokens" :key=i
                             @click='displayToken = token;'>
                                 {{ tokenAmount(token.balance, token.decimal) }} {{ token.tokenName }}
@@ -688,11 +688,20 @@
                 return buttons;
             },
             urlChange() {
+                this.obj = null;
                 this.tab = 1;
-                this.contract = null;
+                this.txs = [];
+                this.tokens = null;
+                this.displayToken = null;
+                this.decimal = null;
                 this.isContract = false;
+                this.contract = null;
+                this.creator = null;
+                this.deployTxHash = null;
+                this.contractCode = null;
                 this.nrc20TxList = [];
                 this.nrc20TxCnt = 0;
+                this.isNoNrc20Tx = false;
                 this.natChangeList = [];
                 this.isNoNatChanges = false;
                 this.totalPage = 0;
