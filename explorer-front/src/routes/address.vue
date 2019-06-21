@@ -611,6 +611,11 @@
                                 <i class="font-14 font-color-000000" v-else>pending</i>
                             </td>
                             <td class="font-14">
+                                <div v-if="o.source === 0">
+                                    <router-link v-bind:to='fragApi + "/tx/" + o.txHash'>
+                                        <span>tx# {{o.txHash.slice(0, 6) + '...' + o.txHash.slice(o.txHash.length - 6)}}</span>
+                                    </router-link>
+                                </div>
                                 <div v-if="o.source === 1">NR Incentive</div>
                                 <div v-if="o.source === 2">Pledge Rewards</div>
                                 <div v-if="o.source === 3">
