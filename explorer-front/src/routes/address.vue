@@ -311,13 +311,14 @@
                     <td class="base-info-key font-16 font-color-555555 pl-16" style="vertical-align: top; padding-top: 12px;">QR Code:</td>
                     <td style="vertical-align: top; padding-top: 12px;">
                         <a class="d-flex font-16 align-items-center" href=# v-on:click="showOrHideQRCode()" style="text-decoration: none;" data-toggle="collapse" data-target="#collapse-mobile" aria-expanded="false" aria-controls="collapseExample">
-                            <span class="font-16" v-show="isShowQRCode === false">View</span>
+                            <span class="font-16" v-show="isShowQRCode === false">View to Pay</span>
                             <span class="font-16" v-show="isShowQRCode === true">Hide</span>
                             <img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowQRCode ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
                         </a>
                         <div class="collapse" id="collapse-mobile">
                             <div class="pt-10">
                                 <qrcode-vue :value="$route.params.id" :size="220" level="H"></qrcode-vue>
+                                <span class="font-16 detail">Scan using <a href="https://nano.nebulas.io/index_en.html" target="_blank">NAS Nano</a></span>
                             </div>
                         </div>
                     </td>
@@ -387,13 +388,14 @@
                     QR Code:
                     <div>
                         <a href=# v-on:click.prevent="showOrHideQRCode()" style="text-decoration: none;">
-                            <span class="align-middle font-16 weight-400" v-show="isShowQRCode === false">View</span>
+                            <span class="align-middle font-16 weight-400" v-show="isShowQRCode === false">View to Pay</span>
                             <span class="align-middle font-16 weight-400" v-show="isShowQRCode === true">Hide</span>
                             <img style="margin-left: 12px;" class="icon16" v-bind:src="isShowQRCode ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
                         </a>
                         <div v-show="isShowQRCode === true">
                             <div class="pt-10">
                                 <qrcode-vue :value="$route.params.id" :size="220" level="H"></qrcode-vue>
+                                <span class="font-16 detail">Scan using <a href="https://nano.nebulas.io/index_en.html" target="_blank">NAS Nano</a></span>
                             </div>
                         </div>
                     </div>
