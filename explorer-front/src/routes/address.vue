@@ -217,6 +217,14 @@
         padding-left: 16px;
     }
 
+    .vue-address .pt-10 {
+        padding-top: 10px;
+    }
+
+    .weight-400 {
+        font-weight: 400;
+    }
+
 </style>
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
@@ -299,6 +307,22 @@
                         </div>
                     </td>
                 </tr>
+                <tr v-if="!isContract">
+                    <td class="base-info-key font-16 font-color-555555 pl-16" style="vertical-align: top; padding-top: 12px;">QR Code:</td>
+                    <td style="vertical-align: top; padding-top: 12px;">
+                        <a class="d-flex font-16 align-items-center" href=# v-on:click="showOrHideQRCode()" style="text-decoration: none;" data-toggle="collapse" data-target="#collapse-mobile" aria-expanded="false" aria-controls="collapseExample">
+                            <span class="font-16" v-show="isShowQRCode === false">View to Pay</span>
+                            <span class="font-16" v-show="isShowQRCode === true">Hide</span>
+                            <img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowQRCode ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
+                        </a>
+                        <div class="collapse" id="collapse-mobile">
+                            <div class="pt-10">
+                                <qrcode-vue :value="$route.params.id" :size="220" level="H"></qrcode-vue>
+                                <span class="font-16 detail">Scan using <a href="https://nano.nebulas.io/index_en.html" target="_blank">NAS Nano</a></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
             </table>
 
             <div class="mobile-detail d-md-none">
@@ -356,6 +380,22 @@
                             <div class="dropdown-item text-right" v-for="(token, i) in validTokens" :key=i
                             @click='displayToken = token;'>
                                 {{ tokenAmount(token.balance, token.decimal) }} {{ token.tokenName }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="!isContract">
+                    QR Code:
+                    <div>
+                        <a href=# v-on:click.prevent="showOrHideQRCode()" style="text-decoration: none;">
+                            <span class="align-middle font-16 weight-400" v-show="isShowQRCode === false">View to Pay</span>
+                            <span class="align-middle font-16 weight-400" v-show="isShowQRCode === true">Hide</span>
+                            <img style="margin-left: 12px;" class="icon16" v-bind:src="isShowQRCode ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
+                        </a>
+                        <div v-show="isShowQRCode === true">
+                            <div class="pt-10">
+                                <qrcode-vue :value="$route.params.id" :size="220" level="H"></qrcode-vue>
+                                <span class="font-16 detail">Scan using <a href="https://nano.nebulas.io/index_en.html" target="_blank">NAS Nano</a></span>
                             </div>
                         </div>
                     </div>
@@ -663,12 +703,15 @@
         BigNumber = require("bignumber.js"),
         base64 = require("js-base64").Base64;
 
+    import QrcodeVue from 'qrcode.vue'
+
     module.exports = {
         components: {
             "vue-bread": require("@/components/vue-bread").default,
             "vue-pagination": require("@/components/vue-pagination").default,
             "vue-tab-buttons": require("@/components/vue-tab-buttons").default,
-            "vue-blockies": require("@/components/vue-blockies").default
+            "vue-blockies": require("@/components/vue-blockies").default,
+            QrcodeVue
         },
         computed: {
             formatCode() {
@@ -786,10 +829,14 @@
                 natChangeList: [],
                 isNoNatChanges: false,
                 totalPage: 0,
-                currentPage: 0
+                currentPage: 0,
+                isShowQRCode: false
             };
         },
         methods: {
+            showOrHideQRCode(){
+                this.isShowQRCode = !this.isShowQRCode;
+            },
             isDark(i) {
                 return (i % 2 === 0);
             },
