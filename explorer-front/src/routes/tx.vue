@@ -92,7 +92,7 @@
                         <td class="font-color-555555" style="padding-left: 24px;">TxReceipt Status:</td>
                         <td class="d-flex align-items-center" v-if="tx.status === 0" style="height: inherit">
                             <img class="icon18" src="../../static/img/ic_tx_status_failed.png?v=20190110" />
-                            <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ errMsg }} )</span>
+                            <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ tx.executeError }} )</span>
                         </td>
                         <td class="d-flex align-items-center" v-else-if="tx.status === 1" style="height: inherit">
                             <img class="icon18" src="../../static/img/ic_tx_status_success.png" />
@@ -178,7 +178,7 @@
                     TxReceipt Status:
                     <td class="detail d-flex align-items-center" v-if="tx.status === 0" style="height: inherit">
                             <img class="icon18" src="../../static/img/ic_tx_status_failed.png?v=20190110" />
-                            <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ errMsg }} )</span>
+                            <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ tx.executeError }} )</span>
                         </td>
                         <td class="detail d-flex align-items-center" v-else-if="tx.status === 1" style="height: inherit">
                             <img class="icon18" src="../../static/img/ic_tx_status_success.png" />
@@ -420,15 +420,15 @@
                 var decimals = BigNumber('1e+18');
                 return amount.div(decimals).toFormat();
             },
-            errMsg() {
-                if (this.tx.executeError === 'insufficient balance') {
-                    return 'Insufficient Balance of Transfer Address';
-                } else if (this.tx.executeError === 'insufficient gas') {
-                    return 'Out of Gas';
-                } else {
-                    return 'Contract Execution Failed';
-                }
-            }
+            // errMsg() {
+            //     if (this.tx.executeError === 'insufficient balance') {
+            //         return 'Insufficient Balance of Transfer Address';
+            //     } else if (this.tx.executeError === 'insufficient gas') {
+            //         return 'Out of Gas';
+            //     } else {
+            //         return 'Contract Execution Failed';
+            //     }
+            // }
         },
         data() {
             return {
