@@ -283,7 +283,7 @@ public class NebSyncService {
 
     private void createContractAddress(String contractAddress, String creator, String deployTxHash) {
         NebAddress address = nebAddressService.getNebAddressByHashRpc(contractAddress);
-        if (address==null){
+        if (address == null) {
             log.info("未查到智能合约地址(not found on chain / network error): {}", contractAddress);
             return;
         }
@@ -361,7 +361,6 @@ public class NebSyncService {
     }
 
 
-
     private void processContractBalanceInfo(Transaction tx, JSONObject data) {
         log.error("开始处理合约地址资产: " + data.toJSONString());
         if (!isContractTransfer(data)) {
@@ -376,13 +375,9 @@ public class NebSyncService {
 
     private void syncContractBalanceAddress(String address, String contract) {
         try {
-            NebContractTokenBalance addressBalance = contractTokenBalanceService.getByAddressAndContract(address, contract);
-            if (addressBalance == null) {
-                addressBalance = contractTokenBalanceService.getFromRPC(address, contract);
-                if (addressBalance != null) {
-                    contractTokenBalanceService.addAddressBalance(addressBalance);
-                }
-                log.error("从RPC获取合约地址资产: " + addressBalance.getBalance());
+            NebContractTokenBalance rpcAddressBalance = contractTokenBalanceService.getFromRPC(address, contract);
+            if (rpcAddressBalance != null) {
+                contractTokenBalanceService.updateAddressBalance(rpcAddressBalance);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -404,7 +399,6 @@ public class NebSyncService {
         }
         return new JSONObject();
     }
-
 
 
 }
