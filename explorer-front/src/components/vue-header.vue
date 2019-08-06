@@ -100,6 +100,7 @@
     }
 
 </style>
+
 <template>
     <nav class="bg-black navbar navbar-expand-lg navbar-dark vue-header">
         <div class=container>
@@ -112,6 +113,7 @@
             <button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
                 <span class=navbar-toggler-icon></span>
             </button>
+
             <div class="collapse navbar-collapse mr-28" id=navbarSupportedContent>
                 <form class=form-inline v-on:submit.prevent=onSubmit>
                     <img src=/static/img/icon_search.png width=16 alt="">
@@ -146,14 +148,14 @@
                         </a>
                     </li>
                 </ul>
-                
+
             </div>
         </div>
     </nav>
 </template>
 <script>
     var api = require("@/assets/api"),
-        appConfig = require("@/assets/app-config");
+    appConfig = require("@/assets/app-config");
 
     module.exports = {
         data() {
