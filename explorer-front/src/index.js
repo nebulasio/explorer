@@ -164,7 +164,7 @@ var myComp = Vue.extend({
 						</div>
 					</div>`,
 	mounted() {
-		this.$translate.setLang('es_ES');
+		this.$translate.setLang('en_US');
 	},
 	locales: {
 		es_ES: {
@@ -198,9 +198,6 @@ var vm = new Vue({
 
 var HomeIndicator = Vue.extend({
 	template: `<span>{{ t('home') }}<span class=sr-only>({{ t('current') }})</span></span>`,
-	mounted() {
-		this.$translate.setLang('es_ES');
-	},
 	locales: {
 		es_ES: {
 			'home': 'Inicio',
@@ -217,4 +214,24 @@ var vm = new Vue({
 	el: '#homeindicator',
 	components: {HomeIndicator},
 	template: `<div><home-indicator></home-indicator></div>`
+});
+
+// Daily transactions (for demo purposes in this stage)
+
+var DailyTx = Vue.extend({
+	template: `<div class="item-title">{{ t('dailytxs') }}</div>`,
+	locales: {
+		es_ES: {
+			'dailytxs': 'Transacciones diarias',
+		},
+		en_US: {
+			'dailytxs': 'Daily Transactions',
+		}
+	}
+});
+
+var vm = new Vue({
+	el: '#demoi18n3',
+	components: {DailyTx},
+	template: `<div><daily-tx></daily-tx></div>`
 });

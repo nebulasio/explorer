@@ -565,7 +565,7 @@
             display: none;
         }
     }
-    
+
 
     @media (max-width: 414px) {
         .vue-dashboard .row1 .data-source {
@@ -672,7 +672,7 @@
             <div class="row row1">
                 <div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
                     <div class="item-bg">
-                        <div class="item-title" >Daily Transactions</div>
+                        <div id="demoi18n3"></div>
                         <div class="details" v-if="dailyTxChartOptions">
                             <!-- <div class="data-source">Data Sources: Nebulas</div> -->
                             <span v-if="todayTxCnt >= 0">Today</span>
@@ -810,7 +810,7 @@
                     </div>
                 </div>
             </div>
-            <!--ATP mobile中间广告位-->  
+            <!--ATP mobile中间广告位-->
             <div class="flex atlaspAds-bottom d-md-none" id="atlaspAds-middle-mobile"></div>
             <!-- ===================5===================== -->
             <div class="row row5">
@@ -858,7 +858,7 @@
                                         From
                                         <router-link :to='fragApi + "/address/" + tx.from.hash'>
                                             <span class="monospace">{{ tx.from.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.from.hash.slice(-4) }}</span>
-                                        </router-link>    
+                                        </router-link>
                                     </span>
                                     <span class="fromto d-none d-sm-inline">
                                         To
@@ -875,10 +875,10 @@
                     </div>
                 </div>
             </div>
-            <!--ATP底部广告位-->  
+            <!--ATP底部广告位-->
             <div class="flex atlaspAds-bottom d-none d-md-block" id="atlaspAds-bottom"></div>
         </div>
-        <!--ATP侧边栏广告位-->  
+        <!--ATP侧边栏广告位-->
         <div class="flex atlaspAds" id="atlaspAds-side"></div>
     </div>
 </template>
@@ -913,7 +913,7 @@
             dailyTxChartOptions() {
                 if (!this.dailyTxData) return null;
                 var arr = [],
-                    dates = [], 
+                    dates = [],
                     nums = [];
                 for (var k in this.dailyTxData) {
                     arr.push([k, this.dailyTxData[k]]);
@@ -1011,7 +1011,7 @@
                     return null;
                 }
                 var arr = this.staticInfo.addressWeekList;
-                var dates = [], 
+                var dates = [],
                     nums = [];
 
                 arr.sort(function (a, b) { return a.timestamp > b.timestamp; });
@@ -1023,7 +1023,7 @@
                     nums.push(arr[i].addressCount);
                     dates.push(arr[i].timestamp);
                 }
-                
+
                 let vm = this;
                 var options = {
                     grid: { left: '30', bottom: '50', right: '17', top: '10', containLabel: false },
@@ -1133,7 +1133,7 @@
             this.shortIntervalID = setInterval(() => {
                 api.getTx({ type: "latest" }, o => this.txs = this.addLocalTimestamp(o));                   //最新一波 tx
                 api.getBlock({ type: "newblock" }, o => {                           //获取最新一个 block
-                    this.addLocalTimestamp(o);                       
+                    this.addLocalTimestamp(o);
                     try {
                         if (o[0].height != this.blocks[0].height) {
                             this.blocks.splice(0, 0, o[0]);
@@ -1155,10 +1155,10 @@
             }, 60000);
 
             if (this.$root.showAtpAds) {
-                /*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/  
+                /*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/
                 var atpAds = AtlasAds('pbg91eenif2mbsoo3g1qg');
 
-                //获取广告 传入div containerId和广告的宽高（getAd set the containerId and dimension wide high）  
+                //获取广告 传入div containerId和广告的宽高（getAd set the containerId and dimension wide high）
                 atpAds.getAd('#atlaspAds-bottom', 'nas_1200x100_001');
                 atpAds.getAd('#atlaspAds-side', 'nas_360x300_001');
                 atpAds.getAd('#atlaspAds-middle-mobile', 'nas_720x200_001');
@@ -1221,4 +1221,3 @@
         }
     }
 </script>
-
