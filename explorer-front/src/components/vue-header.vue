@@ -119,6 +119,7 @@
                     <img src=/static/img/icon_search.png width=16 alt="">
                     <input class="mr-sm-2 font-12" v-model=search type=search placeholder="Search by Address / Txhash / Block / Token">
                 </form>
+
                 <ul class="navbar-nav ml-auto">
                     <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
                         <router-link v-bind:to="fragApi + '/'" class=nav-link>HOME
