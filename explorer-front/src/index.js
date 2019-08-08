@@ -150,17 +150,10 @@ function onAfterEach(to, from) {
 Vue.use(VueTranslate);
 
 var myComp = Vue.extend({
-	template: `<div><span v-translate>{{ t('draconis') }}</span></div>`,
-
+	template: `<div><span>{{ t('draconis') }}</span></div>`,
 	mounted() {
-		// Define what language you want to use.
-		// This can be called in something like a header with a language selector menu
-		// Or any other case, doesn't need to be called in all components, but
-		// at least in one, so it sets the global language of the plugin
 		this.$translate.setLang('es_ES');
 	},
-
-	// The translations itself, keyed by language or anything else you one
 	locales: {
 		es_ES: {
 			'draconis': 'Hola Mundo'
@@ -172,4 +165,23 @@ var vm = new Vue({
 	el: '#app',
 	components: {myComp},
 	template: `<div><my-comp></my-comp></div>`
+});
+
+var myComp2 = Vue.extend({
+	template: `<span>{{ t('home') }}<span class=sr-only>({{ t('current') }})</span></span>`,
+	mounted() {
+		this.$translate.setLang('es_ES');
+	},
+	locales: {
+		es_ES: {
+			'home': 'Inicio',
+			'current': 'actual'
+		}
+	}
+});
+
+var vm = new Vue({
+	el: '#homeindicator',
+	components: {myComp2},
+	template: `<div><my-comp2></my-comp2></div>`
 });
