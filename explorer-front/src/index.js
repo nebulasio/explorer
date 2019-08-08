@@ -149,25 +149,54 @@ function onAfterEach(to, from) {
 
 Vue.use(VueTranslate);
 
+// Language selector
 var myComp = Vue.extend({
-	template: `<div><span>{{ t('draconis') }}</span></div>`,
+	template:	`<div>
+						<a class="nav-link" href=# id=language-selector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+							{{ t('Languages') }}
+							<img src=/static/img/icon_arrow_down.png width=12 alt="">
+						</a>
+						<div class=dropdown-menu aria-labelledby=language-selector>
+							<div>
+								<a href="#" class="dropdown-item" v-on:click.prevent=translateToEnglish()>{{ t('English') }}</a>
+								<a href="#" class="dropdown-item" v-on:click.prevent=translateToSpanish()>{{ t('Spanish') }}</a>
+							</div>
+						</div>
+					</div>`,
 	mounted() {
 		this.$translate.setLang('es_ES');
 	},
 	locales: {
 		es_ES: {
-			'draconis': 'Hola Mundo'
+			'Languages': 'Idiomas',
+			'English': 'Inglés',
+			'Spanish': 'Español'
+		},
+		en_US: {
+			'Languages': 'Languages',
+			'English': 'English',
+			'Spanish': 'Spanish'
+		}
+	},
+	methods: {
+		translateToSpanish() {
+			this.$translate.setLang('es_ES');
+		},
+		translateToEnglish() {
+			this.$translate.setLang('en_US');
 		}
 	}
 });
 
 var vm = new Vue({
-	el: '#app',
+	el: '#lang-sel',
 	components: {myComp},
 	template: `<div><my-comp></my-comp></div>`
 });
 
-var myComp2 = Vue.extend({
+// Home link (for demo purposes in this stage)
+
+var HomeIndicator = Vue.extend({
 	template: `<span>{{ t('home') }}<span class=sr-only>({{ t('current') }})</span></span>`,
 	mounted() {
 		this.$translate.setLang('es_ES');
@@ -176,12 +205,16 @@ var myComp2 = Vue.extend({
 		es_ES: {
 			'home': 'Inicio',
 			'current': 'actual'
+		},
+		en_US: {
+			'home': 'Home',
+			'current': 'current'
 		}
 	}
 });
 
 var vm = new Vue({
 	el: '#homeindicator',
-	components: {myComp2},
-	template: `<div><my-comp2></my-comp2></div>`
+	components: {HomeIndicator},
+	template: `<div><home-indicator></home-indicator></div>`
 });

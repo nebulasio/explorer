@@ -148,10 +148,8 @@
 							<img src=/static/img/icon_switcher.png width=12 alt="">
 						</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href=# role=button>
-							<div id="app"></div>
-						</a>
+					<li class="dropdown nav-item">
+						<div id="lang-sel"></div>
 					</li>
 				</ul>
 
