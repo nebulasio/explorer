@@ -706,13 +706,13 @@
                 </div>
             </div>
             <!-- ====================dip program==================== -->
-            <div v-if="($root.mainnetDipStarted && $route.params.api !== 'testnet') || ($root.testnetDipStarted && $route.params.api === 'testnet')" class="row">
+            <!-- <div v-if="($root.mainnetDipStarted && $route.params.api !== 'testnet') || ($root.testnetDipStarted && $route.params.api === 'testnet')" class="row">
                 <div class="col">
                     <div class="flex-item item-bg item-shadow">
                         <vue-dip-banner></vue-dip-banner>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- ====================2==================== -->
             <div class="row row2">
                 <div class="col">
@@ -894,7 +894,7 @@
     module.exports = {
         components: {
             'vchart': ECharts,
-            "vue-dip-banner": require("@/components/vue-dip-banner").default
+            // "vue-dip-banner": require("@/components/vue-dip-banner").default
         },
         data() {
             return {
