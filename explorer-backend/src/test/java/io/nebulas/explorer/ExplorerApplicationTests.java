@@ -34,17 +34,7 @@ public class ExplorerApplicationTests {
      */
     @Test
     public void testDipTransactionParse() throws ParseException {
-        NaxPeriod period = new NaxPeriod();
-        period.setPeriod(1L);
-        period.setLastDistribute(1000L);
-        period.setTotalDistribute(22L);
-        period.setTotalNAS(10000000L);
-        period.setTotalSupply(333L);
-        naxPeriodMapper.insert(period);
 
-        NaxPeriod naxPeriodFromDB = naxPeriodMapper.getByPeriod(1L);
-        System.out.println(naxPeriodFromDB);
-        //Assert.assertTrue(naxPeriodFromDB.size()>0);
     }
 
 }
