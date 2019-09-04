@@ -29,9 +29,9 @@ public class NatSyncService {
 
     private static final String TOPIC_INNER_CONTRACT = "chain.innerContract";
     private static final String TOPIC_NR = "chain.contract.nr";
-    private static final String TOPIC_PLEDGE = "chain.contract.pledge";
+    private static final String TOPIC_PLEDGE = "chain.contract.1958f60c9621a9c562cca6a5daa7f9df4ee42a5bbbaacb086a19.pledge";
     private static final String TOPIC_VOTE = "chain.contract.vote";
-    private static final String TOPIC_NAT = "chain.contract.NATToken";
+    private static final String TOPIC_NAT = "chain.contract.1958576b19d76d2ce19b90c7b5b244695c6ffa1797c3f6ae7528.NATToken";
 
     private static final String CONTRACT_NAT = "n1mpgNi6KKdSzr7i5Ma7JsG5yPY9knf9He7";
 

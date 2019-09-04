@@ -15,6 +15,7 @@ import io.nebulas.explorer.model.vo.Nrc20TransactionVo;
 import io.nebulas.explorer.model.vo.TransactionVo;
 import io.nebulas.explorer.util.DecodeUtil;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
  */
 @AllArgsConstructor
 @Service
+@Slf4j
 public class NebTransactionService {
     private final NebTransactionMapper nebTransactionMapper;
     private final NebPendingTransactionMapper nebPendingTransactionMapper;
@@ -210,23 +212,27 @@ public class NebTransactionService {
         List<Nrc20TransactionVo> nrc20TxList = Lists.newLinkedList();
         //过滤掉非nrc20的数据,并且提取对应的data,提取属于自己地址的交易
         contractTxList.forEach(nebTransaction -> {
-            JSONObject data = DecodeUtil.decodeData(nebTransaction.getData());
-            if (DecodeUtil.isContractTransfer(data)) {
-                //将to的合约地址放到对应的contractAddress字段里
-                nebTransaction.setContractAddress(nebTransaction.getTo());
-                JSONArray args = data.getJSONArray("Args");
-                //"Args" -> "["n1JdmmyhrrqBuESseZSbrBucnvugSewSMTE","9299123456789987654321"]"
-                String to = args.get(0).toString();
-                String value = args.get(1).toString();
-                nebTransaction.setTo(to);
-                nebTransaction.setValue(value);
+            try {
+                JSONObject data = DecodeUtil.decodeData(nebTransaction.getData());
+                if (DecodeUtil.isContractTransfer(data)) {
+                    //将to的合约地址放到对应的contractAddress字段里
+                    nebTransaction.setContractAddress(nebTransaction.getTo());
+                    JSONArray args = data.getJSONArray("Args");
+                    //"Args" -> "["n1JdmmyhrrqBuESseZSbrBucnvugSewSMTE","9299123456789987654321"]"
+                    String to = args.get(0).toString();
+                    String value = args.get(1).toString();
+                    nebTransaction.setTo(to);
+                    nebTransaction.setValue(value);
 
-                if (nebTransaction.getFrom().equals(addressHash) || nebTransaction.getTo().equals(addressHash)) {
-                    Nrc20TransactionVo nrc20TransactionVo = new Nrc20TransactionVo();
-                    nrc20TransactionVo.buildFromNebTransaction(nebTransaction);
-                    nrc20TransactionVo.setTokenDecimals(contractMap.get(nrc20TransactionVo.getContractAddress()));
-                    nrc20TxList.add(nrc20TransactionVo);
+                    if (nebTransaction.getFrom().equals(addressHash) || nebTransaction.getTo().equals(addressHash)) {
+                        Nrc20TransactionVo nrc20TransactionVo = new Nrc20TransactionVo();
+                        nrc20TransactionVo.buildFromNebTransaction(nebTransaction);
+                        nrc20TransactionVo.setTokenDecimals(contractMap.get(nrc20TransactionVo.getContractAddress()));
+                        nrc20TxList.add(nrc20TransactionVo);
+                    }
                 }
+            }catch (Exception e){
+                log.error("Got NRC20 txs error: Address - {}; Tx - {} ", addressHash, nebTransaction.getHash());
             }
         });
 
