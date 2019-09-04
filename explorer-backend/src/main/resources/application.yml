@@ -70,14 +70,14 @@ pendingTxExpiredTime: 1
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://172.16.15.150:3306/explorer_test?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
+    url: jdbc:mysql://172.16.15.117:3306/explorer_test?autoCommit=true&autoReconnect=true&useUnicode=true&tinyInt1isBit=false&zeroDateTimeBehavior=round&characterEncoding=UTF-8&yearIsDateType=false
     username: root
     password: root@mysql
   thymeleaf:
     cache: false
     mode: LEGACYHTML5
 redis:
-  host: 172.16.15.150
+  host: 127.0.0.1
   port: 6379
   password:
   database: 2
@@ -85,7 +85,7 @@ environment: dev
 pendingTxExpiredTime: 1
 grpc:
   host: 47.92.203.173
-  port: 9684
+  port: 8684
   enableKeepAlive: true
   keepAliveWithoutCalls: true
   keepAliveTimeout: 2

@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 class ContractCallParameter {
     private String function;
     private String args;
+
 }

@@ -123,6 +123,21 @@ public class NebApiServiceWrapper {
         }
     }
 
+    public CallContractResponse callContractGetNax(String address, String args, String contract) {
+        if (StringUtils.isEmpty(address) || StringUtils.isEmpty(contract)) {
+            return null;
+        }
+        try {
+            CallContractRequest request = CallContractRequest.buildNaxRequest(address,args,contract);
+            NebResponse<CallContractResponse> response = nebApiService
+                    .callContract(request)
+                    .toBlocking().first();
+            return response.getResult();
+        } catch (Exception e) {
+            log.info(e.getMessage(), e);
+            return null;
+        }
+    }
     //添加getEventsByHash rpc方法 :xihao.liao@nebulas.io   2018.11
     public GetEventsByHashResponse getEventsByHash(String hash){
         if (StringUtils.isEmpty(hash)){

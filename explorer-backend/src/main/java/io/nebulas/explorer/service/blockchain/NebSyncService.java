@@ -25,6 +25,7 @@ import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionTypeEnum;
 import io.nebulas.explorer.grpc.GrpcChannelService;
 import io.nebulas.explorer.service.NatSyncService;
+import io.nebulas.explorer.service.NaxSyncService;
 import io.nebulas.explorer.service.redis.RedisService;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
@@ -64,6 +65,8 @@ public class NebSyncService {
     private NebDipAwardService nebDipAwardService;
     @Autowired
     private NatSyncService natSyncService;
+    @Autowired
+    private NaxSyncService naxSyncService;
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
 
@@ -131,6 +134,9 @@ public class NebSyncService {
         }
         if (!isLib) {
             natSyncService.sync(block.getHeight(), txs);
+        }
+        if (!isLib) {
+            naxSyncService.sync(block.getHeight(), txs);
         }
         int i = 0;
         for (Transaction tx : txs) {
