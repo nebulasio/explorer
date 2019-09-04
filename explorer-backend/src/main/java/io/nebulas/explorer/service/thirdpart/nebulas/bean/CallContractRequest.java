@@ -37,7 +37,7 @@ public class CallContractRequest {
     private ContractCallParameter contract;
 
     public static CallContractRequest buildQueryBalanceRequest(String address, String contract){
-        ContractCallParameter contractCallParameter = new ContractCallParameter("balanceof", JSON.toJSONString(Collections.singletonList(address)));
+        ContractCallParameter contractCallParameter = new ContractCallParameter("balanceOf", JSON.toJSONString(Collections.singletonList(address)));
         CallContractRequest request = new CallContractRequest();
         request.from = address;
         request.to = contract;
