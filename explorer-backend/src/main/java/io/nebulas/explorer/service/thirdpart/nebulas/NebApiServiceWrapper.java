@@ -1,5 +1,8 @@
 package io.nebulas.explorer.service.thirdpart.nebulas;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -7,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -154,6 +158,23 @@ public class NebApiServiceWrapper {
             log.info(e.getMessage(), e);
             return null;
         }
+    }
+
+    public NebCallResult call(String address, String contract, String function, String... args){
+        SendTransactionRequest request = new SendTransactionRequest();
+        request.setFrom(address);
+        request.setTo(contract);
+        request.setValue("0");
+        request.setGas_price("1000000");
+        request.setGas_limit("20000000");
+        request.setContract(new Contract(function, JSON.toJSONString(Arrays.asList(args))));
+        JSONObject jsonObject = nebApiService.call(request).toBlocking().first().getResult();
+        if (jsonObject==null){
+            return null;
+        }
+        // {"result":"","estimate_gas":"20101","execute_err":"contract check failed"}
+        // {"result":"\"89766036599584280789\"","estimate_gas":"20344","execute_err":""}
+        return new NebCallResult(jsonObject.getString("execute_err"), jsonObject.getString("result"));
     }
 
 }

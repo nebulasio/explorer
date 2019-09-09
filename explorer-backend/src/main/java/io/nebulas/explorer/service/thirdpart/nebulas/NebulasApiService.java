@@ -1,5 +1,7 @@
 package io.nebulas.explorer.service.thirdpart.nebulas;
 
+import com.alibaba.fastjson.JSONObject;
+
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
 import retrofit2.http.Body;
@@ -41,5 +43,6 @@ public interface NebulasApiService {
     @POST("/v1/user/getEventsByHash")
     Observable<NebResponse<GetEventsByHashResponse>> getEventsByHash(@Body GetEventsByHashRequest request);
 
-
+    @POST("/v1/user/call")
+    Observable<NebResponse<JSONObject>> call(@Body SendTransactionRequest request);
 }

@@ -1,7 +1,7 @@
 package io.nebulas.explorer.service.blockchain;
 
-import io.nebulas.explorer.domain.NaxRecord;
-import io.nebulas.explorer.mapper.NaxMapper;
+import io.nebulas.explorer.domain.NaxProfit;
+import io.nebulas.explorer.mapper.NaxProfitMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,13 +13,13 @@ import java.util.List;
 public class NaxService {
 
     @Autowired
-    private NaxMapper naxMapper;
+    private NaxProfitMapper naxProfitMapper;
 
-    public List<NaxRecord> list(int page, int pageSize, String address) {
-        return naxMapper.getByAddress(address, (page - 1) * pageSize, pageSize);
+    public List<NaxProfit> list(int page, int pageSize, String address) {
+        return naxProfitMapper.getByAddress(address, (page - 1) * pageSize, pageSize);
     }
 
     public long total(String address){
-        return naxMapper.countByAddress(address);
+        return naxProfitMapper.countByAddress(address);
     }
 }

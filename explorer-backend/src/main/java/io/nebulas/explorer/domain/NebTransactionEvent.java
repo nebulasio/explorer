@@ -1,5 +1,7 @@
 package io.nebulas.explorer.domain;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,11 +11,12 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class NaxPeriod {
+public class NebTransactionEvent {
     private int id;
-    private long period;
-    private String lastDistribute;
-    private String totalSupply;
-    private String totalNAS;
-    private String totalDistribute;
+    private String txHash;
+    private long block;
+    private String topic;
+    private String data;
+    private Date timestamp;
+    private Date createdAt;
 }

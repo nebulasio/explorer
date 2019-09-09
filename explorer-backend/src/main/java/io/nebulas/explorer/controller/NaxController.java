@@ -1,6 +1,6 @@
 package io.nebulas.explorer.controller;
 
-import io.nebulas.explorer.domain.NaxRecord;
+import io.nebulas.explorer.domain.NaxProfit;
 import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.service.blockchain.NaxService;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class NaxController {
         if (page < 1) {
             page = 1;
         }
-        List<NaxRecord> records = naxService.list(page, pageSize, address);
+        List<NaxProfit> records = naxService.list(page, pageSize, address);
         long total = naxService.total(address);
         long totalPage = total / pageSize;
         if (total % pageSize != 0) {

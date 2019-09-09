@@ -1,29 +1,27 @@
 package io.nebulas.explorer.domain;
 
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.io.Serializable;
-import java.util.Date;
-
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class NaxRecord implements Serializable {
-    public static final int SOURCE_UNKNOWN = 0;
-    public static final int SOURCE_ = 1;
-    public static final int SOURCE_PLEDGE = 2;
-    public static final int SOURCE_VOTE = 3;
-
+public class NaxProfit implements Serializable {
     private int id;
     private String address;
     private String txHash;
     private long block;
-    private String amount;
+    private BigDecimal profit;
     private int source;
+    private long stage;
     private Date timestamp;
     private Date createdAt;
 }
