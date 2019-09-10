@@ -7,7 +7,7 @@ create table if not exists nat_record
   amount    varchar(64) default '',
   source    INTEGER,
   timestamp TIMESTAMP,
-  createdAt TIMESTAMP default current_timestamp
+  createdAt TIMESTAMP
 );
 
 create index nat_record_address_index
