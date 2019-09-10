@@ -158,8 +158,8 @@ var myComp = Vue.extend({
 						</a>
 						<div class=dropdown-menu aria-labelledby=language-selector>
 							<div>
-								<a href="#" class="dropdown-item" v-on:click.prevent=translateToEnglish()>{{ t('English') }}</a>
-								<a href="#" class="dropdown-item" v-on:click.prevent=translateToSpanish()>{{ t('Spanish') }}</a>
+								<a href="#" class="dropdown-item" v-on:click.prevent=translateToEnglish()><img src=/static/img/icon-engflag.png width=12 alt=""> {{ t('English') }}</a>
+								<a href="#" class="dropdown-item" v-on:click.prevent=translateToSpanish()><img src=/static/img/icon-espflag.png width=12 alt=""> {{ t('Spanish') }}</a>
 							</div>
 						</div>
 					</div>`,
@@ -188,7 +188,7 @@ var myComp = Vue.extend({
 	}
 });
 
-var vm = new Vue({
+var vm0 = new Vue({
 	el: '#lang-sel',
 	components: {myComp},
 	template: `<div><my-comp></my-comp></div>`
@@ -210,7 +210,7 @@ var HomeIndicator = Vue.extend({
 	}
 });
 
-var vm = new Vue({
+var vm1 = new Vue({
 	el: '#homeindicator',
 	components: {HomeIndicator},
 	template: `<div><home-indicator></home-indicator></div>`
@@ -230,7 +230,7 @@ var DailyTx = Vue.extend({
 	}
 });
 
-var vm = new Vue({
+var vm2 = new Vue({
 	el: '#demoi18n3',
 	components: {DailyTx},
 	template: `<div><daily-tx></daily-tx></div>`

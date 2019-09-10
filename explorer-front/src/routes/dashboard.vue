@@ -674,10 +674,9 @@
                     <div class="item-bg">
                         <div id="demoi18n3"></div>
                         <div class="details" v-if="dailyTxChartOptions">
-                            <!-- <div class="data-source">Data Sources: Nebulas</div> -->
-                            <span v-if="todayTxCnt >= 0">Today</span>
-                            <span v-if="todayTxCnt >= 0">{{ numberAddComma(todayTxCnt) }}</span>
-                        </div>
+									<span v-if="todayTxCnt >= 0">Today</span>
+									<span v-if="todayTxCnt >= 0">{{ numberAddComma(todayTxCnt) }}</span>
+								</div>
                         <vchart class="daily-chart" v-if="dailyTxChartOptions" :options="dailyTxChartOptions" :autoResize='true'></vchart>
                     </div>
                 </div>
