@@ -837,7 +837,7 @@
 
                     var token = this.tokens[0];
                     for (var index in this.tokens) {
-                        if (this.tokens[index].tokenName === 'NAT') {
+                        if (this.tokens[index].tokenName === 'NAX') {
                             token = this.tokens[index];
                             break;
                         }
@@ -853,7 +853,7 @@
                 return this.isContract ? "Contract" : "Address";
             },
             validTokens() {
-                let tokens = this.tokens.filter(item => {return item.balance !== 0 || item.tokenName === 'NAT'});
+                let tokens = this.tokens.filter(item => {return item.balance !== 0 || item.tokenName === 'NAX'});
                 return tokens.sort((a, b) => {
                     if (a.tokenName === 'NAX' || b.tokenName === 'NAX') {
                         return a.tokenName === 'NAX' ? -1 : 1;
