@@ -67,12 +67,12 @@ environment: dev
 pendingTxExpiredTime: 1
 nax:
   contract:
-    data: n1tERsgbEds8ifkDeLDNfCyrC6nSDt3dU5Z
-    stakingProxy: n1vXQ6dKYvdNCQmnad5fUG8NCoXZ5Um29n6
-  topic: chain.contract.1958b4d2721a33bae52fff8ee1ca50159a9aab4ec085d401b7c4.NAX
+    data: n1mVD6ZNVtuMCkwsVHvut7cDKna61DQY35X
+    stakingProxy: n1kVgRwg5TJVZeEChr5BgGsFrSUUtJuHEHe
+  topic: chain.contract.19586dcd5af213c856763d7703118f83406b24a72b5a8e554b28.NAX
   height:
-    start: 2449350
-    stage: 50
+    start: 2454300
+    stage: 20
 
 
 ---
