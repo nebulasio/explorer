@@ -376,6 +376,9 @@
                     return"";
             },
             urlChange() {
+                if (!this.$route.path.startsWith('/tx/') || !this.$route.params.id) {
+                    return;
+                }
                 this.$root.showModalLoading = true;
                 api.getTx(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;

@@ -622,8 +622,57 @@
             </div>
 
 
-            <!-- =========================== NAT Changes ================================= -->
+            <!-- =========================== NAX Changes ================================= -->
             <div class="tab" v-show="tab === 3 && !isContract">
+                <div class="explorer-table-container">
+                    <table v-if="naxChangeList.length" class="mt20 explorer-table list-table">
+                        <tr class="font-12 font-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
+                            <th style="width: 100px;"></th>
+                            <th>Value</th>
+                            <th>Age</th>
+                            <th>Block</th>
+                            <th style="width: 25%;">Source</th>
+                        </tr>
+                        <tr v-for="(o, i) in naxChangeList" :key="i">
+                            <td class="text-center"><img :src="natIcon(o.profit)" width="30px"/></td>
+                            <td class="amount">{{ tokenAmount(o.profit, 9) }} NAX</td>
+                            <td class="time font-color-555555 font-14">
+                                <div>
+                                    <div>{{ timeConversion(new Date() - o.timestamp) }} ago</div>
+                                    <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                                </div>
+                            </td>
+                            <td class="txs-block">
+                                <router-link class="font-14"
+                                            v-if=o.block
+                                            v-bind:to='fragApi + "/block/" + o.block'>
+                                    <span>{{ o.block }}</span>
+                                </router-link>
+                                <i class="font-14 font-color-000000" v-else>pending</i>
+                            </td>
+                            <td class="font-14">
+                                <div v-if="o.source === 0">Pledge Rewards</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <vue-pagination v-if="naxChangeList.length" v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
+                v-on:prev=onPrev v-on:to=onTo></vue-pagination>
+
+                <div v-if=isNoNaxChanges
+                     style="left: 0;right:0;text-align:center; padding-top: 76px; padding-bottom: 80px;">
+                    <img style="width: 131px; height: 142px;" src="/static/img/no_content.png?v=20190117"/>
+                    <br/>
+                    <div style="margin-top: 12px;">
+                        <span class="text-no-content">No Content</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- =========================== NAT Changes ================================= -->
+            <div class="tab" v-show="tab === 4 && !isContract">
                 <div class="explorer-table-container">
                     <table v-if="natChangeList.length" class="mt20 explorer-table list-table">
                         <tr class="font-12 font-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
@@ -634,7 +683,7 @@
                             <th style="width: 25%;">Source</th>
                         </tr>
                         <tr v-for="(o, i) in natChangeList" :key="i">
-                            <td class="text-center"><img :src="natIcon(o)" width="30px"/></td>
+                            <td class="text-center"><img :src="natIcon(o.amount)" width="30px"/></td>
                             <td class="amount">{{ tokenAmount(o.amount, 18) }} NAT</td>
                             <td class="time font-color-555555 font-14">
                                 <div>
@@ -726,7 +775,7 @@
                 return "0x0";
             },
             tabButtons() {
-                var buttons = ["Transactions", "NRC20 Token Txns", "NAT"];
+                var buttons = ["Transactions", "NRC20 Token Txns", "NAX", "NAT"];
                 if (this.$route.params.api === 'testnet') {
                     buttons = ["Transactions", "NRC20 Token Txns"];
                 }
@@ -736,6 +785,9 @@
                 return buttons;
             },
             urlChange() {
+                if (!this.$route.path.startsWith('/address/') || !this.$route.params.id) {
+                    return;
+                }
                 this.obj = null;
                 this.tab = 1;
                 this.txs = [];
@@ -750,10 +802,14 @@
                 this.nrc20TxList = [];
                 this.nrc20TxCnt = 0;
                 this.isNoNrc20Tx = false;
+
                 this.natChangeList = [];
                 this.isNoNatChanges = false;
                 this.totalPage = 0;
                 this.currentPage = 0;
+
+                this.naxChangeList = [];
+                this.isNoNaxChanges = false;
 
                 this.$root.showModalLoading = true;
                 api.getAddress(this.$route.params.id, o => {
@@ -799,7 +855,9 @@
             validTokens() {
                 let tokens = this.tokens.filter(item => {return item.balance !== 0 || item.tokenName === 'NAT'});
                 return tokens.sort((a, b) => {
-                    if (a.tokenName === 'NAT' || b.tokenName === 'NAT') {
+                    if (a.tokenName === 'NAX' || b.tokenName === 'NAX') {
+                        return a.tokenName === 'NAX' ? -1 : 1;
+                    } else if (a.tokenName === 'NAT' || b.tokenName === 'NAT') {
                         return a.tokenName === 'NAT' ? -1 : 1;
                     } else if (a.tokenName === 'ATP' || b.tokenName === 'ATP') {
                         return a.tokenName === 'ATP' ? 1 : -1;
@@ -828,6 +886,8 @@
                 isNoNrc20Tx: false,
                 natChangeList: [],
                 isNoNatChanges: false,
+                naxChangeList: [],
+                isNoNaxChanges: false,
                 totalPage: 0,
                 currentPage: 0,
                 isShowQRCode: false
@@ -926,7 +986,8 @@
                 return amount.div(decimals).toFormat().shortAmount();
             },
             natIcon(data) {
-                if (data.amount.startsWith('-')) {
+                var str = data + '';
+                if (str.startsWith('-')) {
                     return "/static/img/icon_nat_out.png";
                 }
                 return "/static/img/icon_nat_in.png";
@@ -934,16 +995,29 @@
             nav(n) {
                 this.$root.showModalLoading = true;
 
-                api.getNatChanges(this.$route.params.id, n || 1, 25, o => {
-                    this.$root.showModalLoading = false;
-                    this.natChangeList = o.list || [];
-                    this.isNoNatChanges = this.natChangeList.length === 0;
-                    this.totalPage = o.totalPage;
-                    this.currentPage = o.currentPage;
-                }, xhr => {
-                    this.$root.showModalLoading = false;
-                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
-                });
+                if (this.tab === 3) {
+                    api.getNaxChanges(this.$route.params.id, n || 1, 25, o => {
+                        this.$root.showModalLoading = false;
+                        this.naxChangeList = o.list || [];
+                        this.isNoNaxChanges = this.naxChangeList.length === 0;
+                        this.totalPage = o.totalPage;
+                        this.currentPage = o.currentPage; 
+                    }, xhr => {
+                        this.$root.showModalLoading = false;
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
+                    });
+                } else if (this.tab === 4) {
+                    api.getNatChanges(this.$route.params.id, n || 1, 25, o => {
+                        this.$root.showModalLoading = false;
+                        this.natChangeList = o.list || [];
+                        this.isNoNatChanges = this.natChangeList.length === 0;
+                        this.totalPage = o.totalPage;
+                        this.currentPage = o.currentPage; 
+                    }, xhr => {
+                        this.$root.showModalLoading = false;
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
+                    });
+                } 
             },
             numberAddComma(n) {
                 return utility.numberAddComma(n);
@@ -976,7 +1050,11 @@
                     }, xhr => {
                         this.$root.showModalLoading = false;
                     });
-                } else if (!this.isContract && newTab == 3 && this.natChangeList.length === 0) {
+                } else if (!this.isContract && newTab == 3) {
+                    this.naxChangeList = [];
+                    this.nav(1);
+                } else if (!this.isContract && newTab == 4) {
+                    this.natChangeList = [];
                     this.nav(1);
                 }
             }
