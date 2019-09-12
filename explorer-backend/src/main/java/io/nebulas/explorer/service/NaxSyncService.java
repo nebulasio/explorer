@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Slf4j(topic = "subscribe")
 public class NaxSyncService {
-    private static String KEY_CURRENT_NAS_PLEDGE = "NaxService.key_current_nas_pledge";
 
     private Executor executor = Executors.newCachedThreadPool();
 
@@ -37,10 +36,6 @@ public class NaxSyncService {
 
     @Autowired
     private NaxStageMapper naxStageMapper;
-
-    @Qualifier("customStringTemplate")
-    @Autowired
-    private StringRedisTemplate redisTemplate;
 
     @Value("${nax.height.start}")
     private long naxStartHeight;
@@ -94,9 +89,7 @@ public class NaxSyncService {
     private String getPledgedNasInfo() {
         NebCallResult result = call(contractNaxData, contractNaxData, "getStakingTotalNAS");
         if (!result.hasError()) {
-            String pledgedNas = (String) JSONObject.parse(result.getResult());
-            redisTemplate.opsForValue().set(KEY_CURRENT_NAS_PLEDGE, pledgedNas, 30, TimeUnit.MINUTES);
-            return pledgedNas;
+            return (String) JSONObject.parse(result.getResult());
         } else {
             return getPledgedNasInfo();
         }
