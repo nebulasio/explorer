@@ -316,7 +316,7 @@ module.exports = {
             keyStakeRate: "dStaking Rate",
             keyDstakingTrend: "dStaking Trend",
             keyDistributionAmount: "Minted NAX",
-            keyDestroyedAmount: "Burned NAS",
+            keyDestroyedAmount: "Burned NAX",
         };
     },
     mounted() {
@@ -393,7 +393,7 @@ module.exports = {
                 return '00:00:00';
             }
             var duration = moment.duration((this.nextIssueBlockHeight - this.currentBlockHeight) * 15000, 'milliseconds');
-            return duration.hours().pad(2) + ":" + duration.minutes().pad(2) + ":" + duration.seconds().pad(2);
+            return (duration.days() * 24 + duration.hours()).pad(2) + ":" + duration.minutes().pad(2) + ":" + duration.seconds().pad(2);
         },
         dailyTxChartOptions() {
             if (!this.trendList || this.trendList.length == 0) {
