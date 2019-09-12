@@ -3,6 +3,7 @@ package io.nebulas.explorer.mapper;
 import io.nebulas.explorer.domain.NebBlock;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @version 1.0
  * @since 2018-01-24
  */
+@Component
 @Mapper
 public interface NebBlockMapper {
 
