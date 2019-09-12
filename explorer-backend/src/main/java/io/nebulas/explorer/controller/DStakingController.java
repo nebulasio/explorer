@@ -49,9 +49,21 @@ public class DStakingController {
     public JsonResult summary(){
         long endHeight = naxService.getCurrentStageEndHeight();
         BigDecimal lastDistributedNax = naxService.getLastDistributeNax();
+        if (lastDistributedNax==null){
+            lastDistributedNax = BigDecimal.ZERO;
+        }
         BigDecimal totalDistributedNax = naxService.getTotalDistributeNax();
+        if (totalDistributedNax==null){
+            totalDistributedNax = BigDecimal.ZERO;
+        }
         BigDecimal currentPledgedNas = naxService.getCurrentPledgedNas();
+        if (currentPledgedNas==null){
+            currentPledgedNas = BigDecimal.ZERO;
+        }
         BigDecimal currentTotalNas = naxService.getCurrentTotalNas();
+        if (currentTotalNas==null){
+            currentTotalNas = BigDecimal.ZERO;
+        }
         List<NaxStageVo> list = naxService.getLast15StageList();
         JsonResult result = JsonResult.success();
         result.put("lastDistributedNax", lastDistributedNax.stripTrailingZeros().toPlainString());
