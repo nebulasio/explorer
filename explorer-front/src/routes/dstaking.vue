@@ -370,12 +370,14 @@ module.exports = {
             return amount.div(decimals).toFormat();
         },
         naxAmount(n) {
+            BigNumber.config({ DECIMAL_PLACES: 18 })
             BigNumber.config({ DECIMAL_PLACES: 0 })
             var amount = BigNumber(n);
             var decimals = BigNumber('1e+9');
             return amount.div(decimals).toFormat();
         },
         bigUnit(n) {
+            BigNumber.config({ DECIMAL_PLACES: 18 })
             if (BigNumber(n).isGreaterThanOrEqualTo(BigNumber('1e+6'))) {
                 return BigNumber(n).div(BigNumber('1e+6')) + 'M'
             } else if (BigNumber(n).isGreaterThanOrEqualTo(BigNumber('1e+3'))) {
@@ -384,6 +386,7 @@ module.exports = {
             return n;
         },
         bigNaxUnit(n) {
+            console.log(n);
             return this.bigUnit(BigNumber(n).div(BigNumber('1e+9')));
         }
     },
