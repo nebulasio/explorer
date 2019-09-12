@@ -84,7 +84,7 @@
                 <table class="mt20 explorer-table list-table">
                     <tr class="list-header font-12 font-bold font-color-000000">
                         <th class="text-center">Period#</th>
-                        <th class="text-center">Pledge Rate</th>
+                        <th class="text-center">dStaking Rate</th>
                         <th class="text-center">Issuance Quantity</th>
                         <th class="text-center">Burned Quantity</th>
                         <th class="text-center pr-3">Pledge Quantity</th>

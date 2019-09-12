@@ -14,6 +14,11 @@
         overflow-wrap: break-word;
     }
 
+    .vue-bread a {
+        font-size: 1.4rem;
+        margin-left: auto;
+    }
+
     @media (max-width: 767.98px) {
         .vue-bread .bread-title {
             font-size: 24px;
@@ -21,6 +26,12 @@
 
         .vue-bread .bread-subtitle {
             font-size: 14px;
+        }
+
+        .vue-bread a {
+            font-size: 1rem;
+            margin-left: initial;
+            padding: 0 15px;
         }
     }
 
@@ -34,6 +45,7 @@
                     <vue-blockies class="d-inline mr-0 align-text-bottom" v-if="blockies" v-bind:address='blockies'></vue-blockies>
                     {{ subtitle }}
                 </div>
+                <a v-if="nextdao" href="https://nextdao.io" target="_blank" >nextdao.io ></a>
             </div>
         </div>
     </div>
@@ -43,7 +55,7 @@
         components: {
             "vue-blockies": require("@/components/vue-blockies").default
         },
-        props: ["title", "subtitle", "subtitlemonospaced", "blockies"],
+        props: ["title", "subtitle", "subtitlemonospaced", "blockies", "nextdao"],
         data() {
             return {
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",

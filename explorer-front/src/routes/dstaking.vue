@@ -15,6 +15,16 @@
         }
     }
 
+    .token-value {
+        display: inline-block;
+    }
+
+    .item-1, .item-2 {
+        label {
+            display: block;
+        }
+    }
+
     .item-2 {
         .user-pie {
             display: block;
@@ -89,7 +99,7 @@
 
         .new-user-indicator .labels {
             position: absolute;
-            top: 0px;
+            top: -20px;
             right: 0px;
             text-align: right;
         }
@@ -153,8 +163,10 @@
 </style>
 <template>
     <div class="dstaking fullfill">
-        <vue-bread title='dStaking Dashboard'></vue-bread>
-        <div class="container">
+        <vue-bread title='dStaking Dashboard' nextdao=true>
+            <a href="">nextdao.io</a>
+        </vue-bread>
+        <div v-if="nextIssueBlockHeight" class="container">
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="item item-1">
@@ -162,21 +174,23 @@
                         <label>{{keyEstimatedLeftTime}}</label>
                         <div class="d-flex mt-5">
                             <div class="w-50">
-                                <h4>{{currentBlockHeight}}</h4>
+                                <h4>{{numberAddComma(currentBlockHeight)}}</h4>
                                 <router-link :to='fragApi + "/block/" + currentBlockHeight'>{{ keyCurrentBlockHeight }}</router-link>
                             </div>
                             <div class="ml-3">
-                                <h4>{{nextIssueBlockHeight}}</h4>
+                                <h4>{{numberAddComma(nextIssueBlockHeight)}}</h4>
                                 <label>{{keyNextIssueBlockHeight}}</label>
                             </div>
                         </div>
                         <div class="d-flex mt-3">
                             <div class="w-50">
-                                <h4>{{naxAmount(lastNaxDistribution)}}</h4>
+                                <h4 class="token-value">{{naxAmount(lastNaxDistribution)}}</h4>
+                                <span>NAX</span>
                                 <label>{{keyLastNaxDistribution}}</label>
                             </div>
                             <div class="ml-3">
-                                <h4>{{naxAmount(totalNaxDistribution)}}</h4>
+                                <h4 class="token-value">{{naxAmount(totalNaxDistribution)}}</h4>
+                                <span>NAX</span>
                                 <label>{{keyTotalNaxDistribution}}</label>
                             </div>
                         </div>
@@ -198,7 +212,7 @@
                                 </div>
                                 <div class="new-user-indicator d-none d-sm-block">
                                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" class="svg" width="195" height="114" viewbox="0 0 195 114">
-                                        <polyline points="5 87, 35 57, 195 57" class="line" id="svg-line"/>
+                                        <polyline points="5 67, 35 37, 195 37" class="line" id="svg-line"/>
                                     </svg>
                                     <div class="labels">
                                         <!-- 四舍五入并保留一位小数 -->
@@ -209,16 +223,22 @@
                             </div>
                             <div class="detail">
                                 <!-- <div class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
-                                <h4>{{ nasAmount(stakedAmount) }}</h4>
+                                <div>
+                                    <h4 class="token-value">{{ nasAmount(stakedAmount) }}</h4>
+                                    <span>NAS</span>
+                                </div>
                                 <label>{{keyStakedAmount}}</label>
-                                <h4 class="mt-3">{{ nasAmount(nasCirculation) }}</h4>
+                                <div>
+                                    <h4 class="token-value mt-3">{{ nasAmount(nasCirculation) }}</h4>
+                                    <span>NAS</span>
+                                </div>
                                 <label>{{keyNasCirculation}}</label>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div v-if="trendList.length" class="row">
                 <div class="col-12">
                     <div class="item item-3">
                         <div class="d-md-flex align-items-center justify-content-between">
@@ -249,6 +269,13 @@
                     </div>
                 </div>
             </div>
+            <div v-else style="left: 0;right:0;text-align:center; padding-top: 76px; padding-bottom: 80px;">
+                <img style="width: 131px; height: 142px;" src="/static/img/no_content.png?v=20190117"/>
+                <br/>
+                <div style="margin-top: 12px;">
+                    <span class="text-no-content">Waiting for the first issuance</span>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -271,7 +298,7 @@ module.exports = {
         return {
             fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
             currentBlockHeight: 2888888,
-            nextIssueBlockHeight: 2999999,
+            nextIssueBlockHeight: null,
             lastNaxDistribution: 9999999,
             totalNaxDistribution: 11999999,
             stakedAmount: 7777777,
@@ -286,7 +313,7 @@ module.exports = {
             keyTotalNaxDistribution: "Total Issuance",
             keyStakedAmount: "Pledged Quantity",
             keyNasCirculation: "Circulating Supply",
-            keyStakeRate: "Pledge Rate",
+            keyStakeRate: "dStaking Rate",
             keyDstakingTrend: "dStaking Statistics Trend",
             keyDistributionAmount: "Issuance Quantity",
             keyDestroyedAmount: "Burned Quantity",
