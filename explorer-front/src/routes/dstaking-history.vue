@@ -71,7 +71,7 @@
 </style>
 <template>
     <div class="staking-history fullfill">
-        <vue-bread title='dSkating Issuance History'></vue-bread>
+        <vue-bread title='dStaking Issuance History'></vue-bread>
 
         <div v-if="arr && arr.length" class="container mt20">
             <div class="d-block d-md-flex flex-row align-items-center mt20">
