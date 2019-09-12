@@ -99,11 +99,14 @@ public class NaxService {
 
     public long getCurrentStageEndHeight() {
         long currentStage = getLastCompletedStage() + 1;
-        return naxStartHeight + (currentStage * naxStageStep);
+        return naxStartHeight + ((currentStage+1) * naxStageStep);
     }
 
     public BigDecimal getLastDistributeNax() {
         long stageIdx = getLastCompletedStage();
+        if (stageIdx==-1){
+            return BigDecimal.ZERO;
+        }
         NaxStage stage = naxStageMapper.getStage(stageIdx);
         return stage.getActualNax();
     }
@@ -127,10 +130,10 @@ public class NaxService {
         return naxStageMapper.getStage(stage);
     }
 
-    public long getLastCompletedStage() {
+    private long getLastCompletedStage() {
         Integer lastCompletedStage = naxStageMapper.getLastCompletedStage();
         if (lastCompletedStage == null) {
-            return 0;
+            return -1;
         }
         return lastCompletedStage;
     }
