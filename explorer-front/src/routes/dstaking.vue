@@ -145,6 +145,9 @@
             width: calc(100% - 30px);
             height: 240px;
         }
+        .form-check-input:checked + label {
+            color: #0057FF;
+        }
     }
 }
 </style>
@@ -290,6 +293,8 @@ module.exports = {
         };
     },
     mounted() {
+        BigNumber.config({ DECIMAL_PLACES: 18 })
+
         this.$root.showModalLoading = true;
         
         this.getSummary();
@@ -368,15 +373,9 @@ module.exports = {
                 return null;
             }
 
-            var arr = this.trendList;
+            var arr = this.trendList.slice(0, 15).reverse();
             var dates = [], 
                 nums = [];
-
-            if (arr.length > 15) {
-                arr.splice(0, arr.length - 15);
-            }
-
-            arr.reverse();
 
             for (var i in arr) {
                 var item = arr[i];

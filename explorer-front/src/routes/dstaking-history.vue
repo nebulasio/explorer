@@ -220,7 +220,7 @@
                 return amount.div(decimals).toFormat().shortAmount();
             },
             pledgeRate(o) {
-                console.log(o);
+                BigNumber.config({ DECIMAL_PLACES: 18 })
                 var rate = BigNumber(o.pledgeNas).div(BigNumber(o.totalNas)) * 100;
                 return rate.toFixed(4)+ '%';
             }
