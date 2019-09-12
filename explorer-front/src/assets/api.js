@@ -288,6 +288,32 @@ module.exports = {
                 fail(xhr);
         }
     },
+
+    getDstakingSummary(t, done, fail) {
+        ajax1("dstaking/summary", t, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
+
+    getDstakingHistory(t, done, fail) {
+        ajax1('dstaking/history', t, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
 };
 
 function ajax1(action, args, done, fail) {

@@ -64,6 +64,14 @@ module.exports = [{
     meta: { headerActive: 2 },
     path: "/:api?/contract-txs"
 }, {
+    component: require("@/routes/dstaking").default,
+    meta: { headerActive: 3 },
+    path: "/:api?/dstaking"
+}, {
+    component: require("@/routes/dstaking-history").default,
+    meta: { headerActive: 3 },
+    path: "/:api?/dstaking-history"
+}, {
     component: require("@/routes/dashboard").default,
     meta: { headerActive: 1, uaview: "Explorer_Home_Show" },
     path: "/:api?",

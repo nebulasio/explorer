@@ -123,6 +123,11 @@
                             <span class=sr-only>(current)</span>
                         </router-link>
                     </li>
+                    <li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
+                        <router-link v-bind:to="fragApi + '/dstaking'" class=nav-link>dStaking
+                            <span class=sr-only>(current)</span>
+                        </router-link>
+                    </li>
                     <li class="dropdown nav-item" v-bind:class="{ active: $route.meta.headerActive == 2 }">
                         <a class="nav-link" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
                             BLOCKCHAIN
