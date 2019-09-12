@@ -196,7 +196,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6 mt-3 mt-md-0">
                     <div class="item item-2 d-flex flex-column">
                         <div class="d-flex align-items-center justify-content-between">
                             <h4>{{keyStakeRate}}</h4>
