@@ -116,7 +116,7 @@
 			<div class="collapse navbar-collapse mr-28" id=navbarSupportedContent>
 				<form class=form-inline v-on:submit.prevent=onSubmit>
 					<img src=/static/img/icon_search.png width=16 alt="" />
-					<span id="buscador" v-model=search></span>
+					<input id="buscador">
 				</form>
 				<ul class="navbar-nav ml-auto">
 					<li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
@@ -157,6 +157,7 @@
 <script>
 	var api = require("@/assets/api"),
 	appConfig = require("@/assets/app-config");
+	console.log("Mad Hatter");
 
 	module.exports = {
 		data() {
@@ -170,7 +171,11 @@
 		},
 		methods: {
 			onSubmit() {
-				console.dir(this.search);
+				// Quick and dirty hack until we figure out this issue:
+				// https://github.com/javisperez/vuetranslate/issues/13
+				var test = document.getElementById("buscador");
+				this.search = test.value;
+
 				if (this.search.trim().length === 0) {
 					console.log ("Es cero");
 					this.search = "";

@@ -240,7 +240,7 @@ var vm2 = new Vue({
 // Daily transactions (for demo purposes in this stage)
 
 var SearchTool = Vue.extend({
-	template: `<input class="mr-sm-2 font-12" v-model=search type=search :placeholder="t('calatrava')" />`,
+	template: `<input class="mr-sm-2 font-12" name=search id=buscador type=search :placeholder="t('calatrava')" />`,
 	locales: {
 		es_ES: {
 			'calatrava': 'Buscar por dirección, txhash, bloque o token'
