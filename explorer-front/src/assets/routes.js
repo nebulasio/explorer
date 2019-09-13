@@ -38,6 +38,10 @@ module.exports = [{
     meta: { headerActive: 2 },
     path: "/:api?/txs/pending"
 }, {
+    component: require("@/routes/dip-leaderboard").default,
+    meta: { headerActive: 3 },
+    path: "/:api?/dip-leaderboard"
+}, {
     component: require("@/routes/404").default,
     path: "/:api?/404"
 }, {
@@ -64,10 +68,6 @@ module.exports = [{
     meta: { headerActive: 1, uaview: "Explorer_Home_Show" },
     path: "/:api?",
     name: "home"
-}, {
-    component: require("@/routes/dip-leaderboard").default,
-    meta: { headerActive: 3 },
-    path: "/:api?/dip-leaderboard"
 }, {
     component: require("@/routes/404").default,
     name: "*",

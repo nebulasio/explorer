@@ -92,7 +92,7 @@
                         <td class="font-color-555555" style="padding-left: 24px;">TxReceipt Status:</td>
                         <td class="d-flex align-items-center" v-if="tx.status === 0" style="height: inherit">
                             <img class="icon18" src="../../static/img/ic_tx_status_failed.png?v=20190110" />
-                            <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ errMsg }} )</span>
+                            <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ tx.executeError }} )</span>
                         </td>
                         <td class="d-flex align-items-center" v-else-if="tx.status === 1" style="height: inherit">
                             <img class="icon18" src="../../static/img/ic_tx_status_success.png" />
@@ -162,7 +162,8 @@
                     </tr>
                     <tr>
                         <td class="font-16 font-color-555555" style="padding-left: 24px;">Value:</td>
-                        <td class="font-16 font-color-000000">{{ nasAmount(tx.value) }} NAS</td>
+                        <td v-if=isNatVoteTransfer class="font-16 font-color-000000">{{ natAmount }} NAT</td>
+                        <td v-else class="font-16 font-color-000000">{{ nasAmount(tx.value) }} NAS</td>
                     </tr>
 
                 </table>
@@ -177,7 +178,7 @@
                     TxReceipt Status:
                     <td class="detail d-flex align-items-center" v-if="tx.status === 0" style="height: inherit">
                             <img class="icon18" src="../../static/img/ic_tx_status_failed.png?v=20190110" />
-                            <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ errMsg }} )</span>
+                            <span class="font-color-F04434" style="margin-left: 10px;">Fail ( {{ tx.executeError }} )</span>
                         </td>
                         <td class="detail d-flex align-items-center" v-else-if="tx.status === 1" style="height: inherit">
                             <img class="icon18" src="../../static/img/ic_tx_status_success.png" />
@@ -247,7 +248,8 @@
                 </div>
                 <div>
                     Value:
-                    <div class="detail">{{ nasAmount(tx.value) }} NAS</div>
+                    <div v-if=isNatVoteTransfer class="detail">{{ natAmount }} NAT</div>
+                    <div v-else class="detail">{{ nasAmount(tx.value) }} NAS</div>
                 </div>
             </div>
 
@@ -325,7 +327,8 @@
         api = require("@/assets/api"),
         utility = require("@/assets/utility"),
         appConfig = require("@/assets/app-config"),
-        BigNumber = require("bignumber.js");
+        BigNumber = require("bignumber.js"),
+        base64 = require("js-base64").Base64;
 
     require("prismjs/themes/prism.css");
 
@@ -338,12 +341,21 @@
 
             formatCode() {
                 var lang = prism.languages.javascript;
-                if (this.tx.data)
-                    if (this.tx.type =="deploy")
+                // console.log(Object.keys(prism.languages))
+                if (this.tx.data) {
+                    if (this.tx.type === "deploy"){
                         return prism.highlight(jsBeautify(JSON.parse(this.tx.data).Source), lang);
-                    else if (this.tx.type =="call")
+                    } else if (this.tx.type === "call") {
                         return prism.highlight(jsBeautify(this.tx.data), lang);
-
+                    } else if (this.tx.type === "protocol") {
+                        var data = JSON.parse(this.tx.data);
+                        var code = base64.decode(data.Data);
+                        var beginIndex = code.indexOf('//');
+                        var endIndex = code.lastIndexOf('}');
+                        code = code.substring(beginIndex, endIndex + 1);
+                        return prism.highlight(code, lang);
+                    }
+                }
                 return "";
             },
             txType() {
@@ -359,10 +371,14 @@
                     case"call": return"call contract";
                     case"candidate": return"dpos candidate";
                     case"delegate": return"dpos delegate";
+                    case"protocol": return"protocol";
                 } else
                     return"";
             },
             urlChange() {
+                if (!this.$route.path.startsWith('/tx/') || !this.$route.params.id) {
+                    return;
+                }
                 this.$root.showModalLoading = true;
                 api.getTx(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;
@@ -379,7 +395,7 @@
             },
             isTokenTransfer() {
                 try {
-                    if (this.tx.type == 'call' && JSON.parse(this.tx.data).Function == 'transfer' && JSON.parse(JSON.parse(this.tx.data).Args).length >= 2) {
+                    if (this.tx.type === 'call' && JSON.parse(this.tx.data).Function === 'transfer' && JSON.parse(JSON.parse(this.tx.data).Args).length >= 2) {
                         return true;
                     }
                 } catch (error) {
@@ -392,15 +408,30 @@
                 var decimals = BigNumber('1e+' + this.tx.decimal);
                 return amount.div(decimals).toFormat();
             },
-            errMsg() {
-                if (this.tx.executeError === 'insufficient balance') {
-                    return 'Insufficient Balance of Transfer Address';
-                } else if (this.tx.executeError === 'insufficient gas') {
-                    return 'Out of Gas';
-                } else {
-                    return 'Contract Execution Failed';
+            isNatVoteTransfer() {
+                try {
+                    if (this.tx.type === 'call' && this.tx.to.hash === 'n1pADU7jnrvpPzcWusGkaizZoWgUywMRGMY' && JSON.parse(this.tx.data).Function === 'vote' && JSON.parse(JSON.parse(this.tx.data).Args).length >= 4) {
+                        return true;
+                    }
+                } catch (error) {
                 }
-            }
+                return false;
+            },
+            natAmount() {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(JSON.parse(JSON.parse(this.tx.data).Args)[3]);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat();
+            },
+            // errMsg() {
+            //     if (this.tx.executeError === 'insufficient balance') {
+            //         return 'Insufficient Balance of Transfer Address';
+            //     } else if (this.tx.executeError === 'insufficient gas') {
+            //         return 'Out of Gas';
+            //     } else {
+            //         return 'Contract Execution Failed';
+            //     }
+            // }
         },
         data() {
             return {

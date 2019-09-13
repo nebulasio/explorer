@@ -217,6 +217,14 @@
         padding-left: 16px;
     }
 
+    .vue-address .pt-10 {
+        padding-top: 10px;
+    }
+
+    .weight-400 {
+        font-weight: 400;
+    }
+
 </style>
 <template>
     <!-- https://etherscan.io/address/0xea674fdde714fd979de3edf0f56aa9716b898ec8 -->
@@ -226,7 +234,7 @@
                    v-bind:subtitlemonospaced="!!$route.params.id"
                    v-bind:blockies="$route.params.id">
         </vue-bread>
-        <div class="container explorer-table-container" v-if=obj>
+        <div v-if=obj class="container explorer-table-container">
             <div class="font-24 font-bold font-color-000000 table-title">
                 Overview
                 <span class=c777 v-show=obj.address.alias> | {{ obj.address.alias }}</span>
@@ -291,10 +299,26 @@
                             </router-link>
                             <img src="../../static/img/icon_arrow_down_black.png" alt="" width="12">
                         </div>
-                        <div v-if="validTokens.length > 1" class="dropdown-menu">
+                        <div class="dropdown-menu">
                             <div class="dropdown-item text-right" v-for="(token, i) in validTokens" :key=i
                             @click='displayToken = token;'>
                                 {{ tokenAmount(token.balance, token.decimal) }} {{ token.tokenName }}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr v-if="!isContract">
+                    <td class="base-info-key font-16 font-color-555555 pl-16" style="vertical-align: top; padding-top: 12px;">QR Code:</td>
+                    <td style="vertical-align: top; padding-top: 12px;">
+                        <a class="d-flex font-16 align-items-center" href=# v-on:click="showOrHideQRCode()" style="text-decoration: none;" data-toggle="collapse" data-target="#collapse-mobile" aria-expanded="false" aria-controls="collapseExample">
+                            <span class="font-16" v-show="isShowQRCode === false">View to Pay</span>
+                            <span class="font-16" v-show="isShowQRCode === true">Hide</span>
+                            <img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowQRCode ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
+                        </a>
+                        <div class="collapse" id="collapse-mobile">
+                            <div class="pt-10">
+                                <qrcode-vue :value="$route.params.id" :size="220" level="H"></qrcode-vue>
+                                <span class="font-16 detail">Scan using <a href="https://nano.nebulas.io/index_en.html" target="_blank">NAS Nano</a></span>
                             </div>
                         </div>
                     </td>
@@ -352,10 +376,26 @@
                             </router-link>
                             <img src="../../static/img/icon_arrow_down_black.png" alt="" width="12">
                         </div>
-                        <div v-if="validTokens.length > 1" class="dropdown-menu">
+                        <div class="dropdown-menu">
                             <div class="dropdown-item text-right" v-for="(token, i) in validTokens" :key=i
                             @click='displayToken = token;'>
                                 {{ tokenAmount(token.balance, token.decimal) }} {{ token.tokenName }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="!isContract">
+                    QR Code:
+                    <div>
+                        <a href=# v-on:click.prevent="showOrHideQRCode()" style="text-decoration: none;">
+                            <span class="align-middle font-16 weight-400" v-show="isShowQRCode === false">View to Pay</span>
+                            <span class="align-middle font-16 weight-400" v-show="isShowQRCode === true">Hide</span>
+                            <img style="margin-left: 12px;" class="icon16" v-bind:src="isShowQRCode ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
+                        </a>
+                        <div v-show="isShowQRCode === true">
+                            <div class="pt-10">
+                                <qrcode-vue :value="$route.params.id" :size="220" level="H"></qrcode-vue>
+                                <span class="font-16 detail">Scan using <a href="https://nano.nebulas.io/index_en.html" target="_blank">NAS Nano</a></span>
                             </div>
                         </div>
                     </div>
@@ -365,8 +405,7 @@
             <vue-tab-buttons class=mt50 v-bind:arr=tabButtons v-bind:tab.sync=tab></vue-tab-buttons>
             <div class=mt20></div>
 
-            <!--    Transactions
-                ============================================================ -->
+            <!-- ============================ Transactions ================================ -->
             <div class="tab" v-show="tab == 1">
                 <div v-if="txs.length" class="d-block d-md-flex flex-row align-items-center">
                     <div class="col mr-auto px-0 font-16 font-bold font-color-000000">
@@ -450,7 +489,8 @@
                                     <span class="fromTo font-14 ">{{ o.to.alias || o.to.hash }}</span>
                                 </router-link>
                             </td>
-                            <td class="amount align-right">{{ tokenAmount(o.value, o.decimal) }} NAS</td>
+                            <td v-if=isNatVoteTransfer(o) class="amount align-right">{{ natAmount(o) }} NAT</td>
+                            <td v-else class="amount align-right">{{ tokenAmount(o.value, o.decimal) }} NAS</td>
                             <td class="txfee align-right pr-3">
                                 <span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
                                 <i v-else>(pending)</i>
@@ -485,8 +525,7 @@
                 </div>
             </div>
 
-            <!--    NRC20 Transactions
-                ============================================================ -->
+            <!-- ============================ NRC20 Transactions ================================ -->
             <div class="tab" v-show="tab === 2 && !isContract">
                 <div v-if="nrc20TxList.length" class="d-block d-md-flex flex-row align-items-center">
                     <div class="col mr-auto px-0 font-16 font-bold font-color-000000">
@@ -583,8 +622,117 @@
             </div>
 
 
-            <!-- code
-             ============================================================ -->
+            <!-- =========================== NAX Changes ================================= -->
+            <div class="tab" v-show="tab === 3 && !isContract">
+                <div class="explorer-table-container">
+                    <table v-if="naxChangeList.length" class="mt20 explorer-table list-table">
+                        <tr class="font-12 font-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
+                            <th style="width: 100px;"></th>
+                            <th>Value</th>
+                            <th>Age</th>
+                            <th>Block</th>
+                            <th style="width: 25%;">Source</th>
+                        </tr>
+                        <tr v-for="(o, i) in naxChangeList" :key="i">
+                            <td class="text-center"><img :src="natIcon(o.profit)" width="30px"/></td>
+                            <td class="amount">{{ tokenAmount(o.profit, 9) }} NAX</td>
+                            <td class="time font-color-555555 font-14">
+                                <div>
+                                    <div>{{ timeConversion(new Date() - o.timestamp) }} ago</div>
+                                    <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                                </div>
+                            </td>
+                            <td class="txs-block">
+                                <router-link class="font-14"
+                                            v-if=o.block
+                                            v-bind:to='fragApi + "/block/" + o.block'>
+                                    <span>{{ o.block }}</span>
+                                </router-link>
+                                <i class="font-14 font-color-000000" v-else>pending</i>
+                            </td>
+                            <td class="font-14">
+                                <div v-if="o.source === 0">Pledge Rewards</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <vue-pagination v-if="naxChangeList.length" v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
+                v-on:prev=onPrev v-on:to=onTo></vue-pagination>
+
+                <div v-if=isNoNaxChanges
+                     style="left: 0;right:0;text-align:center; padding-top: 76px; padding-bottom: 80px;">
+                    <img style="width: 131px; height: 142px;" src="/static/img/no_content.png?v=20190117"/>
+                    <br/>
+                    <div style="margin-top: 12px;">
+                        <span class="text-no-content">No Content</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- =========================== NAT Changes ================================= -->
+            <div class="tab" v-show="tab === 4 && !isContract">
+                <div class="explorer-table-container">
+                    <table v-if="natChangeList.length" class="mt20 explorer-table list-table">
+                        <tr class="font-12 font-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
+                            <th style="width: 100px;"></th>
+                            <th>Value</th>
+                            <th>Age</th>
+                            <th>Block</th>
+                            <th style="width: 25%;">Source</th>
+                        </tr>
+                        <tr v-for="(o, i) in natChangeList" :key="i">
+                            <td class="text-center"><img :src="natIcon(o.amount)" width="30px"/></td>
+                            <td class="amount">{{ tokenAmount(o.amount, 18) }} NAT</td>
+                            <td class="time font-color-555555 font-14">
+                                <div>
+                                    <div>{{ timeConversion(new Date() - o.timestamp) }} ago</div>
+                                    <div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+                                </div>
+                            </td>
+                            <td class="txs-block">
+                                <router-link class="font-14"
+                                            v-if=o.block
+                                            v-bind:to='fragApi + "/block/" + o.block'>
+                                    <span>{{ o.block }}</span>
+                                </router-link>
+                                <i class="font-14 font-color-000000" v-else>pending</i>
+                            </td>
+                            <td class="font-14">
+                                <div v-if="o.source === 0">
+                                    <router-link v-bind:to='fragApi + "/tx/" + o.txHash'>
+                                        <span>tx# {{o.txHash.slice(0, 6) + '...' + o.txHash.slice(o.txHash.length - 6)}}</span>
+                                    </router-link>
+                                </div>
+                                <div v-if="o.source === 1">NR Incentive</div>
+                                <div v-if="o.source === 2">Pledge Rewards</div>
+                                <div v-if="o.source === 3">
+                                    <span>NAT Vote</span>
+                                    <router-link v-bind:to='fragApi + "/tx/" + o.txHash' class="ml-2">
+                                        <span>tx# {{o.txHash.slice(0, 6) + '...' + o.txHash.slice(o.txHash.length - 6)}}</span>
+                                    </router-link>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <vue-pagination v-if="natChangeList.length" v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
+                v-on:prev=onPrev v-on:to=onTo></vue-pagination>
+
+                <div v-if=isNoNatChanges
+                     style="left: 0;right:0;text-align:center; padding-top: 76px; padding-bottom: 80px;">
+                    <img style="width: 131px; height: 142px;" src="/static/img/no_content.png?v=20190117"/>
+                    <br/>
+                    <div style="margin-top: 12px;">
+                        <span class="text-no-content">No Content</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ============================== code ============================== -->
             <div class=tab v-show="tab == 2 && isContract">
                 <table class="mt20 table">
                     <tr>
@@ -604,12 +752,15 @@
         BigNumber = require("bignumber.js"),
         base64 = require("js-base64").Base64;
 
+    import QrcodeVue from 'qrcode.vue'
+
     module.exports = {
         components: {
             "vue-bread": require("@/components/vue-bread").default,
             "vue-pagination": require("@/components/vue-pagination").default,
             "vue-tab-buttons": require("@/components/vue-tab-buttons").default,
-            "vue-blockies": require("@/components/vue-blockies").default
+            "vue-blockies": require("@/components/vue-blockies").default,
+            QrcodeVue
         },
         computed: {
             formatCode() {
@@ -624,18 +775,42 @@
                 return "0x0";
             },
             tabButtons() {
-                var buttons = ["Transactions", "NRC20 Token Txns"];
+                var buttons = ["Transactions", "NRC20 Token Txns", "NAX", "NAT"];
+                if (this.$route.params.api === 'testnet') {
+                    buttons = ["Transactions", "NRC20 Token Txns"];
+                }
                 if (this.isContract) {
                     buttons = ["Transactions", "Contract Code"];
                 }
                 return buttons;
             },
             urlChange() {
+                if (!this.$route.path.startsWith('/address/') || !this.$route.params.id) {
+                    return;
+                }
+                this.obj = null;
                 this.tab = 1;
-                this.contract = null;
+                this.txs = [];
+                this.tokens = null;
+                this.displayToken = null;
+                this.decimal = null;
                 this.isContract = false;
+                this.contract = null;
+                this.creator = null;
+                this.deployTxHash = null;
+                this.contractCode = null;
                 this.nrc20TxList = [];
                 this.nrc20TxCnt = 0;
+                this.isNoNrc20Tx = false;
+
+                this.natChangeList = [];
+                this.isNoNatChanges = false;
+                this.totalPage = 0;
+                this.currentPage = 0;
+
+                this.naxChangeList = [];
+                this.isNoNaxChanges = false;
+
                 this.$root.showModalLoading = true;
                 api.getAddress(this.$route.params.id, o => {
                     this.$root.showModalLoading = false;
@@ -662,7 +837,7 @@
 
                     var token = this.tokens[0];
                     for (var index in this.tokens) {
-                        if (this.tokens[index].tokenName === 'ATP') {
+                        if (this.tokens[index].tokenName === 'NAX') {
                             token = this.tokens[index];
                             break;
                         }
@@ -678,7 +853,17 @@
                 return this.isContract ? "Contract" : "Address";
             },
             validTokens() {
-                return this.tokens;//.filter(token => token.balance > 0);
+                let tokens = this.tokens.filter(item => {return item.balance !== 0 || item.tokenName === 'NAX'});
+                return tokens.sort((a, b) => {
+                    if (a.tokenName === 'NAX' || b.tokenName === 'NAX') {
+                        return a.tokenName === 'NAX' ? -1 : 1;
+                    } else if (a.tokenName === 'NAT' || b.tokenName === 'NAT') {
+                        return a.tokenName === 'NAT' ? -1 : 1;
+                    } else if (a.tokenName === 'ATP' || b.tokenName === 'ATP') {
+                        return a.tokenName === 'ATP' ? 1 : -1;
+                    }
+                    return a.tokenName < b.tokenName;
+                });
             }
         },
         data() {
@@ -698,10 +883,20 @@
                 contractCode: null,
                 nrc20TxList: [],
                 nrc20TxCnt: 0,
-                isNoNrc20Tx: false
+                isNoNrc20Tx: false,
+                natChangeList: [],
+                isNoNatChanges: false,
+                naxChangeList: [],
+                isNoNaxChanges: false,
+                totalPage: 0,
+                currentPage: 0,
+                isShowQRCode: false
             };
         },
         methods: {
+            showOrHideQRCode(){
+                this.isShowQRCode = !this.isShowQRCode;
+            },
             isDark(i) {
                 return (i % 2 === 0);
             },
@@ -765,7 +960,7 @@
             tokenAmount(n, decimals) {
                 decimals = decimals || 18;
                 BigNumber.config({ DECIMAL_PLACES: decimals })
-                var amount = BigNumber(n);
+                var amount = BigNumber(n).abs();
                 var decimals = BigNumber('1e+' + decimals);
                 return amount.div(decimals).toFormat().shortAmount();
             },
@@ -774,11 +969,78 @@
                     return s.substring(0, 17) + '...';
                 }
                 return s;
-            }
+            },
+            isNatVoteTransfer(tx) {
+                try {
+                    if (tx.type === 'call' && tx.to.hash === 'n1pADU7jnrvpPzcWusGkaizZoWgUywMRGMY' && JSON.parse(tx.data).Function === 'vote' && JSON.parse(JSON.parse(tx.data).Args).length >= 4) {
+                        return true;
+                    }
+                } catch (error) {
+                }
+                return false;
+            },
+            natAmount(tx) {
+                BigNumber.config({ DECIMAL_PLACES: 18 })
+                var amount = BigNumber(JSON.parse(JSON.parse(tx.data).Args)[3]);
+                var decimals = BigNumber('1e+18');
+                return amount.div(decimals).toFormat().shortAmount();
+            },
+            natIcon(data) {
+                var str = data + '';
+                if (str.startsWith('-')) {
+                    return "/static/img/icon_nat_out.png";
+                }
+                return "/static/img/icon_nat_in.png";
+            },
+            nav(n) {
+                this.$root.showModalLoading = true;
+
+                if (this.tab === 3) {
+                    api.getNaxChanges(this.$route.params.id, n || 1, 25, o => {
+                        this.$root.showModalLoading = false;
+                        this.naxChangeList = o.list || [];
+                        this.isNoNaxChanges = this.naxChangeList.length === 0;
+                        this.totalPage = o.totalPage;
+                        this.currentPage = o.currentPage; 
+                    }, xhr => {
+                        this.$root.showModalLoading = false;
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
+                    });
+                } else if (this.tab === 4) {
+                    api.getNatChanges(this.$route.params.id, n || 1, 25, o => {
+                        this.$root.showModalLoading = false;
+                        this.natChangeList = o.list || [];
+                        this.isNoNatChanges = this.natChangeList.length === 0;
+                        this.totalPage = o.totalPage;
+                        this.currentPage = o.currentPage; 
+                    }, xhr => {
+                        this.$root.showModalLoading = false;
+                        this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
+                    });
+                } 
+            },
+            numberAddComma(n) {
+                return utility.numberAddComma(n);
+            },
+            onFirst() {
+                this.nav(1);
+            },
+            onLast() {
+                this.nav(this.totalPage);
+            },
+            onNext() {
+                this.nav(this.currentPage + 1);
+            },
+            onPrev() {
+                this.nav(this.currentPage - 1);
+            },
+            onTo(n) {
+                this.nav(n);
+            },
         },
         watch: {
-            tab: function (newTab, oldTaB) {
-                if (!this.isContract && newTab == 2 && this.nrc20TxList.length == 0) {
+            tab: function (newTab, oldTab) {
+                if (!this.isContract && newTab == 2 && this.nrc20TxList.length === 0) {
                     this.$root.showModalLoading = true;
                     api.getNrc20Txs(this.$route.params.id, 1, o => {
                         this.$root.showModalLoading = false;
@@ -788,6 +1050,12 @@
                     }, xhr => {
                         this.$root.showModalLoading = false;
                     });
+                } else if (!this.isContract && newTab == 3) {
+                    this.naxChangeList = [];
+                    this.nav(1);
+                } else if (!this.isContract && newTab == 4) {
+                    this.natChangeList = [];
+                    this.nav(1);
                 }
             }
         }

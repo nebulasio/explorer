@@ -113,13 +113,11 @@
 			<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
 				<span class=navbar-toggler-icon></span>
 			</button>
-
 			<div class="collapse navbar-collapse mr-28" id=navbarSupportedContent>
 				<form class=form-inline v-on:submit.prevent=onSubmit>
-					<img src=/static/img/icon_search.png width=16 alt="">
-					<input class="mr-sm-2 font-12" v-model=search type=search placeholder="Search by Address / Txhash / Block / Token">
+					<img src=/static/img/icon_search.png width=16 alt="" />
+					<span id="buscador" v-model=search></span>
 				</form>
-
 				<ul class="navbar-nav ml-auto">
 					<li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
 						<router-link v-bind:to="fragApi + '/'" class=nav-link>
@@ -140,9 +138,9 @@
 							<router-link class=dropdown-item v-bind:to="fragApi + '/accounts'">Accounts</router-link>
 						</div>
 					</li>
-					<li v-if="$route.params.api == 'testnet' && $root.testnetGotDipWinners" class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
+					<!-- <li v-if="($route.params.api !== 'testnet' && $root.mainnetGotDipWinners) || ($route.params.api == 'testnet' && $root.testnetGotDipWinners)" class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
 						<router-link class=nav-link v-bind:to="fragApi + '/dip-leaderboard'">Dip Winners</router-link>
-					</li>
+					</li> -->
 					<li class="nav-item">
 						<a class="nav-link" href=# role=button v-on:click.prevent=apiSwitch()>{{ MenuMisc }}
 							<img src=/static/img/icon_switcher.png width=12 alt="">
@@ -152,7 +150,6 @@
 						<div id="lang-sel"></div>
 					</li>
 				</ul>
-
 			</div>
 		</div>
 	</nav>
@@ -167,27 +164,22 @@
 				apiPrefixes: null,
 				fragApi: "",
 				paramsApi: "",
-				search: "",
-				MenuMisc:"MAINNET"
+				MenuMisc: "MAINNET",
+				search: ""
 			};
 		},
 		methods: {
-			apiSwitch() {
-				if (this.$route.params.api === 'testnet') {
-					this.$router.replace("/");
-				} else {
-					this.$router.replace("/testnet");
-				}
-				location.reload();
-			},
 			onSubmit() {
+				console.dir(this.search);
 				if (this.search.trim().length === 0) {
+					console.log ("Es cero");
 					this.search = "";
 					return;
 				}
 				this.$root.showModalLoading = true;
 				api.getSearch(this.search.trim(), o => {
 					this.$root.showModalLoading = false;
+					console.log ("Buscando " + this.search);
 					this.search = "";
 
 					if (o.type == "block")
@@ -208,6 +200,14 @@
 					this.search = "";
 					this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
 				});
+			},
+			apiSwitch() {
+				if (this.$route.params.api === 'testnet') {
+					this.$router.replace("/");
+				} else {
+					this.$router.replace("/testnet");
+				}
+				location.reload();
 			},
 			atpAddress() {
 				var api = this.$route.params.api ? this.$route.params.api : "mainnet";

@@ -228,7 +228,7 @@
                             <th class="text-right pr-3">[TxFee]</th>
                         </tr>
 
-                        <tr v-for="o in txs" v-if="o" :key="o.hash">
+                        <tr v-for="o in txs" :key="o.hash">
                             <td>
                                 <img v-if="o.status===0" class="icon40" src="../../static/img/ic_tx_failed.png"/>
                             </td>

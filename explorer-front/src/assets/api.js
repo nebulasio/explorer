@@ -65,7 +65,7 @@ module.exports = {
         }
     },
 
-    
+
     getBlocks(t, done, fail) {
         // wtf - webpack 对 if (typeof t == "object") 报异常
         if (eval('typeof t == "object"'))
@@ -96,6 +96,7 @@ module.exports = {
     },
 
     getSearch(q, done, fail) {
+		 console.log ("Consulta por " + q);
         ajax1("search", { q }, function (s, xhr) {
             var o = JSON.parse(s);
 
@@ -194,6 +195,38 @@ module.exports = {
     // - page   - 页码, 默认 1
     getNrc20Txs(address, page, done, fail) {
         ajax1("address/nrc20/" + address + "/" + page, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
+
+    // get nat/list
+    // - address   - address
+    // - page   - 页码, 默认 1
+    getNatChanges(address, page, size, done, fail) {
+        ajax1("nat/list?address=" + address + '&page=' + page + '&pageSize=' + size, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0)
+                done(o.data);
+            else if (typeof fail == "function")
+                fail(xhr);
+        }
+    },
+
+    // get nax/list
+    // - address   - address
+    // - page   - 页码, 默认 1
+    getNaxChanges(address, page, size, done, fail) {
+        ajax1("nax/list?address=" + address + '&page=' + page + '&pageSize=' + size, null, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);

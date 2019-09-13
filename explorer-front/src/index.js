@@ -1,5 +1,8 @@
 import VueTranslate from 'vue-translate-plugin';
 
+var api = require("@/assets/api"),
+appConfig = require("@/assets/app-config");
+
 var Vue = require("vue").default,
 	VueRouter = require("vue-router").default,
 	vApp = {},
@@ -27,7 +30,7 @@ window.isIE = isIE;
 const isProd = process.env.NODE_ENV === 'production';
 const VueAnalytics = require('vue-analytics').default;
 Vue.use(VueAnalytics, {
-	id: 'UA-101203737-1',
+	id: 'UA-101203737-4',
 	customResourceURL: 'https://www.google-analytics.com/analytics.js',
 	debug: {
 		enabled: !isProd,
@@ -94,11 +97,14 @@ vApp = new Vue({
 		timestamp: Date.now(),
 		showModalLoading: false,
 		showAtpAds: true,
+		mainnetDipStarted: true,
+		mainnetGotDipWinners: true,
 		testnetDipStarted: true,
 		testnetGotDipWinners: true
 	},
 	el: ".vue",
 	router: vRouter
+
 });
 
 setInterval(() => {
@@ -187,7 +193,6 @@ var myComp = Vue.extend({
 		}
 	}
 });
-
 var vm0 = new Vue({
 	el: '#lang-sel',
 	components: {myComp},
@@ -195,7 +200,6 @@ var vm0 = new Vue({
 });
 
 // Home link (for demo purposes in this stage)
-
 var HomeIndicator = Vue.extend({
 	template: `<span>{{ t('home') }}<span class=sr-only>({{ t('current') }})</span></span>`,
 	locales: {
@@ -209,7 +213,6 @@ var HomeIndicator = Vue.extend({
 		}
 	}
 });
-
 var vm1 = new Vue({
 	el: '#homeindicator',
 	components: {HomeIndicator},
@@ -217,7 +220,6 @@ var vm1 = new Vue({
 });
 
 // Daily transactions (for demo purposes in this stage)
-
 var DailyTx = Vue.extend({
 	template: `<div class="item-title">{{ t('dailytxs') }}</div>`,
 	locales: {
@@ -229,9 +231,27 @@ var DailyTx = Vue.extend({
 		}
 	}
 });
-
 var vm2 = new Vue({
 	el: '#demoi18n3',
 	components: {DailyTx},
 	template: `<div><daily-tx></daily-tx></div>`
+});
+
+// Daily transactions (for demo purposes in this stage)
+
+var SearchTool = Vue.extend({
+	template: `<input class="mr-sm-2 font-12" v-model=search type=search :placeholder="t('calatrava')" />`,
+	locales: {
+		es_ES: {
+			'calatrava': 'Buscar por dirección, txhash, bloque o token'
+		},
+		en_US: {
+			'calatrava': 'Search by address, txhash, block or token'
+		}
+	}
+});
+var vm3 = new Vue({
+	el: '#buscador',
+	components: {SearchTool},
+	template: `<search-tool></search-tool>`
 });
