@@ -460,16 +460,16 @@ public class RpcController {
         result.put("totalPage", totalPage > MAX_PAGE ? MAX_PAGE : totalPage);
         result.put("decimal", 18);
 
-        EXECUTOR.execute(() -> {
-            for (NebAddress address : addressList) {
-                if (address.getUpdatedAt().before(LocalDateTime.now().plusSeconds(-5).toDate())) {
-                    GetAccountStateResponse accountState = nebApiServiceWrapper.getAccountState(address.getHash());
-                    if (null != accountState && StringUtils.isNotEmpty(accountState.getBalance())) {
-                        nebAddressService.updateAddressBalance(address.getHash(), accountState.getBalance(), accountState.getNonce());
-                    }
-                }
-            }
-        });
+//        EXECUTOR.execute(() -> {
+//            for (NebAddress address : addressList) {
+//                if (address.getUpdatedAt().before(LocalDateTime.now().plusSeconds(-5).toDate())) {
+//                    GetAccountStateResponse accountState = nebApiServiceWrapper.getAccountState(address.getHash());
+//                    if (null != accountState && StringUtils.isNotEmpty(accountState.getBalance())) {
+//                        nebAddressService.updateAddressBalance(address.getHash(), accountState.getBalance(), accountState.getNonce());
+//                    }
+//                }
+//            }
+//        });
         return result;
     }
 
@@ -552,7 +552,7 @@ public class RpcController {
                     associatedAddresses.add(t.getFrom());
                 }
             });
-            EXECUTOR.execute(() -> associatedAddresses.forEach(address -> {
+            DB_UPDATE_EXECUTOR.execute(() -> associatedAddresses.forEach(address -> {
                 NebContractTokenBalance tokenBalance = contractTokenBalanceService.getFromRPC(address, contract);
                 if (tokenBalance != null) {
                     contractTokenBalanceService.updateAddressBalance(tokenBalance);
@@ -672,7 +672,7 @@ public class RpcController {
                 result.put("tokenName", token.getTokenName());
             }
 
-            EXECUTOR.execute(() -> contractTokenBalanceService.updateAddressBalance(balance));
+            DB_UPDATE_EXECUTOR.execute(() -> contractTokenBalanceService.updateAddressBalance(balance));
             ContractTokenBalance tokenBalance = new ContractTokenBalance();
             tokenBalance.setAddress(hash);
             tokenBalance.setContract(token.getContract());
