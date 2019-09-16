@@ -32,21 +32,22 @@ public class ContractTokenBalanceService {
     }
 
     public boolean updateAddressBalance(NebContractTokenBalance addressBalance) {
-        if (addressBalance==null){
-            return false;
-        }
-        NebContractTokenBalance fromDb = getByAddressAndContract(addressBalance.getAddress(), addressBalance.getContract());
-        if (fromDb != null) {
-            addressBalance.setCreatedTime(fromDb.getCreatedTime());
-            return nebContractTokenBalanceMapper.update(
-                    addressBalance.getAddress(),
-                    addressBalance.getContract(),
-                    addressBalance.getBalance(),
-                    addressBalance.getUpdatedTime()
-            ) > 0;
-        } else {
-            return addAddressBalance(addressBalance);
-        }
+        return false;
+//        if (addressBalance==null){
+//            return false;
+//        }
+//        NebContractTokenBalance fromDb = getByAddressAndContract(addressBalance.getAddress(), addressBalance.getContract());
+//        if (fromDb != null) {
+//            addressBalance.setCreatedTime(fromDb.getCreatedTime());
+//            return nebContractTokenBalanceMapper.update(
+//                    addressBalance.getAddress(),
+//                    addressBalance.getContract(),
+//                    addressBalance.getBalance(),
+//                    addressBalance.getUpdatedTime()
+//            ) > 0;
+//        } else {
+//            return addAddressBalance(addressBalance);
+//        }
     }
 
     public NebContractTokenBalance getByAddressAndContract(String address, String contract) {

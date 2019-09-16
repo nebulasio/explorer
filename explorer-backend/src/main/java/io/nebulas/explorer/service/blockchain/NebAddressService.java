@@ -93,10 +93,11 @@ public class NebAddressService {
      * @return saved result
      */
     public boolean updateAddressBalance(String hash, String balance, String nonce) {
-        if (StringUtils.isEmpty(hash) || StringUtils.isEmpty(balance) || StringUtils.isEmpty(nonce)) {
-            return false;
-        }
-        return nebAddressMapper.update(hash, new BigDecimal(balance), nonce) > 0;
+        return false;
+//        if (StringUtils.isEmpty(hash) || StringUtils.isEmpty(balance) || StringUtils.isEmpty(nonce)) {
+//            return false;
+//        }
+//        return nebAddressMapper.update(hash, new BigDecimal(balance), nonce) > 0;
     }
 
     /**
