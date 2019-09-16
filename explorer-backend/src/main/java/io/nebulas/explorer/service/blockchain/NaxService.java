@@ -111,6 +111,18 @@ public class NaxService {
         return stage.getActualNax();
     }
 
+    public BigDecimal getEstimateNax() {
+        long stageIdx = getLastCompletedStage() + 1;
+        if (stageIdx==-1){
+            return BigDecimal.ZERO;
+        }
+        NaxStage stage = naxStageMapper.getStage(stageIdx);
+        if (stage==null){
+            return BigDecimal.ZERO;
+        }
+        return stage.getEstimateNax();
+    }
+
     private String getPledgedNasInfo() {
         String inCache = redisTemplate.opsForValue().get(KEY_CURRENT_NAS_PLEDGE);
         if (!StringUtils.isEmpty(inCache)) {

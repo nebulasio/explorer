@@ -52,6 +52,10 @@ public class DStakingController {
         if (lastDistributedNax==null){
             lastDistributedNax = BigDecimal.ZERO;
         }
+        BigDecimal estimateNax = naxService.getEstimateNax();
+        if (estimateNax==null){
+            estimateNax = BigDecimal.ZERO;
+        }
         BigDecimal totalDistributedNax = naxService.getTotalDistributeNax();
         if (totalDistributedNax==null){
             totalDistributedNax = BigDecimal.ZERO;
@@ -70,6 +74,7 @@ public class DStakingController {
         result.put("totalDistributedNax", totalDistributedNax.stripTrailingZeros().toPlainString());
         result.put("currentPledgedNas", currentPledgedNas.stripTrailingZeros().toPlainString());
         result.put("currentTotalNas", currentTotalNas.stripTrailingZeros().toPlainString());
+        result.put("estimateNax", estimateNax.stripTrailingZeros().toPlainString());
         result.put("endHeight", endHeight);
         result.put("list", list);
         return result;
