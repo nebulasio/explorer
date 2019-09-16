@@ -77,6 +77,7 @@ public class NebSyncService {
 
     public void syncBlockByHash(String hash, boolean isLib) {
         try {
+            log.info("syncBlockByHash hash: {}", hash);
             Block block = nebApiServiceWrapper.getBlockByHash(hash, true);
             if (block == null) {
                 log.error("block with hash {} not found", hash);

@@ -124,6 +124,7 @@ public class GrpcClientService {
     }
 
     private void processTopicLinkBlock(String hash) {
+        log.info("Ready to sync block with hash: {}", hash);
         if (StringUtils.isBlank(hash)) {
             log.error("empty hash");
             return;
