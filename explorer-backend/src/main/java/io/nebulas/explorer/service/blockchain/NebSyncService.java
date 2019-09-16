@@ -388,14 +388,16 @@ public class NebSyncService {
     }
 
     private void syncContractBalanceAddress(String address, String contract) {
-        try {
-            NebContractTokenBalance rpcAddressBalance = contractTokenBalanceService.getFromRPC(address, contract);
-            if (rpcAddressBalance != null) {
-                contractTokenBalanceService.updateAddressBalance(rpcAddressBalance);
+        SINGLE_EXECUTOR.execute(()->{
+            try {
+                NebContractTokenBalance rpcAddressBalance = contractTokenBalanceService.getFromRPC(address, contract);
+                if (rpcAddressBalance != null) {
+                    contractTokenBalanceService.updateAddressBalance(rpcAddressBalance);
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
             }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
+        });
     }
 
     private boolean isContractTransfer(JSONObject data) {
