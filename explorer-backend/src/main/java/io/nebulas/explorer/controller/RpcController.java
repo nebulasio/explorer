@@ -659,7 +659,7 @@ public class RpcController {
 
         JsonResult result = JsonResult.success();
 
-        nebAddressService.updateAddressBalance(hash, address.getCurrentBalance().toPlainString(), address.getNonce());
+//        nebAddressService.updateAddressBalance(hash, address.getCurrentBalance().toPlainString(), address.getNonce());
 
         List<NebContractToken> allContractTokens = contractTokenService.getAllContractTokens();
         List<ContractTokenBalance> tokenBalanceList = new ArrayList<>(allContractTokens.size());
