@@ -124,31 +124,35 @@
 							<div id="homeindicator"></div>
 						</router-link>
 					</li>
+					<!-- Menú Blockchain -->
 					<li class="dropdown nav-item" v-bind:class="{ active: $route.meta.headerActive == 2 }">
 						<a class="nav-link" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
 							BLOCKCHAIN
 							<img src=/static/img/icon_arrow_down.png width=12 alt="">
 						</a>
 						<div class=dropdown-menu aria-labelledby=header-dropdown-blockchain>
-							<router-link class=dropdown-item v-bind:to="fragApi + '/txs'">Transactions</router-link>
-							<router-link class=dropdown-item v-bind:to="fragApi + '/txs/pending'">Pending Transactions</router-link>
+							<router-link class=dropdown-item v-bind:to="fragApi + '/txs'"><span id="transactionssubmenu"></span></router-link>
+							<router-link class=dropdown-item v-bind:to="fragApi + '/txs/pending'"><span id="pendingtransactionssubmenu"></span></router-link>
 							<div class="dropdown-divider"></div>
-							<router-link class=dropdown-item v-bind:to="fragApi + '/blocks'">Blocks</router-link>
+							<router-link class=dropdown-item v-bind:to="fragApi + '/blocks'"><span id="blockssubmenu"></span></router-link>
 							<div class="dropdown-divider"></div>
-							<router-link class=dropdown-item v-bind:to="fragApi + '/accounts'">Accounts</router-link>
+							<router-link class=dropdown-item v-bind:to="fragApi + '/accounts'"><span id="accountssubmenu"></span></router-link>
 						</div>
 					</li>
+					<!-- // Menú Blockchain -->
 					<!-- <li v-if="($route.params.api !== 'testnet' && $root.mainnetGotDipWinners) || ($route.params.api == 'testnet' && $root.testnetGotDipWinners)" class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
-						<router-link class=nav-link v-bind:to="fragApi + '/dip-leaderboard'">Dip Winners</router-link>
+						<router-link class=nav-link v-bind:to="fragApi + '/dip-leaderboard'"><span id="dipwinners"></span></router-link>
 					</li> -->
 					<li class="nav-item">
 						<a class="nav-link" href=# role=button v-on:click.prevent=apiSwitch()>{{ MenuMisc }}
 							<img src=/static/img/icon_switcher.png width=12 alt="">
 						</a>
 					</li>
+					<!-- Selector de idiomas -->
 					<li class="dropdown nav-item">
 						<div id="lang-sel"></div>
 					</li>
+					<!-- // Selector de idiomas -->
 				</ul>
 			</div>
 		</div>
@@ -157,7 +161,6 @@
 <script>
 	var api = require("@/assets/api"),
 	appConfig = require("@/assets/app-config");
-	console.log("Mad Hatter");
 
 	module.exports = {
 		data() {

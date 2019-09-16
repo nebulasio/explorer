@@ -113,7 +113,9 @@ setInterval(() => {
 
 ////////////////////////////////////////////////////////////
 //
-// api prefix
+// API PREFIX
+//
+////////////////////////////////////////////////////////////
 
 function onBeforeEach(to, from, next) {
 	window.scrollTo(0, 0);
@@ -151,11 +153,17 @@ function onAfterEach(to, from) {
 	}
 }
 
-// ADDENDA
+////////////////////////////////////////////////////////////
+//
+// LOCALIZATION METHODS
+//
+////////////////////////////////////////////////////////////
 
 Vue.use(VueTranslate);
 
-// Language selector
+
+
+// ----------------------------------[ HEADER ]---------------------------------
 var myComp = Vue.extend({
 	template:	`<div>
 						<a class="nav-link" href=# id=language-selector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
@@ -193,13 +201,13 @@ var myComp = Vue.extend({
 		}
 	}
 });
-var vm0 = new Vue({
+var header0 = new Vue({
 	el: '#lang-sel',
 	components: {myComp},
 	template: `<div><my-comp></my-comp></div>`
 });
 
-// Home link (for demo purposes in this stage)
+// Home link
 var HomeIndicator = Vue.extend({
 	template: `<span>{{ t('home') }}<span class=sr-only>({{ t('current') }})</span></span>`,
 	locales: {
@@ -213,32 +221,13 @@ var HomeIndicator = Vue.extend({
 		}
 	}
 });
-var vm1 = new Vue({
+var header1 = new Vue({
 	el: '#homeindicator',
 	components: {HomeIndicator},
 	template: `<div><home-indicator></home-indicator></div>`
 });
 
-// Daily transactions (for demo purposes in this stage)
-var DailyTx = Vue.extend({
-	template: `<div class="item-title">{{ t('dailytxs') }}</div>`,
-	locales: {
-		es_ES: {
-			'dailytxs': 'Transacciones diarias',
-		},
-		en_US: {
-			'dailytxs': 'Daily Transactions',
-		}
-	}
-});
-var vm2 = new Vue({
-	el: '#demoi18n3',
-	components: {DailyTx},
-	template: `<div><daily-tx></daily-tx></div>`
-});
-
-// Daily transactions (for demo purposes in this stage)
-
+// Search tool
 var SearchTool = Vue.extend({
 	template: `<input class="mr-sm-2 font-12" name=search id=buscador type=search :placeholder="t('calatrava')" />`,
 	locales: {
@@ -250,8 +239,149 @@ var SearchTool = Vue.extend({
 		}
 	}
 });
-var vm3 = new Vue({
+var header2 = new Vue({
 	el: '#buscador',
 	components: {SearchTool},
 	template: `<search-tool></search-tool>`
+});
+
+// DIP Winners
+var DipWinners = Vue.extend({
+	template: `<span>{{ t('dipwinners') }}</span>`,
+	locales: {
+		es_ES: {
+			'dipwinners': 'Ganadores del DIP'
+		},
+		en_US: {
+			'dipwinners': 'DIP Winners'
+		}
+	}
+});
+var header3 = new Vue({
+	el: '#dipwinners',
+	components: {DipWinners},
+	template: `<dip-winners></dip-winners>`
+});
+
+// Blockchain submenues
+	// Transactions
+var TransactionsSubmenu = Vue.extend({
+	template: `<span>{{ t('transactionssubmenu') }}</span>`,
+	locales: {
+		es_ES: {
+			'transactionssubmenu': 'Transacciones'
+		},
+		en_US: {
+			'transactionssubmenu': 'Transactions'
+		}
+	}
+});
+var header4 = new Vue({
+	el: '#transactionssubmenu',
+	components: {TransactionsSubmenu},
+	template: `<transactions-submenu></transactions-submenu>`
+});
+	// Pending transactions
+var PendingtransactionsSubmenu = Vue.extend({
+	template: `<span>{{ t('pendingtransactionssubmenu') }}</span>`,
+	locales: {
+		es_ES: {
+			'pendingtransactionssubmenu': 'Transacciones pendientes'
+		},
+		en_US: {
+			'pendingtransactionssubmenu': 'Pending Transactions'
+		}
+	}
+});
+var header5 = new Vue({
+	el: '#pendingtransactionssubmenu',
+	components: {PendingtransactionsSubmenu},
+	template: `<pendingtransactions-submenu></pendingtransactions-submenu>`
+});
+	// Blocks
+var BlocksSubmenu = Vue.extend({
+	template: `<span>{{ t('blockssubmenu') }}</span>`,
+	locales: {
+		es_ES: {
+			'blockssubmenu': 'Bloques'
+		},
+		en_US: {
+			'blockssubmenu': 'Blocks'
+		}
+	}
+});
+var header6 = new Vue({
+	el: '#blockssubmenu',
+	components: {BlocksSubmenu},
+	template: `<blocks-submenu></blocks-submenu>`
+});
+	// Accounts
+var AccountsSubmenu = Vue.extend({
+	template: `<span>{{ t('accountssubmenu') }}</span>`,
+	locales: {
+		es_ES: {
+			'accountssubmenu': 'Cuentas'
+		},
+		en_US: {
+			'accountssubmenu': 'Accounts'
+		}
+	}
+});
+var header7 = new Vue({
+	el: '#accountssubmenu',
+	components: {AccountsSubmenu},
+	template: `<accounts-submenu></accounts-submenu>`
+});
+
+// ---------------------------[ MAIN SCREEN MODULES ]---------------------------
+// Daily transactions, title
+var DailyTx = Vue.extend({
+	template: `<span>{{ t('dailytxs') }}</span>`,
+	locales: {
+		es_ES: {
+			'dailytxs': 'Transacciones diarias',
+		},
+		en_US: {
+			'dailytxs': 'Daily Transactions',
+		}
+	}
+});
+var blocks0 = new Vue({
+	el: '#dailytransactions',
+	components: {DailyTx},
+	template: `<daily-tx></daily-tx>`
+});
+// Daily transactions, subtitle
+var TodaysTx = Vue.extend({
+	template: `<span>{{ t('todaystransactions') }}</span>`,
+	locales: {
+		es_ES: {
+			'todaystransactions': 'Hoy',
+		},
+		en_US: {
+			'todaystransactions': 'Today',
+		}
+	}
+});
+var blocks1 = new Vue({
+	el: '#todaystxs',
+	components: {TodaysTx},
+	template: `<todays-tx></todays-tx>`
+});
+// NAS Price, title
+var NasPrice = Vue.extend({
+	template: `<span>{{ t('nasprice') }}</span>`,
+	locales: {
+		es_ES: {
+			'nasprice': 'Valor del NAS',
+		},
+		en_US: {
+			'nasprice': 'NAS Price',
+		}
+	}
+});
+var blocks2 = new Vue({
+	el: '#nasprice',
+	components: {NasPrice},
+	template: `<nas-price></nas-price>`
 });
