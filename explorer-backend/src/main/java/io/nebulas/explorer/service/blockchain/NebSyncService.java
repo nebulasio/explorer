@@ -73,6 +73,8 @@ public class NebSyncService {
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
 
+    private static Executor SINGLE_EXECUTOR = Executors.newSingleThreadExecutor();
+
     public void syncBlockByHash(String hash, boolean isLib) {
         try {
             Block block = nebApiServiceWrapper.getBlockByHash(hash, true);
@@ -304,20 +306,22 @@ public class NebSyncService {
     }
 
     private void syncAddress(String hash, NebAddressTypeEnum type) {
-        if (StringUtils.isEmpty(hash)) {
-            return;
-        }
-        try {
-            NebAddress address = nebAddressService.getNebAddressByHash(hash);
-            NebAddress addressFromRPC = nebAddressService.getNebAddressByHashRpc(hash);
-            if (address == null) {
-                nebAddressService.addNebAddress(addressFromRPC);
-            } else {
-                nebAddressService.updateAddressBalance(hash, addressFromRPC.getBalance(), addressFromRPC.getNonce());
+        SINGLE_EXECUTOR.execute(()->{
+            if (StringUtils.isEmpty(hash)) {
+                return;
             }
-        } catch (Throwable e) {
-            log.error("add address error", e);
-        }
+            try {
+                NebAddress address = nebAddressService.getNebAddressByHash(hash);
+                NebAddress addressFromRPC = nebAddressService.getNebAddressByHashRpc(hash);
+                if (address == null) {
+                    nebAddressService.addNebAddress(addressFromRPC);
+                } else {
+                    nebAddressService.updateAddressBalance(hash, addressFromRPC.getBalance(), addressFromRPC.getNonce());
+                }
+            } catch (Throwable e) {
+                log.error("add address error", e);
+            }
+        });
     }
 
     private void syncAddresses(List<String> addresses) {
