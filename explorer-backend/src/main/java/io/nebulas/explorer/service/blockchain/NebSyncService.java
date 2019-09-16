@@ -306,7 +306,7 @@ public class NebSyncService {
     }
 
     private void syncAddress(String hash, NebAddressTypeEnum type) {
-        SINGLE_EXECUTOR.execute(()->{
+        SINGLE_EXECUTOR.execute(() -> {
             if (StringUtils.isEmpty(hash)) {
                 return;
             }
@@ -316,7 +316,10 @@ public class NebSyncService {
                 if (address == null) {
                     nebAddressService.addNebAddress(addressFromRPC);
                 } else {
-                    nebAddressService.updateAddressBalance(hash, addressFromRPC.getBalance(), addressFromRPC.getNonce());
+                    if (!address.getBalance().equals(addressFromRPC.getBalance()) ||
+                            !address.getNonce().equals(addressFromRPC.getNonce())) {
+                        nebAddressService.updateAddressBalance(hash, addressFromRPC.getBalance(), addressFromRPC.getNonce());
+                    }
                 }
             } catch (Throwable e) {
                 log.error("add address error", e);
@@ -388,11 +391,14 @@ public class NebSyncService {
     }
 
     private void syncContractBalanceAddress(String address, String contract) {
-        SINGLE_EXECUTOR.execute(()->{
+        SINGLE_EXECUTOR.execute(() -> {
             try {
                 NebContractTokenBalance rpcAddressBalance = contractTokenBalanceService.getFromRPC(address, contract);
                 if (rpcAddressBalance != null) {
-                    contractTokenBalanceService.updateAddressBalance(rpcAddressBalance);
+                    NebContractTokenBalance rpcAddressBalanceFromDB = contractTokenBalanceService.getByAddressAndContract(address, contract);
+                    if (rpcAddressBalanceFromDB == null || rpcAddressBalance.getBalance().doubleValue() != rpcAddressBalanceFromDB.getBalance().doubleValue()) {
+                        contractTokenBalanceService.updateAddressBalance(rpcAddressBalance);
+                    }
                 }
             } catch (Exception e) {
                 log.error(e.getMessage(), e);

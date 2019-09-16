@@ -113,7 +113,7 @@ public class RpcController {
                 if (transaction != null) {
                     address.setCreator(transaction.getFrom());
                     address.setDeployTxHash(transaction.getHash());
-                    DB_UPDATE_EXECUTOR.execute(()-> nebAddressService.updateNebContractCreator(address));
+                    DB_UPDATE_EXECUTOR.execute(() -> nebAddressService.updateNebContractCreator(address));
                 }
             }
             ContractListItemVo vo = new ContractListItemVo();
@@ -555,7 +555,14 @@ public class RpcController {
             DB_UPDATE_EXECUTOR.execute(() -> associatedAddresses.forEach(address -> {
                 NebContractTokenBalance tokenBalance = contractTokenBalanceService.getFromRPC(address, contract);
                 if (tokenBalance != null) {
-                    contractTokenBalanceService.updateAddressBalance(tokenBalance);
+                    NebContractTokenBalance balanceFromDB = contractTokenBalanceService.getByAddressAndContract(address, token.getContract());
+                    if (balanceFromDB==null) {
+                        contractTokenBalanceService.updateAddressBalance(tokenBalance);
+                    } else {
+                        if (tokenBalance.getBalance().doubleValue()!=balanceFromDB.getBalance().doubleValue()){
+                            contractTokenBalanceService.updateAddressBalance(tokenBalance);
+                        }
+                    }
                 }
             }));
         } else {
@@ -672,7 +679,16 @@ public class RpcController {
                 result.put("tokenName", token.getTokenName());
             }
 
-            DB_UPDATE_EXECUTOR.execute(() -> contractTokenBalanceService.updateAddressBalance(balance));
+            DB_UPDATE_EXECUTOR.execute(() -> {
+                NebContractTokenBalance balanceFromDB = contractTokenBalanceService.getByAddressAndContract(hash, token.getContract());
+                if (balanceFromDB==null) {
+                    contractTokenBalanceService.updateAddressBalance(balance);
+                } else {
+                    if (balance.getBalance().doubleValue()!=balanceFromDB.getBalance().doubleValue()){
+                        contractTokenBalanceService.updateAddressBalance(balance);
+                    }
+                }
+            });
             ContractTokenBalance tokenBalance = new ContractTokenBalance();
             tokenBalance.setAddress(hash);
             tokenBalance.setContract(token.getContract());
