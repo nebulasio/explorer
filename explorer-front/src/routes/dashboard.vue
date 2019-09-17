@@ -178,6 +178,16 @@
 		color: rgba(255, 255, 255, 0.7);
 	}
 
+	.vue-dashboard .nas-price .details {
+		position: absolute;
+		top: 20px;
+		right: 30px;
+		align-items: baseline;
+		text-align: right;
+		font-size: 12px;
+		color: rgba(255, 255, 255, 0.7);
+	}
+
 	.vue-dashboard .nas-price .detail {
 		position: absolute;
 		margin-top: 96px;
@@ -675,8 +685,8 @@
 						<div class="item-title">
 							<span id="dailytransactions"></span>
 						</div>
-						<div class="details" v-if="dailyTxChartOptions">
-							<span v-if="todayTxCnt >= 0"><span id="todaystxs"></span></span>
+						<div class="details">
+							<div id="todaytxs"></div>
 							<span v-if="todayTxCnt >= 0">{{ numberAddComma(todayTxCnt) }}</span>
 						</div>
 						<vchart class="daily-chart" v-if="dailyTxChartOptions" :options="dailyTxChartOptions" :autoResize='true'></vchart>
@@ -685,21 +695,23 @@
 				<div class="nas-price flex-item col-12 col-lg-6 row1-item">
 					<div class="item-bg">
 						<div class="item-title"><span id="nasprice"></span></div>
-						<div v-if="market" class="update-time">Update Time : {{ timeConversion(Date.now() - market.createdAt) }} ago</div>
+						<div class="details">
+							<span id="updatetimeprefix"></span><span v-if="market">{{ timeConversion(Date.now() - market.createdAt) }}</span><span id="updatetimesuffix"></span>
+						</div>
 						<div v-if="market" class="detail">
 							<span>$</span>
 							<span>{{ market.price }}</span>
 							<span :class="{'text-red': market.trends <= 0}">({{ market.trends > 0 ? '+' : '-' }}{{ market.change24h }}%)</span>
 						</div>
-						<div v-if="market" class="market container">
+						<div class="market container">
 							<div class="row">
 								<div class="col-6">
-									Market Cap
-									<div>${{ numberAddComma(market.marketCap) }}</div>
+									<span id="marketcap"></span>
+									<div v-if="market">${{ numberAddComma(market.marketCap) }}</div>
 								</div>
 								<div class="col-6">
-									24h Volume
-									<div>${{ numberAddComma(market.volume24h) }}</div>
+									<span id="marketvol"></span>
+									<div v-if="market">${{ numberAddComma(market.volume24h) }}</div>
 								</div>
 							</div>
 						</div>

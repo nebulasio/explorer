@@ -364,7 +364,7 @@ var TodaysTx = Vue.extend({
 	}
 });
 var blocks1 = new Vue({
-	el: '#todaystxs',
+	el: '#todaytxs',
 	components: {TodaysTx},
 	template: `<todays-tx></todays-tx>`
 });
@@ -384,4 +384,72 @@ var blocks2 = new Vue({
 	el: '#nasprice',
 	components: {NasPrice},
 	template: `<nas-price></nas-price>`
+});
+// NAS Price, subtitle
+var UpdatetimePrefix = Vue.extend({
+	template: `<span>{{ t('naspriceprefix') }}</span>`,
+	locales: {
+		es_ES: {
+			'naspriceprefix': 'Actualizado hace: ',
+		},
+		en_US: {
+			'naspriceprefix': 'Update Time: ',
+		}
+	}
+});
+var blocks3 = new Vue({
+	el: '#updatetimeprefix',
+	components: {UpdatetimePrefix},
+	template: `<updatetime-prefix></updatetime-prefix>`
+});
+// NAS Price, subtitle suffix
+var UpdatetimeSuffix = Vue.extend({
+	template: `<span>{{ t('naspricesuffix') }}</span>`,
+	locales: {
+		es_ES: {
+			'naspricesuffix': ' ',
+		},
+		en_US: {
+			'naspricesuffix': ' ago',
+		}
+	}
+});
+var blocks4 = new Vue({
+	el: '#updatetimesuffix',
+	components: {UpdatetimeSuffix},
+	template: `<updatetime-suffix></updatetime-suffix>`
+});
+// NAS Price, market cap
+var MarketCap = Vue.extend({
+	template: `<span>{{ t('marketcap') }}</span>`,
+	locales: {
+		es_ES: {
+			'marketcap': 'Cap. de mercado',
+		},
+		en_US: {
+			'marketcap': 'Market Cap',
+		}
+	}
+});
+var blocks5 = new Vue({
+	el: '#marketcap',
+	components: {MarketCap},
+	template: `<market-cap></market-cap>`
+});
+// NAS Price, market vol
+var MarketVol = Vue.extend({
+	template: `<span>{{ t('marketvol') }}</span>`,
+	locales: {
+		es_ES: {
+			'marketvol': 'Vol. de mercado',
+		},
+		en_US: {
+			'marketvol': 'Market Vol.',
+		}
+	}
+});
+var blocks6 = new Vue({
+	el: '#marketvol',
+	components: {MarketVol},
+	template: `<market-vol></market-vol>`
 });
