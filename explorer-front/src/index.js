@@ -161,9 +161,7 @@ function onAfterEach(to, from) {
 
 Vue.use(VueTranslate);
 
-
-
-// ----------------------------------[ HEADER ]---------------------------------
+// ==================================[ HEADER ]=================================
 var myComp = Vue.extend({
 	template:	`<div>
 						<a class="nav-link" href=# id=language-selector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
@@ -264,7 +262,7 @@ var header3 = new Vue({
 });
 
 // Blockchain submenues
-	// Transactions
+// Transactions
 var TransactionsSubmenu = Vue.extend({
 	template: `<span>{{ t('transactionssubmenu') }}</span>`,
 	locales: {
@@ -281,7 +279,8 @@ var header4 = new Vue({
 	components: {TransactionsSubmenu},
 	template: `<transactions-submenu></transactions-submenu>`
 });
-	// Pending transactions
+
+// Pending transactions
 var PendingtransactionsSubmenu = Vue.extend({
 	template: `<span>{{ t('pendingtransactionssubmenu') }}</span>`,
 	locales: {
@@ -298,7 +297,8 @@ var header5 = new Vue({
 	components: {PendingtransactionsSubmenu},
 	template: `<pendingtransactions-submenu></pendingtransactions-submenu>`
 });
-	// Blocks
+
+// Blocks
 var BlocksSubmenu = Vue.extend({
 	template: `<span>{{ t('blockssubmenu') }}</span>`,
 	locales: {
@@ -315,7 +315,8 @@ var header6 = new Vue({
 	components: {BlocksSubmenu},
 	template: `<blocks-submenu></blocks-submenu>`
 });
-	// Accounts
+
+// Accounts
 var AccountsSubmenu = Vue.extend({
 	template: `<span>{{ t('accountssubmenu') }}</span>`,
 	locales: {
@@ -333,123 +334,272 @@ var header7 = new Vue({
 	template: `<accounts-submenu></accounts-submenu>`
 });
 
-// ---------------------------[ MAIN SCREEN MODULES ]---------------------------
-// Daily transactions, title
+// ===========================[ MAIN SCREEN MODULES ]===========================
+// ----------------------------[ DAILY TRANSACTIONS ]---------------------------
+// Title
 var DailyTx = Vue.extend({
 	template: `<span>{{ t('dailytxs') }}</span>`,
 	locales: {
 		es_ES: {
-			'dailytxs': 'Transacciones diarias',
+			'dailytxs': 'Transacciones diarias'
 		},
 		en_US: {
-			'dailytxs': 'Daily Transactions',
+			'dailytxs': 'Daily Transactions'
 		}
 	}
 });
-var blocks0 = new Vue({
+var dailytx0 = new Vue({
 	el: '#dailytransactions',
 	components: {DailyTx},
 	template: `<daily-tx></daily-tx>`
 });
-// Daily transactions, subtitle
+
+// Subtitle
 var TodaysTx = Vue.extend({
 	template: `<span>{{ t('todaystransactions') }}</span>`,
 	locales: {
 		es_ES: {
-			'todaystransactions': 'Hoy',
+			'todaystransactions': 'Hoy'
 		},
 		en_US: {
-			'todaystransactions': 'Today',
+			'todaystransactions': 'Today'
 		}
 	}
 });
-var blocks1 = new Vue({
+var dailytx1 = new Vue({
 	el: '#todaytxs',
 	components: {TodaysTx},
 	template: `<todays-tx></todays-tx>`
 });
-// NAS Price, title
+// --------------------------------[ NAS PRICE ]--------------------------------
+// Title
 var NasPrice = Vue.extend({
 	template: `<span>{{ t('nasprice') }}</span>`,
 	locales: {
 		es_ES: {
-			'nasprice': 'Valor del NAS',
+			'nasprice': 'Valor del NAS'
 		},
 		en_US: {
-			'nasprice': 'NAS Price',
+			'nasprice': 'NAS Price'
 		}
 	}
 });
-var blocks2 = new Vue({
+var nasprice0 = new Vue({
 	el: '#nasprice',
 	components: {NasPrice},
 	template: `<nas-price></nas-price>`
 });
-// NAS Price, subtitle
+
+// Subtitle
 var UpdatetimePrefix = Vue.extend({
 	template: `<span>{{ t('naspriceprefix') }}</span>`,
 	locales: {
 		es_ES: {
-			'naspriceprefix': 'Actualizado hace: ',
+			'naspriceprefix': 'Actualizado hace: '
 		},
 		en_US: {
-			'naspriceprefix': 'Update Time: ',
+			'naspriceprefix': 'Update Time: '
 		}
 	}
 });
-var blocks3 = new Vue({
+var nasprice1 = new Vue({
 	el: '#updatetimeprefix',
 	components: {UpdatetimePrefix},
 	template: `<updatetime-prefix></updatetime-prefix>`
 });
-// NAS Price, subtitle suffix
+
+// Subtitle suffix
 var UpdatetimeSuffix = Vue.extend({
 	template: `<span>{{ t('naspricesuffix') }}</span>`,
 	locales: {
 		es_ES: {
-			'naspricesuffix': ' ',
+			'naspricesuffix': ' '
 		},
 		en_US: {
-			'naspricesuffix': ' ago',
+			'naspricesuffix': ' ago'
 		}
 	}
 });
-var blocks4 = new Vue({
+var nasprice2 = new Vue({
 	el: '#updatetimesuffix',
 	components: {UpdatetimeSuffix},
 	template: `<updatetime-suffix></updatetime-suffix>`
 });
-// NAS Price, market cap
+
+// Market cap
 var MarketCap = Vue.extend({
 	template: `<span>{{ t('marketcap') }}</span>`,
 	locales: {
 		es_ES: {
-			'marketcap': 'Cap. de mercado',
+			'marketcap': 'Cap. de mercado'
 		},
 		en_US: {
-			'marketcap': 'Market Cap',
+			'marketcap': 'Market Cap'
 		}
 	}
 });
-var blocks5 = new Vue({
+var nasprice3 = new Vue({
 	el: '#marketcap',
 	components: {MarketCap},
 	template: `<market-cap></market-cap>`
 });
-// NAS Price, market vol
+
+// Market vol
 var MarketVol = Vue.extend({
 	template: `<span>{{ t('marketvol') }}</span>`,
 	locales: {
 		es_ES: {
-			'marketvol': 'Vol. de mercado',
+			'marketvol': 'Vol. de mercado'
 		},
 		en_US: {
-			'marketvol': 'Market Vol.',
+			'marketvol': 'Market Vol'
 		}
 	}
 });
-var blocks6 = new Vue({
+var nasprice4 = new Vue({
 	el: '#marketvol',
 	components: {MarketVol},
 	template: `<market-vol></market-vol>`
+});
+
+// ------------------------------[ BLOCKS - MAIN ]------------------------------
+// Title
+var BlocksTitle = Vue.extend({
+	template: `<div class="item-title">{{ t('blockstitle') }}</div>`,
+	locales: {
+		es_ES: {
+			'blockstitle': 'Bloques'
+		},
+		en_US: {
+			'blockstitle': 'Blocks'
+		}
+	}
+});
+var blocks0 = new Vue({
+	el: '#blockstitle',
+	components: {BlocksTitle},
+	template: `<blocks-title></blocks-title>`
+});
+
+// Status
+var BlocksStatus = Vue.extend({
+	template: `<div class="subtitle font-12 text-gray">{{ t('blocksstatus') }}</div>`,
+	locales: {
+		es_ES: {
+			'blocksstatus': 'Estado'
+		},
+		en_US: {
+			'blocksstatus': 'Block Status'
+		}
+	}
+});
+var blocks1 = new Vue({
+	el: '#blocksstatus',
+	components: {BlocksStatus},
+	template: `<blocks-status></blocks-status>`
+});
+
+// Transactions
+var BlocksTransactions = Vue.extend({
+	template: `<span id="blockstransactions" style="display: none;">{{ t('blockstx') }}</span>`,
+	locales: {
+		es_ES: {
+			'blockstx': 'Transacciones: '
+		},
+		en_US: {
+			'blockstx': 'Transactions: '
+		}
+	}
+});
+var blocks2 = new Vue({
+	el: '#blockstransactions',
+	components: {BlocksTransactions},
+	template: `<blocks-transactions></blocks-transactions>`
+});
+
+// Interval
+var BlocksInterval = Vue.extend({
+	template: `<span id="blocksinterval" style="display: none;">{{ t('blocksinterval') }}</span>`,
+	locales: {
+		es_ES: {
+			'blocksinterval': 'Intervalo de bloque: 15 s'
+		},
+		en_US: {
+			'blocksinterval': 'Block interval: 15s'
+		}
+	}
+});
+var blocks3 = new Vue({
+	el: '#blocksinterval',
+	components: {BlocksInterval},
+	template: `<blocks-interval></blocks-interval>`
+});
+// ------------------------------[ BLOCKS - TOOLS ]-----------------------------
+// Height
+var BlocksHeight = Vue.extend({
+	template: `<div style="display: none;" id="blocksheighttext">{{ t('blocksheight') }}</div>`,
+	locales: {
+		es_ES: {
+			'blocksheight': 'Altura de bloque >'
+		},
+		en_US: {
+			'blocksheight': 'Block Height >'
+		}
+	}
+});
+var blocktools0 = new Vue({
+	el: '#blockheight',
+	components: {BlocksHeight},
+	template: `<blocks-height></blocks-height>`
+});
+// Total tx
+var BlocksTotaltx = Vue.extend({
+	template: `<div style="display: none;" id="blockstotaltxtext">{{ t('totaltx') }}</div>`,
+	locales: {
+		es_ES: {
+			'totaltx': 'Total de transacciones >'
+		},
+		en_US: {
+			'totaltx': 'Total Transactions >'
+		}
+	}
+});
+var blocktools1 = new Vue({
+	el: '#blocktotaltx',
+	components: {BlocksTotaltx},
+	template: `<blocks-totaltx></blocks-totaltx>`
+});
+// Total smart contracts
+var BlocksTotalsc = Vue.extend({
+	template: `<div style="display: none;" id="blockstotalsmartcontracts">{{ t('blocktotalsmartcontracts') }}</div>`,
+	locales: {
+		es_ES: {
+			'blocktotalsmartcontracts': 'Total de contratos inteligentes >'
+		},
+		en_US: {
+			'blocktotalsmartcontracts': 'Total Smart Contracts >'
+		}
+	}
+});
+var blocktools2 = new Vue({
+	el: '#blocktotalsmartcontracts',
+	components: {BlocksTotalsc},
+	template: `<blocks-totalsc></blocks-totalsc>`
+});
+// Total addresses
+var BlocksTotalad = Vue.extend({
+	template: `<div style="display: none;" id="blockstotaladdresses">{{ t('blockstotaladdresses') }}</div>`,
+	locales: {
+		es_ES: {
+			'blockstotaladdresses': 'Total de direcciones >'
+		},
+		en_US: {
+			'blockstotaladdresses': 'Total Addresses >'
+		}
+	}
+});
+var blocktools3 = new Vue({
+	el: '#blocktotaladdresses',
+	components: {BlocksTotalad},
+	template: `<blocks-totalad></blocks-totalad>`
 });

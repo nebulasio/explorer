@@ -730,15 +730,17 @@
 			<div class="row row2">
 				<div class="col">
 					<div class="flex-item item-bg item-shadow">
-						<div class="item-title">Blocks</div>
-						<div class="subtitle font-12 text-gray">Block Status</div>
+						<div id="blockstitle"></div>
+						<div id="blocksstatus"></div>
+						<span id="blocksinterval"></span>
+						<span id="blockstransactions"></span>
 						<transition-group v-on:after-enter="afterEnter" name="row2-list" class="realtime-blocks">
 							<div class="realtime-block" v-for="block in blocks" :key="block.height">
 								<div class="blockheight" style="height: 100%" :data-txncnt="block.txnCnt"></div>
 								<div class="block-popover">
 									<div class="font-12 font-bold">{{ numberAddComma(block.height) }}</div>
-									<div>Transactions: {{ block.txnCnt }}</div>
-									<div>Block Interval: 15s</div>
+									<div><span name="blockstransactions"></span> {{ block.txnCnt }}</div>
+									<div><span name="blocksinterval"></span></div>
 								</div>
 							</div>
 						</transition-group>
@@ -746,32 +748,36 @@
 				</div>
 			</div>
 			<!-- ===================3===================== -->
+			<div id="blockheight"></div>
+			<div id="blocktotaltx"></div>
+			<div id="blocktotalsmartcontracts"></div>
+			<div id="blocktotaladdresses"></div>
 			<div class="row row3">
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ blockheight }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/blocks/"'>Block Height ></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/blocks/"'><span id="blocksheight"></span></router-link>
 						<img src=/static/img/dashboard-1.png width=44 alt="">
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ numberAddComma(staticInfo.txnCnt) }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/txs/"'>Total Transactions ></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/txs/"'><span id="totaltransactions"></span></router-link>
 						<img src=/static/img/dashboard-2.png width=44 alt="">
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ numberAddComma(staticInfo.totalContractCount) }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/contracts/"'>Total Smart Contracts ></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/contracts/"'><span id="totalsmartcontracts"></span></router-link>
 						<img src=/static/img/dashboard-3.png width=44 alt="">
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/accounts/"'>Total Addresses ></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/accounts/"'><span id="totaladdresses"></span></router-link>
 						<img src=/static/img/dashboard-4.png width=44 alt="">
 					</div>
 				</div>
@@ -1224,6 +1230,38 @@
 			}
 		},
 		updated() {
+			if (!boolUpdated) {
+				var boolUpdated = false;
+				// Quick and dirty way to assign values to the ticks.
+				var blockstransactionstext = document.getElementById("blockstransactions").innerText;
+				var blocksintervaltext = document.getElementById("blocksinterval").innerText;
+				var blocksinterval = document.getElementsByName("blocksinterval");
+				var blockstransactions = document.getElementsByName("blockstransactions");
+				var totalTicks = blocksinterval.length
+				var i;
+				for (i = 0; i < totalTicks; i++) {
+					blockstransactions[i].innerText = blockstransactionstext;
+					blocksinterval[i].innerText = blocksintervaltext;
+				}
+				// Same for block widgets.
+				var blocksheighttext = document.getElementById("blocksheighttext");
+				var blocksheight = document.getElementById("blocksheight");
+				blocksheight.innerText = blocksheighttext.innerText;
+
+				var blockstotaltxtext = document.getElementById("blockstotaltxtext");
+				var totaltransactions = document.getElementById("totaltransactions");
+				totaltransactions.innerText = blockstotaltxtext.innerText;
+
+				var blockstotalsmartcontracts = document.getElementById("blockstotalsmartcontracts");
+				var totalsmartcontracts = document.getElementById("totalsmartcontracts");
+				totalsmartcontracts.innerText = blockstotalsmartcontracts.innerText;
+
+				var blockstotaladdresses = document.getElementById("blockstotaladdresses");
+				var totaladdresses = document.getElementById("totaladdresses");
+				totaladdresses.innerText = blockstotaladdresses.innerText;
+				boolUpdated = true;
+			}
+
 			if (window.isIE()) {
 				$('#svg-line').css('stroke-dasharray', 'none');
 			}
