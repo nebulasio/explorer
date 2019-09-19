@@ -785,7 +785,7 @@
                 return buttons;
             },
             urlChange() {
-                if (!this.$route.path.startsWith('/address/') || !this.$route.params.id) {
+                if (this.$route.path.indexOf('/address/') === -1 || !this.$route.params.id) {
                     return;
                 }
                 this.obj = null;

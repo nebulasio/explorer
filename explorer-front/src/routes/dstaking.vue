@@ -393,7 +393,7 @@ module.exports = {
     computed: {
         leftTime() {
             if (this.nextIssueBlockHeight - this.currentBlockHeight <= 0) {
-                return '00:00:00';
+                return 'Distributing NAX Now';
             }
             var duration = moment.duration((this.nextIssueBlockHeight - this.currentBlockHeight) * 15000, 'milliseconds');
             return (duration.days() * 24 + duration.hours()).pad(2) + ":" + duration.minutes().pad(2) + ":" + duration.seconds().pad(2);

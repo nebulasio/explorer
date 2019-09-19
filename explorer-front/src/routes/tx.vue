@@ -376,7 +376,7 @@
                     return"";
             },
             urlChange() {
-                if (!this.$route.path.startsWith('/tx/') || !this.$route.params.id) {
+                if (this.$route.path.indexOf('/tx/') === -1 || !this.$route.params.id) {
                     return;
                 }
                 this.$root.showModalLoading = true;
