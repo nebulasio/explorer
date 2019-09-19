@@ -733,9 +733,6 @@
 					<div class="flex-item item-bg item-shadow">
 						<div id="blockstitle"></div>
 						<div id="blocksstatus"></div>
-						<span id="blocksinterval"></span>
-						<span id="blockstransactions"></span>
-						<span id="amounttxt"></span>
 						<transition-group v-on:after-enter="afterEnter" name="row2-list" class="realtime-blocks">
 							<div class="realtime-block" v-for="block in blocks" :key="block.height">
 								<div class="blockheight" style="height: 100%" :data-txncnt="block.txnCnt"></div>
@@ -838,24 +835,27 @@
 			<div class="row row5">
 				<div class="flex-item col-12 col-lg-6 row5-item">
 					<div class="item-bg item-shadow">
-						<div class="item-title">Blocks</div>
-						<router-link :to='fragApi + "/blocks/"' class="showall">View All ></router-link>
+						<div class="item-title"><span id="blocksindicatortitle"></span></div>
+						<router-link :to='fragApi + "/blocks/"' class="showall"><span name="blocksindicatorviewall"></span></router-link>
 						<transition-group name="list" tag="table" frame=hsides rules=rows>
 							<tr class="list-item" v-for="block in blocks.slice(0, 6)" :key="block.height">
 								<td>
 									<img src="/static/img/icon-block.png?v=20190116" width="50" height="50">
 								</td>
 								<td>
-									Block#
+									<span name="blocknumber"></span>
 									<router-link :to='fragApi + "/block/" + block.height' class="monospace">{{ block.height }}</router-link>
 									<br>
 									<span class="txcnt monospace">
-										<router-link v-if="block.txnCnt" :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} {{ block.txnCnt > 1 ? "transactions" : "transaction" }}</router-link>
-										<span v-else>0 transaction</span>
+										<router-link v-if="block.txnCnt == 0" :to='fragApi + "/txs?block=" + block.height'><span name=notransactiontext></span></router-link>
+										<router-link v-if="block.txnCnt == 1" :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} <span name=onetransactiontext></span></router-link>
+										<router-link v-if="block.txnCnt > 1" :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} <span name=severaltransactionstext></span></router-link>
+
+
 									</span>
 								</td>
 								<td>
-									<div class="time">{{ timeConversion(Date.now() - block.localTimestamp + block.timeDiff) }} ago</div>
+									<div class="time">{{ timeConversion(Date.now() - block.localTimestamp + block.timeDiff) }}</div>
 								</td>
 							</tr>
 						</transition-group>
@@ -863,34 +863,34 @@
 				</div>
 				<div class="flex-item col-12 col-lg-6 row5-item">
 					<div class="item-bg item-shadow">
-						<div class="item-title">Transactions</div>
-						<router-link :to='fragApi + "/txs/"' class="showall">View All ></router-link>
+						<div class="item-title"><span id="transactionstitle"></span></div>
+						<router-link :to='fragApi + "/txs/"' class="showall"><span name="blocksindicatorviewall"></span></router-link>
 						<transition-group name="list" tag="table" frame=hsides rules=rows>
 							<tr v-for="tx in txs.slice(0, 6)" :key="tx.hash">
 								<td>
 									<img src="/static/img/icon-tx.png?v=20190116" width="50" height="50">
 								</td>
 								<td>
-									Tx#
+									<span name="transactionnumber"></span>
 									<router-link :to='fragApi + "/tx/" + tx.hash'>
 										<span class="monospace">{{ tx.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.hash.slice(-4) }}</span>
 									</router-link>
 									<br>
 									<span class="fromto d-none d-sm-inline">
-										From
+										<span name="fromtext"></span>
 										<router-link :to='fragApi + "/address/" + tx.from.hash'>
 											<span class="monospace">{{ tx.from.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.from.hash.slice(-4) }}</span>
 										</router-link>
 									</span>
 									<span class="fromto d-none d-sm-inline">
-										To
+										<span name="totext"></span>
 										<router-link :to='fragApi + "/address/" + tx.from.hash'>
 											<span class="monospace">{{ tx.to.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.to.hash.slice(-4) }}</span>
 										</router-link>
 									</span>
 								</td>
 								<td>
-									<div class="time">{{ timeConversion(Date.now() - tx.localTimestamp + tx.timeDiff) }} ago</div>
+									<div class="time">{{ timeConversion(Date.now() - tx.localTimestamp + tx.timeDiff) }}</div>
 								</td>
 							</tr>
 						</transition-group>
@@ -902,6 +902,18 @@
 		</div>
 		<!--ATP侧边栏广告位-->
 		<div class="flex atlaspAds" id="atlaspAds-side"></div>
+		<!-- Hidden containers for localized text strings -->
+		<div id="blocksinterval"></div>
+		<div id="blockstransactions"></div>
+		<div id="amounttxt"></div>
+		<div id="blocknumbertxt"></div>
+		<div id="notransactiontxt"></div>
+		<div id="onetransactiontxt"></div>
+		<div id="severaltransactionstxt"></div>
+		<div id="blocksindicatorviewall"></div>
+		<div id="txnumber"></div>
+		<div id="fromtxt"></div>
+		<div id="totxt"></div>
 	</div>
 </template>
 <script>
@@ -1249,9 +1261,9 @@
 					blocksinterval[i].innerText = blocksintervaltext;
 				}
 				// Same for block widgets.
-				var blocksheighttext = document.getElementById("blocksheighttext");
+				var blocksheighttext = document.getElementById("blocksheighttext").innerText;
 				var blocksheight = document.getElementById("blocksheight");
-				blocksheight.innerText = blocksheighttext.innerText;
+				blocksheight.innerText = blocksheighttext;
 
 				var blockstotaltxtext = document.getElementById("blockstotaltxtext");
 				var totaltransactions = document.getElementById("totaltransactions");
@@ -1271,23 +1283,83 @@
 
 				//Same for other components:
 				var localizedtxtext = document.getElementById("localizedtxtext");
-				var dailytransactions = document.getElementById("dailytransactions");
 				localTransactions = localizedtxtext.innerText;
 
-				var amount_text = document.getElementsByName("amount_text");
-				var amounttext = document.getElementById("amounttext").innerText;
-				var totalTexts = amount_text.length;
-				var i;
-				for (i = 0; i < totalTexts; i++) {
-					amount_text[i].innerText = amounttext;
+				var destination = document.getElementsByName("amount_text");
+				var origin = document.getElementById("amounttext").innerText;
+				var totalElements = destination.length;
+				for (i = 0; i < totalElements; i++) {
+					destination[i].innerText = origin;
 				}
 
-				var newaddressestexts = document.getElementsByName("newaddressestext");
-				var newaddressestxt = document.getElementById("newaddressestxt").innerText;
-				var totalTexts = newaddressestexts.length;
+				var destination = document.getElementsByName("newaddressestext");
+				var origin = document.getElementById("newaddressestxt").innerText;
+				var totalElements = destination.length;
+				for (i = 0; i < totalElements; i++) {
+					destination[i].innerText = origin;
+				}
+
+				var destination = document.getElementsByName("blocknumber");
+				var origin = document.getElementById("blocksnumbertext").innerText;
+				var totalElements = destination.length;
+				for (i = 0; i < totalElements; i++) {
+					destination[i].innerText = origin;
+				}
+
+				var destination = document.getElementsByName("severaltransactionstext");
+				var origin = document.getElementById("severaltransactionstext").innerText;
+				var totalElements = destination.length;
 				var i;
-				for (i = 0; i < totalTexts; i++) {
-					newaddressestexts[i].innerText = newaddressestxt;
+				for (i = 0; i < totalElements; i++) {
+					destination[i].innerText = origin;
+				}
+
+				var destination = document.getElementsByName("onetransactiontext");
+				var origin = document.getElementById("onetransactiontext").innerText;
+				var totalElements = destination.length;
+				var i;
+				for (i = 0; i < totalElements; i++) {
+					destination[i].innerText = origin;
+				}
+
+				var destination = document.getElementsByName("notransactiontext");
+				var origin = document.getElementById("notransactiontext").innerText;
+				var totalElements = destination.length;
+				var i;
+				for (i = 0; i < totalElements; i++) {
+					destination[i].innerText = origin;
+				}
+
+				var destination = document.getElementsByName("blocksindicatorviewall");
+				var origin = document.getElementById("indicatorviewall").innerText;
+				var totalElements = destination.length;
+				var i;
+				for (i = 0; i < totalElements; i++) {
+					destination[i].innerText = origin;
+				}
+
+				var destination = document.getElementsByName("transactionnumber");
+				var origin = document.getElementById("transactionnumber").innerText;
+				var totalElements = destination.length;
+				var i;
+				for (i = 0; i < totalElements; i++) {
+					destination[i].innerText = origin;
+				}
+
+				var destination = document.getElementsByName("fromtext");
+				var origin = document.getElementById("fromtext").innerText;
+				var totalElements = destination.length;
+				var i;
+				for (i = 0; i < totalElements; i++) {
+					destination[i].innerText = origin;
+				}
+
+				var destination = document.getElementsByName("totext");
+				var origin = document.getElementById("totext").innerText;
+				var totalElements = destination.length;
+				var i;
+				for (i = 0; i < totalElements; i++) {
+					destination[i].innerText = origin;
 				}
 
 			}

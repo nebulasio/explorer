@@ -521,7 +521,7 @@ var BlocksStatus = Vue.extend({
 	template: `<div class="subtitle font-12 text-gray">{{ t('blocksstatus') }}</div>`,
 	locales: {
 		es_ES: {
-			'blocksstatus': 'Estado'
+			'blocksstatus': 'Estado actual'
 		},
 		en_US: {
 			'blocksstatus': 'Block Status'
@@ -727,4 +727,176 @@ var addresstools4 = new Vue({
 	el: '#amounttxt',
 	components: {AmountText},
 	template: `<amount-text></amount-text>`
+});
+// -----------------------------[ BLOCK INDICATOR ]-----------------------------
+// Title
+var BlocksIndicatorTitle = Vue.extend({
+	template: `<span>{{ t('blocksindicatortitle') }}</span>`,
+	locales: {
+		es_ES: {
+			'blocksindicatortitle': 'Bloques'
+		},
+		en_US: {
+			'blocksindicatortitle': 'Blocks'
+		}
+	}
+});
+var blocksindicator0 = new Vue({
+	el: '#blocksindicatortitle',
+	components: {BlocksIndicatorTitle},
+	template: `<blocks-indicator-title></blocks-indicator-title>`
+});
+// View all
+var BlocksIndicatorViewAll = Vue.extend({
+	template: `<div style="display: none;" id="indicatorviewall">{{ t('blocksindicatorviewall') }}</div>`,
+	locales: {
+		es_ES: {
+			'blocksindicatorviewall': 'Ver todo >'
+		},
+		en_US: {
+			'blocksindicatorviewall': 'View All >'
+		}
+	}
+});
+var blocksindicator1 = new Vue({
+	el: '#blocksindicatorviewall',
+	components: {BlocksIndicatorViewAll},
+	template: `<blocks-indicator-view-all></blocks-indicator-view-all>`
+});
+// View all
+var BlocksIndicatorBlockNumber = Vue.extend({
+	template: `<span id="blocksnumbertext" style="display: none;">{{ t('blocksindicatorblocknumber') }}</span>`,
+	locales: {
+		es_ES: {
+			'blocksindicatorblocknumber': 'Bloque nro. '
+		},
+		en_US: {
+			'blocksindicatorblocknumber': 'Block# '
+		}
+	}
+});
+var blocksindicator2 = new Vue({
+	el: '#blocknumbertxt',
+	components: {BlocksIndicatorBlockNumber},
+	template: `<blocks-indicator-block-number></blocks-indicator-block-number>`
+});
+// No transaction
+var NoTransaction = Vue.extend({
+	template: `<span id="notransactiontext" style="display: none;">{{ t('notransactiontext') }}</span>`,
+	locales: {
+		es_ES: {
+			'notransactiontext': 'Sin transacciones'
+		},
+		en_US: {
+			'notransactiontext': 'No transactions'
+		}
+	}
+});
+var blocksindicator3 = new Vue({
+	el: '#notransactiontxt',
+	components: {NoTransaction},
+	template: `<no-transaction></no-transaction>`
+});
+// One transaction
+var OneTransaction = Vue.extend({
+	template: `<span id="onetransactiontext" style="display: none;">{{ t('onetransactiontext') }}</span>`,
+	locales: {
+		es_ES: {
+			'onetransactiontext': 'transacción'
+		},
+		en_US: {
+			'onetransactiontext': 'transaction'
+		}
+	}
+});
+var blocksindicator4 = new Vue({
+	el: '#onetransactiontxt',
+	components: {OneTransaction},
+	template: `<one-transaction></one-transaction>`
+});
+// Several transactions
+var SeveralTransactions = Vue.extend({
+	template: `<span id="severaltransactionstext" style="display: none;">{{ t('severaltransactionstext') }}</span>`,
+	locales: {
+		es_ES: {
+			'severaltransactionstext': 'transacciones'
+		},
+		en_US: {
+			'severaltransactionstext': 'transactions'
+		}
+	}
+});
+var blocksindicator5 = new Vue({
+	el: '#severaltransactionstxt',
+	components: {SeveralTransactions},
+	template: `<several-transactions></several-transactions>`
+});
+// ------------------------------[ TRANSACTIONS ]-------------------------------
+// Title
+var TransactionsTitle = Vue.extend({
+	template: `<span>{{ t('transactionstitle') }}</span>`,
+	locales: {
+		es_ES: {
+			'transactionstitle': 'Transacciones'
+		},
+		en_US: {
+			'transactionstitle': 'Transactions'
+		}
+	}
+});
+var transactions0 = new Vue({
+	el: '#transactionstitle',
+	components: {TransactionsTitle},
+	template: `<transactions-title></transactions-title>`
+});
+// Tx#
+var TransactionNumber = Vue.extend({
+	template: `<div id="transactionnumber" style="display: none;">{{ t('transactionnumber') }}</span>`,
+	locales: {
+		es_ES: {
+			'transactionnumber': 'Transacción nro.'
+		},
+		en_US: {
+			'transactionnumber': 'Tx#'
+		}
+	}
+});
+var transactions1 = new Vue({
+	el: '#txnumber',
+	components: {TransactionNumber},
+	template: `<transaction-number></transaction-number>`
+});
+// From
+var FromText = Vue.extend({
+	template: `<div id="fromtext" style="display: none;">{{ t('fromtext') }}</span>`,
+	locales: {
+		es_ES: {
+			'fromtext': 'De'
+		},
+		en_US: {
+			'fromtext': 'From'
+		}
+	}
+});
+var transactions2 = new Vue({
+	el: '#fromtxt',
+	components: {FromText},
+	template: `<from-text></from-text>`
+});
+// To
+var ToText = Vue.extend({
+	template: `<div id="totext" style="display: none;">{{ t('totext') }}</span>`,
+	locales: {
+		es_ES: {
+			'totext': 'a'
+		},
+		en_US: {
+			'totext': 'To'
+		}
+	}
+});
+var transactions3 = new Vue({
+	el: '#totxt',
+	components: {ToText},
+	template: `<to-text></to-text>`
 });
