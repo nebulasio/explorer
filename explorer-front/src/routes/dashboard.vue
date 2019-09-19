@@ -684,6 +684,7 @@
 					<div class="item-bg">
 						<div class="item-title">
 							<span id="dailytransactions"></span>
+							<span id="localtxtext"></span>
 						</div>
 						<div class="details">
 							<div id="todaytxs"></div>
@@ -734,6 +735,7 @@
 						<div id="blocksstatus"></div>
 						<span id="blocksinterval"></span>
 						<span id="blockstransactions"></span>
+						<span id="amounttxt"></span>
 						<transition-group v-on:after-enter="afterEnter" name="row2-list" class="realtime-blocks">
 							<div class="realtime-block" v-for="block in blocks" :key="block.height">
 								<div class="blockheight" style="height: 100%" :data-txncnt="block.txnCnt"></div>
@@ -752,6 +754,7 @@
 			<div id="blocktotaltx"></div>
 			<div id="blocktotalsmartcontracts"></div>
 			<div id="blocktotaladdresses"></div>
+			<div id="newaddressestxt"></div>
 			<div class="row row3">
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
@@ -777,7 +780,7 @@
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/accounts/"'><span id="totaladdresses"></span></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/accounts/"'><span name="totaladdresses"></span></router-link>
 						<img src=/static/img/dashboard-4.png width=44 alt="">
 					</div>
 				</div>
@@ -787,10 +790,10 @@
 				<div class="flex-item col-12 col-lg-6 row4-item user-data">
 					<div class="item-bg item-shadow">
 						<div class="item-title">
-							New Addresses Percentage
-							<div class="text-light-gray font-12 font-regular">New addresses are addresses created within 90 days.</div>
+							<span id="newaddressespercentage"></span>
+							<div class="text-light-gray font-12 font-regular"><span id="newaddressessubtitle"></span></div>
 							<div v-if="staticInfo" class="mt20 d-sm-none">
-								<span class="font-12 font-color-7F7F7F">New Addresses</span>
+								<span class="font-12 font-color-7F7F7F"><span name="totaladdresses"></span></span>
 								<span class="font-20">{{ (Math.round(100 * staticInfo.newAddressCount / staticInfo.totalAddressCount * 10) / 10).toFixed(1) + '%' }}</span>
 							</div>
 						</div>
@@ -808,22 +811,22 @@
 								<div class="labels">
 									<!-- 四舍五入并保留一位小数 -->
 									<div>{{ (Math.round(100 * staticInfo.newAddressCount / staticInfo.totalAddressCount * 10) / 10).toFixed(1) + '%' }}</div>
-									<div>New Addresses</div>
+									<div><span name="newaddressestext"></span></div>
 								</div>
 							</div>
 						</div>
 						<div v-if="staticInfo" class="detail">
 							<!-- <div class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
 							<div class="title">{{ numberAddComma(staticInfo.newAddressCount) }}</div>
-							<div class="font-12 text-gray">New Addresses</div>
+							<div class="font-12 text-gray"><span name="newaddressestext"></span></div>
 							<div class="title">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
-							<div class="font-12 text-gray">Total Addresses</div>
+							<div class="font-12 text-gray"><span name="totaladdresses"></span></div>
 						</div>
 					</div>
 				</div>
 				<div class="flex-item col-12 col-lg-6 row4-item accounts-data">
 					<div class="item-bg item-shadow">
-						<div class="item-title">Growth of Addresses</div>
+						<div class="item-title"><span id="addressesgrowth"></span></div>
 						<!-- <div v-if="accountsChartOptions" class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
 						<vchart class="accounts-chart" v-if="accountsChartOptions" :options="accountsChartOptions" :autoResize='true'></vchart>
 					</div>
@@ -907,6 +910,7 @@
 		BigNumber = require("bignumber.js");
 
 	var ECharts = require('vue-echarts/components/ECharts').default;
+	var localTransactions = "";
 	require('echarts/lib/chart/line');
 	require('echarts/lib/component/tooltip');
 
@@ -1011,7 +1015,7 @@
 						formatter: function(params, ticket, callback) {
 							let date = new Date(params.name);
 							let dateStr = date.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' });
-							return dateStr + '<div>Transactions: ' + vm.numberAddComma(params.value) + '</div><div class=daily-echart-down-arrow></div>';
+							return dateStr + '<div>' + localTransactions + vm.numberAddComma(params.value) + '</div><div class=daily-echart-down-arrow></div>';
 						},
 						backgroundColor: '#595C63',
 						padding: 8,
@@ -1122,7 +1126,7 @@
 						formatter: function(params, ticket, callback) {
 							let date = new Date(new Number(params.name));
 							let dateStr = date.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' });
-							return dateStr + '<div>Amount: ' + vm.numberAddComma(params.value) + '</div><div class=account-echart-down-arrow></div>';
+							return dateStr + '<div><span name="amount_text"></span>' + vm.numberAddComma(params.value) + '</div><div class=account-echart-down-arrow></div>';
 						},
 						backgroundColor: '#0057FF',
 						padding: 8,
@@ -1172,6 +1176,10 @@
 				api.getMarketCap(o => this.market = o);							 //币价和市值
 				api.getStaticInfo(o => this.staticInfo = o);						//合约数量、地址数量。。。
 			}, 60000);
+
+			this.translationMonitor = setInterval(() => {
+				this.checkTranslations();
+			}, 500);
 
 			if (this.$root.showAtpAds) {
 				/*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/
@@ -1227,11 +1235,8 @@
 					}
 				}
 				return n;
-			}
-		},
-		updated() {
-			if (!boolUpdated) {
-				var boolUpdated = false;
+			},
+			checkTranslations() {
 				// Quick and dirty way to assign values to the ticks.
 				var blockstransactionstext = document.getElementById("blockstransactions").innerText;
 				var blocksintervaltext = document.getElementById("blocksinterval").innerText;
@@ -1257,11 +1262,37 @@
 				totalsmartcontracts.innerText = blockstotalsmartcontracts.innerText;
 
 				var blockstotaladdresses = document.getElementById("blockstotaladdresses");
-				var totaladdresses = document.getElementById("totaladdresses");
-				totaladdresses.innerText = blockstotaladdresses.innerText;
-				boolUpdated = true;
-			}
+				var totaladdresses = document.getElementsByName("totaladdresses");
+				var totalTexts = totaladdresses.length;
+				var i;
+				for (i = 0; i < totalTexts; i++) {
+					totaladdresses[i].innerText = blockstotaladdresses.innerText;
+				}
 
+				//Same for other components:
+				var localizedtxtext = document.getElementById("localizedtxtext");
+				var dailytransactions = document.getElementById("dailytransactions");
+				localTransactions = localizedtxtext.innerText;
+
+				var amount_text = document.getElementsByName("amount_text");
+				var amounttext = document.getElementById("amounttext").innerText;
+				var totalTexts = amount_text.length;
+				var i;
+				for (i = 0; i < totalTexts; i++) {
+					amount_text[i].innerText = amounttext;
+				}
+
+				var newaddressestexts = document.getElementsByName("newaddressestext");
+				var newaddressestxt = document.getElementById("newaddressestxt").innerText;
+				var totalTexts = newaddressestexts.length;
+				var i;
+				for (i = 0; i < totalTexts; i++) {
+					newaddressestexts[i].innerText = newaddressestxt;
+				}
+
+			}
+		},
+		updated() {
 			if (window.isIE()) {
 				$('#svg-line').css('stroke-dasharray', 'none');
 			}

@@ -19,6 +19,10 @@ require("bootstrap/dist/css/bootstrap.min.css");
 require("font-awesome/css/font-awesome.min.css");
 require("./index.css");
 
+Vue.use(VueTranslate);
+var selectedLanguage = "en_US";
+var boolCheckLocalizations = false;
+
 function isIE() {
 	if (!!window.ActiveXObject || "ActiveXObject" in window)
 		return true;
@@ -128,18 +132,24 @@ function onBeforeEach(to, from, next) {
 
 	if (to.name == "*") {
 		path = (from.params.api ? "/" + from.params.api : "") + "/404";
-	} else if (to.params.api)
-		if (to.params.api in vAppConfig.apiPrefixes)
+	}
+	else if (to.params.api) {
+		if (to.params.api in vAppConfig.apiPrefixes) {
 			if (to.params.api == first) {
 				// mainnet/xxx -> /xxx
 				to.params.api = undefined;
 				path = vRouter.resolve({ params: to.params }, to).resolved.fullPath;
-			} else
+			}
+			else {
 				apiPrefix = vAppConfig.apiPrefixes[to.params.api].url;
+			}
+		}
 		else {
 			path = (from.params.api ? "/" + from.params.api : "") + "/404";
 		}
+	}
 	else {
+		//var randomNumber = Math.floor((Math.random() * 1000) + 1);
 		apiPrefix = vAppConfig.apiPrefixes[first].url;
 	}
 
@@ -159,8 +169,6 @@ function onAfterEach(to, from) {
 //
 ////////////////////////////////////////////////////////////
 
-Vue.use(VueTranslate);
-
 // ==================================[ HEADER ]=================================
 var myComp = Vue.extend({
 	template:	`<div>
@@ -176,7 +184,9 @@ var myComp = Vue.extend({
 						</div>
 					</div>`,
 	mounted() {
-		this.$translate.setLang('en_US');
+		this.setLocalizationMonitor = setInterval(() => {
+			this.setLocalization();
+		}, 500);
 	},
 	locales: {
 		es_ES: {
@@ -192,10 +202,18 @@ var myComp = Vue.extend({
 	},
 	methods: {
 		translateToSpanish() {
-			this.$translate.setLang('es_ES');
+			selectedLanguage = "es_ES";
+			this.$translate.setLang(selectedLanguage);
+
 		},
 		translateToEnglish() {
-			this.$translate.setLang('en_US');
+			selectedLanguage = "en_US";
+			this.$translate.setLang(selectedLanguage);
+		},
+		setLocalization() {
+			this.$translate.setLang(selectedLanguage);
+			clearInterval(this.setLocalizationMonitor);
+			boolCheckLocalizations = false;
 		}
 	}
 });
@@ -371,6 +389,23 @@ var dailytx1 = new Vue({
 	components: {TodaysTx},
 	template: `<todays-tx></todays-tx>`
 });
+// String for graphics
+var LocalizedTxText = Vue.extend({
+	template: `<span id="localizedtxtext" style="display: none;">{{ t('localizedtxtext') }}</span>`,
+	locales: {
+		es_ES: {
+			'localizedtxtext': 'Transacciones: '
+		},
+		en_US: {
+			'localizedtxtext': 'Transactions: '
+		}
+	}
+});
+var dailytx2 = new Vue({
+	el: '#localtxtext',
+	components: {LocalizedTxText},
+	template: `<localized-tx-text></localized-tx-text>`
+});
 // --------------------------------[ NAS PRICE ]--------------------------------
 // Title
 var NasPrice = Vue.extend({
@@ -540,10 +575,10 @@ var BlocksHeight = Vue.extend({
 	template: `<div style="display: none;" id="blocksheighttext">{{ t('blocksheight') }}</div>`,
 	locales: {
 		es_ES: {
-			'blocksheight': 'Altura de bloque >'
+			'blocksheight': 'Altura de bloque'
 		},
 		en_US: {
-			'blocksheight': 'Block Height >'
+			'blocksheight': 'Block Height'
 		}
 	}
 });
@@ -557,10 +592,10 @@ var BlocksTotaltx = Vue.extend({
 	template: `<div style="display: none;" id="blockstotaltxtext">{{ t('totaltx') }}</div>`,
 	locales: {
 		es_ES: {
-			'totaltx': 'Total de transacciones >'
+			'totaltx': 'Total de transacciones'
 		},
 		en_US: {
-			'totaltx': 'Total Transactions >'
+			'totaltx': 'Total Transactions'
 		}
 	}
 });
@@ -574,10 +609,10 @@ var BlocksTotalsc = Vue.extend({
 	template: `<div style="display: none;" id="blockstotalsmartcontracts">{{ t('blocktotalsmartcontracts') }}</div>`,
 	locales: {
 		es_ES: {
-			'blocktotalsmartcontracts': 'Total de contratos inteligentes >'
+			'blocktotalsmartcontracts': 'Total de contratos inteligentes'
 		},
 		en_US: {
-			'blocktotalsmartcontracts': 'Total Smart Contracts >'
+			'blocktotalsmartcontracts': 'Total Smart Contracts'
 		}
 	}
 });
@@ -591,10 +626,10 @@ var BlocksTotalad = Vue.extend({
 	template: `<div style="display: none;" id="blockstotaladdresses">{{ t('blockstotaladdresses') }}</div>`,
 	locales: {
 		es_ES: {
-			'blockstotaladdresses': 'Total de direcciones >'
+			'blockstotaladdresses': 'Total de direcciones'
 		},
 		en_US: {
-			'blockstotaladdresses': 'Total Addresses >'
+			'blockstotaladdresses': 'Total Addresses'
 		}
 	}
 });
@@ -602,4 +637,94 @@ var blocktools3 = new Vue({
 	el: '#blocktotaladdresses',
 	components: {BlocksTotalad},
 	template: `<blocks-totalad></blocks-totalad>`
+});
+// ---------------------------------[ ADDRESSES ]-------------------------------
+// New addresses percentage
+var NewAddressesPercentage = Vue.extend({
+	template: `<span>{{ t('newaddressespercentage') }}</span>`,
+	locales: {
+		es_ES: {
+			'newaddressespercentage': 'Porcentaje de nuevas direcciones'
+		},
+		en_US: {
+			'newaddressespercentage': 'New Addresses Percentage'
+		}
+	}
+});
+var addresstools0 = new Vue({
+	el: '#newaddressespercentage',
+	components: {NewAddressesPercentage},
+	template: `<new-addresses-percentage></new-addresses-percentage>`
+});
+
+// New addresses subtitle
+var NewAddressesSubtitle = Vue.extend({
+	template: `<span>{{ t('newaddressessubtitle') }}</span>`,
+	locales: {
+		es_ES: {
+			'newaddressessubtitle': 'Son aquellas creadas en los últimos 90 días'
+		},
+		en_US: {
+			'newaddressessubtitle': 'New addresses are those created within 90 days.'
+		}
+	}
+});
+var addresstools1 = new Vue({
+	el: '#newaddressessubtitle',
+	components: {NewAddressesSubtitle},
+	template: `<new-addresses-subtitle></new-addresses-subtitle>`
+});
+
+// New addresses text
+var NewAddressesText = Vue.extend({
+	template: `<div style="display: none" id="newaddressestxt">{{ t('newaddressestext') }}</div>`,
+	locales: {
+		es_ES: {
+			'newaddressestext': 'Nuevas direcciones '
+		},
+		en_US: {
+			'newaddressestext': 'New Addresses '
+		}
+	}
+});
+var addresstools2 = new Vue({
+	el: '#newaddressestxt',
+	components: {NewAddressesText},
+	template: `<new-addresses-text></new-addresses-text>`
+});
+
+// Addresses growth
+var AddressesGrowth = Vue.extend({
+	template: `<span>{{ t('addressesgrowth') }}</span>`,
+	locales: {
+		es_ES: {
+			'addressesgrowth': 'Crecimiento de las direcciones'
+		},
+		en_US: {
+			'addressesgrowth': 'Addresses Growth'
+		}
+	}
+});
+var addresstools3 = new Vue({
+	el: '#addressesgrowth',
+	components: {AddressesGrowth},
+	template: `<addresses-growth></addresses-growth>`
+});
+
+// Amount text
+var AmountText = Vue.extend({
+	template: `<span id="amounttext" style="display: none;">{{ t('amounttext') }}</span>`,
+	locales: {
+		es_ES: {
+			'amounttext': 'Cantidad: '
+		},
+		en_US: {
+			'amounttext': 'Amount: '
+		}
+	}
+});
+var addresstools4 = new Vue({
+	el: '#amounttxt',
+	components: {AmountText},
+	template: `<amount-text></amount-text>`
 });
