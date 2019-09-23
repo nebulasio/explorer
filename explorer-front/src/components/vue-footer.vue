@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="col-xs-12 col-md-4">
-                    <div>Copyright © 2017-2018 Nebulas.io</div>
+                    <div>Copyright © 2017-2019 Nebulas.io</div>
                 </div>
 
                 <div class="col-xs-12 col-md-4">
