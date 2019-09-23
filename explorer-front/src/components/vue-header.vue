@@ -120,7 +120,7 @@
 				</form>
 				<ul class="navbar-nav ml-auto">
 					<li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
-						<router-link v-bind:to="fragApi + '/'" class=nav-link>
+						<router-link v-bind:to="fragApi + '/..'" class=nav-link>
 							<div id="homeindicator"></div>
 						</router-link>
 					</li>
@@ -172,6 +172,32 @@
 				search: ""
 			};
 		},
+		mounted() {
+			this.translationMonitor = setInterval(() => {
+				this.checkTranslations();
+			}, 500);
+			var paramsApi = this.$route.params.api, apiPrefixes = {}, i, first = true;
+
+			for (i in appConfig.apiPrefixes)
+				if (first) {
+					apiPrefixes[""] = appConfig.apiPrefixes[i];
+					first = false;
+				} else
+					apiPrefixes[i] = appConfig.apiPrefixes[i];
+
+			if (!(paramsApi in apiPrefixes))
+				paramsApi = "";
+
+			paramsApi == 'testnet' ? this.MenuMisc = 'TESTNET' : this.MenuMisc = 'MAINNET';
+			this.apiPrefixes = apiPrefixes;
+			this.fragApi = paramsApi ? "/" + paramsApi : "";
+			this.paramsApi = paramsApi;
+
+			if (!!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+				// avoid auto zoom under iOS Safari when font size is less than 16px
+				$('.vue-header input').css('font-size', '16px');
+			}
+		},
 		methods: {
 			onSubmit() {
 				// Quick and dirty hack until we figure out this issue:
@@ -180,14 +206,12 @@
 				this.search = test.value;
 
 				if (this.search.trim().length === 0) {
-					console.log ("Es cero");
 					this.search = "";
 					return;
 				}
 				this.$root.showModalLoading = true;
 				api.getSearch(this.search.trim(), o => {
 					this.$root.showModalLoading = false;
-					console.log ("Buscando " + this.search);
 					this.search = "";
 
 					if (o.type == "block")
@@ -224,29 +248,9 @@
 			showATP() {
 				// 搜索框进入 ATP 的临时方案！！！
 				this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/token/" + this.atpAddress());
-			}
-		},
-		mounted() {
-			var paramsApi = this.$route.params.api, apiPrefixes = {}, i, first = true;
-
-			for (i in appConfig.apiPrefixes)
-				if (first) {
-					apiPrefixes[""] = appConfig.apiPrefixes[i];
-					first = false;
-				} else
-					apiPrefixes[i] = appConfig.apiPrefixes[i];
-
-			if (!(paramsApi in apiPrefixes))
-				paramsApi = "";
-
-			paramsApi == 'testnet' ? this.MenuMisc = 'TESTNET' : this.MenuMisc = 'MAINNET';
-			this.apiPrefixes = apiPrefixes;
-			this.fragApi = paramsApi ? "/" + paramsApi : "";
-			this.paramsApi = paramsApi;
-
-			if (!!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
-				// avoid auto zoom under iOS Safari when font size is less than 16px
-				$('.vue-header input').css('font-size', '16px');
+			},
+			checkTranslations() {
+				//this.$selectedLanguage;
 			}
 		}
 	};

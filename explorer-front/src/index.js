@@ -1,7 +1,8 @@
 import VueTranslate from 'vue-translate-plugin';
+import { EventBus } from './events.js';
 
-var api = require("@/assets/api"),
-appConfig = require("@/assets/app-config");
+var api = require("@/assets/api");
+var appConfig = require("@/assets/app-config");
 
 var Vue = require("vue").default,
 	VueRouter = require("vue-router").default,
@@ -20,8 +21,6 @@ require("font-awesome/css/font-awesome.min.css");
 require("./index.css");
 
 Vue.use(VueTranslate);
-var selectedLanguage = "en_US";
-var boolCheckLocalizations = false;
 
 function isIE() {
 	if (!!window.ActiveXObject || "ActiveXObject" in window)
@@ -111,6 +110,10 @@ vApp = new Vue({
 
 });
 
+Vue.prototype.$selectedLanguage = "en_US";
+Vue.prototype.$myVariable = "hola hola lolo";
+Vue.prototype.$myJSON = {"es_ES": {"a": "hola","b": "mensaje"},"en_US": {"a": "hello","b": "message"}};
+
 setInterval(() => {
 	vApp.timestamp = Date.now();
 }, 1000);
@@ -149,7 +152,6 @@ function onBeforeEach(to, from, next) {
 		}
 	}
 	else {
-		//var randomNumber = Math.floor((Math.random() * 1000) + 1);
 		apiPrefix = vAppConfig.apiPrefixes[first].url;
 	}
 
@@ -163,13 +165,7 @@ function onAfterEach(to, from) {
 	}
 }
 
-////////////////////////////////////////////////////////////
-//
-// LOCALIZATION METHODS
-//
-////////////////////////////////////////////////////////////
-
-// ==================================[ HEADER ]=================================
+// Localization bar
 var myComp = Vue.extend({
 	template:	`<div>
 						<a class="nav-link" href=# id=language-selector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
@@ -183,11 +179,6 @@ var myComp = Vue.extend({
 							</div>
 						</div>
 					</div>`,
-	mounted() {
-		this.setLocalizationMonitor = setInterval(() => {
-			this.setLocalization();
-		}, 500);
-	},
 	locales: {
 		es_ES: {
 			'Languages': 'Idiomas',
@@ -202,18 +193,15 @@ var myComp = Vue.extend({
 	},
 	methods: {
 		translateToSpanish() {
-			selectedLanguage = "es_ES";
-			this.$translate.setLang(selectedLanguage);
+			Vue.prototype.$selectedLanguage = "es_ES";
+			this.$translate.setLang(Vue.prototype.$selectedLanguage);
+			EventBus.$emit('changeLanguage', 0);
 
 		},
 		translateToEnglish() {
-			selectedLanguage = "en_US";
-			this.$translate.setLang(selectedLanguage);
-		},
-		setLocalization() {
-			this.$translate.setLang(selectedLanguage);
-			clearInterval(this.setLocalizationMonitor);
-			boolCheckLocalizations = false;
+			Vue.prototype.$selectedLanguage = "en_US";
+			this.$translate.setLang(Vue.prototype.$selectedLanguage);
+			EventBus.$emit('changeLanguage', 0);
 		}
 	}
 });
@@ -222,6 +210,8 @@ var header0 = new Vue({
 	components: {myComp},
 	template: `<div><my-comp></my-comp></div>`
 });
+
+/*
 
 // Home link
 var HomeIndicator = Vue.extend({
@@ -245,13 +235,13 @@ var header1 = new Vue({
 
 // Search tool
 var SearchTool = Vue.extend({
-	template: `<input class="mr-sm-2 font-12" name=search id=buscador type=search :placeholder="t('calatrava')" />`,
+	template: `<input class="mr-sm-2 font-12" name=search id=buscador type=search :placeholder="t('searchtool')" />`,
 	locales: {
 		es_ES: {
-			'calatrava': 'Buscar por dirección, txhash, bloque o token'
+			'searchtool': 'Buscar por dirección, txhash, bloque o token'
 		},
 		en_US: {
-			'calatrava': 'Search by address, txhash, block or token'
+			'searchtool': 'Search by address, txhash, block or token'
 		}
 	}
 });
@@ -851,7 +841,7 @@ var transactions0 = new Vue({
 });
 // Tx#
 var TransactionNumber = Vue.extend({
-	template: `<div id="transactionnumber" style="display: none;">{{ t('transactionnumber') }}</span>`,
+	template: `<div id="transactionnumber" style="display: none;">{{ t('transactionnumber') }}</div>`,
 	locales: {
 		es_ES: {
 			'transactionnumber': 'Transacción nro.'
@@ -868,7 +858,7 @@ var transactions1 = new Vue({
 });
 // From
 var FromText = Vue.extend({
-	template: `<div id="fromtext" style="display: none;">{{ t('fromtext') }}</span>`,
+	template: `<div id="fromtext" style="display: none;">{{ t('fromtext') }}</div>`,
 	locales: {
 		es_ES: {
 			'fromtext': 'De'
@@ -885,7 +875,7 @@ var transactions2 = new Vue({
 });
 // To
 var ToText = Vue.extend({
-	template: `<div id="totext" style="display: none;">{{ t('totext') }}</span>`,
+	template: `<div id="totext" style="display: none;">{{ t('totext') }}</div>`,
 	locales: {
 		es_ES: {
 			'totext': 'a'
@@ -900,3 +890,4 @@ var transactions3 = new Vue({
 	components: {ToText},
 	template: `<to-text></to-text>`
 });
+*/

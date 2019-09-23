@@ -917,6 +917,7 @@
 	</div>
 </template>
 <script>
+	import { EventBus } from '../events.js';
 	var api = require("@/assets/api"),
 		utility = require("@/assets/utility"),
 		BigNumber = require("bignumber.js");
@@ -1158,6 +1159,7 @@
 			}
 		},
 		mounted() {
+			EventBus.$on('changeLanguage', chara => {console.log(this.$selectedLanguage)});
 			api.getTx("cnt_static", o => this.dailyTxData = o);					 //近期每日交易量
 			api.getMarketCap(o => this.market = o);								 //币价和市值
 			api.getBlock({ type: "latest" }, o => this.blocks = this.addLocalTimestamp(o));				 //最新一波 block
@@ -1188,10 +1190,6 @@
 				api.getMarketCap(o => this.market = o);							 //币价和市值
 				api.getStaticInfo(o => this.staticInfo = o);						//合约数量、地址数量。。。
 			}, 60000);
-
-			this.translationMonitor = setInterval(() => {
-				this.checkTranslations();
-			}, 500);
 
 			if (this.$root.showAtpAds) {
 				/*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/
@@ -1249,6 +1247,9 @@
 				return n;
 			},
 			checkTranslations() {
+				console.debug(this.$selectedLanguage);
+				//console.dir(this.$myJSON);
+				/*
 				// Quick and dirty way to assign values to the ticks.
 				var blockstransactionstext = document.getElementById("blockstransactions").innerText;
 				var blocksintervaltext = document.getElementById("blocksinterval").innerText;
@@ -1361,7 +1362,7 @@
 				for (i = 0; i < totalElements; i++) {
 					destination[i].innerText = origin;
 				}
-
+				*/
 			}
 		},
 		updated() {
