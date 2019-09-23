@@ -111,8 +111,27 @@ vApp = new Vue({
 });
 
 Vue.prototype.$selectedLanguage = "en_US";
-Vue.prototype.$myVariable = "hola hola lolo";
-Vue.prototype.$myJSON = {"es_ES": {"a": "hola","b": "mensaje"},"en_US": {"a": "hello","b": "message"}};
+
+// La estructura es muy sencilla: cada lenguaje contiene una serie de cadenas
+// identificadas con el ID de cada elemento del DOM de cada componente.
+// La idea es emparejar, mediante un bucle for in, el ID hallado con la cadena
+// correspondiente al lenguaje seleccionado.
+
+// Así, por ejemplo, para un elemento DOM cuyo ID es "blocksTitle", la cadena a
+// buscar sería (para español): es_ES.blocksTitle.
+Vue.prototype.$myJSON = {
+	"es_ES": {
+		"headerHomeTitle": "Inicio",
+		"headerHomeSubtitle": "actual",
+		"dailyTransactionsTitle": "Transacciones diarias",
+		"dailyTransactionsSubtitle": "Transacciones:"
+	},"en_US": {
+		"headerHomeTitle": "Home",
+		"headerHomeSubtitle": "current",
+		"dailyTransactionsTitle": "Daily Transactions",
+		"dailyTransactionsSubtitle": "Transactions"
+	}
+};
 
 setInterval(() => {
 	vApp.timestamp = Date.now();
@@ -195,14 +214,18 @@ var myComp = Vue.extend({
 		translateToSpanish() {
 			Vue.prototype.$selectedLanguage = "es_ES";
 			this.$translate.setLang(Vue.prototype.$selectedLanguage);
-			EventBus.$emit('changeLanguage', 0);
+			EventBus.$emit('changeLanguage');
 
 		},
 		translateToEnglish() {
 			Vue.prototype.$selectedLanguage = "en_US";
 			this.$translate.setLang(Vue.prototype.$selectedLanguage);
-			EventBus.$emit('changeLanguage', 0);
+			EventBus.$emit('changeLanguage');
 		}
+	},
+	mounted() {
+		//this.$translate.setLang(Vue.prototype.$selectedLanguage);
+		EventBus.$emit('changeLanguage');
 	}
 });
 var header0 = new Vue({
@@ -212,26 +235,6 @@ var header0 = new Vue({
 });
 
 /*
-
-// Home link
-var HomeIndicator = Vue.extend({
-	template: `<span>{{ t('home') }}<span class=sr-only>({{ t('current') }})</span></span>`,
-	locales: {
-		es_ES: {
-			'home': 'Inicio',
-			'current': 'actual'
-		},
-		en_US: {
-			'home': 'Home',
-			'current': 'current'
-		}
-	}
-});
-var header1 = new Vue({
-	el: '#homeindicator',
-	components: {HomeIndicator},
-	template: `<div><home-indicator></home-indicator></div>`
-});
 
 // Search tool
 var SearchTool = Vue.extend({
@@ -344,58 +347,8 @@ var header7 = new Vue({
 
 // ===========================[ MAIN SCREEN MODULES ]===========================
 // ----------------------------[ DAILY TRANSACTIONS ]---------------------------
-// Title
-var DailyTx = Vue.extend({
-	template: `<span>{{ t('dailytxs') }}</span>`,
-	locales: {
-		es_ES: {
-			'dailytxs': 'Transacciones diarias'
-		},
-		en_US: {
-			'dailytxs': 'Daily Transactions'
-		}
-	}
-});
-var dailytx0 = new Vue({
-	el: '#dailytransactions',
-	components: {DailyTx},
-	template: `<daily-tx></daily-tx>`
-});
 
-// Subtitle
-var TodaysTx = Vue.extend({
-	template: `<span>{{ t('todaystransactions') }}</span>`,
-	locales: {
-		es_ES: {
-			'todaystransactions': 'Hoy'
-		},
-		en_US: {
-			'todaystransactions': 'Today'
-		}
-	}
-});
-var dailytx1 = new Vue({
-	el: '#todaytxs',
-	components: {TodaysTx},
-	template: `<todays-tx></todays-tx>`
-});
-// String for graphics
-var LocalizedTxText = Vue.extend({
-	template: `<span id="localizedtxtext" style="display: none;">{{ t('localizedtxtext') }}</span>`,
-	locales: {
-		es_ES: {
-			'localizedtxtext': 'Transacciones: '
-		},
-		en_US: {
-			'localizedtxtext': 'Transactions: '
-		}
-	}
-});
-var dailytx2 = new Vue({
-	el: '#localtxtext',
-	components: {LocalizedTxText},
-	template: `<localized-tx-text></localized-tx-text>`
-});
+
 // --------------------------------[ NAS PRICE ]--------------------------------
 // Title
 var NasPrice = Vue.extend({

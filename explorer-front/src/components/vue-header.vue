@@ -121,7 +121,12 @@
 				<ul class="navbar-nav ml-auto">
 					<li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
 						<router-link v-bind:to="fragApi + '/..'" class=nav-link>
-							<div id="homeindicator"></div>
+							<span>
+									<span id="headerHomeTitle"></span>
+								<span class=sr-only>
+									<span id="headerHomeSubtitle"></span>
+								</span>
+							</span>
 						</router-link>
 					</li>
 					<!-- Menú Blockchain -->
@@ -159,6 +164,7 @@
 	</nav>
 </template>
 <script>
+	import { EventBus } from '../events.js';
 	var api = require("@/assets/api"),
 	appConfig = require("@/assets/app-config");
 
@@ -173,9 +179,7 @@
 			};
 		},
 		mounted() {
-			this.translationMonitor = setInterval(() => {
-				this.checkTranslations();
-			}, 500);
+			EventBus.$on('changeLanguage', foo => {this.checkTranslations()});
 			var paramsApi = this.$route.params.api, apiPrefixes = {}, i, first = true;
 
 			for (i in appConfig.apiPrefixes)
@@ -250,7 +254,9 @@
 				this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/token/" + this.atpAddress());
 			},
 			checkTranslations() {
-				//this.$selectedLanguage;
+				//console.debug(this.$myJSON[this.$selectedLanguage].headerHomeTitle);
+				var myElement = document.getElementById("headerHomeTitle");
+				myElement.innerText = this.$myJSON[this.$selectedLanguage].headerHomeTitle;
 			}
 		}
 	};

@@ -683,8 +683,8 @@
 				<div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
 					<div class="item-bg">
 						<div class="item-title">
-							<span id="dailytransactions"></span>
-							<span id="localtxtext"></span>
+							<span id="dailyTransactionsTitle"></span>
+							<span id="dailyTransactionsSubtitle"></span>
 						</div>
 						<div class="details">
 							<div id="todaytxs"></div>
@@ -1159,7 +1159,8 @@
 			}
 		},
 		mounted() {
-			EventBus.$on('changeLanguage', chara => {console.log(this.$selectedLanguage)});
+			this.checkTranslations();
+			EventBus.$on('changeLanguage', foo => {this.checkTranslations()});
 			api.getTx("cnt_static", o => this.dailyTxData = o);					 //近期每日交易量
 			api.getMarketCap(o => this.market = o);								 //币价和市值
 			api.getBlock({ type: "latest" }, o => this.blocks = this.addLocalTimestamp(o));				 //最新一波 block
@@ -1247,8 +1248,12 @@
 				return n;
 			},
 			checkTranslations() {
-				console.debug(this.$selectedLanguage);
-				//console.dir(this.$myJSON);
+				//console.debug(this.$myJSON[this.$selectedLanguage].dailyTransactionsTitle);
+				var myElement = document.getElementById("dailyTransactionsTitle");
+				myElement.innerText = this.$myJSON[this.$selectedLanguage].dailyTransactionsTitle;
+
+
+
 				/*
 				// Quick and dirty way to assign values to the ticks.
 				var blockstransactionstext = document.getElementById("blockstransactions").innerText;
