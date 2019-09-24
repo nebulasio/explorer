@@ -1,0 +1,4 @@
+
+(firefox:10112): IBUS-WARNING **: 16:12:38.265: Unable to connect to ibus: Could not connect: Connection refused
+
+(/usr/lib/firefox/firefox:10166): dconf-WARNING **: 16:13:20.842: Unable to open /var/lib/snapd/desktop/dconf/profile/user: Permission denied

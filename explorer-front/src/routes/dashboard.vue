@@ -697,7 +697,7 @@
 					<div class="item-bg">
 						<div class="item-title"><span id="dashboardNasPriceTitle" class="localizable"></span></div>
 						<div class="details">
-							<span id="dashboardNasPriceUpdateTimePrefix" class="localizable"></span><span v-if="market">{{ timeConversion(Date.now() - market.createdAt) }}</span><span id="dashboardNasPriceUpdateTimeSuffix" class="localizable"></span>
+							<span id="dashboardNasPriceUpdateTimePrefix" class="localizable"></span> <span v-if="market">{{ timeConversion(Date.now() - market.createdAt) }}</span><span id="dashboardNasPriceUpdateTimeSuffix" class="localizable"></span>
 						</div>
 						<div v-if="market" class="detail">
 							<span>$</span>
@@ -831,22 +831,20 @@
 				<div class="flex-item col-12 col-lg-6 row5-item">
 					<div class="item-bg item-shadow">
 						<div class="item-title"><span id="dashboardBlocksIndicatorTitle" class="localizable"></span></div>
-						<router-link :to='fragApi + "/blocks/"' class="showall"><span name="blocksindicatorviewall"></span></router-link>
+						<router-link :to='fragApi + "/blocks/"' class="showall"><span name="dashboardIndicatorViewAll" class="multilocalizable"></span></router-link>
 						<transition-group name="list" tag="table" frame=hsides rules=rows>
 							<tr class="list-item" v-for="block in blocks.slice(0, 6)" :key="block.height">
 								<td>
 									<img src="/static/img/icon-block.png?v=20190116" width="50" height="50">
 								</td>
 								<td>
-									<span name="blocknumber"></span>
+									<span name="dashboardBlockNumber" class="multilocalizable"></span>
 									<router-link :to='fragApi + "/block/" + block.height' class="monospace">{{ block.height }}</router-link>
 									<br>
 									<span class="txcnt monospace">
-										<router-link v-if="block.txnCnt == 0" :to='fragApi + "/txs?block=" + block.height'><span name=notransactiontext></span></router-link>
-										<router-link v-if="block.txnCnt == 1" :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} <span name=onetransactiontext></span></router-link>
-										<router-link v-if="block.txnCnt > 1" :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} <span name=severaltransactionstext></span></router-link>
-
-
+										<router-link v-if="block.txnCnt == 0" :to='fragApi + "/txs?block=" + block.height'><span name="dashboardBlocksNoTransaction" class="multilocalizable"></span></router-link>
+										<router-link v-if="block.txnCnt == 1" :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} <span name="dashboardBlocksOneTransaction" class="multilocalizable"></span></router-link>
+										<router-link v-if="block.txnCnt > 1" :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} <span name="dashboardBlocksSeveralTransactions" class="multilocalizable"></span></router-link>
 									</span>
 								</td>
 								<td>
@@ -858,8 +856,8 @@
 				</div>
 				<div class="flex-item col-12 col-lg-6 row5-item">
 					<div class="item-bg item-shadow">
-						<div class="item-title"><span id="transactionstitle"></span></div>
-						<router-link :to='fragApi + "/txs/"' class="showall"><span name="blocksindicatorviewall"></span></router-link>
+						<div class="item-title"><span id="dashboardTransactionsTitle" class="localizable"></span></div>
+						<router-link :to='fragApi + "/txs/"' class="showall"><span name="dashboardIndicatorViewAll" class="multilocalizable"></span></router-link>
 						<transition-group name="list" tag="table" frame=hsides rules=rows>
 							<tr v-for="tx in txs.slice(0, 6)" :key="tx.hash">
 								<td>
