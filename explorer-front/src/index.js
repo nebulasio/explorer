@@ -117,19 +117,57 @@ Vue.prototype.$selectedLanguage = "en_US";
 // La idea es emparejar, mediante un bucle for in, el ID hallado con la cadena
 // correspondiente al lenguaje seleccionado.
 
+// Además, hay que iterar (dentro de cada componente) por los elementos que
+// contienen la clase .localizable, y revisar el atributo localize. Si este no
+// está vacío (lo cual implica modificar el innerHTML), el mismo contendrá el
+// atributo sobre el cual aplicar la cadena localizada.
+
 // Así, por ejemplo, para un elemento DOM cuyo ID es "blocksTitle", la cadena a
 // buscar sería (para español): es_ES.blocksTitle.
 Vue.prototype.$myJSON = {
-	"es_ES": {
-		"headerHomeTitle": "Inicio",
-		"headerHomeSubtitle": "actual",
-		"dailyTransactionsTitle": "Transacciones diarias",
-		"dailyTransactionsSubtitle": "Transacciones:"
-	},"en_US": {
+		"en_US": {
+		"headerToggleNavigation": "Toggle Navigation",
+		"headerSearchTool": "Search by address, txhash, block or token",
 		"headerHomeTitle": "Home",
 		"headerHomeSubtitle": "current",
-		"dailyTransactionsTitle": "Daily Transactions",
-		"dailyTransactionsSubtitle": "Transactions"
+		"headerTransactionsSubmenu": "Transactions",
+		"headerPendingTransactionsSubmenu": "Pending transactions",
+		"headerBlocksSubmenu": "Blocks",
+		"headerAccountsSubmenu": "Accounts",
+		"headerDipWinners": "DIP Winners",
+		"dashboardDailyTransactionsTitle": "Daily Transactions",
+		"dashboardDailyTransactionsSubtitle": "Transactions: ",
+		"dashboardNasPriceTitle": "NAS Value",
+		"dashboardNasPriceUpdateTimePrefix": "Updated",
+		"dashboardNasPriceUpdateTimeSuffix": " ago",
+		"dashboardNasMarketCap": "Market Cap",
+		"dashboardNasMarketVol": "Market Vol",
+		"dashboardBlocksTitle": "Blocks",
+		"dashboardBlocksSubtitle": "Current status",
+		"dashboardBlocksTransactions": "Transactions:",
+		"dashboardBlocksInterval": "Block interval: 15s"
+	},
+	"es_ES": {
+		"headerToggleNavigation": "Cambiar navegación",
+		"headerSearchTool": "Buscar por dirección, txhash, bloque o token",
+		"headerHomeTitle": "Inicio",
+		"headerHomeSubtitle": "actual",
+		"headerTransactionsSubmenu": "Transacciones",
+		"headerPendingTransactionsSubmenu": "Transacciones pendientes",
+		"headerBlocksSubmenu": "Bloques",
+		"headerAccountsSubmenu": "Cuentas",
+		"headerDipWinners": "Ganadores DIP",
+		"dashboardDailyTransactionsTitle": "Transacciones diarias",
+		"dashboardDailyTransactionsSubtitle": "Transacciones: ",
+		"dashboardNasPriceTitle": "Valor del NAS",
+		"dashboardNasPriceUpdateTimePrefix": "Actualizado hace",
+		"dashboardNasPriceUpdateTimeSuffix": "",
+		"dashboardNasMarketCap": "Cap. de mercado",
+		"dashboardNasMarketVol": "Vol. de mercado",
+		"dashboardBlocksTitle": "Bloques",
+		"dashboardBlocksSubtitle": "Estado actual",
+		"dashboardBlocksTransactions": "Transacciones:",
+		"dashboardBlocksInterval": "Intervalo: 15s"
 	}
 };
 
@@ -221,13 +259,19 @@ var myComp = Vue.extend({
 			Vue.prototype.$selectedLanguage = "en_US";
 			this.$translate.setLang(Vue.prototype.$selectedLanguage);
 			EventBus.$emit('changeLanguage');
+		},
+		initializeApp() {
+			EventBus.$emit('changeLanguage');
+			clearInterval(this.longIntervalID);
 		}
 	},
 	mounted() {
-		//this.$translate.setLang(Vue.prototype.$selectedLanguage);
-		EventBus.$emit('changeLanguage');
+		this.longIntervalID = setInterval(() => {
+			this.initializeApp();
+		}, 1500);
 	}
 });
+
 var header0 = new Vue({
 	el: '#lang-sel',
 	components: {myComp},
@@ -236,283 +280,6 @@ var header0 = new Vue({
 
 /*
 
-// Search tool
-var SearchTool = Vue.extend({
-	template: `<input class="mr-sm-2 font-12" name=search id=buscador type=search :placeholder="t('searchtool')" />`,
-	locales: {
-		es_ES: {
-			'searchtool': 'Buscar por dirección, txhash, bloque o token'
-		},
-		en_US: {
-			'searchtool': 'Search by address, txhash, block or token'
-		}
-	}
-});
-var header2 = new Vue({
-	el: '#buscador',
-	components: {SearchTool},
-	template: `<search-tool></search-tool>`
-});
-
-// DIP Winners
-var DipWinners = Vue.extend({
-	template: `<span>{{ t('dipwinners') }}</span>`,
-	locales: {
-		es_ES: {
-			'dipwinners': 'Ganadores del DIP'
-		},
-		en_US: {
-			'dipwinners': 'DIP Winners'
-		}
-	}
-});
-var header3 = new Vue({
-	el: '#dipwinners',
-	components: {DipWinners},
-	template: `<dip-winners></dip-winners>`
-});
-
-// Blockchain submenues
-// Transactions
-var TransactionsSubmenu = Vue.extend({
-	template: `<span>{{ t('transactionssubmenu') }}</span>`,
-	locales: {
-		es_ES: {
-			'transactionssubmenu': 'Transacciones'
-		},
-		en_US: {
-			'transactionssubmenu': 'Transactions'
-		}
-	}
-});
-var header4 = new Vue({
-	el: '#transactionssubmenu',
-	components: {TransactionsSubmenu},
-	template: `<transactions-submenu></transactions-submenu>`
-});
-
-// Pending transactions
-var PendingtransactionsSubmenu = Vue.extend({
-	template: `<span>{{ t('pendingtransactionssubmenu') }}</span>`,
-	locales: {
-		es_ES: {
-			'pendingtransactionssubmenu': 'Transacciones pendientes'
-		},
-		en_US: {
-			'pendingtransactionssubmenu': 'Pending Transactions'
-		}
-	}
-});
-var header5 = new Vue({
-	el: '#pendingtransactionssubmenu',
-	components: {PendingtransactionsSubmenu},
-	template: `<pendingtransactions-submenu></pendingtransactions-submenu>`
-});
-
-// Blocks
-var BlocksSubmenu = Vue.extend({
-	template: `<span>{{ t('blockssubmenu') }}</span>`,
-	locales: {
-		es_ES: {
-			'blockssubmenu': 'Bloques'
-		},
-		en_US: {
-			'blockssubmenu': 'Blocks'
-		}
-	}
-});
-var header6 = new Vue({
-	el: '#blockssubmenu',
-	components: {BlocksSubmenu},
-	template: `<blocks-submenu></blocks-submenu>`
-});
-
-// Accounts
-var AccountsSubmenu = Vue.extend({
-	template: `<span>{{ t('accountssubmenu') }}</span>`,
-	locales: {
-		es_ES: {
-			'accountssubmenu': 'Cuentas'
-		},
-		en_US: {
-			'accountssubmenu': 'Accounts'
-		}
-	}
-});
-var header7 = new Vue({
-	el: '#accountssubmenu',
-	components: {AccountsSubmenu},
-	template: `<accounts-submenu></accounts-submenu>`
-});
-
-// ===========================[ MAIN SCREEN MODULES ]===========================
-// ----------------------------[ DAILY TRANSACTIONS ]---------------------------
-
-
-// --------------------------------[ NAS PRICE ]--------------------------------
-// Title
-var NasPrice = Vue.extend({
-	template: `<span>{{ t('nasprice') }}</span>`,
-	locales: {
-		es_ES: {
-			'nasprice': 'Valor del NAS'
-		},
-		en_US: {
-			'nasprice': 'NAS Price'
-		}
-	}
-});
-var nasprice0 = new Vue({
-	el: '#nasprice',
-	components: {NasPrice},
-	template: `<nas-price></nas-price>`
-});
-
-// Subtitle
-var UpdatetimePrefix = Vue.extend({
-	template: `<span>{{ t('naspriceprefix') }}</span>`,
-	locales: {
-		es_ES: {
-			'naspriceprefix': 'Actualizado hace: '
-		},
-		en_US: {
-			'naspriceprefix': 'Update Time: '
-		}
-	}
-});
-var nasprice1 = new Vue({
-	el: '#updatetimeprefix',
-	components: {UpdatetimePrefix},
-	template: `<updatetime-prefix></updatetime-prefix>`
-});
-
-// Subtitle suffix
-var UpdatetimeSuffix = Vue.extend({
-	template: `<span>{{ t('naspricesuffix') }}</span>`,
-	locales: {
-		es_ES: {
-			'naspricesuffix': ' '
-		},
-		en_US: {
-			'naspricesuffix': ' ago'
-		}
-	}
-});
-var nasprice2 = new Vue({
-	el: '#updatetimesuffix',
-	components: {UpdatetimeSuffix},
-	template: `<updatetime-suffix></updatetime-suffix>`
-});
-
-// Market cap
-var MarketCap = Vue.extend({
-	template: `<span>{{ t('marketcap') }}</span>`,
-	locales: {
-		es_ES: {
-			'marketcap': 'Cap. de mercado'
-		},
-		en_US: {
-			'marketcap': 'Market Cap'
-		}
-	}
-});
-var nasprice3 = new Vue({
-	el: '#marketcap',
-	components: {MarketCap},
-	template: `<market-cap></market-cap>`
-});
-
-// Market vol
-var MarketVol = Vue.extend({
-	template: `<span>{{ t('marketvol') }}</span>`,
-	locales: {
-		es_ES: {
-			'marketvol': 'Vol. de mercado'
-		},
-		en_US: {
-			'marketvol': 'Market Vol'
-		}
-	}
-});
-var nasprice4 = new Vue({
-	el: '#marketvol',
-	components: {MarketVol},
-	template: `<market-vol></market-vol>`
-});
-
-// ------------------------------[ BLOCKS - MAIN ]------------------------------
-// Title
-var BlocksTitle = Vue.extend({
-	template: `<div class="item-title">{{ t('blockstitle') }}</div>`,
-	locales: {
-		es_ES: {
-			'blockstitle': 'Bloques'
-		},
-		en_US: {
-			'blockstitle': 'Blocks'
-		}
-	}
-});
-var blocks0 = new Vue({
-	el: '#blockstitle',
-	components: {BlocksTitle},
-	template: `<blocks-title></blocks-title>`
-});
-
-// Status
-var BlocksStatus = Vue.extend({
-	template: `<div class="subtitle font-12 text-gray">{{ t('blocksstatus') }}</div>`,
-	locales: {
-		es_ES: {
-			'blocksstatus': 'Estado actual'
-		},
-		en_US: {
-			'blocksstatus': 'Block Status'
-		}
-	}
-});
-var blocks1 = new Vue({
-	el: '#blocksstatus',
-	components: {BlocksStatus},
-	template: `<blocks-status></blocks-status>`
-});
-
-// Transactions
-var BlocksTransactions = Vue.extend({
-	template: `<span id="blockstransactions" style="display: none;">{{ t('blockstx') }}</span>`,
-	locales: {
-		es_ES: {
-			'blockstx': 'Transacciones: '
-		},
-		en_US: {
-			'blockstx': 'Transactions: '
-		}
-	}
-});
-var blocks2 = new Vue({
-	el: '#blockstransactions',
-	components: {BlocksTransactions},
-	template: `<blocks-transactions></blocks-transactions>`
-});
-
-// Interval
-var BlocksInterval = Vue.extend({
-	template: `<span id="blocksinterval" style="display: none;">{{ t('blocksinterval') }}</span>`,
-	locales: {
-		es_ES: {
-			'blocksinterval': 'Intervalo de bloque: 15 s'
-		},
-		en_US: {
-			'blocksinterval': 'Block interval: 15s'
-		}
-	}
-});
-var blocks3 = new Vue({
-	el: '#blocksinterval',
-	components: {BlocksInterval},
-	template: `<blocks-interval></blocks-interval>`
-});
-// ------------------------------[ BLOCKS - TOOLS ]-----------------------------
 // Height
 var BlocksHeight = Vue.extend({
 	template: `<div style="display: none;" id="blocksheighttext">{{ t('blocksheight') }}</div>`,

@@ -683,11 +683,11 @@
 				<div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
 					<div class="item-bg">
 						<div class="item-title">
-							<span id="dailyTransactionsTitle"></span>
-							<span id="dailyTransactionsSubtitle"></span>
+							<span id="dashboardDailyTransactionsTitle" class="localizable"></span>
+
 						</div>
 						<div class="details">
-							<div id="todaytxs"></div>
+							<span id="dashboardDailyTransactionsSubtitle" class="localizable"></span>
 							<span v-if="todayTxCnt >= 0">{{ numberAddComma(todayTxCnt) }}</span>
 						</div>
 						<vchart class="daily-chart" v-if="dailyTxChartOptions" :options="dailyTxChartOptions" :autoResize='true'></vchart>
@@ -695,9 +695,9 @@
 				</div>
 				<div class="nas-price flex-item col-12 col-lg-6 row1-item">
 					<div class="item-bg">
-						<div class="item-title"><span id="nasprice"></span></div>
+						<div class="item-title"><span id="dashboardNasPriceTitle" class="localizable"></span></div>
 						<div class="details">
-							<span id="updatetimeprefix"></span><span v-if="market">{{ timeConversion(Date.now() - market.createdAt) }}</span><span id="updatetimesuffix"></span>
+							<span id="dashboardNasPriceUpdateTimePrefix" class="localizable"></span><span v-if="market">{{ timeConversion(Date.now() - market.createdAt) }}</span><span id="dashboardNasPriceUpdateTimeSuffix" class="localizable"></span>
 						</div>
 						<div v-if="market" class="detail">
 							<span>$</span>
@@ -707,11 +707,11 @@
 						<div class="market container">
 							<div class="row">
 								<div class="col-6">
-									<span id="marketcap"></span>
+									<span id="dashboardNasMarketCap" class="localizable"></span>
 									<div v-if="market">${{ numberAddComma(market.marketCap) }}</div>
 								</div>
 								<div class="col-6">
-									<span id="marketvol"></span>
+									<span id="dashboardNasMarketVol" class="localizable"></span>
 									<div v-if="market">${{ numberAddComma(market.volume24h) }}</div>
 								</div>
 							</div>
@@ -731,15 +731,15 @@
 			<div class="row row2">
 				<div class="col">
 					<div class="flex-item item-bg item-shadow">
-						<div id="blockstitle"></div>
-						<div id="blocksstatus"></div>
+						<div id="dashboardBlocksTitle" class="localizable item-title"></div>
+						<div id="dashboardBlocksSubtitle" class="localizable subtitle font-12 text-gray"></div>
 						<transition-group v-on:after-enter="afterEnter" name="row2-list" class="realtime-blocks">
 							<div class="realtime-block" v-for="block in blocks" :key="block.height">
 								<div class="blockheight" style="height: 100%" :data-txncnt="block.txnCnt"></div>
 								<div class="block-popover">
 									<div class="font-12 font-bold">{{ numberAddComma(block.height) }}</div>
-									<div><span name="blockstransactions"></span> {{ block.txnCnt }}</div>
-									<div><span name="blocksinterval"></span></div>
+									<div><span name="dashboardBlocksTransactions" class="multilocalizable"></span> {{ block.txnCnt }}</div>
+									<div><span name="dashboardBlocksInterval" class="multilocalizable"></span></div>
 								</div>
 							</div>
 						</transition-group>
@@ -923,7 +923,8 @@
 		BigNumber = require("bignumber.js");
 
 	var ECharts = require('vue-echarts/components/ECharts').default;
-	var localTransactions = "";
+	var dashboardTransactionsGraphicPointsTitle = "";
+	var dashboardBlocksTransactions = "";
 	require('echarts/lib/chart/line');
 	require('echarts/lib/component/tooltip');
 
@@ -1028,7 +1029,7 @@
 						formatter: function(params, ticket, callback) {
 							let date = new Date(params.name);
 							let dateStr = date.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' });
-							return dateStr + '<div>' + localTransactions + vm.numberAddComma(params.value) + '</div><div class=daily-echart-down-arrow></div>';
+							return dateStr + '<div>' + dashboardTransactionsGraphicPointsTitle + vm.numberAddComma(params.value) + '</div><div class=daily-echart-down-arrow></div>';
 						},
 						backgroundColor: '#595C63',
 						padding: 8,
@@ -1159,8 +1160,13 @@
 			}
 		},
 		mounted() {
-			this.checkTranslations();
-			EventBus.$on('changeLanguage', foo => {this.checkTranslations()});
+			if (typeof this.$selectedLanguage != 'undefined') {
+				this.checkStaticTranslations();
+			}
+			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
+			this.translationsInterval = setInterval(() => {
+				this.checkDynamicTranslations();
+			}, 1000);
 			api.getTx("cnt_static", o => this.dailyTxData = o);					 //近期每日交易量
 			api.getMarketCap(o => this.market = o);								 //币价和市值
 			api.getBlock({ type: "latest" }, o => this.blocks = this.addLocalTimestamp(o));				 //最新一波 block
@@ -1247,127 +1253,42 @@
 				}
 				return n;
 			},
-			checkTranslations() {
-				//console.debug(this.$myJSON[this.$selectedLanguage].dailyTransactionsTitle);
-				var myElement = document.getElementById("dailyTransactionsTitle");
-				myElement.innerText = this.$myJSON[this.$selectedLanguage].dailyTransactionsTitle;
-
-
-
-				/*
-				// Quick and dirty way to assign values to the ticks.
-				var blockstransactionstext = document.getElementById("blockstransactions").innerText;
-				var blocksintervaltext = document.getElementById("blocksinterval").innerText;
-				var blocksinterval = document.getElementsByName("blocksinterval");
-				var blockstransactions = document.getElementsByName("blockstransactions");
-				var totalTicks = blocksinterval.length
-				var i;
-				for (i = 0; i < totalTicks; i++) {
-					blockstransactions[i].innerText = blockstransactionstext;
-					blocksinterval[i].innerText = blocksintervaltext;
-				}
-				// Same for block widgets.
-				var blocksheighttext = document.getElementById("blocksheighttext").innerText;
-				var blocksheight = document.getElementById("blocksheight");
-				blocksheight.innerText = blocksheighttext;
-
-				var blockstotaltxtext = document.getElementById("blockstotaltxtext");
-				var totaltransactions = document.getElementById("totaltransactions");
-				totaltransactions.innerText = blockstotaltxtext.innerText;
-
-				var blockstotalsmartcontracts = document.getElementById("blockstotalsmartcontracts");
-				var totalsmartcontracts = document.getElementById("totalsmartcontracts");
-				totalsmartcontracts.innerText = blockstotalsmartcontracts.innerText;
-
-				var blockstotaladdresses = document.getElementById("blockstotaladdresses");
-				var totaladdresses = document.getElementsByName("totaladdresses");
-				var totalTexts = totaladdresses.length;
-				var i;
-				for (i = 0; i < totalTexts; i++) {
-					totaladdresses[i].innerText = blockstotaladdresses.innerText;
-				}
-
-				//Same for other components:
-				var localizedtxtext = document.getElementById("localizedtxtext");
-				localTransactions = localizedtxtext.innerText;
-
-				var destination = document.getElementsByName("amount_text");
-				var origin = document.getElementById("amounttext").innerText;
-				var totalElements = destination.length;
-				for (i = 0; i < totalElements; i++) {
-					destination[i].innerText = origin;
-				}
-
-				var destination = document.getElementsByName("newaddressestext");
-				var origin = document.getElementById("newaddressestxt").innerText;
-				var totalElements = destination.length;
-				for (i = 0; i < totalElements; i++) {
-					destination[i].innerText = origin;
-				}
-
-				var destination = document.getElementsByName("blocknumber");
-				var origin = document.getElementById("blocksnumbertext").innerText;
-				var totalElements = destination.length;
-				for (i = 0; i < totalElements; i++) {
-					destination[i].innerText = origin;
-				}
-
-				var destination = document.getElementsByName("severaltransactionstext");
-				var origin = document.getElementById("severaltransactionstext").innerText;
-				var totalElements = destination.length;
+			checkStaticTranslations() {
+				// Unique elements, identified by id attr
+				var myLocalizableElements = document.getElementsByClassName("localizable");
+				var totalElements = myLocalizableElements.length;
 				var i;
 				for (i = 0; i < totalElements; i++) {
-					destination[i].innerText = origin;
+					var elementId = myLocalizableElements[i].getAttribute("id");
+					if (myLocalizableElements[i].getAttribute("localize")) {
+						var elementAttribute = myLocalizableElements[i].getAttribute("localize");
+						myLocalizableElements[i].setAttribute(elementAttribute, this.$myJSON[this.$selectedLanguage][elementId]);
+					}
+					else {
+						myLocalizableElements[i].innerText = this.$myJSON[this.$selectedLanguage][elementId];
+					}
 				}
-
-				var destination = document.getElementsByName("onetransactiontext");
-				var origin = document.getElementById("onetransactiontext").innerText;
-				var totalElements = destination.length;
+			},
+			checkDynamicTranslations() {
+				// Multiple elements, identified with name attr
+				var myMultiLocalizableElements = document.getElementsByClassName("multilocalizable");
+				var totalElements = myMultiLocalizableElements.length;
 				var i;
 				for (i = 0; i < totalElements; i++) {
-					destination[i].innerText = origin;
+					var elementName = myMultiLocalizableElements[i].getAttribute("name");
+					if (myMultiLocalizableElements[i].getAttribute("localize")) {
+						var elementAttribute = myMultiLocalizableElements[i].getAttribute("localize");
+						myMultiLocalizableElements[i].setAttribute(elementAttribute, this.$myJSON[this.$selectedLanguage][elementName]);
+					}
+					else {
+						myMultiLocalizableElements[i].innerText = this.$myJSON[this.$selectedLanguage][elementName];
+					}
 				}
 
-				var destination = document.getElementsByName("notransactiontext");
-				var origin = document.getElementById("notransactiontext").innerText;
-				var totalElements = destination.length;
-				var i;
-				for (i = 0; i < totalElements; i++) {
-					destination[i].innerText = origin;
-				}
+				// Other specific methods for unique elements.
 
-				var destination = document.getElementsByName("blocksindicatorviewall");
-				var origin = document.getElementById("indicatorviewall").innerText;
-				var totalElements = destination.length;
-				var i;
-				for (i = 0; i < totalElements; i++) {
-					destination[i].innerText = origin;
-				}
+				dashboardTransactionsGraphicPointsTitle = this.$myJSON[this.$selectedLanguage]["dashboardDailyTransactionsSubtitle"];
 
-				var destination = document.getElementsByName("transactionnumber");
-				var origin = document.getElementById("transactionnumber").innerText;
-				var totalElements = destination.length;
-				var i;
-				for (i = 0; i < totalElements; i++) {
-					destination[i].innerText = origin;
-				}
-
-				var destination = document.getElementsByName("fromtext");
-				var origin = document.getElementById("fromtext").innerText;
-				var totalElements = destination.length;
-				var i;
-				for (i = 0; i < totalElements; i++) {
-					destination[i].innerText = origin;
-				}
-
-				var destination = document.getElementsByName("totext");
-				var origin = document.getElementById("totext").innerText;
-				var totalElements = destination.length;
-				var i;
-				for (i = 0; i < totalElements; i++) {
-					destination[i].innerText = origin;
-				}
-				*/
 			}
 		},
 		updated() {

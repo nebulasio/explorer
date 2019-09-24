@@ -110,21 +110,21 @@
 				</router-link>
 			</div>
 
-			<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+			<button class="navbar-toggler localizable" localize="aria-label" type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation" id="headerToggleNavigation">
 				<span class=navbar-toggler-icon></span>
 			</button>
 			<div class="collapse navbar-collapse mr-28" id=navbarSupportedContent>
 				<form class=form-inline v-on:submit.prevent=onSubmit>
 					<img src=/static/img/icon_search.png width=16 alt="" />
-					<input id="buscador">
+					<input class="mr-sm-2 font-12 localizable" localize="placeholder" id="headerSearchTool" type=search placeholder="" v-model=search>
 				</form>
 				<ul class="navbar-nav ml-auto">
 					<li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
-						<router-link v-bind:to="fragApi + '/..'" class=nav-link>
+						<router-link v-bind:to="fragApi + '/'" class=nav-link>
 							<span>
-									<span id="headerHomeTitle"></span>
+								<span id="headerHomeTitle" class="localizable"></span>
 								<span class=sr-only>
-									<span id="headerHomeSubtitle"></span>
+									<span id="headerHomesubtitle" class="localizable"></span>
 								</span>
 							</span>
 						</router-link>
@@ -136,17 +136,17 @@
 							<img src=/static/img/icon_arrow_down.png width=12 alt="">
 						</a>
 						<div class=dropdown-menu aria-labelledby=header-dropdown-blockchain>
-							<router-link class=dropdown-item v-bind:to="fragApi + '/txs'"><span id="transactionssubmenu"></span></router-link>
-							<router-link class=dropdown-item v-bind:to="fragApi + '/txs/pending'"><span id="pendingtransactionssubmenu"></span></router-link>
+							<router-link class=dropdown-item v-bind:to="fragApi + '/txs'"><span id="headerTransactionsSubmenu" class="localizable"></span></router-link>
+							<router-link class=dropdown-item v-bind:to="fragApi + '/txs/pending'"><span id="headerPendingTransactionsSubmenu" class="localizable"></span></router-link>
 							<div class="dropdown-divider"></div>
-							<router-link class=dropdown-item v-bind:to="fragApi + '/blocks'"><span id="blockssubmenu"></span></router-link>
+							<router-link class=dropdown-item v-bind:to="fragApi + '/blocks'"><span id="headerBlocksSubmenu" class="localizable"></span></router-link>
 							<div class="dropdown-divider"></div>
-							<router-link class=dropdown-item v-bind:to="fragApi + '/accounts'"><span id="accountssubmenu"></span></router-link>
+							<router-link class=dropdown-item v-bind:to="fragApi + '/accounts'"><span id="headerAccountsSubmenu" class="localizable"></span></router-link>
 						</div>
 					</li>
 					<!-- // Menú Blockchain -->
 					<!-- <li v-if="($route.params.api !== 'testnet' && $root.mainnetGotDipWinners) || ($route.params.api == 'testnet' && $root.testnetGotDipWinners)" class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
-						<router-link class=nav-link v-bind:to="fragApi + '/dip-leaderboard'"><span id="dipwinners"></span></router-link>
+						<router-link class=nav-link v-bind:to="fragApi + '/dip-leaderboard'"><span id="headerDipWinners" class="localizable"></span></router-link>
 					</li> -->
 					<li class="nav-item">
 						<a class="nav-link" href=# role=button v-on:click.prevent=apiSwitch()>{{ MenuMisc }}
@@ -179,6 +179,9 @@
 			};
 		},
 		mounted() {
+			if (typeof this.$selectedLanguage != 'undefined') {
+				this.checkTranslations();
+			}
 			EventBus.$on('changeLanguage', foo => {this.checkTranslations()});
 			var paramsApi = this.$route.params.api, apiPrefixes = {}, i, first = true;
 
@@ -204,15 +207,6 @@
 		},
 		methods: {
 			onSubmit() {
-				// Quick and dirty hack until we figure out this issue:
-				// https://github.com/javisperez/vuetranslate/issues/13
-				var test = document.getElementById("buscador");
-				this.search = test.value;
-
-				if (this.search.trim().length === 0) {
-					this.search = "";
-					return;
-				}
 				this.$root.showModalLoading = true;
 				api.getSearch(this.search.trim(), o => {
 					this.$root.showModalLoading = false;
@@ -254,9 +248,19 @@
 				this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/token/" + this.atpAddress());
 			},
 			checkTranslations() {
-				//console.debug(this.$myJSON[this.$selectedLanguage].headerHomeTitle);
-				var myElement = document.getElementById("headerHomeTitle");
-				myElement.innerText = this.$myJSON[this.$selectedLanguage].headerHomeTitle;
+				var myLocalizableElements = document.getElementsByClassName("localizable");
+				var totalElements = myLocalizableElements.length;
+				var i;
+				for (i = 0; i < totalElements; i++) {
+					var elementId = myLocalizableElements[i].getAttribute("id");
+					if (myLocalizableElements[i].getAttribute("localize")) {
+						var elementAttribute = myLocalizableElements[i].getAttribute("localize");
+						myLocalizableElements[i].setAttribute(elementAttribute, this.$myJSON[this.$selectedLanguage][elementId]);
+					}
+					else {
+						myLocalizableElements[i].innerText = this.$myJSON[this.$selectedLanguage][elementId];
+					}
+				}
 			}
 		}
 	};
