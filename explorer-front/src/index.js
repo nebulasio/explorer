@@ -145,7 +145,22 @@ Vue.prototype.$myJSON = {
 		"dashboardBlocksTitle": "Blocks",
 		"dashboardBlocksSubtitle": "Current status",
 		"dashboardBlocksTransactions": "Transactions:",
-		"dashboardBlocksInterval": "Block interval: 15s"
+		"dashboardBlocksInterval": "Block interval: 15s",
+		"dashboardBlocksHeightTitle": "Block's Height",
+		"dashboardTotalTransactions": "Total Transactions",
+		"dashboardTotalSmartContracts": "Total Smart Contracts",
+		"dashboardTotalAddresses": "Total Addresses",
+		"dashboardNewAddresses": "New Directions",
+		"dashboardNewAddressesPercentage": "New Addresses Percentage",
+		"dashboardNewAddressesSubtitle": "New addresses are those created within 90 days.",
+		"dashboardNewAddressesText": "New Directions",
+		"dashboardAddressesGrowth": "Addresses' Growth",
+		"dashboardTotalAddressesText": "Total Addresses",
+		"dashboardBlocksIndicatorTitle": "Blocks",
+		"dashboardTransactionNumber": "Tx#: ",
+		"dashboardTransactionFromText": "from: ",
+		"dashboardTransactionToText": "to: ",
+		"dashboardAmountText": "Amount: "
 	},
 	"es_ES": {
 		"headerToggleNavigation": "Cambiar navegación",
@@ -167,7 +182,22 @@ Vue.prototype.$myJSON = {
 		"dashboardBlocksTitle": "Bloques",
 		"dashboardBlocksSubtitle": "Estado actual",
 		"dashboardBlocksTransactions": "Transacciones:",
-		"dashboardBlocksInterval": "Intervalo: 15s"
+		"dashboardBlocksInterval": "Intervalo: 15s",
+		"dashboardBlocksHeightTitle": "Altura del bloque",
+		"dashboardTotalTransactions": "Transacciones totales",
+		"dashboardTotalSmartContracts": "Total de contratos inteligentes",
+		"dashboardTotalAddresses": "Total de direcciones",
+		"dashboardNewAddresses": "Direcciones nuevas",
+		"dashboardNewAddressesPercentage": "Porcentaje de nuevas direcciones",
+		"dashboardNewAddressesSubtitle": "Son aquellas creadas los últimos 90 días.",
+		"dashboardNewAddressesText": "Direcciones nuevas",
+		"dashboardAddressesGrowth": "Crecimiento de las direcciones",
+		"dashboardTotalAddressesText": "Total de direcciones",
+		"dashboardBlocksIndicatorTitle": "Bloques",
+		"dashboardTransactionNumber": "Tx nro.: ",
+		"dashboardTransactionFromText": "de: ",
+		"dashboardTransactionToText": "a: ",
+		"dashboardAmountText": "Cantidad: "
 	}
 };
 
@@ -280,164 +310,6 @@ var header0 = new Vue({
 
 /*
 
-// Height
-var BlocksHeight = Vue.extend({
-	template: `<div style="display: none;" id="blocksheighttext">{{ t('blocksheight') }}</div>`,
-	locales: {
-		es_ES: {
-			'blocksheight': 'Altura de bloque'
-		},
-		en_US: {
-			'blocksheight': 'Block Height'
-		}
-	}
-});
-var blocktools0 = new Vue({
-	el: '#blockheight',
-	components: {BlocksHeight},
-	template: `<blocks-height></blocks-height>`
-});
-// Total tx
-var BlocksTotaltx = Vue.extend({
-	template: `<div style="display: none;" id="blockstotaltxtext">{{ t('totaltx') }}</div>`,
-	locales: {
-		es_ES: {
-			'totaltx': 'Total de transacciones'
-		},
-		en_US: {
-			'totaltx': 'Total Transactions'
-		}
-	}
-});
-var blocktools1 = new Vue({
-	el: '#blocktotaltx',
-	components: {BlocksTotaltx},
-	template: `<blocks-totaltx></blocks-totaltx>`
-});
-// Total smart contracts
-var BlocksTotalsc = Vue.extend({
-	template: `<div style="display: none;" id="blockstotalsmartcontracts">{{ t('blocktotalsmartcontracts') }}</div>`,
-	locales: {
-		es_ES: {
-			'blocktotalsmartcontracts': 'Total de contratos inteligentes'
-		},
-		en_US: {
-			'blocktotalsmartcontracts': 'Total Smart Contracts'
-		}
-	}
-});
-var blocktools2 = new Vue({
-	el: '#blocktotalsmartcontracts',
-	components: {BlocksTotalsc},
-	template: `<blocks-totalsc></blocks-totalsc>`
-});
-// Total addresses
-var BlocksTotalad = Vue.extend({
-	template: `<div style="display: none;" id="blockstotaladdresses">{{ t('blockstotaladdresses') }}</div>`,
-	locales: {
-		es_ES: {
-			'blockstotaladdresses': 'Total de direcciones'
-		},
-		en_US: {
-			'blockstotaladdresses': 'Total Addresses'
-		}
-	}
-});
-var blocktools3 = new Vue({
-	el: '#blocktotaladdresses',
-	components: {BlocksTotalad},
-	template: `<blocks-totalad></blocks-totalad>`
-});
-// ---------------------------------[ ADDRESSES ]-------------------------------
-// New addresses percentage
-var NewAddressesPercentage = Vue.extend({
-	template: `<span>{{ t('newaddressespercentage') }}</span>`,
-	locales: {
-		es_ES: {
-			'newaddressespercentage': 'Porcentaje de nuevas direcciones'
-		},
-		en_US: {
-			'newaddressespercentage': 'New Addresses Percentage'
-		}
-	}
-});
-var addresstools0 = new Vue({
-	el: '#newaddressespercentage',
-	components: {NewAddressesPercentage},
-	template: `<new-addresses-percentage></new-addresses-percentage>`
-});
-
-// New addresses subtitle
-var NewAddressesSubtitle = Vue.extend({
-	template: `<span>{{ t('newaddressessubtitle') }}</span>`,
-	locales: {
-		es_ES: {
-			'newaddressessubtitle': 'Son aquellas creadas en los últimos 90 días'
-		},
-		en_US: {
-			'newaddressessubtitle': 'New addresses are those created within 90 days.'
-		}
-	}
-});
-var addresstools1 = new Vue({
-	el: '#newaddressessubtitle',
-	components: {NewAddressesSubtitle},
-	template: `<new-addresses-subtitle></new-addresses-subtitle>`
-});
-
-// New addresses text
-var NewAddressesText = Vue.extend({
-	template: `<div style="display: none" id="newaddressestxt">{{ t('newaddressestext') }}</div>`,
-	locales: {
-		es_ES: {
-			'newaddressestext': 'Nuevas direcciones '
-		},
-		en_US: {
-			'newaddressestext': 'New Addresses '
-		}
-	}
-});
-var addresstools2 = new Vue({
-	el: '#newaddressestxt',
-	components: {NewAddressesText},
-	template: `<new-addresses-text></new-addresses-text>`
-});
-
-// Addresses growth
-var AddressesGrowth = Vue.extend({
-	template: `<span>{{ t('addressesgrowth') }}</span>`,
-	locales: {
-		es_ES: {
-			'addressesgrowth': 'Crecimiento de las direcciones'
-		},
-		en_US: {
-			'addressesgrowth': 'Addresses Growth'
-		}
-	}
-});
-var addresstools3 = new Vue({
-	el: '#addressesgrowth',
-	components: {AddressesGrowth},
-	template: `<addresses-growth></addresses-growth>`
-});
-
-// Amount text
-var AmountText = Vue.extend({
-	template: `<span id="amounttext" style="display: none;">{{ t('amounttext') }}</span>`,
-	locales: {
-		es_ES: {
-			'amounttext': 'Cantidad: '
-		},
-		en_US: {
-			'amounttext': 'Amount: '
-		}
-	}
-});
-var addresstools4 = new Vue({
-	el: '#amounttxt',
-	components: {AmountText},
-	template: `<amount-text></amount-text>`
-});
 // -----------------------------[ BLOCK INDICATOR ]-----------------------------
 // Title
 var BlocksIndicatorTitle = Vue.extend({

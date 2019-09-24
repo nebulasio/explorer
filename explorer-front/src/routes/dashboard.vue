@@ -747,37 +747,32 @@
 				</div>
 			</div>
 			<!-- ===================3===================== -->
-			<div id="blockheight"></div>
-			<div id="blocktotaltx"></div>
-			<div id="blocktotalsmartcontracts"></div>
-			<div id="blocktotaladdresses"></div>
-			<div id="newaddressestxt"></div>
 			<div class="row row3">
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ blockheight }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/blocks/"'><span id="blocksheight"></span></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/blocks/"'><span id="dashboardBlocksHeightTitle" class="localizable"></span></router-link>
 						<img src=/static/img/dashboard-1.png width=44 alt="">
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ numberAddComma(staticInfo.txnCnt) }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/txs/"'><span id="totaltransactions"></span></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/txs/"'><span id="dashboardTotalTransactions" class="localizable"></span></router-link>
 						<img src=/static/img/dashboard-2.png width=44 alt="">
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ numberAddComma(staticInfo.totalContractCount) }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/contracts/"'><span id="totalsmartcontracts"></span></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/contracts/"'><span id="dashboardTotalSmartContracts" class="localizable"></span></router-link>
 						<img src=/static/img/dashboard-3.png width=44 alt="">
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/accounts/"'><span name="totaladdresses"></span></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/accounts/"'><span id="dashboardTotalAddresses" class="localizable"></span></router-link>
 						<img src=/static/img/dashboard-4.png width=44 alt="">
 					</div>
 				</div>
@@ -787,10 +782,10 @@
 				<div class="flex-item col-12 col-lg-6 row4-item user-data">
 					<div class="item-bg item-shadow">
 						<div class="item-title">
-							<span id="newaddressespercentage"></span>
-							<div class="text-light-gray font-12 font-regular"><span id="newaddressessubtitle"></span></div>
+							<span id="dashboardNewAddressesPercentage" class="localizable"></span>
+							<div class="text-light-gray font-12 font-regular"><span id="dashboardNewAddressesSubtitle" class="localizable"></span></div>
 							<div v-if="staticInfo" class="mt20 d-sm-none">
-								<span class="font-12 font-color-7F7F7F"><span name="totaladdresses"></span></span>
+								<span class="font-12 font-color-7F7F7F">New Addresses</span>
 								<span class="font-20">{{ (Math.round(100 * staticInfo.newAddressCount / staticInfo.totalAddressCount * 10) / 10).toFixed(1) + '%' }}</span>
 							</div>
 						</div>
@@ -808,22 +803,22 @@
 								<div class="labels">
 									<!-- 四舍五入并保留一位小数 -->
 									<div>{{ (Math.round(100 * staticInfo.newAddressCount / staticInfo.totalAddressCount * 10) / 10).toFixed(1) + '%' }}</div>
-									<div><span name="newaddressestext"></span></div>
+									<div><span id="dashboardNewAddresses" class="localizable">fefefe</span></div>
 								</div>
 							</div>
 						</div>
 						<div v-if="staticInfo" class="detail">
 							<!-- <div class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
 							<div class="title">{{ numberAddComma(staticInfo.newAddressCount) }}</div>
-							<div class="font-12 text-gray"><span name="newaddressestext"></span></div>
+							<div class="font-12 text-gray"><span id="dashboardNewAddressesText" class="localizable"></span></div>
 							<div class="title">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
-							<div class="font-12 text-gray"><span name="totaladdresses"></span></div>
+							<div class="font-12 text-gray"><span id="dashboardTotalAddressesText" class="localizable"></span></div>
 						</div>
 					</div>
 				</div>
 				<div class="flex-item col-12 col-lg-6 row4-item accounts-data">
 					<div class="item-bg item-shadow">
-						<div class="item-title"><span id="addressesgrowth"></span></div>
+						<div class="item-title"><span id="dashboardAddressesGrowth" class="localizable"></span></div>
 						<!-- <div v-if="accountsChartOptions" class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
 						<vchart class="accounts-chart" v-if="accountsChartOptions" :options="accountsChartOptions" :autoResize='true'></vchart>
 					</div>
@@ -835,7 +830,7 @@
 			<div class="row row5">
 				<div class="flex-item col-12 col-lg-6 row5-item">
 					<div class="item-bg item-shadow">
-						<div class="item-title"><span id="blocksindicatortitle"></span></div>
+						<div class="item-title"><span id="dashboardBlocksIndicatorTitle" class="localizable"></span></div>
 						<router-link :to='fragApi + "/blocks/"' class="showall"><span name="blocksindicatorviewall"></span></router-link>
 						<transition-group name="list" tag="table" frame=hsides rules=rows>
 							<tr class="list-item" v-for="block in blocks.slice(0, 6)" :key="block.height">
@@ -871,19 +866,19 @@
 									<img src="/static/img/icon-tx.png?v=20190116" width="50" height="50">
 								</td>
 								<td>
-									<span name="transactionnumber"></span>
+									<span name="dashboardTransactionNumber" class="multilocalizable"></span>
 									<router-link :to='fragApi + "/tx/" + tx.hash'>
 										<span class="monospace">{{ tx.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.hash.slice(-4) }}</span>
 									</router-link>
 									<br>
 									<span class="fromto d-none d-sm-inline">
-										<span name="fromtext"></span>
+										<span name="dashboardTransactionFromText" class="multilocalizable"></span>
 										<router-link :to='fragApi + "/address/" + tx.from.hash'>
 											<span class="monospace">{{ tx.from.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.from.hash.slice(-4) }}</span>
 										</router-link>
 									</span>
 									<span class="fromto d-none d-sm-inline">
-										<span name="totext"></span>
+										<span name="dashboardTransactionToText" class="multilocalizable"></span>
 										<router-link :to='fragApi + "/address/" + tx.from.hash'>
 											<span class="monospace">{{ tx.to.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.to.hash.slice(-4) }}</span>
 										</router-link>
@@ -902,18 +897,6 @@
 		</div>
 		<!--ATP侧边栏广告位-->
 		<div class="flex atlaspAds" id="atlaspAds-side"></div>
-		<!-- Hidden containers for localized text strings -->
-		<div id="blocksinterval"></div>
-		<div id="blockstransactions"></div>
-		<div id="amounttxt"></div>
-		<div id="blocknumbertxt"></div>
-		<div id="notransactiontxt"></div>
-		<div id="onetransactiontxt"></div>
-		<div id="severaltransactionstxt"></div>
-		<div id="blocksindicatorviewall"></div>
-		<div id="txnumber"></div>
-		<div id="fromtxt"></div>
-		<div id="totxt"></div>
 	</div>
 </template>
 <script>
@@ -925,6 +908,7 @@
 	var ECharts = require('vue-echarts/components/ECharts').default;
 	var dashboardTransactionsGraphicPointsTitle = "";
 	var dashboardBlocksTransactions = "";
+	var dashboardAmountText = "";
 	require('echarts/lib/chart/line');
 	require('echarts/lib/component/tooltip');
 
@@ -1140,7 +1124,7 @@
 						formatter: function(params, ticket, callback) {
 							let date = new Date(new Number(params.name));
 							let dateStr = date.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' });
-							return dateStr + '<div><span name="amount_text"></span>' + vm.numberAddComma(params.value) + '</div><div class=account-echart-down-arrow></div>';
+							return dateStr + '<div>' + dashboardAmountText + vm.numberAddComma(params.value) + '</div><div class=account-echart-down-arrow></div>';
 						},
 						backgroundColor: '#0057FF',
 						padding: 8,
@@ -1165,6 +1149,7 @@
 			}
 			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			this.translationsInterval = setInterval(() => {
+				this.checkStaticTranslations();
 				this.checkDynamicTranslations();
 			}, 1000);
 			api.getTx("cnt_static", o => this.dailyTxData = o);					 //近期每日交易量
@@ -1288,6 +1273,8 @@
 				// Other specific methods for unique elements.
 
 				dashboardTransactionsGraphicPointsTitle = this.$myJSON[this.$selectedLanguage]["dashboardDailyTransactionsSubtitle"];
+
+				dashboardAmountText = this.$myJSON[this.$selectedLanguage]["dashboardAmountText"];
 
 			}
 		},
