@@ -165,6 +165,7 @@
 </template>
 <script>
 	import { EventBus } from '../events.js';
+	import { jsonStrings } from '../l10nstrings.js';
 	var api = require("@/assets/api"),
 	appConfig = require("@/assets/app-config");
 
@@ -255,10 +256,10 @@
 					var elementId = myLocalizableElements[i].getAttribute("id");
 					if (myLocalizableElements[i].getAttribute("localize")) {
 						var elementAttribute = myLocalizableElements[i].getAttribute("localize");
-						myLocalizableElements[i].setAttribute(elementAttribute, this.$myJSON[this.$selectedLanguage][elementId]);
+						myLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementId]);
 					}
 					else {
-						myLocalizableElements[i].innerText = this.$myJSON[this.$selectedLanguage][elementId];
+						myLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementId];
 					}
 				}
 			}

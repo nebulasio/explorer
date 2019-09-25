@@ -751,7 +751,9 @@
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ blockheight }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/blocks/"'><span id="dashboardBlocksHeightTitle" class="localizable"></span></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/blocks/"'>
+							<span id="dashboardBlocksHeightTitle" class="localizable"></span>
+						</router-link>
 						<img src=/static/img/dashboard-1.png width=44 alt="">
 					</div>
 				</div>
@@ -899,6 +901,7 @@
 </template>
 <script>
 	import { EventBus } from '../events.js';
+	import { jsonStrings } from '../l10nstrings.js';
 	var api = require("@/assets/api"),
 		utility = require("@/assets/utility"),
 		BigNumber = require("bignumber.js");
@@ -1147,9 +1150,12 @@
 			}
 			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			this.translationsInterval = setInterval(() => {
-				this.checkStaticTranslations();
 				this.checkDynamicTranslations();
 			}, 1000);
+			this.tempInterval = setInterval(() => {
+				this.checkStaticTranslations();
+				this.removeTempInterval();
+			}, 1500);
 			api.getTx("cnt_static", o => this.dailyTxData = o);					 //近期每日交易量
 			api.getMarketCap(o => this.market = o);								 //币价和市值
 			api.getBlock({ type: "latest" }, o => this.blocks = this.addLocalTimestamp(o));				 //最新一波 block
@@ -1202,6 +1208,9 @@
 			}
 		},
 		methods: {
+			removeTempInterval() {
+				clearInterval(this.tempInterval);
+			},
 			numberAddComma(n) {
 				return utility.numberAddComma(n);
 			},
@@ -1245,10 +1254,10 @@
 					var elementId = myLocalizableElements[i].getAttribute("id");
 					if (myLocalizableElements[i].getAttribute("localize")) {
 						var elementAttribute = myLocalizableElements[i].getAttribute("localize");
-						myLocalizableElements[i].setAttribute(elementAttribute, this.$myJSON[this.$selectedLanguage][elementId]);
+						myLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementId]);
 					}
 					else {
-						myLocalizableElements[i].innerText = this.$myJSON[this.$selectedLanguage][elementId];
+						myLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementId];
 					}
 				}
 			},
@@ -1261,18 +1270,18 @@
 					var elementName = myMultiLocalizableElements[i].getAttribute("name");
 					if (myMultiLocalizableElements[i].getAttribute("localize")) {
 						var elementAttribute = myMultiLocalizableElements[i].getAttribute("localize");
-						myMultiLocalizableElements[i].setAttribute(elementAttribute, this.$myJSON[this.$selectedLanguage][elementName]);
+						myMultiLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementName]);
 					}
 					else {
-						myMultiLocalizableElements[i].innerText = this.$myJSON[this.$selectedLanguage][elementName];
+						myMultiLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementName];
 					}
 				}
 
 				// Other specific methods for unique elements.
 
-				dashboardTransactionsGraphicPointsTitle = this.$myJSON[this.$selectedLanguage]["dashboardDailyTransactionsSubtitle"];
+				dashboardTransactionsGraphicPointsTitle = jsonStrings[this.$selectedLanguage]["dashboardDailyTransactionsSubtitle"];
 
-				dashboardAmountText = this.$myJSON[this.$selectedLanguage]["dashboardAmountText"];
+				dashboardAmountText = jsonStrings[this.$selectedLanguage]["dashboardAmountText"];
 
 			}
 		},

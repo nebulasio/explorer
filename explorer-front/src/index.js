@@ -1,5 +1,6 @@
 import VueTranslate from 'vue-translate-plugin';
 import { EventBus } from './events.js';
+import { jsonStrings } from './l10nstrings.js';
 
 var api = require("@/assets/api");
 var appConfig = require("@/assets/app-config");
@@ -112,107 +113,6 @@ vApp = new Vue({
 
 Vue.prototype.$selectedLanguage = "en_US";
 
-// La estructura es muy sencilla: cada lenguaje contiene una serie de cadenas
-// identificadas con el ID de cada elemento del DOM de cada componente.
-// La idea es emparejar, mediante un bucle for in, el ID hallado con la cadena
-// correspondiente al lenguaje seleccionado.
-
-// Además, hay que iterar (dentro de cada componente) por los elementos que
-// contienen la clase .localizable, y revisar el atributo localize. Si este no
-// está vacío (lo cual implica modificar el innerHTML), el mismo contendrá el
-// atributo sobre el cual aplicar la cadena localizada.
-
-// Así, por ejemplo, para un elemento DOM cuyo ID es "blocksTitle", la cadena a
-// buscar sería (para español): es_ES.blocksTitle.
-Vue.prototype.$myJSON = {
-		"en_US": {
-		"headerToggleNavigation": "Toggle Navigation",
-		"headerSearchTool": "Search by address, txhash, block or token",
-		"headerHomeTitle": "Home",
-		"headerHomeSubtitle": "current",
-		"headerTransactionsSubmenu": "Transactions",
-		"headerPendingTransactionsSubmenu": "Pending transactions",
-		"headerBlocksSubmenu": "Blocks",
-		"headerAccountsSubmenu": "Accounts",
-		"headerDipWinners": "DIP Winners",
-		"dashboardDailyTransactionsTitle": "Daily Transactions",
-		"dashboardDailyTransactionsSubtitle": "Transactions: ",
-		"dashboardNasPriceTitle": "NAS Value",
-		"dashboardNasPriceUpdateTimePrefix": "Updated",
-		"dashboardNasPriceUpdateTimeSuffix": " ago",
-		"dashboardNasMarketCap": "Market Cap",
-		"dashboardNasMarketVol": "Market Vol",
-		"dashboardBlocksTitle": "Blocks",
-		"dashboardBlocksSubtitle": "Current status",
-		"dashboardBlocksTransactions": "Transactions:",
-		"dashboardBlocksInterval": "Block interval: 15s",
-		"dashboardBlocksHeightTitle": "Block's Height",
-		"dashboardTotalTransactions": "Total Transactions",
-		"dashboardTotalSmartContracts": "Total Smart Contracts",
-		"dashboardTotalAddresses": "Total Addresses",
-		"dashboardNewAddresses": "New Directions",
-		"dashboardNewAddressesPercentage": "New Addresses Percentage",
-		"dashboardNewAddressesSubtitle": "New addresses are those created within 90 days.",
-		"dashboardNewAddressesText": "New Directions",
-		"dashboardAddressesGrowth": "Addresses' Growth",
-		"dashboardTotalAddressesText": "Total Addresses",
-		"dashboardBlocksIndicatorTitle": "Blocks",
-		"dashboardTransactionNumber": "Tx#: ",
-		"dashboardTransactionFromText": "from: ",
-		"dashboardTransactionToText": "to: ",
-		"dashboardAmountText": "Amount: ",
-		"dashboardBlockNumber": "Block #",
-		"dashboardIndicatorViewAll": "View All >",
-		"dashboardBlocksNoTransaction": "No transactions",
-		"dashboardBlocksOneTransaction": "transaction",
-		"dashboardBlocksSeveralTransactions": "transactions",
-		"dashboardTransactionsTitle": "Transactions"
-	},
-	"es_ES": {
-		"headerToggleNavigation": "Cambiar navegación",
-		"headerSearchTool": "Buscar por dirección, txhash, bloque o token",
-		"headerHomeTitle": "Inicio",
-		"headerHomeSubtitle": "actual",
-		"headerTransactionsSubmenu": "Transacciones",
-		"headerPendingTransactionsSubmenu": "Transacciones pendientes",
-		"headerBlocksSubmenu": "Bloques",
-		"headerAccountsSubmenu": "Cuentas",
-		"headerDipWinners": "Ganadores DIP",
-		"dashboardDailyTransactionsTitle": "Transacciones diarias",
-		"dashboardDailyTransactionsSubtitle": "Transacciones: ",
-		"dashboardNasPriceTitle": "Valor del NAS",
-		"dashboardNasPriceUpdateTimePrefix": "Actualizado hace",
-		"dashboardNasPriceUpdateTimeSuffix": "",
-		"dashboardNasMarketCap": "Cap. de mercado",
-		"dashboardNasMarketVol": "Vol. de mercado",
-		"dashboardBlocksTitle": "Bloques",
-		"dashboardBlocksSubtitle": "Estado actual",
-		"dashboardBlocksTransactions": "Transacciones:",
-		"dashboardBlocksInterval": "Intervalo: 15s",
-		"dashboardBlocksHeightTitle": "Altura del bloque",
-		"dashboardTotalTransactions": "Transacciones totales",
-		"dashboardTotalSmartContracts": "Total de contratos inteligentes",
-		"dashboardTotalAddresses": "Total de direcciones",
-		"dashboardNewAddresses": "Direcciones nuevas",
-		"dashboardNewAddressesPercentage": "Porcentaje de nuevas direcciones",
-		"dashboardNewAddressesSubtitle": "Son aquellas creadas los últimos 90 días.",
-		"dashboardNewAddressesText": "Direcciones nuevas",
-		"dashboardAddressesGrowth": "Crecimiento de las direcciones",
-		"dashboardTotalAddressesText": "Total de direcciones",
-		"dashboardBlocksIndicatorTitle": "Bloques",
-		"dashboardTransactionNumber": "Tx nro.: ",
-		"dashboardTransactionFromText": "de: ",
-		"dashboardTransactionToText": "a: ",
-		"dashboardAmountText": "Cantidad: ",
-		"dashboardBlockNumber": "Bloque nro.",
-		"dashboardIndicatorViewAll": "Ver todo >",
-		"dashboardBlocksNoTransaction": "Sin transacciones",
-		"dashboardBlocksOneTransaction": "transacción",
-		"dashboardBlocksSeveralTransactions": "transacciones",
-		"dashboardTransactionsTitle": "Transacciones"
-	}
-};
-
 setInterval(() => {
 	vApp.timestamp = Date.now();
 }, 1000);
@@ -319,59 +219,3 @@ var header0 = new Vue({
 	components: {myComp},
 	template: `<div><my-comp></my-comp></div>`
 });
-
-/*
-
-
-// Tx#
-var TransactionNumber = Vue.extend({
-	template: `<div id="transactionnumber" style="display: none;">{{ t('transactionnumber') }}</div>`,
-	locales: {
-		es_ES: {
-			'transactionnumber': 'Transacción nro.'
-		},
-		en_US: {
-			'transactionnumber': 'Tx#'
-		}
-	}
-});
-var transactions1 = new Vue({
-	el: '#txnumber',
-	components: {TransactionNumber},
-	template: `<transaction-number></transaction-number>`
-});
-// From
-var FromText = Vue.extend({
-	template: `<div id="fromtext" style="display: none;">{{ t('fromtext') }}</div>`,
-	locales: {
-		es_ES: {
-			'fromtext': 'De'
-		},
-		en_US: {
-			'fromtext': 'From'
-		}
-	}
-});
-var transactions2 = new Vue({
-	el: '#fromtxt',
-	components: {FromText},
-	template: `<from-text></from-text>`
-});
-// To
-var ToText = Vue.extend({
-	template: `<div id="totext" style="display: none;">{{ t('totext') }}</div>`,
-	locales: {
-		es_ES: {
-			'totext': 'a'
-		},
-		en_US: {
-			'totext': 'To'
-		}
-	}
-});
-var transactions3 = new Vue({
-	el: '#totxt',
-	components: {ToText},
-	template: `<to-text></to-text>`
-});
-*/
