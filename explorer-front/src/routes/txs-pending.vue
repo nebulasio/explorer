@@ -25,7 +25,7 @@
 		</div>
 		<div v-if="arr && arr.length" class="container mt20">
 			<div class="align-items-center info-and-pagination mt20 row">
-				<div class="col info font-color-000000 font-24 font-bold">{{ numberAddComma(totalTxs) }} <span id="pendingTxPendingPrefix" class="localizable"></span> {{ totalTxs > 1 ? 'txns' : 'txn' }} <span id="pendingTxPendingSuffix" class="localizable"></span></div>
+				<div class="col info font-color-000000 font-24 font-bold">{{ numberAddComma(totalTxs) }} <span id="pendingTxPendingPrefix" class="localizable"></span> <span v-if="totalTxs == 1" id="pendingTxPendingSuffix" class="localizable"></span><span v-else id="pendingTxPendingSuffixPlural" class="localizable"></span></div>
 			</div>
 			<div class="explorer-table-container">
 				<table class="mt20 explorer-table list-table">
