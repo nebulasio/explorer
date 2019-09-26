@@ -84,13 +84,13 @@
 		<div class="vue-bread">
 			<div class="container">
 				<div class="row align-items-center">
-					<div class="col-auto bread-title font-40 font-bold font-color-000000 localizable" id="transactionsTxPrefix">
-						<div v-if="($route.query.a || $route.query.block)" id="transactionsTxSuffix" class="localizable">
+					<div class="col-auto bread-title font-40 font-bold font-color-000000 txslocalizable" id="transactionsTxPrefix">
+						<div v-if="($route.query.a || $route.query.block)" id="transactionsTxSuffix" class="txslocalizable">
 						</div>
 					</div>
 					<div v-if="$route.query.block">
 						<div class="col-auto bread-subtitle font-16 font-bold font-color-000000 align-baseline">
-							<span id="transactionsBlockNumber" class="localizable"></span> {{ $route.query.block }}
+							<span id="transactionsBlockNumber" class="txslocalizable"></span> {{ $route.query.block }}
 						</div>
 					</div>
 					<div v-else>
@@ -104,37 +104,36 @@
 			<div class="d-block d-md-flex flex-row align-items-center mt20">
 				<span class="col-auto pl-0 pr-2 info font-color-000000 font-24 font-bold title">
 					<span v-if="(totalTxs > 0 && !$route.query.a && !$route.query.block)">
-						<span id="transactionsMoreThan" class="localizable"></span>
+						<span id="transactionsMoreThan" class="txslocalizable"></span>
 					</span>
 					<span v-if="(totalTxs > 1000000)">
 						{{ (Math.floor(totalTxs / 1000000)) }}
 						<span v-if="(Math.floor(totalTxs / 1000000) > 2)">
-							<span id="transactionsMillions" class="localizable"></span>
+							<span id="transactionsMillions" class="txslocalizable"></span>
 						</span>
 						<span v-else>
-							<span id="transactionsMillion" class="localizable"></span>
-						</span>
+							<span id="transactionsMillion" class="txslocalizable"></span>
+						</span> <span id="transactionsOf" class="txslocalizable"></span>
 					</span>
 					<span v-else>
 					{{ numberAddComma(totalTxs) }}
-					</span>
-					<span id="transactionsFound" class="localizable"></span>
+					</span> <span id="transactionsFound" class="txslocalizable"></span>
 				</span>
-				<span v-if="(totalTxs > 500)" class="col-auto pl-0 font-color-555555 font-16 align-text-bottom subtitle">(<span id="transactionsShowingLast" class="localizable"></span>)</span>
+				<span v-if="(totalTxs > 500)" class="col-auto pl-0 font-color-555555 font-16 align-text-bottom subtitle">(<span id="transactionsShowingLast" class="txslocalizable"></span>)</span>
 			</div>
 
 			<div class="explorer-table-container">
 				<table class="mt20 explorer-table list-table">
 					<tr class="list-header font-12 font-bold font-color-000000">
 						<th></th>
-						<th class="localizable" id="transactionsTableTxHash"></th>
-						<th class="localizable" id="transactionsTableBlock"></th>
-						<th class="localizable" id="transactionsTableAge"></th>
-						<th class="localizable" id="transactionsTableFrom"></th>
+						<th class="txslocalizable" id="transactionsTableTxHash"></th>
+						<th class="txslocalizable" id="transactionsTableBlock"></th>
+						<th class="txslocalizable" id="transactionsTableAge"></th>
+						<th class="txslocalizable" id="transactionsTableFrom"></th>
 						<th></th>
-						<th class="localizable" id="transactionsTableTo"></th>
-						<th class=text-right localizable id="transactionsTableValue"></th>
-						<th class="text-right pr-3 localizable" id="transactionsTableTxFee"></th>
+						<th class="txslocalizable" id="transactionsTableTo"></th>
+						<th class=text-right txslocalizable id="transactionsTableValue"></th>
+						<th class="text-right pr-3 txslocalizable" id="transactionsTableTxFee"></th>
 					</tr>
 
 					<tr v-for="(o, i) in arr" :key="i">
@@ -151,12 +150,12 @@
 							<router-link class="font-14" v-if='o.block && o.block.height' v-bind:to='fragApi + "/block/" + o.block.height'>
 								<span>{{ o.block.height }}</span>
 							</router-link>
-							<i class="font-14 font-color-000000" v-else><span name="transactionsTablePending" class="multilocalizable"></span></i>
+							<i class="font-14 font-color-000000" v-else><span name="transactionsTablePending" class="txsmultilocalizable"></span></i>
 						</td>
 						<td class="font-14 font-color-555555">
 							<div>
 								<span>
-									<span name="transactionsTableAgoPrefix" class="multilocalizable"></span> {{ timeConversion(o.timeDiff) }} <span name="transactionsTableAgoSuffix" class="multilocalizable"></span>
+									<span name="transactionsTableAgoPrefix" class="txsmultilocalizable"></span> {{ timeConversion(o.timeDiff) }} <span name="transactionsTableAgoSuffix" class="txsmultilocalizable"></span>
 								</span>
 								<div class="down-arrow-tip" style="display:none;">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
 							</div>
@@ -223,6 +222,36 @@
 		methods: {
 			removeTempInterval() {
 				clearInterval(this.tempInterval);
+			},
+			checkStaticTranslations() {
+				var myTxsElements = document.getElementsByClassName("txslocalizable");
+				var totalElements = myTxsElements.length;
+				var i;
+				for (i = 0; i < totalElements; i++) {
+					var elementId = myTxsElements[i].getAttribute("id");
+					if (myTxsElements[i].getAttribute("localize")) {
+						var elementAttribute = myTxsElements[i].getAttribute("localize");
+						myTxsElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementId]);
+					}
+					else {
+						myTxsElements[i].innerText = jsonStrings[this.$selectedLanguage][elementId];
+					}
+				}
+			},
+			checkDynamicTranslations() {
+				var myTxsMultiElements = document.getElementsByClassName("txsmultilocalizable");
+				var totalElements = myTxsMultiElements.length;
+				var i;
+				for (i = 0; i < totalElements; i++) {
+					var elementName = myTxsMultiElements[i].getAttribute("name");
+					if (myTxsMultiElements[i].getAttribute("localize")) {
+						var elementAttribute = myTxsMultiElements[i].getAttribute("localize");
+						myTxsMultiElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementName]);
+					}
+					else {
+						myTxsMultiElements[i].innerText = jsonStrings[this.$selectedLanguage][elementName];
+					}
+				}
 			},
 			nav(n) {
 				var query = JSON.parse(window.JSON.stringify(this.$route.query));
@@ -297,45 +326,9 @@
 				var amount = BigNumber(JSON.parse(JSON.parse(tx.data).Args)[3]);
 				var decimals = BigNumber('1e+18');
 				return amount.div(decimals).toFormat().shortAmount();
-			},
-			checkStaticTranslations() {
-				// Unique elements, identified by id attr
-				var myLocalizableElements = document.getElementsByClassName("localizable");
-				var totalElements = myLocalizableElements.length;
-				var i;
-				for (i = 0; i < totalElements; i++) {
-					var elementId = myLocalizableElements[i].getAttribute("id");
-					if (myLocalizableElements[i].getAttribute("localize")) {
-						var elementAttribute = myLocalizableElements[i].getAttribute("localize");
-						myLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementId]);
-					}
-					else {
-						myLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementId];
-					}
-				}
-			},
-			checkDynamicTranslations() {
-				// Multiple elements, identified with name attr
-				var myMultiLocalizableElements = document.getElementsByClassName("multilocalizable");
-				var totalElements = myMultiLocalizableElements.length;
-				var i;
-				for (i = 0; i < totalElements; i++) {
-					var elementName = myMultiLocalizableElements[i].getAttribute("name");
-					if (myMultiLocalizableElements[i].getAttribute("localize")) {
-						var elementAttribute = myMultiLocalizableElements[i].getAttribute("localize");
-						myMultiLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementName]);
-					}
-					else {
-						myMultiLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementName];
-					}
-				}
-				// Other specific methods for unique elements.
 			}
 		},
 		mounted() {
-			if (typeof this.$selectedLanguage != 'undefined') {
-				this.checkStaticTranslations();
-			}
 			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			this.translationsInterval = setInterval(() => {
 				this.checkDynamicTranslations();

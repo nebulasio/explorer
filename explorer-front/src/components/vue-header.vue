@@ -110,43 +110,43 @@
 				</router-link>
 			</div>
 
-			<button class="navbar-toggler localizable" localize="aria-label" type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation" id="headerToggleNavigation">
+			<button class="navbar-toggler headerlocalizable" localize="aria-label" type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation" id="headerToggleNavigation">
 				<span class=navbar-toggler-icon></span>
 			</button>
 			<div class="collapse navbar-collapse mr-28" id=navbarSupportedContent>
 				<form class=form-inline v-on:submit.prevent=onSubmit>
 					<img src=/static/img/icon_search.png width=16 alt="" />
-					<input class="mr-sm-2 font-12 localizable" localize="placeholder" id="headerSearchTool" type=search placeholder="" v-model=search>
+					<input class="mr-sm-2 font-12 headerlocalizable" localize="placeholder" id="headerSearchTool" type=search placeholder="" v-model=search>
 				</form>
 				<ul class="navbar-nav ml-auto">
 					<li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 1 }">
 						<router-link v-bind:to="fragApi + '/'" class=nav-link>
 							<span>
-								<span id="headerHomeTitle" class="localizable"></span>
+								<span id="headerHomeTitle" class="headerlocalizable"></span>
 								<span class=sr-only>
-									<span id="headerHomesubtitle" class="localizable"></span>
+									<span id="headerHomesubtitle" class="headerlocalizable"></span>
 								</span>
 							</span>
 						</router-link>
 					</li>
 					<!-- Menú Blockchain -->
-					<li class="dropdown nav-item" v-bind:class="{ active: $route.meta.headerActive == 2 }">
+					<li class="dropdown nav-item" v-bind:class="{ active: $route.meta.headerActive == 2 }" id="blockchain-menu">
 						<a class="nav-link" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
 							BLOCKCHAIN
 							<img src=/static/img/icon_arrow_down.png width=12 alt="">
 						</a>
 						<div class=dropdown-menu aria-labelledby=header-dropdown-blockchain>
-							<router-link class=dropdown-item v-bind:to="fragApi + '/txs'"><span id="headerTransactionsSubmenu" class="localizable"></span></router-link>
-							<router-link class=dropdown-item v-bind:to="fragApi + '/txs/pending'"><span id="headerPendingTransactionsSubmenu" class="localizable"></span></router-link>
+							<router-link class=dropdown-item v-bind:to="fragApi + '/txs'"><span id="headerTransactionsSubmenu" class="headerlocalizable"></span></router-link>
+							<router-link class=dropdown-item v-bind:to="fragApi + '/txs/pending'"><span id="headerPendingTransactionsSubmenu" class="headerlocalizable"></span></router-link>
 							<div class="dropdown-divider"></div>
-							<router-link class=dropdown-item v-bind:to="fragApi + '/blocks'"><span id="headerBlocksSubmenu" class="localizable"></span></router-link>
+							<router-link class=dropdown-item v-bind:to="fragApi + '/blocks'"><span id="headerBlocksSubmenu" class="headerlocalizable"></span></router-link>
 							<div class="dropdown-divider"></div>
-							<router-link class=dropdown-item v-bind:to="fragApi + '/accounts'"><span id="headerAccountsSubmenu" class="localizable"></span></router-link>
+							<router-link class=dropdown-item v-bind:to="fragApi + '/accounts'"><span id="headerAccountsSubmenu" class="headerlocalizable"></span></router-link>
 						</div>
 					</li>
 					<!-- // Menú Blockchain -->
 					<!-- <li v-if="($route.params.api !== 'testnet' && $root.mainnetGotDipWinners) || ($route.params.api == 'testnet' && $root.testnetGotDipWinners)" class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
-						<router-link class=nav-link v-bind:to="fragApi + '/dip-leaderboard'"><span id="headerDipWinners" class="localizable"></span></router-link>
+						<router-link class=nav-link v-bind:to="fragApi + '/dip-leaderboard'"><span id="headerDipWinners" class="headerlocalizable"></span></router-link>
 					</li> -->
 					<li class="nav-item">
 						<a class="nav-link" href=# role=button v-on:click.prevent=apiSwitch()>{{ MenuMisc }}
@@ -181,11 +181,14 @@
 		},
 		mounted() {
 			if (typeof this.$selectedLanguage != 'undefined') {
-				this.checkTranslations();
+				this.checkHeaderTranslations();
 			}
-			EventBus.$on('changeLanguage', foo => {this.checkTranslations()});
-			var paramsApi = this.$route.params.api, apiPrefixes = {}, i, first = true;
+			this.tempInterval = setInterval(() => {
+				this.checkHeaderTranslations();
+				//this.removeTempInterval();//Commented to let the page fully charge
+			}, 1900);
 
+			var paramsApi = this.$route.params.api, apiPrefixes = {}, i, first = true;
 			for (i in appConfig.apiPrefixes)
 				if (first) {
 					apiPrefixes[""] = appConfig.apiPrefixes[i];
@@ -207,6 +210,26 @@
 			}
 		},
 		methods: {
+			removeTempInterval() {
+				clearInterval(this.tempInterval);
+			},
+			checkHeaderTranslations() {
+				// Unique elements, identified by id attr
+				var myLocalizableElements = document.getElementsByClassName("headerlocalizable");
+				var totalElements = myLocalizableElements.length;
+				var i;
+				for (i = 0; i < totalElements; i++) {
+					var elementId = myLocalizableElements[i].getAttribute("id");
+					if (myLocalizableElements[i].getAttribute("localize")) {
+						var elementAttribute = myLocalizableElements[i].getAttribute("localize");
+						myLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementId]);
+					}
+					else {
+						myLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementId];
+					}
+
+				}
+			},
 			onSubmit() {
 				this.$root.showModalLoading = true;
 				api.getSearch(this.search.trim(), o => {
@@ -247,21 +270,6 @@
 			showATP() {
 				// 搜索框进入 ATP 的临时方案！！！
 				this.$router.push((this.$route.params.api ? "/" + this.$route.params.api : "") + "/token/" + this.atpAddress());
-			},
-			checkTranslations() {
-				var myLocalizableElements = document.getElementsByClassName("localizable");
-				var totalElements = myLocalizableElements.length;
-				var i;
-				for (i = 0; i < totalElements; i++) {
-					var elementId = myLocalizableElements[i].getAttribute("id");
-					if (myLocalizableElements[i].getAttribute("localize")) {
-						var elementAttribute = myLocalizableElements[i].getAttribute("localize");
-						myLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementId]);
-					}
-					else {
-						myLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementId];
-					}
-				}
 			}
 		}
 	};

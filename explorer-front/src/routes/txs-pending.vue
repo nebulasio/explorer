@@ -64,7 +64,7 @@
 						</td>
 						<td class=tdxxxwddd>
 							<div v-if="o.type==='call'" class="container-tip">
-								<span class="tip down-arrow-tip font-15 shadow">Smart Contract</span>
+								<span class="tip down-arrow-tip font-15 shadow"><span id="pendingTxSmartContract" class="localizable"></span></span>
 								<img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
 							</div>
 							<vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
@@ -80,7 +80,11 @@
 			</div>
 			<vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext v-on:prev=onPrev v-on:to=onTo></vue-pagination>
 		</div>
-		<vue-nothing v-if="arr && arr.length === 0" title="0 pending txn found"></vue-nothing>
+		<div v-else class="container mt20">
+			<div class="align-items-center info-and-pagination mt20 row">
+				<div class="col info font-color-000000 font-24 font-bold"><span id="pendingTxNoTxFound" class="localizable"></span></div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
