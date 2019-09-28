@@ -157,40 +157,40 @@
 		},
 		methods: {
 			removeTempInterval() {
-			clearInterval(this.tempInterval);
-		},
-		checkStaticTranslations() {
-			// Unique elements, identified by id attr
-			var myLocalizableElements = document.getElementsByClassName("dshistorylocalizable");
-			var totalElements = myLocalizableElements.length;
-			var i;
-			for (i = 0; i < totalElements; i++) {
-				var elementId = myLocalizableElements[i].getAttribute("id");
-				if (myLocalizableElements[i].getAttribute("localize")) {
-					var elementAttribute = myLocalizableElements[i].getAttribute("localize");
-					myLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementId]);
+				clearInterval(this.tempInterval);
+			},
+			checkStaticTranslations() {
+				// Unique elements, identified by id attr
+				var myLocalizableElements = document.getElementsByClassName("dshistorylocalizable");
+				var totalElements = myLocalizableElements.length;
+				var i;
+				for (i = 0; i < totalElements; i++) {
+					var elementId = myLocalizableElements[i].getAttribute("id");
+					if (myLocalizableElements[i].getAttribute("localize")) {
+						var elementAttribute = myLocalizableElements[i].getAttribute("localize");
+						myLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementId]);
+					}
+					else {
+						myLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementId];
+					}
 				}
-				else {
-					myLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementId];
+			},
+			checkDynamicTranslations() {
+				// Multiple elements, identified with name attr
+				var myMultiLocalizableElements = document.getElementsByClassName("dshistorymultilocalizable");
+				var totalElements = myMultiLocalizableElements.length;
+				var i;
+				for (i = 0; i < totalElements; i++) {
+					var elementName = myMultiLocalizableElements[i].getAttribute("name");
+					if (myMultiLocalizableElements[i].getAttribute("localize")) {
+						var elementAttribute = myMultiLocalizableElements[i].getAttribute("localize");
+						myMultiLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementName]);
+					}
+					else {
+						myMultiLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementName];
+					}
 				}
-			}
-		},
-		checkDynamicTranslations() {
-			// Multiple elements, identified with name attr
-			var myMultiLocalizableElements = document.getElementsByClassName("dshistorymultilocalizable");
-			var totalElements = myMultiLocalizableElements.length;
-			var i;
-			for (i = 0; i < totalElements; i++) {
-				var elementName = myMultiLocalizableElements[i].getAttribute("name");
-				if (myMultiLocalizableElements[i].getAttribute("localize")) {
-					var elementAttribute = myMultiLocalizableElements[i].getAttribute("localize");
-					myMultiLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementName]);
-				}
-				else {
-					myMultiLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementName];
-				}
-			}
-		},
+			},
 			nav(n) {
 				var query = JSON.parse(window.JSON.stringify(this.$route.query));
 
