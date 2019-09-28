@@ -230,7 +230,7 @@
 	<div class="vue-address fullfill" v-bind:triggerComputed=urlChange>
 
 		<vue-bread
-			v-bind:title='nothing'
+			v-bind:title="navTitle"
 			v-bind:subtitle="$route.params.id"
 			v-bind:subtitlemonospaced="!!$route.params.id"
 			v-bind:blockies="$route.params.id">
@@ -258,7 +258,7 @@
 							<span>{{ toShortStr(creator) }}</span>
 							<div class="popover down-arrow-tip"><span id="addressContractCreatorAddress" class="addresslocalizable"></span></div>
 						</router-link>
-						at txn
+						, txn
 						<router-link v-bind:to='fragApi + "/tx/" + deployTxHash'>
 							<span>{{ toShortStr(deployTxHash) }}</span>
 							<div class="popover down-arrow-tip"><span id="addressCreatorTxHash" class="addresslocalizable"></span></div>
@@ -421,7 +421,7 @@
 							<span class="d-none d-md-inline-block px-2">|</span>
 							<router-link class="d-block d-md-inline-block align-middle mt-1 mt-md-0"
 										v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>
-								<span class="font-16">View All {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} Pending {{ obj.pendingTxCnt > 1 ? 'Txns' : 'Txn' }}</span>
+								<span class="font-16"><span class="addressViewAll2"></span> {{ obj.pendingTxCnt }} <span v-if="obj.pendingTxCnt > 1" id="addressPendingTxTextPlural" class="addresslocalizable"></span><span v-else id="addressPendingTxTextSingular" class="addresslocalizable"></span></span>
 							</router-link>
 						</span>
 					</div>
@@ -432,14 +432,14 @@
 						<tr class="font-12 font-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
 							<th v-if="isContract"></th>
 							<th v-else style="width: 50px;"></th>
-							<th>TxHash</th>
-							<th>Block</th>
-							<th>Age</th>
-							<th>From</th>
+							<th class="addresslocalizable" id="addressTableTxHash"></th>
+							<th class="addresslocalizable" id="addressTableTxBlock"></th>
+							<th class="addresslocalizable" id="addressTableTxAge"></th>
+							<th class="addresslocalizable" id="addressTableTxFrom"></th>
 							<th></th>
-							<th>To</th>
-							<th class="align-right">Value</th>
-							<th class="align-right pr-3">TxFee</th>
+							<th class="addresslocalizable" id="addressTableTxTo"></th>
+							<th class="align-right addresslocalizable" id="addressTableTxValue"></th>
+							<th class="align-right pr-3 addresslocalizable" id="addressTableTxTxFee"></th>
 						</tr>
 
 						<tr v-for="(o, i) in txs" :key="i" v-bind:class="{'tr-dark' : isDark(i)}">
@@ -461,11 +461,11 @@
 											v-bind:to='fragApi + "/block/" + o.block.height'>
 									<span>{{ o.block.height }}</span>
 								</router-link>
-								<i class="font-14 font-color-000000" v-else>pending</i>
+								<i class="font-14 font-color-000000 addresslocalizable" v-else id="addressPendingText"></i>
 							</td>
 							<td class="time font-color-555555 font-14">
 								<div>
-									<div>{{ timeConversion(o.timeDiff) }} ago</div>
+									<div><span id="addressTimeDiffPrefix" class="addresslocalizable"></span>{{ timeConversion(o.timeDiff) }}<span id="addressTimeDiffSuffix" class="addresslocalizable"></span></div>
 									<div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
 								</div>
 							</td>
@@ -481,7 +481,7 @@
 							</td>
 							<td class="tdxxxwddd txs-from-to monospace">
 								<div v-if="o.type==='call'" class="container-tip">
-									<span class="tip down-arrow-tip font-15 shadow">Smart Contract</span>
+									<span class="tip down-arrow-tip font-15 shadow addresslocalizable" id="addressSmartContract"></span>
 									<img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
 								</div>
 								<vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
@@ -494,7 +494,7 @@
 							<td v-else class="amount align-right">{{ tokenAmount(o.value, o.decimal) }} NAS</td>
 							<td class="txfee align-right pr-3">
 								<span v-if=o.block.height>{{ toWei(o.txFee) }}</span>
-								<i v-else>(pending)</i>
+								<i v-else class="addresslocalizable" id="addressPendingText2"></i>
 							</td>
 						</tr>
 					</table>
@@ -504,13 +504,13 @@
 					<div class="col-auto px-0">
 						<router-link class="d-block d-md-inline-block align-middle mt-1 mt-md-0"
 									 v-bind:to='fragApi + "/txs?a=" + $route.params.id'>
-							<span class="font-16">View All {{ obj.txCnt }} {{ obj.txCnt > 1 ? 'Txns' : 'Txn' }}</span>
+							<span class="font-16"><span class="addresslocalizable" id="addressViewAll3"></span> {{ obj.txCnt }} <span v-if="obj.txCnt > 1" class="addresslocalizable" id="addressTxs"></span><span v-else class="addresslocalizable" id="addressTx"></span></span>
 						</router-link>
 						<span v-if="obj.pendingTxCnt != 0">
 							<span class="d-none d-md-inline-block px-2">|</span>
 							<router-link class="d-block d-md-inline-block align-middle mt-1 mt-md-0"
 										v-bind:to='fragApi + "/txs?a=" + $route.params.id + "&isPending=true" '>
-								<span class="font-16">View All {{ obj.pendingTxCnt == 0 ? 0 : obj.pendingTxCnt }} Pending {{ obj.pendingTxCnt > 1 ? 'Txns' : 'Txn' }}</span>
+								<span class="font-16"><span id="addressViewAll4" class="addresslocalizable"></span> {{ obj.pendingTxCnt }} <span v-if="obj.pendingTxCnt > 1" id="addressPendingTextPlural" class="addresslocalizable"></span><span v-else id="addressPendingTextSingular" class="addresslocalizable"></span></span>
 							</router-link>
 						</span>
 					</div>
@@ -521,7 +521,7 @@
 					<img style="width: 131px; height: 142px;" src="/static/img/no_content.png?v=20190117"/>
 					<br/>
 					<div style="margin-top: 12px;">
-						<span class="text-no-content">No Content</span>
+						<span class="text-no-content addresslocalizable" id="addressNoContent"></span>
 					</div>
 				</div>
 			</div>
@@ -530,12 +530,12 @@
 			<div class="tab" v-show="tab === 2 && !isContract">
 				<div v-if="nrc20TxList.length" class="d-block d-md-flex flex-row align-items-center">
 					<div class="col mr-auto px-0 font-16 font-bold font-color-000000">
-						Latest {{ nrc20TxList.length }} {{ nrc20TxList.length > 1 ? 'txns' : 'txn' }} from total {{ numberAddComma(nrc20TxCnt) }} {{ nrc20TxCnt > 1 ? 'transactions' : 'transaction' }}
+						<span v-if="nrc20TxCnt > 1" id="addressLatestTitlePlural" class="addresslocalizable"></span><span v-else id="addressLatestTitleSingular" class="addresslocalizable"></span> {{ nrc20TxList.length }} {{ nrc20TxList.length > 1 ? 'txs' : 'tx' }} <span id="addressFromTotal2" class="addresslocalizable"></span> {{ numberAddComma(nrc20TxCnt) }} <span v-if="nrc20TxCnt > 1" class="addresslocalizable" id="addressTransactionsPlural"></span><span v-else class="addresslocalizable" id="addressTransactionsSingular"></span>
 					</div>
 					<div class="col-auto px-0">
 						<router-link class="d-block d-md-inline-block align-middle mt-1 mt-md-0"
 									 v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>
-							<span class="font-16">View All {{ nrc20TxCnt }} {{ nrc20TxCnt > 1 ? 'Txns' : 'Txn'}}</span>
+							<span class="font-16"><span id="addressViewAll5" class="addresslocalizable"></span> {{ nrc20TxCnt }} {{ nrc20TxCnt > 1 ? 'txs' : 'tx'}}</span>
 						</router-link>
 					</div>
 				</div>
@@ -544,14 +544,14 @@
 					<table v-if="nrc20TxList.length" class="mt20 explorer-table list-table">
 						<tr class="font-12 font-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
 							<th style="width: 50px;"></th>
-							<th>TxHash</th>
-							<th>Block</th>
-							<th>Age</th>
-							<th>From</th>
+							<th class="addresslocalizable" id="addressTableTxHash2"></th>
+							<th class="addresslocalizable" id="addressTableBlock2"></th>
+							<th class="addresslocalizable" id="addressTableAge2"></th>
+							<th class="addresslocalizable" id="addressTableFrom2"></th>
 							<th></th>
-							<th>To</th>
-							<th class="align-right">Value</th>
-							<th class="align-right pr-3">TxFee</th>
+							<th class="addresslocalizable" id="addressTableTo2"></th>
+							<th class="align-right addresslocalizable" id="addressTableValue2"></th>
+							<th class="align-right pr-3 addresslocalizable" id="addressTableTxFee2"></th>
 						</tr>
 
 						<tr v-for="(o, i) in nrc20TxList" :key="i">
@@ -568,7 +568,7 @@
 											v-bind:to='fragApi + "/block/" + o.block.height'>
 									<span>{{ o.block.height }}</span>
 								</router-link>
-								<i class="font-14 font-color-000000" v-else>pending</i>
+								<i class="font-14 font-color-000000 addresslocalizable" v-else id="addressPendingText3"></i>
 							</td>
 							<td class="time font-color-555555 font-14">
 								<div>
@@ -607,7 +607,7 @@
 					<div class="col-auto px-0">
 						<router-link class="d-block d-md-inline-block align-middle mt-1 mt-md-0"
 									 v-bind:to='fragApi + "/txs-nrc20?a=" + $route.params.id'>
-							<span class="font-16">View All {{ nrc20TxCnt }} {{ nrc20TxCnt > 1 ? 'Txns' : 'Txn'}}</span>
+							<span class="font-16"><span class="addresslocalizable" id="addressViewAll6"></span> {{ nrc20TxCnt }} {{ nrc20TxCnt > 1 ? 'txs' : 'tx'}}</span>
 						</router-link>
 					</div>
 				</div>
@@ -617,7 +617,7 @@
 					<img style="width: 131px; height: 142px;" src="/static/img/no_content.png?v=20190117"/>
 					<br/>
 					<div style="margin-top: 12px;">
-						<span class="text-no-content">No Content</span>
+						<span class="text-no-content addresslocalizable" id="addressNoContent2"></span>
 					</div>
 				</div>
 			</div>
@@ -629,17 +629,17 @@
 					<table v-if="naxChangeList.length" class="mt20 explorer-table list-table">
 						<tr class="font-12 font-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
 							<th style="width: 100px;"></th>
-							<th>Value</th>
-							<th>Age</th>
-							<th>Block</th>
-							<th style="width: 25%;">Source</th>
+							<th class="addresslocalizable" id="addressTableValue3"></th>
+							<th class="addresslocalizable" id="addressTableAge3"></th>
+							<th class="addresslocalizable" id="addressTableBlock3"></th>
+							<th style="width: 25%;" class="addresslocalizable" id="addressTableSource"></th>
 						</tr>
 						<tr v-for="(o, i) in naxChangeList" :key="i">
 							<td class="text-center"><img :src="natIcon(o.profit)" width="30px"/></td>
 							<td class="amount">{{ tokenAmount(o.profit, 9) }} NAX</td>
 							<td class="time font-color-555555 font-14">
 								<div>
-									<div>{{ timeConversion(new Date() - o.timestamp) }} ago</div>
+									<div><span class="addresslocalizable" id="addressTimeStampPrefix"></span>{{ timeConversion(new Date() - o.timestamp) }} <span class="addresslocalizable" id="addressTimeStampSuffix"></span></div>
 									<div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
 								</div>
 							</td>
@@ -649,10 +649,10 @@
 											v-bind:to='fragApi + "/block/" + o.block'>
 									<span>{{ o.block }}</span>
 								</router-link>
-								<i class="font-14 font-color-000000" v-else>pending</i>
+								<i class="font-14 font-color-000000" v-else><span id="addressPendingText4" class="addresslocalizable"></span></i>
 							</td>
 							<td class="font-14">
-								<div v-if="o.source === 0">Pledge Rewards</div>
+								<div v-if="o.source === 0" class="addresslocalizable" id="addressPledgeRewards"></div>
 							</td>
 						</tr>
 					</table>
@@ -666,11 +666,10 @@
 					<img style="width: 131px; height: 142px;" src="/static/img/no_content.png?v=20190117"/>
 					<br/>
 					<div style="margin-top: 12px;">
-						<span class="text-no-content">No Content</span>
+						<span class="text-no-content addresslocalizable" id="addressNoContent3"></span>
 					</div>
 				</div>
 			</div>
-
 
 			<!-- =========================== NAT Changes ================================= -->
 			<div class="tab" v-show="tab === 4 && !isContract">
@@ -678,17 +677,17 @@
 					<table v-if="natChangeList.length" class="mt20 explorer-table list-table">
 						<tr class="font-12 font-bold font-color-000000" style="height: 46px; background-color: #e8e8e8;">
 							<th style="width: 100px;"></th>
-							<th>Value</th>
-							<th>Age</th>
-							<th>Block</th>
-							<th style="width: 25%;">Source</th>
+							<th class="addresslocalizable" id="addressTableValue4"></th>
+							<th class="addresslocalizable" id="addressTableAge4"></th>
+							<th class="addresslocalizable" id="addressTableBlock4"></th>
+							<th style="width: 25%;" class="addresslocalizable" id="addressTableSource2"></th>
 						</tr>
 						<tr v-for="(o, i) in natChangeList" :key="i">
 							<td class="text-center"><img :src="natIcon(o.amount)" width="30px"/></td>
 							<td class="amount">{{ tokenAmount(o.amount, 18) }} NAT</td>
 							<td class="time font-color-555555 font-14">
 								<div>
-									<div>{{ timeConversion(new Date() - o.timestamp) }} ago</div>
+									<div><span class="addresslocalizable" id="addressTimeStampPrefix2"></span>{{ timeConversion(new Date() - o.timestamp) }}<span class="addresslocalizable" id="addressTimeStampSuffix2"></span></div>
 									<div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
 								</div>
 							</td>
@@ -698,7 +697,7 @@
 											v-bind:to='fragApi + "/block/" + o.block'>
 									<span>{{ o.block }}</span>
 								</router-link>
-								<i class="font-14 font-color-000000" v-else>pending</i>
+								<i class="font-14 font-color-000000 addresslocalizable" v-else id="addressPendingText5"></i>
 							</td>
 							<td class="font-14">
 								<div v-if="o.source === 0">
@@ -706,10 +705,10 @@
 										<span>tx# {{o.txHash.slice(0, 6) + '...' + o.txHash.slice(o.txHash.length - 6)}}</span>
 									</router-link>
 								</div>
-								<div v-if="o.source === 1">NR Incentive</div>
-								<div v-if="o.source === 2">Pledge Rewards</div>
+								<div v-if="o.source === 1" class="addresslocalizable" id="addressNRIncentive"></div>
+								<div v-if="o.source === 2" class="addresslocalizable" id="addressPledgeRewards"></div>
 								<div v-if="o.source === 3">
-									<span>NAT Vote</span>
+									<span class="addresslocalizable" id="addressNATVote"></span>
 									<router-link v-bind:to='fragApi + "/tx/" + o.txHash' class="ml-2">
 										<span>tx# {{o.txHash.slice(0, 6) + '...' + o.txHash.slice(o.txHash.length - 6)}}</span>
 									</router-link>
@@ -727,7 +726,7 @@
 					<img style="width: 131px; height: 142px;" src="/static/img/no_content.png?v=20190117"/>
 					<br/>
 					<div style="margin-top: 12px;">
-						<span class="text-no-content">No Content</span>
+						<span class="text-no-content addresslocalizable" id="addressNoContent4"></span>
 					</div>
 				</div>
 			</div>
@@ -765,6 +764,16 @@
 			QrcodeVue
 		},
 		computed: {
+			tabButtons() {
+				var buttons = [jsonStrings[this.$selectedLanguage]["addressButtonsTransactions"], jsonStrings[this.$selectedLanguage]["addressButtonsNRC20Tokens"], jsonStrings[this.$selectedLanguage]["addressButtonsNax"], jsonStrings[this.$selectedLanguage]["addressButtonsNat"]];
+				if (this.$route.params.api === 'testnet') {
+					buttons = [jsonStrings[this.$selectedLanguage]["addressButtonsTransactions"], jsonStrings[this.$selectedLanguage]["addressButtonsNRC20Tokens"]];//
+				}
+				if (this.isContract) {
+					buttons = [jsonStrings[this.$selectedLanguage]["addressButtonsTransactions"], jsonStrings[this.$selectedLanguage]["addressButtonsContractCode"]];
+				}
+				return buttons;
+			},
 			formatCode() {
 				var lang = prism.languages.javascript;
 
@@ -775,16 +784,6 @@
 					}
 				}
 				return "0x0";
-			},
-			tabButtons() {
-				var buttons = ["Transactions", "NRC20 Token Txns", "NAX", "NAT"];
-				if (this.$route.params.api === 'testnet') {
-					buttons = ["Transactions", "NRC20 Token Txns"];
-				}
-				if (this.isContract) {
-					buttons = ["Transactions", "Contract Code"];
-				}
-				return buttons;
 			},
 			urlChange() {
 				if (!this.$route.path.startsWith('/address/') || !this.$route.params.id) {
@@ -892,8 +891,7 @@
 				isNoNaxChanges: false,
 				totalPage: 0,
 				currentPage: 0,
-				isShowQRCode: false,
-				nothing:""
+				isShowQRCode: false
 			};
 		},
 		methods: {
@@ -916,11 +914,15 @@
 					}
 				}
 				// Other specific methods for unique elements.
-				myLocalizableElements = document.getElementsByClassName("bread-title");
 
-				totalElements = myLocalizableElements.length;
-				for (i = 0; i < totalElements; i++) {
-					myLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage]["addressTitle"];
+				var foo = this.$route.fullPath.split("/");
+				if(foo[1]=="address") {
+					myLocalizableElements = document.getElementsByClassName("bread-title");
+
+					totalElements = myLocalizableElements.length;
+					for (i = 0; i < totalElements; i++) {
+						myLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage]["addressTitle"];
+					}
 				}
 			},
 			checkDynamicTranslations() {
@@ -1083,17 +1085,17 @@
 			},
 		},
 		mounted() {
+			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			if (typeof this.$selectedLanguage != 'undefined') {
 				this.checkStaticTranslations();
 			}
-			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			this.translationsInterval = setInterval(() => {
 				this.checkDynamicTranslations();
 			}, 1000);
 			this.tempInterval = setInterval(() => {
 				this.checkStaticTranslations();
-				//this.removeTempInterval();//Commented to let the page fully charge
-			}, 1500);
+				//this.removeTempInterval();
+			}, 1000);
 		},
 		watch: {
 			tab: function (newTab, oldTab) {

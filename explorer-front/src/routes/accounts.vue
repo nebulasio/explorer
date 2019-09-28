@@ -31,7 +31,7 @@
 		<div class="vue-bread">
 			<div class="container">
 				<div class="row align-items-center">
-					<div class="col-auto bread-title font-40 font-bold font-color-000000 localizable" id="accountsTitle"></div>
+					<div class="col-auto bread-title font-40 font-bold font-color-000000 accountslocalizable" id="accountsTitle"></div>
 					<div class="col-auto bread-subtitle font-16 font-bold font-color-000000 align-baseline"></div>
 				</div>
 			</div>
@@ -39,18 +39,18 @@
 		<div v-if="arr && arr.length" class="mt20 container">
 			<div class="d-block d-md-flex flex-row align-items-center mt20">
 				<div class="col-auto pl-0 pr-2 info font-color-000000 font-24 font-bold title">
-					{{ numberAddComma(totalAccounts) }} <span id="accountsAmountFound" class="localizable"></span>
+					{{ numberAddComma(totalAccounts) }} <span id="accountsAmountFound" class="accountslocalizable"></span>
 				</div>
-				<span v-if="totalAccounts > 10000" class="col-auto pl-0 font-color-555555 font-16 align-text-bottom subtitle">(<span id="accountsShowingLatestFound" class="localizable"></span>)</span>
+				<span v-if="totalAccounts > 10000" class="col-auto pl-0 font-color-555555 font-16 align-text-bottom subtitle">(<span id="accountsShowingLatestFound" class="accountslocalizable"></span>)</span>
 			</div>
 			<div class="explorer-table-container">
 				<table class="mt20 explorer-table list-table">
 					<tr class="list-header font-12 font-bold font-color-000000">
-						<th style="padding-left: 24px;"><span id="accountsTableRank" class="localizable"></span></th>
-						<th><span id="accountsTableAddress" class="localizable"></span></th>
-						<th class=text-right><span id="accountsTableBalance" class="localizable"></span></th>
-						<th class=text-right><span id="accountsTablePercentage" class="localizable"></span></th>
-						<th class=text-right style="padding-right: 24px;"><span id="accountsTableTxCount" class="localizable"></span></th>
+						<th style="padding-left: 24px;"><span id="accountsTableRank" class="accountslocalizable"></span></th>
+						<th><span id="accountsTableAddress" class="accountslocalizable"></span></th>
+						<th class=text-right><span id="accountsTableBalance" class="accountslocalizable"></span></th>
+						<th class=text-right><span id="accountsTablePercentage" class="accountslocalizable"></span></th>
+						<th class=text-right style="padding-right: 24px;"><span id="accountsTableTxCount" class="accountslocalizable"></span></th>
 					</tr>
 					<tr v-for="(o, i) in arr" :key="i" class="font-14">
 						<td style="padding-left: 24px;" class="font-color-000000">{{ o.rank }}</td>
@@ -100,7 +100,7 @@
 			},
 			checkStaticTranslations() {
 				// Unique elements, identified by id attr
-				var myLocalizableElements = document.getElementsByClassName("localizable");
+				var myLocalizableElements = document.getElementsByClassName("accountslocalizable");
 				var totalElements = myLocalizableElements.length;
 				var i;
 				for (i = 0; i < totalElements; i++) {
@@ -116,7 +116,7 @@
 			},
 			checkDynamicTranslations() {
 				// Multiple elements, identified with name attr
-				var myMultiLocalizableElements = document.getElementsByClassName("multilocalizable");
+				var myMultiLocalizableElements = document.getElementsByClassName("accountsmultilocalizable");
 				var totalElements = myMultiLocalizableElements.length;
 				var i;
 				for (i = 0; i < totalElements; i++) {
@@ -204,16 +204,16 @@
 			}
 		},
 		mounted() {
+			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			if (typeof this.$selectedLanguage != 'undefined') {
 				this.checkStaticTranslations();
 			}
-			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			this.translationsInterval = setInterval(() => {
 				this.checkDynamicTranslations();
 			}, 1000);
 			this.tempInterval = setInterval(() => {
 				this.checkStaticTranslations();
-				this.removeTempInterval();
+				//this.removeTempInterval();
 			}, 1500);
 			this.nthPage();
 		},

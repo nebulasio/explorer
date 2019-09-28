@@ -47,9 +47,9 @@
         data() {
             return {
                 fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
-                subtitleStyle: { 
-                    'white-space': 'nowrap', 
-                    'overflow': 'hidden', 
+                subtitleStyle: {
+                    'white-space': 'nowrap',
+                    'overflow': 'hidden',
                     'text-overflow': 'ellipsis'
                 }
             };

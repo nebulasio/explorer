@@ -683,11 +683,11 @@
 				<div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
 					<div class="item-bg">
 						<div class="item-title">
-							<span id="dashboardDailyTransactionsTitle" class="localizable"></span>
+							<span id="dashboardDailyTransactionsTitle" class="dashboardlocalizable"></span>
 
 						</div>
 						<div class="details">
-							<span id="dashboardDailyTransactionsSubtitle" class="localizable"></span>
+							<span id="dashboardDailyTransactionsSubtitle" class="dashboardlocalizable"></span>
 							<span v-if="todayTxCnt >= 0">{{ numberAddComma(todayTxCnt) }}</span>
 						</div>
 						<vchart class="daily-chart" v-if="dailyTxChartOptions" :options="dailyTxChartOptions" :autoResize='true'></vchart>
@@ -695,9 +695,9 @@
 				</div>
 				<div class="nas-price flex-item col-12 col-lg-6 row1-item">
 					<div class="item-bg">
-						<div class="item-title"><span id="dashboardNasPriceTitle" class="localizable"></span></div>
+						<div class="item-title"><span id="dashboardNasPriceTitle" class="dashboardlocalizable"></span></div>
 						<div class="details">
-							<span id="dashboardNasPriceUpdateTimePrefix" class="localizable"></span> <span v-if="market">{{ timeConversion(Date.now() - market.createdAt) }}</span><span id="dashboardNasPriceUpdateTimeSuffix" class="localizable"></span>
+							<span id="dashboardNasPriceUpdateTimePrefix" class="dashboardlocalizable"></span> <span v-if="market">{{ timeConversion(Date.now() - market.createdAt) }}</span><span id="dashboardNasPriceUpdateTimeSuffix" class="dashboardlocalizable"></span>
 						</div>
 						<div v-if="market" class="detail">
 							<span>$</span>
@@ -707,11 +707,11 @@
 						<div class="market container">
 							<div class="row">
 								<div class="col-6">
-									<span id="dashboardNasMarketCap" class="localizable"></span>
+									<span id="dashboardNasMarketCap" class="dashboardlocalizable"></span>
 									<div v-if="market">${{ numberAddComma(market.marketCap) }}</div>
 								</div>
 								<div class="col-6">
-									<span id="dashboardNasMarketVol" class="localizable"></span>
+									<span id="dashboardNasMarketVol" class="dashboardlocalizable"></span>
 									<div v-if="market">${{ numberAddComma(market.volume24h) }}</div>
 								</div>
 							</div>
@@ -731,15 +731,15 @@
 			<div class="row row2">
 				<div class="col">
 					<div class="flex-item item-bg item-shadow">
-						<div id="dashboardBlocksTitle" class="localizable item-title"></div>
-						<div id="dashboardBlocksSubtitle" class="localizable subtitle font-12 text-gray"></div>
+						<div id="dashboardBlocksTitle" class="dashboardlocalizable item-title"></div>
+						<div id="dashboardBlocksSubtitle" class="dashboardlocalizable subtitle font-12 text-gray"></div>
 						<transition-group v-on:after-enter="afterEnter" name="row2-list" class="realtime-blocks">
 							<div class="realtime-block" v-for="block in blocks" :key="block.height">
 								<div class="blockheight" style="height: 100%" :data-txncnt="block.txnCnt"></div>
 								<div class="block-popover">
 									<div class="font-12 font-bold">{{ numberAddComma(block.height) }}</div>
-									<div><span name="dashboardBlocksTransactions" class="multilocalizable"></span> {{ block.txnCnt }}</div>
-									<div><span name="dashboardBlocksInterval" class="multilocalizable"></span></div>
+									<div><span name="dashboardBlocksTransactions" class="dashboardmultilocalizable"></span> {{ block.txnCnt }}</div>
+									<div><span name="dashboardBlocksInterval" class="dashboardmultilocalizable"></span></div>
 								</div>
 							</div>
 						</transition-group>
@@ -752,7 +752,7 @@
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ blockheight }}</div>
 						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/blocks/"'>
-							<span id="dashboardBlocksHeightTitle" class="localizable"></span>
+							<span id="dashboardBlocksHeightTitle" class="dashboardlocalizable"></span>
 						</router-link>
 						<img src=/static/img/dashboard-1.png width=44 alt="">
 					</div>
@@ -760,21 +760,21 @@
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ numberAddComma(staticInfo.txnCnt) }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/txs/"'><span id="dashboardTotalTransactions" class="localizable"></span></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/txs/"'><span id="dashboardTotalTransactions" class="dashboardlocalizable"></span></router-link>
 						<img src=/static/img/dashboard-2.png width=44 alt="">
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ numberAddComma(staticInfo.totalContractCount) }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/contracts/"'><span id="dashboardTotalSmartContracts" class="localizable"></span></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/contracts/"'><span id="dashboardTotalSmartContracts" class="dashboardlocalizable"></span></router-link>
 						<img src=/static/img/dashboard-3.png width=44 alt="">
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6 col-12 flex-item w285">
 					<div class="item-bg item-shadow">
 						<div v-if="staticInfo">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
-						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/accounts/"'><span id="dashboardTotalAddresses" class="localizable"></span></router-link>
+						<router-link v-if="staticInfo" class="link link-style" :to='fragApi + "/accounts/"'><span id="dashboardTotalAddresses" class="dashboardlocalizable"></span></router-link>
 						<img src=/static/img/dashboard-4.png width=44 alt="">
 					</div>
 				</div>
@@ -784,8 +784,8 @@
 				<div class="flex-item col-12 col-lg-6 row4-item user-data">
 					<div class="item-bg item-shadow">
 						<div class="item-title">
-							<span id="dashboardNewAddressesPercentage" class="localizable"></span>
-							<div class="text-light-gray font-12 font-regular"><span id="dashboardNewAddressesSubtitle" class="localizable"></span></div>
+							<span id="dashboardNewAddressesPercentage" class="dashboardlocalizable"></span>
+							<div class="text-light-gray font-12 font-regular"><span id="dashboardNewAddressesSubtitle" class="dashboardlocalizable"></span></div>
 							<div v-if="staticInfo" class="mt20 d-sm-none">
 								<span class="font-12 font-color-7F7F7F">New Addresses</span>
 								<span class="font-20">{{ (Math.round(100 * staticInfo.newAddressCount / staticInfo.totalAddressCount * 10) / 10).toFixed(1) + '%' }}</span>
@@ -805,22 +805,22 @@
 								<div class="labels">
 									<!-- 四舍五入并保留一位小数 -->
 									<div>{{ (Math.round(100 * staticInfo.newAddressCount / staticInfo.totalAddressCount * 10) / 10).toFixed(1) + '%' }}</div>
-									<div><span id="dashboardNewAddresses" class="localizable">fefefe</span></div>
+									<div><span id="dashboardNewAddresses" class="dashboardlocalizable">fefefe</span></div>
 								</div>
 							</div>
 						</div>
 						<div v-if="staticInfo" class="detail">
 							<!-- <div class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
 							<div class="title">{{ numberAddComma(staticInfo.newAddressCount) }}</div>
-							<div class="font-12 text-gray"><span id="dashboardNewAddressesText" class="localizable"></span></div>
+							<div class="font-12 text-gray"><span id="dashboardNewAddressesText" class="dashboardlocalizable"></span></div>
 							<div class="title">{{ numberAddComma(staticInfo.totalAddressCount) }}</div>
-							<div class="font-12 text-gray"><span id="dashboardTotalAddressesText" class="localizable"></span></div>
+							<div class="font-12 text-gray"><span id="dashboardTotalAddressesText" class="dashboardlocalizable"></span></div>
 						</div>
 					</div>
 				</div>
 				<div class="flex-item col-12 col-lg-6 row4-item accounts-data">
 					<div class="item-bg item-shadow">
-						<div class="item-title"><span id="dashboardAddressesGrowth" class="localizable"></span></div>
+						<div class="item-title"><span id="dashboardAddressesGrowth" class="dashboardlocalizable"></span></div>
 						<!-- <div v-if="accountsChartOptions" class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
 						<vchart class="accounts-chart" v-if="accountsChartOptions" :options="accountsChartOptions" :autoResize='true'></vchart>
 					</div>
@@ -832,21 +832,21 @@
 			<div class="row row5">
 				<div class="flex-item col-12 col-lg-6 row5-item">
 					<div class="item-bg item-shadow">
-						<div class="item-title"><span id="dashboardBlocksIndicatorTitle" class="localizable"></span></div>
-						<router-link :to='fragApi + "/blocks/"' class="showall"><span name="dashboardIndicatorViewAll" class="multilocalizable"></span></router-link>
+						<div class="item-title"><span id="dashboardBlocksIndicatorTitle" class="dashboardlocalizable"></span></div>
+						<router-link :to='fragApi + "/blocks/"' class="showall"><span name="dashboardIndicatorViewAll" class="dashboardmultilocalizable"></span></router-link>
 						<transition-group name="list" tag="table" frame=hsides rules=rows>
 							<tr class="list-item" v-for="block in blocks.slice(0, 6)" :key="block.height">
 								<td>
 									<img src="/static/img/icon-block.png?v=20190116" width="50" height="50">
 								</td>
 								<td>
-									<span name="dashboardBlockNumber" class="multilocalizable"></span>
+									<span name="dashboardBlockNumber" class="dashboardmultilocalizable"></span>
 									<router-link :to='fragApi + "/block/" + block.height' class="monospace">{{ block.height }}</router-link>
 									<br>
 									<span class="txcnt monospace">
-										<router-link v-if="block.txnCnt == 0" :to='fragApi + "/txs?block=" + block.height'><span name="dashboardBlocksNoTransaction" class="multilocalizable"></span></router-link>
-										<router-link v-if="block.txnCnt == 1" :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} <span name="dashboardBlocksOneTransaction" class="multilocalizable"></span></router-link>
-										<router-link v-if="block.txnCnt > 1" :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} <span name="dashboardBlocksSeveralTransactions" class="multilocalizable"></span></router-link>
+										<router-link v-if="block.txnCnt == 0" :to='fragApi + "/txs?block=" + block.height'><span name="dashboardBlocksNoTransaction" class="dashboardmultilocalizable"></span></router-link>
+										<router-link v-if="block.txnCnt == 1" :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} <span name="dashboardBlocksOneTransaction" class="dashboardmultilocalizable"></span></router-link>
+										<router-link v-if="block.txnCnt > 1" :to='fragApi + "/txs?block=" + block.height'>{{ block.txnCnt }} <span name="dashboardBlocksSeveralTransactions" class="dashboardmultilocalizable"></span></router-link>
 									</span>
 								</td>
 								<td>
@@ -858,27 +858,27 @@
 				</div>
 				<div class="flex-item col-12 col-lg-6 row5-item">
 					<div class="item-bg item-shadow">
-						<div class="item-title"><span id="dashboardTransactionsTitle" class="localizable"></span></div>
-						<router-link :to='fragApi + "/txs/"' class="showall"><span name="dashboardIndicatorViewAll" class="multilocalizable"></span></router-link>
+						<div class="item-title"><span id="dashboardTransactionsTitle" class="dashboardlocalizable"></span></div>
+						<router-link :to='fragApi + "/txs/"' class="showall"><span name="dashboardIndicatorViewAll" class="dashboardmultilocalizable"></span></router-link>
 						<transition-group name="list" tag="table" frame=hsides rules=rows>
 							<tr v-for="tx in txs.slice(0, 6)" :key="tx.hash">
 								<td>
 									<img src="/static/img/icon-tx.png?v=20190116" width="50" height="50">
 								</td>
 								<td>
-									<span name="dashboardTransactionNumber" class="multilocalizable"></span>
+									<span name="dashboardTransactionNumber" class="dashboardmultilocalizable"></span>
 									<router-link :to='fragApi + "/tx/" + tx.hash'>
 										<span class="monospace">{{ tx.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.hash.slice(-4) }}</span>
 									</router-link>
 									<br>
 									<span class="fromto d-none d-sm-inline">
-										<span name="dashboardTransactionFromText" class="multilocalizable"></span>
+										<span name="dashboardTransactionFromText" class="dashboardmultilocalizable"></span>
 										<router-link :to='fragApi + "/address/" + tx.from.hash'>
 											<span class="monospace">{{ tx.from.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.from.hash.slice(-4) }}</span>
 										</router-link>
 									</span>
 									<span class="fromto d-none d-sm-inline">
-										<span name="dashboardTransactionToText" class="multilocalizable"></span>
+										<span name="dashboardTransactionToText" class="dashboardmultilocalizable"></span>
 										<router-link :to='fragApi + "/address/" + tx.from.hash'>
 											<span class="monospace">{{ tx.to.hash.slice(0, 4) }}</span>...<span class="monospace">{{ tx.to.hash.slice(-4) }}</span>
 										</router-link>
@@ -1145,10 +1145,10 @@
 			}
 		},
 		mounted() {
+			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			if (typeof this.$selectedLanguage != 'undefined') {
 				this.checkStaticTranslations();
 			}
-			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			this.translationsInterval = setInterval(() => {
 				this.checkDynamicTranslations();
 			}, 1000);
@@ -1247,7 +1247,7 @@
 			},
 			checkStaticTranslations() {
 				// Unique elements, identified by id attr
-				var myLocalizableElements = document.getElementsByClassName("localizable");
+				var myLocalizableElements = document.getElementsByClassName("dashboardlocalizable");
 				var totalElements = myLocalizableElements.length;
 				var i;
 				for (i = 0; i < totalElements; i++) {
@@ -1263,7 +1263,7 @@
 			},
 			checkDynamicTranslations() {
 				// Multiple elements, identified with name attr
-				var myMultiLocalizableElements = document.getElementsByClassName("multilocalizable");
+				var myMultiLocalizableElements = document.getElementsByClassName("dashboardmultilocalizable");
 				var totalElements = myMultiLocalizableElements.length;
 				var i;
 				for (i = 0; i < totalElements; i++) {

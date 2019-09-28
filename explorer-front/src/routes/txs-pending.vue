@@ -18,26 +18,26 @@
 		<div class="vue-bread">
 			<div class="container">
 				<div class="row align-items-center">
-					<div class="col-auto bread-title font-40 font-bold font-color-000000 localizable" id="pendingTxTitle"></div>
+					<div class="col-auto bread-title font-40 font-bold font-color-000000 txspendinglocalizable" id="pendingTxTitle"></div>
 					<div class="col-auto bread-subtitle font-16 font-bold font-color-000000 align-baseline"></div>
 				</div>
 			</div>
 		</div>
 		<div v-if="arr && arr.length" class="container mt20">
 			<div class="align-items-center info-and-pagination mt20 row">
-				<div class="col info font-color-000000 font-24 font-bold">{{ numberAddComma(totalTxs) }} <span id="pendingTxPendingPrefix" class="localizable"></span> <span v-if="totalTxs == 1" id="pendingTxPendingSuffix" class="localizable"></span><span v-else id="pendingTxPendingSuffixPlural" class="localizable"></span></div>
+				<div class="col info font-color-000000 font-24 font-bold">{{ numberAddComma(totalTxs) }} <span id="pendingTxPendingPrefix" class="txspendinglocalizable"></span> <span v-if="totalTxs == 1" id="pendingTxPendingSuffix" class="txspendinglocalizable"></span><span v-else id="pendingTxPendingSuffixPlural" class="txspendinglocalizable"></span></div>
 			</div>
 			<div class="explorer-table-container">
 				<table class="mt20 explorer-table list-table">
 					<tr class="list-header font-12 font-bold font-color-000000">
-						<th class="pl-3 localizable" id="pendingTxTxHash"></th>
-						<th class="localizable" id="pendingTxTxLastSeen"></th>
-						<th class="localizable" id="pendingTxTxGasLimit"></th>
-						<th class="localizable" id="pendingTxTxGasPrice"></th>
-						<th class="localizable" id="pendingTxTxFrom"></th>
+						<th class="pl-3 txspendinglocalizable" id="pendingTxTxHash"></th>
+						<th class="txspendinglocalizable" id="pendingTxTxLastSeen"></th>
+						<th class="txspendinglocalizable" id="pendingTxTxGasLimit"></th>
+						<th class="txspendinglocalizable" id="pendingTxTxGasPrice"></th>
+						<th class="txspendinglocalizable" id="pendingTxTxFrom"></th>
 						<th></th>
-						<th class="localizable" id="pendingTxTxTo"></th>
-						<th class="text-right pr-3 localizable" id="pendingTxTxValue"></th>
+						<th class="txspendinglocalizable" id="pendingTxTxTo"></th>
+						<th class="text-right pr-3 txspendinglocalizable" id="pendingTxTxValue"></th>
 					</tr>
 					<tr v-for="(o, i) in arr" :key="i">
 						<td class="tdxxxwddd pl-3">
@@ -47,7 +47,7 @@
 						</td>
 						<td class="font-14 font-color-555555">
 							<div>
-								<div><span name="transactionsTableAgoPrefix" class="multilocalizable"></span> {{ timeConversion(o.timeDiff) }} <span name="transactionsTableAgoSuffix" class="multilocalizable"></span></div>
+								<div><span name="transactionsTableAgoPrefix" class="txspendingmultilocalizable"></span> {{ timeConversion(o.timeDiff) }} <span name="transactionsTableAgoSuffix" class="txspendingmultilocalizable"></span></div>
 								<div class="down-arrow-tip" style="display: none;">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
 							</div>
 						</td>
@@ -64,7 +64,7 @@
 						</td>
 						<td class=tdxxxwddd>
 							<div v-if="o.type==='call'" class="container-tip">
-								<span class="tip down-arrow-tip font-15 shadow"><span id="pendingTxSmartContract" class="localizable"></span></span>
+								<span class="tip down-arrow-tip font-15 shadow"><span id="pendingTxSmartContract" class="txspendinglocalizable"></span></span>
 								<img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
 							</div>
 							<vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
@@ -82,7 +82,7 @@
 		</div>
 		<div v-else class="container mt20">
 			<div class="align-items-center info-and-pagination mt20 row">
-				<div class="col info font-color-000000 font-24 font-bold"><span id="pendingTxNoTxFound" class="localizable"></span></div>
+				<div class="col info font-color-000000 font-24 font-bold"><span id="pendingTxNoTxFound" class="txspendinglocalizable"></span></div>
 			</div>
 		</div>
 	</div>
@@ -116,7 +116,7 @@
 			},
 			checkStaticTranslations() {
 				// Unique elements, identified by id attr
-				var myLocalizableElements = document.getElementsByClassName("localizable");
+				var myLocalizableElements = document.getElementsByClassName("txspendinglocalizable");
 				var totalElements = myLocalizableElements.length;
 				var i;
 				for (i = 0; i < totalElements; i++) {
@@ -132,7 +132,7 @@
 			},
 			checkDynamicTranslations() {
 				// Multiple elements, identified with name attr
-				var myMultiLocalizableElements = document.getElementsByClassName("multilocalizable");
+				var myMultiLocalizableElements = document.getElementsByClassName("txspendingmultilocalizable");
 				var totalElements = myMultiLocalizableElements.length;
 				var i;
 				for (i = 0; i < totalElements; i++) {
@@ -225,10 +225,10 @@
 			}
 		},
 		mounted() {
+			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			if (typeof this.$selectedLanguage != 'undefined') {
 				this.checkStaticTranslations();
 			}
-			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			this.translationsInterval = setInterval(() => {
 				this.checkDynamicTranslations();
 			}, 1000);

@@ -41,32 +41,32 @@
 		<div class="vue-bread">
 			<div class="container">
 				<div class="row align-items-center">
-					<div class="col-auto bread-title font-40 font-bold font-color-000000 localizable" id="blockTitle"></div>
+					<div class="col-auto bread-title font-40 font-bold font-color-000000 blocklocalizable" id="blockTitle"></div>
 					<div class="col-auto bread-subtitle font-16 font-bold font-color-000000 align-baseline">{{ $route.params.id }}</div>
 				</div>
 			</div>
 		</div>
 		<div v-if="block" class="container">
 			<div class="font-24 font-bold font-color-000000 table-title">
-				<span id="blockOverview" class="localizable"></span>
+				<span id="blockOverview" class="blocklocalizable"></span>
 			</div>
 
 			<div class="explorer-table-container d-none d-md-block">
 				<table class="explorer-table font-16">
 					<tr>
-						<td class="font-color-555555 localizable" id="blockHeight"></td>
+						<td class="font-color-555555 blocklocalizable" id="blockHeight"></td>
 						<td class="font-color-000000">
-							<nav aria-label="" class="navgation-tab localizable" localize="aria-label" id="blockPageNavigation">
+							<nav aria-label="" class="navgation-tab blocklocalizable" localize="aria-label" id="blockPageNavigation">
 								<ul class=pagination>
 									<li>
-										<router-link v-if="block.height > 1" v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label="" localize="aria-label" id="blockRouterPrevious" class="localizable">
-											<span aria-hidden=true class="localizable" id="blockButtonPrev"></span>
+										<router-link v-if="block.height > 1" v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label="" localize="aria-label" id="blockRouterPrevious" class="blocklocalizable">
+											<span aria-hidden=true class="blocklocalizable" id="blockButtonPrev"></span>
 										</router-link>
 									</li>
 									<li>&nbsp; {{ block.height }} &nbsp;</li>
 									<li>
-										<router-link v-if="$root.timestamp - block.timestamp > 16000" v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label="" localize="aria-label" id="blockRouterNext" class="localizable">
-											<span aria-hidden=true class="localizable" id="blockButtonNext"></span>
+										<router-link v-if="$root.timestamp - block.timestamp > 16000" v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label="" localize="aria-label" id="blockRouterNext" class="blocklocalizable">
+											<span aria-hidden=true class="blocklocalizable" id="blockButtonNext"></span>
 										</router-link>
 									</li>
 								</ul>
@@ -74,24 +74,24 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="font-color-555555">TimeStamp</td>
-						<td class="font-color-000000"><span id="transactionsTableAgoPrefix" class="localizable"></span> {{ timeConversion(Date.now() - block.localTimestamp + block.timeDiff) }} <span id="transactionsTableAgoSuffix" class="localizable"></span> ({{ new Date(block.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ block.timestamp }})</td>
+						<td class="font-color-555555 blocklocalizable" id="blockTimeStamp"></td>
+						<td class="font-color-000000"><span id="transactionsTableAgoPrefix" class="blocklocalizable"></span> {{ timeConversion(Date.now() - block.localTimestamp + block.timeDiff) }} <span id="transactionsTableAgoSuffix" class="blocklocalizable"></span> ({{ new Date(block.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ block.timestamp }})</td>
 					</tr>
 					<tr>
-						<td class="font-color-555555 localizable" id="blockTransactionsTitle"></td>
+						<td class="font-color-555555 blocklocalizable" id="blockTransactionsTitle"></td>
 						<td class="font-color-000000">
 							<router-link v-bind:to='fragApi + "/txs?block=" + block.height'>
 								<span>{{ block.blkSummary.txCnt }}</span>
 							</router-link>
-							tx <span class="localizable" id="blockTxInBlock"></span>
+							tx <span class="blocklocalizable" id="blockTxInBlock"></span>
 						</td>
 					</tr>
 					<tr>
-						<td class="font-color-555555 localizable" id="blockHashTitle"></td>
+						<td class="font-color-555555 blocklocalizable" id="blockHashTitle"></td>
 						<td class="font-color-000000 monospace">{{ block.hash }}</td>
 					</tr>
 					<tr>
-						<td class="font-color-555555 localizable" id="blockParentHashTitle"></td>
+						<td class="font-color-555555 blocklocalizable" id="blockParentHashTitle"></td>
 						<td>
 							<router-link v-bind:to='fragApi + "/block/" + block.parentHash'>
 								<span class="monospace">{{ block.parentHash }}</span>
@@ -99,7 +99,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="font-color-555555 localizable" id="blockMintedTitle"></td>
+						<td class="font-color-555555 blocklocalizable" id="blockMintedTitle"></td>
 						<td>
 							<router-link v-bind:to='fragApi + "/address/" + block.miner.hash'>
 								<span class="monospace">{{ block.miner.hash }}</span>
@@ -108,7 +108,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="font-color-555555 localizable" id="blockCoinbaseTitle"></td>
+						<td class="font-color-555555 blocklocalizable" id="blockCoinbaseTitle"></td>
 						<td>
 							<router-link v-bind:to='fragApi + "/address/" + block.coinbase'>
 								<span class="monospace">{{ block.coinbase }}</span>
@@ -116,10 +116,10 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="font-color-555555 localizable" style="vertical-align: top; padding-top: 12px;" id="blockDinastyTitle"></td>
+						<td class="font-color-555555 blocklocalizable" style="vertical-align: top; padding-top: 12px;" id="blockDinastyTitle"></td>
 						<td style="vertical-align: top; padding-top: 12px;">
 							<a class="d-flex align-items-center" href=# v-on:click="showOrHideDynasty()" style="text-decoration: none;" data-toggle="collapse" data-target="#collapse-mobile" aria-expanded="false" aria-controls="collapseExample">
-								<span id="blockShowDinasty" class="localizable"></span>
+								<span id="blockShowDinasty" class="blocklocalizable"></span>
 								<img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowDynasty ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
 							</a>
 							<div class="collapse" id="collapse-mobile">
@@ -132,7 +132,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="font-color-555555 localizable" id="blockGasReward"></td>
+						<td class="font-color-555555 blocklocalizable" id="blockGasReward"></td>
 						<td class="font-color-000000">{{ toWei(block.blkSummary.gasReward) }}</td>
 					</tr>
 				</table>
@@ -140,19 +140,19 @@
 
 			<div class="mobile-detail d-md-none">
 				<div>
-					Height:
+					<span class="blocklocalizable" id="blockHeightTitle"></span>
 					<div class="detail">
-						<nav aria-label="Page navigation" class=navgation-tab>
+						<nav localize="aria-label" aria-label="Page navigation" class="navgation-tab blocklocalizable" id="blockAriaLabelPageNavigation">
 							<ul class=pagination>
 								<li>
 									<router-link v-if="block.height > 1" v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label=Previous>
-										<span aria-hidden=true>&lt; Prev</span>
+										<span aria-hidden=true class="blocklocalizable" id="blockPreviousLink"></span>
 									</router-link>
 								</li>
 								<li>&nbsp; {{ block.height }} &nbsp;</li>
 								<li>
 									<router-link v-if="$root.timestamp - block.timestamp > 16000" v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label=Next>
-										<span aria-hidden=true>Next &gt;</span>
+										<span aria-hidden=true class="blocklocalizable" id="blockNextLink"></span>
 									</router-link>
 								</li>
 							</ul>
@@ -160,16 +160,16 @@
 					</div>
 				</div>
 				<div>
-					TimeStamp:
-					<div class="detail">{{ timeConversion(Date.now() - block.localTimestamp + block.timeDiff) }} ago ({{ new Date(block.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ block.timestamp }})</div>
+					<span class="blocklocalizable" id="blockTimeStampTitle"></span>
+					<div class="detail"><span class="blocklocalizable" id="blockTimeStampPrefix"></span>{{ timeConversion(Date.now() - block.localTimestamp + block.timeDiff) }} <span class="blocklocalizable" id="blockTimeStampSuffix"></span> ({{ new Date(block.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ block.timestamp }})</div>
 				</div>
 				<div>
-					Transactions:
+					<span class="blocklocalizable" id="blockTransactionsTitle"></span>
 					<div class="detail">
 						<router-link v-bind:to='fragApi + "/txs?block=" + block.height'>
 							<span>{{ block.blkSummary.txCnt }}</span>
 						</router-link>
-						tx in this block
+						<span class="blocklocalizable" id="blockTxInThisBlock"></span>
 					</div>
 				</div>
 				<div>
@@ -177,7 +177,7 @@
 					<div class="detail monospace">{{ block.hash }}</div>
 				</div>
 				<div>
-					Parent Hash:
+					<span class="blocklocalizable" id="blockParentHashTitle"></span>
 					<div class="detail">
 						<router-link v-bind:to='fragApi + "/block/" + block.parentHash'>
 							<span class="monospace">{{ block.parentHash }}</span>
@@ -185,7 +185,7 @@
 					</div>
 				</div>
 				<div>
-					Minted:
+					<span class="blocklocalizable" id="blockMintedTitle"></span>
 					<div class="detail">
 						<router-link v-bind:to='fragApi + "/address/" + block.miner.hash'>
 							<span class="monospace">{{ block.miner.hash }}</span>
@@ -194,7 +194,7 @@
 					</div>
 				</div>
 				<div>
-					Coinbase:
+					<span class="blocklocalizable" id="blockCoinbaseTitle"></span>
 					<div class="detail">
 						<router-link v-bind:to='fragApi + "/address/" + block.coinbase'>
 							<span class="monospace">{{ block.coinbase }}</span>
@@ -202,11 +202,11 @@
 					</div>
 				</div>
 				<div>
-					Dynasty:
+					<span class="blocklocalizable" id="blockDinastyTitle"></span>
 					<div class="detail">
 						<a class="d-flex align-items-center" href=# v-on:click="showOrHideDynasty()" style="text-decoration: none;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 							<span>
-								Show Dynasty
+								<span class="blocklocalizable" id="blockShowDinastyButton"></span>
 							</span>
 							<img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowDynasty ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
 						</a>
@@ -220,7 +220,7 @@
 					</div>
 				</div>
 				<div>
-					Gas Reward:
+					<span class="blocklocalizable" id="blockGasRewardTitle"></span>
 					<div class="detail">{{ toWei(block.blkSummary.gasReward) }}</div>
 				</div>
 			</div>
@@ -259,7 +259,7 @@
 			},
 			checkStaticTranslations() {
 				// Unique elements, identified by id attr
-				var myLocalizableElements = document.getElementsByClassName("localizable");
+				var myLocalizableElements = document.getElementsByClassName("blocklocalizable");
 				var totalElements = myLocalizableElements.length;
 				var i;
 				for (i = 0; i < totalElements; i++) {
@@ -275,7 +275,7 @@
 			},
 			checkDynamicTranslations() {
 				// Multiple elements, identified with name attr
-				var myMultiLocalizableElements = document.getElementsByClassName("multilocalizable");
+				var myMultiLocalizableElements = document.getElementsByClassName("blockmultilocalizable");
 				var totalElements = myMultiLocalizableElements.length;
 				var i;
 				for (i = 0; i < totalElements; i++) {
@@ -314,10 +314,10 @@
 			};
 		},
 		mounted() {
+			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			if (typeof this.$selectedLanguage != 'undefined') {
 				this.checkStaticTranslations();
 			}
-			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			this.translationsInterval = setInterval(() => {
 				this.checkDynamicTranslations();
 			}, 1000);

@@ -180,13 +180,14 @@
 			};
 		},
 		mounted() {
+			EventBus.$on('changeLanguage', foo => {this.checkHeaderTranslations()});
 			if (typeof this.$selectedLanguage != 'undefined') {
 				this.checkHeaderTranslations();
 			}
 			this.tempInterval = setInterval(() => {
 				this.checkHeaderTranslations();
 				//this.removeTempInterval();//Commented to let the page fully charge
-			}, 1900);
+			}, 800);
 
 			var paramsApi = this.$route.params.api, apiPrefixes = {}, i, first = true;
 			for (i in appConfig.apiPrefixes)
@@ -227,7 +228,6 @@
 					else {
 						myLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementId];
 					}
-
 				}
 			},
 			onSubmit() {

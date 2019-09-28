@@ -25,7 +25,7 @@
 		<div class="vue-bread">
 			<div class="container">
 				<div class="row align-items-center">
-					<div class="col-auto bread-title font-40 font-bold font-color-000000 localizable" id="blocksTitle"></div>
+					<div class="col-auto bread-title font-40 font-bold font-color-000000 blockslocalizable" id="blocksTitle"></div>
 					<div class="col-auto bread-subtitle font-16 font-bold font-color-000000 align-baseline"></div>
 				</div>
 			</div>
@@ -34,21 +34,21 @@
 		<div v-if="arr" class="container mt20">
 			<div class="align-items-center info-and-pagination mt20 row">
 				<div class="col info font-color-000000 font-24 font-bold title">
-					{{ numberAddComma(totalBlocks) }} <span class="localizable" id="blocksFound"></span>
-					<!-- <span v-if="totalTxs > 500" class="font-color-555555 font-16" style="vertical-align: text-bottom;">(<span class="localizable" id="blocksLatestFound"></span>)</span> -->
+					{{ numberAddComma(totalBlocks) }} <span class="blockslocalizable" id="blocksFound"></span>
+					<!-- <span v-if="totalTxs > 500" class="font-color-555555 font-16" style="vertical-align: text-bottom;">(<span class="blockslocalizable" id="blocksLatestFound"></span>)</span> -->
 				</div>
 			</div>
 			<div class="explorer-table-container">
 				<table class="mt20 explorer-table list-table">
 					<tr class="list-header font-12 font-bold font-color-000000">
 						<th style="width: 20px;"></th>
-						<th style="width: 130px;" class="localizable" id="blocksTableHeight"></th>
-						<th style="width: 130px;" class="localizable" id="blocksTableAge"></th>
-						<th style="padding-left: 20px" class="localizable" id="blocksTableTxn"></th>
-						<th style="padding-left: 30px" class="localizable" id="blocksTableMinted"></th>
-						<th class="text-right localizable" id="blocksTableGasReward"></th>
-						<th class="text-right localizable" id="blocksTableGasLimit"></th>
-						<th class="text-right localizable" id="blocksTableAverageGasPrice"></th>
+						<th style="width: 130px;" class="blockslocalizable" id="blocksTableHeight"></th>
+						<th style="width: 130px;" class="blockslocalizable" id="blocksTableAge"></th>
+						<th style="padding-left: 20px" class="blockslocalizable" id="blocksTableTxn"></th>
+						<th style="padding-left: 30px" class="blockslocalizable" id="blocksTableMinted"></th>
+						<th class="text-right blockslocalizable" id="blocksTableGasReward"></th>
+						<th class="text-right blockslocalizable" id="blocksTableGasLimit"></th>
+						<th class="text-right blockslocalizable" id="blocksTableAverageGasPrice"></th>
 						<th style="width: 20px;"></th>
 					</tr>
 					<tr v-for="(o, i) in arr" :key="i">
@@ -60,7 +60,7 @@
 						</td>
 						<td>
 							<div>
-								<div class="font-color-000000 font-14"><span name="transactionsTableAgoPrefix" class="multilocalizable"></span> {{ timeConversion(o.timeDiff) }} <span name="transactionsTableAgoSuffix" class="multilocalizable"></span></div>
+								<div class="font-color-000000 font-14"><span name="transactionsTableAgoPrefix" class="blocksmultilocalizable"></span> {{ timeConversion(o.timeDiff) }} <span name="transactionsTableAgoSuffix" class="blocksmultilocalizable"></span></div>
 								<div class="down-arrow-tip" style="display: none;">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
 							</div>
 						</td>
@@ -121,7 +121,7 @@
 			},
 			checkStaticTranslations() {
 				// Unique elements, identified by id attr
-				var myLocalizableElements = document.getElementsByClassName("localizable");
+				var myLocalizableElements = document.getElementsByClassName("blockslocalizable");
 				var totalElements = myLocalizableElements.length;
 				var i;
 				for (i = 0; i < totalElements; i++) {
@@ -137,7 +137,7 @@
 			},
 			checkDynamicTranslations() {
 				// Multiple elements, identified with name attr
-				var myMultiLocalizableElements = document.getElementsByClassName("multilocalizable");
+				var myMultiLocalizableElements = document.getElementsByClassName("blocksmultilocalizable");
 				var totalElements = myMultiLocalizableElements.length;
 				var i;
 				for (i = 0; i < totalElements; i++) {
@@ -222,10 +222,10 @@
 			}
 		},
 		mounted() {
+			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			if (typeof this.$selectedLanguage != 'undefined') {
 				this.checkStaticTranslations();
 			}
-			EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
 			this.translationsInterval = setInterval(() => {
 				this.checkDynamicTranslations();
 			}, 1000);

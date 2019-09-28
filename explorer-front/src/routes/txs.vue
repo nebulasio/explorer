@@ -78,7 +78,7 @@
 	<!-- https://etherscan.io/txs -->
 	<div class="vue-txs fullfill">
 		<!--
-		<vue-bread :subtitle='$route.query.block ? ("Block #" + $route.query.block) : $route.query.a' :subtitlemonospaced='!!$route.query.a' :blockies='$route.query.a'></vue-bread>
+		 <vue-bread :title='"Transactions" + (($route.query.a || $route.query.block) ? " of" : "")' :subtitle='$route.query.block ? ("Block #" + $route.query.block) : $route.query.a' :subtitlemonospaced='!!$route.query.a' :blockies='$route.query.a'></vue-bread>
 		-->
 
 		<div class="vue-bread">
@@ -173,7 +173,7 @@
 						</td>
 						<td class="tdxxxwddd txs-from-to">
 							<div v-if="o.type==='call'" class="container-tip">
-								<span class="tip down-arrow-tip font-15 shadow">Smart Contract</span>
+								<span class="tip down-arrow-tip font-15 shadow txslocalizable" id="transactionsSmartcontract"></span>
 								<img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
 							</div>
 							<vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
@@ -192,7 +192,11 @@
 			<vue-pagination v-bind:current=currentPage right=1 v-bind:total=totalPage v-on:first=onFirst v-on:last=onLast v-on:next=onNext
 				v-on:prev=onPrev v-on:to=onTo></vue-pagination>
 		</div>
-		<vue-nothing v-if="arr && arr.length === 0" title="0 transaction found"></vue-nothing>
+		<div v-else class="container mt-20">
+			<div class="d-block d-md-flex flex-row align-items-center mt20">
+				<span class="col-auto pl-0 pr-2 info font-color-000000 font-24 font-bold title txslocalizable" id="transactionsNoTxFound"></span>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
