@@ -163,6 +163,7 @@
 </style>
 <template>
 	<div class="dstaking fullfill">
+	<!-- Not localized to keep the vue-bread as it is -->
 		<vue-bread title='dStaking Dashboard' nextdao=true>
 			<a href="">nextdao.io</a>
 		</vue-bread>
@@ -171,27 +172,27 @@
 				<div class="col-12 col-md-6">
 					<div class="item item-1">
 						<h1>{{leftTime}}</h1>
-						<label>{{keyEstimatedLeftTime}}</label>
+						<label class="dstakinglocalizable" id="dstakingEstimatedTimeLeft">{{keyEstimatedLeftTime}}</label>
 						<div class="d-flex mt-5">
 							<div class="w-50">
 								<h4>{{numberAddComma(currentBlockHeight)}}</h4>
-								<router-link :to='fragApi + "/block/" + currentBlockHeight'>{{ keyCurrentBlockHeight }}</router-link>
+								<router-link :to='fragApi + "/block/" + currentBlockHeight'><span class="dstakinglocalizable" id="dstakingCurrentBlock">{{ keyCurrentBlockHeight }}</span></router-link>
 							</div>
 							<div class="ml-3">
 								<h4>{{numberAddComma(nextIssueBlockHeight)}}</h4>
-								<label>{{keyNextIssueBlockHeight}}</label>
+								<label><span class="dstakinglocalizable" id="dstakingNextIssueBlockHeight">{{keyNextIssueBlockHeight}}</span></label>
 							</div>
 						</div>
 						<div class="d-flex mt-3">
 							<div class="w-50">
 								<h4 class="token-value">{{naxAmount(lastNaxDistribution)}}</h4>
 								<span>NAX</span>
-								<label>{{keyLastNaxDistribution}}</label>
+								<label><span class="dstakinglocalizable" id="dstakingPrevMintedNAX">{{keyLastNaxDistribution}}</span></label>
 							</div>
 							<div class="ml-3">
 								<h4 class="token-value">{{naxAmount(totalNaxDistribution)}}</h4>
 								<span>NAX</span>
-								<label>{{keyTotalNaxDistribution}}</label>
+								<label><span class="dstakinglocalizable" id="dstakingTotalNaxDistribution">{{keyTotalNaxDistribution}}</span></label>
 							</div>
 						</div>
 					</div>
@@ -199,8 +200,8 @@
 				<div class="col-12 col-md-6 mt-3 mt-md-0">
 					<div class="item item-2 d-flex flex-column">
 						<div class="d-flex align-items-center justify-content-between">
-							<h4>{{keyStakeRate}}</h4>
-							<label>Update Time: 15 Secs ago</label>
+							<h4><span class="dstakinglocalizable" id="dstakingRate1">{{keyStakeRate}}</span></h4>
+							<label><span class="dstakinglocalizable" id="dstakingUpdateTime"></span></label>
 						</div>
 						<div class="flex-fill d-flex align-items-center justify-content-between">
 							<div class="user-pie">
@@ -217,7 +218,7 @@
 									<div class="labels">
 										<!-- 四舍五入并保留一位小数 -->
 										<div>{{ (Math.round(100 * stakedAmount / nasCirculation * 10) / 10).toFixed(2) + '%' }}</div>
-										<div>{{keyStakeRate}}</div>
+										<div class="dstakinglocalizable" id="dstakingRate2">{{keyStakeRate}}</div>
 									</div>
 								</div>
 							</div>
@@ -232,7 +233,7 @@
 									<h4 class="token-value mt-3">{{ nasAmount(nasCirculation) }}</h4>
 									<span>NAS</span>
 								</div>
-								<label>{{keyNasCirculation}}</label>
+								<label class="dstakinglocalizable" id="dstakingCirculatingNAS">{{keyNasCirculation}}</label>
 							</div>
 						</div>
 					</div>
@@ -242,26 +243,26 @@
 				<div class="col-12">
 					<div class="item item-3">
 						<div class="d-md-flex align-items-center justify-content-between">
-							<h4>{{keyDstakingTrend}}</h4>
-							<router-link :to='fragApi + "/dstaking-history"'>View More ></router-link>
+							<h4 class="dstakinglocalizable" id="dstakingTrend">{{keyDstakingTrend}}</h4>
+							<router-link :to='fragApi + "/dstaking-history"'><span class="dstakinglocalizable" id="dstakingViewMore"></span></router-link>
 						</div>
 						<div class="d-flex mt-1">
 							<div class="form-check mr-4">
 								<input class="form-check-input" type="radio" id="exampleRadios1" :checked="trendTab === 0" @click="trendTab = 0">
 								<label class="form-check-label" for="exampleRadios1">
-									{{keyStakeRate}}
+									<span class="dstakinglocalizable" id="dstakingRate3">{{keyStakeRate}}</span>
 								</label>
 							</div>
 							<div class="form-check mr-4">
 								<input class="form-check-input" type="radio" id="exampleRadios2" :checked="trendTab === 1" @click="trendTab = 1">
 								<label class="form-check-label" for="exampleRadios2">
-									{{keyDistributionAmount}}
+									<span class="dstakinglocalizable" id="dstakingMintedNAX">{{keyDistributionAmount}}</span>
 								</label>
 							</div>
 							<div class="form-check">
 								<input class="form-check-input" type="radio" id="exampleRadios3" :checked="trendTab === 2" @click="trendTab = 2">
 								<label class="form-check-label" for="exampleRadios3">
-									{{keyDestroyedAmount}}
+									<span class="dstakinglocalizable" id="dstakingBurnedNAX">{{keyDestroyedAmount}}</span>
 								</label>
 							</div>
 						</div>
@@ -273,14 +274,16 @@
 				<img style="width: 131px; height: 142px;" src="/static/img/no_content.png?v=20190117"/>
 				<br/>
 				<div style="margin-top: 12px;">
-					<span class="text-no-content">Waiting for the first issuance</span>
+					<span class="text-no-content dstakinglocalizable" id="dstakingWaitingForFirstIssuance"></span>
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
-var api = require("@/assets/api"),
+	import { EventBus } from '../events.js';
+	import { jsonStrings } from '../l10nstrings.js';
+	var api = require("@/assets/api"),
 	utility = require("@/assets/utility"),
 	BigNumber = require("bignumber.js"),
 	moment = require("@/assets/utility").moment;
@@ -320,6 +323,17 @@ module.exports = {
 		};
 	},
 	mounted() {
+		EventBus.$on('changeLanguage', foo => {this.checkStaticTranslations()});
+		if (typeof this.$selectedLanguage != 'undefined') {
+			this.checkStaticTranslations();
+		}
+		this.translationsInterval = setInterval(() => {
+			this.checkDynamicTranslations();
+		}, 750);
+		this.tempInterval = setInterval(() => {
+			this.checkStaticTranslations();
+			this.removeTempInterval();
+		}, 2000);
 		BigNumber.config({ DECIMAL_PLACES: 18 })
 
 		this.$root.showModalLoading = true;
@@ -335,6 +349,41 @@ module.exports = {
 		clearInterval(this.shortIntervalID);
 	},
 	methods: {
+		removeTempInterval() {
+			clearInterval(this.tempInterval);
+		},
+		checkStaticTranslations() {
+			// Unique elements, identified by id attr
+			var myLocalizableElements = document.getElementsByClassName("dstakinglocalizable");
+			var totalElements = myLocalizableElements.length;
+			var i;
+			for (i = 0; i < totalElements; i++) {
+				var elementId = myLocalizableElements[i].getAttribute("id");
+				if (myLocalizableElements[i].getAttribute("localize")) {
+					var elementAttribute = myLocalizableElements[i].getAttribute("localize");
+					myLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementId]);
+				}
+				else {
+					myLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementId];
+				}
+			}
+		},
+		checkDynamicTranslations() {
+			// Multiple elements, identified with name attr
+			var myMultiLocalizableElements = document.getElementsByClassName("dstakingmultilocalizable");
+			var totalElements = myMultiLocalizableElements.length;
+			var i;
+			for (i = 0; i < totalElements; i++) {
+				var elementName = myMultiLocalizableElements[i].getAttribute("name");
+				if (myMultiLocalizableElements[i].getAttribute("localize")) {
+					var elementAttribute = myMultiLocalizableElements[i].getAttribute("localize");
+					myMultiLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementName]);
+				}
+				else {
+					myMultiLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementName];
+				}
+			}
+		},
 		getSummary() {
 			api.getDstakingSummary({}, o => {
 				this.$root.showModalLoading = false;
@@ -504,14 +553,14 @@ module.exports = {
 					transitionDuration: 0,
 					position: 'top',
 					formatter: function(params, ticket, callback) {
-						let stageStr = 'Period: ' + params.name;
+						let stageStr = '<span class="dstakingmultilocalizable" name="dstakingPeriodTitle"></span>' + params.name;
 						var detailStr = null;
 						if (vm.trendTab === 0) {
-							detailStr = vm.keyStakeRate + ': ' + (params.value * 100).toFixed(2) + '%';
+							detailStr = '<span class="dstakingmultilocalizable" name="dstakingRate4"></span>' + ': ' + (params.value * 100).toFixed(2) + '%';
 						} else if (vm.trendTab === 1) {
-							detailStr = vm.keyDistributionAmount + ': ' + vm.naxAmount(params.value);
+							detailStr = '<span class="dstakingmultilocalizable" name="dstakingMintedNAX2"></span>' + ': ' + vm.naxAmount(params.value);
 						} else {
-							detailStr = vm.keyDestroyedAmount + ': ' + vm.naxAmount(params.value);
+							detailStr = '<span class="dstakingmultilocalizable" name="dstakingBurnedNAX2"></span>' + ': ' + vm.naxAmount(params.value);
 						}
 						return stageStr + '<div>' + detailStr + '</div><div class=account-echart-down-arrow></div>';
 					},
