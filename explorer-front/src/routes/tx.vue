@@ -84,7 +84,7 @@
 		</vue-bread>
 		<div v-if="tx" class="container">
 			<div class="font-24 font-bold font-color-000000 table-title">
-				Overview
+				<span class="txlocalizable" id="txOverview"></span>
 			</div>
 			<div class="explorer-table-container d-none d-md-block">
 				<table class="explorer-table">

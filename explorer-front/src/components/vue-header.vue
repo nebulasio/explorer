@@ -129,6 +129,12 @@
 							</span>
 						</router-link>
 					</li>
+					<!-- Menú dStaking -->
+					<li class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
+						<router-link v-bind:to="fragApi + '/dstaking'" class="nav-link"><span class="headerlocalizable" id="headerMenuDstaking"></span>
+							<span class="sr-only headerlocalizable" id="headerCurrentText"></span>
+						</router-link>
+					</li>
 					<!-- Menú Blockchain -->
 					<li class="dropdown nav-item" v-bind:class="{ active: $route.meta.headerActive == 2 }" id="blockchain-menu">
 						<a class="nav-link" href=# id=header-dropdown-blockchain role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
