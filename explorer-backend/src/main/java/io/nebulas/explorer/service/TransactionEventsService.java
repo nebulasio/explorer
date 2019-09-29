@@ -114,6 +114,7 @@ public class TransactionEventsService {
                                 }
                             }
                             if (jsonData.containsKey("Transfer")) {
+                                log.info("Found NAX transfer: {}", tx.getHash());
                                 JSONObject transfer = jsonData.getJSONObject("Transfer");
                                 if (transfer != null) {
                                     String from = transfer.getString("from");
@@ -128,10 +129,10 @@ public class TransactionEventsService {
                                     if (value==null){
                                         value = "0";
                                     }
-
+                                    log.info("Parse NAX transfer: From:{} , To:{}, Value:{}", from, to, value);
                                     NaxProfit recordSend = new NaxProfit();
                                     recordSend.setSource(NaxProfit.SOURCE_TRANSFER);
-                                    recordSend.setStage(stage);
+                                    recordSend.setStage(-1);
                                     recordSend.setAddress(from);
                                     recordSend.setProfit(new BigDecimal(value).negate());
                                     recordSend.setTimestamp(new Date(blk.getTimestamp() * 1000));
@@ -142,7 +143,7 @@ public class TransactionEventsService {
 
                                     NaxProfit recordReceive = new NaxProfit();
                                     recordReceive.setSource(NaxProfit.SOURCE_TRANSFER);
-                                    recordReceive.setStage(stage);
+                                    recordReceive.setStage(-1);
                                     recordReceive.setAddress(to);
                                     recordReceive.setProfit(new BigDecimal(value));
                                     recordReceive.setTimestamp(new Date(blk.getTimestamp() * 1000));
