@@ -652,6 +652,12 @@
                             </td>
                             <td class="font-14">
                                 <div v-if="o.source === 0">Pledge Rewards</div>
+                                <div v-if="o.source === 1"> 
+                                    <span>NAX Vote</span>
+                                    <router-link v-bind:to='fragApi + "/tx/" + o.txHash' class="ml-2">
+                                        <span>tx# {{o.txHash.slice(0, 6) + '...' + o.txHash.slice(o.txHash.length - 6)}}</span>
+                                    </router-link>
+                                </div>
                             </td>
                         </tr>
                     </table>
