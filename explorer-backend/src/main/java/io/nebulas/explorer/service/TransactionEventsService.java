@@ -69,17 +69,19 @@ public class TransactionEventsService {
                             stakingEvent = event;
                         }
                     }
-                    if (naxEvent != null && stakingEvent != null) {
+                    if (naxEvent != null) {
                         log.info("Found NAX trigger transaction: {}", tx.getHash());
                         // 解析Staking数据，用于获取此交易对应的NAX周期
                         long stage = -1;
-                        String stakingData = stakingEvent.getData();
-                        JSONObject jsonStakingData = JSONObject.parseObject(stakingData);
-                        if (jsonStakingData.containsKey("section")) {
-                            JSONObject section = jsonStakingData.getJSONObject("section");
-                            stage = section.getLongValue("period");
-                        } else {
-                            log.error("NAX trigger events data error in staking info: {}", stakingData);
+                        if (stakingEvent!=null) {
+                            String stakingData = stakingEvent.getData();
+                            JSONObject jsonStakingData = JSONObject.parseObject(stakingData);
+                            if (jsonStakingData.containsKey("section")) {
+                                JSONObject section = jsonStakingData.getJSONObject("section");
+                                stage = section.getLongValue("period");
+                            } else {
+                                log.error("NAX trigger events data error in staking info: {}", stakingData);
+                            }
                         }
                         // 真正的nax数据，需要解析
                         String data = naxEvent.getData();
