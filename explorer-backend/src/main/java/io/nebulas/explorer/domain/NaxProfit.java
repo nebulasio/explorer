@@ -15,6 +15,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NaxProfit implements Serializable {
+
+    public static int SOURCE_PLEDGE = 0;
+    public static int SOURCE_TRANSFER = 1;
+
     private int id;
     private String address;
     private String txHash;

@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -100,7 +101,7 @@ public class TransactionEventsService {
                                         if (value == null || value.isEmpty()) {
                                             value = "0";
                                         }
-                                        record.setSource(0);
+                                        record.setSource(NaxProfit.SOURCE_PLEDGE);
                                         record.setStage(stage);
                                         record.setAddress(address);
                                         record.setProfit(new BigDecimal(value));
@@ -110,6 +111,45 @@ public class TransactionEventsService {
                                         record.setCreatedAt(new Date());
                                         naxProfitMapper.insert(record);
                                     }
+                                }
+                            }
+                            if (jsonData.containsKey("Transfer")) {
+                                JSONObject transfer = jsonData.getJSONObject("Transfer");
+                                if (transfer != null) {
+                                    String from = transfer.getString("from");
+                                    String to = transfer.getString("to");
+                                    String value = transfer.getString("value");
+                                    if (from==null){
+                                        from = "";
+                                    }
+                                    if (to==null){
+                                        to = "";
+                                    }
+                                    if (value==null){
+                                        value = "0";
+                                    }
+
+                                    NaxProfit recordSend = new NaxProfit();
+                                    recordSend.setSource(NaxProfit.SOURCE_TRANSFER);
+                                    recordSend.setStage(stage);
+                                    recordSend.setAddress(from);
+                                    recordSend.setProfit(new BigDecimal(value).negate());
+                                    recordSend.setTimestamp(new Date(blk.getTimestamp() * 1000));
+                                    recordSend.setTxHash(tx.getHash());
+                                    recordSend.setBlock(blk.getHeight());
+                                    recordSend.setCreatedAt(new Date());
+                                    naxProfitMapper.insert(recordSend);
+
+                                    NaxProfit recordReceive = new NaxProfit();
+                                    recordReceive.setSource(NaxProfit.SOURCE_TRANSFER);
+                                    recordReceive.setStage(stage);
+                                    recordReceive.setAddress(to);
+                                    recordReceive.setProfit(new BigDecimal(value));
+                                    recordReceive.setTimestamp(new Date(blk.getTimestamp() * 1000));
+                                    recordReceive.setTxHash(tx.getHash());
+                                    recordReceive.setBlock(blk.getHeight());
+                                    recordReceive.setCreatedAt(new Date());
+                                    naxProfitMapper.insert(recordReceive);
                                 }
                             }
                         } catch (Exception e) {

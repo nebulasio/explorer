@@ -38,8 +38,8 @@ public class GrpcClientService {
     private NebBlockService nebBlockService;
     private NebSyncService nebSyncService;
 
-    private static ExecutorService LINK_BLOCK_EXECUTOR = Executors.newFixedThreadPool(5);
-    private static ExecutorService PENDING_TX_EXECUTOR = Executors.newFixedThreadPool(20);
+    private static ExecutorService LINK_BLOCK_EXECUTOR = Executors.newFixedThreadPool(1);
+    private static ExecutorService PENDING_TX_EXECUTOR = Executors.newFixedThreadPool(2);
     private static ExecutorService LIB_BLOCK_EXECUTOR = Executors.newFixedThreadPool(1);
 
     public void subscribe() {
