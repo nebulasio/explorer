@@ -222,8 +222,8 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
-        WHERE
-        `to` in
+        WHERE `timestamp`>'20180301000000'
+        and `to` in
         <foreach collection="tokens" item="item" open="(" close=")" separator=",">
             #{item,jdbcType=VARCHAR}
         </foreach>
@@ -236,8 +236,8 @@
         SELECT
         count(*)
         FROM `neb_transaction`
-        WHERE
-        `to` in
+        WHERE `timestamp`>'20180301000000'
+        and `to` in
         <foreach collection="tokens" item="item" open="(" close=")" separator=",">
             #{item,jdbcType=VARCHAR}
         </foreach>
