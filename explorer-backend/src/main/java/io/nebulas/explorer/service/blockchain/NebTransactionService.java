@@ -23,11 +23,14 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -45,6 +48,8 @@ public class NebTransactionService {
     private final NebPendingTransactionMapper nebPendingTransactionMapper;
     private final NebContractTokenMapper nebContractTokenMapper;
 
+    @Qualifier("customStringTemplate")
+    private final StringRedisTemplate redisTemplate;
 
     private static final Base64.Decoder DECODER = Base64.getDecoder();
 
@@ -187,12 +192,23 @@ public class NebTransactionService {
     }
 
     public long getNrc20TransactionsCount(String addressHash) {
+        String key = "NRC20-count-"+addressHash;
+        String inCache = redisTemplate.opsForValue().get(key);
+        if (inCache!=null && inCache.length()>0){
+            try{
+                return Long.parseLong(inCache);
+            }catch (Exception e){
+                log.warn("Something was wrong when get nrc20 tx count from cache: {}, {}", addressHash, inCache);
+            }
+        }
         List<NebContractToken> contractToken = nebContractTokenMapper.getAllContractTokens();
         List<String> tokens = new ArrayList<>(contractToken.size());
         contractToken.forEach(nebContractToken -> {
             tokens.add(nebContractToken.getContract());
         });
-        return nebTransactionMapper.countNrc20TxList(addressHash, tokens);
+        long count = nebTransactionMapper.countNrc20TxList(addressHash, tokens);
+        redisTemplate.opsForValue().set(key, String.valueOf(count), 1, TimeUnit.MINUTES);
+        return count;
     }
 
     /**
