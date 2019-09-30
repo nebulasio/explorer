@@ -199,15 +199,18 @@ public class NebTransactionService {
         Map<String, Long> contractMap = contractToken.stream().collect(Collectors.toMap(NebContractToken::getContract, NebContractToken::getTokenDecimals));
 
         //搜索所有nrc20转账记录，然后提取属于自己地址的
-        List<NebTransaction> contractTxList = new ArrayList<>();
+//        List<NebTransaction> contractTxList = new ArrayList<>();
+        List<String> tokens = new ArrayList<>(contractToken.size());
         contractToken.forEach(nebContractToken -> {
-
-            List<NebTransaction> contractList = nebTransactionMapper.findTxnByContract(nebContractToken.getContract());
-            if (contractList == null || contractList.size() == 0) {
-                contractList = Collections.emptyList();
-            }
-            contractTxList.addAll(nebTransactionMapper.findTxnByContract(nebContractToken.getContract()));
+            tokens.add(nebContractToken.getContract());
+//            List<NebTransaction> contractList = nebTransactionMapper.findTxnByContract(nebContractToken.getContract());
+//            if (contractList == null || contractList.size() == 0) {
+//                contractList = Collections.emptyList();
+//            }
+//            contractTxList.addAll(nebTransactionMapper.findTxnByContract(nebContractToken.getContract()));
         });
+
+        List<NebTransaction> contractTxList = nebTransactionMapper.findNrc20TxList(addressHash, tokens);
 
         List<Nrc20TransactionVo> nrc20TxList = Lists.newLinkedList();
         //过滤掉非nrc20的数据,并且提取对应的data,提取属于自己地址的交易

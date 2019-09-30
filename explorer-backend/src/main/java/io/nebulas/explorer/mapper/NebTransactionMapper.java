@@ -70,6 +70,8 @@ public interface NebTransactionMapper {
 
     List<NebTransaction> findTxnByContract(@Param("contractAddress") String contractAddress);
 
+    List<NebTransaction> findNrc20TxList(@Param("address") String address, @Param("tokens") List<String> tokens);
+
     List<BlockSummary> countTxnInBlock(@Param("blockHeights") List<Long> blockHeights);
 
     List<Map<String, String>> countTxnCntMapByFrom(List<String> addressHashes);

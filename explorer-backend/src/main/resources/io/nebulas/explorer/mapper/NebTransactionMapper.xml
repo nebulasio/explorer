@@ -218,6 +218,20 @@
         ORDER BY `timestamp` DESC
     </select>
 
+    <select id="findNrc20TxList" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `neb_transaction`
+        WHERE `from` = #{address,jdbcType=VARCHAR}
+        and `to` in
+        <foreach collection="tokens" item="item" open="(" close=")" separator=",">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+        and from_base64(data) like "%"#{address}"%"
+        AND `type` = 'call'
+        ORDER BY `timestamp` DESC
+    </select>
+
 
     <select id="findTxnOrderById" parameterType="map" resultMap="BaseResultMap">
         SELECT

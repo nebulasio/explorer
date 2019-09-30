@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j(topic = "subscribe")
 public class NaxSyncService {
 
-    private Executor executor = Executors.newCachedThreadPool();
+    private Executor executor = Executors.newSingleThreadExecutor();
 
     @Autowired
     private NebApiServiceWrapper nebApiServiceWrapper;
