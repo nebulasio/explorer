@@ -938,8 +938,8 @@ public class RpcController {
             }
         }
 
-        int totalRowNum = txList.size();
-        int totalPageNum = totalRowNum / PAGE_SIZE;
+        long totalRowNum = nebTransactionService.getNrc20TransactionsCount(hash);
+        long totalPageNum = totalRowNum / PAGE_SIZE;
         if (totalRowNum % PAGE_SIZE != 0) {
             totalPageNum++;
         }

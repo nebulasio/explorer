@@ -186,6 +186,15 @@ public class NebTransactionService {
         return nebTransactionMapper.countNrc20TxnCntByFromAndTo(addressHash);
     }
 
+    public long getNrc20TransactionsCount(String addressHash) {
+        List<NebContractToken> contractToken = nebContractTokenMapper.getAllContractTokens();
+        List<String> tokens = new ArrayList<>(contractToken.size());
+        contractToken.forEach(nebContractToken -> {
+            tokens.add(nebContractToken.getContract());
+        });
+        return nebTransactionMapper.countNrc20TxList(addressHash, tokens);
+    }
+
     /**
      * get address nrc20 transfer transaction
      *
@@ -234,7 +243,7 @@ public class NebTransactionService {
                         nrc20TxList.add(nrc20TransactionVo);
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error("Got NRC20 txs error: Address - {}; Tx - {} ", addressHash, nebTransaction.getHash());
             }
         });
