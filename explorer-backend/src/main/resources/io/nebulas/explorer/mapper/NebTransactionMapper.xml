@@ -229,7 +229,7 @@
         </foreach>
         AND `type` = 'call'
         and (`from` = #{address,jdbcType=VARCHAR} or from_base64(data) like "%"#{address}"%")
-        ORDER BY `timestamp` DESC
+        ORDER BY `timestamp` DESC limit 500
     </select>
 
 
