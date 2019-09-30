@@ -222,13 +222,13 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM `neb_transaction`
-        WHERE `from` = #{address,jdbcType=VARCHAR}
-        and `to` in
+        WHERE
+        `to` in
         <foreach collection="tokens" item="item" open="(" close=")" separator=",">
             #{item,jdbcType=VARCHAR}
         </foreach>
-        and from_base64(data) like "%"#{address}"%"
         AND `type` = 'call'
+        and (`from` = #{address,jdbcType=VARCHAR} or from_base64(data) like "%"#{address}"%")
         ORDER BY `timestamp` DESC
     </select>
 
