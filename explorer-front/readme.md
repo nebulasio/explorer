@@ -30,3 +30,12 @@ npm run dev
 # run webpack production build, results will output to 'dist' folder
 npm run build
 ```
+
+## Localization
+
+### ToDo
+
+#### routes/contract.vue
+1. We need to find a way to localize the tabButtons.
+#### routes/address.vue
+1. We need to refine the way it localizes the title. Right now isn't very elegant. Maybe we can add some additional/optional parameters such as class and id for each element, so it can be localized normally after.
