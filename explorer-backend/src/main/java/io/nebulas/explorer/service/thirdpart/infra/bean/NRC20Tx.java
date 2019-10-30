@@ -10,6 +10,8 @@ public class NRC20Tx {
     public long nonce;
     public String type;
     public long timestamp;
+    public long currentTimestamp;
+    public long timeDiff;
     public String gasPrice;
     public String gasLimit;
     public String gasUsed;
