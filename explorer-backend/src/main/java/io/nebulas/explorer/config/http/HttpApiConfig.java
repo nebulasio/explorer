@@ -7,6 +7,7 @@ import com.alibaba.fastjson.serializer.SerializeConfig;
 import io.nebulas.explorer.config.YAMLConfig;
 import io.nebulas.explorer.service.thirdpart.coinmarketcap.CoinMarketCapApiService;
 import io.nebulas.explorer.service.thirdpart.gateio.GateioApiService;
+import io.nebulas.explorer.service.thirdpart.infra.InfraApiService;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebulasApiService;
 import io.nebulas.explorer.service.thirdpart.nebulas.converter.NebulasApiConverterFactory;
 import okhttp3.*;
@@ -49,6 +50,18 @@ public class HttpApiConfig {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
         return retrofit.create(NebulasApiService.class);
+    }
+
+    @Scope
+    @Bean
+    public InfraApiService createInfraApiService(OkHttpClient httpClient) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(httpClient)
+                .baseUrl("http://54.184.64.237:8000/")
+                .addConverterFactory(new ConverterFactoryWithSerialization<>())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+        return retrofit.create(InfraApiService.class);
     }
 
     @Scope

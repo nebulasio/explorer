@@ -15,6 +15,9 @@ import io.nebulas.explorer.model.vo.ContractListItemVo;
 import io.nebulas.explorer.model.vo.Nrc20TransactionVo;
 import io.nebulas.explorer.model.vo.TransactionVo;
 import io.nebulas.explorer.service.blockchain.*;
+import io.nebulas.explorer.service.thirdpart.infra.InfraApiService;
+import io.nebulas.explorer.service.thirdpart.infra.bean.InfraResponse;
+import io.nebulas.explorer.service.thirdpart.infra.bean.NRC20TxListBean;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetAccountStateResponse;
 import lombok.AllArgsConstructor;
@@ -26,7 +29,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +53,6 @@ import java.util.stream.Collectors;
  * @since 2018-01-29
  */
 @Slf4j
-@AllArgsConstructor
 @RequestMapping("/api")
 @RestController
 public class RpcController {
@@ -57,24 +61,43 @@ public class RpcController {
     //暂时屏蔽该地址的请求
     private static String BAN_ADDRESS = "n1ggAx4ZJ9Bn63Fuor8ZbqXAJ6x49wLi11D";
 
-    private final NebAddressService nebAddressService;
-    private final NebBlockService nebBlockService;
-    private final NebTransactionService nebTransactionService;
-    private final NebMarketCapitalizationService nebMarketCapitalizationService;
-    private final NebDynastyService nebDynastyService;
-    private final NebApiServiceWrapper nebApiServiceWrapper;
-    private final NebStatService nebStatService;
-    private final NebEventService nebEventService;
-    private final NasAccountService nasAccountService;
-    private final NebTxCountByDayService nebTxCountByDayService;
+    @Autowired
+    private NebAddressService nebAddressService;
+    @Autowired
+    private NebBlockService nebBlockService;
+    @Autowired
+    private NebTransactionService nebTransactionService;
+    @Autowired
+    private NebMarketCapitalizationService nebMarketCapitalizationService;
+    @Autowired
+    private NebDynastyService nebDynastyService;
+    @Autowired
+    private NebApiServiceWrapper nebApiServiceWrapper;
+    @Autowired
+    private NebStatService nebStatService;
+    @Autowired
+    private NebEventService nebEventService;
+    @Autowired
+    private NasAccountService nasAccountService;
+    @Autowired
+    private NebTxCountByDayService nebTxCountByDayService;
 
+    @Autowired
     @Qualifier("customStringTemplate")
-    private final StringRedisTemplate redisTemplate;
+    private StringRedisTemplate redisTemplate;
+    @Autowired
     @Qualifier("customRedisTemplate")
-    private final RedisTemplate<String, String> mapRedisTemplate;
+    private RedisTemplate<String, String> mapRedisTemplate;
 
-    private final ContractTokenService contractTokenService;
-    private final ContractTokenBalanceService contractTokenBalanceService;
+    @Value("${spring.profiles.active}")
+    private String profiles;
+
+    @Autowired
+    private ContractTokenService contractTokenService;
+    @Autowired
+    private ContractTokenBalanceService contractTokenBalanceService;
+    @Autowired
+    private InfraApiService infraApiService;
 
     private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(20);
     private static final Base64.Decoder DECODER = Base64.getDecoder();
@@ -911,6 +934,12 @@ public class RpcController {
 
     @RequestMapping("/address/nrc20/{hash}/{page}")
     public JsonResult nrc20Transactions(@PathVariable("hash") String hash, @PathVariable("page") int page) {
+
+        if (profiles.equalsIgnoreCase("prod")){
+            InfraResponse<NRC20TxListBean> response = infraApiService.getNRC20TxList(hash, page).toBlocking().first();
+            return JsonResult.success(response);
+        }
+
         NebAddress address = nebAddressService.getNebAddressByHashRpc(hash);
         if (null == address || hash.equals(BAN_ADDRESS)) {
             return JsonResult.failed();
