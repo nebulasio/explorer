@@ -937,7 +937,7 @@ public class RpcController {
 
         if (profiles.equalsIgnoreCase("prod")){
             InfraResponse<NRC20TxListBean> response = infraApiService.getNRC20TxList(hash, page).toBlocking().first();
-            return JsonResult.success(response);
+            return JsonResult.success(response.data);
         }
 
         NebAddress address = nebAddressService.getNebAddressByHashRpc(hash);
