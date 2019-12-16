@@ -449,7 +449,10 @@ public class RpcController {
         }
 
         long maxBlockHeight = nebBlockService.getMaxHeight();
-        BigDecimal totalBalance = new BigDecimal("100000000").subtract(new BigDecimal(1.42694 * maxBlockHeight)).setScale(8, BigDecimal.ROUND_DOWN).stripTrailingZeros();
+        //65000000 + 1.42694*2307000 + 1.9026*(current_height-2307000)
+        BigDecimal totalBalance = new BigDecimal("65000000")
+                .add(new BigDecimal("1.42694").multiply(new BigDecimal("2307000")))
+                .add(new BigDecimal("1.9026").multiply(new BigDecimal(maxBlockHeight - 2307000)));
 
         List<NebAddress> addressList = nebAddressService.findAddressOrderByBalance(page, PAGE_SIZE);
 
