@@ -62,7 +62,14 @@
 							<span v-show=o.alias> | {{ o.alias }}</span>
 						</td>
 						<td class="text-right font-color-555555">{{ nasAmount(o.balance) }}</td>
-						<td class="text-right font-color-555555">{{ new Number(o.percentage).toFixed(4) }}%</td>
+						<td class="text-right font-color-555555">
+                            <span v-if="o.hash === 'n1gczhpkT54RaT4PB55CNoYbqmEQcfo4hqq'">
+                                -
+                            </span>
+                            <span v-else>
+                                {{ new Number(o.percentage).toFixed(4) }}%
+                            </span>
+                        </td>
 						<td class="text-right font-color-555555" style="padding-right: 24px;">{{ numberAddComma(o.txCnt) }}</td>
 					</tr>
 				</table>
