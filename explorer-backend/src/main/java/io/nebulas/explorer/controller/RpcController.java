@@ -2,30 +2,22 @@ package io.nebulas.explorer.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
 import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.domain.extention.ContractTransaction;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionStatusEnum;
 import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.model.PageIterator;
-import io.nebulas.explorer.model.vo.AddressVo;
-import io.nebulas.explorer.model.vo.BlockVo;
-import io.nebulas.explorer.model.vo.ContractListItemVo;
-import io.nebulas.explorer.model.vo.Nrc20TransactionVo;
-import io.nebulas.explorer.model.vo.TransactionVo;
+import io.nebulas.explorer.model.vo.*;
 import io.nebulas.explorer.service.blockchain.*;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetAccountStateResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -984,6 +976,9 @@ public class RpcController {
         }
 
         NasAccount ninetyDayAccount = nasAccountService.getNasAccountFromNinetyDays();
+        if (ninetyDayAccount == null) {
+            ninetyDayAccount = nasAccount;
+        }
 
         long newAddressCount = nasAccount.getAddressCount() - ninetyDayAccount.getAddressCount();
         result.put("totalAddressCount", totalAddressCount);
