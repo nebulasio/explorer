@@ -66,7 +66,28 @@ public class HttpApiConfig {
 
     @Scope
     @Bean
-    public CoinMarketCapApiService createCoinMarketCapApiService(@Autowired YAMLConfig yamlConfig, OkHttpClient httpClient) {
+    public CoinMarketCapApiService createCoinMarketCapApiService(@Autowired YAMLConfig yamlConfig) {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .retryOnConnectionFailure(true)
+                .connectionPool(new ConnectionPool(50, 5, MINUTES))
+                .connectTimeout(1, MINUTES)
+                .readTimeout(2, MINUTES)
+                .writeTimeout(1, MINUTES);
+
+        builder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request()
+                        .newBuilder()
+                        .addHeader("Accepts", "application/json")
+                        .addHeader("X-CMC_PRO_API_KEY", yamlConfig.getApiHost().getCoinmarketcapKey())
+                        .build();
+
+                return chain.proceed(request);
+            }
+        });
+
+        OkHttpClient httpClient = builder.build();
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClient)
                 .baseUrl(yamlConfig.getApiHost().getCoinmarketcap())

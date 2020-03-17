@@ -1,6 +1,5 @@
 package io.nebulas.explorer.jobs;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.nebulas.explorer.domain.NebMarketCapitalization;
 import io.nebulas.explorer.service.blockchain.NebMarketCapitalizationService;
@@ -26,42 +25,63 @@ public class FetchNebulasMarket {
     private CoinMarketCapApiService coinMarketCapApiService;
     private GateioApiService gateioApiService;
 
-    @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     public void fetch() {
-        JSONArray jsonArray = coinMarketCapApiService.getMarket().toBlocking().first();
+        JSONObject object = coinMarketCapApiService.getMarket().toBlocking().first();
 
-        if (null != jsonArray && jsonArray.size() > 0) {
+        if (null != object && object.containsKey("data")) {
             /** jsonObject格式
-             * {
-             "id": "nebulas-token",
-             "name": "Nebulas",
-             "symbol": "NAS",
-             "rank": "67",
-             "price_usd": "8.0421",
-             "price_btc": "0.00080844",
-             "24h_volume_usd": "7921550.0",
-             "market_cap_usd": "285494550.0",
-             "available_supply": "35500000.0",
-             "total_supply": "100000000.0",
-             "max_supply": "100000000.0",
-             "percent_change_1h": "1.14",
-             "percent_change_24h": "-3.66",
-             "percent_change_7d": "-11.3",
-             "last_updated": "1519376054"
-             }
+             {
+                "status": {
+                    "timestamp": "2020-03-17T13:37:44.816Z",
+                    "error_code": 0,
+                    "error_message": null,
+                    "elapsed": 15,
+                    "credit_count": 1,
+                    "notice": null
+                },
+                "data": {
+                    "1908": {
+                        "id": 1908,
+                        "name": "Nebulas",
+                        "symbol": "NAS",
+                        "slug": "nebulas-token",
+                        "num_market_pairs": 24,
+                        "date_added": "2017-08-23T00:00:00.000Z",
+                        "tags": [],
+                        "max_supply": null,
+                        "circulating_supply": 51952589,
+                        "total_supply": 71758447.8254,
+                        "platform": null,
+                        "cmc_rank": 167,
+                        "last_updated": "2020-03-17T13:37:06.000Z",
+                        "quote": {
+                            "USD": {
+                                "price": 0.189892368131,
+                                "volume_24h": 2044144.71774657,
+                                "percent_change_1h": -2.49873,
+                                "percent_change_24h": 7.42929,
+                                "percent_change_7d": -50.9639,
+                                "market_cap": 9865400.15574654,
+                                "last_updated": "2020-03-17T13:37:06.000Z"
+                            }
+                        }
+                    }
+                }
+            }
              */
-            JSONObject jsonObject = jsonArray.getJSONObject(0);
+            JSONObject jsonObject = object.getJSONObject("data").getJSONObject("1908").getJSONObject("quote").getJSONObject("USD");
 
             NebMarketCapitalization record = new NebMarketCapitalization();
             record.setCurrencyId("NAS");
-            record.setMarketCap(jsonObject.getBigDecimal("market_cap_usd"));
-            record.setVolume24h(jsonObject.getBigDecimal("24h_volume_usd"));
+            record.setMarketCap(jsonObject.getBigDecimal("market_cap"));
+            record.setVolume24h(jsonObject.getBigDecimal("volume_24h"));
 
             BigDecimal change24HBD = jsonObject.getBigDecimal("percent_change_24h");
             record.setChange24h(change24HBD.abs());
             record.setTrends(change24HBD.compareTo(BigDecimal.ZERO) > 0 ? 1 : 0);
 
-            record.setPrice(jsonObject.getBigDecimal("price_usd"));
+            record.setPrice(jsonObject.getBigDecimal("price"));
             record.setPriceUnit("USD");
 
             nebMarketCapitalizationService.addMarket(record);
