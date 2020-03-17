@@ -55,7 +55,7 @@ sync:
   open: true
   subscribe: true
 apiHost:
-  coinmarketcap: https://api.coinmarketcap.com
+  coinmarketcap: https://pro-api.coinmarketcap.com
   nebulas: https://testnet.nebulas.io
   gateio: https://data.gateio.io
 redis:
@@ -150,7 +150,7 @@ redis:
   password:
   database: 2
 apiHost:
-  coinmarketcap: https://api.coinmarketcap.com
+  coinmarketcap: https://pro-api.coinmarketcap.com
   nebulas: http://47.92.203.173:8685
   gateio: https://data.gateio.io
 grpc:
