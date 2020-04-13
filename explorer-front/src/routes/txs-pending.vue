@@ -41,22 +41,22 @@
 					</tr>
 					<tr v-for="(o, i) in arr" :key="i">
 						<td class="tdxxxwddd pl-3">
-							<router-link v-bind:to='fragApi + "/tx/" + o.hash'>
-								<span class="font-14 monospace">{{ o.hash }}</span>
+							<router-link v-bind:to='fragApi + "/tx/" + o.tx_hash'>
+								<span class="font-14 monospace">{{ o.tx_hash }}</span>
 							</router-link>
 						</td>
 						<td class="font-14 font-color-555555">
 							<div>
-								<div><span name="transactionsTableAgoPrefix" class="txspendingmultilocalizable"></span> {{ timeConversion(o.timeDiff) }} <span name="transactionsTableAgoSuffix" class="txspendingmultilocalizable"></span></div>
+								<div><span name="transactionsTableAgoPrefix" class="txspendingmultilocalizable"></span> {{ timeConversion(serverTime - o.timestamp*1000) }} <span name="transactionsTableAgoSuffix" class="txspendingmultilocalizable"></span></div>
 								<div class="down-arrow-tip" style="display: none;">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
 							</div>
 						</td>
-						<td class="font-14 font-color-555555">{{ numberAddComma(o.gasLimit) }}</td>
-						<td class="font-14 font-color-555555">{{ toWei(o.gasPrice) }}</td>
+						<td class="font-14 font-color-555555">{{ numberAddComma(o.gas_limit) }}</td>
+						<td class="font-14 font-color-555555">{{ toWei(o.gas_price) }}</td>
 						<td class=tdxxxwddd>
-							<vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
-							<router-link v-bind:to='fragApi + "/address/" + o.from.hash'>
-								<span class="font-14  monospace">{{ o.from.alias || o.from.hash }}</span>
+							<vue-blockies v-bind:address='o.address_from'></vue-blockies>
+							<router-link v-bind:to='fragApi + "/address/" + o.address_from'>
+								<span class="font-14  monospace">{{ o.address_from }}</span>
 							</router-link>
 						</td>
 						<td>
@@ -67,9 +67,9 @@
 								<span class="tip down-arrow-tip font-15 shadow"><span id="pendingTxSmartContract" class="txspendinglocalizable"></span></span>
 								<img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
 							</div>
-							<vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
-							<router-link v-bind:to='fragApi + "/address/" + o.to.hash'>
-								<span class="font-14  monospace">{{ o.to.alias || o.to.hash }}</span>
+							<vue-blockies v-bind:address='o.address_to'></vue-blockies>
+							<router-link v-bind:to='fragApi + "/address/" + o.address_to'>
+								<span class="font-14  monospace">{{ o.address_to }}</span>
 							</router-link>
 						</td>
 						<td class="text-right font-14 font-color-000000 pr-3">
@@ -103,6 +103,7 @@
 		},
 		data() {
 			return {
+                serverTime: 0,
 				arr: null,
 				currentPage: 0,
 				fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
@@ -155,12 +156,16 @@
 				else {
 					this.$root.showModalLoading = true;
 
-					api.getTx({ isPending: true, p }, o => {
+					api.getPendingTxList({
+                        page: p,
+                        page_size: 25
+                    }, o => {
 						this.$root.showModalLoading = false;
-						this.arr = o.txnList;
-						this.currentPage = o.currentPage;
-						this.totalPage = o.totalPage;
-						this.totalTxs = o.txnCnt;
+                        this.serverTime = o.server_timestamp;
+						this.arr = o.list;
+						this.currentPage = o.current_page;
+						this.totalPage = o.total_page;
+						this.totalTxs = o.count;
 
 						if (this.arr.length) {
 							this.heightFrom = this.arr[0].height;
@@ -169,6 +174,11 @@
 							this.heightFrom = 0;
 							this.heightTo = 0;
 						}
+
+                        this.tempInterval = setInterval(() => {
+                            this.checkStaticTranslations();
+                            this.removeTempInterval();
+                        }, 500);
 					}, xhr => {
 						this.$root.showModalLoading = false;
 						this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");

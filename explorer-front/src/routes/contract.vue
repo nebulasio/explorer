@@ -383,14 +383,24 @@
 				return ["Transfers", "Holders"]
 			},
 			urlChange() {
+                this.holders = [];
+                this.currentPage = 0;
+                this.totalPage = 0;
+                this.totalHolderCount = 0;
+
 				this.tab = 1;
 				this.$root.showModalLoading = true;
-				api.getContract(this.$route.params.id, o => {
+				api.getContract({contract: this.$route.params.id}, o => {
 					this.$root.showModalLoading = false;
 					this.decimal = o.decimal;
 					this.obj = o.contract;
 					this.txs = o.txList;
 					this.tokenPrice =  o.price ? {price: o.price, trends: o.trends, change24h: o.change24h} : null;
+
+                    this.tempInterval = setInterval(() => {
+                        this.checkStaticTranslations();
+                        this.removeTempInterval();
+                    }, 500);
 				}, xhr => {
 					this.$root.showModalLoading = false;
 					this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
@@ -503,6 +513,11 @@
 					this.currentPage = o.page;
 					this.totalPage = o.totalPageCount;
 					this.totalHolderCount = o.totalHolderCount;
+
+                    this.tempInterval = setInterval(() => {
+                        this.checkStaticTranslations();
+                        this.removeTempInterval();
+                    }, 500);
 				}, xhr => {
 					this.$root.showModalLoading = false;
 					this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");

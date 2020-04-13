@@ -413,7 +413,7 @@
 				this.checkStaticTranslations();
 				this.removeTempInterval();
 			}, 1500);
-			api.getBlock({ type: "latest" }, o => this.blocks = o);
+			api.getBlocks({ page_size: "40" }, o => this.blocks = o);
 			api.getTx({ type: "latest" }, o => this.txs = o);
 			api.getMarketCap(o => this.market = o);
 

@@ -55,22 +55,21 @@
 					<tr v-for="(o, i) in arr" :key="i" class="font-14">
 						<td style="padding-left: 24px;" class="font-color-000000">{{ o.rank }}</td>
 						<td class="tdxxxwddd">
-							<vue-blockies v-bind:address='o.hash'></vue-blockies>
-							<router-link v-bind:to='fragApi + "/address/" + o.hash'>
-								<span class="monospace">{{ o.hash }}</span>
+							<vue-blockies v-bind:address='o.address'></vue-blockies>
+							<router-link v-bind:to='fragApi + "/address/" + o.address'>
+								<span class="monospace">{{ o.address }}</span>
 							</router-link>
-							<span v-show=o.alias> | {{ o.alias }}</span>
 						</td>
 						<td class="text-right font-color-555555">{{ nasAmount(o.balance) }}</td>
 						<td class="text-right font-color-555555">
-                            <span v-if="o.hash === 'n1gczhpkT54RaT4PB55CNoYbqmEQcfo4hqq'">
+                            <span v-if="o.address === 'n1gczhpkT54RaT4PB55CNoYbqmEQcfo4hqq'">
                                 -
                             </span>
                             <span v-else>
                                 {{ new Number(o.percentage).toFixed(4) }}%
                             </span>
                         </td>
-						<td class="text-right font-color-555555" style="padding-right: 24px;">{{ numberAddComma(o.txCnt) }}</td>
+						<td class="text-right font-color-555555" style="padding-right: 24px;">{{ numberAddComma(o.tx_count) }}</td>
 					</tr>
 				</table>
 			</div>
@@ -148,11 +147,11 @@
 
 					api.getAccount(p, o => {
 						this.$root.showModalLoading = false;
-						this.arr = o.addressList;
-						this.currentPage = o.page;
-						this.totalAccounts = o.totalAccountsCnt;
-						this.totalBalance = o.totalBalance;
-						this.totalPage = o.totalPage;
+						this.arr = o.list;
+						this.currentPage = o.current_page;
+						this.totalAccounts = o.count;
+						// this.totalBalance = o.totalBalance;
+						this.totalPage = o.total_page;
 
 						if (this.arr.length) {
 							this.heightFrom = this.arr[0].height;

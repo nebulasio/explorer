@@ -21,6 +21,11 @@ module.exports = {
 			// url: "http://39.96.38.130:8080/api/", //aliyun
 			// url: "http://172.16.15.94:8080/api/", // xucun
 			atp: "n1rR5uiy4vDUn7TPMAtJ8Y1Eo54K6EYvSJ6"
-		}
+		},
+		test: {
+		    name: "Infra",
+            url: "http://54.184.64.237:8000",
+            atp: "n1zUNqeBPvsyrw5zxp9mKcDdLTjuaEL7s39"
+        }
 	}
 };

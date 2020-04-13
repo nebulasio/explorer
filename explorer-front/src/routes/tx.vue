@@ -90,13 +90,13 @@
 				<table class="explorer-table">
 					<tr>
 						<td class="td-left font-16 font-color-555555 txlocalizable" style="padding-left: 24px;" id="txTxHash"></td>
-						<td class="font-16 font-color-000000 monospace">{{ tx.hash }}</td>
+						<td class="font-16 font-color-000000 monospace">{{ tx.tx_hash }}</td>
 					</tr>
 					<tr class="font-16">
 						<td class="font-color-555555 txlocalizable" style="padding-left: 24px;" id="txTxReceiptStatusTitle"></td>
 						<td class="d-flex align-items-center" v-if="tx.status === 0" style="height: inherit">
 							<img class="icon18" src="../../static/img/ic_tx_status_failed.png?v=20190110" />
-							<span class="font-color-F04434 txlocalizable" style="margin-left: 10px;" id="txFail"> ( {{ tx.executeError }} )</span>
+							<span class="font-color-F04434 txlocalizable" style="margin-left: 10px;" id="txFail"> ( {{ tx.ext_info.execute_error }} )</span>
 						</td>
 						<td class="d-flex align-items-center" v-else-if="tx.status === 1" style="height: inherit">
 							<img class="icon18" src="../../static/img/ic_tx_status_success.png" />
@@ -110,57 +110,57 @@
 					<tr>
 						<td class="font-16 font-color-555555 txlocalizable" style="padding-left: 24px;" id="txBlockHeight"></td>
 						<td>
-							<template v-if=tx.isPending>
+							<template v-if="tx.status===2">
 								<span class="font-color-000000 font-16"> <span id="txPendingText" class="txlocalizable"></span> </span>
 							</template>
 							<template v-else>
-								<router-link v-if=tx.block v-bind:to='fragApi +"/block/" + tx.block.height'>
-									<span class="font-16">{{tx.block.height}}</span>
+								<router-link v-if=tx.block_height v-bind:to='fragApi +"/block/" + tx.block_height'>
+									<span class="font-16">{{tx.block_height}}</span>
 								</router-link>
 							</template>
 						</td>
 					</tr>
 					<tr>
 						<td class="font-16 font-color-555555 txlocalizable" style="padding-left: 24px;" id="txTimeStamp"></td>
-						<td class="font-16 font-color-000000"><span id="txTimeAgoPrefix" class="txlocalizable"></span> {{ timeConversion(tx.timeDiff) }} <span id="txTimeAgoSuffix" class="txlocalizable"></span> ({{ new Date(tx.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ tx.timestamp }})</td>
+						<td class="font-16 font-color-000000"><span id="txTimeAgoPrefix" class="txlocalizable"></span> {{ timeConversion(tx.block_timestamp) }} <span id="txTimeAgoSuffix" class="txlocalizable"></span> ({{ new Date(tx.block_timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ tx.block_timestamp }})</td>
 					</tr>
 					<tr>
 						<td class="font-16 font-color-555555 txlocalizable" style="padding-left: 24px;" id="txFromText"></td>
 						<td>
-							<router-link v-if=tx.from v-bind:to='fragApi +"/address/" + tx.from.hash'>
-								<span class="font-16 monospace">{{ tx.from.hash }}</span>
+							<router-link v-if=tx.from v-bind:to='fragApi +"/address/" + tx.from'>
+								<span class="font-16 monospace">{{ tx.from }}</span>
 							</router-link>
 						</td>
 					</tr>
 					<tr>
 						<td class="font-16 font-color-555555 txlocalizable" style="padding-left: 24px;" id="txToText"></td>
-						<td v-if="tx.type === 'call'">
+						<td v-if=tx.is_nrc20>
 							<span class="font-color-000000 font-16 txlocalizable" id="txContract"></span>
-							<router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
-								<span style="margin-left: 20px;" class="font-16 monospace">{{ tx.to.hash }}</span>
+							<router-link v-if=tx.contract_address v-bind:to='fragApi +"/address/" + tx.contract_address'>
+								<span style="margin-left: 20px;" class="font-16 monospace">{{ tx.contract_address }}</span>
 							</router-link>
-							<div class="token-name font-16 font-color-000000" style="margin-left: 14px;" v-if="isTokenTransfer && tx.tokenName">(<span id="txTextTokenPrefix" class="txlocalizable"></span>{{ tx.tokenName }}<span id="txTextTokenSuffix" class="txlocalizable"></span>)</div>
+							<div class="token-name font-16 font-color-000000" style="margin-left: 14px;" v-if="tx.is_nrc20 && tx.token_name">(<span id="txTextTokenPrefix" class="txlocalizable"></span>{{ tx.token_name }}<span id="txTextTokenSuffix" class="txlocalizable"></span>)</div>
 						</td>
 						<td v-else>
-							<router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
-								<span class="font-16 monospace">{{ tx.to.hash }}</span>
+							<router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to'>
+								<span class="font-16 monospace">{{ tx.to }}</span>
 							</router-link>
 						</td>
 					</tr>
-					<tr  v-if=isTokenTransfer class="font-16">
+					<tr  v-if=tx.is_nrc20 class="font-16">
 						<td class="font-color-555555 txlocalizable" style="padding-left: 24px;" id="txTokenTransferred"></td>
 						<td>
 							<span class="font-color-000000 txlocalizable" id="txTransferredFrom"></span>
-							<router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.from.hash'>
-								<span class="monospace">{{ tx.from.hash }}</span>
+							<router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.from'>
+								<span class="monospace">{{ tx.from }}</span>
 							</router-link>
 							<span class="font-color-000000 txlocalizable" id="txTransferredTo"></span>
-							<router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>
-								<span class="monospace">{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
+							<router-link  class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to'>
+								<span class="monospace">{{ tx.to }} </span>
 							</router-link>
 							<span class="font-color-000000"><span id="txFor" class="txlocalizable"></span> {{ tokenAmount }}</span>
-							<div class="token-name" v-if="tx.tokenName">
-								<a href=# @click="search(tx.tokenName)">{{ tx.tokenName }}</a>
+							<div class="token-name" v-if="tx.token_name">
+								<a href=# @click="search(tx.token_name)">{{ tx.token_name }}</a>
 							</div>
 						</td>
 					</tr>
@@ -176,13 +176,13 @@
 			<div class="mobile-detail d-md-none">
 				<div>
 					<span class="txlocalizable" id="txHashTitle"></span>
-					<div class="detail monospace">{{ tx.hash }}</div>
+					<div class="detail monospace">{{ tx.tx_hash }}</div>
 				</div>
 				<div>
 					<span class="txlocalizable" id="txReceiptStatusTitle"></span>
 					<td class="detail d-flex align-items-center" v-if="tx.status === 0" style="height: inherit">
 							<img class="icon18" src="../../static/img/ic_tx_status_failed.png?v=20190110" />
-							<span class="font-color-F04434" style="margin-left: 10px;"><span class="txlocalizable" id="txTxFailStatus"></span> ( {{ tx.executeError }} )</span>
+							<span class="font-color-F04434" style="margin-left: 10px;"><span class="txlocalizable" id="txTxFailStatus"></span> ( {{ tx.execute_error }} )</span>
 						</td>
 						<td class="detail d-flex align-items-center" v-else-if="tx.status === 1" style="height: inherit">
 							<img class="icon18" src="../../static/img/ic_tx_status_success.png" />
@@ -196,40 +196,40 @@
 				<div>
 					<span class="txlocalizable" id="txBlockHeightText"></span>
 					<div class="detail">
-						<template v-if=tx.isPending>
+						<template v-if="tx.status === 2">
 							<span class="font-color-000000"> <span class="txlocalizable" id="txPendingStatus"></span> </span>
 						</template>
 						<template v-else>
-							<router-link v-if=tx.block v-bind:to='fragApi +"/block/" + tx.block.height'>
-								<span>{{tx.block.height}}</span>
+							<router-link v-if=tx.block_height v-bind:to='fragApi +"/block/" + tx.block_height'>
+								<span>{{tx.block_height}}</span>
 							</router-link>
 						</template>
 					</div>
 				</div>
 				<div>
 					<span class="txlocalizable" id="txTimestampText"></span>
-					<div class="detail">{{ timeConversion(tx.timeDiff) }} ago ({{ new Date(tx.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ tx.timestamp }})</div>
+					<div class="detail">{{ timeConversion(tx.server_timestamp - tx.block_timestamp) }} ago ({{ new Date(tx.block_timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ tx.timestamp }})</div>
 				</div>
 				<div>
 					<span class="txlocalizable" id="txFromText2"></span>
 					<div class="detail">
-						<router-link v-if=tx.from v-bind:to='fragApi +"/address/" + tx.from.hash'>
-							<span class="monospace">{{ tx.from.hash }}</span>
+						<router-link v-if=tx.from v-bind:to='fragApi +"/address/" + tx.from'>
+							<span class="monospace">{{ tx.from }}</span>
 						</router-link>
 					</div>
 				</div>
 				<div>
 					<span class="txlocalizable" id="txToText2"></span>
-					<div v-if="tx.type == 'call'" class="detail">
+					<div v-if=tx.is_nrc20 class="detail">
 						<span class="font-color-000000 txlocalizable" style="margin-right: 20px;" id="txContractText"></span>
-						<router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash' style="margin-right: 14px;">
-							<span class="monospace">{{ tx.to.hash }}</span>
+						<router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to' style="margin-right: 14px;">
+							<span class="monospace">{{ tx.to }}</span>
 						</router-link>
-						<div class="token-name font-color-000000" v-if="isTokenTransfer && tx.tokenName">(<span class="txlocalizable" id="txTokenTextPrefix"></span>){{ tx.tokenName }}<span class="txlocalizable" id="txTokenTextSuffix"></span>)</div>
+						<div class="token-name font-color-000000" v-if="isTokenTransfer && tx.token_name">(<span class="txlocalizable" id="txTokenTextPrefix"></span>){{ tx.token_name }}<span class="txlocalizable" id="txTokenTextSuffix"></span>)</div>
 					</div>
 					<div v-else class="detail">
-						<router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to.hash'>
-							<span class="monospace">{{ tx.to.hash }}</span>
+						<router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to'>
+							<span class="monospace">{{ tx.to }}</span>
 						</router-link>
 					</div>
 				</div>
@@ -237,16 +237,16 @@
 					<span class="txlocalizable" id="txTokenTransferred2"></span>
 					<div class="detail">
 						<span class="font-color-000000 txlocalizable" id="txFromText3"></span>
-						<router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.from.hash'>
-							<span class="monospace">{{ tx.from.hash }}</span>
+						<router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.from'>
+							<span class="monospace">{{ tx.from }}</span>
 						</router-link>
 						<span class="font-color-000000 txlocalizable" id="txToText3"></span>
-						<router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + JSON.parse(JSON.parse(tx.data).Args)[0]'>
-							<span class="monospace">{{ JSON.parse(JSON.parse(tx.data).Args)[0] }} </span>
+						<router-link class=atpAddress v-if=tx.to v-bind:to='fragApi +"/address/" + tx.to'>
+							<span class="monospace">{{ tx.to }} </span>
 						</router-link>
 						<span class="font-color-000000"><span class="txlocalizable" id="txFor2"></span> {{ tokenAmount }}</span>
-						<div class="token-name" v-if="tx.tokenName">
-							<a href=# @click="search(tx.tokenName)">{{ tx.tokenName }}</a>
+						<div class="token-name" v-if="tx.token_name">
+							<a href=# @click="search(tx.token_name)">{{ tx.token_name }}</a>
 						</div>
 					</div>
 				</div>
@@ -264,19 +264,19 @@
 				<table class="explorer-table">
 					<tr>
 						<td class="td-left font-16 font-color-555555" style="padding-left: 24px;"><span id="txGasLimitTitle" class="txlocalizable"></span></td>
-						<td class="font-color-000000 font-16">{{ numberAddComma(tx.gasLimit) }}</td>
+						<td class="font-color-000000 font-16">{{ numberAddComma(tx.gas_limit) }}</td>
 					</tr>
 					<tr>
 						<td class="font-16 font-color-555555" style="padding-left: 24px;"><span id="txGasUsedByTx" class="txlocalizable"></span></td>
-						<td class="font-color-000000 font-16"><span v-if="tx.isPending === true" id="txPendingText2"></span><span v-else>{{ numberAddComma(tx.gasUsed) }}</span></td>
+						<td class="font-color-000000 font-16"><span v-if="tx.status===2" id="txPendingText2"></span><span v-else>{{ numberAddComma(tx.gas_used) }}</span></td>
 					</tr>
 					<tr>
 						<td class="font-16 font-color-555555" style="padding-left: 24px;"><span id="txGasPrice" class="txlocalizable"></span></td>
-						<td class="font-color-000000 font-16">{{ toWei(tx.gasPrice) }}</td>
+						<td class="font-color-000000 font-16">{{ toWei(tx.gas_price) }}</td>
 					</tr>
 					<tr>
 						<td class="font-16 font-color-555555" style="padding-left: 24px;"><span id="txActualTxCostFee" class="txlocalizable"></span></td>
-						<td class="font-color-000000 font-16">{{ toWei(tx.txFee) }}</td>
+						<td class="font-color-000000 font-16">{{ toWei(tx.tx_fee) }}</td>
 					</tr>
 					<tr>
 						<td class="font-16 font-color-555555" style="padding-left: 24px;"><span id="txNonce" class="txlocalizable"></span></td>
@@ -284,7 +284,7 @@
 					</tr>
 					<tr>
 						<td class="font-16 font-color-555555" style="padding-left: 24px;"><span id="txTxType" class="txlocalizable"></span></td>
-						<td class="font-color-000000 font-16" v-if=" tx.type === 'deploy'">{{ txType }} ( <span id="txContractAddress" class="txlocalizable"></span> <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.contractAddress'> <span> {{tx.contractAddress}}</span> </router-link>)</td>
+						<td class="font-color-000000 font-16" v-if=" tx.type === 'deploy'">{{ txType }} ( <span id="txContractAddress" class="txlocalizable"></span> <router-link v-if=tx.to v-bind:to='fragApi +"/address/" + tx.contract_address'> <span> {{tx.contract_address}}</span> </router-link>)</td>
 						<td class="font-color-000000 font-16" v-else>{{ txType }}</td>
 					</tr>
 					<tr>
@@ -386,7 +386,7 @@
 					return;
 				}
 				this.$root.showModalLoading = true;
-				api.getTx(this.$route.params.id, o => {
+				api.getTx({hash: this.$route.params.id}, o => {
 					this.$root.showModalLoading = false;
 					this.tx = o;
 					// if (!o.tokenName || o.tokenName.length == 0) {
@@ -394,6 +394,10 @@
 					//		 this.tx.tokenName ="ATP";
 					//	 }
 					// }
+                    this.tempInterval = setInterval(() => {
+                        this.checkStaticTranslations();
+                        this.removeTempInterval();
+                    }, 500);
 				}, xhr => {
 					this.$root.showModalLoading = false;
 					this.$router.replace((this.$route.params.api ?"/" + this.$route.params.api :"") +"/404");
@@ -409,8 +413,8 @@
 				return false;
 			},
 			tokenAmount() {
-				BigNumber.config({ DECIMAL_PLACES: this.tx.decimal })
-				var amount = BigNumber(JSON.parse(JSON.parse(this.tx.data).Args)[1]);
+				BigNumber.config({ DECIMAL_PLACES: this.tx.decimal });
+				var amount = BigNumber(this.tx.real_value);
 				var decimals = BigNumber('1e+' + this.tx.decimal);
 				return amount.div(decimals).toFormat();
 			},
@@ -457,6 +461,7 @@
 				// Unique elements, identified by id attr
 				var myLocalizableElements = document.getElementsByClassName("txlocalizable");
 				var totalElements = myLocalizableElements.length;
+				console.log(totalElements);
 				var i;
 				for (i = 0; i < totalElements; i++) {
 					var elementId = myLocalizableElements[i].getAttribute("id");

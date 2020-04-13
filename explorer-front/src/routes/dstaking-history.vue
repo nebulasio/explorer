@@ -112,15 +112,15 @@
 						</td>
 
 						<td>
-							<span>{{naxAmount(o.distributedNax) + ' NAX'}}</span>
+							<span>{{naxAmount(o.distributed_nax) + ' NAX'}}</span>
 						</td>
 
 						<td>
-							<span>{{naxAmount(o.destroyedNax) + ' NAX'}}</span>
+							<span>{{naxAmount(o.destroyed_nax) + ' NAX'}}</span>
 						</td>
 
 						<td>
-							<span>{{tokenAmount(o.pledgeNas) + ' NAS'}}</span>
+							<span>{{tokenAmount(o.pledged_nas) + ' NAS'}}</span>
 						</td>
 
 					</tr>
@@ -206,9 +206,14 @@
 				}, o => {
 					this.$root.showModalLoading = false;
 					this.arr = o.list;
-					this.currentPage = o.currentPage;
-					this.totalPage = o.totalPage;
-					this.totalTxs = o.total;
+					this.currentPage = o.current_page;
+					this.totalPage = o.total_page;
+					this.totalTxs = o.count;
+
+                    this.tempInterval = setInterval(() => {
+                        this.checkStaticTranslations();
+                        this.removeTempInterval();
+                    }, 500);
 				}, xhr => {
 					this.$root.showModalLoading = false;
 					this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
@@ -270,7 +275,7 @@
 			},
 			pledgeRate(o) {
 				BigNumber.config({ DECIMAL_PLACES: 18 })
-				var rate = BigNumber(o.pledgeNas).div(BigNumber(o.totalNas)) * 100;
+				var rate = BigNumber(o.pledged_nas).div(BigNumber(o.total_supplied_nas)) * 100;
 				return rate.toFixed(4)+ '%';
 			}
 		},

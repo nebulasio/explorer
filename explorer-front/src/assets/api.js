@@ -1,20 +1,19 @@
-var { ajax, ajaxSplitAction, getNebulasNetHost } = require("@/assets/utility");
+var {ajax, ajaxSplitAction, getNebulasNetHost} = require("@/assets/utility");
 
 module.exports = {
     // get api/account?
     // - p      - 页码, 默认 1
     getAccount(p, done, fail) {
-        ajax1(
-            "account",
-            { p },
-            function d(s, xhr) {
-                var o = JSON.parse(s);
 
-                if (o.code == 0) done(o.data);
-                else if (typeof fail == "function") fail(xhr);
-            },
-            fail
-        );
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/holders", {page: p, page_size: 25}, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0) done(o.data);
+            else if (typeof fail == "function") fail(xhr);
+        }
     },
 
     // get api/address?
@@ -23,9 +22,12 @@ module.exports = {
     // get api/address/
     // - <hash>
     getAddress(t, done, fail) {
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/explorer/address", t, d, fail);
+
         // wtf - webpack 对 if (typeof t == "object") 报异常
-        if (eval('typeof t == "object"')) ajax1("address", t, d, fail);
-        else ajax1("address/" + t, null, d, fail);
+        // if (eval('typeof t == "object"')) ajax1("address", t, d, fail);
+        // else ajax1("address/" + t, null, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -46,9 +48,26 @@ module.exports = {
     // get api/block/
     // - <id or hash>
     getBlock(t, done, fail) {
+        // var host = "http://54.184.64.237:8000";
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/block/detail", t, d, fail);
+
         // wtf - webpack 对 if (typeof t == "object") 报异常
-        if (eval('typeof t == "object"')) ajax1("block", t, d, fail);
-        else ajax1("block/" + t, null, d, fail);
+        // if (eval('typeof t == "object"')) ajax1("block", t, d, fail);
+        // else ajax1("block/" + t, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0) done(o.data);
+            else if (typeof fail == "function") fail(xhr);
+        }
+    },
+
+    getLatestBlockHeight(t, done, fail) {
+        // var host = "http://54.184.64.237:8000";
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/block/max", t, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -59,9 +78,13 @@ module.exports = {
     },
 
     getBlocks(t, done, fail) {
-        // wtf - webpack 对 if (typeof t == "object") 报异常
-        if (eval('typeof t == "object"')) ajax1("blocks", t, d, fail);
-        else ajax1("blocks/" + t, null, d, fail);
+        // var host = "http://54.184.64.237:8000";
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/explorer/block/list", t, d, fail);
+
+        // // wtf - webpack 对 if (typeof t == "object") 报异常
+        // if (eval('typeof t == "object"')) ajax1("blocks", t, d, fail);
+        // else ajax1("blocks/" + t, null, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -76,7 +99,7 @@ module.exports = {
         ajax1(
             "market_cap",
             null,
-            function(s, xhr) {
+            function (s, xhr) {
                 var o = JSON.parse(s);
 
                 if (o.code == 0) done(o.data);
@@ -87,32 +110,85 @@ module.exports = {
     },
 
     getSearch(q, done, fail) {
-        ajax1(
-            "search",
-            { q },
-            function(s, xhr) {
-                var o = JSON.parse(s);
 
-                if (o.code == 0) done(o.data);
-                else if (typeof fail == "function") fail(xhr);
-            },
-            fail
-        );
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/explorer/search", {q: q}, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0) done(o.data);
+            else if (typeof fail == "function") fail(xhr);
+        }
     },
 
-    // get api/tx?
-    // - a          - address hash
-    // - block      - block height
-    // - isPending
-    // - p          - 页码, 默认 1
-    // - type       - 目前只有 latest
-    // get api/tx/
-    // - cnt_static
-    // - <id or hash>
-    getTx(t, done, fail) {
+
+    getTxDailyCount(done, fail) {
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/explorer/tx/count", null, d, fail);
         // wtf - webpack 对 if (typeof t == "object") 报异常
-        if (eval('typeof t == "object"')) ajax1("tx", t, d, fail);
-        else ajax1("tx/" + t, null, d, fail);
+        // if (eval('typeof t == "object"')) ajax1("tx", t, d, fail);
+        // else ajax1("tx/" + t, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0) done(o.data);
+            else if (typeof fail == "function") fail(xhr);
+        }
+    },
+
+    getTx(t, done, fail) {
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/explorer/tx/detail", t, d, fail);
+        // wtf - webpack 对 if (typeof t == "object") 报异常
+        // if (eval('typeof t == "object"')) ajax1("tx", t, d, fail);
+        // else ajax1("tx/" + t, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0) done(o.data);
+            else if (typeof fail == "function") fail(xhr);
+        }
+    },
+
+    getTxLatest(done, fail) {
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/explorer/tx/latest", null, d, fail);
+        // wtf - webpack 对 if (typeof t == "object") 报异常
+        // if (eval('typeof t == "object"')) ajax1("tx", t, d, fail);
+        // else ajax1("tx/" + t, null, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0) done(o.data);
+            else if (typeof fail == "function") fail(xhr);
+        }
+    },
+
+    getPendingTxList(t, done, fail) {
+        // var host = "http://54.184.64.237:8000";
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/tx/list/pending", t, d, fail);
+
+        function d(s, xhr) {
+            var o = JSON.parse(s);
+
+            if (o.code == 0) done(o.data);
+            else if (typeof fail == "function") fail(xhr);
+        }
+    },
+
+    getTxList(t, done, fail) {
+        // var host = "http://54.184.64.237:8000";
+        var host = "http://localhost:8000";
+        var path = "/tx/list";
+        if (t.address) {
+            path = "/tx/listByAddress"
+        }
+        ajax("GET " + host + path, t, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -125,8 +201,11 @@ module.exports = {
     // get api/contract?
     // - c      - contract address
     getContract(c, done, fail) {
-        if (eval('typeof t == "object"')) ajax1("contract", c, d, fail);
-        else ajax1("contract/" + c, null, d, fail);
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/explorer/contract", c, d, fail);
+
+        // if (eval('typeof t == "object"')) ajax1("contract", c, d, fail);
+        // else ajax1("contract/" + c, null, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -141,8 +220,11 @@ module.exports = {
     // - isPending  - 默认 false
     // - p          - 页码, 默认 1
     getContractTx(t, done, fail) {
-        if (eval('typeof t == "object"')) ajax1("contract/tx", t, d, fail);
-        else ajax1("contract/tx/" + t, null, d, fail);
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/token/tx/list", t, d, fail);
+
+        // if (eval('typeof t == "object"')) ajax1("contract/tx", t, d, fail);
+        // else ajax1("contract/tx/" + t, null, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -156,8 +238,10 @@ module.exports = {
     // - contract   - contract address
     // - p          - 页码, 默认 1
     getContractHolders(t, done, fail) {
-        if (eval('typeof t == "object"')) ajax1("contract/holders", t, d, fail);
-        else ajax1("contract/holders/" + t, null, d, fail);
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/explorer/token/holders", t, d, fail);
+        // if (eval('typeof t == "object"')) ajax1("contract/holders", t, d, fail);
+        // else ajax1("contract/holders/" + t, null, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -171,7 +255,8 @@ module.exports = {
     // - address   - address
     // - page   - 页码, 默认 1
     getNrc20Txs(address, page, done, fail) {
-        ajax1("address/nrc20/" + address + "/" + page, null, d, fail);
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/tx/nrc20", {address: address, page: page, page_size: 25}, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -187,11 +272,11 @@ module.exports = {
     getNatChanges(address, page, size, done, fail) {
         ajax1(
             "nat/list?address=" +
-                address +
-                "&page=" +
-                page +
-                "&pageSize=" +
-                size,
+            address +
+            "&page=" +
+            page +
+            "&pageSize=" +
+            size,
             null,
             d,
             fail
@@ -211,11 +296,11 @@ module.exports = {
     getNaxChanges(address, page, size, done, fail) {
         ajax1(
             "nax/list?address=" +
-                address +
-                "&page=" +
-                page +
-                "&pageSize=" +
-                size,
+            address +
+            "&page=" +
+            page +
+            "&pageSize=" +
+            size,
             null,
             d,
             fail
@@ -230,7 +315,10 @@ module.exports = {
     },
 
     getTodayTxCnt(done, fail) {
-        ajax1("tx/cnt_today", null, d, fail);
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/tx/count/today", null, d, fail);
+
+        // ajax1("tx/cnt_today", null, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -241,7 +329,10 @@ module.exports = {
     },
 
     getStaticInfo(done, fail) {
-        ajax1("nasinfo", null, d, fail);
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/explorer/nasinfo", null, d, fail);
+
+        // ajax1("nasinfo", null, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -252,7 +343,10 @@ module.exports = {
     },
 
     getContracts(t, done, fail) {
-        ajax1("contracts", t, d, fail);
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/contracts", t, d, fail);
+
+        // ajax1("contracts", t, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -274,7 +368,10 @@ module.exports = {
     },
 
     getDstakingSummary(t, done, fail) {
-        ajax1("dstaking/summary", t, d, fail);
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/nax/summary", t, d, fail);
+
+        // ajax1("dstaking/summary", t, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);
@@ -285,7 +382,10 @@ module.exports = {
     },
 
     getDstakingHistory(t, done, fail) {
-        ajax1("dstaking/history", t, d, fail);
+        var host = "http://localhost:8000";
+        ajax("GET " + host + "/nax/history", t, d, fail);
+
+        // ajax1("dstaking/history", t, d, fail);
 
         function d(s, xhr) {
             var o = JSON.parse(s);

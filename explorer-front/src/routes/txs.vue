@@ -141,30 +141,30 @@
 							<img v-if="o.status===0" class="icon40" src="../../static/img/ic_tx_failed.png"/>
 						</td>
 						<td class="txs-hash">
-							<router-link v-bind:to='fragApi + "/tx/" + o.hash'>
-								<span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal', 'monospace']">{{ o.hash }}</span>
+							<router-link v-bind:to='fragApi + "/tx/" + o.tx_hash'>
+								<span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal', 'monospace']">{{ o.tx_hash }}</span>
 							</router-link>
 						</td>
 
 						<td class="txs-block">
-							<router-link class="font-14" v-if='o.block && o.block.height' v-bind:to='fragApi + "/block/" + o.block.height'>
-								<span>{{ o.block.height }}</span>
+							<router-link class="font-14" v-if='o.block_height' v-bind:to='fragApi + "/block/" + o.block_height'>
+								<span>{{ o.block_height }}</span>
 							</router-link>
 							<i class="font-14 font-color-000000" v-else><span name="transactionsTablePending" class="txsmultilocalizable"></span></i>
 						</td>
 						<td class="font-14 font-color-555555">
 							<div>
 								<span>
-									<span name="transactionsTableAgoPrefix" class="txsmultilocalizable"></span> {{ timeConversion(o.timeDiff) }} <span name="transactionsTableAgoSuffix" class="txsmultilocalizable"></span>
+									<span name="transactionsTableAgoPrefix" class="txsmultilocalizable"></span> {{ timeConversion(serverTime - o.block_timestamp*1000) }} <span name="transactionsTableAgoSuffix" class="txsmultilocalizable"></span>
 								</span>
 								<div class="down-arrow-tip" style="display:none;">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
 							</div>
 						</td>
 						<td class="tdxxxwddd txs-from-to">
-							<vue-blockies v-bind:address='o.from.alias || o.from.hash'></vue-blockies>
+							<vue-blockies v-bind:address='o.address_from'></vue-blockies>
 							<!-- <span class="fromTo font-color-000000 font-14" v-if="o.from.hash === $route.query.a">{{ o.from.alias || o.from.hash }}</span> -->
-							<router-link v-bind:to='fragApi + "/address/" + o.from.hash'>
-								<span class="fromTo font-14  monospace">{{ o.from.hash }}</span>
+							<router-link v-bind:to='fragApi + "/address/" + o.address_from'>
+								<span class="fromTo font-14  monospace">{{ o.address_from }}</span>
 							</router-link>
 						</td>
 						<td style="padding: 10px;">
@@ -176,15 +176,15 @@
 								<span class="tip down-arrow-tip font-15 shadow txslocalizable" id="transactionsSmartcontract"></span>
 								<img class="icon24" src="../../static/img/icon_tx_type_contract.png" />
 							</div>
-							<vue-blockies v-bind:address='o.to.alias || o.to.hash'></vue-blockies>
+							<vue-blockies v-bind:address='o.address_to || o.address_to'></vue-blockies>
 							<!-- <span class="fromTo font-color-000000 font-14" v-if="o.to.hash === $route.query.a">{{ o.to.alias || o.to.hash }}</span> -->
-							<router-link v-bind:to='fragApi + "/address/" + o.to.hash'>
-								<span class="fromTo font-14  monospace">{{ o.to.hash }}</span>
+							<router-link v-bind:to='fragApi + "/address/" + o.address_to'>
+								<span class="fromTo font-14  monospace">{{ o.address_to }}</span>
 							</router-link>
 						</td>
 						<td v-if=isNatVoteTransfer(o) class="text-right font-color-000000 font-14">{{ natAmount(o) }} NAT</td>
 						<td v-else class="text-right font-color-000000 font-14">{{ tokenAmount(o.value) }} NAS</td>
-						<td class="text-right font-14 font-color-555555 pr-3">{{ toWei(o.txFee) }}</td>
+						<td class="text-right font-14 font-color-555555 pr-3">{{ toWei(o.gas_price*o.gas_used) }}</td>
 					</tr>
 				</table>
 			</div>
@@ -215,6 +215,7 @@
 		},
 		data() {
 			return {
+			    serverTime: 0,
 				arr: null,
 				currentPage: 0,
 				fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
@@ -260,24 +261,24 @@
 			nav(n) {
 				var query = JSON.parse(window.JSON.stringify(this.$route.query));
 
-				query.p = n;
+				query.page = n;
 				this.$router.push({ path: this.$route.path, query });
 			},
 			nthPage() {
 				this.$root.showModalLoading = true;
-
-				api.getTx({
-					a: this.$route.query.a,
-					block: this.$route.query.block,
-					p: this.$route.query.p || 1,
-					isPending: this.$route.query.isPending
+				api.getTxList({
+                    address: this.$route.query.a,
+                    block_height: this.$route.query.block,
+					page: this.$route.query.page || 1,
+                    page_size: 25
 				}, o => {
+				    this.serverTime = o.server_timestamp;
 					this.$root.showModalLoading = false;
-					this.arr = o.txnList;
-					this.currentPage = o.currentPage;
-					this.maxDisplayCnt = o.maxDisplayCnt;
-					this.totalPage = o.totalPage;
-					this.totalTxs = o.txnCnt;
+					this.arr = o.list;
+					this.currentPage = o.current_page;
+					this.maxDisplayCnt = o.count;
+					this.totalPage = o.total_page;
+					this.totalTxs = o.count;
 				}, xhr => {
 					this.$root.showModalLoading = false;
 					this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");

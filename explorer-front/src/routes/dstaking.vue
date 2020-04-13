@@ -387,12 +387,17 @@ module.exports = {
 		getSummary() {
 			api.getDstakingSummary({}, o => {
 				this.$root.showModalLoading = false;
-				this.nextIssueBlockHeight = o.endHeight;
-				this.lastNaxDistribution = o.lastDistributedNax;
-				this.totalNaxDistribution = o.totalDistributedNax;
-				this.stakedAmount = o.currentPledgedNas;
-				this.nasCirculation = o.currentTotalNas;
+				this.nextIssueBlockHeight = o.end_height;
+				this.lastNaxDistribution = o.last_distributed_nax;
+				this.totalNaxDistribution = o.total_distributed_nax;
+				this.stakedAmount = o.current_pledged_nas;
+				this.nasCirculation = o.current_total_nas;
 				this.trendList = o.list;
+
+                this.tempInterval = setInterval(() => {
+                    this.checkStaticTranslations();
+                    this.removeTempInterval();
+                }, 500);
 			}, xhr => {
 				this.$root.showModalLoading = false;
 				this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
@@ -400,10 +405,8 @@ module.exports = {
 		},
 		getNewBlock() {
 			//获取最新一个 block
-			api.getBlock({ type: "newblock" }, o => {
-				if (o.length > 0) {
-					this.currentBlockHeight = o[0].height;
-				}
+			api.getLatestBlockHeight({}, o => {
+                this.currentBlockHeight = o.height;
 			});
 		},
 		numberAddComma(n) {
@@ -459,13 +462,13 @@ module.exports = {
 			for (var i in arr) {
 				var item = arr[i];
 				if (this.trendTab === 0) {
-					var stakeRate = BigNumber(item.pledgeNas) / BigNumber(item.totalNas);
+					var stakeRate = BigNumber(item.pledged_nas) / BigNumber(item.total_supplied_nas);
 					nums.push(stakeRate);
 				} else if (this.trendTab === 1) {
-					var lastDistributed = item.distributedNax;
+					var lastDistributed = item.distributed_nax;
 					nums.push(lastDistributed);
 				} else {
-					var lastDestroyed = item.destroyedNax;
+					var lastDestroyed = item.destroyed_nax;
 					nums.push(lastDestroyed);
 				}
 				dates.push(item.stage);

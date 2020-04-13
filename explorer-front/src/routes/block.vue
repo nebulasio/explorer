@@ -37,7 +37,7 @@
 </style>
 <template>
 	<!-- https://etherscan.io/block/4951841 -->
-	<div class="vue-block fullfill" v-bind:triggerComputed=urlChange>
+	<div class="vue-block fullfill">
 		<div class="vue-bread">
 			<div class="container">
 				<div class="row align-items-center">
@@ -46,7 +46,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="block" class="container">
+		<div class="container">
 			<div class="font-24 font-bold font-color-000000 table-title">
 				<span id="blockOverview" class="blocklocalizable"></span>
 			</div>
@@ -59,13 +59,16 @@
 							<nav aria-label="" class="navgation-tab blocklocalizable" localize="aria-label" id="blockPageNavigation">
 								<ul class=pagination>
 									<li>
-										<router-link v-if="block.height > 1" v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label="" localize="aria-label" id="blockRouterPrevious" class="blocklocalizable">
+										<router-link  v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label="" localize="aria-label" id="blockRouterPrevious" class="blocklocalizable">
 											<span aria-hidden=true class="blocklocalizable" id="blockButtonPrev"></span>
 										</router-link>
 									</li>
+
+                                    <div v-if="block">
 									<li>&nbsp; {{ block.height }} &nbsp;</li>
+                                    </div>
 									<li>
-										<router-link v-if="$root.timestamp - block.timestamp > 16000" v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label="" localize="aria-label" id="blockRouterNext" class="blocklocalizable">
+										<router-link v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label="" localize="aria-label" id="blockRouterNext" class="blocklocalizable">
 											<span aria-hidden=true class="blocklocalizable" id="blockButtonNext"></span>
 										</router-link>
 									</li>
@@ -75,44 +78,59 @@
 					</tr>
 					<tr>
 						<td class="font-color-555555 blocklocalizable" id="blockTimeStamp"></td>
-						<td class="font-color-000000"><span id="transactionsTableAgoPrefix" class="blocklocalizable"></span> {{ timeConversion(Date.now() - block.localTimestamp + block.timeDiff) }} <span id="transactionsTableAgoSuffix" class="blocklocalizable"></span> ({{ new Date(block.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ block.timestamp }})</td>
+						<td class="font-color-000000">
+                            <div v-if="block">
+                            <span id="transactionsTableAgoPrefix" class="blocklocalizable"></span>
+                            {{ timeConversion(block.server_timestamp - block.timestamp*1000) }}
+                            <span id="transactionsTableAgoSuffix" class="blocklocalizable"></span>
+                            ({{ new Date(block.timestamp*1000).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ block.timestamp }})
+                            </div>
+                        </td>
 					</tr>
 					<tr>
 						<td class="font-color-555555 blocklocalizable" id="blockTransactionsTitle"></td>
 						<td class="font-color-000000">
+                            <div v-if="block">
 							<router-link v-bind:to='fragApi + "/txs?block=" + block.height'>
-								<span>{{ block.blkSummary.txCnt }}</span>
+								<span>{{ block.tx_count }}</span>
 							</router-link>
 							tx <span class="blocklocalizable" id="blockTxInBlock"></span>
+                            </div>
 						</td>
 					</tr>
 					<tr>
 						<td class="font-color-555555 blocklocalizable" id="blockHashTitle"></td>
-						<td class="font-color-000000 monospace">{{ block.hash }}</td>
+						<td class="font-color-000000 monospace">
+                            <div v-if="block">{{ block.block_hash }}</div></td>
 					</tr>
 					<tr>
 						<td class="font-color-555555 blocklocalizable" id="blockParentHashTitle"></td>
 						<td>
-							<router-link v-bind:to='fragApi + "/block/" + block.parentHash'>
-								<span class="monospace">{{ block.parentHash }}</span>
+                            <div v-if="block">
+							<router-link v-bind:to='fragApi + "/block/" + block.parent_hash'>
+								<span class="monospace">{{ block.parent_hash }}</span>
 							</router-link>
+                            </div>
 						</td>
 					</tr>
 					<tr>
 						<td class="font-color-555555 blocklocalizable" id="blockMintedTitle"></td>
 						<td>
-							<router-link v-bind:to='fragApi + "/address/" + block.miner.hash'>
-								<span class="monospace">{{ block.miner.hash }}</span>
+                            <div v-if="block">
+							<router-link v-bind:to='fragApi + "/address/" + block.miner'>
+								<span class="monospace">{{ block.miner }}</span>
 							</router-link>
-							<span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
+                            </div>
 						</td>
 					</tr>
 					<tr>
 						<td class="font-color-555555 blocklocalizable" id="blockCoinbaseTitle"></td>
 						<td>
+                            <div v-if="block">
 							<router-link v-bind:to='fragApi + "/address/" + block.coinbase'>
 								<span class="monospace">{{ block.coinbase }}</span>
 							</router-link>
+                            </div>
 						</td>
 					</tr>
 					<tr>
@@ -122,6 +140,7 @@
 								<span id="blockShowDinasty" class="blocklocalizable"></span>
 								<img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowDynasty ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
 							</a>
+                            <div  v-if="block">
 							<div class="collapse" id="collapse-mobile">
 								<div class="card card-body dynasty">
 									<router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>
@@ -129,11 +148,14 @@
 									</router-link>
 								</div>
 							</div>
+                            </div>
 						</td>
 					</tr>
 					<tr>
 						<td class="font-color-555555 blocklocalizable" id="blockGasReward"></td>
-						<td class="font-color-000000">{{ toWei(block.blkSummary.gasReward) }}</td>
+						<td class="font-color-000000">
+                            <div v-if="block">{{ toWei(block.gas_info.gas_reward) }}</div>
+                        </td>
 					</tr>
 				</table>
 			</div>
@@ -142,16 +164,19 @@
 				<div>
 					<span class="blocklocalizable" id="blockHeightTitle"></span>
 					<div class="detail">
+
 						<nav localize="aria-label" aria-label="Page navigation" class="navgation-tab blocklocalizable" id="blockAriaLabelPageNavigation">
 							<ul class=pagination>
 								<li>
-									<router-link v-if="block.height > 1" v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label=Previous>
+									<router-link v-bind:to='fragApi + "/block/" + (+$route.params.id - 1)' aria-label=Previous>
 										<span aria-hidden=true class="blocklocalizable" id="blockPreviousLink"></span>
 									</router-link>
 								</li>
+                                <div v-if="block">
 								<li>&nbsp; {{ block.height }} &nbsp;</li>
+                                </div>
 								<li>
-									<router-link v-if="$root.timestamp - block.timestamp > 16000" v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label=Next>
+									<router-link v-bind:to='fragApi + "/block/" + (+$route.params.id + 1)' aria-label=Next>
 										<span aria-hidden=true class="blocklocalizable" id="blockNextLink"></span>
 									</router-link>
 								</li>
@@ -161,44 +186,60 @@
 				</div>
 				<div>
 					<span class="blocklocalizable" id="blockTimeStampTitle"></span>
-					<div class="detail"><span class="blocklocalizable" id="blockTimeStampPrefix"></span>{{ timeConversion(Date.now() - block.localTimestamp + block.timeDiff) }} <span class="blocklocalizable" id="blockTimeStampSuffix"></span> ({{ new Date(block.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ block.timestamp }})</div>
+					<div class="detail">
+                        <div v-if="block">
+                        <span class="blocklocalizable" id="blockTimeStampPrefix"></span>
+                            {{ timeConversion(block.server_timestamp - block.timestamp*1000) }}
+                            <span class="blocklocalizable" id="blockTimeStampSuffix"></span>
+                            ({{ new Date(block.timestamp*1000).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ block.timestamp }})
+                        </div>
+                    </div>
 				</div>
 				<div>
 					<span class="blocklocalizable" id="blockTransactionsTitle"></span>
 					<div class="detail">
+                        <div v-if="block">
 						<router-link v-bind:to='fragApi + "/txs?block=" + block.height'>
-							<span>{{ block.blkSummary.txCnt }}</span>
+							<span>{{ block.tx_count }}</span>
 						</router-link>
 						<span class="blocklocalizable" id="blockTxInThisBlock"></span>
+                        </div>
 					</div>
 				</div>
 				<div>
 					Hash:
-					<div class="detail monospace">{{ block.hash }}</div>
+					<div class="detail monospace">
+                        <div v-if="block">{{ block.block_hash }}</div>
+                    </div>
 				</div>
 				<div>
 					<span class="blocklocalizable" id="blockParentHashTitle"></span>
 					<div class="detail">
-						<router-link v-bind:to='fragApi + "/block/" + block.parentHash'>
-							<span class="monospace">{{ block.parentHash }}</span>
+                        <div v-if="block">
+						<router-link v-bind:to='fragApi + "/block/" + block.parent_hash'>
+							<span class="monospace">{{ block.parent_hash }}</span>
 						</router-link>
+                        </div>
 					</div>
 				</div>
 				<div>
 					<span class="blocklocalizable" id="blockMintedTitle"></span>
 					<div class="detail">
-						<router-link v-bind:to='fragApi + "/address/" + block.miner.hash'>
-							<span class="monospace">{{ block.miner.hash }}</span>
+                        <div v-if="block">
+						<router-link v-bind:to='fragApi + "/address/" + block.miner'>
+							<span class="monospace">{{ block.miner }}</span>
 						</router-link>
-						<span v-if=block.miner.alias> | {{ block.miner.alias }}</span>
+                        </div>
 					</div>
 				</div>
 				<div>
 					<span class="blocklocalizable" id="blockCoinbaseTitle"></span>
 					<div class="detail">
+                        <div v-if="block">
 						<router-link v-bind:to='fragApi + "/address/" + block.coinbase'>
 							<span class="monospace">{{ block.coinbase }}</span>
 						</router-link>
+                        </div>
 					</div>
 				</div>
 				<div>
@@ -210,7 +251,7 @@
 							</span>
 							<img style="margin-left: 12px; margin-top: 3px; vertical-align: middle;" class="icon16" v-bind:src="isShowDynasty ? '../../static/img/ic_payload_arrow_up.png' : '../../static/img/ic_payload_arrow_down.png'" />
 						</a>
-						<div class="collapse" id="collapseExample">
+						<div v-if="block" class="collapse" id="collapseExample">
 							<div class="card card-body dynasty">
 								<router-link v-for="dynasty in block.dynasty" v-bind:key=dynasty v-bind:to='fragApi + "/address/" + dynasty'>
 									<span class="font-16 font-bold "> {{ dynasty }}</span>
@@ -221,7 +262,9 @@
 				</div>
 				<div>
 					<span class="blocklocalizable" id="blockGasRewardTitle"></span>
-					<div class="detail">{{ toWei(block.blkSummary.gasReward) }}</div>
+					<div class="detail">
+                        <div v-if="block">{{ toWei(block.gas_info.gas_reward) }}</div>
+                    </div>
 				</div>
 			</div>
 		</div>
@@ -238,39 +281,46 @@
 			"vue-bread": require("@/components/vue-bread").default,
 			"vue-tab-buttons": require("@/components/vue-tab-buttons").default
 		},
-		computed: {
-			urlChange() {
-				this.$root.showModalLoading = true;
-				api.getBlock(this.$route.params.id, o => {
-					this.$root.showModalLoading = false;
-					if (!o.localTimestamp) {
-						o.localTimestamp = Date.now();
-					}
-					this.block = o;
-				}, xhr => {
-					this.$root.showModalLoading = false;
-					this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
-				});
-			}
-		},
 		methods: {
+		    getBlock(){
+                this.$root.showModalLoading = true;
+                api.getBlock({h:this.$route.params.id}, o => {
+                    this.$root.showModalLoading = false;
+                    if (!o.localTimestamp) {
+                        o.localTimestamp = Date.now();
+                    }
+                    this.block = o;
+                    this.$route.params.id = o.height
+                }, xhr => {
+                    this.$root.showModalLoading = false;
+                    this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");
+                });
+            },
 			removeTempInterval() {
 				clearInterval(this.tempInterval);
 			},
-			checkStaticTranslations() {
+            checkTranslation(element){
+		        if(element==null){
+		            return
+                }
+                var elementId = element.getAttribute("id");
+                if (element.getAttribute("localize")) {
+                    var elementAttribute = element.getAttribute("localize");
+                    element.setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementId]);
+                }
+                else {
+                    element.innerText = jsonStrings[this.$selectedLanguage][elementId];
+                }
+            },
+			checkStaticTranslations(param) {
 				// Unique elements, identified by id attr
 				var myLocalizableElements = document.getElementsByClassName("blocklocalizable");
 				var totalElements = myLocalizableElements.length;
+                console.log(param);
+                console.log(totalElements);
 				var i;
 				for (i = 0; i < totalElements; i++) {
-					var elementId = myLocalizableElements[i].getAttribute("id");
-					if (myLocalizableElements[i].getAttribute("localize")) {
-						var elementAttribute = myLocalizableElements[i].getAttribute("localize");
-						myLocalizableElements[i].setAttribute(elementAttribute, jsonStrings[this.$selectedLanguage][elementId]);
-					}
-					else {
-						myLocalizableElements[i].innerText = jsonStrings[this.$selectedLanguage][elementId];
-					}
+                    this.checkTranslation(myLocalizableElements[i])
 				}
 			},
 			checkDynamicTranslations() {
@@ -325,6 +375,12 @@
 				this.checkStaticTranslations();
 				this.removeTempInterval();
 			}, 1500);
-		}
+			this.getBlock();
+		},
+        watch: {
+            $route() {
+                this.getBlock();
+            }
+        }
 	};
 </script>

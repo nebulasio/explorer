@@ -106,40 +106,40 @@
 							<img v-if="o.status===0" class="icon40" src="../../static/img/ic_tx_failed.png"/>
 						</td>
 						<td class="txs-hash">
-							<router-link v-bind:to='fragApi + "/tx/" + o.hash'>
-								<span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal', 'monospace']">{{ o.hash }}</span>
+							<router-link v-bind:to='fragApi + "/tx/" + o.tx_hash'>
+								<span v-bind:class="[o.status===0 ? 'hash-failed' : 'hash-normal', 'monospace']">{{ o.tx_hash }}</span>
 							</router-link>
 						</td>
 
 						<td class="txs-block">
-							<router-link class="font-14" v-if=o.blockHeight v-bind:to='fragApi + "/block/" + o.blockHeight'>
-								<span>{{ o.blockHeight }}</span>
+							<router-link class="font-14" v-if=o.block_height v-bind:to='fragApi + "/block/" + o.block_height'>
+								<span>{{ o.block_height }}</span>
 							</router-link>
 							<i class="font-14 font-color-000000 contracttxslocalizable" v-else id="contracttxsPendingText"></i>
 						</td>
 						<td class="time font-14 font-color-555555">
 							<div>
-								<div><span class="contracttxslocalizable" id="contracttxsTimeStampPrefix"></span>{{ timeConversion(o.timeDiff) }}<span class="contracttxslocalizable" id="contracttxsTimeStampSuffix"></span></div>
-								<div class="down-arrow-tip">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+								<div><span class="contracttxslocalizable" id="contracttxsTimeStampPrefix"></span>{{ timeConversion(serverTime - o.block_timestamp*1000) }}<span class="contracttxslocalizable" id="contracttxsTimeStampSuffix"></span></div>
+								<div class="down-arrow-tip">{{ new Date(o.block_timestamp*1000).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.block_timestamp*1000 }}</div>
 							</div>
 						</td>
 						<td class="tdxxxwddd txs-from-to">
-							<vue-blockies v-bind:address='o.from'></vue-blockies>
-							<router-link v-bind:to='fragApi + "/address/" + o.from'>
-								<span class="fromTo font-14  monospace">{{ o.from }}</span>
+							<vue-blockies v-bind:address='o.address_main'></vue-blockies>
+							<router-link v-bind:to='fragApi + "/address/" + o.address_main'>
+								<span class="fromTo font-14  monospace">{{ o.address_main }}</span>
 							</router-link>
 						</td>
 						<td>
 							<img class="icon16" src="../../static/img/ic_arrow_right.png"/>
 						</td>
 						<td class="tdxxxwddd txs-from-to">
-							<vue-blockies v-bind:address='o.to'></vue-blockies>
-							<router-link v-bind:to='fragApi + "/address/" + o.to'>
-								<span class="fromTo font-14  monospace">{{ o.to }}</span>
+							<vue-blockies v-bind:address='o.address_supporting'></vue-blockies>
+							<router-link v-bind:to='fragApi + "/address/" + o.address_supporting'>
+								<span class="fromTo font-14  monospace">{{ o.address_supporting }}</span>
 							</router-link>
 						</td>
-						<td class="text-right font-color-000000 font-14">{{ tokenAmount(o.contractValue) }} {{ o.tokenName }}</td>
-						<td class="text-right font-14 font-color-555555 pr-3">{{ toWei(o.txFee) }}</td>
+						<td class="text-right font-color-000000 font-14">{{ tokenAmount(o.real_value) }} {{ o.token.token_name }}</td>
+						<td class="text-right font-14 font-color-555555 pr-3">{{ toWei(o.gas_price*o.gas_used) }}</td>
 					</tr>
 				</table>
 			</div>
@@ -164,6 +164,7 @@
 		},
 		data() {
 			return {
+			    serverTime: 0,
 				arr: [],
 				currentPage: 0,
 				fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
@@ -232,17 +233,23 @@
 
 				api.getContractTx({
 					contract: this.$route.query.contract,
-					p: this.$route.query.p || 1,
+					page: this.$route.query.p || 1,
 					isPending: this.$route.query.isPending
 				}, o => {
 					this.$root.showModalLoading = false;
-					this.arr = o.txnList;
-					this.currentPage = o.currentPage;
-					this.maxDisplayCnt = o.maxDisplayCnt;
-					this.totalPage = o.totalPage;
-					this.totalTxs = o.txnCnt;
-					this.tokenName = o.tokenName;
-					this.decimal = o.decimal;
+                    this.serverTime = o.server_timestamp;
+					this.arr = o.list;
+					this.currentPage = o.current_page;
+					this.maxDisplayCnt = o.count;
+					this.totalPage = o.total_page;
+					this.totalTxs = o.count;
+					this.tokenName = o.token.token_name;
+					this.decimal = o.token.token_decimals;
+
+                    this.tempInterval = setInterval(() => {
+                        this.checkStaticTranslations();
+                        this.removeTempInterval();
+                    }, 500);
 				}, xhr => {
 					this.$root.showModalLoading = false;
 					this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");

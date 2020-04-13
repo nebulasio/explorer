@@ -31,10 +31,13 @@
 			</div>
 		</div>
 
-		<div v-if="arr" class="container mt20">
+		<div class="container mt20">
 			<div class="align-items-center info-and-pagination mt20 row">
 				<div class="col info font-color-000000 font-24 font-bold title">
-					{{ numberAddComma(totalBlocks) }} <span class="blockslocalizable" id="blocksFound"></span>
+                    <span v-if="arr">
+					    {{ numberAddComma(totalBlocks) }}
+                    </span>
+                    <span class="blockslocalizable" id="blocksFound"></span>
 					<!-- <span v-if="totalTxs > 500" class="font-color-555555 font-16" style="vertical-align: text-bottom;">(<span class="blockslocalizable" id="blocksLatestFound"></span>)</span> -->
 				</div>
 			</div>
@@ -60,29 +63,29 @@
 						</td>
 						<td>
 							<div>
-								<div class="font-color-000000 font-14"><span name="transactionsTableAgoPrefix" class="blocksmultilocalizable"></span> {{ timeConversion(o.timeDiff) }} <span name="transactionsTableAgoSuffix" class="blocksmultilocalizable"></span></div>
-								<div class="down-arrow-tip" style="display: none;">{{ new Date(o.timestamp).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp }}</div>
+								<div class="font-color-000000 font-14"><span name="transactionsTableAgoPrefix" class="blocksmultilocalizable"></span> {{ timeConversion(serverTime - o.timestamp*1000) }} <span name="transactionsTableAgoSuffix" class="blocksmultilocalizable"></span></div>
+								<div class="down-arrow-tip" style="display: none;">{{ new Date(o.timestamp*1000).toString().replace('GMT', 'UTC').replace(/\(.+\)/gi, '') }} | {{ o.timestamp*1000 }}</div>
 							</div>
 						</td>
 						<td style="padding-left: 20px">
 							<router-link v-bind:to='fragApi + "/txs?block=" + o.height'>
-								<span class="font-14">{{ numberAddComma(o.txnCnt) }}</span>
+								<span class="font-14">{{ numberAddComma(o.tx_count) }}</span>
 							</router-link>
 						</td>
 						<td style="padding-left: 30px">
-							<router-link v-bind:to='fragApi + "/address/" + o.miner.hash'>
-								<vue-blockies class="d-inline" v-bind:address='o.miner.alias || o.miner.hash'></vue-blockies>
-								<span class="font-14 monospace">{{ o.miner.alias || o.miner.hash }}</span>
+							<router-link v-bind:to='fragApi + "/address/" + o.miner'>
+								<vue-blockies class="d-inline" v-bind:address='o.miner'></vue-blockies>
+								<span class="font-14 monospace">{{ o.miner }}</span>
 							</router-link>
 						</td>
 						<td class=text-right>
-							<span class="font-14 font-color-555555">{{ toWei(o.gasReward) }}</span>
+							<span class="font-14 font-color-555555">{{ toWei(o.gas_info.gas_reward) }}</span>
 						</td>
 						<td class=text-right>
-							<span class="font-14 font-color-000000">{{ numberAddComma(o.gasLimit) }}</span>
+							<span class="font-14 font-color-000000">{{ numberAddComma(o.gas_info.gas_limit) }}</span>
 						</td>
 						<td class=text-right>
-							<span class="font-14 font-color-555555">{{ toWei(o.avgGasPrice) }}</span>
+							<span class="font-14 font-color-555555">{{ toWei(o.gas_info.avg_gas_price) }}</span>
 						</td>
 						<td></td>
 					</tr>
@@ -106,6 +109,7 @@
 		},
 		data() {
 			return {
+			    serverTime: 0,
 				arr: null,
 				currentPage: 0,
 				fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
@@ -153,20 +157,21 @@
 				// Other specific methods for unique elements.
 			},
 			nthPage() {
-				var p = this.$route.query.p || 1;
+				var p = this.$route.query.page || 1;
 
 				if (p == this.currentPage)
 					console.log("nthPage - 请求的第", p, "页正是当前页, 忽略此次调用");
 				else {
 					this.$root.showModalLoading = true;
 
-					api.getBlocks({ p }, o => {
+					api.getBlocks({ page: p, page_size: 25 }, o => {
 
 						this.$root.showModalLoading = false;
-						this.arr = o.data;
-						this.currentPage = o.page;
-						this.totalPage = o.totalPage;
-						this.totalBlocks = o.totalCount;
+						this.serverTime = o.server_timestamp;
+						this.arr = o.list;
+						this.currentPage = o.current_page;
+						this.totalPage = o.total_page;
+						this.totalBlocks = o.count;
 
 						if (this.arr.length) {
 							this.heightFrom = this.arr[0].height;
@@ -187,31 +192,31 @@
 			onFirst() {
 				this.$router.push({
 					path: this.$route.path,
-					query: { p: 1 }
+					query: { page: 1, page_size: 25 }
 				});
 			},
 			onLast() {
 				this.$router.push({
 					path: this.$route.path,
-					query: { p: this.totalPage }
+					query: { page: this.totalPage, page_size: 25 }
 				});
 			},
 			onNext() {
 				this.$router.push({
 					path: this.$route.path,
-					query: { p: this.currentPage + 1 }
+					query: { page: this.currentPage + 1, page_size: 25 }
 				});
 			},
 			onPrev() {
 				this.$router.push({
 					path: this.$route.path,
-					query: { p: this.currentPage - 1 }
+					query: { page: this.currentPage - 1, page_size: 25 }
 				});
 			},
 			onTo(n) {
 				this.$router.push({
 					path: this.$route.path,
-					query: { p: n }
+					query: { page: n, page_size: 25 }
 				});
 			},
 			timeConversion(ms) {

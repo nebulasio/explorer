@@ -69,19 +69,19 @@
 
 					<tr v-for="(o, i) in arr" :key="i">
 						<td style="padding-left: 24px;" class="hash">
-							<vue-blockies v-bind:address='o.hash'></vue-blockies>
-							<router-link v-bind:to='fragApi + "/address/" + o.hash'>
-								<span class="hash-normal monospace">{{ o.hash }}</span>
+							<vue-blockies v-bind:address='o.address'></vue-blockies>
+							<router-link v-bind:to='fragApi + "/address/" + o.address'>
+								<span class="hash-normal monospace">{{ o.address }}</span>
 							</router-link>
 						</td>
 						<td class="hash" v-if="$route.params.api === 'testnet'">
-							<vue-blockies v-bind:address='o.creator'></vue-blockies>
-							<router-link v-bind:to='fragApi + "/address/" + o.hash'>
-								<span class="hash-normal monospace">{{ o.creator }}</span>
+							<vue-blockies v-bind:address='o.creator_address'></vue-blockies>
+							<router-link v-bind:to='fragApi + "/address/" + o.creator_address'>
+								<span class="hash-normal monospace">{{ o.creator_address }}</span>
 							</router-link>
 						</td>
-						<td class="font-color-000000"><span v-if="o.contractType === 'NORMAL'" class="contractslocalizable" id="contractsTypeContract"></span><span v-else class="contractslocalizable" id="contractsTypeTokenContract"></span></td>
-						<td class="text-right font-color-555555" style="padding-right: 24px;">{{ new Date(o.createdAt).toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' }) }}</td>
+						<td class="font-color-000000"><span v-if="o.type === 'NORMAL'" class="contractslocalizable" id="contractsTypeContract"></span><span v-else class="contractslocalizable" id="contractsTypeTokenContract"></span></td>
+						<td class="text-right font-color-555555" style="padding-right: 24px;">{{ new Date(o.block_timestamp).toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' }) }}</td>
 					</tr>
 				</table>
 			</div>
@@ -160,14 +160,20 @@
 				this.$root.showModalLoading = true;
 
 				api.getContracts({
-					p: this.$route.query.p || 1,
+					page: this.$route.query.p || 1,
+                    page_size: 25
 				}, o => {
 					this.$root.showModalLoading = false;
-					this.arr = o.contracts;
-					this.currentPage = o.currentPage;
+					this.arr = o.list;
+					this.currentPage = o.current_page;
 					// this.maxDisplayCnt = o.maxDisplayCnt;
-					this.totalPage = o.totalPage;
-					this.totalCts = o.total;
+					this.totalPage = o.total_page;
+					this.totalCts = o.count;
+
+                    this.tempInterval = setInterval(() => {
+                        this.checkStaticTranslations();
+                        this.removeTempInterval();
+                    }, 500);
 				}, xhr => {
 					this.$root.showModalLoading = false;
 					this.$router.replace((this.$route.params.api ? "/" + this.$route.params.api : "") + "/404");

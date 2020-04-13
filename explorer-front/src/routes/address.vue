@@ -819,7 +819,7 @@
 				this.isNoNaxChanges = false;
 
 				this.$root.showModalLoading = true;
-				api.getAddress(this.$route.params.id, o => {
+				api.getAddress({address: this.$route.params.id}, o => {
 					this.$root.showModalLoading = false;
 					this.minted = o.mintedBlkList;
 					this.obj = o;
@@ -829,17 +829,21 @@
 					this.contractCode = o.contractCode;
 					this.creator = o.creator;
 					this.deployTxHash = o.deployTxHash;
-					this.isContract = o.address.type == 1;
-					if (o.address.type == 1) {// this is a smart contract address
-						api.getTransactionByContract({address: o.address.hash}, this.$route.params.api, (data) => {
-							var data = JSON.parse(data);
-							if (data && data.result && data.result.data) {
-								this.contract = data.result;
-								this.creator = this.contract.from;
-								this.deployTxHash = this.contract.hash;
-								this.contractCode = base64.decode(data.result.data);
-							}
-						})
+					this.isContract = o.address.type === 1;
+					if (o.address.type === 1) {// this is a smart contract address
+						// api.getTransactionByContract({address: o.address.hash}, this.$route.params.api, (data) => {
+						// 	var data = JSON.parse(data);
+						// 	if (data && data.result && data.result.data) {
+						// 		this.contract = data.result;
+						// 		this.creator = this.contract.from;
+						// 		this.deployTxHash = this.contract.hash;
+						// 		this.contractCode = base64.decode(data.result.data);
+						// 	}
+						// })
+                        this.contract = o.address.contract;
+                        this.creator = this.contract.from;
+                        this.deployTxHash = this.contract.hash;
+                        this.contractCode = base64.decode(this.contract.data);
 					}
 
 					var token = this.tokens[0];
