@@ -2,33 +2,24 @@ package io.nebulas.explorer.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
 import io.nebulas.explorer.domain.*;
 import io.nebulas.explorer.domain.extention.ContractTransaction;
 import io.nebulas.explorer.enums.NebAddressTypeEnum;
 import io.nebulas.explorer.enums.NebTransactionStatusEnum;
 import io.nebulas.explorer.model.JsonResult;
 import io.nebulas.explorer.model.PageIterator;
-import io.nebulas.explorer.model.vo.AddressVo;
-import io.nebulas.explorer.model.vo.BlockVo;
-import io.nebulas.explorer.model.vo.ContractListItemVo;
-import io.nebulas.explorer.model.vo.Nrc20TransactionVo;
-import io.nebulas.explorer.model.vo.TransactionVo;
+import io.nebulas.explorer.model.vo.*;
 import io.nebulas.explorer.service.blockchain.*;
 import io.nebulas.explorer.service.thirdpart.infra.InfraApiService;
 import io.nebulas.explorer.service.thirdpart.infra.bean.InfraResponse;
 import io.nebulas.explorer.service.thirdpart.infra.bean.NRC20TxListBean;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetAccountStateResponse;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +28,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -81,6 +73,8 @@ public class RpcController {
     private NasAccountService nasAccountService;
     @Autowired
     private NebTxCountByDayService nebTxCountByDayService;
+    @Autowired
+    private NasCirculationService nasCirculationService;
 
     @Autowired
     @Qualifier("customStringTemplate")
@@ -448,11 +442,8 @@ public class RpcController {
             page = MAX_PAGE;
         }
 
-        long maxBlockHeight = nebBlockService.getMaxHeight();
-        //65000000 + 1.42694*2307000 + 1.9026*(current_height-2307000)
-        BigDecimal totalBalance = new BigDecimal("65000000")
-                .add(new BigDecimal("1.42694").multiply(new BigDecimal("2307000")))
-                .add(new BigDecimal("1.9026").multiply(new BigDecimal(maxBlockHeight - 2307000)));
+        BigInteger supplyNAS = nasCirculationService.totalSupplyNAS();
+        BigDecimal totalBalance = new BigDecimal(supplyNAS).divide(BigDecimal.valueOf(Math.pow(10, 18)));
 
         List<NebAddress> addressList = nebAddressService.findAddressOrderByBalance(page, PAGE_SIZE);
 

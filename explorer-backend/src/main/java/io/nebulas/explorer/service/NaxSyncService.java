@@ -1,29 +1,20 @@
 package io.nebulas.explorer.service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-
 import io.nebulas.explorer.domain.NaxStage;
-import io.nebulas.explorer.mapper.NaxProfitMapper;
 import io.nebulas.explorer.mapper.NaxStageMapper;
+import io.nebulas.explorer.service.blockchain.NasCirculationService;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.*;
-import io.nebulas.explorer.util.NebUtils;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.NebCallResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
-import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j(topic = "subscribe")
@@ -36,6 +27,9 @@ public class NaxSyncService {
 
     @Autowired
     private NaxStageMapper naxStageMapper;
+
+    @Autowired
+    private NasCirculationService nasCirculationService;
 
     @Value("${nax.height.start}")
     private long naxStartHeight;
@@ -160,7 +154,7 @@ public class NaxSyncService {
             String pledgeNas = jsonObject.getString("totalNAS");
             Long start = jsonObject.getLong("start");
             Long end = jsonObject.getLong("end");
-            BigInteger totalNas = NebUtils.calculateTotalNas(end - 1);
+            BigInteger totalNas = nasCirculationService.circulationNAS();
 
             naxStage.setStart(start);
             naxStage.setEnd(end);

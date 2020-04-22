@@ -1,7 +1,6 @@
 package io.nebulas.explorer.service.blockchain;
 
 import com.alibaba.fastjson.JSONObject;
-
 import io.nebulas.explorer.domain.NaxProfit;
 import io.nebulas.explorer.domain.NaxStage;
 import io.nebulas.explorer.mapper.NaxProfitMapper;
@@ -10,9 +9,6 @@ import io.nebulas.explorer.mapper.NebBlockMapper;
 import io.nebulas.explorer.model.vo.NaxStageVo;
 import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
 import io.nebulas.explorer.service.thirdpart.nebulas.bean.NebCallResult;
-import io.nebulas.explorer.util.NebUtils;
-import lombok.AllArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +20,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,6 +50,9 @@ public class NaxService {
 
     @Autowired
     private NebApiServiceWrapper nebApiServiceWrapper;
+
+    @Autowired
+    private NasCirculationService nasCirculationService;
 
     public List<NaxProfit> list(int page, int pageSize, String address) {
         return naxProfitMapper.getByAddress(address, (page - 1) * pageSize, pageSize);
@@ -91,8 +89,7 @@ public class NaxService {
         if (!StringUtils.isEmpty(inCache)) {
             return new BigDecimal(inCache);
         }
-        long height = nebBlockMapper.getMaxHeight();
-        BigInteger totalNas = NebUtils.calculateTotalNas(height);
+        BigInteger totalNas = nasCirculationService.circulationNAS();
         redisTemplate.opsForValue().set(KEY_CURRENT_NAS_TOTAL, totalNas.toString(), 15, TimeUnit.SECONDS);
         return new BigDecimal(totalNas);
     }
