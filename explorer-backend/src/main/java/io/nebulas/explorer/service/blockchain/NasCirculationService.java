@@ -50,7 +50,7 @@ public class NasCirculationService {
      */
     public BigInteger totalSupplyNAS() {
         // totalNAS - destoryNAS
-        NebAddress destoryAddr = nebAddressService.getNebAddressByHash(DESTORY_ADDRESS);
+        NebAddress destoryAddr = nebAddressService.getNebAddressByHashRpc(DESTORY_ADDRESS);
 
         return this.totalNAS().subtract(new BigInteger(destoryAddr.getBalance()));
     }
@@ -61,9 +61,9 @@ public class NasCirculationService {
      */
     public BigInteger circulationNAS() {
         // totalNAS - destoryNAS - lockedNAS
-        NebAddress lockedAddr1 = nebAddressService.getNebAddressByHash(LOCKED_ADDRESS1);
-        NebAddress lockedAddr2 = nebAddressService.getNebAddressByHash(LOCKED_ADDRESS2);
-        NebAddress lockedAddr3 = nebAddressService.getNebAddressByHash(LOCKED_ADDRESS3);
+        NebAddress lockedAddr1 = nebAddressService.getNebAddressByHashRpc(LOCKED_ADDRESS1);
+        NebAddress lockedAddr2 = nebAddressService.getNebAddressByHashRpc(LOCKED_ADDRESS2);
+        NebAddress lockedAddr3 = nebAddressService.getNebAddressByHashRpc(LOCKED_ADDRESS3);
 
         return this.totalSupplyNAS()
                 .subtract(new BigInteger(lockedAddr1.getBalance()))
