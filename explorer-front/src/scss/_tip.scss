@@ -1,40 +1,40 @@
 .container-tip {
-    position: relative;
-    overflow: initial;
+  position: relative;
+  overflow: initial;
 }
 
-            .container-tip .tip {
-                position: absolute;
-                left: calc(-50% + 26px);
-                top: -48px;
-                padding: 8px;
+.container-tip .tip {
+  position: absolute;
+  left: calc(-50% + 26px);
+  top: -48px;
+  padding: 8px;
 
-                /* font-size: 12px; */
-                color: white;
-                background-color: rgba(0, 0, 0, .7);
-                transform: translateX(-50%);
-                white-space: nowrap;
-                z-index: 1060;
-                display: none;
-            }
+  /* font-size: 12px; */
+  color: white;
+  background-color: rgba(0, 0, 0, 0.7);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 1060;
+  display: none;
+}
 
 .down-arrow-tip::before {
-    content: "";
-    width: 0;
-    height: 0;
-    border-top: 4px solid rgba(0, 0, 0, .7);
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
-    position: absolute;
-    bottom: -4px;
-    left: calc(50% - 4px);
-    z-index: 1060;
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: 4px solid rgba(0, 0, 0, 0.7);
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  position: absolute;
+  bottom: -4px;
+  left: calc(50% - 4px);
+  z-index: 1060;
 }
 
 .container-tip:hover .tip {
-    display: block;
+  display: block;
 }
 
 .container-tip img {
-    margin-right: 8px;
+  margin-right: 8px;
 }
