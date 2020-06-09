@@ -31,7 +31,7 @@
 .vue-header form {
   border: none;
   margin-left: 20px;
-  padding: 6px 0px 6px 10px;
+  padding: 6px 0 6px 10px;
   width: 350px;
   background-color: white;
 }
@@ -88,7 +88,7 @@
     align-items: center;
     display: flex;
     width: 100%;
-    margin: 10px 0px;
+    margin: 10px 0;
   }
 }
 
@@ -134,21 +134,33 @@
           />
         </form>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item" v-bind:class="{ active: $route.meta.headerActive == 1 }">
+          <li
+            class="nav-item"
+            v-bind:class="{ active: $route.meta.headerActive == 1 }"
+          >
             <router-link v-bind:to="fragApi + '/'" class="nav-link">
               <span>
                 <span id="headerHomeTitle" class="headerlocalizable"></span>
                 <span class="sr-only">
-                  <span id="headerHomesubtitle" class="headerlocalizable"></span>
+                  <span
+                    id="headerHomesubtitle"
+                    class="headerlocalizable"
+                  ></span>
                 </span>
               </span>
             </router-link>
           </li>
           <!-- Menú dStaking -->
-          <li class="nav-item" v-bind:class="{ active: $route.meta.headerActive == 3 }">
+          <li
+            class="nav-item"
+            v-bind:class="{ active: $route.meta.headerActive == 3 }"
+          >
             <router-link v-bind:to="fragApi + '/dstaking'" class="nav-link">
               <span class="headerlocalizable" id="headerMenuDstaking"></span>
-              <span class="sr-only headerlocalizable" id="headerCurrentText"></span>
+              <span
+                class="sr-only headerlocalizable"
+                id="headerCurrentText"
+              ></span>
             </router-link>
           </li>
           <!-- Menú Blockchain -->
@@ -166,23 +178,44 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              BLOCKCHAIN
-              <img src=/static/img/icon_arrow_down.png width=12 alt="">
+              BLOCKCHAIN <img src=/static/img/icon_arrow_down.png width=12
+              alt="" >
             </a>
-            <div class="dropdown-menu" aria-labelledby="header-dropdown-blockchain">
+            <div
+              class="dropdown-menu"
+              aria-labelledby="header-dropdown-blockchain"
+            >
               <router-link class="dropdown-item" v-bind:to="fragApi + '/txs'">
-                <span id="headerTransactionsSubmenu" class="headerlocalizable"></span>
+                <span
+                  id="headerTransactionsSubmenu"
+                  class="headerlocalizable"
+                ></span>
               </router-link>
-              <router-link class="dropdown-item" v-bind:to="fragApi + '/txs/pending'">
-                <span id="headerPendingTransactionsSubmenu" class="headerlocalizable"></span>
+              <router-link
+                class="dropdown-item"
+                v-bind:to="fragApi + '/txs/pending'"
+              >
+                <span
+                  id="headerPendingTransactionsSubmenu"
+                  class="headerlocalizable"
+                ></span>
               </router-link>
               <div class="dropdown-divider"></div>
-              <router-link class="dropdown-item" v-bind:to="fragApi + '/blocks'">
+              <router-link
+                class="dropdown-item"
+                v-bind:to="fragApi + '/blocks'"
+              >
                 <span id="headerBlocksSubmenu" class="headerlocalizable"></span>
               </router-link>
               <div class="dropdown-divider"></div>
-              <router-link class="dropdown-item" v-bind:to="fragApi + '/accounts'">
-                <span id="headerAccountsSubmenu" class="headerlocalizable"></span>
+              <router-link
+                class="dropdown-item"
+                v-bind:to="fragApi + '/accounts'"
+              >
+                <span
+                  id="headerAccountsSubmenu"
+                  class="headerlocalizable"
+                ></span>
               </router-link>
             </div>
           </li>
@@ -191,9 +224,14 @@
 						<router-link class=nav-link v-bind:to="fragApi + '/dip-leaderboard'"><span id="headerDipWinners" class="headerlocalizable"></span></router-link>
           </li>-->
           <li class="nav-item">
-            <a class="nav-link" href="#" role="button" v-on:click.prevent="apiSwitch()">
+            <a
+              class="nav-link"
+              href="#"
+              role="button"
+              v-on:click.prevent="apiSwitch()"
+            >
               {{ MenuMisc }}
-              <img src=/static/img/icon_switcher.png width=12 alt="">
+              <img src=/static/img/icon_switcher.png width=12 alt="" >
             </a>
           </li>
           <!-- Selector de idiomas -->
