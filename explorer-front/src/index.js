@@ -19,7 +19,6 @@ window.jQuery = window.$ = jQuery;
 require("bootstrap");
 require("bootstrap/dist/css/bootstrap.min.css");
 require("font-awesome/css/font-awesome.min.css");
-require("./index.css");
 
 Vue.use(VueTranslate);
 

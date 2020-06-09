@@ -1,0 +1,99 @@
+
+.explorer-table-container {
+    overflow-x: scroll;
+}
+
+.explorer-table {
+    width: 100%;
+    max-width: 100%;
+    /* padding-bottom: 10px; */
+    background-color: transparent;
+    overflow-x: scroll;
+}
+
+.table-title {
+    margin-top: 60px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 767.98px) {
+    .table-title {
+        margin-top: 25px;
+        margin-bottom: 22px;
+        font-size: 20px !important;
+    }
+}
+
+.explorer-table th,
+.explorer-table td {
+    padding: 5px;
+    vertical-align: middle;
+    border-top: 0;
+    white-space: nowrap;
+}
+
+.explorer-table thead th {
+    vertical-align: middle;
+    border-bottom: 0;
+}
+
+.explorer-table tbody {
+    border-top: 0;
+}
+
+.explorer-table tr {
+    height: 46px;
+}
+
+.explorer-table tr:nth-of-type(odd) {
+    background: rgba(247, 247, 247, 1);
+    /* box-shadow: 0px -1px 0px 0px rgba(243, 241, 241, 1); */
+}
+
+.explorer-table tr:nth-of-type(even) {
+    background: rgba(255, 255, 255, 1);
+}
+
+.list-table tr:nth-of-type(odd) {
+    background-color: white;
+}
+
+.list-table tr:nth-of-type(even) {
+    background-color: #f9f9f9;
+}
+
+.list-table th {
+    text-align: left;
+    height: 20px;
+    vertical-align: middle;
+}
+
+.list-table tr {
+    height: 50px;
+}
+
+.list-table tr.list-header {
+    height: 46px;
+    background-color: #e8e8e8;
+}
+
+.list-table th .align-right {
+    text-align: right;
+}
+
+.list-table tr .align-right {
+    text-align: right;
+}
+
+.list-table th .align-left {
+    text-align: left;
+}
+
+.list-table tr .align-left {
+    text-align: left;
+}
+
+.list-table td {
+    padding: 5px;
+    vertical-align: middle;
+}
