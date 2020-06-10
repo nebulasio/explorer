@@ -327,8 +327,8 @@
                 {{ keyDstakingTrend }}
               </h4>
               <router-link :to="fragApi + '/dstaking-history'"
-                ><span class="dstakinglocalizable" id="dstakingViewMore"></span
-              ></router-link>
+                >View More &gt;</router-link
+              >
             </div>
             <div class="d-flex mt-1">
               <div class="form-check mr-4">

@@ -94,11 +94,7 @@
         <span
           class="col-auto pl-0 pr-2 info font-color-000000 font-24 font-bold title"
         >
-          <span
-            v-if=""
-            class="dshistorylocalizable"
-            id="dshistoryTotalText"
-          ></span>
+          <span class="dshistorylocalizable" id="dshistoryTotalText"></span>
           {{ totalTxs }}
           <span
             v-if="totalTxs > 1"

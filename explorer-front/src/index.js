@@ -1,3 +1,7 @@
+import Vue from "vue";
+import VueRouter from "vue-router";
+import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+
 import VueTranslate from "vue-translate-plugin";
 import { EventBus } from "./events.js";
 import { jsonStrings } from "./l10nstrings.js";
@@ -5,9 +9,7 @@ import { jsonStrings } from "./l10nstrings.js";
 var api = require("@/assets/api");
 var appConfig = require("@/assets/app-config");
 
-var Vue = require("vue").default,
-  VueRouter = require("vue-router").default,
-  vApp = {},
+var vApp = {},
   vAppConfig = require("@/assets/app-config"),
   vRouter = new VueRouter({ routes: require("@/assets/routes") }),
   gaPage = require("vue-analytics").page;
@@ -19,7 +21,14 @@ window.jQuery = window.$ = jQuery;
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+
 import "./scss/style.scss";
+
+// Install BootstrapVue
+Vue.use(BootstrapVue);
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin);
 
 Vue.use(VueTranslate);
 
