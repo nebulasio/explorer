@@ -1,6 +1,11 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
+// import VueRouter from "vue-router";
+import VueI18n from "vue-i18n";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+import { i18n } from "./i18n";
+import router from "./router";
+import { Trans } from "./plugins/Translation";
+import App from "./App.vue";
 
 import VueTranslate from "vue-translate-plugin";
 import { EventBus } from "./events.js";
@@ -9,9 +14,12 @@ import { jsonStrings } from "./l10nstrings.js";
 var api = require("@/assets/api");
 var appConfig = require("@/assets/app-config");
 
+Vue.prototype.$i18nRoute = Trans.i18nRoute.bind(Trans);
+Vue.config.productionTip = false;
+
 var vApp = {},
-  vAppConfig = require("@/assets/app-config"),
-  vRouter = new VueRouter({ routes: require("@/assets/routes") }),
+  // vAppConfig = require("@/assets/app-config"),
+  // vRouter = new VueRouter({ routes: require("@/assets/routes") }),
   gaPage = require("vue-analytics").page;
 
 // Expose jQuery to the global object
@@ -32,6 +40,9 @@ Vue.use(IconsPlugin);
 
 Vue.use(VueTranslate);
 
+// Install vue i18n
+Vue.use(VueI18n);
+
 function isIE() {
   if (!!window.ActiveXObject || "ActiveXObject" in window) return true;
   else return false;
@@ -49,10 +60,10 @@ Vue.use(VueAnalytics, {
   }
 });
 
-Vue.config.productionTip = false;
-Vue.use(VueRouter);
-vRouter.beforeEach(onBeforeEach);
-vRouter.afterEach(onAfterEach);
+// Vue.config.productionTip = false;
+// Vue.use(VueRouter);
+// vRouter.beforeEach(onBeforeEach);
+// vRouter.afterEach(onAfterEach);
 
 Number.prototype.pad = function(size) {
   var s = String(this);
@@ -101,31 +112,41 @@ Date.prototype.getWeekNumber = function() {
   return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
 };
 
-vApp = new Vue({
-  components: {
-    //"vue-popmsg": require("@/components/vue-popmsg").default,
-    "vue-footer": require("@/components/vue-footer").default,
-    "vue-header": require("@/components/vue-header").default,
-    "vue-modal": require("@/components/vue-modal").default
-  },
+// vApp = new Vue({
+//   components: {
+//     //"vue-popmsg": require("@/components/vue-popmsg").default,
+//     "vue-footer": require("@/components/vue-footer").default,
+//     "vue-header": require("@/components/vue-header").default,
+//     "vue-modal": require("@/components/vue-modal").default
+//   },
+//   data: {
+//     timestamp: Date.now(),
+//     showModalLoading: false,
+//     showAtpAds: true,
+//     mainnetDipStarted: true,
+//     mainnetGotDipWinners: true,
+//     testnetDipStarted: true,
+//     testnetGotDipWinners: true
+//   },
+//   el: ".vue",
+//   i18n,
+//   router
+// });
+
+new Vue({
   data: {
-    timestamp: Date.now(),
-    showModalLoading: false,
-    showAtpAds: true,
-    mainnetDipStarted: true,
-    mainnetGotDipWinners: true,
-    testnetDipStarted: true,
-    testnetGotDipWinners: true
+    showModalLoading: false
   },
-  el: ".vue",
-  router: vRouter
-});
+  i18n,
+  router,
+  render: h => h(App)
+}).$mount("#app");
 
 Vue.prototype.$selectedLanguage = "en_US";
 
-setInterval(() => {
-  vApp.timestamp = Date.now();
-}, 1000);
+// setInterval(() => {
+//   vApp.timestamp = Date.now();
+// }, 1000);
 
 ////////////////////////////////////////////////////////////
 //
@@ -133,42 +154,42 @@ setInterval(() => {
 //
 ////////////////////////////////////////////////////////////
 
-function onBeforeEach(to, from, next) {
-  window.scrollTo(0, 0);
+// function onBeforeEach(to, from, next) {
+//   window.scrollTo(0, 0);
 
-  vApp.showModalLoading = false;
+//   vApp.showModalLoading = false;
 
-  var apiPrefix, first, path;
+//   var apiPrefix, first, path;
 
-  for (first in vAppConfig.apiPrefixes) break;
+//   for (first in vAppConfig.apiPrefixes) break;
 
-  if (to.name == "*") {
-    path = (from.params.api ? "/" + from.params.api : "") + "/404";
-  } else if (to.params.api) {
-    if (to.params.api in vAppConfig.apiPrefixes) {
-      if (to.params.api == first) {
-        // mainnet/xxx -> /xxx
-        to.params.api = undefined;
-        path = vRouter.resolve({ params: to.params }, to).resolved.fullPath;
-      } else {
-        apiPrefix = vAppConfig.apiPrefixes[to.params.api].url;
-      }
-    } else {
-      path = (from.params.api ? "/" + from.params.api : "") + "/404";
-    }
-  } else {
-    apiPrefix = vAppConfig.apiPrefixes[first].url;
-  }
+//   if (to.name == "*") {
+//     path = (from.params.api ? "/" + from.params.api : "") + "/404";
+//   } else if (to.params.api) {
+//     if (to.params.api in vAppConfig.apiPrefixes) {
+//       if (to.params.api == first) {
+//         // mainnet/xxx -> /xxx
+//         to.params.api = undefined;
+//         path = vRouter.resolve({ params: to.params }, to).resolved.fullPath;
+//       } else {
+//         apiPrefix = vAppConfig.apiPrefixes[to.params.api].url;
+//       }
+//     } else {
+//       path = (from.params.api ? "/" + from.params.api : "") + "/404";
+//     }
+//   } else {
+//     apiPrefix = vAppConfig.apiPrefixes[first].url;
+//   }
 
-  sessionStorage.apiPrefix = apiPrefix;
-  next(path);
-}
+//   sessionStorage.apiPrefix = apiPrefix;
+//   next(path);
+// }
 
-function onAfterEach(to, from) {
-  if (to.meta && to.meta.uaview) {
-    gaPage(to.meta.uaview);
-  }
-}
+// function onAfterEach(to, from) {
+//   if (to.meta && to.meta.uaview) {
+//     gaPage(to.meta.uaview);
+//   }
+// }
 
 // Localization bar
 var myComp = Vue.extend({

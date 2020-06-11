@@ -1,0 +1,16 @@
+{
+    "menu": {
+      "en": "English",
+      "ru": "Russian",
+      "home": "Home",
+      "about": "About"
+    },
+    "main": {
+      "welcome": "Hello from {company}!",
+      "new_message": "no messages | one message | {count} messages"
+    },
+    "about": {
+      "welcome": "Welcome to the About page!"
+    }
+  }
+  
