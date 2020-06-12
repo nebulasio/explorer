@@ -15,10 +15,10 @@
 }
 
 .vue-modal .outer {
-  background-color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  /* background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33); */
   margin: auto auto;
-  height: 56px;
+  /* height: 56px; */
   transition: transform 0.3s ease;
 }
 

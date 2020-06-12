@@ -41,7 +41,7 @@
 </style>
 <template>
   <!-- https://etherscan.io/txs -->
-  <div class="vue-contracts fullfill">
+  <div class="vue-contracts ">
     <div class="vue-bread">
       <div class="container">
         <div class="row align-items-center">

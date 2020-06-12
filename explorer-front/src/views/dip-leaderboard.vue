@@ -156,7 +156,7 @@ tr {
 }
 </style>
 <template>
-  <div class="dip-leaderboard fullfill">
+  <div class="dip-leaderboard ">
     <div class="container">
       <!-- <div class="banner font-color-FFFFFF">
 				<img class="nova-logo d-none d-xl-block" src="/static/img/nova_logo.png?v=20190116" width="169px" alt="nova">

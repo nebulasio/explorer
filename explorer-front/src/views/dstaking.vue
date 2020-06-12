@@ -163,7 +163,7 @@
 }
 </style>
 <template>
-  <div class="dstaking fullfill">
+  <div class="dstaking ">
     <!-- Not localized to keep the vue-bread as it is -->
     <vue-bread title="dStaking Dashboard" nextdao="true">
       <a href="">nextdao.io</a>

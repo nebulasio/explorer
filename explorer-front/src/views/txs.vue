@@ -75,7 +75,7 @@
 </style>
 <template>
   <!-- https://etherscan.io/txs -->
-  <div class="vue-txs fullfill">
+  <div class="vue-txs ">
     <!--
 		 <vue-bread :title='"Transactions" + (($route.query.a || $route.query.block) ? " of" : "")' :subtitle='$route.query.block ? ("Block #" + $route.query.block) : $route.query.a' :subtitlemonospaced='!!$route.query.a' :blockies='$route.query.a'></vue-bread>
 		-->

@@ -74,7 +74,7 @@ div .vue-tx {
 }
 </style>
 <template>
-  <div class="vue-tx fullfill" v-bind:triggerComputed="urlChange">
+  <div class="vue-tx " v-bind:triggerComputed="urlChange">
     <vue-bread
       :title="nothing"
       :subtitle="$route.params.id"

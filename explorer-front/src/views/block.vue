@@ -36,7 +36,7 @@
 </style>
 <template>
   <!-- https://etherscan.io/block/4951841 -->
-  <div class="vue-block fullfill" v-bind:triggerComputed="urlChange">
+  <div class="vue-block " v-bind:triggerComputed="urlChange">
     <div class="vue-bread">
       <div class="container">
         <div class="row align-items-center">

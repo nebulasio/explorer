@@ -74,7 +74,7 @@
 }
 </style>
 <template>
-  <div class="staking-history fullfill">
+  <div class="staking-history ">
     <div class="vue-bread">
       <div class="container">
         <div class="row align-items-center">

@@ -35,7 +35,7 @@
 }
 </style>
 <template>
-  <div class="vue-404 fullfill">
+  <div class="vue-404 ">
     <div class="container vertical-center">
       <div class="msg font-bold">
         {{ $t("404NotFoundMessage") }}

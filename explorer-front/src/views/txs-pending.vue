@@ -14,7 +14,7 @@
 </style>
 <template>
   <!-- https://etherscan.io/txsPending -->
-  <div class="vue-txs-pending fullfill">
+  <div class="vue-txs-pending ">
     <div class="vue-bread">
       <div class="container">
         <div class="row align-items-center">

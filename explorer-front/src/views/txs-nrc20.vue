@@ -80,7 +80,7 @@
 </style>
 <template>
   <!-- https://etherscan.io/txs -->
-  <div class="vue-txs-nrc20 fullfill">
+  <div class="vue-txs-nrc20 ">
     <div class="vue-bread">
       <div class="container">
         <div class="row align-items-center">

@@ -21,7 +21,7 @@
 
 <template>
   <!-- https://etherscan.io/blocks -->
-  <div class="vue-blocks fullfill">
+  <div class="vue-blocks ">
     <div class="vue-bread">
       <div class="container">
         <div class="row align-items-center">

@@ -10,6 +10,17 @@ body {
   font-size: 13px;
 }
 
+// footer stick to bottom
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main-container {
+  flex: 1 0 auto;
+}
+
 dl,
 ol,
 ul {
@@ -89,17 +100,17 @@ td.time:hover :nth-child(2) {
   height: 100%;
 }
 
-.fullfill {
-  min-height: calc(100% - 70px - 82px);
-  border-bottom: 0.5px solid rgba(221, 221, 221, 1);
-  padding-bottom: 50px;
-}
+// .fullfill {
+//   min-height: calc(100% - 70px - 82px);
+//   border-bottom: 0.5px solid rgba(221, 221, 221, 1);
+//   padding-bottom: 50px;
+// }
 
-@media (max-width: 767.98px) {
-  .fullfill {
-    padding-bottom: 30px;
-  }
-}
+// @media (max-width: 767.98px) {
+//   .fullfill {
+//     padding-bottom: 30px;
+//   }
+// }
 
 /*  overrides - bootstrap
     ============================================================ */

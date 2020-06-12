@@ -1,5 +1,7 @@
 <style>
     .vue-footer {
+        flex-shrink: 0;
+        width: 100%;
         background: rgba(255, 255, 255, 1);
         box-shadow: 0px 1px 0px 0px rgba(221, 221, 221, 1);
         /* margin-top: 30px; */
@@ -79,7 +81,7 @@
 
 </style>
 <template>
-    <div class=vue-footer>
+    <footer class=vue-footer>
         <div class=container>
             <div class="row">
                 <div class="col-xs-12 col-md-4">
@@ -106,5 +108,5 @@
             </div>
             <div class="safe-bottom"></div>
         </div>
-    </div>
+    </footer>
 </template>

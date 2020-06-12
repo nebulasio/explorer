@@ -79,7 +79,7 @@
 </style>
 <template>
   <!-- https://etherscan.io/txs -->
-  <div class="vue-txs fullfill">
+  <div class="vue-txs ">
     <vue-bread v-bind:title="transactionsTitle"></vue-bread>
 
     <div class="container mt20">

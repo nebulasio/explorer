@@ -26,7 +26,7 @@
 </style>
 <template>
   <!-- https://etherscan.io/accounts  -->
-  <div class="vue-accounts fullfill">
+  <div class="vue-accounts ">
     <div class="vue-bread">
       <div class="container">
         <div class="row align-items-center">

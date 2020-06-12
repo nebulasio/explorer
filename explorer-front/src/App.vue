@@ -1,18 +1,14 @@
 <template>
   <div id="app">
-    <Header></Header>
-    <router-view />
+    <main class="main-container">
+      <Header></Header>
+      <router-view />
+    </main>
     <Footer></Footer>
-    <Modal class="loading" v-show="showModalLoading">
-      <div slot="l1" class="progress">
-        <div
-          class="progress-bar progress-bar-striped progress-bar-animated"
-          role="progressbar"
-          aria-valuenow="100"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        ></div>
-      </div>
+    <Modal class="loading" v-show="this.$root.showModalLoading">
+      <template v-slot:l1>
+        <b-spinner label="Loading..."></b-spinner>
+      </template>
     </Modal>
   </div>
 </template>

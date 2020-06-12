@@ -36,7 +36,7 @@
 }
 </style>
 <template>
-  <div class="vue-nothing fullfill">
+  <div class="vue-nothing ">
     <div class="container vertical-center">
       <div class="msg font-bold">
         {{ $t("nothingNoSearchResults") }}
