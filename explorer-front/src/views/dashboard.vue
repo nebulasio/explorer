@@ -109,34 +109,60 @@ $nax-price-card-height: 520px;
   box-shadow: 10px 10px 20px 0px rgba(30, 30, 30, 0.05);
 }
 
-.vue-dashboard .row1 .flex-item {
-  box-shadow: none;
-  background-color: initial;
-}
+// .vue-dashboard .row1 .flex-item {
+//   box-shadow: none;
+//   background-color: initial;
+// }
 
-.vue-dashboard .row1 .item-bg {
-  position: relative;
-  background: linear-gradient(
-    135deg,
-    rgba(48, 58, 76, 1) 0%,
-    rgba(15, 19, 26, 1) 100%
-  );
-}
+// .vue-dashboard .row1 .item-bg {
+//   position: relative;
+//   background: linear-gradient(
+//     135deg,
+//     rgba(48, 58, 76, 1) 0%,
+//     rgba(15, 19, 26, 1) 100%
+//   );
+// }
 
-.vue-dashboard .item-title {
-  position: absolute;
-  left: 30px;
-  top: 25px;
-  font-size: 20px;
-  font-weight: 600;
-}
+// .vue-dashboard .item-title {
+//   position: absolute;
+//   left: 30px;
+//   top: 25px;
+//   font-size: 20px;
+//   font-weight: 600;
+// }
 
-.vue-dashboard .row1 {
+// .vue-dashboard .row1 {
+//   color: white;
+// }
+
+// .vue-dashboard .row1 .item-title {
+//   color: white;
+// }
+
+.row1 {
   color: white;
-}
 
-.vue-dashboard .row1 .item-title {
-  color: white;
+  .flex-item {
+    box-shadow: none;
+    background-color: initial;
+  }
+
+  .item-bg {
+    position: relative;
+    background: linear-gradient(
+      135deg,
+      rgba(48, 58, 76, 1) 0%,
+      rgba(15, 19, 26, 1) 100%
+    );
+  }
+
+  .item-title {
+    position: absolute;
+    left: 30px;
+    top: 25px;
+    font-size: 20px;
+    font-weight: 600;
+  }
 }
 
 .daily-transactions {
@@ -247,11 +273,15 @@ $nax-price-card-height: 520px;
   padding: 0 30px;
 }
 
-.market-price {
-  &.nax-price-card {
-    height: $nax-price-card-height !important;
-  }
+.nax-price-card {
+  height: $nax-price-card-height !important;
+}
 
+.top-node-card {
+  height: 620px !important;
+}
+
+.market-price {
   .detail {
     *:nth-child(1) {
       font-size: 28px;
@@ -515,20 +545,6 @@ $nax-price-card-height: 520px;
   font-weight: 600;
 }
 
-/* .vue-dashboard .row4 .accounts-data .data-source {
-		position: absolute;
-		top: 30px;
-		right: 30px;
-	} */
-
-// .vue-dashboard .accounts-chart {
-//   position: absolute;
-//   top: 90px;
-//   width: calc(100% - 30px);
-//   height: 240px;
-//   margin-left: 30px;
-// }
-
 .vue-dashboard .account-echart-down-arrow {
   width: 0;
   height: 0;
@@ -740,12 +756,7 @@ $nax-price-card-height: 520px;
                 {{ numberAddComma(todayTxCnt) }}</span
               >
             </div>
-            <!-- <vchart
-              class="daily-chart"
-              v-if="dailyTxChartOptions"
-              :options="dailyTxChartOptions"
-              :autoResize="true"
-            ></vchart> -->
+
             <DailyTxChart />
           </div>
         </div>
@@ -810,7 +821,9 @@ $nax-price-card-height: 520px;
 
       <!-- row 2: nax data -->
       <div class="row row1">
-        <div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
+        <div
+          class="daily-transactions market-price nax-price-card flex-item col-12 col-lg-6 row1-item"
+        >
           <div class="item-bg">
             <div class="item-title">
               dStaking NAS and Minting NAX
@@ -894,7 +907,9 @@ $nax-price-card-height: 520px;
 
       <!-- row 3: node data -->
       <div class="row row1">
-        <div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
+        <div
+          class="daily-transactions top-node-card flex-item col-12 col-lg-6 row1-item"
+        >
           <div class="item-bg">
             <div class="item-title">
               Top 21 Nodes
@@ -902,12 +917,8 @@ $nax-price-card-height: 520px;
             <div class="details">
               <span>Current Polling Cycle: 21,314</span>
             </div>
-            <!-- <vchart
-              class="daily-chart"
-              v-if="dailyTxChartOptions"
-              :options="dailyTxChartOptions"
-              :autoResize="true"
-            ></vchart> -->
+
+            <TopNodesChart />
           </div>
         </div>
         <!-- nax price card -->
@@ -1339,12 +1350,14 @@ var dashboardAmountText = "";
 
 import DailyTxChart from "@/components/DailyTxChart";
 import DStakingChart from "@/components/DStakingChart";
+import TopNodesChart from "@/components/TopNodesChart";
 import AddressGrowthChart from "@/components/AddressGrowthChart";
 
 module.exports = {
   components: {
     DailyTxChart,
     DStakingChart,
+    TopNodesChart,
     AddressGrowthChart
   },
   data() {
