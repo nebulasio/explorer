@@ -125,11 +125,9 @@
         <form class="form-inline" v-on:submit.prevent="onSubmit">
           <img src=/static/img/icon_search.png width=16 alt="" />
           <input
-            class="mr-sm-2 font-12 headerlocalizable"
-            localize="placeholder"
-            id="headerSearchTool"
+            class="mr-sm-2 font-12"
             type="search"
-            placeholder
+            :placeholder="$t('headerSearchTool')"
             v-model="search"
           />
         </form>
@@ -140,12 +138,11 @@
           >
             <router-link v-bind:to="fragApi + '/'" class="nav-link">
               <span>
-                <span id="headerHomeTitle" class="headerlocalizable"></span>
+                <span id="headerHomeTitle">
+                  {{ $t("headerHomeTitle") }}
+                </span>
                 <span class="sr-only">
-                  <span
-                    id="headerHomesubtitle"
-                    class="headerlocalizable"
-                  ></span>
+                  {{ $t("headerHomesubtitle") }}
                 </span>
               </span>
             </router-link>
@@ -156,11 +153,11 @@
             v-bind:class="{ active: $route.meta.headerActive == 3 }"
           >
             <router-link v-bind:to="fragApi + '/dstaking'" class="nav-link">
-              <span class="headerlocalizable" id="headerMenuDstaking"></span>
-              <span
-                class="sr-only headerlocalizable"
-                id="headerCurrentText"
-              ></span>
+              {{ $t("headerMenuDstaking") }}
+
+              <span class="sr-only">
+                {{ $t("headerCurrentText") }}
+              </span>
             </router-link>
           </li>
           <!-- Menú Blockchain -->
@@ -186,36 +183,27 @@
               aria-labelledby="header-dropdown-blockchain"
             >
               <router-link class="dropdown-item" v-bind:to="fragApi + '/txs'">
-                <span
-                  id="headerTransactionsSubmenu"
-                  class="headerlocalizable"
-                ></span>
+                {{ $t("headerTransactionsSubmenu") }}
               </router-link>
               <router-link
                 class="dropdown-item"
                 v-bind:to="fragApi + '/txs/pending'"
               >
-                <span
-                  id="headerPendingTransactionsSubmenu"
-                  class="headerlocalizable"
-                ></span>
+                {{ $t("headerPendingTransactionsSubmenu") }}
               </router-link>
               <div class="dropdown-divider"></div>
               <router-link
                 class="dropdown-item"
                 v-bind:to="fragApi + '/blocks'"
               >
-                <span id="headerBlocksSubmenu" class="headerlocalizable"></span>
+                {{ $t("headerBlocksSubmenu") }}
               </router-link>
               <div class="dropdown-divider"></div>
               <router-link
                 class="dropdown-item"
                 v-bind:to="fragApi + '/accounts'"
               >
-                <span
-                  id="headerAccountsSubmenu"
-                  class="headerlocalizable"
-                ></span>
+                {{ $t("headerAccountsSubmenu") }}
               </router-link>
             </div>
           </li>
@@ -245,10 +233,11 @@
   </nav>
 </template>
 <script>
-import { EventBus } from "../events.js";
-import { jsonStrings } from "../l10nstrings.js";
-var api = require("@/assets/api"),
-  appConfig = require("@/assets/app-config");
+// import { EventBus } from "../events.js";
+// import { jsonStrings } from "../l10nstrings.js";
+var api = require("@/assets/api");
+
+import { apiPrefixesConfig } from "@/config";
 
 module.exports = {
   data() {
@@ -261,26 +250,26 @@ module.exports = {
     };
   },
   mounted() {
-    EventBus.$on("changeLanguage", foo => {
-      this.checkHeaderTranslations();
-    });
-    if (typeof this.$selectedLanguage != "undefined") {
-      this.checkHeaderTranslations();
-    }
-    this.tempInterval = setInterval(() => {
-      this.checkHeaderTranslations();
-      //this.removeTempInterval();//Commented to let the page fully charge
-    }, 800);
+    // EventBus.$on("changeLanguage", foo => {
+    //   this.checkHeaderTranslations();
+    // });
+    // if (typeof this.$selectedLanguage != "undefined") {
+    //   this.checkHeaderTranslations();
+    // }
+    // this.tempInterval = setInterval(() => {
+    //   this.checkHeaderTranslations();
+    //   //this.removeTempInterval();//Commented to let the page fully charge
+    // }, 800);
 
     var paramsApi = this.$route.params.api,
       apiPrefixes = {},
       i,
       first = true;
-    for (i in appConfig.apiPrefixes)
+    for (i in apiPrefixesConfig)
       if (first) {
-        apiPrefixes[""] = appConfig.apiPrefixes[i];
+        apiPrefixes[""] = apiPrefixesConfig[i];
         first = false;
-      } else apiPrefixes[i] = appConfig.apiPrefixes[i];
+      } else apiPrefixes[i] = apiPrefixesConfig[i];
 
     if (!(paramsApi in apiPrefixes)) paramsApi = "";
 
@@ -297,32 +286,32 @@ module.exports = {
     }
   },
   methods: {
-    removeTempInterval() {
-      clearInterval(this.tempInterval);
-    },
-    checkHeaderTranslations() {
-      // Unique elements, identified by id attr
-      var myLocalizableElements = document.getElementsByClassName(
-        "headerlocalizable"
-      );
-      var totalElements = myLocalizableElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementId = myLocalizableElements[i].getAttribute("id");
-        if (myLocalizableElements[i].getAttribute("localize")) {
-          var elementAttribute = myLocalizableElements[i].getAttribute(
-            "localize"
-          );
-          myLocalizableElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementId]
-          );
-        } else {
-          myLocalizableElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementId];
-        }
-      }
-    },
+    // removeTempInterval() {
+    //   clearInterval(this.tempInterval);
+    // },
+    // checkHeaderTranslations() {
+    //   // Unique elements, identified by id attr
+    //   var myLocalizableElements = document.getElementsByClassName(
+    //     "headerlocalizable"
+    //   );
+    //   var totalElements = myLocalizableElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementId = myLocalizableElements[i].getAttribute("id");
+    //     if (myLocalizableElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myLocalizableElements[i].getAttribute(
+    //         "localize"
+    //       );
+    //       myLocalizableElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementId]
+    //       );
+    //     } else {
+    //       myLocalizableElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementId];
+    //     }
+    //   }
+    // },
     onSubmit() {
       this.$root.showModalLoading = true;
       api.getSearch(
@@ -368,7 +357,7 @@ module.exports = {
     },
     atpAddress() {
       var api = this.$route.params.api ? this.$route.params.api : "mainnet";
-      return appConfig.apiPrefixes[api].atp;
+      return apiPrefixesConfig[api].atp;
     },
     showATP() {
       // 搜索框进入 ATP 的临时方案！！！

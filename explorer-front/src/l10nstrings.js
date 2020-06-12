@@ -50,11 +50,11 @@ You can check the dashboard.vue file as a reference and a guide on how to do
 this.
 
 */
-import Vue from 'vue';
+import Vue from "vue";
 //Add more lines like those two for additional language strings
-import { json_en_us } from './l10n_en_us.js';
-import { json_es_es } from './l10n_es_es.js';
+import { json_en_us } from "./l10n_en_us.js";
+import { json_es_es } from "./l10n_es_es.js";
 export const jsonStrings = {
-	"en_US": json_en_us,
-	"es_ES": json_es_es
+  en_US: json_en_us,
+  es_ES: json_es_es
 };

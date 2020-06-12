@@ -25,5 +25,5 @@ export const apiPrefixesConfig = {
 export const i18nConfig = {
   locale: "en",
   fallback_locale: "en",
-  supported_locale: "en,ru"
+  supported_locale: "en,es"
 };
