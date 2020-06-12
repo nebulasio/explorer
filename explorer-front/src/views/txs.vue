@@ -83,21 +83,17 @@
     <div class="vue-bread">
       <div class="container">
         <div class="row align-items-center">
-          <div
-            class="col-auto bread-title font-40 font-bold font-color-000000 txslocalizable"
-            id="transactionsTxPrefix"
-          >
-            <div
-              v-if="$route.query.a || $route.query.block"
-              id="transactionsTxSuffix"
-              class="txslocalizable"
-            ></div>
+          <div class="col-auto bread-title font-40 font-bold font-color-000000">
+            {{ $t("transactionsTxPrefix") }}
+            <div v-if="$route.query.a || $route.query.block">
+              {{ $t("transactionsTxSuffix") }}
+            </div>
           </div>
           <div v-if="$route.query.block">
             <div
               class="col-auto bread-subtitle font-16 font-bold font-color-000000 align-baseline"
             >
-              <span id="transactionsBlockNumber" class="txslocalizable"></span>
+              {{ $t("transactionsBlockNumber") }}
               {{ $route.query.block }}
             </div>
           </div>
@@ -118,28 +114,27 @@
           class="col-auto pl-0 pr-2 info font-color-000000 font-24 font-bold title"
         >
           <span v-if="totalTxs > 0 && !$route.query.a && !$route.query.block">
-            <span id="transactionsMoreThan" class="txslocalizable"></span>
+            {{ $t("transactionsMoreThan") }}
           </span>
           <span v-if="totalTxs > 1000000">
             {{ Math.floor(totalTxs / 1000000) }}
             <span v-if="Math.floor(totalTxs / 1000000) > 2">
-              <span id="transactionsMillions" class="txslocalizable"></span>
+              {{ $t("transactionsMillions") }}
             </span>
             <span v-else>
-              <span id="transactionsMillion" class="txslocalizable"></span>
+              {{ $t("transactionsMillion") }}
             </span>
-            <span id="transactionsOf" class="txslocalizable"></span>
+            {{ $t("transactionsOf") }}
           </span>
           <span v-else>
             {{ numberAddComma(totalTxs) }}
           </span>
-          <span id="transactionsFound" class="txslocalizable"></span>
+          {{ $t("transactionsFound") }}
         </span>
         <span
           v-if="totalTxs > 500"
           class="col-auto pl-0 font-color-555555 font-16 align-text-bottom subtitle"
-          >(<span id="transactionsShowingLast" class="txslocalizable"></span
-          >)</span
+          >(<span> {{ $t("transactionsShowingLast") }} </span>)</span
         >
       </div>
 
@@ -147,21 +142,18 @@
         <table class="mt20 explorer-table list-table">
           <tr class="list-header font-12 font-bold font-color-000000">
             <th></th>
-            <th class="txslocalizable" id="transactionsTableTxHash"></th>
-            <th class="txslocalizable" id="transactionsTableBlock"></th>
-            <th class="txslocalizable" id="transactionsTableAge"></th>
-            <th class="txslocalizable" id="transactionsTableFrom"></th>
+            <th>{{ $t("transactionsTableTxHash") }}</th>
+            <th>{{ $t("transactionsTableBlock") }}</th>
+            <th>{{ $t("transactionsTableAge") }}</th>
+            <th>{{ $t("transactionsTableFrom") }}</th>
             <th></th>
-            <th class="txslocalizable" id="transactionsTableTo"></th>
-            <th
-              class="text-right"
-              txslocalizable
-              id="transactionsTableValue"
-            ></th>
-            <th
-              class="text-right pr-3 txslocalizable"
-              id="transactionsTableTxFee"
-            ></th>
+            <th>{{ $t("transactionsTableTo") }}</th>
+            <th class="text-right">
+              {{ $t("transactionsTableValue") }}
+            </th>
+            <th class="text-right pr-3">
+              {{ $t("transactionsTableTxFee") }}
+            </th>
           </tr>
 
           <tr v-for="(o, i) in arr" :key="i">
@@ -238,10 +230,9 @@
             </td>
             <td class="tdxxxwddd txs-from-to">
               <div v-if="o.type === 'call'" class="container-tip">
-                <span
-                  class="tip down-arrow-tip font-15 shadow txslocalizable"
-                  id="transactionsSmartcontract"
-                ></span>
+                <span class="tip down-arrow-tip font-15 shadow">
+                  {{ $t("transactionsSmartcontract") }}
+                </span>
                 <img
                   class="icon24"
                   src="../../static/img/icon_tx_type_contract.png"
@@ -285,16 +276,17 @@
     <div v-else class="container mt-20">
       <div class="d-block d-md-flex flex-row align-items-center mt20">
         <span
-          class="col-auto pl-0 pr-2 info font-color-000000 font-24 font-bold title txslocalizable"
-          id="transactionsNoTxFound"
-        ></span>
+          class="col-auto pl-0 pr-2 info font-color-000000 font-24 font-bold title"
+        >
+          {{ $t("transactionsNoTxFound") }}
+        </span>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { EventBus } from "../events.js";
-import { jsonStrings } from "../l10nstrings.js";
+// import { EventBus } from "../events.js";
+// import { jsonStrings } from "../l10nstrings.js";
 var api = require("@/assets/api");
 var utility = require("@/assets/utility");
 var BigNumber = require("bignumber.js");
@@ -317,47 +309,47 @@ module.exports = {
     };
   },
   methods: {
-    removeTempInterval() {
-      clearInterval(this.tempInterval);
-    },
-    checkStaticTranslations() {
-      var myTxsElements = document.getElementsByClassName("txslocalizable");
-      var totalElements = myTxsElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementId = myTxsElements[i].getAttribute("id");
-        if (myTxsElements[i].getAttribute("localize")) {
-          var elementAttribute = myTxsElements[i].getAttribute("localize");
-          myTxsElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementId]
-          );
-        } else {
-          myTxsElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementId];
-        }
-      }
-    },
-    checkDynamicTranslations() {
-      var myTxsMultiElements = document.getElementsByClassName(
-        "txsmultilocalizable"
-      );
-      var totalElements = myTxsMultiElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementName = myTxsMultiElements[i].getAttribute("name");
-        if (myTxsMultiElements[i].getAttribute("localize")) {
-          var elementAttribute = myTxsMultiElements[i].getAttribute("localize");
-          myTxsMultiElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementName]
-          );
-        } else {
-          myTxsMultiElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementName];
-        }
-      }
-    },
+    // removeTempInterval() {
+    //   clearInterval(this.tempInterval);
+    // },
+    // checkStaticTranslations() {
+    //   var myTxsElements = document.getElementsByClassName("txslocalizable");
+    //   var totalElements = myTxsElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementId = myTxsElements[i].getAttribute("id");
+    //     if (myTxsElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myTxsElements[i].getAttribute("localize");
+    //       myTxsElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementId]
+    //       );
+    //     } else {
+    //       myTxsElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementId];
+    //     }
+    //   }
+    // },
+    // checkDynamicTranslations() {
+    //   var myTxsMultiElements = document.getElementsByClassName(
+    //     "txsmultilocalizable"
+    //   );
+    //   var totalElements = myTxsMultiElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementName = myTxsMultiElements[i].getAttribute("name");
+    //     if (myTxsMultiElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myTxsMultiElements[i].getAttribute("localize");
+    //       myTxsMultiElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementName]
+    //       );
+    //     } else {
+    //       myTxsMultiElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementName];
+    //     }
+    //   }
+    // },
     nav(n) {
       var query = JSON.parse(window.JSON.stringify(this.$route.query));
 
@@ -451,16 +443,16 @@ module.exports = {
     }
   },
   mounted() {
-    EventBus.$on("changeLanguage", foo => {
-      this.checkStaticTranslations();
-    });
-    this.translationsInterval = setInterval(() => {
-      this.checkDynamicTranslations();
-    }, 1000);
-    this.tempInterval = setInterval(() => {
-      this.checkStaticTranslations();
-      this.removeTempInterval();
-    }, 1500);
+    // EventBus.$on("changeLanguage", foo => {
+    //   this.checkStaticTranslations();
+    // });
+    // this.translationsInterval = setInterval(() => {
+    //   this.checkDynamicTranslations();
+    // }, 1000);
+    // this.tempInterval = setInterval(() => {
+    //   this.checkStaticTranslations();
+    //   this.removeTempInterval();
+    // }, 1500);
 
     this.nthPage();
   },
