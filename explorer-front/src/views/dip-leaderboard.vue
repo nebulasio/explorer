@@ -169,10 +169,12 @@ tr {
 			</div> -->
 
       <div class="top font-color-000000">
-        <div class="title font-40 font-bold diplocalizable" id="dipTitle">
-          Native Developer Incentive Protocol Awards
+        <div class="title font-40 font-bold">
+          {{ $t("dipTitle") }}
         </div>
-        <div class="update font-16 mt-3 diplocalizable" id="dipSubtitle"></div>
+        <div class="update font-16 mt-3">
+          {{ $t("dipSubtitle") }}
+        </div>
       </div>
 
       <div
@@ -208,7 +210,9 @@ tr {
         class="font-14 font-color-666666 d-block d-md-inline mt-4 mt-md-0"
       >
         <span class="font-bold font-color-333333">{{ totalContract }}</span>
-        <span class="diplocalizable" id="dipRewardsText"></span>
+        <span>
+          {{ $t("dipRewardsText") }}
+        </span>
         <span class="font-bold font-color-333333">{{
           tokenAmount(totalAward)
         }}</span>
@@ -218,12 +222,16 @@ tr {
       <div v-if="arr && arr.length" class="explorer-table-container">
         <table class="explorer-table list-table">
           <tr class="list-header font-12 font-bold font-color-000000">
-            <th class="px-3 text-center diplocalizable" id="dipTableRank"></th>
-            <th class="diplocalizable" id="dipTableContract"></th>
-            <th class="diplocalizable" id="dipTableCreatorAddress"></th>
-            <th class="diplocalizable" id="dipTableAward"></th>
-            <th class="diplocalizable" id="dipTableTxHash"></th>
-            <th class="text-right pr-3 diplocalizable" id="dipTableAge"></th>
+            <th class="px-3 text-center">
+              {{ $t("dipTableRank") }}
+            </th>
+            <th>{{ $t("dipTableContract") }}</th>
+            <th>{{ $t("dipTableCreatorAddress") }}</th>
+            <th>{{ $t("dipTableAward") }}</th>
+            <th>{{ $t("dipTableTxHash") }}</th>
+            <th class="text-right pr-3">
+              {{ $t("dipTableAge") }}
+            </th>
           </tr>
 
           <tr v-for="(o, i) in arr" :key="i">
@@ -237,10 +245,9 @@ tr {
             </td>
             <td class="tdxxxwddd txs-from-to">
               <div class="container-tip">
-                <span
-                  class="tip down-arrow-tip font-15 shadow diplocalizable"
-                  id="dipSmartContractTitle"
-                ></span>
+                <span class="tip down-arrow-tip font-15 shadow">
+                  {{ $t("dipSmartContractTitle") }}
+                </span>
                 <img
                   class="icon24"
                   src="../../static/img/icon_tx_type_contract.png"
@@ -294,8 +301,8 @@ tr {
   </div>
 </template>
 <script>
-import { EventBus } from "../events.js";
-import { jsonStrings } from "../l10nstrings.js";
+// import { EventBus } from "../events.js";
+// import { jsonStrings } from "../l10nstrings.js";
 var api = require("@/assets/api"),
   utility = require("@/assets/utility"),
   BigNumber = require("bignumber.js"),
@@ -335,55 +342,55 @@ module.exports = {
     }
   },
   methods: {
-    removeTempInterval() {
-      clearInterval(this.tempInterval);
-    },
-    checkStaticTranslations() {
-      // Unique elements, identified by id attr
-      var myLocalizableElements = document.getElementsByClassName(
-        "diplocalizable"
-      );
-      var totalElements = myLocalizableElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementId = myLocalizableElements[i].getAttribute("id");
-        if (myLocalizableElements[i].getAttribute("localize")) {
-          var elementAttribute = myLocalizableElements[i].getAttribute(
-            "localize"
-          );
-          myLocalizableElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementId]
-          );
-        } else {
-          myLocalizableElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementId];
-        }
-      }
-    },
-    checkDynamicTranslations() {
-      // Multiple elements, identified with name attr
-      var myMultiLocalizableElements = document.getElementsByClassName(
-        "dipmultilocalizable"
-      );
-      var totalElements = myMultiLocalizableElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementName = myMultiLocalizableElements[i].getAttribute("name");
-        if (myMultiLocalizableElements[i].getAttribute("localize")) {
-          var elementAttribute = myMultiLocalizableElements[i].getAttribute(
-            "localize"
-          );
-          myMultiLocalizableElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementName]
-          );
-        } else {
-          myMultiLocalizableElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementName];
-        }
-      }
-    },
+    // removeTempInterval() {
+    //   clearInterval(this.tempInterval);
+    // },
+    // checkStaticTranslations() {
+    //   // Unique elements, identified by id attr
+    //   var myLocalizableElements = document.getElementsByClassName(
+    //     "diplocalizable"
+    //   );
+    //   var totalElements = myLocalizableElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementId = myLocalizableElements[i].getAttribute("id");
+    //     if (myLocalizableElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myLocalizableElements[i].getAttribute(
+    //         "localize"
+    //       );
+    //       myLocalizableElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementId]
+    //       );
+    //     } else {
+    //       myLocalizableElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementId];
+    //     }
+    //   }
+    // },
+    // checkDynamicTranslations() {
+    //   // Multiple elements, identified with name attr
+    //   var myMultiLocalizableElements = document.getElementsByClassName(
+    //     "dipmultilocalizable"
+    //   );
+    //   var totalElements = myMultiLocalizableElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementName = myMultiLocalizableElements[i].getAttribute("name");
+    //     if (myMultiLocalizableElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myMultiLocalizableElements[i].getAttribute(
+    //         "localize"
+    //       );
+    //       myMultiLocalizableElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementName]
+    //       );
+    //     } else {
+    //       myMultiLocalizableElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementName];
+    //     }
+    //   }
+    // },
     nav(n) {
       var query = JSON.parse(window.JSON.stringify(this.$route.query));
 
@@ -479,19 +486,19 @@ module.exports = {
     }
   },
   mounted() {
-    EventBus.$on("changeLanguage", foo => {
-      this.checkStaticTranslations();
-    });
-    if (typeof this.$selectedLanguage != "undefined") {
-      this.checkStaticTranslations();
-    }
-    this.translationsInterval = setInterval(() => {
-      this.checkDynamicTranslations();
-    }, 1000);
-    this.tempInterval = setInterval(() => {
-      this.checkStaticTranslations();
-      //this.removeTempInterval();
-    }, 1000);
+    // EventBus.$on("changeLanguage", foo => {
+    //   this.checkStaticTranslations();
+    // });
+    // if (typeof this.$selectedLanguage != "undefined") {
+    //   this.checkStaticTranslations();
+    // }
+    // this.translationsInterval = setInterval(() => {
+    //   this.checkDynamicTranslations();
+    // }, 1000);
+    // this.tempInterval = setInterval(() => {
+    //   this.checkStaticTranslations();
+    //   //this.removeTempInterval();
+    // }, 1000);
     this.nthPage();
   },
   watch: {

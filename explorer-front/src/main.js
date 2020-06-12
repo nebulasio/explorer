@@ -8,8 +8,8 @@ import { Trans } from "./plugins/Translation";
 import App from "./App.vue";
 
 import VueTranslate from "vue-translate-plugin";
-import { EventBus } from "./events.js";
-import { jsonStrings } from "./l10nstrings.js";
+// import { EventBus } from "./events.js";
+// import { jsonStrings } from "./l10nstrings.js";
 
 var api = require("@/assets/api");
 var appConfig = require("@/assets/app-config");
@@ -192,56 +192,56 @@ Vue.prototype.$selectedLanguage = "en_US";
 // }
 
 // Localization bar
-var myComp = Vue.extend({
-  template: `<div>
-						<a class="nav-link" href=# id=language-selector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
-							{{ t('Languages') }}
-							<img src=/static/img/icon_arrow_down.png width=12 alt="">
-						</a>
-						<div class=dropdown-menu aria-labelledby=language-selector>
-							<div>
-								<a href="#" class="dropdown-item" v-on:click.prevent=translateToEnglish()><img src=/static/img/icon-engflag.png width=12 alt=""> {{ t('English') }}</a>
-								<a href="#" class="dropdown-item" v-on:click.prevent=translateToSpanish()><img src=/static/img/icon-espflag.png width=12 alt=""> {{ t('Spanish') }}</a>
-							</div>
-						</div>
-					</div>`,
-  locales: {
-    es_ES: {
-      Languages: "Idiomas",
-      English: "Inglés",
-      Spanish: "Español"
-    },
-    en_US: {
-      Languages: "Languages",
-      English: "English",
-      Spanish: "Spanish"
-    }
-  },
-  methods: {
-    translateToSpanish() {
-      Vue.prototype.$selectedLanguage = "es_ES";
-      this.$translate.setLang(Vue.prototype.$selectedLanguage);
-      EventBus.$emit("changeLanguage");
-    },
-    translateToEnglish() {
-      Vue.prototype.$selectedLanguage = "en_US";
-      this.$translate.setLang(Vue.prototype.$selectedLanguage);
-      EventBus.$emit("changeLanguage");
-    },
-    initializeApp() {
-      EventBus.$emit("changeLanguage");
-      clearInterval(this.longIntervalID);
-    }
-  },
-  mounted() {
-    this.longIntervalID = setInterval(() => {
-      this.initializeApp();
-    }, 1500);
-  }
-});
+// var myComp = Vue.extend({
+//   template: `<div>
+// 						<a class="nav-link" href=# id=language-selector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+// 							{{ t('Languages') }}
+// 							<img src=/static/img/icon_arrow_down.png width=12 alt="">
+// 						</a>
+// 						<div class=dropdown-menu aria-labelledby=language-selector>
+// 							<div>
+// 								<a href="#" class="dropdown-item" v-on:click.prevent=translateToEnglish()><img src=/static/img/icon-engflag.png width=12 alt=""> {{ t('English') }}</a>
+// 								<a href="#" class="dropdown-item" v-on:click.prevent=translateToSpanish()><img src=/static/img/icon-espflag.png width=12 alt=""> {{ t('Spanish') }}</a>
+// 							</div>
+// 						</div>
+// 					</div>`,
+//   locales: {
+//     es_ES: {
+//       Languages: "Idiomas",
+//       English: "Inglés",
+//       Spanish: "Español"
+//     },
+//     en_US: {
+//       Languages: "Languages",
+//       English: "English",
+//       Spanish: "Spanish"
+//     }
+//   },
+//   methods: {
+//     translateToSpanish() {
+//       Vue.prototype.$selectedLanguage = "es_ES";
+//       this.$translate.setLang(Vue.prototype.$selectedLanguage);
+//       EventBus.$emit("changeLanguage");
+//     },
+//     translateToEnglish() {
+//       Vue.prototype.$selectedLanguage = "en_US";
+//       this.$translate.setLang(Vue.prototype.$selectedLanguage);
+//       EventBus.$emit("changeLanguage");
+//     },
+//     initializeApp() {
+//       EventBus.$emit("changeLanguage");
+//       clearInterval(this.longIntervalID);
+//     }
+//   },
+//   mounted() {
+//     this.longIntervalID = setInterval(() => {
+//       this.initializeApp();
+//     }, 1500);
+//   }
+// });
 
-var header0 = new Vue({
-  el: "#lang-sel",
-  components: { myComp },
-  template: `<div><my-comp></my-comp></div>`
-});
+// var header0 = new Vue({
+//   el: "#lang-sel",
+//   components: { myComp },
+//   template: `<div><my-comp></my-comp></div>`
+// });
