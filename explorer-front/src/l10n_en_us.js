@@ -113,7 +113,6 @@ export const json_en_us = {
   blockTimeStampPrefix: "",
   blockTimeStampSuffix: " ago",
   blockTransactionsTitle: "Transactions:",
-  blockParentHashTitle: "Parent Hash:",
   blockMintedTitle: "Minted:",
   blockCoinbaseTitle: "Coinbase:",
   blockDinastyTitle: "Dinasty:",

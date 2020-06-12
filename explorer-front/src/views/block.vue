@@ -40,10 +40,9 @@
     <div class="vue-bread">
       <div class="container">
         <div class="row align-items-center">
-          <div
-            class="col-auto bread-title font-40 font-bold font-color-000000 blocklocalizable"
-            id="blockTitle"
-          ></div>
+          <div class="col-auto bread-title font-40 font-bold font-color-000000">
+            {{ $t("blockTitle") }}
+          </div>
           <div
             class="col-auto bread-subtitle font-16 font-bold font-color-000000 align-baseline"
           >
@@ -54,23 +53,19 @@
     </div>
     <div v-if="block" class="container">
       <div class="font-24 font-bold font-color-000000 table-title">
-        <span id="blockOverview" class="blocklocalizable"></span>
+        <span>
+          {{ $t("blockOverview") }}
+        </span>
       </div>
 
       <div class="explorer-table-container d-none d-md-block">
         <table class="explorer-table font-16">
           <tr>
-            <td
-              class="font-color-555555 blocklocalizable"
-              id="blockHeight"
-            ></td>
+            <td class="font-color-555555">
+              {{ $t("blockHeight") }}
+            </td>
             <td class="font-color-000000">
-              <nav
-                aria-label=""
-                class="navgation-tab blocklocalizable"
-                localize="aria-label"
-                id="blockPageNavigation"
-              >
+              <nav aria-label="" class="navgation-tab" localize="aria-label">
                 <ul class="pagination">
                   <li>
                     <router-link
@@ -78,14 +73,10 @@
                       v-bind:to="fragApi + '/block/' + (+$route.params.id - 1)"
                       aria-label=""
                       localize="aria-label"
-                      id="blockRouterPrevious"
-                      class="blocklocalizable"
                     >
-                      <span
-                        aria-hidden="true"
-                        class="blocklocalizable"
-                        id="blockButtonPrev"
-                      ></span>
+                      <span aria-hidden="true">
+                        {{ $t("blockButtonPrev") }}
+                      </span>
                     </router-link>
                   </li>
                   <li>&nbsp; {{ block.height }} &nbsp;</li>
@@ -110,24 +101,21 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="font-color-555555 blocklocalizable"
-              id="blockTimeStamp"
-            ></td>
+            <td class="font-color-555555">
+              {{ $t("blockTimeStamp") }}
+            </td>
             <td class="font-color-000000">
-              <span
-                id="transactionsTableAgoPrefix"
-                class="blocklocalizable"
-              ></span>
+              <span>
+                {{ $t("transactionsTableAgoPrefix") }}
+              </span>
               {{
                 timeConversion(
                   Date.now() - block.localTimestamp + block.timeDiff
                 )
               }}
-              <span
-                id="transactionsTableAgoSuffix"
-                class="blocklocalizable"
-              ></span>
+              <span>
+                {{ $t("transactionsTableAgoSuffix") }}
+              </span>
               ({{
                 new Date(block.timestamp)
                   .toString()
@@ -138,29 +126,26 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="font-color-555555 blocklocalizable"
-              id="blockTransactionsTitle"
-            ></td>
+            <td class="font-color-555555">
+              {{ $t("blockTransactionsTitle") }}
+            </td>
             <td class="font-color-000000">
               <router-link v-bind:to="fragApi + '/txs?block=' + block.height">
                 <span>{{ block.blkSummary.txCnt }}</span>
               </router-link>
-              tx <span class="blocklocalizable" id="blockTxInBlock"></span>
+              tx {{ $t("blockTxInBlock") }}
             </td>
           </tr>
           <tr>
-            <td
-              class="font-color-555555 blocklocalizable"
-              id="blockHashTitle"
-            ></td>
+            <td class="font-color-555555">
+              {{ $t("blockHashTitle") }}
+            </td>
             <td class="font-color-000000 monospace">{{ block.hash }}</td>
           </tr>
           <tr>
-            <td
-              class="font-color-555555 blocklocalizable"
-              id="blockParentHashTitle"
-            ></td>
+            <td class="font-color-555555">
+              {{ $t("blockParentHashTitle") }}
+            </td>
             <td>
               <router-link v-bind:to="fragApi + '/block/' + block.parentHash">
                 <span class="monospace">{{ block.parentHash }}</span>
@@ -168,10 +153,9 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="font-color-555555 blocklocalizable"
-              id="blockMintedTitle"
-            ></td>
+            <td class="font-color-555555">
+              {{ $t("blockMintedTitle") }}
+            </td>
             <td>
               <router-link v-bind:to="fragApi + '/address/' + block.miner.hash">
                 <span class="monospace">{{ block.miner.hash }}</span>
@@ -180,10 +164,9 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="font-color-555555 blocklocalizable"
-              id="blockCoinbaseTitle"
-            ></td>
+            <td class="font-color-555555">
+              {{ $t("blockCoinbaseTitle") }}
+            </td>
             <td>
               <router-link v-bind:to="fragApi + '/address/' + block.coinbase">
                 <span class="monospace">{{ block.coinbase }}</span>
@@ -192,10 +175,11 @@
           </tr>
           <tr>
             <td
-              class="font-color-555555 blocklocalizable"
+              class="font-color-555555"
               style="vertical-align: top; padding-top: 12px;"
-              id="blockDinastyTitle"
-            ></td>
+            >
+              {{ $t("blockDinastyTitle") }}
+            </td>
             <td style="vertical-align: top; padding-top: 12px;">
               <a
                 class="d-flex align-items-center"
@@ -207,7 +191,9 @@
                 aria-expanded="false"
                 aria-controls="collapseExample"
               >
-                <span id="blockShowDinasty" class="blocklocalizable"></span>
+                <span>
+                  {{ $t("blockShowDinasty") }}
+                </span>
                 <img
                   style="margin-left: 12px; margin-top: 3px; vertical-align: middle;"
                   class="icon16"
@@ -234,10 +220,9 @@
             </td>
           </tr>
           <tr>
-            <td
-              class="font-color-555555 blocklocalizable"
-              id="blockGasReward"
-            ></td>
+            <td class="font-color-555555">
+              {{ $t("blockGasReward") }}
+            </td>
             <td class="font-color-000000">
               {{ toWei(block.blkSummary.gasReward) }}
             </td>
@@ -247,13 +232,12 @@
 
       <div class="mobile-detail d-md-none">
         <div>
-          <span class="blocklocalizable" id="blockHeightTitle"></span>
+          {{ $t("blockHeightTitle") }}
           <div class="detail">
             <nav
               localize="aria-label"
               aria-label="Page navigation"
-              class="navgation-tab blocklocalizable"
-              id="blockAriaLabelPageNavigation"
+              class="navgation-tab"
             >
               <ul class="pagination">
                 <li>
@@ -262,11 +246,9 @@
                     v-bind:to="fragApi + '/block/' + (+$route.params.id - 1)"
                     aria-label="Previous"
                   >
-                    <span
-                      aria-hidden="true"
-                      class="blocklocalizable"
-                      id="blockPreviousLink"
-                    ></span>
+                    <span aria-hidden="true">
+                      {{ $t("blockPreviousLink") }}
+                    </span>
                   </router-link>
                 </li>
                 <li>&nbsp; {{ block.height }} &nbsp;</li>
@@ -288,13 +270,13 @@
           </div>
         </div>
         <div>
-          <span class="blocklocalizable" id="blockTimeStampTitle"></span>
+          {{ $t("blockTimeStampTitle") }}
           <div class="detail">
-            <span class="blocklocalizable" id="blockTimeStampPrefix"></span
+            <span> {{ $t("blockTimeStampPrefix") }} </span
             >{{
               timeConversion(Date.now() - block.localTimestamp + block.timeDiff)
             }}
-            <span class="blocklocalizable" id="blockTimeStampSuffix"></span> ({{
+            {{ $t("blockTimeStampSuffix") }} ({{
               new Date(block.timestamp)
                 .toString()
                 .replace("GMT", "UTC")
@@ -304,12 +286,12 @@
           </div>
         </div>
         <div>
-          <span class="blocklocalizable" id="blockTransactionsTitle"></span>
+          {{ $t("blockTransactionsTitle") }}
           <div class="detail">
             <router-link v-bind:to="fragApi + '/txs?block=' + block.height">
               <span>{{ block.blkSummary.txCnt }}</span>
             </router-link>
-            <span class="blocklocalizable" id="blockTxInThisBlock"></span>
+            {{ $t("blockTxInThisBlock") }}
           </div>
         </div>
         <div>
@@ -317,7 +299,7 @@
           <div class="detail monospace">{{ block.hash }}</div>
         </div>
         <div>
-          <span class="blocklocalizable" id="blockParentHashTitle"></span>
+          {{ $t("blockParentHashTitle") }}
           <div class="detail">
             <router-link v-bind:to="fragApi + '/block/' + block.parentHash">
               <span class="monospace">{{ block.parentHash }}</span>
@@ -325,7 +307,7 @@
           </div>
         </div>
         <div>
-          <span class="blocklocalizable" id="blockMintedTitle"></span>
+          {{ $t("blockMintedTitle") }}
           <div class="detail">
             <router-link v-bind:to="fragApi + '/address/' + block.miner.hash">
               <span class="monospace">{{ block.miner.hash }}</span>
@@ -334,7 +316,7 @@
           </div>
         </div>
         <div>
-          <span class="blocklocalizable" id="blockCoinbaseTitle"></span>
+          {{ $t("blockCoinbaseTitle") }}
           <div class="detail">
             <router-link v-bind:to="fragApi + '/address/' + block.coinbase">
               <span class="monospace">{{ block.coinbase }}</span>
@@ -342,7 +324,7 @@
           </div>
         </div>
         <div>
-          <span class="blocklocalizable" id="blockDinastyTitle"></span>
+          {{ $t("blockDinastyTitle") }}
           <div class="detail">
             <a
               class="d-flex align-items-center"
@@ -355,10 +337,9 @@
               aria-controls="collapseExample"
             >
               <span>
-                <span
-                  class="blocklocalizable"
-                  id="blockShowDinastyButton"
-                ></span>
+                <span>
+                  {{ $t("blockShowDinastyButton") }}
+                </span>
               </span>
               <img
                 style="margin-left: 12px; margin-top: 3px; vertical-align: middle;"
@@ -384,7 +365,7 @@
           </div>
         </div>
         <div>
-          <span class="blocklocalizable" id="blockGasRewardTitle"></span>
+          {{ $t("blockGasRewardTitle") }}
           <div class="detail">{{ toWei(block.blkSummary.gasReward) }}</div>
         </div>
       </div>
@@ -392,8 +373,8 @@
   </div>
 </template>
 <script>
-import { EventBus } from "../events.js";
-import { jsonStrings } from "../l10nstrings.js";
+// import { EventBus } from "../events.js";
+// import { jsonStrings } from "../l10nstrings.js";
 var api = require("@/assets/api"),
   utility = require("@/assets/utility");
 
@@ -425,56 +406,56 @@ module.exports = {
     }
   },
   methods: {
-    removeTempInterval() {
-      clearInterval(this.tempInterval);
-    },
-    checkStaticTranslations() {
-      // Unique elements, identified by id attr
-      var myLocalizableElements = document.getElementsByClassName(
-        "blocklocalizable"
-      );
-      var totalElements = myLocalizableElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementId = myLocalizableElements[i].getAttribute("id");
-        if (myLocalizableElements[i].getAttribute("localize")) {
-          var elementAttribute = myLocalizableElements[i].getAttribute(
-            "localize"
-          );
-          myLocalizableElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementId]
-          );
-        } else {
-          myLocalizableElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementId];
-        }
-      }
-    },
-    checkDynamicTranslations() {
-      // Multiple elements, identified with name attr
-      var myMultiLocalizableElements = document.getElementsByClassName(
-        "blockmultilocalizable"
-      );
-      var totalElements = myMultiLocalizableElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementName = myMultiLocalizableElements[i].getAttribute("name");
-        if (myMultiLocalizableElements[i].getAttribute("localize")) {
-          var elementAttribute = myMultiLocalizableElements[i].getAttribute(
-            "localize"
-          );
-          myMultiLocalizableElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementName]
-          );
-        } else {
-          myMultiLocalizableElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementName];
-        }
-      }
-      // Other specific methods for unique elements.
-    },
+    // removeTempInterval() {
+    //   clearInterval(this.tempInterval);
+    // },
+    // checkStaticTranslations() {
+    //   // Unique elements, identified by id attr
+    //   var myLocalizableElements = document.getElementsByClassName(
+    //     "blocklocalizable"
+    //   );
+    //   var totalElements = myLocalizableElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementId = myLocalizableElements[i].getAttribute("id");
+    //     if (myLocalizableElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myLocalizableElements[i].getAttribute(
+    //         "localize"
+    //       );
+    //       myLocalizableElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementId]
+    //       );
+    //     } else {
+    //       myLocalizableElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementId];
+    //     }
+    //   }
+    // },
+    // checkDynamicTranslations() {
+    //   // Multiple elements, identified with name attr
+    //   var myMultiLocalizableElements = document.getElementsByClassName(
+    //     "blockmultilocalizable"
+    //   );
+    //   var totalElements = myMultiLocalizableElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementName = myMultiLocalizableElements[i].getAttribute("name");
+    //     if (myMultiLocalizableElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myMultiLocalizableElements[i].getAttribute(
+    //         "localize"
+    //       );
+    //       myMultiLocalizableElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementName]
+    //       );
+    //     } else {
+    //       myMultiLocalizableElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementName];
+    //     }
+    //   }
+    //   // Other specific methods for unique elements.
+    // },
     showOrHideDynasty() {
       this.isShowDynasty = !this.isShowDynasty;
     },
@@ -497,21 +478,21 @@ module.exports = {
       isShowDynasty: false,
       timestamp: Date.now()
     };
-  },
-  mounted() {
-    EventBus.$on("changeLanguage", foo => {
-      this.checkStaticTranslations();
-    });
-    if (typeof this.$selectedLanguage != "undefined") {
-      this.checkStaticTranslations();
-    }
-    this.translationsInterval = setInterval(() => {
-      this.checkDynamicTranslations();
-    }, 1000);
-    this.tempInterval = setInterval(() => {
-      this.checkStaticTranslations();
-      this.removeTempInterval();
-    }, 1500);
   }
+  // mounted() {
+  //   EventBus.$on("changeLanguage", foo => {
+  //     this.checkStaticTranslations();
+  //   });
+  //   if (typeof this.$selectedLanguage != "undefined") {
+  //     this.checkStaticTranslations();
+  //   }
+  //   this.translationsInterval = setInterval(() => {
+  //     this.checkDynamicTranslations();
+  //   }, 1000);
+  //   this.tempInterval = setInterval(() => {
+  //     this.checkStaticTranslations();
+  //     this.removeTempInterval();
+  //   }, 1500);
+  // }
 };
 </script>
