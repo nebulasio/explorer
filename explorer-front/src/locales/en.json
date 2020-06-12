@@ -1,4 +1,7 @@
 {
+  "Languages": "Languages",
+  "English": "English",
+  "Spanish": "Spanish",
   "headerToggleNavigation": "Toggle Navigation", 
   "headerSearchTool": "Search by address, txhash, block or token", 
   "headerHomeTitle": "Home", 

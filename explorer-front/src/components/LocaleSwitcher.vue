@@ -1,13 +1,30 @@
 <template>
-  <ul>
-    <li
-      v-for="locale in supportedLocales"
-      :key="locale"
-      @click="switchLocale(locale)"
+  <div>
+    <a
+      class="nav-link"
+      href="#"
+      id="language-selector"
+      role="button"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
     >
-      {{ $t("menu." + locale) }}
-    </li>
-  </ul>
+      {{ $t("Languages") }}
+      <img src=/static/img/icon_arrow_down.png width=12 alt="">
+    </a>
+    <div class="dropdown-menu" aria-labelledby="language-selector">
+      <div>
+        <a href="#" class="dropdown-item" @click.prevent="switchLocale('en')"
+          ><img src=/static/img/icon-engflag.png width=12 alt="">
+          {{ $t("English") }}</a
+        >
+        <a href="#" class="dropdown-item" @click.prevent="switchLocale('es')"
+          ><img src=/static/img/icon-espflag.png width=12 alt="">
+          {{ $t("Spanish") }}</a
+        >
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <LocaleSwitcher />
     <Header></Header>
     <router-view />
     <Footer></Footer>
@@ -19,8 +18,6 @@
 </template>
 
 <script>
-import LocaleSwitcher from "@/components/LocaleSwitcher.vue";
-
 import Header from "@/components/vue-header";
 import Footer from "@/components/vue-footer";
 import Modal from "@/components/vue-modal";
@@ -28,7 +25,6 @@ import Modal from "@/components/vue-modal";
 export default {
   name: "App",
   components: {
-    LocaleSwitcher,
     Header,
     Footer,
     Modal

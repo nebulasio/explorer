@@ -1,4 +1,7 @@
 {
+  "Languages": "Idiomas",
+  "English": "Inglés",
+  "Spanish": "Español",
   "headerToggleNavigation": "Cambiar navegación", 
   "headerSearchTool": "Buscar por dirección, txhash, bloque o token", 
   "headerHomeTitle": "Inicio", 

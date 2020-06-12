@@ -224,7 +224,7 @@
           </li>
           <!-- Selector de idiomas -->
           <li class="dropdown nav-item">
-            <div id="lang-sel"></div>
+            <LocaleSwitcher />
           </li>
           <!-- // Selector de idiomas -->
         </ul>
@@ -235,11 +235,15 @@
 <script>
 // import { EventBus } from "../events.js";
 // import { jsonStrings } from "../l10nstrings.js";
+import LocaleSwitcher from "@/components/LocaleSwitcher.vue";
 var api = require("@/assets/api");
 
 import { apiPrefixesConfig } from "@/config";
 
 module.exports = {
+  components: {
+    LocaleSwitcher
+  },
   data() {
     return {
       apiPrefixes: null,
