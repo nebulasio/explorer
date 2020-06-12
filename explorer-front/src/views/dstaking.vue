@@ -173,28 +173,25 @@
         <div class="col-12 col-md-6">
           <div class="item item-1">
             <h1>{{ leftTime }}</h1>
-            <label class="dstakinglocalizable" id="dstakingEstimatedTimeLeft">{{
-              keyEstimatedLeftTime
-            }}</label>
+            <label>
+              {{ $t("dstakingEstimatedTimeLeft") }}
+            </label>
+
             <div class="d-flex mt-5">
               <div class="w-50">
                 <h4>{{ numberAddComma(currentBlockHeight) }}</h4>
                 <router-link :to="fragApi + '/block/' + currentBlockHeight"
-                  ><span
-                    class="dstakinglocalizable"
-                    id="dstakingCurrentBlock"
-                    >{{ keyCurrentBlockHeight }}</span
-                  ></router-link
+                  ><span>
+                    {{ $t("dstakingCurrentBlock") }}
+                  </span></router-link
                 >
               </div>
               <div class="ml-3">
                 <h4>{{ numberAddComma(nextIssueBlockHeight) }}</h4>
                 <label
-                  ><span
-                    class="dstakinglocalizable"
-                    id="dstakingNextIssueBlockHeight"
-                    >{{ keyNextIssueBlockHeight }}</span
-                  ></label
+                  ><span>
+                    {{ $t("dstakingNextIssueBlockHeight") }}
+                  </span></label
                 >
               </div>
             </div>
@@ -205,11 +202,9 @@
                 </h4>
                 <span>NAX</span>
                 <label
-                  ><span
-                    class="dstakinglocalizable"
-                    id="dstakingPrevMintedNAX"
-                    >{{ keyLastNaxDistribution }}</span
-                  ></label
+                  ><span>
+                    {{ $t("dstakingPrevMintedNAX") }}
+                  </span></label
                 >
               </div>
               <div class="ml-3">
@@ -218,11 +213,9 @@
                 </h4>
                 <span>NAX</span>
                 <label
-                  ><span
-                    class="dstakinglocalizable"
-                    id="dstakingTotalNaxDistribution"
-                    >{{ keyTotalNaxDistribution }}</span
-                  ></label
+                  ><span>
+                    {{ $t("dstakingTotalNaxDistribution") }}
+                  </span></label
                 >
               </div>
             </div>
@@ -232,16 +225,15 @@
           <div class="item item-2 d-flex flex-column">
             <div class="d-flex align-items-center justify-content-between">
               <h4>
-                <span class="dstakinglocalizable" id="dstakingRate1">{{
-                  keyStakeRate
-                }}</span>
+                <span>
+                  {{ $t("dstakingRate1") }}
+                </span>
               </h4>
               <label
-                ><span
-                  class="dstakinglocalizable"
-                  id="dstakingUpdateTime"
-                ></span
-              ></label>
+                ><span>
+                  {{ $t("dstakingUpdateTime") }}
+                </span></label
+              >
             </div>
             <div
               class="flex-fill d-flex align-items-center justify-content-between"
@@ -290,8 +282,8 @@
                         ).toFixed(2) + "%"
                       }}
                     </div>
-                    <div class="dstakinglocalizable" id="dstakingRate2">
-                      {{ keyStakeRate }}
+                    <div>
+                      {{ $t("dstakingRate2") }}
                     </div>
                   </div>
                 </div>
@@ -309,11 +301,9 @@
                   </h4>
                   <span>NAS</span>
                 </div>
-                <label
-                  class="dstakinglocalizable"
-                  id="dstakingCirculatingNAS"
-                  >{{ keyNasCirculation }}</label
-                >
+                <label>
+                  {{ $t("dstakingCirculatingNAS") }}
+                </label>
               </div>
             </div>
           </div>
@@ -323,11 +313,12 @@
         <div class="col-12">
           <div class="item item-3">
             <div class="d-md-flex align-items-center justify-content-between">
-              <h4 class="dstakinglocalizable" id="dstakingTrend">
-                {{ keyDstakingTrend }}
+              <h4>
+                {{ $t("dstakingTrend") }}
               </h4>
-              <router-link :to="fragApi + '/dstaking-history'"
-                >View More &gt;</router-link
+              <router-link :to="fragApi + '/dstaking-history'">
+                {{ $t("dshistoryTitle") }}
+                &gt;</router-link
               >
             </div>
             <div class="d-flex mt-1">
@@ -340,9 +331,9 @@
                   @click="trendTab = 0"
                 />
                 <label class="form-check-label" for="exampleRadios1">
-                  <span class="dstakinglocalizable" id="dstakingRate3">{{
-                    keyStakeRate
-                  }}</span>
+                  <span>
+                    {{ $t("dstakingRate3") }}
+                  </span>
                 </label>
               </div>
               <div class="form-check mr-4">
@@ -354,9 +345,9 @@
                   @click="trendTab = 1"
                 />
                 <label class="form-check-label" for="exampleRadios2">
-                  <span class="dstakinglocalizable" id="dstakingMintedNAX">{{
-                    keyDistributionAmount
-                  }}</span>
+                  <span>
+                    {{ $t("dstakingMintedNAX") }}
+                  </span>
                 </label>
               </div>
               <div class="form-check">
@@ -368,9 +359,9 @@
                   @click="trendTab = 2"
                 />
                 <label class="form-check-label" for="exampleRadios3">
-                  <span class="dstakinglocalizable" id="dstakingBurnedNAX">{{
-                    keyDestroyedAmount
-                  }}</span>
+                  <span>
+                    {{ $t("dstakingBurnedNAX") }}
+                  </span>
                 </label>
               </div>
             </div>
@@ -393,18 +384,17 @@
         />
         <br />
         <div style="margin-top: 12px;">
-          <span
-            class="text-no-content dstakinglocalizable"
-            id="dstakingWaitingForFirstIssuance"
-          ></span>
+          <span class="text-no-content">
+            {{ $t("dstakingWaitingForFirstIssuance") }}
+          </span>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { EventBus } from "../events.js";
-import { jsonStrings } from "../l10nstrings.js";
+// import { EventBus } from "../events.js";
+// import { jsonStrings } from "../l10nstrings.js";
 var api = require("@/assets/api"),
   utility = require("@/assets/utility"),
   BigNumber = require("bignumber.js"),
@@ -431,11 +421,11 @@ module.exports = {
       trendList: [],
       trendTab: 0,
       shortIntervalID: null,
-      keyEstimatedLeftTime: "Next Mint Count Down ",
-      keyCurrentBlockHeight: "Current Block >",
-      keyNextIssueBlockHeight: "Next Mint Block",
-      keyLastNaxDistribution: "Prev Minted NAX ",
-      keyTotalNaxDistribution: "Total Minted NAX",
+      // keyEstimatedLeftTime: "Next Mint Count Down ",
+      // keyCurrentBlockHeight: "Current Block >",
+      // keyNextIssueBlockHeight: "Next Mint Block",
+      // keyLastNaxDistribution: "Prev Minted NAX ",
+      // keyTotalNaxDistribution: "Total Minted NAX",
       keyStakedAmount: "dStaking NAS",
       keyNasCirculation: "Circulating NAS",
       keyStakeRate: "dStaking Rate",
@@ -445,19 +435,20 @@ module.exports = {
     };
   },
   mounted() {
-    EventBus.$on("changeLanguage", foo => {
-      this.checkStaticTranslations();
-    });
-    if (typeof this.$selectedLanguage != "undefined") {
-      this.checkStaticTranslations();
-    }
-    this.translationsInterval = setInterval(() => {
-      this.checkDynamicTranslations();
-    }, 750);
-    this.tempInterval = setInterval(() => {
-      this.checkStaticTranslations();
-      this.removeTempInterval();
-    }, 2000);
+    // EventBus.$on("changeLanguage", foo => {
+    //   this.checkStaticTranslations();
+    // });
+    // if (typeof this.$selectedLanguage != "undefined") {
+    //   this.checkStaticTranslations();
+    // }
+    // this.translationsInterval = setInterval(() => {
+    //   this.checkDynamicTranslations();
+    // }, 750);
+    // this.tempInterval = setInterval(() => {
+    //   this.checkStaticTranslations();
+    //   this.removeTempInterval();
+    // }, 2000);
+
     BigNumber.config({ DECIMAL_PLACES: 18 });
 
     this.$root.showModalLoading = true;
@@ -473,55 +464,55 @@ module.exports = {
     clearInterval(this.shortIntervalID);
   },
   methods: {
-    removeTempInterval() {
-      clearInterval(this.tempInterval);
-    },
-    checkStaticTranslations() {
-      // Unique elements, identified by id attr
-      var myLocalizableElements = document.getElementsByClassName(
-        "dstakinglocalizable"
-      );
-      var totalElements = myLocalizableElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementId = myLocalizableElements[i].getAttribute("id");
-        if (myLocalizableElements[i].getAttribute("localize")) {
-          var elementAttribute = myLocalizableElements[i].getAttribute(
-            "localize"
-          );
-          myLocalizableElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementId]
-          );
-        } else {
-          myLocalizableElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementId];
-        }
-      }
-    },
-    checkDynamicTranslations() {
-      // Multiple elements, identified with name attr
-      var myMultiLocalizableElements = document.getElementsByClassName(
-        "dstakingmultilocalizable"
-      );
-      var totalElements = myMultiLocalizableElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementName = myMultiLocalizableElements[i].getAttribute("name");
-        if (myMultiLocalizableElements[i].getAttribute("localize")) {
-          var elementAttribute = myMultiLocalizableElements[i].getAttribute(
-            "localize"
-          );
-          myMultiLocalizableElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementName]
-          );
-        } else {
-          myMultiLocalizableElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementName];
-        }
-      }
-    },
+    // removeTempInterval() {
+    //   clearInterval(this.tempInterval);
+    // },
+    // checkStaticTranslations() {
+    //   // Unique elements, identified by id attr
+    //   var myLocalizableElements = document.getElementsByClassName(
+    //     "dstakinglocalizable"
+    //   );
+    //   var totalElements = myLocalizableElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementId = myLocalizableElements[i].getAttribute("id");
+    //     if (myLocalizableElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myLocalizableElements[i].getAttribute(
+    //         "localize"
+    //       );
+    //       myLocalizableElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementId]
+    //       );
+    //     } else {
+    //       myLocalizableElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementId];
+    //     }
+    //   }
+    // },
+    // checkDynamicTranslations() {
+    //   // Multiple elements, identified with name attr
+    //   var myMultiLocalizableElements = document.getElementsByClassName(
+    //     "dstakingmultilocalizable"
+    //   );
+    //   var totalElements = myMultiLocalizableElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementName = myMultiLocalizableElements[i].getAttribute("name");
+    //     if (myMultiLocalizableElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myMultiLocalizableElements[i].getAttribute(
+    //         "localize"
+    //       );
+    //       myMultiLocalizableElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementName]
+    //       );
+    //     } else {
+    //       myMultiLocalizableElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementName];
+    //     }
+    //   }
+    // },
     getSummary() {
       api.getDstakingSummary(
         {},

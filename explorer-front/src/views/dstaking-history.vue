@@ -78,10 +78,9 @@
     <div class="vue-bread">
       <div class="container">
         <div class="row align-items-center">
-          <div
-            class="col-auto bread-title font-40 font-bold font-color-000000 dshistorylocalizable"
-            id="dshistoryTitle"
-          ></div>
+          <div class="col-auto bread-title font-40 font-bold font-color-000000">
+            {{ $t("dshistoryTitle") }}
+          </div>
           <div
             class="col-auto bread-subtitle font-16 font-bold font-color-000000 align-baseline"
           ></div>
@@ -94,44 +93,36 @@
         <span
           class="col-auto pl-0 pr-2 info font-color-000000 font-24 font-bold title"
         >
-          <span class="dshistorylocalizable" id="dshistoryTotalText"></span>
+          <span>
+            {{ $t("dshistoryTotalText") }}
+          </span>
           {{ totalTxs }}
-          <span
-            v-if="totalTxs > 1"
-            class="dshistorylocalizable"
-            id="dshistoryPeriodPluralText"
-          ></span
-          ><span
-            v-else
-            class="dshistorylocalizable"
-            id="dshistoryPeriodSingularText"
-          ></span>
+          <span v-if="totalTxs > 1">
+            {{ $t("dshistoryPeriodPluralText") }} </span
+          ><span v-else>
+            {{ $t("dshistoryPeriodSingularText") }}
+          </span>
         </span>
       </div>
 
       <div class="explorer-table-container text-center">
         <table class="mt20 explorer-table list-table">
           <tr class="list-header font-12 font-bold font-color-000000">
-            <th
-              class="text-center dshistorylocalizable"
-              id="dstakingTablePeriodNumber"
-            ></th>
-            <th
-              class="text-center dshistorylocalizable"
-              id="dstakingTableDstakingRate"
-            ></th>
-            <th
-              class="text-center dshistorylocalizable"
-              id="dstakingTableIssuanceQuantity"
-            ></th>
-            <th
-              class="text-center dshistorylocalizable"
-              id="dstakingTableBurnedQuantity"
-            ></th>
-            <th
-              class="text-center pr-3 dshistorylocalizable"
-              id="dstakingTablePledgeQuantity"
-            ></th>
+            <th class="text-center">
+              {{ $t("dstakingTablePeriodNumber") }}
+            </th>
+            <th class="text-center">
+              {{ $t("dstakingTableDstakingRate") }}
+            </th>
+            <th class="text-center">
+              {{ $t("dstakingTableIssuanceQuantity") }}
+            </th>
+            <th class="text-center">
+              {{ $t("dstakingTableBurnedQuantity") }}
+            </th>
+            <th class="text-center pr-3">
+              {{ $t("dstakingTablePledgeQuantity") }}
+            </th>
           </tr>
 
           <tr v-for="(o, i) in arr" :key="i">
@@ -176,8 +167,8 @@
   </div>
 </template>
 <script>
-import { EventBus } from "../events.js";
-import { jsonStrings } from "../l10nstrings.js";
+// import { EventBus } from "../events.js";
+// import { jsonStrings } from "../l10nstrings.js";
 var api = require("@/assets/api"),
   utility = require("@/assets/utility"),
   BigNumber = require("bignumber.js");
@@ -198,55 +189,55 @@ module.exports = {
     };
   },
   methods: {
-    removeTempInterval() {
-      clearInterval(this.tempInterval);
-    },
-    checkStaticTranslations() {
-      // Unique elements, identified by id attr
-      var myLocalizableElements = document.getElementsByClassName(
-        "dshistorylocalizable"
-      );
-      var totalElements = myLocalizableElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementId = myLocalizableElements[i].getAttribute("id");
-        if (myLocalizableElements[i].getAttribute("localize")) {
-          var elementAttribute = myLocalizableElements[i].getAttribute(
-            "localize"
-          );
-          myLocalizableElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementId]
-          );
-        } else {
-          myLocalizableElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementId];
-        }
-      }
-    },
-    checkDynamicTranslations() {
-      // Multiple elements, identified with name attr
-      var myMultiLocalizableElements = document.getElementsByClassName(
-        "dshistorymultilocalizable"
-      );
-      var totalElements = myMultiLocalizableElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementName = myMultiLocalizableElements[i].getAttribute("name");
-        if (myMultiLocalizableElements[i].getAttribute("localize")) {
-          var elementAttribute = myMultiLocalizableElements[i].getAttribute(
-            "localize"
-          );
-          myMultiLocalizableElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementName]
-          );
-        } else {
-          myMultiLocalizableElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementName];
-        }
-      }
-    },
+    // removeTempInterval() {
+    //   clearInterval(this.tempInterval);
+    // },
+    // checkStaticTranslations() {
+    //   // Unique elements, identified by id attr
+    //   var myLocalizableElements = document.getElementsByClassName(
+    //     "dshistorylocalizable"
+    //   );
+    //   var totalElements = myLocalizableElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementId = myLocalizableElements[i].getAttribute("id");
+    //     if (myLocalizableElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myLocalizableElements[i].getAttribute(
+    //         "localize"
+    //       );
+    //       myLocalizableElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementId]
+    //       );
+    //     } else {
+    //       myLocalizableElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementId];
+    //     }
+    //   }
+    // },
+    // checkDynamicTranslations() {
+    //   // Multiple elements, identified with name attr
+    //   var myMultiLocalizableElements = document.getElementsByClassName(
+    //     "dshistorymultilocalizable"
+    //   );
+    //   var totalElements = myMultiLocalizableElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementName = myMultiLocalizableElements[i].getAttribute("name");
+    //     if (myMultiLocalizableElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myMultiLocalizableElements[i].getAttribute(
+    //         "localize"
+    //       );
+    //       myMultiLocalizableElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementName]
+    //       );
+    //     } else {
+    //       myMultiLocalizableElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementName];
+    //     }
+    //   }
+    // },
     nav(n) {
       var query = JSON.parse(window.JSON.stringify(this.$route.query));
 
@@ -351,19 +342,19 @@ module.exports = {
     }
   },
   mounted() {
-    EventBus.$on("changeLanguage", foo => {
-      this.checkStaticTranslations();
-    });
-    if (typeof this.$selectedLanguage != "undefined") {
-      this.checkStaticTranslations();
-    }
-    this.translationsInterval = setInterval(() => {
-      this.checkDynamicTranslations();
-    }, 750);
-    this.tempInterval = setInterval(() => {
-      this.checkStaticTranslations();
-      this.removeTempInterval();
-    }, 2000);
+    // EventBus.$on("changeLanguage", foo => {
+    //   this.checkStaticTranslations();
+    // });
+    // if (typeof this.$selectedLanguage != "undefined") {
+    //   this.checkStaticTranslations();
+    // }
+    // this.translationsInterval = setInterval(() => {
+    //   this.checkDynamicTranslations();
+    // }, 750);
+    // this.tempInterval = setInterval(() => {
+    //   this.checkStaticTranslations();
+    //   this.removeTempInterval();
+    // }, 2000);
     this.nthPage();
   },
   watch: {
