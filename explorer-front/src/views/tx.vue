@@ -83,24 +83,27 @@ div .vue-tx {
     </vue-bread>
     <div v-if="tx" class="container">
       <div class="font-24 font-bold font-color-000000 table-title">
-        <span class="txlocalizable" id="txOverview"></span>
+        {{ $t("txOverview") }}
       </div>
       <div class="explorer-table-container d-none d-md-block">
         <table class="explorer-table">
           <tr>
             <td
-              class="td-left font-16 font-color-555555 txlocalizable"
+              class="td-left font-16 font-color-555555"
               style="padding-left: 24px;"
-              id="txTxHash"
-            ></td>
+            >
+              {{ $t("txTxHash") }}
+            </td>
             <td class="font-16 font-color-000000 monospace">{{ tx.hash }}</td>
           </tr>
           <tr class="font-16">
             <td
-              class="font-color-555555 txlocalizable"
+              class="font-color-555555"
               style="padding-left: 24px;"
               id="txTxReceiptStatusTitle"
-            ></td>
+            >
+              {{ $t("txTxReceiptStatusTitle") }}
+            </td>
             <td
               class="d-flex align-items-center"
               v-if="tx.status === 0"
@@ -110,11 +113,8 @@ div .vue-tx {
                 class="icon18"
                 src="../../static/img/ic_tx_status_failed.png?v=20190110"
               />
-              <span
-                class="font-color-F04434 txlocalizable"
-                style="margin-left: 10px;"
-                id="txFail"
-              >
+              <span class="font-color-F04434" style="margin-left: 10px;">
+                {{ $t("txFail") }}
                 ( {{ tx.executeError }} )</span
               >
             </td>
@@ -127,11 +127,9 @@ div .vue-tx {
                 class="icon18"
                 src="../../static/img/ic_tx_status_success.png"
               />
-              <span
-                class="font-color-07A656 txlocalizable"
-                style="margin-left: 10px;"
-                id="txSuccess"
-              ></span>
+              <span class="font-color-07A656" style="margin-left: 10px;">
+                {{ $t("txSuccess") }}
+              </span>
             </td>
             <td
               class="d-flex align-items-center"
@@ -142,23 +140,19 @@ div .vue-tx {
                 class="icon18"
                 src="../../static/img/ic_tx_status_pending.png"
               />
-              <span
-                class="font-color-F8BB08 txlocalizable"
-                style="margin-left: 10px;"
-                id="txPending"
-              ></span>
+              <span class="font-color-F8BB08" style="margin-left: 10px;">
+                {{ $t("txPending") }}
+              </span>
             </td>
           </tr>
           <tr>
-            <td
-              class="font-16 font-color-555555 txlocalizable"
-              style="padding-left: 24px;"
-              id="txBlockHeight"
-            ></td>
+            <td class="font-16 font-color-555555" style="padding-left: 24px;">
+              {{ $t("txBlockHeight") }}
+            </td>
             <td>
               <template v-if="tx.isPending">
                 <span class="font-color-000000 font-16">
-                  <span id="txPendingText" class="txlocalizable"></span>
+                  {{ $t("txPendingText") }}
                 </span>
               </template>
               <template v-else>
@@ -172,15 +166,16 @@ div .vue-tx {
             </td>
           </tr>
           <tr>
-            <td
-              class="font-16 font-color-555555 txlocalizable"
-              style="padding-left: 24px;"
-              id="txTimeStamp"
-            ></td>
+            <td class="font-16 font-color-555555" style="padding-left: 24px;">
+              {{ $t("txTimeStamp") }}
+            </td>
             <td class="font-16 font-color-000000">
-              <span id="txTimeAgoPrefix" class="txlocalizable"></span>
+              {{ $t("txTimeAgoPrefix") }}
+
               {{ timeConversion(tx.timeDiff) }}
-              <span id="txTimeAgoSuffix" class="txlocalizable"></span> ({{
+
+              {{ $t("txTimeAgoSuffix") }}
+              ({{
                 new Date(tx.timestamp)
                   .toString()
                   .replace("GMT", "UTC")
@@ -190,11 +185,9 @@ div .vue-tx {
             </td>
           </tr>
           <tr>
-            <td
-              class="font-16 font-color-555555 txlocalizable"
-              style="padding-left: 24px;"
-              id="txFromText"
-            ></td>
+            <td class="font-16 font-color-555555" style="padding-left: 24px;">
+              {{ $t("txFromText") }}
+            </td>
             <td>
               <router-link
                 v-if="tx.from"
@@ -205,16 +198,13 @@ div .vue-tx {
             </td>
           </tr>
           <tr>
-            <td
-              class="font-16 font-color-555555 txlocalizable"
-              style="padding-left: 24px;"
-              id="txToText"
-            ></td>
+            <td class="font-16 font-color-555555" style="padding-left: 24px;">
+              {{ $t("txToText") }}
+            </td>
             <td v-if="tx.type === 'call'">
-              <span
-                class="font-color-000000 font-16 txlocalizable"
-                id="txContract"
-              ></span>
+              <span class="font-color-000000 font-16">
+                {{ $t("txContract") }}
+              </span>
               <router-link
                 v-if="tx.to"
                 v-bind:to="fragApi + '/address/' + tx.to.hash"
@@ -228,9 +218,12 @@ div .vue-tx {
                 style="margin-left: 14px;"
                 v-if="isTokenTransfer && tx.tokenName"
               >
-                (<span id="txTextTokenPrefix" class="txlocalizable"></span
-                >{{ tx.tokenName
-                }}<span id="txTextTokenSuffix" class="txlocalizable"></span>)
+                (
+                {{ $t("txTextTokenPrefix") }}
+                {{ tx.tokenName }}
+
+                {{ $t("txTextTokenSuffix") }}
+                )
               </div>
             </td>
             <td v-else>
@@ -243,16 +236,13 @@ div .vue-tx {
             </td>
           </tr>
           <tr v-if="isTokenTransfer" class="font-16">
-            <td
-              class="font-color-555555 txlocalizable"
-              style="padding-left: 24px;"
-              id="txTokenTransferred"
-            ></td>
+            <td class="font-color-555555" style="padding-left: 24px;">
+              {{ $t("txTokenTransferred") }}
+            </td>
             <td>
-              <span
-                class="font-color-000000 txlocalizable"
-                id="txTransferredFrom"
-              ></span>
+              <span class="font-color-000000">
+                {{ $t("txTransferredFrom") }}
+              </span>
               <router-link
                 class="atpAddress"
                 v-if="tx.to"
@@ -260,10 +250,9 @@ div .vue-tx {
               >
                 <span class="monospace">{{ tx.from.hash }}</span>
               </router-link>
-              <span
-                class="font-color-000000 txlocalizable"
-                id="txTransferredTo"
-              ></span>
+              <span class="font-color-000000">
+                {{ $t("txTransferredTo") }}
+              </span>
               <router-link
                 class="atpAddress"
                 v-if="tx.to"
@@ -277,8 +266,9 @@ div .vue-tx {
                   >{{ JSON.parse(JSON.parse(tx.data).Args)[0] }}
                 </span>
               </router-link>
-              <span class="font-color-000000"
-                ><span id="txFor" class="txlocalizable"></span>
+              <span class="font-color-000000">
+                {{ $t("txFor") }}
+
                 {{ tokenAmount }}</span
               >
               <div class="token-name" v-if="tx.tokenName">
@@ -287,11 +277,9 @@ div .vue-tx {
             </td>
           </tr>
           <tr>
-            <td
-              class="font-16 font-color-555555 txlocalizable"
-              style="padding-left: 24px;"
-              id="txValue"
-            ></td>
+            <td class="font-16 font-color-555555" style="padding-left: 24px;">
+              {{ $t("txValue") }}
+            </td>
             <td v-if="isNatVoteTransfer" class="font-16 font-color-000000">
               {{ natAmount }} NAT
             </td>
@@ -304,11 +292,12 @@ div .vue-tx {
 
       <div class="mobile-detail d-md-none">
         <div>
-          <span class="txlocalizable" id="txHashTitle"></span>
+          {{ $t("txHashTitle") }}
+
           <div class="detail monospace">{{ tx.hash }}</div>
         </div>
         <div>
-          <span class="txlocalizable" id="txReceiptStatusTitle"></span>
+          {{ $t("txReceiptStatusTitle") }}
           <td
             class="detail d-flex align-items-center"
             v-if="tx.status === 0"
@@ -318,8 +307,9 @@ div .vue-tx {
               class="icon18"
               src="../../static/img/ic_tx_status_failed.png?v=20190110"
             />
-            <span class="font-color-F04434" style="margin-left: 10px;"
-              ><span class="txlocalizable" id="txTxFailStatus"></span> (
+            <span class="font-color-F04434" style="margin-left: 10px;">
+              {{ $t("txTxFailStatus") }}
+              (
               {{ tx.executeError }} )</span
             >
           </td>
@@ -332,9 +322,9 @@ div .vue-tx {
               class="icon18"
               src="../../static/img/ic_tx_status_success.png"
             />
-            <span class="font-color-07A656" style="margin-left: 10px;"
-              ><span class="txlocalizable" id="txTxSuccessStatus"></span
-            ></span>
+            <span class="font-color-07A656" style="margin-left: 10px;">
+              {{ $t("txTxSuccessStatus") }}
+            </span>
           </td>
           <td
             class="detail d-flex align-items-center"
@@ -345,17 +335,17 @@ div .vue-tx {
               class="icon18"
               src="../../static/img/ic_tx_status_pending.png"
             />
-            <span class="font-color-F8BB08" style="margin-left: 10px;"
-              ><span class="txlocalizable" id="txTxPendingStatus"></span
-            ></span>
+            <span class="font-color-F8BB08" style="margin-left: 10px;">
+              {{ $t("txTxPendingStatus") }}
+            </span>
           </td>
         </div>
         <div>
-          <span class="txlocalizable" id="txBlockHeightText"></span>
+          {{ $t("txBlockHeightText") }}
           <div class="detail">
             <template v-if="tx.isPending">
               <span class="font-color-000000">
-                <span class="txlocalizable" id="txPendingStatus"></span>
+                {{ $t("txPendingStatus") }}
               </span>
             </template>
             <template v-else>
@@ -369,7 +359,7 @@ div .vue-tx {
           </div>
         </div>
         <div>
-          <span class="txlocalizable" id="txTimestampText"></span>
+          {{ $t("txTimestampText") }}
           <div class="detail">
             {{ timeConversion(tx.timeDiff) }} ago ({{
               new Date(tx.timestamp)
@@ -381,7 +371,7 @@ div .vue-tx {
           </div>
         </div>
         <div>
-          <span class="txlocalizable" id="txFromText2"></span>
+          {{ $t("txFromText2") }}
           <div class="detail">
             <router-link
               v-if="tx.from"
@@ -392,13 +382,11 @@ div .vue-tx {
           </div>
         </div>
         <div>
-          <span class="txlocalizable" id="txToText2"></span>
+          {{ $t("txToText2") }}
           <div v-if="tx.type == 'call'" class="detail">
-            <span
-              class="font-color-000000 txlocalizable"
-              style="margin-right: 20px;"
-              id="txContractText"
-            ></span>
+            <span class="font-color-000000" style="margin-right: 20px;">
+              {{ $t("txContractText") }}
+            </span>
             <router-link
               v-if="tx.to"
               v-bind:to="fragApi + '/address/' + tx.to.hash"
@@ -410,9 +398,12 @@ div .vue-tx {
               class="token-name font-color-000000"
               v-if="isTokenTransfer && tx.tokenName"
             >
-              (<span class="txlocalizable" id="txTokenTextPrefix"></span>){{
-                tx.tokenName
-              }}<span class="txlocalizable" id="txTokenTextSuffix"></span>)
+              (
+              {{ $t("txTokenTextPrefix") }}
+              ){{ tx.tokenName }}
+
+              {{ $t("txTokenTextSuffix") }}
+              )
             </div>
           </div>
           <div v-else class="detail">
@@ -425,12 +416,11 @@ div .vue-tx {
           </div>
         </div>
         <div v-if="isTokenTransfer">
-          <span class="txlocalizable" id="txTokenTransferred2"></span>
+          {{ $t("txTokenTransferred2") }}
           <div class="detail">
-            <span
-              class="font-color-000000 txlocalizable"
-              id="txFromText3"
-            ></span>
+            <span class="font-color-000000">
+              {{ $t("txFromText3") }}
+            </span>
             <router-link
               class="atpAddress"
               v-if="tx.to"
@@ -438,7 +428,9 @@ div .vue-tx {
             >
               <span class="monospace">{{ tx.from.hash }}</span>
             </router-link>
-            <span class="font-color-000000 txlocalizable" id="txToText3"></span>
+            <span class="font-color-000000">
+              {{ $t("txToText3") }}
+            </span>
             <router-link
               class="atpAddress"
               v-if="tx.to"
@@ -450,8 +442,8 @@ div .vue-tx {
                 >{{ JSON.parse(JSON.parse(tx.data).Args)[0] }}
               </span>
             </router-link>
-            <span class="font-color-000000"
-              ><span class="txlocalizable" id="txFor2"></span>
+            <span class="font-color-000000">
+              {{ $t("txFor2") }}
               {{ tokenAmount }}</span
             >
             <div class="token-name" v-if="tx.tokenName">
@@ -476,7 +468,7 @@ div .vue-tx {
               class="td-left font-16 font-color-555555"
               style="padding-left: 24px;"
             >
-              <span id="txGasLimitTitle" class="txlocalizable"></span>
+              {{ $t("txGasLimitTitle") }}
             </td>
             <td class="font-color-000000 font-16">
               {{ numberAddComma(tx.gasLimit) }}
@@ -484,7 +476,7 @@ div .vue-tx {
           </tr>
           <tr>
             <td class="font-16 font-color-555555" style="padding-left: 24px;">
-              <span id="txGasUsedByTx" class="txlocalizable"></span>
+              {{ $t("txGasUsedByTx") }}
             </td>
             <td class="font-color-000000 font-16">
               <span v-if="tx.isPending === true" id="txPendingText2"></span
@@ -493,29 +485,31 @@ div .vue-tx {
           </tr>
           <tr>
             <td class="font-16 font-color-555555" style="padding-left: 24px;">
-              <span id="txGasPrice" class="txlocalizable"></span>
+              {{ $t("txGasPrice") }}
             </td>
             <td class="font-color-000000 font-16">{{ toWei(tx.gasPrice) }}</td>
           </tr>
           <tr>
             <td class="font-16 font-color-555555" style="padding-left: 24px;">
-              <span id="txActualTxCostFee" class="txlocalizable"></span>
+              {{ $t("txActualTxCostFee") }}
             </td>
             <td class="font-color-000000 font-16">{{ toWei(tx.txFee) }}</td>
           </tr>
           <tr>
             <td class="font-16 font-color-555555" style="padding-left: 24px;">
-              <span id="txNonce" class="txlocalizable"></span>
+              {{ $t("txlocalizable") }}
             </td>
             <td class="font-color-000000 font-16">{{ tx.nonce }}</td>
           </tr>
           <tr>
             <td class="font-16 font-color-555555" style="padding-left: 24px;">
-              <span id="txTxType" class="txlocalizable"></span>
+              {{ $t("txTxType") }}
             </td>
             <td class="font-color-000000 font-16" v-if="tx.type === 'deploy'">
               {{ txType }} (
-              <span id="txContractAddress" class="txlocalizable"></span>
+
+              {{ $t("txContractAddress") }}
+
               <router-link
                 v-if="tx.to"
                 v-bind:to="fragApi + '/address/' + tx.contractAddress"
@@ -527,7 +521,7 @@ div .vue-tx {
           </tr>
           <tr>
             <td class="font-16 font-color-555555" style="padding-left: 24px;">
-              <span id="txSourceType" class="txlocalizable"></span>
+              {{ $t("txSourceType") }}
             </td>
             <td class="font-color-000000 font-16" v-if="tx.type === 'deploy'">
               {{ JSON.parse(tx.data).SourceType }}
@@ -536,7 +530,7 @@ div .vue-tx {
           </tr>
           <tr>
             <td class="font-16 font-color-555555" style="padding-left: 24px;">
-              <span id="txArgs" class="txlocalizable"></span>
+              {{ $t("txArgs") }}
             </td>
             <td class="font-color-000000 font-16" v-if="tx.type === 'deploy'">
               {{ JSON.parse(tx.data).Args }}
@@ -545,7 +539,7 @@ div .vue-tx {
           </tr>
           <tr>
             <td class="font-16 font-color-555555" style="padding-left: 24px;">
-              <span id="txPayloadData" class="txlocalizable"></span>
+              {{ $t("txPayloadData") }}
             </td>
             <td v-if="tx.type === 'binary'" class="text">
               {{ tx.data }}
@@ -556,10 +550,7 @@ div .vue-tx {
                 v-on:click.prevent="showOrHidePayload()"
                 style="text-decoration: none;"
               >
-                <span
-                  class="align-middle font-16 txlocalizable"
-                  id="txViewAll"
-                ></span>
+                {{ $t("txViewAll") }}
                 <img
                   style="margin-left: 12px;"
                   class="icon16"
@@ -589,15 +580,16 @@ div .vue-tx {
   </div>
 </template>
 <script>
-import { EventBus } from "../events.js";
-import { jsonStrings } from "../l10nstrings.js";
+// import { EventBus } from "../events.js";
+// import { jsonStrings } from "../l10nstrings.js";
 var jsBeautify = require("js-beautify").js_beautify,
   prism = require("prismjs"),
   api = require("@/assets/api"),
   utility = require("@/assets/utility"),
-  appConfig = require("@/assets/app-config"),
   BigNumber = require("bignumber.js"),
   base64 = require("js-base64").Base64;
+
+import { apiPrefixesConfig } from "@/config";
 
 require("prismjs/themes/prism.css");
 
@@ -736,63 +728,63 @@ module.exports = {
     };
   },
   methods: {
-    removeTempInterval() {
-      clearInterval(this.tempInterval);
-    },
-    checkStaticTranslations() {
-      // Unique elements, identified by id attr
-      var myLocalizableElements = document.getElementsByClassName(
-        "txlocalizable"
-      );
-      var totalElements = myLocalizableElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementId = myLocalizableElements[i].getAttribute("id");
-        if (myLocalizableElements[i].getAttribute("localize")) {
-          var elementAttribute = myLocalizableElements[i].getAttribute(
-            "localize"
-          );
-          myLocalizableElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementId]
-          );
-        } else {
-          myLocalizableElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementId];
-        }
-      }
+    // removeTempInterval() {
+    //   clearInterval(this.tempInterval);
+    // },
+    // checkStaticTranslations() {
+    //   // Unique elements, identified by id attr
+    //   var myLocalizableElements = document.getElementsByClassName(
+    //     "txlocalizable"
+    //   );
+    //   var totalElements = myLocalizableElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementId = myLocalizableElements[i].getAttribute("id");
+    //     if (myLocalizableElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myLocalizableElements[i].getAttribute(
+    //         "localize"
+    //       );
+    //       myLocalizableElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementId]
+    //       );
+    //     } else {
+    //       myLocalizableElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementId];
+    //     }
+    //   }
 
-      myLocalizableElements = document.getElementsByClassName("bread-title");
+    //   myLocalizableElements = document.getElementsByClassName("bread-title");
 
-      totalElements = myLocalizableElements.length;
-      for (i = 0; i < totalElements; i++) {
-        myLocalizableElements[i].innerText =
-          jsonStrings[this.$selectedLanguage]["txTitle"];
-      }
-    },
-    checkDynamicTranslations() {
-      // Multiple elements, identified with name attr
-      var myMultiLocalizableElements = document.getElementsByClassName(
-        "txmultilocalizable"
-      );
-      var totalElements = myMultiLocalizableElements.length;
-      var i;
-      for (i = 0; i < totalElements; i++) {
-        var elementName = myMultiLocalizableElements[i].getAttribute("name");
-        if (myMultiLocalizableElements[i].getAttribute("localize")) {
-          var elementAttribute = myMultiLocalizableElements[i].getAttribute(
-            "localize"
-          );
-          myMultiLocalizableElements[i].setAttribute(
-            elementAttribute,
-            jsonStrings[this.$selectedLanguage][elementName]
-          );
-        } else {
-          myMultiLocalizableElements[i].innerText =
-            jsonStrings[this.$selectedLanguage][elementName];
-        }
-      }
-    },
+    //   totalElements = myLocalizableElements.length;
+    //   for (i = 0; i < totalElements; i++) {
+    //     myLocalizableElements[i].innerText =
+    //       jsonStrings[this.$selectedLanguage]["txTitle"];
+    //   }
+    // },
+    // checkDynamicTranslations() {
+    //   // Multiple elements, identified with name attr
+    //   var myMultiLocalizableElements = document.getElementsByClassName(
+    //     "txmultilocalizable"
+    //   );
+    //   var totalElements = myMultiLocalizableElements.length;
+    //   var i;
+    //   for (i = 0; i < totalElements; i++) {
+    //     var elementName = myMultiLocalizableElements[i].getAttribute("name");
+    //     if (myMultiLocalizableElements[i].getAttribute("localize")) {
+    //       var elementAttribute = myMultiLocalizableElements[i].getAttribute(
+    //         "localize"
+    //       );
+    //       myMultiLocalizableElements[i].setAttribute(
+    //         elementAttribute,
+    //         jsonStrings[this.$selectedLanguage][elementName]
+    //       );
+    //     } else {
+    //       myMultiLocalizableElements[i].innerText =
+    //         jsonStrings[this.$selectedLanguage][elementName];
+    //     }
+    //   }
+    // },
     showOrHidePayload() {
       this.isShowPayload = !this.isShowPayload;
       // setTimeout(() => {
@@ -816,7 +808,7 @@ module.exports = {
     },
     atpAddress() {
       var api = this.$route.params.api ? this.$route.params.api : "mainnet";
-      return appConfig.apiPrefixes[api].atp;
+      return apiPrefixesConfig[api].atp;
     },
     search(keyword) {
       if (keyword.trim().length === 0) {
@@ -852,40 +844,6 @@ module.exports = {
           );
         }
       );
-    }
-  },
-  mounted() {
-    EventBus.$on("changeLanguage", foo => {
-      this.checkStaticTranslations();
-    });
-    if (typeof this.$selectedLanguage != "undefined") {
-      this.checkStaticTranslations();
-    }
-    this.translationsInterval = setInterval(() => {
-      this.checkDynamicTranslations();
-    }, 1000);
-    this.tempInterval = setInterval(() => {
-      this.checkStaticTranslations();
-      this.removeTempInterval();
-    }, 1500);
-    if (this.$root.showAtpAds) {
-      /*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/
-      var atpAds = AtlasAds("pbg91eenif2mbsoo3g1qg");
-
-      //获取广告 传入div containerId和广告的宽高（getAd set the containerId and dimension wide high）
-      atpAds.getAd("#atlaspAds-bottom", "nas_1200x100_002");
-      atpAds.getAd("#atlaspAds-side", "nas_360x300_002");
-      atpAds.getAd("#atlaspAds-mobile", "nas_720x200_002");
-
-      //侧栏广告尺寸限制
-      window.onresize = function() {
-        if (window.innerWidth >= 1600) {
-          $("#atlaspAds-side").show();
-        } else {
-          $("#atlaspAds-side").hide();
-        }
-      };
-      window.onresize();
     }
   }
 };
