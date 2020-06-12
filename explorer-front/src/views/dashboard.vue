@@ -1,4 +1,7 @@
-<style>
+<style lang="scss" scoped>
+$dark-card-height: 420px;
+$nax-price-card-height: 520px;
+
 .vue-dashboard {
   display: block;
   color: black;
@@ -47,7 +50,7 @@
 }
 
 .vue-dashboard .row1 .flex-item {
-  height: 320px;
+  height: $dark-card-height;
 }
 
 .vue-dashboard .row2 .flex-item {
@@ -136,23 +139,27 @@
   color: white;
 }
 
-.vue-dashboard .daily-transactions .details {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  align-items: baseline;
-  text-align: right;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.7);
+.daily-transactions {
+  .details {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    align-items: baseline;
+    text-align: right;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+  }
 }
 
-.vue-dashboard .daily-transactions .details *:nth-child(2) {
+/* .vue-dashboard .daily-transactions .details *:nth-child(2) {
   font-size: 28px;
   color: white;
   font-weight: 400;
   margin-left: 10px;
   margin-top: 10px;
-}
+} */
 
 .vue-dashboard .daily-chart {
   position: absolute;
@@ -174,7 +181,7 @@
   z-index: 1060;
 }
 
-.vue-dashboard .nas-price .update-time {
+.vue-dashboard .market-price .update-time {
   position: absolute;
   top: 32px;
   right: 30px;
@@ -182,7 +189,7 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-.vue-dashboard .nas-price .details {
+.vue-dashboard .market-price .details {
   position: absolute;
   top: 20px;
   right: 30px;
@@ -192,31 +199,31 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-.vue-dashboard .nas-price .detail {
+.vue-dashboard .market-price .detail {
   position: absolute;
   margin-top: 96px;
   margin-left: 30px;
   vertical-align: bottom;
 }
 
-.vue-dashboard .nas-price .detail *:nth-child(1) {
+.vue-dashboard .market-price .detail *:nth-child(1) {
   font-size: 28px;
 }
 
-.vue-dashboard .nas-price .detail *:nth-child(2) {
+.vue-dashboard .market-price .detail *:nth-child(2) {
   font-size: 60px;
 }
 
-.vue-dashboard .nas-price .detail *:nth-child(3) {
+.vue-dashboard .market-price .detail *:nth-child(3) {
   font-size: 20px;
   color: #2cee8c;
 }
 
-.vue-dashboard .nas-price .detail .text-red {
+.vue-dashboard .market-price .detail .text-red {
   color: red;
 }
 
-.vue-dashboard .nas-price .market {
+.vue-dashboard .market-price .market {
   position: absolute;
   margin-top: 234px;
   flex-flow: row nowrap;
@@ -225,19 +232,59 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-.vue-dashboard .nas-price .market .row div div {
+.vue-dashboard .market-price .market .row div div {
   font-size: 28px;
   color: white;
 }
 
 @media (max-width: 575.98px) {
-  .vue-dashboard .nas-price .market .row div div {
+  .vue-dashboard .market-price .market .row div div {
     font-size: 22px;
   }
 }
 
-.vue-dashboard .nas-price .container {
+.vue-dashboard .market-price .container {
   padding: 0 30px;
+}
+
+.market-price {
+  &.nax-price-card {
+    height: $nax-price-card-height !important;
+  }
+
+  .detail {
+    *:nth-child(1) {
+      font-size: 28px;
+    }
+
+    *:nth-child(2) {
+      font-size: 60px;
+    }
+
+    *:nth-child(3) {
+      font-size: 20px;
+      color: #2cee8c;
+    }
+
+    .text-red {
+      color: red;
+    }
+  }
+
+  .row {
+    & > div {
+      margin-bottom: 20px;
+    }
+    &.border-top {
+      border-top: 0.5px solid #d6d8db !important;
+      padding-top: 20px;
+    }
+  }
+
+  a {
+    color: #fff;
+    font-size: 14px;
+  }
 }
 
 .vue-dashboard .row2 .subtitle {
@@ -474,13 +521,13 @@
 		right: 30px;
 	} */
 
-.vue-dashboard .accounts-chart {
-  position: absolute;
-  top: 90px;
-  width: calc(100% - 30px);
-  height: 240px;
-  margin-left: 30px;
-}
+// .vue-dashboard .accounts-chart {
+//   position: absolute;
+//   top: 90px;
+//   width: calc(100% - 30px);
+//   height: 240px;
+//   margin-left: 30px;
+// }
 
 .vue-dashboard .account-echart-down-arrow {
   width: 0;
@@ -565,7 +612,7 @@
   max-width: calc((100% - 1140px) * 0.5 - 25px);
 }
 
-@media (max-width: 320px) {
+@media (max-width: $dark-card-height) {
   .vue-dashboard .realtime-block:nth-of-type(-n + 5) {
     display: block;
     opacity: 1;
@@ -680,7 +727,7 @@
   <div class="vue-dashboard">
     <div class="bg-black black-header"></div>
     <div class="container">
-      <!-- ====================1==================== -->
+      <!-- row 1: nas data -->
       <div class="row row1">
         <div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
           <div class="item-bg">
@@ -688,20 +735,22 @@
               {{ $t("dashboardDailyTransactionsTitle") }}
             </div>
             <div class="details">
-              {{ $t("dashboardDailyTransactionsSubtitle") }}
-              <span v-if="todayTxCnt >= 0">{{
-                numberAddComma(todayTxCnt)
-              }}</span>
+              <span v-if="todayTxCnt >= 0">
+                {{ $t("dashboardDailyTransactionsSubtitle") }}
+                {{ numberAddComma(todayTxCnt) }}</span
+              >
             </div>
-            <vchart
+            <!-- <vchart
               class="daily-chart"
               v-if="dailyTxChartOptions"
               :options="dailyTxChartOptions"
               :autoResize="true"
-            ></vchart>
+            ></vchart> -->
+            <DailyTxChart />
           </div>
         </div>
-        <div class="nas-price flex-item col-12 col-lg-6 row1-item">
+        <!-- nas price card -->
+        <div class="market-price flex-item col-12 col-lg-6 row1-item">
           <div class="item-bg">
             <div class="item-title">
               {{ $t("dashboardNasPriceTitle") }}
@@ -722,6 +771,7 @@
                 }}{{ market.change24h }}%)</span
               >
             </div>
+            <!-- market realtime data -->
             <div class="market container">
               <div class="row">
                 <div class="col-6">
@@ -731,16 +781,177 @@
                   </div>
                 </div>
                 <div class="col-6">
+                  Total Supply:
+                  <div>9999999 NAS</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
                   {{ $t("dashboardNasMarketVol") }}
                   <div v-if="market">
                     ${{ numberAddComma(market.volume24h) }}
                   </div>
+                </div>
+                <div class="col-6">
+                  Circulating Supply:
+                  <div>9999999 NAS</div>
+                  <router-link
+                    class="link link-style"
+                    :to="fragApi + '/monitor/'"
+                  >
+                    View NAS Distribution &gt;
+                  </router-link>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- row 2: nax data -->
+      <div class="row row1">
+        <div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
+          <div class="item-bg">
+            <div class="item-title">
+              dStaking NAS and Minting NAX
+            </div>
+            <div class="details">
+              <span>Next Minted Block: 4,452,000</span>
+              <span>Time Left: 13:37:30</span>
+            </div>
+            <DStakingChart />
+          </div>
+        </div>
+        <!-- nax price card -->
+        <div
+          class="market-price nax-price-card flex-item col-12 col-lg-6 row1-item"
+        >
+          <div class="item-bg">
+            <div class="item-title">
+              NAX Price
+            </div>
+            <div class="details">
+              {{ $t("dashboardNasPriceUpdateTimePrefix") }}
+              <span v-if="market">{{
+                timeConversion(Date.now() - market.createdAt)
+              }}</span>
+
+              {{ $t("dashboardNasPriceUpdateTimeSuffix") }}
+            </div>
+            <div v-if="market" class="detail">
+              <span>$</span>
+              <span>{{ market.price }}</span>
+              <span :class="{ 'text-red': market.trends <= 0 }"
+                >({{ market.trends > 0 ? "+" : "-"
+                }}{{ market.change24h }}%)</span
+              >
+            </div>
+            <!-- market realtime data -->
+            <div class="market container">
+              <div class="row">
+                <div class="col-6">
+                  {{ $t("dashboardNasMarketCap") }}
+                  <div v-if="market">
+                    ${{ numberAddComma(market.marketCap) }}
+                  </div>
+                </div>
+                <div class="col-6">
+                  Total Supply:
+                  <div>9999999 NAS</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  {{ $t("dashboardNasMarketVol") }}
+                  <div v-if="market">
+                    ${{ numberAddComma(market.volume24h) }}
+                  </div>
+                </div>
+                <div class="col-6">
+                  Circulating Supply:
+                  <div>9999999 NAS</div>
+                </div>
+              </div>
+
+              <div class="row border-top">
+                <div class="col-6">
+                  dStaking NAS:
+                  <div v-if="market">
+                    ${{ numberAddComma(market.volume24h) }}
+                  </div>
+
+                  <a href="#">dStake NAS and mint NAX now &gt; </a>
+                </div>
+                <div class="col-6">
+                  dStaking Rate:
+                  <div>45.5%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- row 3: node data -->
+      <div class="row row1">
+        <div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
+          <div class="item-bg">
+            <div class="item-title">
+              Top 21 Nodes
+            </div>
+            <div class="details">
+              <span>Current Polling Cycle: 21,314</span>
+            </div>
+            <!-- <vchart
+              class="daily-chart"
+              v-if="dailyTxChartOptions"
+              :options="dailyTxChartOptions"
+              :autoResize="true"
+            ></vchart> -->
+          </div>
+        </div>
+        <!-- nax price card -->
+        <div class="market-price node-card flex-item col-12 col-lg-6 row1-item">
+          <div class="item-bg">
+            <div class="item-title">
+              Avg. Annualized Rate of Return
+            </div>
+            <div class="details">
+              {{ $t("dashboardNasPriceUpdateTimePrefix") }}
+              <span v-if="market">{{
+                timeConversion(Date.now() - market.createdAt)
+              }}</span>
+
+              {{ $t("dashboardNasPriceUpdateTimeSuffix") }}
+            </div>
+            <div v-if="market" class="detail">
+              <span> </span>
+              <span>200%</span>
+            </div>
+            <!-- market realtime data -->
+            <div class="market container">
+              <div class="row">
+                <div class="col-6">
+                  Total Rewards:
+                  <div>9999999 NAS</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  Voted for Nodes:
+                  <div>9999999 NAX</div>
+                  <a href="#">View all nodes &gt; </a>
+                </div>
+                <div class="col-6">
+                  Voting Rate:
+                  <div>40%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- ====================dip program==================== -->
       <!-- <div v-if="($root.mainnetDipStarted && $route.params.api !== 'testnet') || ($root.testnetDipStarted && $route.params.api === 'testnet')" class="row">
 				<div class="col">
@@ -956,13 +1167,7 @@
             <div class="item-title">
               {{ $t("dashboardAddressesGrowth") }}
             </div>
-            <!-- <div v-if="accountsChartOptions" class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
-            <vchart
-              class="accounts-chart"
-              v-if="accountsChartOptions"
-              :options="accountsChartOptions"
-              :autoResize="true"
-            ></vchart>
+            <AddressGrowthChart />
           </div>
         </div>
       </div>
@@ -1124,22 +1329,23 @@
   </div>
 </template>
 <script>
-// import { EventBus } from "../events.js";
-// import { jsonStrings } from "../l10nstrings.js";
 var api = require("@/assets/api"),
   utility = require("@/assets/utility"),
   BigNumber = require("bignumber.js");
 
-var ECharts = require("vue-echarts/components/ECharts").default;
 var dashboardTransactionsGraphicPointsTitle = "";
 var dashboardBlocksTransactions = "";
 var dashboardAmountText = "";
-require("echarts/lib/chart/line");
-require("echarts/lib/component/tooltip");
+
+import DailyTxChart from "@/components/DailyTxChart";
+import DStakingChart from "@/components/DStakingChart";
+import AddressGrowthChart from "@/components/AddressGrowthChart";
 
 module.exports = {
   components: {
-    vchart: ECharts
+    DailyTxChart,
+    DStakingChart,
+    AddressGrowthChart
   },
   data() {
     return {
@@ -1155,255 +1361,6 @@ module.exports = {
     };
   },
   computed: {
-    dailyTxChartOptions() {
-      if (!this.dailyTxData) return null;
-      var arr = [],
-        dates = [],
-        nums = [];
-      for (var k in this.dailyTxData) {
-        arr.push([k, this.dailyTxData[k]]);
-      }
-      arr.sort(function(a, b) {
-        return Date.parse(a[0]) - Date.parse(b[0]);
-      });
-      // if (arr.length > 13) {
-      //	 arr.splice(0, arr.length - 13);
-      // }
-      for (var i in arr) {
-        dates.push(arr[i][0]);
-        nums.push(arr[i][1]);
-      }
-
-      let vm = this;
-      var options = {
-        grid: {
-          left: "40",
-          bottom: "50",
-          right: "17",
-          top: "10",
-          containLabel: false
-        },
-        xAxis: {
-          data: dates,
-          axisLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          axisLabel: {
-            textStyle: {
-              color: "#B2B2B2"
-            },
-            margin: 18,
-            formatter: function(value) {
-              return vm.shortDate(value);
-            }
-          }
-        },
-        yAxis: {
-          // min: 'dataMin',
-          axisLine: {
-            show: false
-          },
-          axisLabel: {
-            textStyle: {
-              color: "#B2B2B2"
-            },
-            margin: 0
-          },
-          axisTick: {
-            show: false
-          },
-          splitLine: {
-            show: false
-          }
-        },
-        series: {
-          type: "line",
-          data: nums,
-          smooth: true,
-          symbol: "circle",
-          symbolSize: 5,
-          lineStyle: {
-            color: "#595C63",
-            width: 3
-          },
-          itemStyle: {
-            color: "#FFFFFF",
-            borderWidth: 3
-          },
-          areaStyle: {
-            color: "#595C63",
-            opacity: 1
-          }
-        },
-        tooltip: {
-          trigger: "item",
-          transitionDuration: 0,
-          position: "top",
-          formatter: function(params, ticket, callback) {
-            let date = new Date(params.name);
-            let dateStr = date.toLocaleDateString("en", {
-              year: "numeric",
-              month: "short",
-              day: "numeric"
-            });
-            return (
-              dateStr +
-              "<div>" +
-              dashboardTransactionsGraphicPointsTitle +
-              vm.numberAddComma(params.value) +
-              "</div><div class=daily-echart-down-arrow></div>"
-            );
-          },
-          backgroundColor: "#595C63",
-          padding: 8,
-          extraCssText:
-            "border-radius: 2px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);",
-          textStyle: {
-            fontFamily: "menlo, consolas",
-            fontSize: 12,
-            lineHeight: 18
-          }
-        }
-      };
-      return options;
-    },
-    accountsChartOptions() {
-      if (
-        !this.staticInfo ||
-        !this.staticInfo.addressWeekList ||
-        this.staticInfo.addressWeekList.length == 0
-      ) {
-        return null;
-      }
-      var arr = this.staticInfo.addressWeekList;
-      var dates = [],
-        nums = [];
-
-      arr.sort(function(a, b) {
-        return a.timestamp > b.timestamp;
-      });
-      if (arr.length > 8) {
-        arr.splice(0, arr.length - 8);
-      }
-
-      for (var i in arr) {
-        nums.push(arr[i].addressCount);
-        dates.push(arr[i].timestamp);
-      }
-
-      let vm = this;
-      var options = {
-        grid: {
-          left: "30",
-          bottom: "50",
-          right: "17",
-          top: "10",
-          containLabel: false
-        },
-        xAxis: {
-          data: dates,
-          axisLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          axisLabel: {
-            textStyle: {
-              color: "#B2B2B2"
-            },
-            margin: 18,
-            formatter: function(value) {
-              return vm.shortDate(new Number(value));
-            }
-          }
-        },
-        yAxis: {
-          min: Math.floor(nums[0] / 1000) * 1000 - 1000,
-          axisLine: {
-            show: false
-          },
-          axisLabel: {
-            textStyle: {
-              color: "#B2B2B2"
-            },
-            margin: 0,
-            formatter: function(value) {
-              return value / 1000 + "k";
-            }
-          },
-          axisTick: {
-            show: false
-          },
-          splitLine: {
-            show: false
-          },
-          // splitNumber: 5,
-          // maxInterval: 3000,
-          minInterval: 1000
-        },
-        series: {
-          type: "line",
-          data: nums,
-          smooth: true,
-          symbol: "emptyCircle",
-          symbolSize: 7,
-          lineStyle: {
-            color: "#0057FF",
-            width: 3
-          },
-          itemStyle: {
-            normal: {
-              color: "#FFFFFF",
-              borderWidth: 3,
-              borderColor: "#0057FF"
-            },
-            emphasis: {
-              color: "#FFFFFF",
-              borderWidth: 3,
-              borderColor: "#0057FF"
-            }
-          },
-          areaStyle: {
-            color: "#0057FF",
-            opacity: 1
-          }
-        },
-        tooltip: {
-          trigger: "item",
-          transitionDuration: 0,
-          position: "top",
-          formatter: function(params, ticket, callback) {
-            let date = new Date(new Number(params.name));
-            let dateStr = date.toLocaleDateString("en", {
-              year: "numeric",
-              month: "short",
-              day: "numeric"
-            });
-            return (
-              dateStr +
-              "<div>" +
-              dashboardAmountText +
-              vm.numberAddComma(params.value) +
-              "</div><div class=account-echart-down-arrow></div>"
-            );
-          },
-          backgroundColor: "#0057FF",
-          padding: 8,
-          extraCssText:
-            "border-radius: 2px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);",
-          textStyle: {
-            fontFamily: "menlo, consolas",
-            fontSize: 12,
-            lineHeight: 18
-          }
-        }
-      };
-      return options;
-    },
     blockheight() {
       if (this.blocks.length > 0)
         return this.numberAddComma(this.blocks[0].height);
@@ -1411,19 +1368,6 @@ module.exports = {
     }
   },
   mounted() {
-    // EventBus.$on("changeLanguage", foo => {
-    //   this.checkStaticTranslations();
-    // });
-    // if (typeof this.$selectedLanguage != "undefined") {
-    //   this.checkStaticTranslations();
-    // }
-    // this.translationsInterval = setInterval(() => {
-    //   this.checkDynamicTranslations();
-    // }, 1000);
-    // this.tempInterval = setInterval(() => {
-    //   this.checkStaticTranslations();
-    //   this.removeTempInterval();
-    // }, 1500);
     api.getTx("cnt_static", o => (this.dailyTxData = o)); //近期每日交易量
     api.getMarketCap(o => (this.market = o)); //币价和市值
     api.getBlock(
@@ -1461,31 +1405,9 @@ module.exports = {
       api.getMarketCap(o => (this.market = o)); //币价和市值
       api.getStaticInfo(o => (this.staticInfo = o)); //合约数量、地址数量。。。
     }, 60000);
-
-    // if (this.$root.showAtpAds) {
-    //   /*初始化ATPSDK，并设置partnerID (init ATP-SDK ,Set partnerID)*/
-    //   var atpAds = AtlasAds("pbg91eenif2mbsoo3g1qg");
-
-    //   //获取广告 传入div containerId和广告的宽高（getAd set the containerId and dimension wide high）
-    //   atpAds.getAd("#atlaspAds-bottom", "nas_1200x100_001");
-    //   atpAds.getAd("#atlaspAds-side", "nas_360x300_001");
-    //   atpAds.getAd("#atlaspAds-middle-mobile", "nas_720x200_001");
-
-    //   //侧栏广告尺寸限制
-    //   window.onresize = function() {
-    //     if (window.innerWidth >= 1600) {
-    //       $("#atlaspAds-side").show();
-    //     } else {
-    //       $("#atlaspAds-side").hide();
-    //     }
-    //   };
-    //   window.onresize();
-    // }
   },
+
   methods: {
-    // removeTempInterval() {
-    //   clearInterval(this.tempInterval);
-    // },
     numberAddComma(n) {
       return utility.numberAddComma(n);
     },
@@ -1527,62 +1449,6 @@ module.exports = {
       }
       return n;
     }
-    // checkStaticTranslations() {
-    //   // Unique elements, identified by id attr
-    //   var myLocalizableElements = document.getElementsByClassName(
-    //     "dashboardlocalizable"
-    //   );
-    //   var totalElements = myLocalizableElements.length;
-    //   var i;
-    //   for (i = 0; i < totalElements; i++) {
-    //     var elementId = myLocalizableElements[i].getAttribute("id");
-    //     if (myLocalizableElements[i].getAttribute("localize")) {
-    //       var elementAttribute = myLocalizableElements[i].getAttribute(
-    //         "localize"
-    //       );
-    //       myLocalizableElements[i].setAttribute(
-    //         elementAttribute,
-    //         jsonStrings[this.$selectedLanguage][elementId]
-    //       );
-    //     } else {
-    //       myLocalizableElements[i].innerText =
-    //         jsonStrings[this.$selectedLanguage][elementId];
-    //     }
-    //   }
-    // },
-    // checkDynamicTranslations() {
-    //   // Multiple elements, identified with name attr
-    //   var myMultiLocalizableElements = document.getElementsByClassName(
-    //     "dashboardmultilocalizable"
-    //   );
-    //   var totalElements = myMultiLocalizableElements.length;
-    //   var i;
-    //   for (i = 0; i < totalElements; i++) {
-    //     var elementName = myMultiLocalizableElements[i].getAttribute("name");
-    //     if (myMultiLocalizableElements[i].getAttribute("localize")) {
-    //       var elementAttribute = myMultiLocalizableElements[i].getAttribute(
-    //         "localize"
-    //       );
-    //       myMultiLocalizableElements[i].setAttribute(
-    //         elementAttribute,
-    //         jsonStrings[this.$selectedLanguage][elementName]
-    //       );
-    //     } else {
-    //       myMultiLocalizableElements[i].innerText =
-    //         jsonStrings[this.$selectedLanguage][elementName];
-    //     }
-    //   }
-
-    //   // Other specific methods for unique elements.
-
-    //   dashboardTransactionsGraphicPointsTitle =
-    //     jsonStrings[this.$selectedLanguage][
-    //       "dashboardDailyTransactionsSubtitle"
-    //     ];
-
-    //   dashboardAmountText =
-    //     jsonStrings[this.$selectedLanguage]["dashboardAmountText"];
-    // }
   },
   updated() {
     if (window.isIE()) {
