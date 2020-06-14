@@ -97,10 +97,12 @@
 
   .vue-header .dropdown-menu {
     padding: 0;
+    margin-top: 6px;
+    min-width: 15rem;
 
     &.dropdown-menu-long {
       margin-left: 30px;
-      width: 30rem;
+      width: 34rem;
     }
 
     .row {
@@ -114,6 +116,19 @@
         display: flex;
         align-items: baseline;
         margin: 0 1rem;
+        height: 5rem;
+        position: relative;
+
+        & > a {
+          position: absolute;
+          top: 50%;
+          right: 1rem;
+          transform: translateY(-50%);
+
+          &:hover {
+            background-color: transparent;
+          }
+        }
 
         &:hover {
           background-color: #f8f9fa;
@@ -130,6 +145,10 @@
         &:after {
           content: "\003E";
           color: #999;
+          position: absolute;
+          top: 50%;
+          right: 1rem;
+          transform: translateY(-50%);
         }
       }
     }
@@ -260,7 +279,8 @@
                         class="dropdown-item"
                         v-bind:to="fragApi + '/monitor'"
                       >
-                        Monitor Address
+                        <span class="title">Monitor Address</span>
+                        <span class="desc">Hold by Nebulas Foundation</span>
                       </router-link>
                     </li>
                     <li>
