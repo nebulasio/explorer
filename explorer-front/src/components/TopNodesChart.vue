@@ -177,7 +177,7 @@ export default {
             xAxisIndex: 1,
             data: reward_nas_data,
             itemStyle: {
-              color: "rgba(255,255,255,0.1)"
+              color: "rgba(255,255,255,0.2)"
             }
           }
         ]
@@ -193,7 +193,7 @@ export default {
 .top-nodes-chart {
   position: absolute;
   top: 30px;
-  height: 600px;
+  height: 500px;
   width: calc(100% - 40px);
 }
 </style>

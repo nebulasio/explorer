@@ -278,7 +278,7 @@ $nax-price-card-height: 520px;
 }
 
 .top-node-card {
-  height: 620px !important;
+  height: $nax-price-card-height !important;
 }
 
 .market-price {
@@ -922,7 +922,9 @@ $nax-price-card-height: 520px;
           </div>
         </div>
         <!-- nax price card -->
-        <div class="market-price node-card flex-item col-12 col-lg-6 row1-item">
+        <div
+          class="market-price top-node-card flex-item col-12 col-lg-6 row1-item"
+        >
           <div class="item-bg">
             <div class="item-title">
               Avg. Annualized Rate of Return
@@ -946,16 +948,31 @@ $nax-price-card-height: 520px;
                   Total Rewards:
                   <div>9999999 NAS</div>
                 </div>
+                <div class="col-6">
+                  Total Nodes:
+                  <div>60</div>
+                  <a href="#">View all nodes &gt; </a>
+                </div>
               </div>
               <div class="row">
                 <div class="col-6">
                   Voted for Nodes:
                   <div>9999999 NAX</div>
-                  <a href="#">View all nodes &gt; </a>
                 </div>
                 <div class="col-6">
                   Voting Rate:
                   <div>40%</div>
+                </div>
+              </div>
+
+              <div class="row border-top">
+                <div class="col-6">
+                  Current period:
+                  <div>99455</div>
+                </div>
+                <div class="col-6">
+                  Current Govern period:
+                  <div>2</div>
                 </div>
               </div>
             </div>
