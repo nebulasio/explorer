@@ -1,4 +1,4 @@
-<style>
+<style lang="scss" scoped>
 .vue-header .container {
   padding-top: 5px;
   padding-bottom: 5px;
@@ -6,6 +6,10 @@
 
 .vue-header a {
   color: inherit;
+}
+
+.navbar-collapse {
+  justify-content: space-around;
 }
 
 .vue-header .dev-version {
@@ -76,10 +80,78 @@
 
   .vue-header.navbar.navbar-default .navbar-nav > li > a {
     background-color: initial;
+    padding: 0;
+  }
+
+  .navbar-nav {
+    & > li {
+      & > a {
+        padding: 0;
+      }
+    }
+  }
+
+  .icon-menu1 {
+    font-size: 24px;
   }
 
   .vue-header .dropdown-menu {
-    margin-left: 30px;
+    padding: 0;
+
+    &.dropdown-menu-long {
+      margin-left: 30px;
+      width: 30rem;
+    }
+
+    .row {
+      margin: 0;
+    }
+
+    ul {
+      padding: 1rem 0;
+      & > li {
+        list-style-type: none;
+        display: flex;
+        align-items: baseline;
+        margin: 0 1rem;
+
+        &:hover {
+          background-color: #f8f9fa;
+        }
+
+        &:active {
+          background-color: #e8e8e8;
+        }
+
+        &:not(:last-child) {
+          border-bottom: 1px solid #e9ecef;
+        }
+
+        &:after {
+          content: "\003E";
+          color: #999;
+        }
+      }
+    }
+
+    .dropdown-item {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      &:active {
+        background-color: #e8e8e8;
+      }
+
+      span {
+        &.title {
+        }
+
+        &.desc {
+          font-size: 12px;
+          color: #999;
+        }
+      }
+    }
   }
 }
 
@@ -109,7 +181,7 @@
       </div>
 
       <button
-        class="navbar-toggler headerlocalizable"
+        class="navbar-toggler"
         localize="aria-label"
         type="button"
         data-toggle="collapse"
@@ -122,45 +194,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse mr-28" id="navbarSupportedContent">
-        <form class="form-inline" v-on:submit.prevent="onSubmit">
-          <img src=/static/img/icon_search.png width=16 alt="" />
-          <input
-            class="mr-sm-2 font-12"
-            type="search"
-            :placeholder="$t('headerSearchTool')"
-            v-model="search"
-          />
-        </form>
-        <ul class="navbar-nav ml-auto">
-          <li
-            class="nav-item"
-            v-bind:class="{ active: $route.meta.headerActive == 1 }"
-          >
-            <router-link v-bind:to="fragApi + '/'" class="nav-link">
-              <span>
-                <span id="headerHomeTitle">
-                  {{ $t("headerHomeTitle") }}
-                </span>
-                <span class="sr-only">
-                  {{ $t("headerHomesubtitle") }}
-                </span>
-              </span>
-            </router-link>
-          </li>
-          <!-- Menú dStaking -->
-          <li
-            class="nav-item"
-            v-bind:class="{ active: $route.meta.headerActive == 3 }"
-          >
-            <router-link v-bind:to="fragApi + '/dstaking'" class="nav-link">
-              {{ $t("headerMenuDstaking") }}
-
-              <span class="sr-only">
-                {{ $t("headerCurrentText") }}
-              </span>
-            </router-link>
-          </li>
-          <!-- Menú Blockchain -->
+        <ul class="navbar-nav">
           <li
             class="dropdown nav-item"
             v-bind:class="{ active: $route.meta.headerActive == 2 }"
@@ -175,36 +209,71 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              BLOCKCHAIN <img src=/static/img/icon_arrow_down.png width=12
+              Blockchains <img src=/static/img/icon_arrow_down.png width=12
               alt="" >
             </a>
             <div
-              class="dropdown-menu"
+              class="dropdown-menu dropdown-menu-long"
               aria-labelledby="header-dropdown-blockchain"
             >
-              <router-link class="dropdown-item" v-bind:to="fragApi + '/txs'">
-                {{ $t("headerTransactionsSubmenu") }}
-              </router-link>
-              <router-link
-                class="dropdown-item"
-                v-bind:to="fragApi + '/txs/pending'"
-              >
-                {{ $t("headerPendingTransactionsSubmenu") }}
-              </router-link>
-              <div class="dropdown-divider"></div>
-              <router-link
-                class="dropdown-item"
-                v-bind:to="fragApi + '/blocks'"
-              >
-                {{ $t("headerBlocksSubmenu") }}
-              </router-link>
-              <div class="dropdown-divider"></div>
-              <router-link
-                class="dropdown-item"
-                v-bind:to="fragApi + '/accounts'"
-              >
-                {{ $t("headerAccountsSubmenu") }}
-              </router-link>
+              <b-row>
+                <b-col>
+                  <ul>
+                    <li>
+                      <router-link
+                        class="dropdown-item"
+                        v-bind:to="fragApi + '/blocks'"
+                      >
+                        {{ $t("headerBlocksSubmenu") }}
+                      </router-link>
+                    </li>
+                    <li>
+                      <router-link
+                        class="dropdown-item"
+                        v-bind:to="fragApi + '/txs'"
+                      >
+                        {{ $t("headerTransactionsSubmenu") }}
+                      </router-link>
+                    </li>
+                    <li>
+                      <router-link
+                        class="dropdown-item"
+                        v-bind:to="fragApi + '/txs/pending'"
+                      >
+                        {{ $t("headerPendingTransactionsSubmenu") }}
+                      </router-link>
+                    </li>
+                  </ul>
+                </b-col>
+                <b-col>
+                  <ul>
+                    <li>
+                      <router-link
+                        class="dropdown-item"
+                        v-bind:to="fragApi + '/accounts'"
+                      >
+                        {{ $t("headerAccountsSubmenu") }}
+                      </router-link>
+                    </li>
+                    <li>
+                      <router-link
+                        class="dropdown-item"
+                        v-bind:to="fragApi + '/monitor'"
+                      >
+                        Monitor Address
+                      </router-link>
+                    </li>
+                    <li>
+                      <router-link
+                        class="dropdown-item"
+                        v-bind:to="fragApi + '/contracts'"
+                      >
+                        Smart Contract
+                      </router-link>
+                    </li>
+                  </ul>
+                </b-col>
+              </b-row>
             </div>
           </li>
           <!-- // Menú Blockchain -->
@@ -222,11 +291,84 @@
               <img src=/static/img/icon_switcher.png width=12 alt="" >
             </a>
           </li>
-          <!-- Selector de idiomas -->
+        </ul>
+
+        <form class="form-inline" v-on:submit.prevent="onSubmit">
+          <img src=/static/img/icon_search.png width=16 alt="" />
+          <input
+            class="mr-sm-2 font-12"
+            type="search"
+            :placeholder="$t('headerSearchTool')"
+            v-model="search"
+          />
+        </form>
+
+        <ul class="navbar-nav">
+          <li class="dropdown nav-item">
+            <a
+              class="nav-link"
+              href="#"
+              id="header-dropdown-blockchain"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="iconfont icon-menu1"></i>
+            </a>
+            <div class="dropdown-menu">
+              <ul>
+                <li>
+                  <a href="#" class="dropdown-item">
+                    <span class="title">Explorer</span>
+                    <span class="desc">Blockchain, dStaking</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#" class="dropdown-item">
+                    <span class="title">Nodes</span>
+                    <span class="desc">POD Consensus</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#" class="dropdown-item">
+                    <span class="title">Go Nebulas</span>
+                    <span class="desc">Community Collaboration</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#" class="dropdown-item">
+                    <span class="title">APP</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#" class="dropdown-item">
+                    <span class="title">Documents</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#" class="dropdown-item">
+                    <span class="title">Forum</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#" class="dropdown-item">
+                    <span class="title">Nebulas.io</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
           <li class="dropdown nav-item">
             <LocaleSwitcher />
           </li>
-          <!-- // Selector de idiomas -->
         </ul>
       </div>
     </div>
@@ -254,17 +396,6 @@ module.exports = {
     };
   },
   mounted() {
-    // EventBus.$on("changeLanguage", foo => {
-    //   this.checkHeaderTranslations();
-    // });
-    // if (typeof this.$selectedLanguage != "undefined") {
-    //   this.checkHeaderTranslations();
-    // }
-    // this.tempInterval = setInterval(() => {
-    //   this.checkHeaderTranslations();
-    //   //this.removeTempInterval();//Commented to let the page fully charge
-    // }, 800);
-
     var paramsApi = this.$route.params.api,
       apiPrefixes = {},
       i,
@@ -290,32 +421,6 @@ module.exports = {
     }
   },
   methods: {
-    // removeTempInterval() {
-    //   clearInterval(this.tempInterval);
-    // },
-    // checkHeaderTranslations() {
-    //   // Unique elements, identified by id attr
-    //   var myLocalizableElements = document.getElementsByClassName(
-    //     "headerlocalizable"
-    //   );
-    //   var totalElements = myLocalizableElements.length;
-    //   var i;
-    //   for (i = 0; i < totalElements; i++) {
-    //     var elementId = myLocalizableElements[i].getAttribute("id");
-    //     if (myLocalizableElements[i].getAttribute("localize")) {
-    //       var elementAttribute = myLocalizableElements[i].getAttribute(
-    //         "localize"
-    //       );
-    //       myLocalizableElements[i].setAttribute(
-    //         elementAttribute,
-    //         jsonStrings[this.$selectedLanguage][elementId]
-    //       );
-    //     } else {
-    //       myLocalizableElements[i].innerText =
-    //         jsonStrings[this.$selectedLanguage][elementId];
-    //     }
-    //   }
-    // },
     onSubmit() {
       this.$root.showModalLoading = true;
       api.getSearch(

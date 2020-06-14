@@ -9,8 +9,10 @@
       aria-haspopup="true"
       aria-expanded="false"
     >
+      <i class="iconfont icon-language"></i>
       {{ $t("Languages") }}
-      <img src=/static/img/icon_arrow_down.png width=12 alt="">
+      <i class="iconfont icon-down"></i>
+      <!-- <img src=/static/img/icon_arrow_down.png width=12 alt=""> -->
     </a>
     <div class="dropdown-menu" aria-labelledby="language-selector">
       <div>
@@ -51,10 +53,18 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 li {
   text-decoration: underline;
   color: #459ce7;
   cursor: pointer;
+}
+
+.icon-language {
+  font-size: 14px;
+}
+
+.icon-down {
+  font-size: 12px;
 }
 </style>
