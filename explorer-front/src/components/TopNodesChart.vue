@@ -32,138 +32,153 @@ export default {
 
   computed: {
     chartOptions() {
+      const fetch_data = [
+        {
+          id: "gateio",
+          vote_nax: 100003,
+          reward_nas: 321
+        },
+        {
+          id: "tech",
+          vote_nax: 100001,
+          reward_nas: 34
+        },
+        {
+          id: "naxone01",
+          vote_nax: 10000,
+          reward_nas: 166
+        },
+        {
+          id: "gateio1",
+          vote_nax: 8967,
+          reward_nas: 124
+        },
+        {
+          id: "tech2",
+          vote_nax: 76754,
+          reward_nas: 345
+        },
+        {
+          id: "naxone013",
+          vote_nax: 23478,
+          reward_nas: 223
+        },
+        {
+          id: "gateio13",
+          vote_nax: 7895,
+          reward_nas: 189
+        },
+        {
+          id: "tech24",
+          vote_nax: 2435,
+          reward_nas: 280
+        },
+        {
+          id: "naxone0135",
+          vote_nax: 5667,
+          reward_nas: 120
+        }
+      ];
+
+      let nodes_data = [];
+      let vote_nax_data = [];
+      let reward_nas_data = [];
+      let vote_nax_max = 0;
+
+      for (let i = 0; i < fetch_data.length; i++) {
+        nodes_data.push(fetch_data[i].id);
+        vote_nax_data.push(fetch_data[i].vote_nax);
+        reward_nas_data.push(fetch_data[i].reward_nas);
+
+        if (fetch_data[i].vote_nax > vote_nax_max) {
+          vote_nax_max = fetch_data[i].vote_nax;
+        }
+      }
+
       const option = {
         tooltip: {
           trigger: "axis",
           axisPointer: {
-            type: "cross",
+            type: "shadow",
             crossStyle: {
               color: "#999"
             }
           }
         },
-        toolbox: {
-          feature: {
-            dataView: { show: true, readOnly: false },
-            magicType: { show: true, type: ["line", "bar"] },
-            restore: { show: true },
-            saveAsImage: { show: true }
-          }
-        },
-        legend: {
-          data: ["蒸发量", "降水量", "平均温度"]
-        },
         yAxis: [
           {
             type: "category",
-            data: [
-              "1月",
-              "2月",
-              "3月",
-              "4月",
-              "5月",
-              "6月",
-              "7月",
-              "8月",
-              "9月",
-              "10月",
-              "11月",
-              "12月",
-              "1月",
-              "2月",
-              "3月",
-              "4月",
-              "5月",
-              "6月",
-              "7月",
-              "8月",
-              "9月",
-              "10月",
-              "11月",
-              "12月"
-            ],
-            axisPointer: {
-              type: "shadow"
-            }
+            data: nodes_data,
+            axisLabel: {
+              inside: true,
+              textStyle: {
+                color: "#fff"
+              }
+            },
+            z: 10
           }
         ],
         xAxis: [
           {
             type: "value",
-            name: "水量",
+            // name: "vote nax",
             min: 0,
-            max: 250,
-            interval: 50,
+            max: vote_nax_max,
+            axisLine: {
+              show: false
+            },
             axisLabel: {
-              formatter: "{value} ml"
+              textStyle: {
+                color: "#B2B2B2"
+              },
+              margin: 0
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: false
             }
           },
           {
             type: "value",
-            name: "温度",
+            // name: "reward nas",
             min: 0,
-            max: 25,
-            interval: 5,
+            max: 350,
+            axisLine: {
+              show: false
+            },
             axisLabel: {
-              formatter: "{value} °C"
+              textStyle: {
+                color: "#B2B2B2"
+              },
+              margin: 0
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: false
             }
           }
         ],
         series: [
           {
-            name: "蒸发量",
+            name: "vote nax",
             type: "bar",
-            data: [
-              2.0,
-              4.9,
-              7.0,
-              23.2,
-              25.6,
-              76.7,
-              135.6,
-              162.2,
-              32.6,
-              20.0,
-              6.4,
-              3.3
-            ]
+            data: vote_nax_data,
+            itemStyle: {
+              color: "#595C63"
+            }
           },
           {
-            name: "降水量",
-            type: "bar",
-            data: [
-              2.6,
-              5.9,
-              9.0,
-              26.4,
-              28.7,
-              70.7,
-              175.6,
-              182.2,
-              48.7,
-              18.8,
-              6.0,
-              2.3
-            ]
-          },
-          {
-            name: "平均温度",
+            name: "reward nas",
             type: "line",
             xAxisIndex: 1,
-            data: [
-              2.0,
-              2.2,
-              3.3,
-              4.5,
-              6.3,
-              10.2,
-              20.3,
-              23.4,
-              23.0,
-              16.5,
-              12.0,
-              6.2
-            ]
+            data: reward_nas_data,
+            itemStyle: {
+              color: "rgba(255,255,255,0.1)"
+            }
           }
         ]
       };
@@ -177,9 +192,8 @@ export default {
 <style lang="scss" scoped>
 .top-nodes-chart {
   position: absolute;
-  top: 90px;
-  height: 500px;
-  width: calc(100% - 30px);
-  margin-left: 30px;
+  top: 30px;
+  height: 600px;
+  width: calc(100% - 40px);
 }
 </style>

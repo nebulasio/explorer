@@ -150,7 +150,7 @@ export default {
               "<div>" +
               vm.$t("dashboardDailyTransactionsSubtitle") +
               utility.numberAddComma(params.value) +
-              "</div><div class=daily-echart-down-arrow></div>"
+              "</div><div class=echart-down-arrow></div>"
             );
           },
           backgroundColor: "#595C63",

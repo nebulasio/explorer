@@ -166,3 +166,16 @@ label {
 .bg-bl {
   background-color: black;
 }
+
+// echart
+.echart-down-arrow {
+  width: 0;
+  height: 0;
+  border-top: 4px solid #595c63;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  position: absolute;
+  bottom: -4px;
+  left: calc(50% - 4px);
+  z-index: 1060;
+}
