@@ -7,7 +7,7 @@ import router from "./router";
 import { Trans } from "./plugins/Translation";
 import App from "./App.vue";
 
-import VueTranslate from "vue-translate-plugin";
+// import VueTranslate from "vue-translate-plugin";
 // import { EventBus } from "./events.js";
 // import { jsonStrings } from "./l10nstrings.js";
 
@@ -38,7 +38,7 @@ Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
 
-Vue.use(VueTranslate);
+// Vue.use(VueTranslate);
 
 // Install vue i18n
 Vue.use(VueI18n);

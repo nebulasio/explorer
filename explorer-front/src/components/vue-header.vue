@@ -428,9 +428,12 @@ module.exports = {
 
     if (!(paramsApi in apiPrefixes)) paramsApi = "";
 
-    paramsApi == "testnet"
-      ? (this.MenuMisc = "TESTNET")
-      : (this.MenuMisc = "MAINNET");
+    if (paramsApi === "testnet") {
+      this.MenuMisc = "TESTNET";
+    } else {
+      this.MenuMisc = "MAINNET";
+    }
+
     this.apiPrefixes = apiPrefixes;
     this.fragApi = paramsApi ? "/" + paramsApi : "";
     this.paramsApi = paramsApi;
