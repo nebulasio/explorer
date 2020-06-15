@@ -761,62 +761,7 @@ $nax-price-card-height: 520px;
           </div>
         </div>
         <!-- nas price card -->
-        <div class="market-price flex-item col-12 col-lg-6 row1-item">
-          <div class="item-bg">
-            <div class="item-title">
-              {{ $t("dashboardNasPriceTitle") }}
-            </div>
-            <div class="details">
-              {{ $t("dashboardNasPriceUpdateTimePrefix") }}
-              <span v-if="market">{{
-                timeConversion(Date.now() - market.createdAt)
-              }}</span>
-
-              {{ $t("dashboardNasPriceUpdateTimeSuffix") }}
-            </div>
-            <div v-if="market" class="detail">
-              <span>$</span>
-              <span>{{ market.price }}</span>
-              <span :class="{ 'text-red': market.trends <= 0 }"
-                >({{ market.trends > 0 ? "+" : "-"
-                }}{{ market.change24h }}%)</span
-              >
-            </div>
-            <!-- market realtime data -->
-            <div class="market container">
-              <div class="row">
-                <div class="col-6">
-                  {{ $t("dashboardNasMarketCap") }}
-                  <div v-if="market">
-                    ${{ numberAddComma(market.marketCap) }}
-                  </div>
-                </div>
-                <div class="col-6">
-                  Total Supply:
-                  <div>9999999 NAS</div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-6">
-                  {{ $t("dashboardNasMarketVol") }}
-                  <div v-if="market">
-                    ${{ numberAddComma(market.volume24h) }}
-                  </div>
-                </div>
-                <div class="col-6">
-                  Circulating Supply:
-                  <div>9999999 NAS</div>
-                  <router-link
-                    class="link link-style"
-                    :to="fragApi + '/monitor/'"
-                  >
-                    View NAS Distribution &gt;
-                  </router-link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <NasMarketCard />
       </div>
 
       <!-- row 2: nax data -->
@@ -1304,6 +1249,7 @@ import DStakingChart from "@/components/DStakingChart";
 import TopNodesChart from "@/components/TopNodesChart";
 import AddressGrowthChart from "@/components/AddressGrowthChart";
 import NaxMarketCard from "@/components/NaxMarketCard";
+import NasMarketCard from "@/components/NasMarketCard";
 
 module.exports = {
   components: {
@@ -1311,7 +1257,8 @@ module.exports = {
     DStakingChart,
     TopNodesChart,
     AddressGrowthChart,
-    NaxMarketCard
+    NaxMarketCard,
+    NasMarketCard
   },
   data() {
     return {

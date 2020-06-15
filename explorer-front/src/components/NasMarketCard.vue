@@ -1,8 +1,8 @@
 <template>
-  <div class="market-price nax-price-card flex-item col-12 col-lg-6 row1-item">
+  <div class="market-price flex-item col-12 col-lg-6 row1-item">
     <div class="item-bg">
       <div class="item-title">
-        NAX Price
+        {{ $t("dashboardNasPriceTitle") }}
       </div>
       <div class="details">
         {{ $t("dashboardNasPriceUpdateTimePrefix") }}
@@ -35,20 +35,9 @@
           <div class="col-6">
             Circulating Supply:
             <div>{{ this.totalCirculation }}</div>
-          </div>
-        </div>
-
-        <div class="row border-top">
-          <div class="col-6">
-            dStaking NAS:
-            <!-- <div v-if="market">${{ numberAddComma(market.volume24h) }}</div> -->
-            <div>{{ this.totalStaking }}</div>
-
-            <a href="#">dStake NAS and mint NAX now &gt; </a>
-          </div>
-          <div class="col-6">
-            dStaking Rate:
-            <div>{{ this.stakingRate }}</div>
+            <router-link class="link link-style" :to="fragApi + '/monitor/'">
+              View NAS Distribution &gt;
+            </router-link>
           </div>
         </div>
       </div>
@@ -58,18 +47,18 @@
 
 <script>
 import moment from "moment";
-import { convert2NaxStr, convert2NasStr } from "@/utils/neb";
+import { convert2NasStr } from "@/utils/neb";
 import { toLocaleString } from "@/utils/number";
 
 export default {
-  name: "NaxMarketCard",
+  name: "NasMarketCard",
   data() {
     return {
       market: null
     };
   },
   mounted() {
-    this.$api.home.getNaxMarket().then(res => (this.market = res));
+    this.$api.home.getNasMarket().then(res => (this.market = res));
   },
   computed: {
     updatedPass() {
@@ -86,10 +75,10 @@ export default {
       return `$${toLocaleString(this.market.volume24h)}`;
     },
     totalSupply() {
-      return convert2NaxStr(this.market.totalSupply);
+      return convert2NasStr(this.market.totalSupply);
     },
     totalCirculation() {
-      return convert2NaxStr(this.market.totalCirculation);
+      return convert2NasStr(this.market.totalCirculation);
     },
     totalStaking() {
       return convert2NasStr(this.market.totalStaking);
@@ -98,14 +87,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.market {
-  .row {
-    & > div {
-      & > div {
-        font-size: 20px;
-      }
-    }
-  }
-}
-</style>
+<style></style>
