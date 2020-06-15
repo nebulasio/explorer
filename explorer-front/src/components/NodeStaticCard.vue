@@ -4,24 +4,17 @@
       <div class="item-title">
         Avg. Annualized Rate of Return
       </div>
-      <div class="details">
-        {{ $t("dashboardNasPriceUpdateTimePrefix") }}
-        <span v-if="market">{{
-          timeConversion(Date.now() - market.createdAt)
-        }}</span>
-
-        {{ $t("dashboardNasPriceUpdateTimeSuffix") }}
-      </div>
-      <div v-if="market" class="detail">
+      <div class="details"></div>
+      <div class="detail">
         <span> </span>
-        <span>{{ this.avgRewardRate }}</span>
+        <span>{{ avgRewardRate }}</span>
       </div>
       <!-- market realtime data -->
       <div class="market container">
         <div class="row">
           <div class="col-6">
             Total Rewards:
-            <div>9999999 NAS</div>
+            <div>{{ totalRewardValue }}</div>
           </div>
           <div class="col-6">
             Total Nodes:
@@ -32,11 +25,11 @@
         <div class="row">
           <div class="col-6">
             Voted for Nodes:
-            <div>9999999 NAX</div>
+            <div>{{ totalVoteValue }}</div>
           </div>
           <div class="col-6">
             Voting Rate:
-            <div>40%</div>
+            <div>{{ voteRate }}</div>
           </div>
         </div>
 
@@ -71,12 +64,25 @@ export default {
     this.$api.home.getNodeSummary().then(res => (this.summary = res));
   },
   computed: {
-    updatedPass() {
-      return moment(this.market.updatedAt).fromNow();
-    },
     avgRewardRate() {
-      return this.summary.avgRewardRate7 * 100 + "%";
+      return (
+        this.summary && toLocaleString(this.summary.avgRewardRate7 * 100) + "%"
+      );
+    },
+    totalRewardValue() {
+      return (
+        this.summary && toLocaleString(this.summary.totalRewardValue) + " NAS"
+      );
+    },
+    totalVoteValue() {
+      return (
+        this.summary && toLocaleString(this.summary.totalVoteValue) + " NAX"
+      );
+    },
+    voteRate() {
+      return this.summary && toLocaleString(this.summary.voteRate * 100) + "%";
     }
+
     // stakingRate() {
     //   return this.market.stakingRate * 100 + "%";
     // },

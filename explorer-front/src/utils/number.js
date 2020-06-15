@@ -1,7 +1,7 @@
 import numeral from "numeral";
 
 export const toLocaleString = value => {
-  return parseFloat(value).toLocaleString();
+  return Number(parseFloat(value).toFixed(2)).toLocaleString();
 };
 
 export const toBigNumString = (value, precision = 1) => {

@@ -35,7 +35,7 @@ export default {
     const res = await this.$api.home.getNaxHistory();
 
     this.data = res.list;
-    console.log("getNaxHistory", this.data);
+    // console.log("getNaxHistory", this.data);
   },
 
   computed: {
