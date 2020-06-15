@@ -801,62 +801,7 @@ $nax-price-card-height: 520px;
           </div>
         </div>
         <!-- nax price card -->
-        <div
-          class="market-price top-node-card flex-item col-12 col-lg-6 row1-item"
-        >
-          <div class="item-bg">
-            <div class="item-title">
-              Avg. Annualized Rate of Return
-            </div>
-            <div class="details">
-              {{ $t("dashboardNasPriceUpdateTimePrefix") }}
-              <span v-if="market">{{
-                timeConversion(Date.now() - market.createdAt)
-              }}</span>
-
-              {{ $t("dashboardNasPriceUpdateTimeSuffix") }}
-            </div>
-            <div v-if="market" class="detail">
-              <span> </span>
-              <span>200%</span>
-            </div>
-            <!-- market realtime data -->
-            <div class="market container">
-              <div class="row">
-                <div class="col-6">
-                  Total Rewards:
-                  <div>9999999 NAS</div>
-                </div>
-                <div class="col-6">
-                  Total Nodes:
-                  <div>60</div>
-                  <a href="#">View all nodes &gt; </a>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-6">
-                  Voted for Nodes:
-                  <div>9999999 NAX</div>
-                </div>
-                <div class="col-6">
-                  Voting Rate:
-                  <div>40%</div>
-                </div>
-              </div>
-
-              <div class="row border-top">
-                <div class="col-6">
-                  Current period:
-                  <div>99455</div>
-                </div>
-                <div class="col-6">
-                  Current Govern period:
-                  <div>2</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <NodeStaticCard />
       </div>
 
       <!-- ====================dip program==================== -->
@@ -1250,6 +1195,7 @@ import TopNodesChart from "@/components/TopNodesChart";
 import AddressGrowthChart from "@/components/AddressGrowthChart";
 import NaxMarketCard from "@/components/NaxMarketCard";
 import NasMarketCard from "@/components/NasMarketCard";
+import NodeStaticCard from "@/components/NodeStaticCard";
 
 module.exports = {
   components: {
@@ -1258,7 +1204,8 @@ module.exports = {
     TopNodesChart,
     AddressGrowthChart,
     NaxMarketCard,
-    NasMarketCard
+    NasMarketCard,
+    NodeStaticCard
   },
   data() {
     return {

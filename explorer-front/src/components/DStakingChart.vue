@@ -17,6 +17,9 @@ import api from "@/assets/api";
 
 import _ from "lodash";
 
+import { convert2NasNumber, convert2NaxNumber } from "@/utils/neb";
+import { toBigNumString } from "@/utils/number";
+
 export default {
   name: "DStakingChart",
   components: {
@@ -28,93 +31,69 @@ export default {
     };
   },
   async mounted() {
-    // get dStaking chart data
-    this.data = await this.$api.home.getNaxMarket();
-    // console.log(this.data);
+    // get nax history
+    const res = await this.$api.home.getNaxHistory();
+
+    this.data = res.list;
+    console.log("getNaxHistory", this.data);
   },
 
   computed: {
     chartOptions() {
-      const chartData = [120, 200, 150, 80, 70, 110, 130];
-      const dates = ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7"];
+      if (!this.data) return null;
 
-      const fetch_data = [
-        {
-          date: "6.1",
-          dstaking_nas: 10,
-          mint_nax: 101,
-          burned: 5,
-          rate: 0.12,
-          nax_price: 0.01
-        },
-        {
-          date: "6.2",
-          dstaking_nas: 11,
-          mint_nax: 1021,
-          burned: 5,
-          rate: 0.43,
-          nax_price: 0.01
-        },
-        {
-          date: "6.3",
-          dstaking_nas: 12,
-          mint_nax: 1011,
-          burned: 5,
-          rate: 0.44,
-          nax_price: 0.01
-        },
-        {
-          date: "6.4",
-          dstaking_nas: 10,
-          mint_nax: 101,
-          burned: 5,
-          rate: 0.4,
-          nax_price: 0.01
-        },
-        {
-          date: "6.5",
-          dstaking_nas: 11,
-          mint_nax: 1021,
-          burned: 5,
-          rate: 0.4,
-          nax_price: 0.01
-        },
-        {
-          date: "6.6",
-          dstaking_nas: 12,
-          mint_nax: 1011,
-          burned: 5,
-          rate: 0.4,
-          nax_price: 0.01
-        },
-        {
-          date: "6.7",
-          dstaking_nas: 12,
-          mint_nax: 1011,
-          burned: 5,
-          rate: 0.4,
-          nax_price: 0.01
-        }
-      ];
+      const show_limit = 14;
+      const data_limit = this.data.slice(0, show_limit);
 
-      let dataShadow = [];
+      let dstakingData = [];
+      let mintData = [];
+      let dates = [];
 
-      for (var i = 0; i < chartData.length; i++) {
-        dataShadow.push(chartData[i] * 10);
+      for (let d of data_limit) {
+        let dstaking_day = convert2NasNumber(d.pledged_nas);
+        let mint_day = convert2NaxNumber(d.distributed_nax);
+        dstakingData.push(dstaking_day);
+        mintData.push(mint_day);
+
+        dates.push(d.stage);
       }
 
+      let max_dstaking, min_dstaking;
+      let max_mint, min_mint;
+
+      min_mint = _.min(mintData);
+      min_dstaking = _.min(dstakingData);
+
+      max_mint = _.max(mintData);
+      max_dstaking = _.max(dstakingData);
+
       const tooltipFormatter = (params, ticket, callback) => {
-        const findItem = _.find(fetch_data, { date: params.name });
+        const findItem = _.find(data_limit, { stage: parseInt(params.name) });
+
+        const dstaking_rate =
+          (findItem.pledged_nas / findItem.total_supplied_nas) * 100;
+
+        const minted = toBigNumString(
+          convert2NaxNumber(findItem.distributed_nax),
+          2
+        );
+
+        const burned = toBigNumString(
+          convert2NaxNumber(findItem.destroyed_nax)
+        );
+
+        const dstaking_amount = toBigNumString(
+          convert2NasNumber(findItem.pledged_nas)
+        );
 
         const text = `
-        <div>${params.name}</div>
-        <div>Minted:${findItem.mint_nax}</div>
-        <div>Burned:${findItem.burned}</div>
-        <div>dStaking NAS:${findItem.dstaking_nas}</div>
-        <div>dStaking rate:${findItem.rate}</div>
-        <div>NAX Price:${findItem.nax_price}</div>
-        <div class=echart-down-arrow></div>
-      `;
+            <div>${params.name}</div>
+            <div>Minted:${minted} NAX</div>
+            <div>Burned:${burned} NAX</div>
+            <div>dStaking NAS:${dstaking_amount} NAS</div>
+            <div>dStaking rate:${dstaking_rate.toFixed(2)}%</div>
+            <div class=echart-down-arrow></div>
+          `;
 
         return text;
       };
@@ -138,8 +117,8 @@ export default {
           {
             type: "value",
             // name: "dstaking NAS",
-            min: 0,
-            max: 250,
+            min: min_dstaking,
+            max: max_dstaking,
             position: "left",
             axisLine: {
               show: false
@@ -148,7 +127,10 @@ export default {
               textStyle: {
                 color: "#B2B2B2"
               },
-              margin: 0
+              margin: 0,
+              formatter: function(value, index) {
+                return toBigNumString(value);
+              }
             },
             axisTick: {
               show: false
@@ -160,8 +142,8 @@ export default {
           {
             type: "value",
             // name: "mint NAX",
-            min: 0,
-            max: 2000,
+            min: min_mint,
+            max: max_mint,
             position: "right",
             axisLine: {
               show: false
@@ -170,7 +152,10 @@ export default {
               textStyle: {
                 color: "#B2B2B2"
               },
-              margin: 0
+              margin: 0,
+              formatter: function(value, index) {
+                return toBigNumString(value, 2);
+              }
             },
             axisTick: {
               show: false
@@ -184,7 +169,7 @@ export default {
           {
             name: "dstaking NAS",
             type: "bar",
-            data: chartData,
+            data: dstakingData,
             itemStyle: {
               color: "#595C63"
             }
@@ -192,7 +177,7 @@ export default {
           {
             type: "bar",
             name: "mint NAX",
-            data: dataShadow,
+            data: mintData,
             yAxisIndex: 1,
             itemStyle: {
               color: "rgba(255,255,255,0.05)"

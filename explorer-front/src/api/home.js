@@ -6,6 +6,12 @@ const home = {
   },
   getNaxMarket() {
     return get("explorer/market/nax");
+  },
+  getNodeSummary() {
+    return get("node/summary");
+  },
+  getNaxHistory() {
+    return get("nax/history");
   }
 };
 
