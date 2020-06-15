@@ -1,4 +1,6 @@
-export const apiPrefixesConfig = {
+import nebFoundationAddrs from "./neb_foundation_addr";
+
+const apiPrefixesConfig = {
   // http://192.168.1.168:8080/api/
   // https://52.53.225.118/api/
   // https://explorer.nebulas.io/api/
@@ -22,8 +24,10 @@ export const apiPrefixesConfig = {
   }
 };
 
-export const i18nConfig = {
+const i18nConfig = {
   locale: "en",
   fallback_locale: "en",
   supported_locale: "en,es"
 };
+
+export { apiPrefixesConfig, i18nConfig, nebFoundationAddrs };

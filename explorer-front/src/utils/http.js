@@ -129,7 +129,10 @@ export function post(url, params) {
     axios
       .post(url, QS.stringify(params))
       .then(res => {
-        resolve(res.data);
+        // get data success
+        if (res.data.code === 0) {
+          resolve(res.data.data);
+        }
       })
       .catch(err => {
         reject(err.data);

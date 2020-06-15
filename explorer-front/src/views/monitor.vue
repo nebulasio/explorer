@@ -8,11 +8,13 @@
       </h2>
       <div class="chart-container">
         <h3 class="title">
-          总量: 12932103 NAS | 流通量: 123123 NAS ｜ 币价: 0.25 USDT
+          Total Supply: {{ totalSupply }} | Total Circulation:
+          {{ totalCirculation }} ｜ Price:
+          {{ nasPrice }}
         </h3>
         <vchart
           class="pie-chart mt-5"
-          :options="nasVolOption"
+          :options="chartOption"
           :autoResize="true"
         ></vchart>
       </div>
@@ -23,10 +25,12 @@
         striped
         hover
         :fields="foundationAddress.fields"
-        :items="foundationAddress.items"
+        :items="foundationAddrData"
       >
         <template v-slot:cell(address)="data">
-          <a href="#">{{ data.value }}</a>
+          <router-link :to="'/address/' + data.value">
+            <span class="monospace">{{ data.value }}</span>
+          </router-link>
         </template>
       </b-table>
     </b-container>
@@ -41,15 +45,149 @@ import "echarts/lib/chart/pie";
 import "echarts/lib/component/tooltip";
 import "echarts/lib/component/legend";
 
+import { nebFoundationAddrs } from "@/config";
+import { convert2NasStr, convert2NasNumber } from "@/utils/neb";
+
+import { toLocaleString } from "@/utils/number";
+
+import _ from "lodash";
+import { chain } from "mathjs";
+
 export default {
   name: "Monitor",
   components: {
     "vue-bread": vueBread,
     vchart: ECharts
   },
+  async mounted() {
+    const monitor_addresses = [];
+
+    for (let addr of nebFoundationAddrs) {
+      monitor_addresses.push(addr["address"]);
+    }
+
+    this.nasMarket = await this.$api.home.getNasMarket();
+
+    // get monitor address balance
+    this.addressBalance = await this.$api.monitor.getAddressBalance(
+      monitor_addresses
+    );
+  },
   data() {
     return {
-      nasVolOption: {
+      nasMarket: null,
+      addressBalance: null,
+      foundationAddress: {
+        fields: [
+          {
+            key: "address",
+            label: "Address"
+          },
+          {
+            key: "info",
+            label: "Info"
+          },
+          {
+            key: "nas",
+            label: "NAS"
+          },
+          {
+            key: "nasPercent",
+            label: "%"
+          },
+          {
+            key: "status",
+            label: "Status"
+          }
+        ]
+      }
+    };
+  },
+  computed: {
+    nasPrice() {
+      return this.nasMarket && `$${this.nasMarket.price}`;
+    },
+
+    marketCap() {
+      return this.nasMarket && `$${toLocaleString(this.nasMarket.marketCap)}`;
+    },
+
+    volume24h() {
+      return this.nasMarket && `$${toLocaleString(this.nasMarket.volume24h)}`;
+    },
+    totalSupply() {
+      return this.nasMarket && convert2NasStr(this.nasMarket.totalSupply);
+    },
+    totalCirculation() {
+      return this.nasMarket && convert2NasStr(this.nasMarket.totalCirculation);
+    },
+    chartOption() {
+      const legends = [
+        "Nas Reserved for Community Ecosystem (Burned)",
+        "DPoS adjustment (Burned)",
+        "Nas Reserved for the Nebulas Team",
+        "Go Nebulas Fund",
+        "rest in circulating"
+      ];
+      let data = [];
+
+      if (!this.foundationAddrData.length) {
+        return null;
+      }
+
+      for (let name of legends) {
+        let value = 0;
+
+        // "Nas Reserved for Community Ecosystem (Burned)"
+        if (name === legends[0]) {
+          value = 35000000;
+        }
+
+        // "DPoS adjustment (Burned)"
+        if (name === legends[1]) {
+          value = 901356.75;
+        }
+        // "Nas Reserved for the Nebulas Team"
+        if (name === legends[2]) {
+          this.foundationAddrData.forEach(el => {
+            if (el["key"] === "team") {
+              value = chain(value)
+                .add(el["nasAmount"])
+                .done();
+            }
+          });
+        }
+
+        // "Go Nebulas Fund"
+        if (name === legends[3]) {
+          this.foundationAddrData.forEach(el => {
+            if (el["key"] === "gn") {
+              value = el["nasAmount"];
+            }
+          });
+        }
+
+        // "rest in circulating"
+        if (name === legends[4]) {
+          const totalCirculation = convert2NasNumber(
+            this.nasMarket.totalCirculation
+          );
+          value = totalCirculation;
+
+          for (let d of data) {
+            value -= d["value"];
+          }
+        }
+
+        data.push({
+          value: value.toFixed(2),
+          name
+        });
+      }
+
+      console.log(data);
+
+      const options = {
         color: [
           "#E6EAFB",
           "#4460E7",
@@ -62,19 +200,12 @@ export default {
         ],
         tooltip: {
           trigger: "item",
-          formatter: "{b}: {c} ({d}%)"
+          formatter: "{b}: {c} NAS ({d}%)"
         },
         legend: {
           left: "center",
           top: "bottom",
-          data: [
-            "社区预留已销毁",
-            "DPoS 增发超出部分已销毁",
-            "团队预留",
-            "dStaking NAS",
-            "NAT 质押池",
-            "其余流通中"
-          ]
+          data: legends
         },
         series: [
           {
@@ -101,65 +232,37 @@ export default {
                 }
               }
             },
-            data: [
-              { value: 35000000, name: "社区预留已销毁" },
-              { value: 901356.75, name: "DPoS 增发超出部分已销毁" },
-              { value: 11565577.38, name: "团队预留" },
-              { value: 27143630, name: "dStaking NAS" },
-              { value: 95609, name: "NAT 质押池" },
-              { value: 52971302.23, name: "其余流通中" }
-            ]
+            data
           }
         ]
-      },
-      foundationAddress: {
-        fields: [
-          {
-            key: "address",
-            label: "Address"
-          },
-          {
-            key: "info",
-            label: "Info"
-          },
-          {
-            key: "nas",
-            label: "NAS"
-          },
-          {
-            key: "percent",
-            label: "%"
-          },
-          {
-            key: "status",
-            label: "Status"
-          }
-        ],
-        items: [
-          {
-            address: "n1ZbXBzCqmSRsidsD27RL2qcJa4DdwghX5t",
-            info: "Nas Reserved for the Nebulas Team",
-            nas: "4,999,999.91",
-            percent: "4.6%",
-            status: "Unreleased"
-          },
-          {
-            address: "n1ZbXBzCqmSRsidsD27RL2qcJa4DdwghX5t",
-            info: "Nas Reserved for the Nebulas Team",
-            nas: "4,999,999.91",
-            percent: "4.6%",
-            status: "Unreleased"
-          },
-          {
-            address: "n1ZbXBzCqmSRsidsD27RL2qcJa4DdwghX5t",
-            info: "Nas Reserved for the Nebulas Team",
-            nas: "4,999,999.91",
-            percent: "4.6%",
-            status: "Unreleased"
-          }
-        ]
+      };
+
+      return options;
+    },
+    foundationAddrData() {
+      let data = [];
+
+      for (let addr of nebFoundationAddrs) {
+        if (!this.addressBalance) {
+          break;
+        }
+
+        const findItem = _.find(this.addressBalance, {
+          address: addr["address"]
+        });
+
+        // add find result to addr obj
+        addr = Object.assign(addr, findItem);
+
+        addr["nas"] = convert2NasStr(addr["nasBalance"]);
+        addr["nasAmount"] = convert2NasNumber(addr["nasBalance"]);
+        addr["nasPercent"] = `${(addr["nasPercent"] * 100).toFixed(2)}%`;
+
+        data.push(addr);
       }
-    };
+
+      return data;
+    }
   }
 };
 </script>
@@ -183,7 +286,7 @@ export default {
   }
 
   .echarts {
-    width: 800px;
+    width: 900px;
     height: 500px;
   }
 }

@@ -68,7 +68,7 @@ export default {
     };
   },
   mounted() {
-    // this.$api.home.getNodeSummary().then(res => (this.summary = res));
+    this.$api.home.getNodeSummary().then(res => (this.summary = res));
   },
   computed: {
     updatedPass() {
