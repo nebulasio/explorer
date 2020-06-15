@@ -27,8 +27,10 @@ export default {
       data: null
     };
   },
-  mounted() {
+  async mounted() {
     // get dStaking chart data
+    this.data = await this.$api.home.getNaxMarket();
+    // console.log(this.data);
   },
 
   computed: {

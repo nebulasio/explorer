@@ -6,21 +6,23 @@ import { i18n } from "./i18n";
 import router from "./router";
 import { Trans } from "./plugins/Translation";
 import App from "./App.vue";
+import api from "./api";
 
 // import VueTranslate from "vue-translate-plugin";
 // import { EventBus } from "./events.js";
 // import { jsonStrings } from "./l10nstrings.js";
 
-var api = require("@/assets/api");
 var appConfig = require("@/assets/app-config");
 
 Vue.prototype.$i18nRoute = Trans.i18nRoute.bind(Trans);
 Vue.config.productionTip = false;
 
-var vApp = {},
-  // vAppConfig = require("@/assets/app-config"),
-  // vRouter = new VueRouter({ routes: require("@/assets/routes") }),
-  gaPage = require("vue-analytics").page;
+Vue.prototype.$api = api; // 将api挂载到vue的原型上
+
+// var vApp = {},
+// vAppConfig = require("@/assets/app-config"),
+// vRouter = new VueRouter({ routes: require("@/assets/routes") }),
+// gaPage = require("vue-analytics").page;
 
 // Expose jQuery to the global object
 const jQuery = require("jquery");
@@ -142,7 +144,7 @@ new Vue({
   render: h => h(App)
 }).$mount("#app");
 
-Vue.prototype.$selectedLanguage = "en_US";
+// Vue.prototype.$selectedLanguage = "en_US";
 
 // setInterval(() => {
 //   vApp.timestamp = Date.now();

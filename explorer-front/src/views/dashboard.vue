@@ -1,4 +1,4 @@
-<style lang="scss" scoped>
+<style lang="scss">
 $dark-card-height: 420px;
 $nax-price-card-height: 520px;
 
@@ -259,7 +259,7 @@ $nax-price-card-height: 520px;
 }
 
 .vue-dashboard .market-price .market .row div div {
-  font-size: 28px;
+  font-size: 20px;
   color: white;
 }
 
@@ -836,73 +836,7 @@ $nax-price-card-height: 520px;
           </div>
         </div>
         <!-- nax price card -->
-        <div
-          class="market-price nax-price-card flex-item col-12 col-lg-6 row1-item"
-        >
-          <div class="item-bg">
-            <div class="item-title">
-              NAX Price
-            </div>
-            <div class="details">
-              {{ $t("dashboardNasPriceUpdateTimePrefix") }}
-              <span v-if="market">{{
-                timeConversion(Date.now() - market.createdAt)
-              }}</span>
-
-              {{ $t("dashboardNasPriceUpdateTimeSuffix") }}
-            </div>
-            <div v-if="market" class="detail">
-              <span>$</span>
-              <span>{{ market.price }}</span>
-              <span :class="{ 'text-red': market.trends <= 0 }"
-                >({{ market.trends > 0 ? "+" : "-"
-                }}{{ market.change24h }}%)</span
-              >
-            </div>
-            <!-- market realtime data -->
-            <div class="market container">
-              <div class="row">
-                <div class="col-6">
-                  {{ $t("dashboardNasMarketCap") }}
-                  <div v-if="market">
-                    ${{ numberAddComma(market.marketCap) }}
-                  </div>
-                </div>
-                <div class="col-6">
-                  Total Supply:
-                  <div>9999999 NAS</div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-6">
-                  {{ $t("dashboardNasMarketVol") }}
-                  <div v-if="market">
-                    ${{ numberAddComma(market.volume24h) }}
-                  </div>
-                </div>
-                <div class="col-6">
-                  Circulating Supply:
-                  <div>9999999 NAS</div>
-                </div>
-              </div>
-
-              <div class="row border-top">
-                <div class="col-6">
-                  dStaking NAS:
-                  <div v-if="market">
-                    ${{ numberAddComma(market.volume24h) }}
-                  </div>
-
-                  <a href="#">dStake NAS and mint NAX now &gt; </a>
-                </div>
-                <div class="col-6">
-                  dStaking Rate:
-                  <div>45.5%</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <NaxMarketCard />
       </div>
 
       <!-- row 3: node data -->
@@ -1369,13 +1303,15 @@ import DailyTxChart from "@/components/DailyTxChart";
 import DStakingChart from "@/components/DStakingChart";
 import TopNodesChart from "@/components/TopNodesChart";
 import AddressGrowthChart from "@/components/AddressGrowthChart";
+import NaxMarketCard from "@/components/NaxMarketCard";
 
 module.exports = {
   components: {
     DailyTxChart,
     DStakingChart,
     TopNodesChart,
-    AddressGrowthChart
+    AddressGrowthChart,
+    NaxMarketCard
   },
   data() {
     return {
