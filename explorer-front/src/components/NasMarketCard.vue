@@ -2,6 +2,7 @@
   <div class="market-price flex-item col-12 col-lg-6 row1-item">
     <div class="item-bg">
       <div class="item-title">
+        <img class="logo" src="/static/img/nas-logo.png" />
         {{ $t("dashboardNasPriceTitle") }}
       </div>
       <div class="details">
@@ -91,4 +92,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.logo {
+  width: 32px;
+  margin-right: 0.5rem;
+}
+
+.item-title {
+  display: flex;
+}
+</style>

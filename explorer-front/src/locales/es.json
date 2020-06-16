@@ -15,7 +15,7 @@
   "headerMenuDstaking": "dStaking", 
   "dashboardDailyTransactionsTitle": "Transacciones diarias", 
   "dashboardDailyTransactionsSubtitle": "Transacciones(24h)", 
-  "dashboardNasPriceTitle": "Valor del NAS", 
+  "dashboardNasPriceTitle": "NAS Price", 
   "dashboardNasPriceUpdateTimePrefix": "Actualizado hace", 
   "dashboardNasPriceUpdateTimeSuffix": "", 
   "dashboardNasMarketCap": "Cap. de mercado", 

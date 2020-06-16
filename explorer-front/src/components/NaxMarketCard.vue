@@ -2,6 +2,7 @@
   <div class="market-price nax-price-card flex-item col-12 col-lg-6 row1-item">
     <div class="item-bg">
       <div class="item-title">
+        <img class="logo" src="/static/img/nax-logo.png" />
         NAX Price
       </div>
       <div class="details">
@@ -105,6 +106,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.logo {
+  width: 25px;
+  height: auto;
+  margin-right: 0.5rem;
+}
+
+.item-title {
+  display: flex;
+  align-items: center;
+}
+
 .market {
   .row {
     & > div {
