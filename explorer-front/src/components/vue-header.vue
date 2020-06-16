@@ -367,46 +367,74 @@
             <div class="dropdown-menu">
               <ul>
                 <li>
-                  <a href="#" class="dropdown-item">
+                  <a
+                    target="__blank"
+                    href="https://explorer.nebulas.io/"
+                    class="dropdown-item"
+                  >
                     <span class="title">Explorer</span>
                     <span class="desc">Blockchain, dStaking</span>
                   </a>
                 </li>
 
                 <li>
-                  <a href="#" class="dropdown-item">
+                  <a
+                    target="__blank"
+                    href="https://node.nebulas.io/"
+                    class="dropdown-item"
+                  >
                     <span class="title">Nodes</span>
                     <span class="desc">POD Consensus</span>
                   </a>
                 </li>
 
                 <li>
-                  <a href="#" class="dropdown-item">
+                  <a
+                    target="__blank"
+                    href="https://go.nebulas.io"
+                    class="dropdown-item"
+                  >
                     <span class="title">Go Nebulas</span>
                     <span class="desc">Community Collaboration</span>
                   </a>
                 </li>
 
                 <li>
-                  <a href="#" class="dropdown-item">
+                  <a
+                    target="__blank"
+                    href="https://nano.nebulas.io"
+                    class="dropdown-item"
+                  >
                     <span class="title">APP</span>
                   </a>
                 </li>
 
                 <li>
-                  <a href="#" class="dropdown-item">
+                  <a
+                    target="__blank"
+                    href="https://wiki.nebulas.io/"
+                    class="dropdown-item"
+                  >
                     <span class="title">Documents</span>
                   </a>
                 </li>
 
                 <li>
-                  <a href="#" class="dropdown-item">
+                  <a
+                    target="__blank"
+                    href="https://community.nebulas.io"
+                    class="dropdown-item"
+                  >
                     <span class="title">Forum</span>
                   </a>
                 </li>
 
                 <li>
-                  <a href="#" class="dropdown-item">
+                  <a
+                    target="__blank"
+                    href="https://nebulas.io"
+                    class="dropdown-item"
+                  >
                     <span class="title">Nebulas.io</span>
                   </a>
                 </li>
