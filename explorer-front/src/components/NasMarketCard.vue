@@ -11,8 +11,12 @@
       <div v-if="market" class="detail">
         <span>$</span>
         <span>{{ market.price }}</span>
-        <span :class="{ 'text-red': market.trends <= 0 }"
-          >({{ market.trends > 0 ? "+" : "-" }}{{ market.change24h }}%)</span
+        <span
+          :class="{
+            'price-down': market.trends <= 0,
+            'price-up': market.trends > 0
+          }"
+          >{{ market.trends > 0 ? "+" : "-" }}{{ market.change24h }}%</span
         >
       </div>
       <!-- market realtime data -->

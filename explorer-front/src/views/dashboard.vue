@@ -206,22 +206,22 @@ $nax-price-card-height: 520px;
   vertical-align: bottom;
 }
 
-.vue-dashboard .market-price .detail *:nth-child(1) {
-  font-size: 28px;
-}
+// .vue-dashboard .market-price .detail *:nth-child(1) {
+//   font-size: 28px;
+// }
 
-.vue-dashboard .market-price .detail *:nth-child(2) {
-  font-size: 60px;
-}
+// .vue-dashboard .market-price .detail *:nth-child(2) {
+//   font-size: 60px;
+// }
 
-.vue-dashboard .market-price .detail *:nth-child(3) {
-  font-size: 20px;
-  color: #2cee8c;
-}
+// .vue-dashboard .market-price .detail *:nth-child(3) {
+//   font-size: 20px;
+//   color: #2cee8c;
+// }
 
-.vue-dashboard .market-price .detail .text-red {
-  color: red;
-}
+// .vue-dashboard .market-price .detail .text-red {
+//   color: red;
+// }
 
 .vue-dashboard .market-price .market {
   position: absolute;
@@ -270,8 +270,12 @@ $nax-price-card-height: 520px;
       color: #2cee8c;
     }
 
-    .text-red {
-      color: red;
+    .price-up {
+      color: #ff4060;
+    }
+
+    .price-down {
+      color: #3dcc85;
     }
   }
 
