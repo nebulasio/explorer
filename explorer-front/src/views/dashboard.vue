@@ -109,35 +109,15 @@ $nax-price-card-height: 520px;
   box-shadow: 10px 10px 20px 0px rgba(30, 30, 30, 0.05);
 }
 
-// .vue-dashboard .row1 .flex-item {
-//   box-shadow: none;
-//   background-color: initial;
-// }
-
-// .vue-dashboard .row1 .item-bg {
-//   position: relative;
-//   background: linear-gradient(
-//     135deg,
-//     rgba(48, 58, 76, 1) 0%,
-//     rgba(15, 19, 26, 1) 100%
-//   );
-// }
-
-// .vue-dashboard .item-title {
-//   position: absolute;
-//   left: 30px;
-//   top: 25px;
-//   font-size: 20px;
-//   font-weight: 600;
-// }
-
-// .vue-dashboard .row1 {
-//   color: white;
-// }
-
-// .vue-dashboard .row1 .item-title {
-//   color: white;
-// }
+.row {
+  .item-title {
+    position: absolute;
+    left: 30px;
+    top: 25px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+}
 
 .row1 {
   color: white;
@@ -154,14 +134,6 @@ $nax-price-card-height: 520px;
       rgba(48, 58, 76, 1) 0%,
       rgba(15, 19, 26, 1) 100%
     );
-  }
-
-  .item-title {
-    position: absolute;
-    left: 30px;
-    top: 25px;
-    font-size: 20px;
-    font-weight: 600;
   }
 }
 
