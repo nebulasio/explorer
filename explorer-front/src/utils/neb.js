@@ -6,7 +6,7 @@ export const convert2NasStr = (value, suffix = "NAS") => {
 };
 
 export const convert2NasNumber = value => {
-  return parseFloat(Unit.fromBasic(value, "nas"));
+  return Number(parseFloat(Unit.fromBasic(value, "nas")).toFixed(2));
 };
 
 export const convert2NaxStr = (value, suffix = "NAX") => {
@@ -14,7 +14,7 @@ export const convert2NaxStr = (value, suffix = "NAX") => {
 };
 
 export const convert2NaxNumber = value => {
-  return parseFloat(Unit.fromBasic(value, "gwei"));
+  return Number(parseFloat(Unit.fromBasic(value, "gwei")).toFixed(2));
 };
 
 export const convert2NaxBasic = value => {

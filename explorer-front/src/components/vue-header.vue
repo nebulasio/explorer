@@ -137,12 +137,21 @@
         position: relative;
         width: 15rem;
 
-        border-bottom: 1px solid #e9ecef;
+        &.short {
+          height: 3rem;
+
+          a {
+            font-weight: normal;
+          }
+        }
+
+        // border-bottom: 1px solid #e9ecef;
 
         & > a {
           width: 100%;
           height: 100%;
           justify-content: center;
+          font-weight: bold;
 
           &:hover {
             background-color: transparent;
@@ -181,7 +190,7 @@
     }
 
     .dropdown-item {
-      padding: 1.5rem;
+      padding: 0 1.5rem;
       display: flex;
       flex-direction: column;
       &:active {
@@ -189,12 +198,10 @@
       }
 
       span {
-        &.title {
-        }
-
         &.desc {
           font-size: 12px;
           color: #999;
+          font-weight: normal;
         }
       }
     }
@@ -412,7 +419,7 @@
                   </a>
                 </li>
 
-                <li>
+                <li class="short">
                   <a
                     target="__blank"
                     href="https://nano.nebulas.io"
@@ -422,7 +429,7 @@
                   </a>
                 </li>
 
-                <li>
+                <li class="short">
                   <a
                     target="__blank"
                     href="https://wiki.nebulas.io/"
@@ -432,7 +439,7 @@
                   </a>
                 </li>
 
-                <li>
+                <li class="short">
                   <a
                     target="__blank"
                     href="https://community.nebulas.io"
@@ -442,7 +449,7 @@
                   </a>
                 </li>
 
-                <li>
+                <li class="short">
                   <a
                     target="__blank"
                     href="https://nebulas.io"

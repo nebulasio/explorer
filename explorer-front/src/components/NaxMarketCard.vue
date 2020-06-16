@@ -24,21 +24,21 @@
         <div class="row">
           <div class="col-6">
             {{ $t("dashboardNasMarketCap") }}
-            <div>{{ this.marketCap }}</div>
+            <div>{{ marketCap }}</div>
           </div>
           <div class="col-6">
             Total Supply:
-            <div>{{ this.totalSupply }}</div>
+            <div>{{ totalSupply }}</div>
           </div>
         </div>
         <div class="row">
           <div class="col-6">
             {{ $t("dashboardNasMarketVol") }}
-            <div>{{ this.volume24h }}</div>
+            <div>{{ volume24h }}</div>
           </div>
           <div class="col-6">
             Circulating Supply:
-            <div>{{ this.totalCirculation }}</div>
+            <div>{{ totalCirculation }}</div>
           </div>
         </div>
 
@@ -46,7 +46,7 @@
           <div class="col-6">
             dStaking NAS:
             <!-- <div v-if="market">${{ numberAddComma(market.volume24h) }}</div> -->
-            <div>{{ this.totalStaking }}</div>
+            <div>{{ totalStaking }}</div>
 
             <a target="__blank" href="https://dstaking.nebulas.io/"
               >dStake NAS and mint NAX now &gt;
@@ -54,7 +54,7 @@
           </div>
           <div class="col-6">
             dStaking Rate:
-            <div>{{ this.stakingRate }}</div>
+            <div>{{ stakingRate }}</div>
           </div>
         </div>
       </div>
@@ -82,7 +82,7 @@ export default {
       return moment(this.market.updatedAt).fromNow();
     },
     stakingRate() {
-      return this.market.stakingRate * 100 + "%";
+      return (this.market.stakingRate * 100).toFixed(2) + "%";
     },
     marketCap() {
       return `$${toLocaleString(this.market.marketCap)}`;

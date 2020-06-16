@@ -290,7 +290,7 @@ $nax-price-card-height: 520px;
   }
 
   a {
-    color: #fff;
+    color: #798bdf;
     font-size: 14px;
   }
 }
