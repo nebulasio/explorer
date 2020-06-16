@@ -18,7 +18,7 @@
           </div>
           <div class="col-6">
             Total Nodes:
-            <div>60</div>
+            <div>-</div>
             <a href="#">View all nodes &gt; </a>
           </div>
         </div>
@@ -36,11 +36,11 @@
         <div class="row border-top">
           <div class="col-6">
             Current period:
-            <div>99455</div>
+            <div>-</div>
           </div>
           <div class="col-6">
             Current Govern period:
-            <div>2</div>
+            <div>-</div>
           </div>
         </div>
       </div>

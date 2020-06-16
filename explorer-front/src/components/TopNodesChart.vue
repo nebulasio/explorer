@@ -1,10 +1,23 @@
 <template>
-  <div class="chart-container">
-    <vchart
-      class="top-nodes-chart"
-      :options="chartOptions"
-      :autoResize="true"
-    ></vchart>
+  <div
+    class="daily-transactions top-node-card flex-item col-12 col-lg-6 row1-item"
+  >
+    <div class="item-bg">
+      <div class="item-title">
+        Top 21 Nodes
+      </div>
+      <div v-if="data" class="details">
+        <span>Current Polling Cycle: {{ currentPeriod }}</span>
+      </div>
+
+      <div class="chart-container">
+        <vchart
+          class="top-nodes-chart"
+          :options="chartOptions"
+          :autoResize="true"
+        ></vchart>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -14,7 +27,16 @@ import "echarts/lib/chart/bar";
 import "echarts/lib/chart/line";
 import "echarts/lib/component/tooltip";
 
-import api from "@/assets/api";
+import {
+  convert2NasNumber,
+  convert2NaxNumber,
+  convert2NasStr,
+  convert2NaxStr
+} from "@/utils/neb";
+
+import { toBigNumString, toLocaleString } from "@/utils/number";
+
+import _ from "lodash";
 
 export default {
   name: "TopNodesChart",
@@ -26,85 +48,75 @@ export default {
       data: null
     };
   },
-  mounted() {
-    // get dStaking chart data
+  async mounted() {
+    // get top nodes data
+    this.data = await this.$api.home.getTopNodes();
   },
 
   computed: {
+    currentPeriod() {
+      return this.data && this.data[0].period;
+    },
     chartOptions() {
-      const fetch_data = [
-        {
-          id: "gateio",
-          vote_nax: 100003,
-          reward_nas: 321
-        },
-        {
-          id: "tech",
-          vote_nax: 100001,
-          reward_nas: 34
-        },
-        {
-          id: "naxone01",
-          vote_nax: 10000,
-          reward_nas: 166
-        },
-        {
-          id: "gateio1",
-          vote_nax: 8967,
-          reward_nas: 124
-        },
-        {
-          id: "tech2",
-          vote_nax: 76754,
-          reward_nas: 345
-        },
-        {
-          id: "naxone013",
-          vote_nax: 23478,
-          reward_nas: 223
-        },
-        {
-          id: "gateio13",
-          vote_nax: 7895,
-          reward_nas: 189
-        },
-        {
-          id: "tech24",
-          vote_nax: 2435,
-          reward_nas: 280
-        },
-        {
-          id: "naxone0135",
-          vote_nax: 5667,
-          reward_nas: 120
-        }
-      ];
+      if (!this.data) {
+        return null;
+      }
+
+      let chartData = _.sortBy(this.data, ["currentRanking"]);
+
+      console.log("chartData", chartData);
+
+      const limit = 21;
+      let topNodesData = chartData.slice(0, limit).reverse();
 
       let nodes_data = [];
       let vote_nax_data = [];
       let reward_nas_data = [];
-      let vote_nax_max = 0;
 
-      for (let i = 0; i < fetch_data.length; i++) {
-        nodes_data.push(fetch_data[i].id);
-        vote_nax_data.push(fetch_data[i].vote_nax);
-        reward_nas_data.push(fetch_data[i].reward_nas);
+      topNodesData = topNodesData.map(d => {
+        nodes_data.push(d.nodeId);
 
-        if (fetch_data[i].vote_nax > vote_nax_max) {
-          vote_nax_max = fetch_data[i].vote_nax;
-        }
-      }
+        vote_nax_data.push(convert2NaxNumber(d.voteValue));
+
+        d["total_reward"] =
+          d.blockCount * 1.18912 + convert2NasNumber(d.govReward);
+        reward_nas_data.push(d["total_reward"]);
+
+        return d;
+      });
+
+      const reward_nas_max = _.max(reward_nas_data);
+      const reward_nas_min = _.min(reward_nas_data);
+
+      const vote_nax_max = _.max(vote_nax_data);
+      const vote_nax_min = _.min(vote_nax_data);
+
+      const tooltipFormatter = (params, ticket, callback) => {
+        const findItem = _.find(topNodesData, { nodeId: params.name });
+
+        const vote = convert2NaxStr(findItem.voteValue);
+        const total_reward = toLocaleString(findItem.total_reward);
+
+        const text = `
+            <div>${findItem.nodeId}</div>
+            <div>Vote: ${vote}</div>
+            <div>Total Rewards: ${total_reward} NAS</div>
+            <div class=echart-down-arrow></div>
+          `;
+
+        return text;
+      };
 
       const option = {
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "shadow",
-            crossStyle: {
-              color: "#999"
-            }
-          }
-        },
+        // tooltip: {
+        //   trigger: "axis",
+        //   axisPointer: {
+        //     type: "shadow",
+        //     crossStyle: {
+        //       color: "#999"
+        //     }
+        //   }
+        // },
         yAxis: [
           {
             type: "category",
@@ -121,8 +133,8 @@ export default {
         xAxis: [
           {
             type: "value",
-            // name: "vote nax",
-            min: 0,
+            name: "NAX",
+            min: vote_nax_min,
             max: vote_nax_max,
             axisLine: {
               show: false
@@ -131,7 +143,9 @@ export default {
               textStyle: {
                 color: "#B2B2B2"
               },
-              margin: 0
+              formatter: function(value, index) {
+                return toBigNumString(value);
+              }
             },
             axisTick: {
               show: false
@@ -142,17 +156,19 @@ export default {
           },
           {
             type: "value",
-            // name: "reward nas",
-            min: 0,
-            max: 350,
+            name: "NAS",
+            min: reward_nas_min,
+            max: reward_nas_max,
             axisLine: {
               show: false
             },
             axisLabel: {
               textStyle: {
                 color: "#B2B2B2"
-              },
-              margin: 0
+              }
+              //   formatter: function(value, index) {
+              //     return convert2NasNumber(value);
+              //   }
             },
             axisTick: {
               show: false
@@ -180,7 +196,22 @@ export default {
               color: "rgba(255,255,255,0.2)"
             }
           }
-        ]
+        ],
+        tooltip: {
+          trigger: "item",
+          transitionDuration: 0,
+          position: "top",
+          formatter: tooltipFormatter,
+          backgroundColor: "#595C63",
+          padding: 8,
+          extraCssText:
+            "border-radius: 2px;box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);",
+          textStyle: {
+            fontFamily: "menlo, consolas",
+            fontSize: 12,
+            lineHeight: 18
+          }
+        }
       };
 
       return option;

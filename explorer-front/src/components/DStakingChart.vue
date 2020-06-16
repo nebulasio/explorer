@@ -16,6 +16,7 @@ import "echarts/lib/component/tooltip";
 import api from "@/assets/api";
 
 import _ from "lodash";
+import moment from "moment";
 
 import { convert2NasNumber, convert2NaxNumber } from "@/utils/neb";
 import { toBigNumString } from "@/utils/number";
@@ -43,20 +44,24 @@ export default {
       if (!this.data) return null;
 
       const show_limit = 14;
-      const data_limit = this.data.slice(0, show_limit);
+      let data_limit = this.data.slice(0, show_limit).reverse();
 
       let dstakingData = [];
       let mintData = [];
       let dates = [];
 
-      for (let d of data_limit) {
+      data_limit = data_limit.map(d => {
         let dstaking_day = convert2NasNumber(d.pledged_nas);
         let mint_day = convert2NaxNumber(d.distributed_nax);
         dstakingData.push(dstaking_day);
         mintData.push(mint_day);
 
-        dates.push(d.stage);
-      }
+        d["date"] = moment(d.end_timestamp).format("MMM D");
+
+        dates.push(d["date"]);
+
+        return d;
+      });
 
       let max_dstaking, min_dstaking;
       let max_mint, min_mint;
@@ -68,7 +73,7 @@ export default {
       max_dstaking = _.max(dstakingData);
 
       const tooltipFormatter = (params, ticket, callback) => {
-        const findItem = _.find(data_limit, { stage: parseInt(params.name) });
+        const findItem = _.find(data_limit, { date: params.name });
 
         const dstaking_rate =
           (findItem.pledged_nas / findItem.total_supplied_nas) * 100;
@@ -117,6 +122,7 @@ export default {
           {
             type: "value",
             // name: "dstaking NAS",
+            name: "NAS",
             min: min_dstaking,
             max: max_dstaking,
             position: "left",
@@ -142,6 +148,7 @@ export default {
           {
             type: "value",
             // name: "mint NAX",
+            name: "NAX",
             min: min_mint,
             max: max_mint,
             position: "right",

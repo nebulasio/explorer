@@ -12,6 +12,9 @@ const home = {
   },
   getNaxHistory() {
     return get("nax/history");
+  },
+  getTopNodes() {
+    return get("node/list");
   }
 };
 

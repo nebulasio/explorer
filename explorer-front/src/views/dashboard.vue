@@ -786,20 +786,8 @@ $nax-price-card-height: 520px;
 
       <!-- row 3: node data -->
       <div class="row row1">
-        <div
-          class="daily-transactions top-node-card flex-item col-12 col-lg-6 row1-item"
-        >
-          <div class="item-bg">
-            <div class="item-title">
-              Top 21 Nodes
-            </div>
-            <div class="details">
-              <span>Current Polling Cycle: 21,314</span>
-            </div>
+        <TopNodesChart />
 
-            <TopNodesChart />
-          </div>
-        </div>
         <!-- nax price card -->
         <NodeStaticCard />
       </div>
