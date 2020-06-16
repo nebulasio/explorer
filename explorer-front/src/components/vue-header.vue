@@ -102,22 +102,28 @@
 
     &.dropdown-menu-long {
       margin-left: 30px;
-      width: 34rem;
+      min-width: 45rem;
     }
 
     .row {
       margin: 0;
+      .col {
+        padding: 0;
+      }
     }
 
     ul {
-      padding: 1rem 0;
+      padding: 0;
       & > li {
         list-style-type: none;
         display: flex;
         align-items: baseline;
-        margin: 0 1rem;
+        margin: 0;
         height: 5rem;
         position: relative;
+        width: 15rem;
+
+        border-bottom: 1px solid #e9ecef;
 
         & > a {
           position: absolute;
@@ -127,6 +133,14 @@
 
           &:hover {
             background-color: transparent;
+
+            &:active {
+              background-color: transparent;
+            }
+          }
+
+          &:active {
+            background-color: transparent !important;
           }
         }
 
@@ -138,9 +152,9 @@
           background-color: #e8e8e8;
         }
 
-        &:not(:last-child) {
-          border-bottom: 1px solid #e9ecef;
-        }
+        // &:not(:last-child) {
+        //   border-bottom: 1px solid #e9ecef;
+        // }
 
         &:after {
           content: "\003E";
@@ -222,7 +236,6 @@
             <a
               class="nav-link"
               href="#"
-              id="header-dropdown-blockchain"
               role="button"
               data-toggle="dropdown"
               aria-haspopup="true"
@@ -277,10 +290,9 @@
                     <li>
                       <router-link
                         class="dropdown-item"
-                        v-bind:to="fragApi + '/monitor'"
+                        v-bind:to="fragApi + '/distribution'"
                       >
-                        <span class="title">Monitor Address</span>
-                        <span class="desc">Hold by Nebulas Foundation</span>
+                        <span class="title">NAS Distribution</span>
                       </router-link>
                     </li>
                     <li>
@@ -289,6 +301,23 @@
                         v-bind:to="fragApi + '/contracts'"
                       >
                         Smart Contract
+                      </router-link>
+                    </li>
+                  </ul>
+                </b-col>
+                <b-col>
+                  <ul>
+                    <li>
+                      <router-link
+                        class="dropdown-item"
+                        :to="'/token/n1etmdwczuAUCnMMvpGasfi8kwUbb2ddvRJ'"
+                      >
+                        NAX
+                      </router-link>
+                    </li>
+                    <li>
+                      <router-link class="dropdown-item" :to="'/dstaking'">
+                        dStaking
                       </router-link>
                     </li>
                   </ul>
@@ -328,7 +357,6 @@
             <a
               class="nav-link"
               href="#"
-              id="header-dropdown-blockchain"
               role="button"
               data-toggle="dropdown"
               aria-haspopup="true"

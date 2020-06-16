@@ -766,20 +766,8 @@ $nax-price-card-height: 520px;
 
       <!-- row 2: nax data -->
       <div class="row row1">
-        <div
-          class="daily-transactions market-price nax-price-card flex-item col-12 col-lg-6 row1-item"
-        >
-          <div class="item-bg">
-            <div class="item-title">
-              dStaking NAS and Minting NAX
-            </div>
-            <div class="details">
-              <span>Next Minted Block: 4,452,000</span>
-              <span>Time Left: 13:37:30</span>
-            </div>
-            <DStakingChart />
-          </div>
-        </div>
+        <DStakingChart />
+
         <!-- nax price card -->
         <NaxMarketCard />
       </div>

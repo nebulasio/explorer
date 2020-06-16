@@ -1,10 +1,24 @@
 <template>
-  <div class="chart-container">
-    <vchart
-      class="dstaking-chart"
-      :options="chartOptions"
-      :autoResize="true"
-    ></vchart>
+  <div
+    class="daily-transactions market-price nax-price-card flex-item col-12 col-lg-6 row1-item"
+  >
+    <div class="item-bg">
+      <div class="item-title">
+        dStaking NAS and Minting NAX
+      </div>
+      <div class="details">
+        <span v-if="nextMintBlock">Next Minted Block: {{ nextMintBlock }}</span>
+        <span v-if="leftTime">Time Left: {{ leftTime }}</span>
+      </div>
+
+      <div class="chart-container">
+        <vchart
+          class="dstaking-chart"
+          :options="chartOptions"
+          :autoResize="true"
+        ></vchart>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -19,7 +33,7 @@ import _ from "lodash";
 import moment from "moment";
 
 import { convert2NasNumber, convert2NaxNumber } from "@/utils/neb";
-import { toBigNumString } from "@/utils/number";
+import { toBigNumString, toLocaleString } from "@/utils/number";
 
 export default {
   name: "DStakingChart",
@@ -28,7 +42,9 @@ export default {
   },
   data() {
     return {
-      data: null
+      data: null,
+      summary: null,
+      newBlock: null
     };
   },
   async mounted() {
@@ -37,9 +53,41 @@ export default {
 
     this.data = res.list;
     // console.log("getNaxHistory", this.data);
+
+    this.summary = await this.$api.home.getDStakingSummary();
+
+    this.newBlock = await this.$api.home.getNewBlock();
   },
 
   computed: {
+    nextMintBlock() {
+      return this.summary && toLocaleString(this.summary.endHeight);
+    },
+
+    leftTime() {
+      if (!this.summary || !this.newBlock) {
+        return null;
+      }
+
+      let nextIssueBlockHeight = this.summary.endHeight;
+      let currentBlockHeight = this.newBlock[0].height;
+
+      if (nextIssueBlockHeight - currentBlockHeight <= 0) {
+        return "Distributing NAX Now";
+      }
+      var duration = moment.duration(
+        (nextIssueBlockHeight - currentBlockHeight) * 15000,
+        "milliseconds"
+      );
+      return (
+        (duration.days() * 24 + duration.hours()).pad(2) +
+        ":" +
+        duration.minutes().pad(2) +
+        ":" +
+        duration.seconds().pad(2)
+      );
+    },
+
     chartOptions() {
       if (!this.data) return null;
 

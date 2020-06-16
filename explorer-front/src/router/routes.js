@@ -92,11 +92,11 @@ const routes = [
     meta: { headerActive: 3 },
     path: "/:api?/dstaking-history"
   },
-  // monitor address
+  // nas distribution
   {
     component: load("monitor"),
     meta: { headerActive: 3 },
-    path: "/:api?/monitor"
+    path: "/:api?/distribution"
   },
   // this route must put last
   {

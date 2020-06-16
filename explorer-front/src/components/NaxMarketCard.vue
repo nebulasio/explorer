@@ -44,7 +44,9 @@
             <!-- <div v-if="market">${{ numberAddComma(market.volume24h) }}</div> -->
             <div>{{ this.totalStaking }}</div>
 
-            <a href="#">dStake NAS and mint NAX now &gt; </a>
+            <a target="__blank" href="https://dstaking.nebulas.io/"
+              >dStake NAS and mint NAX now &gt;
+            </a>
           </div>
           <div class="col-6">
             dStaking Rate:

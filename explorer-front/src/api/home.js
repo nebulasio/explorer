@@ -15,6 +15,12 @@ const home = {
   },
   getTopNodes() {
     return get("node/list");
+  },
+  getDStakingSummary() {
+    return get("api/dstaking/summary");
+  },
+  getNewBlock() {
+    return get("api/block?type=newblock");
   }
 };
 

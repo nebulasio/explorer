@@ -4,7 +4,10 @@
       <div class="item-title">
         Avg. Annualized Rate of Return
       </div>
-      <div class="details"></div>
+      <div v-if="updatedPass" class="details">
+        {{ $t("dashboardNasPriceUpdateTimePrefix") }}
+        <span>{{ updatedPass }}</span>
+      </div>
       <div class="detail">
         <span> </span>
         <span>{{ avgRewardRate }}</span>
@@ -18,7 +21,7 @@
           </div>
           <div class="col-6">
             Total Nodes:
-            <div>-</div>
+            <div>{{ nodeCount }}</div>
             <a href="#">View all nodes &gt; </a>
           </div>
         </div>
@@ -36,11 +39,11 @@
         <div class="row border-top">
           <div class="col-6">
             Current period:
-            <div>-</div>
+            <div>{{ currentPeriod }}</div>
           </div>
           <div class="col-6">
             Current Govern period:
-            <div>-</div>
+            <div>{{ currentGovPeriod }}</div>
           </div>
         </div>
       </div>
@@ -81,27 +84,19 @@ export default {
     },
     voteRate() {
       return this.summary && toLocaleString(this.summary.voteRate * 100) + "%";
+    },
+    nodeCount() {
+      return this.summary && this.summary.nodeCount;
+    },
+    currentPeriod() {
+      return this.summary && this.summary.currentPeriod;
+    },
+    currentGovPeriod() {
+      return this.summary && this.summary.currentGovPeriod;
+    },
+    updatedPass() {
+      return this.summary && moment(this.summary.updatedTime).fromNow();
     }
-
-    // stakingRate() {
-    //   return this.market.stakingRate * 100 + "%";
-    // },
-    // marketCap() {
-    //   return `$${toLocaleString(this.market.marketCap)}`;
-    // },
-
-    // volume24h() {
-    //   return `$${toLocaleString(this.market.volume24h)}`;
-    // },
-    // totalSupply() {
-    //   return convert2NaxStr(this.market.totalSupply);
-    // },
-    // totalCirculation() {
-    //   return convert2NaxStr(this.market.totalCirculation);
-    // },
-    // totalStaking() {
-    //   return convert2NasStr(this.market.totalStaking);
-    // }
   }
 };
 </script>

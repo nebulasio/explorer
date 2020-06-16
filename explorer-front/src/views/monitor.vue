@@ -1,11 +1,11 @@
 <template>
   <div class="monitor">
-    <vue-bread title="Monitor Address"></vue-bread>
+    <vue-bread title="NAS Distribution"></vue-bread>
 
     <b-container>
-      <h2 class="subtitle">
-        NAS distribution and Addresses hold by Nebulas Foundation
-      </h2>
+      <!-- <h2 class="subtitle">
+        NAS distribution
+      </h2> -->
       <div class="chart-container">
         <h3 class="title">
           Total Supply: {{ totalSupply }} | Total Circulation:
@@ -27,6 +27,15 @@
         :fields="foundationAddress.fields"
         :items="foundationAddrData"
       >
+        <template v-slot:head(nasPercent)="data">
+          <span>{{ data.label }} </span>
+          <b-icon
+            v-b-tooltip.hover
+            title="Nas Amount / Nas Total Supply"
+            icon="question-circle"
+          ></b-icon>
+        </template>
+
         <template v-slot:cell(address)="data">
           <router-link :to="'/address/' + data.value">
             <span class="monospace">{{ data.value }}</span>
@@ -127,6 +136,7 @@ export default {
         "DPoS adjustment (Burned)",
         "Nas Reserved for the Nebulas Team",
         "Go Nebulas Fund",
+        "dStaking NAS",
         "rest in circulating"
       ];
       let data = [];
@@ -167,16 +177,18 @@ export default {
           });
         }
 
-        // "rest in circulating"
+        // "dStaking NAS"
         if (name === legends[4]) {
+          value = convert2NasNumber(this.nasMarket.totalStaking);
+        }
+
+        // "rest in circulating"
+        if (name === legends[5]) {
           const totalCirculation = convert2NasNumber(
             this.nasMarket.totalCirculation
           );
-          value = totalCirculation;
 
-          for (let d of data) {
-            value -= d["value"];
-          }
+          value = totalCirculation - data[3].value - data[4].value;
         }
 
         data.push({
@@ -189,15 +201,14 @@ export default {
 
       const options = {
         color: [
-          "#F8F9FE",
-          "#E6EAFB",
-          "#4460E7",
-          "#6A81EB",
-          "#0BB160",
-          "#2FBF79",
-          "#59CC93",
-          "#82D9AE",
-          "#9FEBC5"
+          "#F8F9FE", // burned
+          "#E6EAFB", // burned
+          "#4460E7", // lock
+          "#0BB160", // circulation
+          "#2FBF79", // circulation
+          "#59CC93", // circulation
+          "#82D9AE", // circulation
+          "#9FEBC5" // circulation
         ],
         tooltip: {
           trigger: "item",
@@ -257,7 +268,14 @@ export default {
 
         addr["nas"] = convert2NasStr(addr["nasBalance"]);
         addr["nasAmount"] = convert2NasNumber(addr["nasBalance"]);
-        addr["nasPercent"] = `${(addr["nasPercent"] * 100).toFixed(2)}%`;
+
+        if (addr["key"] === "burned") {
+          addr["nasPercent"] = `-`;
+        } else {
+          let percent = (addr["nasBalance"] / this.nasMarket.totalSupply) * 100;
+
+          addr["nasPercent"] = `${percent.toFixed(2)}%`;
+        }
 
         data.push(addr);
       }
@@ -269,6 +287,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.monitor {
+  background-color: #fff;
+  height: 100%;
+}
+
 .subtitle {
   margin-top: 30px;
   font-size: 24px;
@@ -287,7 +310,7 @@ export default {
   }
 
   .echarts {
-    width: 1200px;
+    width: 1100px;
     height: 500px;
   }
 }
