@@ -1,23 +1,57 @@
 <style lang="scss" scoped>
-.vue-header .container {
-  padding-top: 5px;
-  padding-bottom: 5px;
+.vue-header {
+  height: 70px;
+  .container {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #fff;
+    color: #333333;
+  }
+
+  a {
+    color: #333;
+  }
+
+  form {
+    border: 1px solid #d7d7d7;
+    border-radius: 5px;
+    margin-left: 20px;
+    padding: 6px 0 6px 10px;
+    width: 350px;
+    background-color: white;
+  }
+
+  .navbar-nav {
+    & > li {
+      & > a {
+        padding: 0;
+      }
+    }
+  }
+
+  .iconfont {
+    font-size: 12px;
+
+    &.icon-menu1 {
+      font-size: 24px;
+    }
+  }
 }
 
-.vue-header a {
-  color: inherit;
+.navbar-brand {
+  img {
+    width: 150px;
+    height: auto;
+  }
+
+  span {
+    color: #4460e7;
+    font-size: 12px;
+  }
 }
 
 .navbar-collapse {
   justify-content: space-around;
-}
-
-.vue-header .dev-version {
-  color: #2a88ff;
-  left: -15px;
-  padding: 5px;
-  position: relative;
-  top: 10px;
 }
 
 .vue-header .btn-group-toggle {
@@ -30,14 +64,6 @@
 
 .vue-header .visibility-hidden {
   visibility: hidden;
-}
-
-.vue-header form {
-  border: none;
-  margin-left: 20px;
-  padding: 6px 0 6px 10px;
-  width: 350px;
-  background-color: white;
 }
 
 .vue-header .form-inline img {
@@ -83,18 +109,6 @@
     padding: 0;
   }
 
-  .navbar-nav {
-    & > li {
-      & > a {
-        padding: 0;
-      }
-    }
-  }
-
-  .icon-menu1 {
-    font-size: 24px;
-  }
-
   .vue-header .dropdown-menu {
     padding: 0;
     margin-top: 6px;
@@ -126,10 +140,9 @@
         border-bottom: 1px solid #e9ecef;
 
         & > a {
-          position: absolute;
-          top: 50%;
-          right: 1rem;
-          transform: translateY(-50%);
+          width: 100%;
+          height: 100%;
+          justify-content: center;
 
           &:hover {
             background-color: transparent;
@@ -141,6 +154,15 @@
 
           &:active {
             background-color: transparent !important;
+          }
+
+          &:after {
+            content: "\003E";
+            color: #999;
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            transform: translateY(-50%);
           }
         }
 
@@ -155,15 +177,6 @@
         // &:not(:last-child) {
         //   border-bottom: 1px solid #e9ecef;
         // }
-
-        &:after {
-          content: "\003E";
-          color: #999;
-          position: absolute;
-          top: 50%;
-          right: 1rem;
-          transform: translateY(-50%);
-        }
       }
     }
 
@@ -205,11 +218,12 @@
 </style>
 
 <template>
-  <nav class="bg-black navbar navbar-expand-lg navbar-dark vue-header">
+  <nav class="navbar navbar-expand-lg vue-header">
     <div class="container">
       <div>
         <router-link v-bind:to="fragApi + '/'" class="navbar-brand">
-          <img src="/static/img/logo_beta.png?v=20190117" width="210" alt />
+          <img class="nas-logo" src="/static/img/nebulas-logo.png" alt />
+          <span>Explorer</span>
         </router-link>
       </div>
 
@@ -241,8 +255,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Blockchains <img src=/static/img/icon_arrow_down.png width=12
-              alt="" >
+              Blockchains <i class="iconfont icon-down"></i>
             </a>
             <div
               class="dropdown-menu dropdown-menu-long"
@@ -337,7 +350,7 @@
               v-on:click.prevent="apiSwitch()"
             >
               {{ MenuMisc }}
-              <img src=/static/img/icon_switcher.png width=12 alt="" >
+              <i class="iconfont icon-switch"></i>
             </a>
           </li>
         </ul>

@@ -1,4 +1,4 @@
-<style>
+<style lang="scss" scoped>
 div .vue-tx {
   background-color: white;
 }
@@ -74,9 +74,9 @@ div .vue-tx {
 }
 </style>
 <template>
-  <div class="vue-tx " v-bind:triggerComputed="urlChange">
+  <div class="vue-tx" v-bind:triggerComputed="urlChange">
     <vue-bread
-      :title="nothing"
+      title="Transaction"
       :subtitle="$route.params.id"
       :subtitlemonospaced="$route.params.id"
     >

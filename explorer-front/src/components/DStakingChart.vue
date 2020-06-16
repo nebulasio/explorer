@@ -95,13 +95,16 @@ export default {
       let data_limit = this.data.slice(0, show_limit).reverse();
 
       let dstakingData = [];
+      let estimateDate = [];
       let mintData = [];
       let dates = [];
 
       data_limit = data_limit.map(d => {
         let dstaking_day = convert2NasNumber(d.pledged_nas);
         let mint_day = convert2NaxNumber(d.distributed_nax);
+        let estimate_day = convert2NaxNumber(d.estimate_nax);
         dstakingData.push(dstaking_day);
+        estimateDate.push(estimate_day);
         mintData.push(mint_day);
 
         d["date"] = moment(d.end_timestamp).format("MMM D");
@@ -111,14 +114,13 @@ export default {
         return d;
       });
 
-      let max_dstaking, min_dstaking;
-      let max_mint, min_mint;
+      const min_mint = _.min(mintData);
+      const min_dstaking = _.min(dstakingData);
+      const min_estimate = _.min(estimateDate);
 
-      min_mint = _.min(mintData);
-      min_dstaking = _.min(dstakingData);
-
-      max_mint = _.max(mintData);
-      max_dstaking = _.max(dstakingData);
+      const max_mint = _.max(mintData);
+      const max_dstaking = _.max(dstakingData);
+      const max_estimate = _.max(estimateDate);
 
       const tooltipFormatter = (params, ticket, callback) => {
         const findItem = _.find(data_limit, { date: params.name });
@@ -132,7 +134,8 @@ export default {
         );
 
         const burned = toBigNumString(
-          convert2NaxNumber(findItem.destroyed_nax)
+          convert2NaxNumber(findItem.destroyed_nax),
+          2
         );
 
         const dstaking_amount = toBigNumString(
@@ -169,10 +172,10 @@ export default {
         yAxis: [
           {
             type: "value",
-            // name: "dstaking NAS",
-            name: "NAS",
-            min: min_dstaking,
-            max: max_dstaking,
+            // name: "estimate NAX",
+            show: false,
+            min: 0,
+            max: max_estimate,
             position: "left",
             axisLine: {
               show: false
@@ -197,8 +200,11 @@ export default {
             type: "value",
             // name: "mint NAX",
             name: "NAX",
-            min: min_mint,
-            max: max_mint,
+            nameTextStyle: {
+              color: "#B2B2B2"
+            },
+            min: 0,
+            max: max_estimate,
             position: "right",
             axisLine: {
               show: false
@@ -207,7 +213,7 @@ export default {
               textStyle: {
                 color: "#B2B2B2"
               },
-              margin: 0,
+              //   margin: 0,
               formatter: function(value, index) {
                 return toBigNumString(value, 2);
               }
@@ -222,11 +228,11 @@ export default {
         ],
         series: [
           {
-            name: "dstaking NAS",
+            name: "estimate NAX",
             type: "bar",
-            data: dstakingData,
+            data: estimateDate,
             itemStyle: {
-              color: "#595C63"
+              color: "rgba(255,255,255,0.05)"
             }
           },
           {
@@ -235,7 +241,7 @@ export default {
             data: mintData,
             yAxisIndex: 1,
             itemStyle: {
-              color: "rgba(255,255,255,0.05)"
+              color: "#595C63"
             },
             barGap: "-100%",
             barCategoryGap: "40%"
@@ -269,6 +275,6 @@ export default {
   top: 30px;
   height: 500px;
   width: calc(100% - 20px);
-  margin-left: 10px;
+  margin-left: 0;
 }
 </style>

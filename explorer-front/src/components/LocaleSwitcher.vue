@@ -56,8 +56,10 @@ export default {
 <style lang="scss" scoped>
 li {
   text-decoration: underline;
-  color: #459ce7;
   cursor: pointer;
+  a {
+    color: #333333;
+  }
 }
 
 .icon-language {

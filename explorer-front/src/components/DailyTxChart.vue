@@ -1,11 +1,25 @@
 <template>
-  <div class="chart-container">
-    <vchart
-      class="daily-chart"
-      v-if="dailyTxChartOptions"
-      :options="dailyTxChartOptions"
-      :autoResize="true"
-    ></vchart>
+  <div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
+    <div class="item-bg">
+      <div class="item-title">
+        Nebulas Transaction History
+      </div>
+      <div class="details">
+        <span v-if="blockHeight">Current Height: {{ blockHeight }}</span>
+        <span v-if="tx24h">
+          {{ $t("dashboardDailyTransactionsSubtitle") }}: {{ tx24h }}</span
+        >
+      </div>
+
+      <div class="chart-container">
+        <vchart
+          class="daily-chart"
+          v-if="dailyTxChartOptions"
+          :options="dailyTxChartOptions"
+          :autoResize="true"
+        ></vchart>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -17,6 +31,10 @@ import "echarts/lib/component/tooltip";
 import api from "@/assets/api";
 
 import utility from "@/assets/utility";
+import moment from "moment";
+import _ from "lodash";
+
+import { toLocaleString } from "@/utils/number";
 
 export default {
   name: "DailyTxChart",
@@ -25,11 +43,21 @@ export default {
   },
   data() {
     return {
-      dailyTxData: null
+      dailyTxData: null,
+      latestBlock: null,
+      txToday: null
     };
   },
-  mounted() {
-    api.getTx("cnt_static", o => (this.dailyTxData = o)); //近期每日交易量
+  async mounted() {
+    this.dailyTxData = await this.$api.home.getNetData();
+    const latestBlocks = await this.$api.home.getLatestBlock();
+
+    if (latestBlocks) {
+      this.latestBlock = latestBlocks[0];
+    }
+
+    this.txToday = await this.$api.home.getTxToday();
+    console.log("txToday", this.txToday);
   },
   methods: {
     shortDate(value) {
@@ -51,24 +79,30 @@ export default {
     }
   },
   computed: {
+    blockHeight() {
+      return this.latestBlock && toLocaleString(this.latestBlock["height"]);
+    },
+
+    tx24h() {
+      return this.txToday && toLocaleString(this.txToday);
+    },
+
     dailyTxChartOptions() {
       if (!this.dailyTxData) return null;
-      var arr = [],
-        dates = [],
-        nums = [];
-      for (var k in this.dailyTxData) {
-        arr.push([k, this.dailyTxData[k]]);
-      }
-      arr.sort(function(a, b) {
-        return Date.parse(a[0]) - Date.parse(b[0]);
+
+      let dates = [];
+      let nums = [];
+
+      let data = this.dailyTxData;
+
+      data = data.reverse();
+
+      data = data.map(d => {
+        d["date_label"] = moment(d["date"]).format("MMM DD");
+        dates.push(d["date_label"]);
+        nums.push(d["transaction_count"]);
+        return d;
       });
-      // if (arr.length > 13) {
-      //	 arr.splice(0, arr.length - 13);
-      // }
-      for (var i in arr) {
-        dates.push(arr[i][0]);
-        nums.push(arr[i][1]);
-      }
 
       let vm = this;
       var options = {
@@ -91,10 +125,10 @@ export default {
             textStyle: {
               color: "#B2B2B2"
             },
-            margin: 18,
-            formatter: function(value) {
-              return vm.shortDate(value);
-            }
+            margin: 18
+            // formatter: function(value) {
+            //   return vm.shortDate(value);
+            // }
           }
         },
         yAxis: {
@@ -139,19 +173,24 @@ export default {
           transitionDuration: 0,
           position: "top",
           formatter: function(params, ticket, callback) {
+            let findItem = _.find(data, { date_label: params.name });
+
             let date = new Date(params.name);
             let dateStr = date.toLocaleDateString("en", {
               year: "numeric",
               month: "short",
               day: "numeric"
             });
-            return (
-              dateStr +
-              "<div>" +
-              vm.$t("dashboardDailyTransactionsSubtitle") +
-              utility.numberAddComma(params.value) +
-              "</div><div class=echart-down-arrow></div>"
-            );
+
+            const text = `
+            ${dateStr}
+            <div>${vm.$t("dashboardDailyTransactionsSubtitle")}
+            ${utility.numberAddComma(params.value)}</div>
+            <div>Nas price: $${findItem["price"]}</div>
+            <div class=echart-down-arrow></div>
+            `;
+
+            return text;
           },
           backgroundColor: "#595C63",
           padding: 8,

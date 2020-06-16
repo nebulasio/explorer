@@ -21,6 +21,18 @@ const home = {
   },
   getNewBlock() {
     return get("api/block?type=newblock");
+  },
+  getLatestBlock() {
+    return get("api/block?type=latest");
+  },
+  getNetData() {
+    return get("tx/count/history");
+  },
+  getStaticInfo() {
+    return get("api/nasinfo");
+  },
+  getTxToday() {
+    return get("api/tx/cnt_today");
   }
 };
 

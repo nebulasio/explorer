@@ -6,6 +6,8 @@ $nax-price-card-height: 520px;
   display: block;
   color: black;
   position: relative;
+  background-color: #f5f6fa;
+  padding-top: 1px; // for full fill bg color
 }
 
 .vue-dashboard .black-header {
@@ -53,17 +55,17 @@ $nax-price-card-height: 520px;
   height: $dark-card-height;
 }
 
-.vue-dashboard .row2 .flex-item {
-  height: 160px;
-}
+// .vue-dashboard .row2 .flex-item {
+//   height: 160px;
+// }
 
-.vue-dashboard .row3 .flex-item {
-  height: 110px;
-}
+// .vue-dashboard .row3 .flex-item {
+//   height: 110px;
+// }
 
-.vue-dashboard .row4 .flex-item {
-  height: 330px;
-}
+// .vue-dashboard .row4 .flex-item {
+//   height: 330px;
+// }
 
 .vue-dashboard .row5 .flex-item {
   height: 476px;
@@ -361,39 +363,39 @@ $nax-price-card-height: 520px;
   display: block;
 }
 
-.vue-dashboard .row3 .flex-item {
-  position: relative;
-}
+// .vue-dashboard .row3 .flex-item {
+//   position: relative;
+// }
 
-.vue-dashboard .row3 .flex-item .item-bg div:nth-child(1) {
-  position: absolute;
-  margin-top: 23px;
-  margin-left: 30px;
-  font-size: 28px;
-  font-weight: 600;
-}
+// .vue-dashboard .row3 .flex-item .item-bg div:nth-child(1) {
+//   position: absolute;
+//   margin-top: 23px;
+//   margin-left: 30px;
+//   font-size: 28px;
+//   font-weight: 600;
+// }
 
-.vue-dashboard .row3 .link-style {
-  position: absolute;
-  margin-top: 65px;
-  margin-left: 30px;
-  color: #7f7f7f;
-  font-size: 12px;
-}
+// .vue-dashboard .row3 .link-style {
+//   position: absolute;
+//   margin-top: 65px;
+//   margin-left: 30px;
+//   color: #7f7f7f;
+//   font-size: 12px;
+// }
 
-.vue-dashboard .row3 img {
-  position: absolute;
-  top: 35px;
-  right: 33px;
-}
+// .vue-dashboard .row3 img {
+//   position: absolute;
+//   top: 35px;
+//   right: 33px;
+// }
 
-.vue-dashboard .row3 .flex-item:hover .link {
-  color: rgba(0, 87, 255, 1);
-}
+// .vue-dashboard .row3 .flex-item:hover .link {
+//   color: rgba(0, 87, 255, 1);
+// }
 
-.vue-dashboard .row4 .item-bg {
-  position: relative;
-}
+// .vue-dashboard .row4 .item-bg {
+//   position: relative;
+// }
 
 .vue-dashboard .user-pie {
   display: block;
@@ -496,26 +498,21 @@ $nax-price-card-height: 520px;
   }
 }
 
-.vue-dashboard .row4 .detail {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-end;
-  align-items: flex-end;
-  position: absolute;
-  top: 74px;
-  right: 30px;
-}
+// .vue-dashboard .row4 .detail {
+//   display: flex;
+//   flex-flow: column nowrap;
+//   justify-content: flex-end;
+//   align-items: flex-end;
+//   position: absolute;
+//   top: 74px;
+//   right: 30px;
+// }
 
-/* .vue-dashboard .row4 .user-data .data-source {
-		margin-top: 30px;
-		margin-bottom: 26px;
-	} */
-
-.vue-dashboard .row4 .title {
-  font-size: 28px;
-  margin-top: 40px;
-  font-weight: 600;
-}
+// .vue-dashboard .row4 .title {
+//   font-size: 28px;
+//   margin-top: 40px;
+//   font-weight: 600;
+// }
 
 .vue-dashboard .account-echart-down-arrow {
   width: 0;
@@ -717,21 +714,8 @@ $nax-price-card-height: 520px;
     <div class="container">
       <!-- row 1: nas data -->
       <div class="row row1">
-        <div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
-          <div class="item-bg">
-            <div class="item-title">
-              {{ $t("dashboardDailyTransactionsTitle") }}
-            </div>
-            <div class="details">
-              <span v-if="todayTxCnt >= 0">
-                {{ $t("dashboardDailyTransactionsSubtitle") }}
-                {{ numberAddComma(todayTxCnt) }}</span
-              >
-            </div>
+        <DailyTxChart />
 
-            <DailyTxChart />
-          </div>
-        </div>
         <!-- nas price card -->
         <NasMarketCard />
       </div>
@@ -761,7 +745,7 @@ $nax-price-card-height: 520px;
 				</div>
 			</div> -->
       <!-- ====================2==================== -->
-      <div class="row row2">
+      <!-- <div class="row row2">
         <div class="col">
           <div class="flex-item item-bg item-shadow">
             <div class="item-title">
@@ -806,9 +790,9 @@ $nax-price-card-height: 520px;
             </transition-group>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- ===================3===================== -->
-      <div class="row row3">
+      <!-- <div class="row row3">
         <div class="col-lg-3 col-md-6 col-12 flex-item w285">
           <div class="item-bg item-shadow">
             <div v-if="staticInfo">{{ blockheight }}</div>
@@ -865,9 +849,9 @@ $nax-price-card-height: 520px;
             <img src=/static/img/dashboard-4.png width=44 alt="">
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- ===================4===================== -->
-      <div class="row row4">
+      <!-- <div class="row row4">
         <div class="flex-item col-12 col-lg-6 row4-item user-data">
           <div class="item-bg item-shadow">
             <div class="item-title">
@@ -927,7 +911,6 @@ $nax-price-card-height: 520px;
                   />
                 </svg>
                 <div class="labels">
-                  <!-- 四舍五入并保留一位小数 -->
                   <div>
                     {{
                       (
@@ -946,7 +929,6 @@ $nax-price-card-height: 520px;
               </div>
             </div>
             <div v-if="staticInfo" class="detail">
-              <!-- <div class="font-12 text-light-gray data-source">Data Sources: Nebulas</div> -->
               <div class="title">
                 {{ numberAddComma(staticInfo.newAddressCount) }}
               </div>
@@ -971,11 +953,10 @@ $nax-price-card-height: 520px;
           </div>
         </div>
       </div>
-      <!--ATP mobile中间广告位-->
       <div
         class="flex atlaspAds-bottom d-md-none"
         id="atlaspAds-middle-mobile"
-      ></div>
+      ></div> -->
       <!-- ===================5===================== -->
       <div class="row row5">
         <div class="flex-item col-12 col-lg-6 row5-item">
@@ -1051,10 +1032,7 @@ $nax-price-card-height: 520px;
         <div class="flex-item col-12 col-lg-6 row5-item">
           <div class="item-bg item-shadow">
             <div class="item-title">
-              <span
-                id="dashboardTransactionsTitle"
-                class="dashboardlocalizable"
-              ></span>
+              {{ $t("dashboardTransactionsTitle") }}
             </div>
             <router-link :to="fragApi + '/txs/'" class="showall">
               {{ $t("dashboardIndicatorViewAll") }}
@@ -1176,14 +1154,14 @@ module.exports = {
     }
   },
   mounted() {
-    api.getTx("cnt_static", o => (this.dailyTxData = o)); //近期每日交易量
-    api.getMarketCap(o => (this.market = o)); //币价和市值
+    // api.getTx("cnt_static", o => (this.dailyTxData = o)); //近期每日交易量
+    // api.getMarketCap(o => (this.market = o)); //币价和市值
     api.getBlock(
       { type: "latest" },
       o => (this.blocks = this.addLocalTimestamp(o))
     ); //最新一波 block
     api.getTx({ type: "latest" }, o => (this.txs = this.addLocalTimestamp(o))); //最新一波 tx
-    api.getTodayTxCnt(o => (this.todayTxCnt = o)); //今日交易量
+    // api.getTodayTxCnt(o => (this.todayTxCnt = o)); //今日交易量
     api.getStaticInfo(o => (this.staticInfo = o)); //合约数量、地址数量。。。
 
     this.shortIntervalID = setInterval(() => {
@@ -1209,8 +1187,8 @@ module.exports = {
     }, 5000);
 
     this.longIntervalID = setInterval(() => {
-      api.getTodayTxCnt(o => (this.todayTxCnt = o)); //今日交易量
-      api.getMarketCap(o => (this.market = o)); //币价和市值
+      //   api.getTodayTxCnt(o => (this.todayTxCnt = o)); //今日交易量
+      //   api.getMarketCap(o => (this.market = o)); //币价和市值
       api.getStaticInfo(o => (this.staticInfo = o)); //合约数量、地址数量。。。
     }, 60000);
   },

@@ -14,7 +14,7 @@
   "headerCurrentText": "(current)", 
   "headerMenuDstaking": "dStaking", 
   "dashboardDailyTransactionsTitle": "Daily Transactions", 
-  "dashboardDailyTransactionsSubtitle": "Transactions: ", 
+  "dashboardDailyTransactionsSubtitle": "Transactions(24h) ", 
   "dashboardNasPriceTitle": "NAS Value", 
   "dashboardNasPriceUpdateTimePrefix": "Updated", 
   "dashboardNasPriceUpdateTimeSuffix": " ago", 

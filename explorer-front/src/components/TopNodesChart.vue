@@ -55,7 +55,7 @@ export default {
 
   computed: {
     currentPeriod() {
-      return this.data && this.data[0].period;
+      return this.data && toLocaleString(this.data[0].period);
     },
     chartOptions() {
       if (!this.data) {
@@ -127,14 +127,48 @@ export default {
                 color: "#fff"
               }
             },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            },
             z: 10
+          },
+          // node order index
+          {
+            name: "Order",
+            data: _.rangeRight(1, limit + 1),
+            interval: 5,
+            position: "left",
+            axisLabel: {
+              textStyle: {
+                color: "#fff"
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            }
           }
         ],
         xAxis: [
           {
             type: "value",
-            name: "NAX",
-            min: vote_nax_min,
+            // name: "Voted",
+            nameTextStyle: {
+              color: "#B2B2B2"
+            },
+            position: "bottom",
+            min: 0,
             max: vote_nax_max,
             axisLine: {
               show: false
@@ -144,7 +178,7 @@ export default {
                 color: "#B2B2B2"
               },
               formatter: function(value, index) {
-                return toBigNumString(value);
+                return toBigNumString(value) + " NAX";
               }
             },
             axisTick: {
@@ -156,8 +190,12 @@ export default {
           },
           {
             type: "value",
-            name: "NAS",
-            min: reward_nas_min,
+            // name: "Reward",
+            nameTextStyle: {
+              color: "#B2B2B2"
+            },
+            position: "top",
+            min: 0,
             max: reward_nas_max,
             axisLine: {
               show: false
@@ -165,10 +203,10 @@ export default {
             axisLabel: {
               textStyle: {
                 color: "#B2B2B2"
+              },
+              formatter: function(value, index) {
+                return `${toLocaleString(value)} NAS`;
               }
-              //   formatter: function(value, index) {
-              //     return convert2NasNumber(value);
-              //   }
             },
             axisTick: {
               show: false
@@ -225,6 +263,6 @@ export default {
   position: absolute;
   top: 30px;
   height: 500px;
-  width: calc(100% - 40px);
+  width: calc(100% - 10px);
 }
 </style>
