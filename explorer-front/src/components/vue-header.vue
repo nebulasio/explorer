@@ -152,6 +152,7 @@
           height: 100%;
           justify-content: center;
           font-weight: bold;
+          font-size: 18px;
 
           &:hover {
             background-color: transparent;
@@ -165,14 +166,14 @@
             background-color: transparent !important;
           }
 
-          &:after {
-            content: "\003E";
-            color: #999;
-            position: absolute;
-            top: 50%;
-            right: 1rem;
-            transform: translateY(-50%);
-          }
+          // &:after {
+          //   content: "\003E";
+          //   color: #999;
+          //   position: absolute;
+          //   top: 50%;
+          //   right: 1rem;
+          //   transform: translateY(-50%);
+          // }
         }
 
         &:hover {
@@ -198,6 +199,14 @@
       }
 
       span {
+        font-size: 15px;
+        font-weight: 400;
+
+        &.title {
+          font-size: 18px;
+          font-weight: bold;
+        }
+
         &.desc {
           font-size: 12px;
           color: #999;
@@ -425,7 +434,7 @@
                     href="https://nano.nebulas.io"
                     class="dropdown-item"
                   >
-                    <span class="title">APP</span>
+                    <span>APP</span>
                   </a>
                 </li>
 
@@ -435,7 +444,7 @@
                     href="https://wiki.nebulas.io/"
                     class="dropdown-item"
                   >
-                    <span class="title">Documents</span>
+                    <span>Documents</span>
                   </a>
                 </li>
 
@@ -445,7 +454,7 @@
                     href="https://community.nebulas.io"
                     class="dropdown-item"
                   >
-                    <span class="title">Forum</span>
+                    <span>Forum</span>
                   </a>
                 </li>
 
@@ -455,7 +464,7 @@
                     href="https://nebulas.io"
                     class="dropdown-item"
                   >
-                    <span class="title">Nebulas.io</span>
+                    <span>Nebulas.io</span>
                   </a>
                 </li>
               </ul>
