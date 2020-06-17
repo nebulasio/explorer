@@ -152,7 +152,7 @@
           height: 100%;
           justify-content: center;
           font-weight: bold;
-          font-size: 18px;
+          font-size: 15px;
 
           &:hover {
             background-color: transparent;
@@ -203,7 +203,7 @@
         font-weight: 400;
 
         &.title {
-          font-size: 18px;
+          // font-size: 18px;
           font-weight: bold;
         }
 
