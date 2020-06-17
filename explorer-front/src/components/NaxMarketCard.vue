@@ -17,7 +17,7 @@
             'price-down': market.trends <= 0,
             'price-up': market.trends > 0
           }"
-          >{{ market.trends > 0 ? "+" : "-" }}{{ market.change24h }}%</span
+          >{{ market.trends > 0 ? "+" : "-" }}{{ priceChange }}</span
         >
       </div>
       <!-- market realtime data -->
@@ -84,6 +84,9 @@ export default {
     },
     stakingRate() {
       return (this.market.stakingRate * 100).toFixed(2) + "%";
+    },
+    priceChange() {
+      return this.market && `${toLocaleString(this.market.change24h)}%`;
     },
     marketCap() {
       return `$${toLocaleString(this.market.marketCap)}`;

@@ -17,7 +17,7 @@
             'price-down': market.trends <= 0,
             'price-up': market.trends > 0
           }"
-          >{{ market.trends > 0 ? "+" : "-" }}{{ market.change24h }}%</span
+          >{{ market.trends > 0 ? "+" : "-" }}{{ priceChange }}</span
         >
       </div>
       <!-- market realtime data -->
@@ -75,6 +75,9 @@ export default {
     marketCap() {
       return `$${toLocaleString(this.market.marketCap)}`;
     },
+    priceChange() {
+      return this.market && `${toLocaleString(this.market.change24h)}%`;
+    },
 
     volume24h() {
       return `$${toLocaleString(this.market.volume24h)}`;
@@ -95,6 +98,7 @@ export default {
 <style lang="scss" scoped>
 .logo {
   width: 32px;
+  height: 32px;
   margin-right: 0.5rem;
 }
 
