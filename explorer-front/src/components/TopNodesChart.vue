@@ -74,7 +74,7 @@ export default {
       let reward_nas_data = [];
 
       topNodesData = topNodesData.map(d => {
-        nodes_data.push(d.nodeId);
+        nodes_data.push(d.info.name);
 
         vote_nax_data.push(convert2NaxNumber(d.voteValue));
 
@@ -92,13 +92,15 @@ export default {
       const vote_nax_min = _.min(vote_nax_data);
 
       const tooltipFormatter = (params, ticket, callback) => {
-        const findItem = _.find(topNodesData, { nodeId: params.name });
+        const findItem = _.find(topNodesData, o => {
+          return o.info.name === params.name;
+        });
 
         const vote = convert2NaxStr(findItem.voteValue);
         const total_reward = toLocaleString(findItem.total_reward);
 
         const text = `
-            <div>${findItem.nodeId}</div>
+            <div>${findItem.info.name}</div>
             <div>Vote: ${vote}</div>
             <div>Total Rewards: ${total_reward} NAS</div>
             <div class=echart-down-arrow></div>
