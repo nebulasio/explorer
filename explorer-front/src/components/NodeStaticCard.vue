@@ -3,6 +3,12 @@
     <div class="item-bg">
       <div class="item-title">
         Avg. Annualized Rate of Return
+
+        <b-icon
+          v-b-tooltip.hover
+          title="7天出块收益/nax平均投票金额*365/7天"
+          icon="question-circle"
+        ></b-icon>
       </div>
       <div v-if="updatedPass" class="details">
         {{ $t("dashboardNasPriceUpdateTimePrefix") }}
@@ -10,14 +16,16 @@
       </div>
       <div class="detail">
         <span> </span>
-        <span>{{ avgRewardRate }}</span>
+        <span>{{ avgRewardRate }} </span>
       </div>
       <!-- market realtime data -->
       <div class="market container">
         <div class="row">
           <div class="col-6">
             Total Rewards:
-            <div>{{ totalRewardValue }}</div>
+            <div>
+              {{ totalRewardValue }}
+            </div>
           </div>
           <div class="col-6">
             Total Nodes:

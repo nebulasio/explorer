@@ -3,12 +3,24 @@
   flex-shrink: 0;
   width: 100%;
   color: #333333;
-  padding-top: 4rem;
+
+  @include media("<=desktop") {
+    padding: 1rem;
+  }
+
+  @include media(">desktop") {
+    padding-top: 4rem;
+  }
 
   .logo {
     width: 150px;
     height: auto;
     margin-top: -2rem;
+
+    @include media("<=desktop") {
+      margin-top: 1rem;
+      margin-bottom: 1rem !important;
+    }
   }
 
   h5 {
@@ -30,12 +42,22 @@
     }
   }
 
+  .nav-links {
+    @include media("<=desktop") {
+      padding-top: 1rem;
+    }
+  }
+
   .explorer {
     position: relative;
 
     small.top {
       position: absolute;
       top: -1.5rem;
+
+      @include media("<=desktop") {
+        top: -0.1rem;
+      }
     }
   }
 
@@ -44,29 +66,49 @@
     flex-direction: column;
     align-items: center;
 
+    @include media("<=desktop") {
+      margin: 0 auto;
+    }
+
     .title {
       margin-bottom: 1rem;
+
+      @include media("<=desktop") {
+        margin-bottom: 0;
+      }
+    }
+
+    .links {
+      @include media("<=desktop") {
+        display: flex;
+        align-items: center;
+      }
+
+      a {
+        margin: 0.5rem 0;
+        display: block;
+        img {
+          display: block;
+          margin: 0 auto;
+
+          &.appstore {
+            width: 130px;
+            height: auto;
+          }
+
+          &.google-play {
+            width: 150px;
+            height: auto;
+          }
+        }
+      }
     }
 
     .copyright {
       margin-top: 1rem;
-    }
-    a {
-      margin: 0.5rem 0;
-      display: block;
-      img {
-        display: block;
-        margin: 0 auto;
 
-        &.appstore {
-          width: 130px;
-          height: auto;
-        }
-
-        &.google-play {
-          width: 150px;
-          height: auto;
-        }
+      @include media("<=desktop") {
+        margin-top: 0;
       }
     }
   }
@@ -76,14 +118,14 @@
   <footer class="vue-footer my-md-5 border-top">
     <div class="container">
       <div class="row">
-        <div class="col-12 col-md">
+        <div class="col-12 col-lg">
           <img
             class="mb-2 logo"
             src="/static/img/nebulas-logo.png"
             alt="nebulas"
           />
         </div>
-        <div class="col-6 col-md explorer">
+        <div class="col-6 col-lg explorer nav-links">
           <small class="top">Blockchain, dStaking</small>
 
           <h5>Explorer</h5>
@@ -104,7 +146,7 @@
             </li>
           </ul>
         </div>
-        <div class="col-6 col-md">
+        <div class="col-6 col-lg nav-links">
           <h5>Nodes</h5>
           <small>PoD Consensus</small>
           <ul class="list-unstyled text-small">
@@ -125,7 +167,7 @@
             </li>
           </ul>
         </div>
-        <div class="col-6 col-md">
+        <div class="col-6 col-lg nav-links">
           <h5>Go.nebulas</h5>
           <small>Community Collaboration </small>
           <ul class="list-unstyled text-small">
@@ -149,7 +191,7 @@
           </ul>
         </div>
 
-        <div class="col-6 col-md">
+        <div class="col-6 col-lg nav-links">
           <h5>nebulas.io</h5>
           <ul class="list-unstyled text-small">
             <li>
@@ -170,7 +212,7 @@
           </ul>
         </div>
 
-        <div class="col-6 col-md download">
+        <div class="col-6 col-lg download">
           <small class="title">Nas nano pro Download</small>
 
           <div class="links">

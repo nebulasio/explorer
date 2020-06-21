@@ -16,6 +16,7 @@
     "bootstrap-vue": "^2.15.0",
     "font-awesome": "^4.7.0",
     "highcharts": "^6.1.0",
+    "include-media": "^1.4.9",
     "jquery": "^3.3.1",
     "js-base64": "2.4.9",
     "js-beautify": "^1.7.5",

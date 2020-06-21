@@ -45,6 +45,18 @@ exports.cssLoaders = function(options) {
       });
     }
 
+    if (loader === "sass") {
+      loaders.push({
+        loader: "sass-resources-loader",
+        options: {
+          resources: [
+            path.resolve(__dirname, "../src/scss/_variable.scss"),
+            path.resolve(__dirname, "../src/scss/_media.scss")
+          ]
+        }
+      });
+    }
+
     // Extract CSS when that option is specified
     // (which is the case during production build)
     if (options.extract) {
@@ -62,8 +74,8 @@ exports.cssLoaders = function(options) {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders("less"),
-    // sass: generateLoaders("sass", { indentedSyntax: true }),
-    // scss: generateLoaders("sass"),
+    sass: generateLoaders("sass", { indentedSyntax: true }),
+    scss: generateLoaders("sass"),
     stylus: generateLoaders("stylus"),
     styl: generateLoaders("stylus")
   };
