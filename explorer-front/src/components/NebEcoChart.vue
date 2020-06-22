@@ -108,6 +108,7 @@ export default {
 
       let price_nas_data = [];
       let price_nax_data = [];
+      let rate_of_return_data = [];
 
       let dates = [];
 
@@ -122,12 +123,14 @@ export default {
 
         let price_nas_day = d.nas_price;
         let price_nax_day = d.nax_price;
+        let rate_of_return_day = d.nas_price * 3; //fake
 
         total_burned_data.push(total_burned_day);
         total_minted_data.push(total_minted_day);
         voted_data.push(voted_day);
         price_nas_data.push(price_nas_day);
         price_nax_data.push(price_nax_day);
+        rate_of_return_data.push(rate_of_return_day);
 
         d["date"] = moment(d.end_timestamp).format("MMM D");
 
@@ -178,11 +181,15 @@ export default {
         return text;
       };
 
-      const legends = ["NAS Price USDT", "NAX Price USDT"];
+      const legends = [
+        "NAS Price USDT",
+        "NAX Price USDT",
+        "Avg. Annualized Rate of Return"
+      ];
 
       const options = {
         grid: {
-          left: "3%",
+          left: "50",
           right: "100"
         },
         // title: {
@@ -257,6 +264,29 @@ export default {
             splitLine: {
               show: false
             }
+          },
+          {
+            type: "value",
+            position: "left",
+            // max: max_price_nax,
+            interval: 0.1,
+            axisLine: {
+              show: false
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#595C63"
+              },
+              formatter: function(value, index) {
+                return `${value * 100}%`;
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: false
+            }
           }
         ],
         series: [
@@ -270,13 +300,14 @@ export default {
             type: "line",
             data: price_nax_data,
             yAxisIndex: 1
+          },
+          {
+            name: legends[2],
+            type: "line",
+            areaStyle: {},
+            data: rate_of_return_data,
+            yAxisIndex: 2
           }
-          //   {
-          //     name: legends[2],
-          //     type: "line",
-          //     areaStyle: {},
-          //     data: voted_data
-          //   }
         ],
         tooltip: {
           trigger: "item",
