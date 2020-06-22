@@ -26,6 +26,7 @@ import ECharts from "vue-echarts/components/ECharts";
 import "echarts/lib/chart/bar";
 import "echarts/lib/chart/line";
 import "echarts/lib/component/tooltip";
+import "echarts/lib/component/legend";
 
 import {
   convert2NasNumber,
@@ -109,20 +110,20 @@ export default {
         return text;
       };
 
+      const legends = ["Reward NAS", "Voted NAX"];
+
       const option = {
-        // tooltip: {
-        //   trigger: "axis",
-        //   axisPointer: {
-        //     type: "shadow",
-        //     crossStyle: {
-        //       color: "#999"
-        //     }
-        //   }
-        // },
         grid: {
-          top: "5%",
-          right: "20%",
           bottom: "5%"
+        },
+        legend: {
+          left: "center",
+          top: "top",
+          icon: "roundRect",
+          textStyle: {
+            color: "#fff"
+          },
+          data: legends
         },
 
         yAxis: [
@@ -171,11 +172,11 @@ export default {
         xAxis: [
           {
             type: "value",
-            name: "Voted",
-            nameGap: 10,
-            nameTextStyle: {
-              color: "#B2B2B2"
-            },
+            // name: "Voted",
+            // nameGap: 10,
+            // nameTextStyle: {
+            //   color: "#B2B2B2"
+            // },
             position: "bottom",
             min: 0,
             max: vote_nax_max,
@@ -200,11 +201,11 @@ export default {
           },
           {
             type: "value",
-            name: "Reward",
-            nameGap: 10,
-            nameTextStyle: {
-              color: "#3DCC85"
-            },
+            // name: "Reward",
+            // nameGap: 10,
+            // nameTextStyle: {
+            //   color: "#3DCC85"
+            // },
             position: "top",
             // min: 0,
             // max: reward_nas_max,
@@ -230,7 +231,7 @@ export default {
         ],
         series: [
           {
-            name: "voted",
+            name: legends[1],
             type: "bar",
             data: vote_nax_data,
             itemStyle: {
@@ -238,7 +239,7 @@ export default {
             }
           },
           {
-            name: "reward",
+            name: legends[0],
             type: "line",
             xAxisIndex: 1,
             data: reward_nas_data,
