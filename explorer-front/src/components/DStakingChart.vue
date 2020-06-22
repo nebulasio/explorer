@@ -111,9 +111,9 @@ export default {
         let mint_day = convert2NaxNumber(d.distributed_nax);
         let estimate_day = convert2NaxNumber(d.estimate_nax);
 
-        let total_burned_day = convert2NaxNumber(d.total_supplied_nax * 2); // data error
-        let total_minted_day = convert2NaxNumber(d.total_supplied_nax);
-        let voted_day = convert2NaxNumber(d.destroyed_nax); // fake
+        let total_burned_day = convert2NaxNumber(d.total_destroyed_nax);
+        let total_minted_day = convert2NaxNumber(d.total_distributed_nax);
+        let voted_day = convert2NaxNumber(d.total_vote_nax);
 
         total_burned_data.push(total_burned_day);
         total_minted_data.push(total_minted_day);
@@ -140,13 +140,18 @@ export default {
         const dstaking_rate =
           (findItem.pledged_nas / findItem.total_supplied_nas) * 100;
 
-        const minted = toBigNumString(
-          convert2NaxNumber(findItem.distributed_nax),
+        const total_minted = toBigNumString(
+          convert2NaxNumber(findItem.total_distributed_nax),
           2
         );
 
-        const burned = toBigNumString(
-          convert2NaxNumber(findItem.destroyed_nax),
+        const total_burned = toBigNumString(
+          convert2NaxNumber(findItem.total_destroyed_nax),
+          2
+        );
+
+        const total_voted = toBigNumString(
+          convert2NaxNumber(findItem.total_vote_nax),
           2
         );
 
@@ -156,8 +161,9 @@ export default {
 
         const text = `
             <div>${params.name}</div>
-            <div>Minted:${minted} NAX</div>
-            <div>Burned:${burned} NAX</div>
+            <div>Total Minted:${total_minted} NAX</div>
+            <div>Total Burned:${total_burned} NAX</div>
+            <div>Total Voted:${total_voted} NAX</div>
             <div>dStaking NAS:${dstaking_amount} NAS</div>
             <div>dStaking rate:${dstaking_rate.toFixed(2)}%</div>
             <div class=echart-down-arrow></div>

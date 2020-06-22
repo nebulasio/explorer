@@ -93,13 +93,13 @@ export default {
         let mint_day = convert2NaxNumber(d.distributed_nax);
         let estimate_day = convert2NaxNumber(d.estimate_nax);
 
-        let total_burned_day = convert2NaxNumber(d.total_supplied_nax * 2); // data error
-        let total_minted_day = convert2NaxNumber(d.total_supplied_nax);
-        let voted_day = convert2NaxNumber(d.destroyed_nax); // fake
+        let total_burned_day = convert2NaxNumber(d.total_destroyed_nax);
+        let total_minted_day = convert2NaxNumber(d.total_distributed_nax);
+        let voted_day = convert2NaxNumber(d.total_vote_nax);
 
         let price_nas_day = d.nas_price;
         let price_nax_day = d.nax_price;
-        let rate_of_return_day = d.nas_price * 3; //fake
+        let rate_of_return_day = d.avg_reward_rate;
 
         total_burned_data.push(total_burned_day);
         total_minted_data.push(total_minted_day);
@@ -109,7 +109,7 @@ export default {
         rate_of_return_data.push(rate_of_return_day);
 
         d["date"] = moment(d.end_timestamp).format("MMM D");
-        d["rate_of_return"] = d.nas_price * 3; //fake
+        d["rate_of_return"] = rate_of_return_day;
 
         dates.push(d["date"]);
 
@@ -124,7 +124,7 @@ export default {
       // const max_dstaking = _.max(dstakingData);
       // const max_estimate = _.max(estimateData);
       const max_price_nas = _.max(price_nas_data);
-      const max_price_nax = _.max(price_nax_data);
+      // const max_price_nax = _.max(price_nax_data);
 
       const tooltipFormatter = (params, ticket, callback) => {
         const findItem = _.find(data_limit, { date: params.name });
@@ -178,9 +178,7 @@ export default {
           left: "50",
           right: "80"
         },
-        // title: {
-        //   text: "堆叠区域图"
-        // },
+
         legend: {
           left: "center",
           top: "top",
@@ -256,7 +254,7 @@ export default {
             type: "value",
             position: "left",
             // max: max_price_nax,
-            interval: 0.3,
+            interval: 0.4,
             axisLine: {
               show: false
             },
