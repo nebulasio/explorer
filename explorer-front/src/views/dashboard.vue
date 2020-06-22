@@ -847,6 +847,10 @@ $nax-price-card-height: 520px;
         <NaxMarketCard />
       </div>
 
+      <div class="row row1">
+        <NebEcoChart />
+      </div>
+
       <!-- row 3: node data -->
       <div class="row row1">
         <TopNodesChart />
@@ -1019,6 +1023,7 @@ import AddressGrowthChart from "@/components/AddressGrowthChart";
 import NaxMarketCard from "@/components/NaxMarketCard";
 import NasMarketCard from "@/components/NasMarketCard";
 import NodeStaticCard from "@/components/NodeStaticCard";
+import NebEcoChart from "@/components/NebEcoChart";
 
 module.exports = {
   components: {
@@ -1028,7 +1033,8 @@ module.exports = {
     AddressGrowthChart,
     NaxMarketCard,
     NasMarketCard,
-    NodeStaticCard
+    NodeStaticCard,
+    NebEcoChart
   },
   data() {
     return {

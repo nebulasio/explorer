@@ -1,16 +1,16 @@
 <template>
-  <div class="dashboard-card col-12 col-lg-6">
+  <div class="dashboard-card col-12">
     <div class="item-bg">
       <div class="header">
         <div class="title">
           Nax distribution
         </div>
-        <div class="details">
+        <!-- <div class="details">
           <span v-if="nextMintBlock"
             >Next Minted Block: {{ nextMintBlock }}</span
           >
           <span v-if="leftTime">Time Left: {{ leftTime }}</span>
-        </div>
+        </div> -->
       </div>
 
       <div class="chart-container">
@@ -39,7 +39,7 @@ import { convert2NasNumber, convert2NaxNumber } from "@/utils/neb";
 import { toBigNumString, toLocaleString } from "@/utils/number";
 
 export default {
-  name: "DStakingChart",
+  name: "NebEcoChart",
   components: {
     vchart: ECharts
   },
@@ -55,41 +55,42 @@ export default {
     const res = await this.$api.home.getNaxHistory();
 
     this.data = res.list;
+
     // console.log("getNaxHistory", this.data);
 
-    this.summary = await this.$api.home.getDStakingSummary();
+    // this.summary = await this.$api.home.getDStakingSummary();
 
-    this.newBlock = await this.$api.home.getNewBlock();
+    // this.newBlock = await this.$api.home.getNewBlock();
   },
 
   computed: {
-    nextMintBlock() {
-      return this.summary && toLocaleString(this.summary.endHeight);
-    },
+    // nextMintBlock() {
+    //   return this.summary && toLocaleString(this.summary.endHeight);
+    // },
 
-    leftTime() {
-      if (!this.summary || !this.newBlock) {
-        return null;
-      }
+    // leftTime() {
+    //   if (!this.summary || !this.newBlock) {
+    //     return null;
+    //   }
 
-      let nextIssueBlockHeight = this.summary.endHeight;
-      let currentBlockHeight = this.newBlock[0].height;
+    //   let nextIssueBlockHeight = this.summary.endHeight;
+    //   let currentBlockHeight = this.newBlock[0].height;
 
-      if (nextIssueBlockHeight - currentBlockHeight <= 0) {
-        return "Distributing NAX Now";
-      }
-      var duration = moment.duration(
-        (nextIssueBlockHeight - currentBlockHeight) * 15000,
-        "milliseconds"
-      );
-      return (
-        (duration.days() * 24 + duration.hours()).pad(2) +
-        ":" +
-        duration.minutes().pad(2) +
-        ":" +
-        duration.seconds().pad(2)
-      );
-    },
+    //   if (nextIssueBlockHeight - currentBlockHeight <= 0) {
+    //     return "Distributing NAX Now";
+    //   }
+    //   var duration = moment.duration(
+    //     (nextIssueBlockHeight - currentBlockHeight) * 15000,
+    //     "milliseconds"
+    //   );
+    //   return (
+    //     (duration.days() * 24 + duration.hours()).pad(2) +
+    //     ":" +
+    //     duration.minutes().pad(2) +
+    //     ":" +
+    //     duration.seconds().pad(2)
+    //   );
+    // },
 
     chartOptions() {
       if (!this.data) return null;
@@ -100,9 +101,13 @@ export default {
       let dstakingData = [];
       let estimateData = [];
       let mintData = [];
+
       let total_burned_data = [];
       let total_minted_data = [];
       let voted_data = [];
+
+      let price_nas_data = [];
+      let price_nax_data = [];
 
       let dates = [];
 
@@ -115,9 +120,14 @@ export default {
         let total_minted_day = convert2NaxNumber(d.total_supplied_nax);
         let voted_day = convert2NaxNumber(d.destroyed_nax); // fake
 
+        let price_nas_day = d.nas_price;
+        let price_nax_day = d.nax_price;
+
         total_burned_data.push(total_burned_day);
         total_minted_data.push(total_minted_day);
         voted_data.push(voted_day);
+        price_nas_data.push(price_nas_day);
+        price_nax_data.push(price_nax_day);
 
         d["date"] = moment(d.end_timestamp).format("MMM D");
 
@@ -133,6 +143,8 @@ export default {
       // const max_mint = _.max(mintData);
       // const max_dstaking = _.max(dstakingData);
       // const max_estimate = _.max(estimateData);
+      const max_price_nas = _.max(price_nas_data);
+      const max_price_nax = _.max(price_nax_data);
 
       const tooltipFormatter = (params, ticket, callback) => {
         const findItem = _.find(data_limit, { date: params.name });
@@ -166,12 +178,12 @@ export default {
         return text;
       };
 
-      const legends = ["Total Burned NAX", "Total Minted NAX", "Voted NAX"];
+      const legends = ["NAS Price USDT", "NAX Price USDT"];
 
       const options = {
         grid: {
-          left: "12%",
-          right: "3%"
+          left: "3%",
+          right: "100"
         },
         // title: {
         //   text: "堆叠区域图"
@@ -185,7 +197,7 @@ export default {
           },
           data: legends
         },
-        color: ["#343B4B", "#3DCC85", "#0BB160"],
+        color: ["#3DCC85", "#FF7733", "#595C63"],
         xAxis: {
           data: dates,
           axisLabel: {
@@ -203,24 +215,40 @@ export default {
         yAxis: [
           {
             type: "value",
-            // name: "mint NAX",
-            // name: "NAX",
-            nameTextStyle: {
-              color: "#B2B2B2"
+            position: "right",
+            axisLine: {
+              show: false
             },
-            // min: 0,
-            // max: max_estimate,
-            position: "left",
+            max: max_price_nas,
+            interval: 0.1,
+            axisLabel: {
+              textStyle: {
+                color: "#3DCC85"
+              },
+              //   margin: 0,
+              formatter: function(value, index) {
+                return toBigNumString(value);
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: false
+            }
+          },
+          {
+            type: "value",
+            position: "right",
+            offset: 50,
+            // max: max_price_nax,
+            interval: 0.0005,
             axisLine: {
               show: false
             },
             axisLabel: {
               textStyle: {
-                color: "#B2B2B2"
-              },
-              //   margin: 0,
-              formatter: function(value, index) {
-                return toBigNumString(value);
+                color: "#FF7733"
               }
             },
             axisTick: {
@@ -235,21 +263,20 @@ export default {
           {
             name: legends[0],
             type: "line",
-            areaStyle: {},
-            data: total_burned_data
+            data: price_nas_data
           },
           {
             name: legends[1],
             type: "line",
-            areaStyle: {},
-            data: total_minted_data
-          },
-          {
-            name: legends[2],
-            type: "line",
-            areaStyle: {},
-            data: voted_data
+            data: price_nax_data,
+            yAxisIndex: 1
           }
+          //   {
+          //     name: legends[2],
+          //     type: "line",
+          //     areaStyle: {},
+          //     data: voted_data
+          //   }
         ],
         tooltip: {
           trigger: "item",
