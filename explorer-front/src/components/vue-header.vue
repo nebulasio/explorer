@@ -12,6 +12,10 @@
     color: #333;
   }
 
+  form {
+    width: 350px !important;
+  }
+
   .navbar-nav {
     & > li {
       & > a {
@@ -64,7 +68,6 @@ form {
   border-radius: 5px;
   margin-left: 20px;
   padding: 6px 0 6px 10px;
-  width: 350px;
   background-color: white;
 
   &.form-inline {

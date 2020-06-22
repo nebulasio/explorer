@@ -6,14 +6,14 @@
       <!-- <h2 class="subtitle">
         NAS distribution
       </h2> -->
+      <h3 class="title">
+        <span>Total Supply: {{ totalSupply }}</span>
+        <span>Total Circulation: {{ totalCirculation }}</span>
+        <span>Price: {{ nasPrice }}</span>
+      </h3>
       <div class="chart-container">
-        <h3 class="title">
-          Total Supply: {{ totalSupply }} | Total Circulation:
-          {{ totalCirculation }} ｜ Price:
-          {{ nasPrice }}
-        </h3>
         <vchart
-          class="pie-chart mt-5"
+          class="pie-chart"
           :options="chartOption"
           :autoResize="true"
         ></vchart>
@@ -24,6 +24,7 @@
       <b-table
         striped
         hover
+        responsive
         :fields="foundationAddress.fields"
         :items="foundationAddrData"
       >
@@ -223,17 +224,17 @@ export default {
           {
             name: "访问来源",
             type: "pie",
-            radius: ["25%", "55%"],
+            radius: ["25%", "50%"],
             label: {
               formatter: "{a|{b}}\n{b|{c} NAS} {per|{d}%}  ",
               rich: {
                 a: {
                   color: "#000",
-                  fontSize: 15,
-                  lineHeight: 25
+                  fontSize: 14,
+                  lineHeight: 20
                 },
                 b: {
-                  fontSize: 14,
+                  fontSize: 12,
                   color: "#000"
                 },
                 per: {
@@ -292,6 +293,23 @@ export default {
   height: 100%;
 }
 
+.title {
+  span {
+    @include media("<=desktop") {
+      font-size: 16px;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    @include media(">desktop") {
+      padding: 0 1rem;
+      &:not(:last-child) {
+        border-right: 1px solid #777;
+      }
+    }
+  }
+}
+
 .subtitle {
   margin-top: 30px;
   font-size: 24px;
@@ -299,18 +317,22 @@ export default {
   color: #000;
 }
 
-.chart-container {
-  .title {
-    margin-top: 15px;
-    font-size: 20px;
-  }
+.title {
+  margin-top: 15px;
+  font-size: 20px;
+}
 
+.chart-container {
+  @include media("<=desktop") {
+    width: calc(100%);
+    overflow-x: scroll;
+  }
   .pie-chart {
-    margin: 0 auto;
+    margin: 0 auto !important;
   }
 
   .echarts {
-    width: 1100px;
+    width: 900px;
     height: 500px;
   }
 }

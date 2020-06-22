@@ -3,6 +3,7 @@
   flex-shrink: 0;
   width: 100%;
   color: #333333;
+  background: #f5f6fa;
 
   @include media("<=desktop") {
     padding: 1rem;
