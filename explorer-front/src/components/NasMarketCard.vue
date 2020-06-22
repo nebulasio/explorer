@@ -56,7 +56,7 @@
               {{ this.totalCirculation }}
               <span class="suffix">NAS</span>
             </div>
-            <router-link class="link link-style" :to="fragApi + '/monitor/'">
+            <router-link class="link link-style" :to="'/distribution'">
               View NAS Distribution &gt;
             </router-link>
           </div>
