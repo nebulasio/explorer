@@ -60,10 +60,14 @@ $nax-price-card-height: 520px;
       font-size: 20px;
       font-weight: 600;
     }
+
+    .details {
+      color: #bcbec1;
+    }
   }
 
   .detail {
-    margin-top: 2rem;
+    // margin-top: 2rem;
     font-size: 60px;
     display: flex;
     align-items: baseline;
@@ -79,13 +83,19 @@ $nax-price-card-height: 520px;
       }
     }
 
-    .prefix {
+    .prefix,
+    .suffix {
       font-size: 28px;
     }
 
     .price-up,
     .price-down {
       font-size: 28px;
+      margin-left: 1rem;
+
+      .suffix {
+        font-size: 20px;
+      }
     }
 
     .price-up {
@@ -100,13 +110,24 @@ $nax-price-card-height: 520px;
   .market {
     margin-top: auto;
     .row {
+      label {
+        color: #bcbec1;
+      }
+
       a {
         color: #798bdf;
         font-size: 14px;
       }
 
+      .prefix,
+      .suffix {
+        font-size: 14px;
+      }
+
       .col-4,
       .col-md-4 {
+        padding: 0;
+
         & > div {
           font-size: 16px;
           @include media("<=desktop") {
@@ -138,7 +159,7 @@ $nax-price-card-height: 520px;
   }
 
   .chart-container {
-    margin-top: 2rem;
+    margin-top: 0;
     @include media("<=desktop") {
       margin-top: 1rem;
     }

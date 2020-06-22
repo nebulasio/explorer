@@ -20,29 +20,43 @@
             'price-down': market.trends <= 0,
             'price-up': market.trends > 0
           }"
-          >{{ market.trends > 0 ? "+" : "-" }}{{ priceChange }}</span
-        >
+          >{{ market.trends > 0 ? "+" : "-" }}{{ priceChange
+          }}<span class="suffix">%</span>
+        </span>
       </div>
       <!-- market realtime data -->
       <div class="market">
         <div class="row">
           <div class="col-6">
             <label>{{ $t("dashboardNasMarketCap") }}</label>
-            <div>{{ marketCap }}</div>
+            <div>
+              <span class="prefix">$</span>
+              {{ marketCap }}
+            </div>
           </div>
           <div class="col-6">
-            <label>Total Supply</label>
-            <div>{{ totalSupply }}</div>
+            <label>Total Supply in Plan</label>
+            <div>
+              {{ totalSupply }}
+
+              <span class="suffix">NAX</span>
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="col-6">
             <label>{{ $t("dashboardNasMarketVol") }}</label>
-            <div>{{ volume24h }}</div>
+            <div>
+              <span class="prefix">$</span>
+              {{ volume24h }}
+            </div>
           </div>
           <div class="col-6">
-            <label>Circulating Supply</label>
-            <div>{{ totalCirculation }}</div>
+            <label>Total Supply / Circulating Supply</label>
+            <div>
+              {{ totalCirculation }}
+              <span class="suffix">NAX</span>
+            </div>
           </div>
         </div>
 
@@ -50,7 +64,10 @@
           <div class="col-6">
             <label>dStaking NAS</label>
             <!-- <div v-if="market">${{ numberAddComma(market.volume24h) }}</div> -->
-            <div>{{ totalStaking }}</div>
+            <div>
+              {{ totalStaking }}
+              <span class="suffix">NAS</span>
+            </div>
 
             <a target="__blank" href="https://dstaking.nebulas.io/"
               >dStake NAS and mint NAX now &gt;
@@ -58,7 +75,11 @@
           </div>
           <div class="col-6">
             <label>dStaking Rate</label>
-            <div>{{ stakingRate }}</div>
+            <div>
+              {{ stakingRate }}
+
+              <span class="suffix">%</span>
+            </div>
           </div>
         </div>
       </div>
@@ -86,26 +107,26 @@ export default {
       return moment(this.market.updatedAt).fromNow();
     },
     stakingRate() {
-      return (this.market.stakingRate * 100).toFixed(2) + "%";
+      return (this.market.stakingRate * 100).toFixed(2);
     },
     priceChange() {
-      return this.market && `${toLocaleString(this.market.change24h)}%`;
+      return this.market && `${toLocaleString(this.market.change24h)}`;
     },
     marketCap() {
-      return `$${toLocaleString(this.market.marketCap)}`;
+      return `${toLocaleString(this.market.marketCap)}`;
     },
 
     volume24h() {
-      return `$${toLocaleString(this.market.volume24h)}`;
+      return `${toLocaleString(this.market.volume24h)}`;
     },
     totalSupply() {
-      return convert2NaxStr(this.market.totalSupply);
+      return convert2NaxStr(this.market.totalSupply, "");
     },
     totalCirculation() {
-      return convert2NaxStr(this.market.totalCirculation);
+      return convert2NaxStr(this.market.totalCirculation, "");
     },
     totalStaking() {
-      return convert2NasStr(this.market.totalStaking);
+      return convert2NasStr(this.market.totalStaking, "");
     }
   }
 };

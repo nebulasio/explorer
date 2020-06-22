@@ -6,7 +6,7 @@
           Avg. Annualized Rate of Return
           <b-icon
             v-b-tooltip.hover
-            title="7天出块收益/nax平均投票金额*365/7天"
+            title="NAS rewards in 7 days / avg. voted NAX x 365d / 7d"
             icon="question-circle"
           ></b-icon>
         </div>
@@ -18,6 +18,7 @@
 
       <div class="detail">
         <span>{{ avgRewardRate }} </span>
+        <span class="suffix">%</span>
       </div>
       <!-- market realtime data -->
       <div class="market container">
@@ -26,6 +27,7 @@
             <label>Total Rewards</label>
             <div>
               {{ totalRewardValue }}
+              <span class="suffix">NAS</span>
             </div>
           </div>
           <div class="col-6 col-md-4">
@@ -40,12 +42,19 @@
         <div class="row">
           <div class="col-6 col-md-4">
             <label>Voted for Nodes</label>
-            <div>{{ totalVoteValue }}</div>
+            <div>
+              {{ totalVoteValue }}
+              <span class="suffix">NAX</span>
+            </div>
             <a href="#">View all nodes &gt; </a>
           </div>
           <div class="col-6 col-md-4">
             <label>Voting Rate</label>
-            <div>{{ voteRate }}</div>
+            <div>
+              {{ voteRate }}
+
+              <span class="suffix">%</span>
+            </div>
           </div>
           <div class="col-6 col-md-4">
             <label>Governance Cycle</label>
@@ -74,22 +83,16 @@ export default {
   },
   computed: {
     avgRewardRate() {
-      return (
-        this.summary && toLocaleString(this.summary.avgRewardRate7 * 100) + "%"
-      );
+      return this.summary && toLocaleString(this.summary.avgRewardRate7 * 100);
     },
     totalRewardValue() {
-      return (
-        this.summary && toLocaleString(this.summary.totalRewardValue) + " NAS"
-      );
+      return this.summary && toLocaleString(this.summary.totalRewardValue);
     },
     totalVoteValue() {
-      return (
-        this.summary && toLocaleString(this.summary.totalVoteValue) + " NAX"
-      );
+      return this.summary && toLocaleString(this.summary.totalVoteValue);
     },
     voteRate() {
-      return this.summary && toLocaleString(this.summary.voteRate * 100) + "%";
+      return this.summary && toLocaleString(this.summary.voteRate * 100);
     },
     nodeCount() {
       return this.summary && this.summary.nodeCount;

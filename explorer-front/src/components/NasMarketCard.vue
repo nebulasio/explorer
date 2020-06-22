@@ -20,29 +20,42 @@
             'price-down': market.trends <= 0,
             'price-up': market.trends > 0
           }"
-          >{{ market.trends > 0 ? "+" : "-" }}{{ priceChange }}</span
-        >
+          >{{ market.trends > 0 ? "+" : "-" }}{{ priceChange
+          }}<span class="suffix">%</span>
+        </span>
       </div>
       <!-- market realtime data -->
       <div class="market">
         <div class="row">
           <div class="col-6 col-md-6">
             <label>{{ $t("dashboardNasMarketCap") }}</label>
-            <div>{{ this.marketCap }}</div>
+            <div>
+              <span class="prefix">$</span>
+              {{ this.marketCap }}
+            </div>
           </div>
           <div class="col-6 col-md-6">
             <label>Total Supply</label>
-            <div>{{ this.totalSupply }}</div>
+            <div>
+              {{ this.totalSupply }}
+              <span class="suffix">NAS</span>
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="col-6 col-md-6">
             <label>{{ $t("dashboardNasMarketVol") }}</label>
-            <div>{{ this.volume24h }}</div>
+            <div>
+              <span class="prefix">$</span>
+              {{ this.volume24h }}
+            </div>
           </div>
           <div class="col-6 col-md-6">
             <label>Circulating Supply</label>
-            <div>{{ this.totalCirculation }}</div>
+            <div>
+              {{ this.totalCirculation }}
+              <span class="suffix">NAS</span>
+            </div>
             <router-link class="link link-style" :to="fragApi + '/monitor/'">
               View NAS Distribution &gt;
             </router-link>
@@ -73,26 +86,26 @@ export default {
       return moment(this.market.updatedAt).fromNow();
     },
     stakingRate() {
-      return this.market.stakingRate * 100 + "%";
+      return this.market.stakingRate * 100;
     },
     marketCap() {
-      return `$${toLocaleString(this.market.marketCap)}`;
+      return `${toLocaleString(this.market.marketCap)}`;
     },
     priceChange() {
-      return this.market && `${toLocaleString(this.market.change24h)}%`;
+      return this.market && `${toLocaleString(this.market.change24h)}`;
     },
 
     volume24h() {
-      return `$${toLocaleString(this.market.volume24h)}`;
+      return `${toLocaleString(this.market.volume24h)}`;
     },
     totalSupply() {
-      return convert2NasStr(this.market.totalSupply);
+      return convert2NasStr(this.market.totalSupply, "");
     },
     totalCirculation() {
-      return convert2NasStr(this.market.totalCirculation);
+      return convert2NasStr(this.market.totalCirculation, "");
     },
     totalStaking() {
-      return convert2NasStr(this.market.totalStaking);
+      return convert2NasStr(this.market.totalStaking, "");
     }
   }
 };
