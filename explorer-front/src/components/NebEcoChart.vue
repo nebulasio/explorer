@@ -6,10 +6,9 @@
           Nax distribution
         </div>
         <!-- <div class="details">
-          <span v-if="nextMintBlock"
-            >Next Minted Block: {{ nextMintBlock }}</span
-          >
-          <span v-if="leftTime">Time Left: {{ leftTime }}</span>
+          <span @click="selectDate(d)" :key="i" v-for="(d, i) in [7, 15, 30]">
+            {{ d }} d
+          </span>
         </div> -->
       </div>
 
@@ -62,36 +61,13 @@ export default {
 
     // this.newBlock = await this.$api.home.getNewBlock();
   },
+  methods: {
+    selectDate(d) {
+      console.log(d);
+    }
+  },
 
   computed: {
-    // nextMintBlock() {
-    //   return this.summary && toLocaleString(this.summary.endHeight);
-    // },
-
-    // leftTime() {
-    //   if (!this.summary || !this.newBlock) {
-    //     return null;
-    //   }
-
-    //   let nextIssueBlockHeight = this.summary.endHeight;
-    //   let currentBlockHeight = this.newBlock[0].height;
-
-    //   if (nextIssueBlockHeight - currentBlockHeight <= 0) {
-    //     return "Distributing NAX Now";
-    //   }
-    //   var duration = moment.duration(
-    //     (nextIssueBlockHeight - currentBlockHeight) * 15000,
-    //     "milliseconds"
-    //   );
-    //   return (
-    //     (duration.days() * 24 + duration.hours()).pad(2) +
-    //     ":" +
-    //     duration.minutes().pad(2) +
-    //     ":" +
-    //     duration.seconds().pad(2)
-    //   );
-    // },
-
     chartOptions() {
       if (!this.data) return null;
 
@@ -133,6 +109,7 @@ export default {
         rate_of_return_data.push(rate_of_return_day);
 
         d["date"] = moment(d.end_timestamp).format("MMM D");
+        d["rate_of_return"] = d.nas_price * 3; //fake
 
         dates.push(d["date"]);
 
@@ -152,29 +129,38 @@ export default {
       const tooltipFormatter = (params, ticket, callback) => {
         const findItem = _.find(data_limit, { date: params.name });
 
-        const dstaking_rate =
-          (findItem.pledged_nas / findItem.total_supplied_nas) * 100;
+        // const dstaking_rate =
+        //   (findItem.pledged_nas / findItem.total_supplied_nas) * 100;
 
-        const minted = toBigNumString(
-          convert2NaxNumber(findItem.distributed_nax),
-          2
-        );
+        // const minted = toBigNumString(
+        //   convert2NaxNumber(findItem.distributed_nax),
+        //   2
+        // );
 
-        const burned = toBigNumString(
-          convert2NaxNumber(findItem.destroyed_nax),
-          2
-        );
+        // const burned = toBigNumString(
+        //   convert2NaxNumber(findItem.destroyed_nax),
+        //   2
+        // );
 
-        const dstaking_amount = toBigNumString(
-          convert2NasNumber(findItem.pledged_nas)
-        );
+        // const dstaking_amount = toBigNumString(
+        //   convert2NasNumber(findItem.pledged_nas)
+        // );
+
+        let price_nas = findItem.nas_price
+          ? findItem.nas_price.toFixed(4)
+          : "-";
+        let price_nax = findItem.nax_price
+          ? findItem.nax_price.toFixed(6)
+          : "-";
+        let rate_of_return = findItem.rate_of_return
+          ? `${(findItem.rate_of_return * 100).toFixed(2)}%`
+          : "-";
 
         const text = `
             <div>${params.name}</div>
-            <div>Minted:${minted} NAX</div>
-            <div>Burned:${burned} NAX</div>
-            <div>dStaking NAS:${dstaking_amount} NAS</div>
-            <div>dStaking rate:${dstaking_rate.toFixed(2)}%</div>
+            <div>Nas Price:${price_nas} USDT</div>
+            <div>Nax Price:${price_nax} USDT</div>
+            <div>Avg. Annualized Rate of Return:${rate_of_return}</div>
             <div class=echart-down-arrow></div>
           `;
 
@@ -190,7 +176,7 @@ export default {
       const options = {
         grid: {
           left: "50",
-          right: "100"
+          right: "80"
         },
         // title: {
         //   text: "堆叠区域图"
@@ -247,7 +233,7 @@ export default {
           {
             type: "value",
             position: "right",
-            offset: 50,
+            offset: 30,
             // max: max_price_nax,
             interval: 0.0005,
             axisLine: {
@@ -275,10 +261,10 @@ export default {
             },
             axisLabel: {
               textStyle: {
-                color: "#595C63"
+                color: "#B2B2B2"
               },
               formatter: function(value, index) {
-                return `${value * 100}%`;
+                return `${(value * 100).toFixed(0)}%`;
               }
             },
             axisTick: {
@@ -293,17 +279,20 @@ export default {
           {
             name: legends[0],
             type: "line",
+            smooth: true,
             data: price_nas_data
           },
           {
             name: legends[1],
             type: "line",
+            smooth: true,
             data: price_nax_data,
             yAxisIndex: 1
           },
           {
             name: legends[2],
             type: "line",
+            smooth: true,
             areaStyle: {},
             data: rate_of_return_data,
             yAxisIndex: 2

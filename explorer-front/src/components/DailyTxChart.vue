@@ -184,11 +184,13 @@ export default {
               day: "numeric"
             });
 
+            let price_nas = Number(findItem["price"]).toFixed(4);
+
             const text = `
             ${dateStr}
             <div>${vm.$t("dashboardDailyTransactionsSubtitle")}
             ${utility.numberAddComma(params.value)}</div>
-            <div>Nas price: $${findItem["price"]}</div>
+            <div>Nas price: $${price_nas}</div>
             <div class=echart-down-arrow></div>
             `;
 
