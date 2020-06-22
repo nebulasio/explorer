@@ -1,24 +1,15 @@
 <style lang="scss" scoped>
 .vue-header {
-  height: 70px;
+  // height: 70px;
   .container {
     padding-top: 5px;
     padding-bottom: 5px;
-    background-color: #fff;
+    // background-color: #fff;
     color: #333333;
   }
 
   a {
     color: #333;
-  }
-
-  form {
-    border: 1px solid #d7d7d7;
-    border-radius: 5px;
-    margin-left: 20px;
-    padding: 6px 0 6px 10px;
-    width: 350px;
-    background-color: white;
   }
 
   .navbar-nav {
@@ -50,7 +41,7 @@
   }
 }
 
-.navbar-collapse {
+.navbar-links {
   justify-content: space-around;
 }
 
@@ -66,28 +57,45 @@
   visibility: hidden;
 }
 
-.vue-header .form-inline img {
-  margin-right: 6px;
+// search input
+
+form {
+  border: 1px solid #d7d7d7;
+  border-radius: 5px;
+  margin-left: 20px;
+  padding: 6px 0 6px 10px;
+  width: 350px;
+  background-color: white;
+
+  &.form-inline {
+    align-items: center;
+    display: flex;
+    width: 100%;
+    margin: 10px 0;
+    img {
+      margin-right: 6px;
+    }
+
+    input {
+      outline: none;
+      border: none;
+      flex: 1;
+    }
+  }
 }
 
-.vue-header .form-inline input {
-  outline: none;
-  border: none;
-  flex: 1;
-}
-
-.vue-header input::placeholder {
+input::placeholder {
   font-size: 13px;
   line-height: 20px;
 }
 
-.vue-header .navbar-nav .nav-item:nth-child(2) a img {
-  margin-top: -5px;
-}
+// .vue-header .navbar-nav .nav-item:nth-child(2) a img {
+//   margin-top: -5px;
+// }
 
-.vue-header .navbar-nav .nav-item:nth-child(3) a img {
-  margin-top: -1.5px;
-}
+// .vue-header .navbar-nav .nav-item:nth-child(3) a img {
+//   margin-top: -1.5px;
+// }
 
 @media (min-width: 992px) {
   .vue-header .navbar-nav > li > a {
@@ -234,143 +242,328 @@
 </style>
 
 <template>
-  <nav class="navbar navbar-expand-lg vue-header">
-    <div class="container">
-      <div>
-        <router-link v-bind:to="fragApi + '/'" class="navbar-brand">
-          <img class="nas-logo" src="/static/img/nebulas-logo.png" alt />
-          <span>Explorer</span>
-        </router-link>
+  <div>
+    <!-- navbar desktop -->
+    <nav
+      v-if="!$isMobile()"
+      class="navbar navbar-light navbar-expand-lg vue-header"
+    >
+      <div class="container">
+        <div class="home">
+          <router-link v-bind:to="fragApi + '/'" class="navbar-brand">
+            <img class="nas-logo" src="/static/img/nebulas-logo.png" alt />
+            <span>Explorer</span>
+          </router-link>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-links mr-28">
+          <ul class="navbar-nav">
+            <li
+              class="dropdown nav-item"
+              v-bind:class="{ active: $route.meta.headerActive == 2 }"
+              id="blockchain-menu"
+            >
+              <a
+                class="nav-link"
+                href="#"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Blockchains <i class="iconfont icon-down"></i>
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-long"
+                aria-labelledby="header-dropdown-blockchain"
+              >
+                <b-row>
+                  <b-col>
+                    <ul>
+                      <li>
+                        <router-link
+                          class="dropdown-item"
+                          v-bind:to="fragApi + '/blocks'"
+                        >
+                          {{ $t("headerBlocksSubmenu") }}
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link
+                          class="dropdown-item"
+                          v-bind:to="fragApi + '/txs'"
+                        >
+                          {{ $t("headerTransactionsSubmenu") }}
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link
+                          class="dropdown-item"
+                          v-bind:to="fragApi + '/txs/pending'"
+                        >
+                          {{ $t("headerPendingTransactionsSubmenu") }}
+                        </router-link>
+                      </li>
+                    </ul>
+                  </b-col>
+                  <b-col>
+                    <ul>
+                      <li>
+                        <router-link
+                          class="dropdown-item"
+                          v-bind:to="fragApi + '/accounts'"
+                        >
+                          {{ $t("headerAccountsSubmenu") }}
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link
+                          class="dropdown-item"
+                          v-bind:to="fragApi + '/distribution'"
+                        >
+                          <span class="title">NAS Distribution</span>
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link
+                          class="dropdown-item"
+                          v-bind:to="fragApi + '/contracts'"
+                        >
+                          Smart Contract
+                        </router-link>
+                      </li>
+                    </ul>
+                  </b-col>
+                  <b-col>
+                    <ul>
+                      <li>
+                        <router-link
+                          class="dropdown-item"
+                          :to="'/token/n1etmdwczuAUCnMMvpGasfi8kwUbb2ddvRJ'"
+                        >
+                          NAX
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link class="dropdown-item" :to="'/dstaking'">
+                          dStaking
+                        </router-link>
+                      </li>
+                    </ul>
+                  </b-col>
+                </b-row>
+              </div>
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="#"
+                role="button"
+                v-on:click.prevent="apiSwitch()"
+              >
+                {{ MenuMisc }}
+                <i class="iconfont icon-switch"></i>
+              </a>
+            </li>
+          </ul>
+
+          <form class="form-inline" v-on:submit.prevent="onSubmit">
+            <img src=/static/img/icon_search.png width=16 alt="" />
+            <input
+              class="mr-sm-2 font-12"
+              type="search"
+              :placeholder="$t('headerSearchTool')"
+              v-model="search"
+            />
+          </form>
+
+          <ul class="navbar-nav">
+            <li class="dropdown nav-item">
+              <a
+                class="nav-link"
+                href="#"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="iconfont icon-menu1"></i>
+              </a>
+              <div class="dropdown-menu">
+                <ul>
+                  <li>
+                    <a
+                      target="__blank"
+                      href="https://explorer.nebulas.io/"
+                      class="dropdown-item"
+                    >
+                      <span class="title">Explorer</span>
+                      <span class="desc">Blockchain, dStaking</span>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      target="__blank"
+                      href="https://node.nebulas.io/"
+                      class="dropdown-item"
+                    >
+                      <span class="title">Nodes</span>
+                      <span class="desc">POD Consensus</span>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      target="__blank"
+                      href="https://go.nebulas.io"
+                      class="dropdown-item"
+                    >
+                      <span class="title">Go Nebulas</span>
+                      <span class="desc">Community Collaboration</span>
+                    </a>
+                  </li>
+
+                  <li class="short">
+                    <a
+                      target="__blank"
+                      href="https://nano.nebulas.io"
+                      class="dropdown-item"
+                    >
+                      <span>APP</span>
+                    </a>
+                  </li>
+
+                  <li class="short">
+                    <a
+                      target="__blank"
+                      href="https://wiki.nebulas.io/"
+                      class="dropdown-item"
+                    >
+                      <span>Documents</span>
+                    </a>
+                  </li>
+
+                  <li class="short">
+                    <a
+                      target="__blank"
+                      href="https://community.nebulas.io"
+                      class="dropdown-item"
+                    >
+                      <span>Forum</span>
+                    </a>
+                  </li>
+
+                  <li class="short">
+                    <a
+                      target="__blank"
+                      href="https://nebulas.io"
+                      class="dropdown-item"
+                    >
+                      <span>Nebulas.io</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="dropdown nav-item">
+              <LocaleSwitcher />
+            </li>
+          </ul>
+        </div>
       </div>
+    </nav>
+
+    <!-- nav mobile -->
+    <nav
+      v-if="$isMobile()"
+      class="navbar navbar-expand-lg navbar-light bg-light"
+    >
+      <router-link v-bind:to="fragApi + '/'" class="navbar-brand">
+        <img class="nas-logo" src="/static/img/nebulas-logo.png" alt />
+        <span>Explorer</span>
+      </router-link>
 
       <button
         class="navbar-toggler"
-        localize="aria-label"
         type="button"
         data-toggle="collapse"
         data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent"
         aria-expanded="false"
         aria-label="Toggle navigation"
-        id="headerToggleNavigation"
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse mr-28" id="navbarSupportedContent">
-        <ul class="navbar-nav">
-          <li
-            class="dropdown nav-item"
-            v-bind:class="{ active: $route.meta.headerActive == 2 }"
-            id="blockchain-menu"
-          >
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item dropdown">
             <a
-              class="nav-link"
+              class="nav-link dropdown-toggle"
               href="#"
+              id="navbarDropdown"
               role="button"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Blockchains <i class="iconfont icon-down"></i>
+              Blockchains
             </a>
-            <div
-              class="dropdown-menu dropdown-menu-long"
-              aria-labelledby="header-dropdown-blockchain"
-            >
-              <b-row>
-                <b-col>
-                  <ul>
-                    <li>
-                      <router-link
-                        class="dropdown-item"
-                        v-bind:to="fragApi + '/blocks'"
-                      >
-                        {{ $t("headerBlocksSubmenu") }}
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link
-                        class="dropdown-item"
-                        v-bind:to="fragApi + '/txs'"
-                      >
-                        {{ $t("headerTransactionsSubmenu") }}
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link
-                        class="dropdown-item"
-                        v-bind:to="fragApi + '/txs/pending'"
-                      >
-                        {{ $t("headerPendingTransactionsSubmenu") }}
-                      </router-link>
-                    </li>
-                  </ul>
-                </b-col>
-                <b-col>
-                  <ul>
-                    <li>
-                      <router-link
-                        class="dropdown-item"
-                        v-bind:to="fragApi + '/accounts'"
-                      >
-                        {{ $t("headerAccountsSubmenu") }}
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link
-                        class="dropdown-item"
-                        v-bind:to="fragApi + '/distribution'"
-                      >
-                        <span class="title">NAS Distribution</span>
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link
-                        class="dropdown-item"
-                        v-bind:to="fragApi + '/contracts'"
-                      >
-                        Smart Contract
-                      </router-link>
-                    </li>
-                  </ul>
-                </b-col>
-                <b-col>
-                  <ul>
-                    <li>
-                      <router-link
-                        class="dropdown-item"
-                        :to="'/token/n1etmdwczuAUCnMMvpGasfi8kwUbb2ddvRJ'"
-                      >
-                        NAX
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link class="dropdown-item" :to="'/dstaking'">
-                        dStaking
-                      </router-link>
-                    </li>
-                  </ul>
-                </b-col>
-              </b-row>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <router-link
+                class="dropdown-item"
+                v-bind:to="fragApi + '/blocks'"
+              >
+                {{ $t("headerBlocksSubmenu") }}
+              </router-link>
+              <router-link class="dropdown-item" v-bind:to="fragApi + '/txs'">
+                {{ $t("headerTransactionsSubmenu") }}
+              </router-link>
+              <router-link
+                class="dropdown-item"
+                v-bind:to="fragApi + '/txs/pending'"
+              >
+                {{ $t("headerPendingTransactionsSubmenu") }}
+              </router-link>
+
+              <div class="dropdown-divider"></div>
+              <router-link
+                class="dropdown-item"
+                v-bind:to="fragApi + '/accounts'"
+              >
+                {{ $t("headerAccountsSubmenu") }}
+              </router-link>
+              <router-link
+                class="dropdown-item"
+                v-bind:to="fragApi + '/distribution'"
+              >
+                <span class="title">NAS Distribution</span>
+              </router-link>
+              <router-link
+                class="dropdown-item"
+                v-bind:to="fragApi + '/contracts'"
+              >
+                Smart Contract
+              </router-link>
+              <div class="dropdown-divider"></div>
+              <router-link
+                class="dropdown-item"
+                :to="'/token/n1etmdwczuAUCnMMvpGasfi8kwUbb2ddvRJ'"
+              >
+                NAX
+              </router-link>
+              <router-link class="dropdown-item" :to="'/dstaking'">
+                dStaking
+              </router-link>
             </div>
           </li>
-          <!-- // Menú Blockchain -->
-          <!-- <li v-if="($route.params.api !== 'testnet' && $root.mainnetGotDipWinners) || ($route.params.api == 'testnet' && $root.testnetGotDipWinners)" class=nav-item v-bind:class="{ active: $route.meta.headerActive == 3 }">
-						<router-link class=nav-link v-bind:to="fragApi + '/dip-leaderboard'"><span id="headerDipWinners" class="headerlocalizable"></span></router-link>
-          </li>-->
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="#"
-              role="button"
-              v-on:click.prevent="apiSwitch()"
-            >
-              {{ MenuMisc }}
-              <i class="iconfont icon-switch"></i>
-            </a>
+          <li class="dropdown nav-item">
+            <LocaleSwitcher />
           </li>
         </ul>
-
         <form class="form-inline" v-on:submit.prevent="onSubmit">
           <img src=/static/img/icon_search.png width=16 alt="" />
           <input
@@ -380,104 +573,9 @@
             v-model="search"
           />
         </form>
-
-        <ul class="navbar-nav">
-          <li class="dropdown nav-item">
-            <a
-              class="nav-link"
-              href="#"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i class="iconfont icon-menu1"></i>
-            </a>
-            <div class="dropdown-menu">
-              <ul>
-                <li>
-                  <a
-                    target="__blank"
-                    href="https://explorer.nebulas.io/"
-                    class="dropdown-item"
-                  >
-                    <span class="title">Explorer</span>
-                    <span class="desc">Blockchain, dStaking</span>
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    target="__blank"
-                    href="https://node.nebulas.io/"
-                    class="dropdown-item"
-                  >
-                    <span class="title">Nodes</span>
-                    <span class="desc">POD Consensus</span>
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    target="__blank"
-                    href="https://go.nebulas.io"
-                    class="dropdown-item"
-                  >
-                    <span class="title">Go Nebulas</span>
-                    <span class="desc">Community Collaboration</span>
-                  </a>
-                </li>
-
-                <li class="short">
-                  <a
-                    target="__blank"
-                    href="https://nano.nebulas.io"
-                    class="dropdown-item"
-                  >
-                    <span>APP</span>
-                  </a>
-                </li>
-
-                <li class="short">
-                  <a
-                    target="__blank"
-                    href="https://wiki.nebulas.io/"
-                    class="dropdown-item"
-                  >
-                    <span>Documents</span>
-                  </a>
-                </li>
-
-                <li class="short">
-                  <a
-                    target="__blank"
-                    href="https://community.nebulas.io"
-                    class="dropdown-item"
-                  >
-                    <span>Forum</span>
-                  </a>
-                </li>
-
-                <li class="short">
-                  <a
-                    target="__blank"
-                    href="https://nebulas.io"
-                    class="dropdown-item"
-                  >
-                    <span>Nebulas.io</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
-
-          <li class="dropdown nav-item">
-            <LocaleSwitcher />
-          </li>
-        </ul>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </div>
 </template>
 <script>
 // import { EventBus } from "../events.js";

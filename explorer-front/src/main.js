@@ -7,12 +7,13 @@ import router from "./router";
 import { Trans } from "./plugins/Translation";
 import App from "./App.vue";
 import api from "./api";
+import VueMobileDetection from "vue-mobile-detection";
 
 // import VueTranslate from "vue-translate-plugin";
 // import { EventBus } from "./events.js";
 // import { jsonStrings } from "./l10nstrings.js";
 
-var appConfig = require("@/assets/app-config");
+// var appConfig = require("@/assets/app-config");
 
 Vue.prototype.$i18nRoute = Trans.i18nRoute.bind(Trans);
 Vue.config.productionTip = false;
@@ -28,10 +29,10 @@ Vue.prototype.$api = api; // 将api挂载到vue的原型上
 const jQuery = require("jquery");
 window.jQuery = window.$ = jQuery;
 
-import "bootstrap";
+// import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "font-awesome/css/font-awesome.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import "font-awesome/css/font-awesome.min.css";
 
 import "./scss/style.scss";
 
@@ -39,6 +40,9 @@ import "./scss/style.scss";
 Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
+
+// detect mobile view
+Vue.use(VueMobileDetection);
 
 // Vue.use(VueTranslate);
 

@@ -142,7 +142,11 @@
               </router-link>
             </li>
             <li>
-              <a href="#" target="__blank">Submit Issues</a>
+              <a
+                href="https://github.com/nebulasio/explorer/issues"
+                target="__blank"
+                >Submit Issues</a
+              >
             </li>
           </ul>
         </div>

@@ -24,7 +24,10 @@ module.exports = {
   resolve: {
     extensions: [".js", ".vue", ".json"],
     alias: {
-      vue$: "vue/dist/vue.esm.js",
+      // If using the runtime only build
+      vue$: "vue/dist/vue.runtime.esm.js",
+      // Or if using full build of Vue (runtime + compiler)
+      // vue$: "vue/dist/vue.esm.js",
       "@": resolve("src")
     }
   },

@@ -46,7 +46,9 @@
               {{ totalVoteValue }}
               <span class="suffix">NAX</span>
             </div>
-            <a href="#">View all nodes &gt; </a>
+            <a target="__blank" href="https://node.nebulas.io/"
+              >View all nodes &gt;
+            </a>
           </div>
           <div class="col-6 col-md-4">
             <label>Voting Rate</label>
