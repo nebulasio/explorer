@@ -121,7 +121,8 @@ export default {
         // },
         grid: {
           top: "5%",
-          right: "20%"
+          right: "20%",
+          bottom: "5%"
         },
 
         yAxis: [

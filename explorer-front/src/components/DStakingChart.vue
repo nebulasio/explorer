@@ -28,6 +28,7 @@
 import ECharts from "vue-echarts/components/ECharts";
 import "echarts/lib/chart/bar";
 import "echarts/lib/component/tooltip";
+import "echarts/lib/component/legend";
 
 import api from "@/assets/api";
 
@@ -97,17 +98,26 @@ export default {
       let data_limit = this.data.slice(0, show_limit).reverse();
 
       let dstakingData = [];
-      let estimateDate = [];
+      let estimateData = [];
       let mintData = [];
+      let total_burned_data = [];
+      let total_minted_data = [];
+      let voted_data = [];
+
       let dates = [];
 
       data_limit = data_limit.map(d => {
         let dstaking_day = convert2NasNumber(d.pledged_nas);
         let mint_day = convert2NaxNumber(d.distributed_nax);
         let estimate_day = convert2NaxNumber(d.estimate_nax);
-        dstakingData.push(dstaking_day);
-        estimateDate.push(estimate_day);
-        mintData.push(mint_day);
+
+        let total_burned_day = convert2NaxNumber(d.total_supplied_nax * 2); // data error
+        let total_minted_day = convert2NaxNumber(d.total_supplied_nax);
+        let voted_day = convert2NaxNumber(d.destroyed_nax); // fake
+
+        total_burned_data.push(total_burned_day);
+        total_minted_data.push(total_minted_day);
+        voted_data.push(voted_day);
 
         d["date"] = moment(d.end_timestamp).format("MMM D");
 
@@ -116,13 +126,13 @@ export default {
         return d;
       });
 
-      const min_mint = _.min(mintData);
-      const min_dstaking = _.min(dstakingData);
-      const min_estimate = _.min(estimateDate);
+      // const min_mint = _.min(mintData);
+      // const min_dstaking = _.min(dstakingData);
+      // const min_estimate = _.min(estimateData);
 
-      const max_mint = _.max(mintData);
-      const max_dstaking = _.max(dstakingData);
-      const max_estimate = _.max(estimateDate);
+      // const max_mint = _.max(mintData);
+      // const max_dstaking = _.max(dstakingData);
+      // const max_estimate = _.max(estimateData);
 
       const tooltipFormatter = (params, ticket, callback) => {
         const findItem = _.find(data_limit, { date: params.name });
@@ -156,7 +166,26 @@ export default {
         return text;
       };
 
+      const legends = ["Total Burned NAX", "Total Minted NAX", "Voted NAX"];
+
       const options = {
+        grid: {
+          left: "12%",
+          right: "3%"
+        },
+        // title: {
+        //   text: "堆叠区域图"
+        // },
+        legend: {
+          left: "center",
+          top: "top",
+          icon: "roundRect",
+          textStyle: {
+            color: "#fff"
+          },
+          data: legends
+        },
+        color: ["#343B4B", "#3DCC85", "#0BB160"],
         xAxis: {
           data: dates,
           axisLabel: {
@@ -174,40 +203,14 @@ export default {
         yAxis: [
           {
             type: "value",
-            // name: "estimate NAX",
-            show: false,
-            min: 0,
-            max: max_estimate,
-            position: "left",
-            axisLine: {
-              show: false
-            },
-            axisLabel: {
-              textStyle: {
-                color: "#B2B2B2"
-              },
-              margin: 0,
-              formatter: function(value, index) {
-                return toBigNumString(value);
-              }
-            },
-            axisTick: {
-              show: false
-            },
-            splitLine: {
-              show: false
-            }
-          },
-          {
-            type: "value",
             // name: "mint NAX",
-            name: "NAX",
+            // name: "NAX",
             nameTextStyle: {
               color: "#B2B2B2"
             },
-            min: 0,
-            max: max_estimate,
-            position: "right",
+            // min: 0,
+            // max: max_estimate,
+            position: "left",
             axisLine: {
               show: false
             },
@@ -217,7 +220,7 @@ export default {
               },
               //   margin: 0,
               formatter: function(value, index) {
-                return toBigNumString(value, 2);
+                return toBigNumString(value);
               }
             },
             axisTick: {
@@ -230,23 +233,22 @@ export default {
         ],
         series: [
           {
-            name: "estimate NAX",
-            type: "bar",
-            data: estimateDate,
-            itemStyle: {
-              color: "rgba(255,255,255,0.05)"
-            }
+            name: legends[0],
+            type: "line",
+            areaStyle: {},
+            data: total_burned_data
           },
           {
-            type: "bar",
-            name: "mint NAX",
-            data: mintData,
-            yAxisIndex: 1,
-            itemStyle: {
-              color: "#595C63"
-            },
-            barGap: "-100%",
-            barCategoryGap: "40%"
+            name: legends[1],
+            type: "line",
+            areaStyle: {},
+            data: total_minted_data
+          },
+          {
+            name: legends[2],
+            type: "line",
+            areaStyle: {},
+            data: voted_data
           }
         ],
         tooltip: {
