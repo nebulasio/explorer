@@ -184,9 +184,10 @@ export default {
         legend: {
           left: "center",
           top: "top",
-          icon: "roundRect",
+          icon: "react",
           textStyle: {
-            color: "#fff"
+            color: "#fff",
+            padding: [0, 15, 0, 0]
           },
           data: legends
         },
@@ -255,7 +256,7 @@ export default {
             type: "value",
             position: "left",
             // max: max_price_nax,
-            interval: 0.1,
+            interval: 0.3,
             axisLine: {
               show: false
             },
@@ -326,8 +327,12 @@ export default {
   flex-direction: column;
 }
 
+.chart-container {
+  margin-top: 0;
+}
+
 .dstaking-chart {
-  height: 600px;
+  height: 400px;
   width: calc(100%);
 }
 </style>

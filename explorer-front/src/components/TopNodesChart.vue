@@ -119,9 +119,10 @@ export default {
         legend: {
           left: "center",
           top: "top",
-          icon: "roundRect",
+          icon: "rect",
           textStyle: {
-            color: "#fff"
+            color: "#fff",
+            padding: [0, 15, 0, 0]
           },
           data: legends
         },
