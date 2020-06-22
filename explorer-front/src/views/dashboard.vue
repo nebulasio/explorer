@@ -31,6 +31,120 @@ $nax-price-card-height: 520px;
   flex: none;
 }
 
+.dashboard-card {
+  .item-bg {
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+
+    @include media("<=desktop") {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .title {
+        font-size: 18px !important;
+      }
+
+      .details {
+        margin-top: 0.5rem;
+      }
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+
+  .detail {
+    margin-top: 2rem;
+    font-size: 60px;
+    display: flex;
+    align-items: baseline;
+
+    @include media("<=desktop") {
+      margin-top: 0;
+      font-size: 50px;
+
+      .price-up,
+      .price-down {
+        font-size: 20px !important;
+        margin-left: 6px;
+      }
+    }
+
+    .prefix {
+      font-size: 28px;
+    }
+
+    .price-up,
+    .price-down {
+      font-size: 28px;
+    }
+
+    .price-up {
+      color: #ff4060;
+    }
+
+    .price-down {
+      color: #3dcc85;
+    }
+  }
+
+  .market {
+    margin-top: auto;
+    .row {
+      a {
+        color: #798bdf;
+        font-size: 14px;
+      }
+
+      .col-4,
+      .col-md-4 {
+        & > div {
+          font-size: 16px;
+          @include media("<=desktop") {
+            font-size: 14px;
+          }
+        }
+      }
+
+      .col-6,
+      .col-md-6 {
+        @include media("<=desktop") {
+          padding: 0;
+        }
+
+        & > div {
+          font-size: 20px;
+          @include media("<=desktop") {
+            font-size: 16px;
+          }
+        }
+      }
+
+      .col-12 {
+        & > div {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+
+  .chart-container {
+    margin-top: 2rem;
+    @include media("<=desktop") {
+      margin-top: 1rem;
+    }
+  }
+}
+
 .vue-dashboard .text-light-gray {
   color: #a6a6a6;
 }
@@ -139,19 +253,19 @@ $nax-price-card-height: 520px;
   }
 }
 
-.daily-transactions {
-  .details {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    align-items: baseline;
-    text-align: right;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.7);
-  }
-}
+// .daily-transactions {
+//   .details {
+//     display: flex;
+//     flex-direction: column;
+//     position: absolute;
+//     top: 20px;
+//     right: 30px;
+//     align-items: baseline;
+//     text-align: right;
+//     font-size: 12px;
+//     color: rgba(255, 255, 255, 0.7);
+//   }
+// }
 
 /* .vue-dashboard .daily-transactions .details *:nth-child(2) {
   font-size: 28px;
@@ -161,25 +275,25 @@ $nax-price-card-height: 520px;
   margin-top: 10px;
 } */
 
-.vue-dashboard .daily-chart {
-  position: absolute;
-  top: 90px;
-  height: 230px;
-  width: calc(100% - 30px);
-  margin-left: 30px;
-}
+// .vue-dashboard .daily-chart {
+//   position: absolute;
+//   top: 90px;
+//   height: 230px;
+//   width: calc(100% - 30px);
+//   margin-left: 30px;
+// }
 
-.vue-dashboard .daily-echart-down-arrow {
-  width: 0;
-  height: 0;
-  border-top: 4px solid #595c63;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
-  position: absolute;
-  bottom: -4px;
-  left: calc(50% - 4px);
-  z-index: 1060;
-}
+// .vue-dashboard .daily-echart-down-arrow {
+//   width: 0;
+//   height: 0;
+//   border-top: 4px solid #595c63;
+//   border-right: 4px solid transparent;
+//   border-left: 4px solid transparent;
+//   position: absolute;
+//   bottom: -4px;
+//   left: calc(50% - 4px);
+//   z-index: 1060;
+// }
 
 .vue-dashboard .market-price .update-time {
   position: absolute;
@@ -720,13 +834,14 @@ $nax-price-card-height: 520px;
       <div class="row row1">
         <DailyTxChart />
 
-        <!-- nas price card -->
-        <NasMarketCard />
+        <!-- avg. annualized rate fo return -->
+        <NodeStaticCard />
       </div>
 
       <!-- row 2: nax data -->
       <div class="row row1">
-        <DStakingChart />
+        <!-- nas price -->
+        <NasMarketCard />
 
         <!-- nax price card -->
         <NaxMarketCard />
@@ -736,232 +851,10 @@ $nax-price-card-height: 520px;
       <div class="row row1">
         <TopNodesChart />
 
-        <!-- nax price card -->
-        <NodeStaticCard />
+        <!-- dStaking NAS and Mint NAX -->
+        <DStakingChart />
       </div>
 
-      <!-- ====================dip program==================== -->
-      <!-- <div v-if="($root.mainnetDipStarted && $route.params.api !== 'testnet') || ($root.testnetDipStarted && $route.params.api === 'testnet')" class="row">
-				<div class="col">
-					<div class="flex-item item-bg item-shadow">
-						<vue-dip-banner></vue-dip-banner>
-					</div>
-				</div>
-			</div> -->
-      <!-- ====================2==================== -->
-      <!-- <div class="row row2">
-        <div class="col">
-          <div class="flex-item item-bg item-shadow">
-            <div class="item-title">
-              {{ $t("dashboardBlocksTitle") }}
-            </div>
-            <div class="subtitle font-12 text-gray">
-              {{ $t("dashboardBlocksSubtitle") }}
-            </div>
-            <transition-group
-              v-on:after-enter="afterEnter"
-              name="row2-list"
-              class="realtime-blocks"
-            >
-              <div
-                class="realtime-block"
-                v-for="block in blocks"
-                :key="block.height"
-              >
-                <div
-                  class="blockheight"
-                  style="height: 100%"
-                  :data-txncnt="block.txnCnt"
-                ></div>
-                <div class="block-popover">
-                  <div class="font-12 font-bold">
-                    {{ numberAddComma(block.height) }}
-                  </div>
-                  <div>
-                    <span>
-                      {{ $t("dashboardBlocksTransactions") }}
-                    </span>
-
-                    {{ block.txnCnt }}
-                  </div>
-                  <div>
-                    <span>
-                      {{ $t("dashboardBlocksInterval") }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </transition-group>
-          </div>
-        </div>
-      </div> -->
-      <!-- ===================3===================== -->
-      <!-- <div class="row row3">
-        <div class="col-lg-3 col-md-6 col-12 flex-item w285">
-          <div class="item-bg item-shadow">
-            <div v-if="staticInfo">{{ blockheight }}</div>
-            <router-link
-              v-if="staticInfo"
-              class="link link-style"
-              :to="fragApi + '/blocks/'"
-            >
-              {{ $t("dashboardBlocksHeightTitle") }}
-            </router-link>
-            <img src=/static/img/dashboard-1.png width=44 alt="">
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-12 flex-item w285">
-          <div class="item-bg item-shadow">
-            <div v-if="staticInfo">{{ numberAddComma(staticInfo.txnCnt) }}</div>
-            <router-link
-              v-if="staticInfo"
-              class="link link-style"
-              :to="fragApi + '/txs/'"
-            >
-              {{ $t("dashboardTotalTransactions") }}
-            </router-link>
-            <img src=/static/img/dashboard-2.png width=44 alt="">
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-12 flex-item w285">
-          <div class="item-bg item-shadow">
-            <div v-if="staticInfo">
-              {{ numberAddComma(staticInfo.totalContractCount) }}
-            </div>
-            <router-link
-              v-if="staticInfo"
-              class="link link-style"
-              :to="fragApi + '/contracts/'"
-            >
-              {{ $t("dashboardTotalSmartContracts") }}
-            </router-link>
-            <img src=/static/img/dashboard-3.png width=44 alt="">
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-12 flex-item w285">
-          <div class="item-bg item-shadow">
-            <div v-if="staticInfo">
-              {{ numberAddComma(staticInfo.totalAddressCount) }}
-            </div>
-            <router-link
-              v-if="staticInfo"
-              class="link link-style"
-              :to="fragApi + '/accounts/'"
-            >
-              {{ $t("dashboardTotalAddresses") }}
-            </router-link>
-            <img src=/static/img/dashboard-4.png width=44 alt="">
-          </div>
-        </div>
-      </div> -->
-      <!-- ===================4===================== -->
-      <!-- <div class="row row4">
-        <div class="flex-item col-12 col-lg-6 row4-item user-data">
-          <div class="item-bg item-shadow">
-            <div class="item-title">
-              {{ $t("dashboardNewAddressesPercentage") }}
-              <div class="text-light-gray font-12 font-regular">
-                {{ $t("dashboardNewAddressesSubtitle") }}
-              </div>
-              <div v-if="staticInfo" class="mt20 d-sm-none">
-                <span class="font-12 font-color-7F7F7F">New Addresses</span>
-                <span class="font-20">{{
-                  (
-                    Math.round(
-                      ((100 * staticInfo.newAddressCount) /
-                        staticInfo.totalAddressCount) *
-                        10
-                    ) / 10
-                  ).toFixed(1) + "%"
-                }}</span>
-              </div>
-            </div>
-            <div v-show="staticInfo" class="user-pie">
-              <div class="old-user"></div>
-              <div class="new-user-container">
-                <transition name="new-user-pie">
-                  <div
-                    class="new-user"
-                    :style="
-                      staticInfo
-                        ? 'transform: rotate(-' +
-                          (staticInfo.newAddressCount /
-                            staticInfo.totalAddressCount) *
-                            360 +
-                          'deg)'
-                        : ''
-                    "
-                  ></div>
-                </transition>
-              </div>
-              <div
-                v-if="staticInfo"
-                class="new-user-indicator d-none d-sm-block"
-              >
-                <svg
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  xml:space="preserve"
-                  class="svg"
-                  width="195"
-                  height="114"
-                  viewbox="0 0 195 114"
-                >
-                  <polyline
-                    points="5 87, 35 57, 195 57"
-                    class="line"
-                    id="svg-line"
-                  />
-                </svg>
-                <div class="labels">
-                  <div>
-                    {{
-                      (
-                        Math.round(
-                          ((100 * staticInfo.newAddressCount) /
-                            staticInfo.totalAddressCount) *
-                            10
-                        ) / 10
-                      ).toFixed(1) + "%"
-                    }}
-                  </div>
-                  <div>
-                    {{ $t("dashboardNewAddresses") }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-if="staticInfo" class="detail">
-              <div class="title">
-                {{ numberAddComma(staticInfo.newAddressCount) }}
-              </div>
-              <div class="font-12 text-gray">
-                {{ $t("dashboardNewAddressesText") }}
-              </div>
-              <div class="title">
-                {{ numberAddComma(staticInfo.totalAddressCount) }}
-              </div>
-              <div class="font-12 text-gray">
-                {{ $t("dashboardTotalAddressesText") }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="flex-item col-12 col-lg-6 row4-item accounts-data">
-          <div class="item-bg item-shadow">
-            <div class="item-title">
-              {{ $t("dashboardAddressesGrowth") }}
-            </div>
-            <AddressGrowthChart />
-          </div>
-        </div>
-      </div>
-      <div
-        class="flex atlaspAds-bottom d-md-none"
-        id="atlaspAds-middle-mobile"
-      ></div> -->
-      <!-- ===================5===================== -->
       <div class="row row5">
         <div class="flex-item col-12 col-lg-6 row5-item">
           <div class="item-bg item-shadow">

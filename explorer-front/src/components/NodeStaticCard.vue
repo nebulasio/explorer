@@ -1,56 +1,54 @@
 <template>
-  <div class="market-price top-node-card flex-item col-12 col-lg-6 row1-item">
+  <div class="dashboard-card  col-12 col-lg-6">
     <div class="item-bg">
-      <div class="item-title">
-        Avg. Annualized Rate of Return
+      <div class="header">
+        <div class="title">
+          Avg. Annualized Rate of Return
+          <b-icon
+            v-b-tooltip.hover
+            title="7天出块收益/nax平均投票金额*365/7天"
+            icon="question-circle"
+          ></b-icon>
+        </div>
+        <div v-if="updatedPass" class="details">
+          {{ $t("dashboardNasPriceUpdateTimePrefix") }}
+          <span>{{ updatedPass }}</span>
+        </div>
+      </div>
 
-        <b-icon
-          v-b-tooltip.hover
-          title="7天出块收益/nax平均投票金额*365/7天"
-          icon="question-circle"
-        ></b-icon>
-      </div>
-      <div v-if="updatedPass" class="details">
-        {{ $t("dashboardNasPriceUpdateTimePrefix") }}
-        <span>{{ updatedPass }}</span>
-      </div>
       <div class="detail">
-        <span> </span>
         <span>{{ avgRewardRate }} </span>
       </div>
       <!-- market realtime data -->
       <div class="market container">
         <div class="row">
-          <div class="col-6">
-            Total Rewards:
+          <div class="col-6 col-md-4">
+            <label>Total Rewards</label>
             <div>
               {{ totalRewardValue }}
             </div>
           </div>
-          <div class="col-6">
-            Total Nodes:
+          <div class="col-6 col-md-4">
+            <label>Nodes</label>
             <div>{{ nodeCount }}</div>
-            <a href="#">View all nodes &gt; </a>
+          </div>
+          <div class="col-6 col-md-4">
+            <label>Polling Cycle</label>
+            <div>{{ currentPeriod }}</div>
           </div>
         </div>
         <div class="row">
-          <div class="col-6">
-            Voted for Nodes:
+          <div class="col-6 col-md-4">
+            <label>Voted for Nodes</label>
             <div>{{ totalVoteValue }}</div>
+            <a href="#">View all nodes &gt; </a>
           </div>
-          <div class="col-6">
-            Voting Rate:
+          <div class="col-6 col-md-4">
+            <label>Voting Rate</label>
             <div>{{ voteRate }}</div>
           </div>
-        </div>
-
-        <div class="row border-top">
-          <div class="col-6">
-            Current period:
-            <div>{{ currentPeriod }}</div>
-          </div>
-          <div class="col-6">
-            Current Govern period:
+          <div class="col-6 col-md-4">
+            <label>Governance Cycle</label>
             <div>{{ currentGovPeriod }}</div>
           </div>
         </div>
@@ -109,4 +107,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped></style>

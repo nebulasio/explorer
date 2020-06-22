@@ -1,16 +1,19 @@
 <template>
-  <div class="market-price flex-item col-12 col-lg-6 row1-item">
+  <div class="dashboard-card col-12 col-lg-6">
     <div class="item-bg">
-      <div class="item-title">
-        <img class="logo" src="/static/img/nas-logo.png" />
-        {{ $t("dashboardNasPriceTitle") }}
+      <div class="header">
+        <div class="title">
+          <img class="logo" src="/static/img/nas-logo.png" />
+          <span>{{ $t("dashboardNasPriceTitle") }}</span>
+        </div>
+        <div class="details">
+          {{ $t("dashboardNasPriceUpdateTimePrefix") }}
+          <span v-if="market">{{ this.updatedPass }}</span>
+        </div>
       </div>
-      <div class="details">
-        {{ $t("dashboardNasPriceUpdateTimePrefix") }}
-        <span v-if="market">{{ this.updatedPass }}</span>
-      </div>
+
       <div v-if="market" class="detail">
-        <span>$</span>
+        <span class="prefix">$</span>
         <span>{{ market.price }}</span>
         <span
           :class="{
@@ -21,24 +24,24 @@
         >
       </div>
       <!-- market realtime data -->
-      <div class="market container">
+      <div class="market">
         <div class="row">
-          <div class="col-6">
-            {{ $t("dashboardNasMarketCap") }}
+          <div class="col-6 col-md-6">
+            <label>{{ $t("dashboardNasMarketCap") }}</label>
             <div>{{ this.marketCap }}</div>
           </div>
-          <div class="col-6">
-            Total Supply:
+          <div class="col-6 col-md-6">
+            <label>Total Supply</label>
             <div>{{ this.totalSupply }}</div>
           </div>
         </div>
         <div class="row">
-          <div class="col-6">
-            {{ $t("dashboardNasMarketVol") }}
+          <div class="col-6 col-md-6">
+            <label>{{ $t("dashboardNasMarketVol") }}</label>
             <div>{{ this.volume24h }}</div>
           </div>
-          <div class="col-6">
-            Circulating Supply:
+          <div class="col-6 col-md-6">
+            <label>Circulating Supply</label>
             <div>{{ this.totalCirculation }}</div>
             <router-link class="link link-style" :to="fragApi + '/monitor/'">
               View NAS Distribution &gt;
@@ -96,13 +99,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.logo {
-  width: 32px;
-  height: 32px;
-  margin-right: 0.5rem;
-}
-
-.item-title {
+.title {
   display: flex;
+  align-items: center;
+
+  .logo {
+    width: 32px;
+    height: 32px;
+    margin-right: 6px;
+  }
 }
 </style>

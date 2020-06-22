@@ -1,14 +1,16 @@
 <template>
-  <div
-    class="daily-transactions market-price nax-price-card flex-item col-12 col-lg-6 row1-item"
-  >
+  <div class="dashboard-card col-12 col-lg-6">
     <div class="item-bg">
-      <div class="item-title">
-        dStaking NAS and Minting NAX
-      </div>
-      <div class="details">
-        <span v-if="nextMintBlock">Next Minted Block: {{ nextMintBlock }}</span>
-        <span v-if="leftTime">Time Left: {{ leftTime }}</span>
+      <div class="header">
+        <div class="title">
+          dStaking NAS and Minting NAX
+        </div>
+        <div class="details">
+          <span v-if="nextMintBlock"
+            >Next Minted Block: {{ nextMintBlock }}</span
+          >
+          <span v-if="leftTime">Time Left: {{ leftTime }}</span>
+        </div>
       </div>
 
       <div class="chart-container">
@@ -270,11 +272,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.details {
+  display: flex;
+  flex-direction: column;
+}
+
 .dstaking-chart {
-  position: absolute;
-  top: 30px;
-  height: 500px;
-  width: calc(100% - 20px);
-  margin-left: 0;
+  height: 600px;
+  width: calc(100%);
 }
 </style>

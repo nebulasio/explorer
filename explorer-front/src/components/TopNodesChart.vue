@@ -1,13 +1,13 @@
 <template>
-  <div
-    class="daily-transactions top-node-card flex-item col-12 col-lg-6 row1-item"
-  >
+  <div class="dashboard-card col-12 col-lg-6">
     <div class="item-bg">
-      <div class="item-title">
-        Top 21 Nodes
-      </div>
-      <div v-if="data" class="details">
-        <span>Current Polling Cycle: {{ currentPeriod }}</span>
+      <div class="header">
+        <div class="title">
+          Top 21 Nodes
+        </div>
+        <div v-if="data" class="details">
+          <span>Current Polling Cycle: {{ currentPeriod }}</span>
+        </div>
       </div>
 
       <div class="chart-container">
@@ -119,6 +119,11 @@ export default {
         //     }
         //   }
         // },
+        grid: {
+          top: "5%",
+          right: "20%"
+        },
+
         yAxis: [
           {
             type: "category",
@@ -142,9 +147,9 @@ export default {
           },
           // node order index
           {
+            type: "category",
             name: "Order",
             data: _.rangeRight(1, limit + 1),
-            interval: 5,
             position: "left",
             axisLabel: {
               textStyle: {
@@ -165,13 +170,15 @@ export default {
         xAxis: [
           {
             type: "value",
-            // name: "Voted",
+            name: "Voted",
+            nameGap: 10,
             nameTextStyle: {
               color: "#B2B2B2"
             },
             position: "bottom",
             min: 0,
             max: vote_nax_max,
+            interval: 50000000,
             axisLine: {
               show: false
             },
@@ -192,19 +199,21 @@ export default {
           },
           {
             type: "value",
-            // name: "Reward",
+            name: "Reward",
+            nameGap: 10,
             nameTextStyle: {
-              color: "#B2B2B2"
+              color: "#3DCC85"
             },
             position: "top",
-            min: 0,
-            max: reward_nas_max,
+            // min: 0,
+            // max: reward_nas_max,
+            interval: 10000,
             axisLine: {
               show: false
             },
             axisLabel: {
               textStyle: {
-                color: "#B2B2B2"
+                color: "#3DCC85"
               },
               formatter: function(value, index) {
                 return `${toLocaleString(value)} NAS`;
@@ -220,7 +229,7 @@ export default {
         ],
         series: [
           {
-            name: "vote nax",
+            name: "voted",
             type: "bar",
             data: vote_nax_data,
             itemStyle: {
@@ -228,12 +237,12 @@ export default {
             }
           },
           {
-            name: "reward nas",
+            name: "reward",
             type: "line",
             xAxisIndex: 1,
             data: reward_nas_data,
             itemStyle: {
-              color: "rgba(255,255,255,0.2)"
+              color: "#3DCC85"
             }
           }
         ],
@@ -261,10 +270,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// .item-bg {
+//   @include media("<=desktop") {
+//     padding: 0 1rem;
+//   }
+// }
+.chart-container {
+  margin-top: 0;
+}
 .top-nodes-chart {
-  position: absolute;
-  top: 30px;
-  height: 500px;
-  width: calc(100% - 10px);
+  height: 600px;
+  width: calc(100%);
 }
 </style>

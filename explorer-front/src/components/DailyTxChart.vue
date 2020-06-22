@@ -1,14 +1,16 @@
 <template>
-  <div class="daily-transactions flex-item col-12 col-lg-6 row1-item">
+  <div class="dashboard-card col-12 col-lg-6">
     <div class="item-bg">
-      <div class="item-title">
-        Nebulas Transaction History
-      </div>
-      <div class="details">
-        <span v-if="blockHeight">Current Height: {{ blockHeight }}</span>
-        <span v-if="tx24h">
-          {{ $t("dashboardDailyTransactionsSubtitle") }}: {{ tx24h }}</span
-        >
+      <div class="header">
+        <div class="title">
+          Nebulas Transaction History
+        </div>
+        <div class="details">
+          <span v-if="blockHeight">Current Height: {{ blockHeight }}</span>
+          <span v-if="tx24h">
+            {{ $t("dashboardDailyTransactionsSubtitle") }}: {{ tx24h }}</span
+          >
+        </div>
       </div>
 
       <div class="chart-container">
@@ -210,11 +212,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.details {
+  display: flex;
+  flex-direction: column;
+}
+
+// .chart-container {
+//   margin-top: 2rem;
+//   @include media("<=desktop") {
+//     margin-top: 1rem;
+//   }
+// }
+
 .daily-chart {
-  position: absolute;
-  top: 90px;
   height: 300px;
-  width: calc(100% - 30px);
-  margin-left: 30px;
+  width: calc(100%);
 }
 </style>
