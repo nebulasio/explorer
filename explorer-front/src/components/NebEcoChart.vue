@@ -3,7 +3,7 @@
     <div class="item-bg">
       <div class="header">
         <div class="title">
-          Nax distribution
+          Nebulas Economy
         </div>
         <!-- <div class="details">
           <span @click="selectDate(d)" :key="i" v-for="(d, i) in [7, 15, 30]">

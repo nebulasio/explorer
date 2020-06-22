@@ -332,7 +332,7 @@ export default {
   }
 
   .echarts {
-    width: 900px;
+    width: 950px;
     height: 500px;
   }
 }

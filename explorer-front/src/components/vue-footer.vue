@@ -127,7 +127,7 @@
           />
         </div>
         <div class="col-6 col-lg explorer nav-links">
-          <small class="top">Blockchain, dStaking</small>
+          <small class="top">Nebulas Ecosystem</small>
 
           <h5>Explorer</h5>
           <small>Blockchain, dStaking</small>
