@@ -6,9 +6,7 @@
           NAX Distribution
         </div>
         <div class="details">
-          <span v-if="nextMintBlock"
-            >Next Minted Block: {{ nextMintBlock }}</span
-          >
+          <span v-if="nextMintBlock">Next Mint Block: {{ nextMintBlock }}</span>
           <span v-if="leftTime">Time Left: {{ leftTime }}</span>
         </div>
       </div>
