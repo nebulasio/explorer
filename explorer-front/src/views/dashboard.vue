@@ -99,11 +99,11 @@ $nax-price-card-height: 520px;
     }
 
     .price-up {
-      color: #ff4060;
+      color: #3dcc85;
     }
 
     .price-down {
-      color: #3dcc85;
+      color: #ff4060;
     }
   }
 
