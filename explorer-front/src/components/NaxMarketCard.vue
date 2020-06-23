@@ -35,7 +35,7 @@
             </div>
           </div>
           <div class="col-6">
-            <label>Total Supply in Plan</label>
+            <label>Estimated Supply (based on dStaking)</label>
             <div>
               {{ totalSupply }}
 
@@ -52,7 +52,7 @@
             </div>
           </div>
           <div class="col-6">
-            <label>Total Supply / Circulating Supply</label>
+            <label>Total/Circulating Supply</label>
             <div>
               {{ totalCirculation }}
               <span class="suffix">NAX</span>

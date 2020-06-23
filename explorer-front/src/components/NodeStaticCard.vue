@@ -3,7 +3,7 @@
     <div class="item-bg">
       <div class="header">
         <div class="title">
-          Avg. Annualized Rate of Return
+          Avg. Annual Return on Investment
           <b-icon
             v-b-tooltip.hover
             title="NAS rewards in 7 days / avg. voted NAX x 365d / 7d"

@@ -160,7 +160,7 @@ export default {
             <div>${params.name}</div>
             <div>Nas Price:${price_nas} USDT</div>
             <div>Nax Price:${price_nax} USDT</div>
-            <div>Avg. Annualized Rate of Return:${rate_of_return}</div>
+            <div>Avg. Annual Return on Investment:${rate_of_return}</div>
             <div class=echart-down-arrow></div>
           `;
 
@@ -170,7 +170,7 @@ export default {
       const legends = [
         "NAS Price USDT",
         "NAX Price USDT",
-        "Avg. Annualized Rate of Return"
+        "Avg. Annual Return on Investment"
       ];
 
       const options = {

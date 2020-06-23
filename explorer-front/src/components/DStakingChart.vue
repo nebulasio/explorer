@@ -3,7 +3,7 @@
     <div class="item-bg">
       <div class="header">
         <div class="title">
-          Nax distribution
+          NAX Distribution
         </div>
         <div class="details">
           <span v-if="nextMintBlock"
