@@ -286,7 +286,7 @@ input::placeholder {
                       <li>
                         <router-link
                           class="dropdown-item"
-                          v-bind:to="fragApi + '/blocks'"
+                          v-bind:to="linkUrl('/blocks')"
                         >
                           {{ $t("headerBlocksSubmenu") }}
                         </router-link>
@@ -294,7 +294,7 @@ input::placeholder {
                       <li>
                         <router-link
                           class="dropdown-item"
-                          v-bind:to="fragApi + '/txs'"
+                          v-bind:to="linkUrl('/txs')"
                         >
                           {{ $t("headerTransactionsSubmenu") }}
                         </router-link>
@@ -302,7 +302,7 @@ input::placeholder {
                       <li>
                         <router-link
                           class="dropdown-item"
-                          v-bind:to="fragApi + '/txs/pending'"
+                          v-bind:to="linkUrl('/txs/pending')"
                         >
                           {{ $t("headerPendingTransactionsSubmenu") }}
                         </router-link>
@@ -314,7 +314,7 @@ input::placeholder {
                       <li>
                         <router-link
                           class="dropdown-item"
-                          v-bind:to="fragApi + '/accounts'"
+                          v-bind:to="linkUrl('/accounts')"
                         >
                           {{ $t("headerAccountsSubmenu") }}
                         </router-link>
@@ -322,7 +322,7 @@ input::placeholder {
                       <li>
                         <router-link
                           class="dropdown-item"
-                          v-bind:to="fragApi + '/distribution'"
+                          v-bind:to="'/distribution'"
                         >
                           <span class="title">NAS Distribution</span>
                         </router-link>
@@ -330,7 +330,7 @@ input::placeholder {
                       <li>
                         <router-link
                           class="dropdown-item"
-                          v-bind:to="fragApi + '/contracts'"
+                          v-bind:to="linkUrl('/contracts')"
                         >
                           Smart Contract
                         </router-link>
@@ -365,7 +365,7 @@ input::placeholder {
                 role="button"
                 v-on:click.prevent="apiSwitch()"
               >
-                {{ MenuMisc }}
+                {{ netStatusText }}
                 <i class="iconfont icon-switch"></i>
               </a>
             </li>
@@ -516,51 +516,17 @@ input::placeholder {
               Blockchains
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <router-link
-                class="dropdown-item"
-                v-bind:to="fragApi + '/blocks'"
-              >
-                {{ $t("headerBlocksSubmenu") }}
-              </router-link>
-              <router-link class="dropdown-item" v-bind:to="fragApi + '/txs'">
-                {{ $t("headerTransactionsSubmenu") }}
-              </router-link>
-              <router-link
-                class="dropdown-item"
-                v-bind:to="fragApi + '/txs/pending'"
-              >
-                {{ $t("headerPendingTransactionsSubmenu") }}
-              </router-link>
-
-              <div class="dropdown-divider"></div>
-              <router-link
-                class="dropdown-item"
-                v-bind:to="fragApi + '/accounts'"
-              >
-                {{ $t("headerAccountsSubmenu") }}
-              </router-link>
-              <router-link
-                class="dropdown-item"
-                v-bind:to="fragApi + '/distribution'"
-              >
-                <span class="title">NAS Distribution</span>
-              </router-link>
-              <router-link
-                class="dropdown-item"
-                v-bind:to="fragApi + '/contracts'"
-              >
-                Smart Contract
-              </router-link>
-              <div class="dropdown-divider"></div>
-              <router-link
-                class="dropdown-item"
-                :to="'/token/n1etmdwczuAUCnMMvpGasfi8kwUbb2ddvRJ'"
-              >
-                NAX
-              </router-link>
-              <router-link class="dropdown-item" :to="'/dstaking'">
-                dStaking
-              </router-link>
+              <template v-for="(item, index) in menuItems">
+                <router-link
+                  class="dropdown-item"
+                  v-if="item.url"
+                  v-bind:key="index"
+                  v-bind:to="item.url"
+                >
+                  {{ item.text }}
+                </router-link>
+                <div v-else v-bind:key="index" class="dropdown-divider"></div>
+              </template>
             </div>
           </li>
           <li class="dropdown nav-item">
@@ -587,6 +553,7 @@ import LocaleSwitcher from "@/components/LocaleSwitcher.vue";
 var api = require("@/assets/api");
 
 import { apiPrefixesConfig } from "@/config";
+import { netStatus, urlPrefix, baseUrl } from "@/utils/neb";
 
 module.exports = {
   components: {
@@ -597,8 +564,48 @@ module.exports = {
       apiPrefixes: null,
       fragApi: "",
       paramsApi: "",
-      MenuMisc: "MAINNET",
-      search: ""
+      // MenuMisc: "MAINNET",
+      search: "",
+      menuItems: [
+        {
+          url: this.linkUrl("/blocks"),
+          text: this.$t("headerBlocksSubmenu")
+        },
+        {
+          url: this.linkUrl("/txs"),
+          text: this.$t("headerTransactionsSubmenu")
+        },
+        {
+          url: this.linkUrl("/txs/pending"),
+          text: this.$t("headerPendingTransactionsSubmenu")
+        },
+        {
+          url: ""
+        },
+        {
+          url: this.linkUrl("/accounts"),
+          text: this.$t("headerAccountsSubmenu")
+        },
+        {
+          url: "/distribution",
+          text: "NAS Distribution"
+        },
+        {
+          url: this.linkUrl("/contracts"),
+          text: "Smart Contract"
+        },
+        {
+          url: ""
+        },
+        {
+          url: "/token/n1etmdwczuAUCnMMvpGasfi8kwUbb2ddvRJ",
+          text: "NAX"
+        },
+        {
+          url: "/dstaking",
+          text: "dStaking"
+        }
+      ]
     };
   },
   mounted() {
@@ -612,16 +619,9 @@ module.exports = {
         first = false;
       } else apiPrefixes[i] = apiPrefixesConfig[i];
 
-    if (!(paramsApi in apiPrefixes)) paramsApi = "";
+    // if (!(paramsApi in apiPrefixes)) paramsApi = "";
 
-    if (paramsApi === "testnet") {
-      this.MenuMisc = "TESTNET";
-    } else {
-      this.MenuMisc = "MAINNET";
-    }
-
-    this.apiPrefixes = apiPrefixes;
-    this.fragApi = paramsApi ? "/" + paramsApi : "";
+    this.fragApi = urlPrefix(this.$route);
     this.paramsApi = paramsApi;
 
     if (!!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
@@ -629,7 +629,16 @@ module.exports = {
       $(".vue-header input").css("font-size", "16px");
     }
   },
+
+  computed: {
+    netStatusText() {
+      return netStatus(this.$route);
+    }
+  },
   methods: {
+    linkUrl(url) {
+      return baseUrl(this.$route, url);
+    },
     onSubmit() {
       this.$root.showModalLoading = true;
       api.getSearch(
@@ -672,19 +681,19 @@ module.exports = {
         this.$router.replace("/testnet");
       }
       location.reload();
-    },
-    atpAddress() {
-      var api = this.$route.params.api ? this.$route.params.api : "mainnet";
-      return apiPrefixesConfig[api].atp;
-    },
-    showATP() {
-      // 搜索框进入 ATP 的临时方案！！！
-      this.$router.push(
-        (this.$route.params.api ? "/" + this.$route.params.api : "") +
-          "/token/" +
-          this.atpAddress()
-      );
     }
+    // atpAddress() {
+    //   var api = this.$route.params.api ? this.$route.params.api : "mainnet";
+    //   return apiPrefixesConfig[api].atp;
+    // },
+    // showATP() {
+    //   // 搜索框进入 ATP 的临时方案！！！
+    //   this.$router.push(
+    //     (this.$route.params.api ? "/" + this.$route.params.api : "") +
+    //       "/token/" +
+    //       this.atpAddress()
+    //   );
+    // }
   }
 };
 </script>

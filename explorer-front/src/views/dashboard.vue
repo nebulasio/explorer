@@ -49,6 +49,11 @@ $nax-price-card-height: 520px;
 
       .title {
         font-size: 18px !important;
+        .net-status {
+          font-size: 12px !important;
+          font-weight: normal;
+          color: #bcbec1;
+        }
       }
 
       .details {
@@ -59,6 +64,11 @@ $nax-price-card-height: 520px;
     .title {
       font-size: 20px;
       font-weight: 600;
+      .net-status {
+        font-size: 12px;
+        font-weight: normal;
+        color: #bcbec1;
+      }
     }
 
     .details {

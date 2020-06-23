@@ -13,34 +13,6 @@ import { apiPrefixesConfig } from "@/config";
 
 Vue.use(VueRouter);
 
-// const routes = [
-//   {
-//     path: "/:locale",
-//     component: {
-//       template: "<router-view></router-view>"
-//     },
-//     beforeEnter: Trans.routeMiddleware,
-//     children: [
-//       {
-//         path: "",
-//         name: "Home",
-//         component: load("Home")
-//       },
-//       {
-//         path: "about",
-//         name: "About",
-//         component: load("About")
-//       }
-//     ]
-//   },
-//   {
-//     path: "*",
-//     redirect() {
-//       return Trans.defaultLocale;
-//     }
-//   }
-// ];
-
 const router = new VueRouter({
   routes
 });

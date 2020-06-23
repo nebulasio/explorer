@@ -4,6 +4,7 @@
       <div class="header">
         <div class="title">
           Avg. Annual Return on Investment
+          <span class="net-status">{{ mainnetText }}</span>
           <b-icon
             v-b-tooltip.hover
             title="NAS rewards in 7 days / avg. voted NAX x 365d / 7d"
@@ -70,7 +71,7 @@
 
 <script>
 import moment from "moment";
-import { convert2NaxStr, convert2NasStr } from "@/utils/neb";
+import { isMainnet } from "@/utils/neb";
 import { toLocaleString } from "@/utils/number";
 
 export default {
@@ -107,6 +108,9 @@ export default {
     },
     updatedPass() {
       return this.summary && moment(this.summary.updatedTime).fromNow();
+    },
+    mainnetText() {
+      return !isMainnet(this.$route) && `Mainnet`;
     }
   }
 };

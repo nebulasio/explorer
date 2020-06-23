@@ -24,3 +24,35 @@ export const convert2NaxBasic = value => {
 export const convert2NasBasic = value => {
   return parseInt(Unit.toBasic(value, "nas"));
 };
+
+export const netStatus = route => {
+  const paramsApi = route.params.api;
+  let netStatusText;
+  if (paramsApi === "testnet") {
+    netStatusText = "TESTNET";
+  } else {
+    netStatusText = "MAINNET";
+  }
+
+  return netStatusText;
+};
+
+export const isMainnet = route => {
+  const paramsApi = route.params.api;
+  if (paramsApi === "testnet") {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+export const urlPrefix = route => {
+  const paramsApi = route.params.api;
+  const fragApi = paramsApi ? "/" + paramsApi : "";
+  return fragApi;
+};
+
+export const baseUrl = (route, url) => {
+  const prefix = urlPrefix(route);
+  return prefix + url;
+};
