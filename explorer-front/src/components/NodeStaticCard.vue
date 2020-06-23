@@ -4,12 +4,12 @@
       <div class="header">
         <div class="title">
           Avg. Annual Return on Investment
-          <span class="net-status">{{ mainnetText }}</span>
           <b-icon
             v-b-tooltip.hover
             title="NAS rewards in 7 days / avg. voted NAX x 365d / 7d"
             icon="question-circle"
           ></b-icon>
+          <span class="net-status">{{ mainnetText }}</span>
         </div>
         <div v-if="updatedPass" class="details">
           {{ $t("dashboardNasPriceUpdateTimePrefix") }}
@@ -110,7 +110,7 @@ export default {
       return this.summary && moment(this.summary.updatedTime).fromNow();
     },
     mainnetText() {
-      return !isMainnet(this.$route) && `Mainnet`;
+      return !isMainnet(this.$route) ? `Mainnet` : "";
     }
   }
 };

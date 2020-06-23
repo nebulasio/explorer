@@ -65,6 +65,7 @@ $nax-price-card-height: 520px;
       font-size: 20px;
       font-weight: 600;
       .net-status {
+        margin-left: 6px;
         font-size: 12px;
         font-weight: normal;
         color: #bcbec1;

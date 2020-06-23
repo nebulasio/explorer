@@ -4,6 +4,7 @@
       <div class="header">
         <div class="title">
           Nebulas Economy
+          <span class="net-status">{{ mainnetText }}</span>
         </div>
         <!-- <div class="details">
           <span @click="selectDate(d)" :key="i" v-for="(d, i) in [7, 15, 30]">
@@ -34,7 +35,7 @@ import api from "@/assets/api";
 import _ from "lodash";
 import moment from "moment";
 
-import { convert2NasNumber, convert2NaxNumber } from "@/utils/neb";
+import { convert2NasNumber, convert2NaxNumber, isMainnet } from "@/utils/neb";
 import { toBigNumString, toLocaleString } from "@/utils/number";
 
 export default {
@@ -314,6 +315,9 @@ export default {
         }
       };
       return options;
+    },
+    mainnetText() {
+      return !isMainnet(this.$route) ? `Mainnet` : "";
     }
   }
 };

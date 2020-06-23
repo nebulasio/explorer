@@ -4,7 +4,8 @@
       <div class="header">
         <div class="title">
           <img class="logo" src="/static/img/nax-logo.png" />
-          NAX Price
+          <span>NAX Price</span>
+          <span class="net-status">{{ mainnetText }}</span>
         </div>
         <div class="details">
           {{ $t("dashboardNasPriceUpdateTimePrefix") }}
@@ -89,7 +90,7 @@
 
 <script>
 import moment from "moment";
-import { convert2NaxStr, convert2NasStr } from "@/utils/neb";
+import { convert2NaxStr, convert2NasStr, isMainnet } from "@/utils/neb";
 import { toLocaleString } from "@/utils/number";
 
 export default {
@@ -127,6 +128,9 @@ export default {
     },
     totalStaking() {
       return convert2NasStr(this.market.totalStaking, "");
+    },
+    mainnetText() {
+      return !isMainnet(this.$route) ? `Mainnet` : "";
     }
   }
 };

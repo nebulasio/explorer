@@ -4,6 +4,7 @@
       <div class="header">
         <div class="title">
           Top 21 Nodes
+          <span class="net-status">{{ mainnetText }}</span>
         </div>
         <div v-if="data" class="details">
           <span>Current Polling Cycle: {{ currentPeriod }}</span>
@@ -32,7 +33,8 @@ import {
   convert2NasNumber,
   convert2NaxNumber,
   convert2NasStr,
-  convert2NaxStr
+  convert2NaxStr,
+  isMainnet
 } from "@/utils/neb";
 
 import { toBigNumString, toLocaleString } from "@/utils/number";
@@ -267,6 +269,9 @@ export default {
       };
 
       return option;
+    },
+    mainnetText() {
+      return !isMainnet(this.$route) ? `Mainnet` : "";
     }
   }
 };
