@@ -205,9 +205,9 @@ $nax-price-card-height: 520px;
 //   height: 160px;
 // }
 
-// .vue-dashboard .row3 .flex-item {
-//   height: 110px;
-// }
+.vue-dashboard .row3 .flex-item {
+  height: 110px;
+}
 
 // .vue-dashboard .row4 .flex-item {
 //   height: 330px;
@@ -513,39 +513,39 @@ $nax-price-card-height: 520px;
   display: block;
 }
 
-// .vue-dashboard .row3 .flex-item {
-//   position: relative;
-// }
+.vue-dashboard .row3 .flex-item {
+  position: relative;
+}
 
-// .vue-dashboard .row3 .flex-item .item-bg div:nth-child(1) {
-//   position: absolute;
-//   margin-top: 23px;
-//   margin-left: 30px;
-//   font-size: 28px;
-//   font-weight: 600;
-// }
+.vue-dashboard .row3 .flex-item .item-bg div:nth-child(1) {
+  position: absolute;
+  margin-top: 23px;
+  margin-left: 30px;
+  font-size: 28px;
+  font-weight: 600;
+}
 
-// .vue-dashboard .row3 .link-style {
-//   position: absolute;
-//   margin-top: 65px;
-//   margin-left: 30px;
-//   color: #7f7f7f;
-//   font-size: 12px;
-// }
+.vue-dashboard .row3 .link-style {
+  position: absolute;
+  margin-top: 65px;
+  margin-left: 30px;
+  color: #7f7f7f;
+  font-size: 12px;
+}
 
-// .vue-dashboard .row3 img {
-//   position: absolute;
-//   top: 35px;
-//   right: 33px;
-// }
+.vue-dashboard .row3 img {
+  position: absolute;
+  top: 35px;
+  right: 33px;
+}
 
-// .vue-dashboard .row3 .flex-item:hover .link {
-//   color: rgba(0, 87, 255, 1);
-// }
+.vue-dashboard .row3 .flex-item:hover .link {
+  color: rgba(0, 87, 255, 1);
+}
 
-// .vue-dashboard .row4 .item-bg {
-//   position: relative;
-// }
+.vue-dashboard .row4 .item-bg {
+  position: relative;
+}
 
 .vue-dashboard .user-pie {
   display: block;
@@ -862,7 +862,7 @@ $nax-price-card-height: 520px;
   <div class="vue-dashboard">
     <div class="bg-black black-header"></div>
     <div class="container">
-      <!-- row 1: nas data -->
+      <!-- row 1: net, node data -->
       <div class="row row1">
         <DailyTxChart />
 
@@ -870,7 +870,7 @@ $nax-price-card-height: 520px;
         <NodeStaticCard />
       </div>
 
-      <!-- row 2: nax data -->
+      <!-- row 2: price market -->
       <div class="row row1">
         <!-- nas price -->
         <NasMarketCard />
@@ -879,11 +879,12 @@ $nax-price-card-height: 520px;
         <NaxMarketCard />
       </div>
 
+      <!-- row 4: neb eco -->
       <div class="row row1">
         <NebEcoChart />
       </div>
 
-      <!-- row 3: node data -->
+      <!-- row 4: node data -->
       <div class="row row1">
         <TopNodesChart />
 
@@ -891,13 +892,74 @@ $nax-price-card-height: 520px;
         <DStakingChart />
       </div>
 
+      <!-- statics -->
+      <div class="row row3">
+        <div class="col-lg-3 col-md-6 col-12 flex-item w285">
+          <div class="item-bg item-shadow">
+            <div v-if="staticInfo">{{ blockheight }}</div>
+            <router-link
+              v-if="staticInfo"
+              class="link link-style"
+              :to="linkUrl('/blocks')"
+            >
+              {{ $t("dashboardBlocksHeightTitle") }}
+            </router-link>
+            <img src=/static/img/dashboard-1.png width=44 alt="">
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12 flex-item w285">
+          <div class="item-bg item-shadow">
+            <div v-if="staticInfo">{{ numberAddComma(staticInfo.txnCnt) }}</div>
+            <router-link
+              v-if="staticInfo"
+              class="link link-style"
+              :to="linkUrl('/txs')"
+            >
+              {{ $t("dashboardTotalTransactions") }}
+            </router-link>
+            <img src=/static/img/dashboard-2.png width=44 alt="">
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12 flex-item w285">
+          <div class="item-bg item-shadow">
+            <div v-if="staticInfo">
+              {{ numberAddComma(staticInfo.totalContractCount) }}
+            </div>
+            <router-link
+              v-if="staticInfo"
+              class="link link-style"
+              :to="linkUrl('/contracts')"
+            >
+              {{ $t("dashboardTotalSmartContracts") }}
+            </router-link>
+            <img src=/static/img/dashboard-3.png width=44 alt="">
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12 flex-item w285">
+          <div class="item-bg item-shadow">
+            <div v-if="staticInfo">
+              {{ numberAddComma(staticInfo.totalAddressCount) }}
+            </div>
+            <router-link
+              v-if="staticInfo"
+              class="link link-style"
+              :to="linkUrl('/accounts')"
+            >
+              {{ $t("dashboardTotalAddresses") }}
+            </router-link>
+            <img src=/static/img/dashboard-4.png width=44 alt="">
+          </div>
+        </div>
+      </div>
+
+      <!-- blocks, txs -->
       <div class="row row5">
         <div class="flex-item col-12 col-lg-6 row5-item">
           <div class="item-bg item-shadow">
             <div class="item-title">
               {{ $t("dashboardBlocksIndicatorTitle") }}
             </div>
-            <router-link :to="fragApi + '/blocks/'" class="showall">
+            <router-link :to="linkUrl('/blocks')" class="showall">
               {{ $t("dashboardIndicatorViewAll") }}
             </router-link>
             <transition-group
@@ -921,7 +983,7 @@ $nax-price-card-height: 520px;
                 <td>
                   {{ $t("dashboardBlockNumber") }}
                   <router-link
-                    :to="fragApi + '/block/' + block.height"
+                    :to="linkUrl(`/block/${block.height}`)"
                     class="monospace"
                     >{{ block.height }}</router-link
                   >
@@ -929,20 +991,20 @@ $nax-price-card-height: 520px;
                   <span class="txcnt monospace">
                     <router-link
                       v-if="block.txnCnt == 0"
-                      :to="fragApi + '/txs?block=' + block.height"
+                      :to="linkUrl(`/txs?block=${block.height}`)"
                     >
                       {{ $t("dashboardBlocksNoTransaction") }}
                     </router-link>
                     <router-link
                       v-if="block.txnCnt == 1"
-                      :to="fragApi + '/txs?block=' + block.height"
+                      :to="linkUrl(`/txs?block=${block.height}`)"
                       >{{ block.txnCnt }}
 
                       {{ $t("dashboardBlocksOneTransaction") }}
                     </router-link>
                     <router-link
                       v-if="block.txnCnt > 1"
-                      :to="fragApi + '/txs?block=' + block.height"
+                      :to="linkUrl(`/txs?block=${block.height}`)"
                       >{{ block.txnCnt }}
 
                       {{ $t("dashboardBlocksSeveralTransactions") }}
@@ -967,7 +1029,7 @@ $nax-price-card-height: 520px;
             <div class="item-title">
               {{ $t("dashboardTransactionsTitle") }}
             </div>
-            <router-link :to="fragApi + '/txs/'" class="showall">
+            <router-link :to="linkUrl('/txs')" class="showall">
               {{ $t("dashboardIndicatorViewAll") }}
             </router-link>
             <transition-group
@@ -987,7 +1049,7 @@ $nax-price-card-height: 520px;
                 <td>
                   {{ $t("dashboardTransactionNumber") }}
 
-                  <router-link :to="fragApi + '/tx/' + tx.hash">
+                  <router-link :to="linkUrl(`/tx/${tx.hash}`)">
                     <span class="monospace">{{ tx.hash.slice(0, 4) }}</span
                     >...<span class="monospace">{{ tx.hash.slice(-4) }}</span>
                   </router-link>
@@ -995,7 +1057,7 @@ $nax-price-card-height: 520px;
                   <span class="fromto d-none d-sm-inline">
                     {{ $t("dashboardTransactionFromText") }}
 
-                    <router-link :to="fragApi + '/address/' + tx.from.hash">
+                    <router-link :to="linkUrl(`/address/${tx.from.hash}`)">
                       <span class="monospace">{{
                         tx.from.hash.slice(0, 4)
                       }}</span
@@ -1007,7 +1069,7 @@ $nax-price-card-height: 520px;
                   <span class="fromto d-none d-sm-inline">
                     {{ $t("dashboardTransactionToText") }}
 
-                    <router-link :to="fragApi + '/address/' + tx.from.hash">
+                    <router-link :to="linkUrl(`/address/${tx.from.hash}`)">
                       <span class="monospace">{{ tx.to.hash.slice(0, 4) }}</span
                       >...<span class="monospace">{{
                         tx.to.hash.slice(-4)
@@ -1057,6 +1119,8 @@ import NasMarketCard from "@/components/NasMarketCard";
 import NodeStaticCard from "@/components/NodeStaticCard";
 import NebEcoChart from "@/components/NebEcoChart";
 
+import { baseUrl } from "@/utils/neb";
+
 module.exports = {
   components: {
     DailyTxChart,
@@ -1070,7 +1134,6 @@ module.exports = {
   },
   data() {
     return {
-      fragApi: this.$route.params.api ? "/" + this.$route.params.api : "",
       todayTxCnt: -1,
       dailyTxData: null,
       market: null,
@@ -1169,8 +1232,12 @@ module.exports = {
         }
       }
       return n;
+    },
+    linkUrl(url) {
+      return baseUrl(this.$route, url);
     }
   },
+  // vue comp life cycle
   updated() {
     if (window.isIE()) {
       $("#svg-line").css("stroke-dasharray", "none");
