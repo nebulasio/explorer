@@ -36,7 +36,10 @@
             </div>
           </div>
           <div class="col-6">
-            <label>Estimated Supply (based on dStaking)</label>
+            <label
+              >Estimated Supply <br />
+              (based on current dStaking rate)</label
+            >
             <div>
               {{ totalSupply }}
 
