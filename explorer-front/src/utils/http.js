@@ -5,11 +5,11 @@ import axios from "axios";
 import QS from "qs";
 
 // 环境的切换
-if (process.env.NODE_ENV == "development") {
-  axios.defaults.baseURL = "https://data.nebulas.io/";
-} else if (process.env.NODE_ENV == "production") {
-  axios.defaults.baseURL = "https://data.nebulas.io/";
-}
+// if (process.env.NODE_ENV == "development") {
+//   axios.defaults.baseURL = "https://data.nebulas.io/";
+// } else if (process.env.NODE_ENV == "production") {
+//   axios.defaults.baseURL = "https://data.nebulas.io/";
+// }
 
 // 请求超时时间
 axios.defaults.timeout = 10000;
@@ -103,9 +103,15 @@ axios.interceptors.response.use(
  * @param {Object} params [请求时携带的参数]
  */
 export function get(url, params) {
+  let baseURL = "https://data.nebulas.io/";
+  if (url.includes("api/")) {
+    let prefixIndex = sessionStorage.apiPrefix.indexOf("api/");
+    baseURL = sessionStorage.apiPrefix.substring(0, prefixIndex);
+  }
+
   return new Promise((resolve, reject) => {
     axios
-      .get(url, {
+      .get(baseURL + url, {
         params: params
       })
       .then(res => {
@@ -125,9 +131,11 @@ export function get(url, params) {
  * @param {Object} params [请求时携带的参数]
  */
 export function post(url, params) {
+  const baseURL = "https://data.nebulas.io/";
+
   return new Promise((resolve, reject) => {
     axios
-      .post(url, QS.stringify(params))
+      .post(baseURL + url, QS.stringify(params))
       .then(res => {
         // get data success
         if (res.data.code === 0) {
