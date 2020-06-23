@@ -1,6 +1,7 @@
 <style>
 .vue-contract {
   background-color: white;
+  padding-bottom: 2rem;
 }
 .vue-contract td.out {
   width: 50px;

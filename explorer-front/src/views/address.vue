@@ -22,6 +22,7 @@
 
 .vue-address {
   background-color: white;
+  padding-bottom: 2rem;
 }
 
 .vue-address .container .table th {

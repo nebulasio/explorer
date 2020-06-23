@@ -6,6 +6,7 @@
 }
 .vue-txs-nrc20 {
   background-color: white;
+  /* padding-bottom: 2rem; */
 }
 .vue-txs-nrc20 .tip a {
   color: rgb(76, 32, 133);

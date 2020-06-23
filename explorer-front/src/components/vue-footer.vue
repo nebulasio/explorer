@@ -11,6 +11,7 @@
 
   @include media(">desktop") {
     padding-top: 4rem;
+    padding-bottom: 2rem;
   }
 
   .logo {
@@ -116,7 +117,7 @@
 }
 </style>
 <template>
-  <footer class="vue-footer my-md-5 border-top">
+  <footer class="vue-footer border-top">
     <div class="container">
       <div class="row">
         <div class="col-12 col-lg">
