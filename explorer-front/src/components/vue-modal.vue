@@ -12,6 +12,7 @@
   top: 0;
   transition: opacity 0.3s ease;
   width: 100%;
+  z-index: 999;
 }
 
 .vue-modal .outer {
