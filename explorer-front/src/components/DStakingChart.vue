@@ -108,9 +108,10 @@ export default {
         let dstaking_day = convert2NasNumber(d.pledged_nas);
         let mint_day = convert2NaxNumber(d.distributed_nax);
         let estimate_day = convert2NaxNumber(d.estimate_nax);
-
-        let total_burned_day = convert2NaxNumber(d.total_destroyed_nax);
         let total_minted_day = convert2NaxNumber(d.total_distributed_nax);
+
+        let total_burned_day =
+          convert2NaxNumber(d.total_destroyed_nax) + total_minted_day;
         let voted_day = convert2NaxNumber(d.total_vote_nax);
 
         total_burned_data.push(total_burned_day);
@@ -190,7 +191,7 @@ export default {
           },
           data: legends
         },
-        color: ["#343B4B", "#3DCC85", "#0BB160"],
+        color: ["#343B4B", "#3DCC85", "#FF7733"],
         xAxis: {
           data: dates,
           axisLabel: {
