@@ -85,9 +85,9 @@
         <div class="row align-items-center">
           <div class="col-auto bread-title font-40 font-bold font-color-000000">
             {{ $t("transactionsTxPrefix") }}
-            <div v-if="$route.query.a || $route.query.block">
+            <span v-if="$route.query.a || $route.query.block">
               {{ $t("transactionsTxSuffix") }}
-            </div>
+            </span>
           </div>
           <div v-if="$route.query.block">
             <div

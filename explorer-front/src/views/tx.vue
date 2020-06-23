@@ -1,6 +1,7 @@
 <style lang="scss" scoped>
-div .vue-tx {
+.vue-tx {
   background-color: white;
+  padding-bottom: 2rem;
 }
 
 .vue-tx .table tbody tr td {

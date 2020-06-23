@@ -1,6 +1,8 @@
 <style lang="scss" scoped>
 .vue-header {
-  // height: 70px;
+  box-shadow: 0px 4px 10px 0px rgba(134, 141, 167, 0.2);
+  z-index: 10;
+
   .container {
     padding-top: 5px;
     padding-bottom: 5px;
