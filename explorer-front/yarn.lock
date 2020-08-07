@@ -6055,11 +6055,6 @@ in-publish@^2.0.0:
   resolved "https://registry.npm.taobao.org/in-publish/download/in-publish-2.0.0.tgz#e20ff5e3a2afc2690320b6dc552682a9c7fadf51"
   integrity sha1-4g/146KvwmkDILbcVSaCqcf631E=
 
-include-media@^1.4.9:
-  version "1.4.9"
-  resolved "https://registry.npm.taobao.org/include-media/download/include-media-1.4.9.tgz#d0020b7be3eb2d54868a20943595ce380e0bc43b"
-  integrity sha1-0AILe+PrLVSGiiCUNZXOOA4LxDs=
-
 indent-string@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/indent-string/download/indent-string-2.1.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Findent-string%2Fdownload%2Findent-string-2.1.0.tgz#8e2d48348742121b4a8218b7a137e9a52049dc80"
@@ -9088,10 +9083,10 @@ pretty-format@^23.0.1:
     ansi-regex "^3.0.0"
     ansi-styles "^3.2.0"
 
-prismjs@^1.16.0:
-  version "1.17.1"
-  resolved "https://registry.npm.taobao.org/prismjs/download/prismjs-1.17.1.tgz#e669fcbd4cdd873c35102881c33b14d0d68519be"
-  integrity sha1-5mn8vUzdhzw1ECiBwzsU0NaFGb4=
+prismjs@^1.21.0:
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.21.0.tgz#36c086ec36b45319ec4218ee164c110f9fc015a3"
+  integrity sha512-uGdSIu1nk3kej2iZsLyDoJ7e9bnPzIgY0naW/HdknGj61zScaprVEVGHrPoXqI+M9sP0NDnTK2jpkvmldpuqDw==
   optionalDependencies:
     clipboard "^2.0.0"
 
