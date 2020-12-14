@@ -35,4 +35,10 @@
         where `token_name`=#{tokenName,jdbcType=VARCHAR}
     </select>
 
+    <update id="updateTotal" parameterType="map">
+        update `neb_contract_token_dictionary`
+        set `total`=#{total}
+        where `contract`=#{contract}
+    </update>
+
 </mapper>

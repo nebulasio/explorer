@@ -111,6 +111,22 @@ public class NebApiServiceWrapper {
         }
     }
 
+    public CallContractResponse callContractTotalSupply(String address, String contract) {
+        if (StringUtils.isEmpty(address) || StringUtils.isEmpty(contract)) {
+            return null;
+        }
+        try {
+            CallContractRequest request = CallContractRequest.buildQueryTotalSupply(address, contract);
+            NebResponse<CallContractResponse> response = nebApiService
+                    .callContract(request)
+                    .toBlocking().first();
+            return response.getResult();
+        } catch (Exception e) {
+            log.info(e.getMessage(), e);
+            return null;
+        }
+    }
+
     public CallContractResponse callContractBalance(String address, String contract) {
         if (StringUtils.isEmpty(address) || StringUtils.isEmpty(contract)) {
             return null;

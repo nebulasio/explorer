@@ -1,14 +1,11 @@
 package io.nebulas.explorer.service.thirdpart.nebulas.bean;
 
 import com.alibaba.fastjson.JSON;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Collections;
 
 @Data
 @AllArgsConstructor
@@ -35,6 +32,19 @@ public class CallContractRequest {
     private String gasPrice;
     private String gasLimit;
     private ContractCallParameter contract;
+
+    public static CallContractRequest buildQueryTotalSupply(String address, String contract){
+        ContractCallParameter contractCallParameter = new ContractCallParameter("totalSupply", "");
+        CallContractRequest request = new CallContractRequest();
+        request.from = address;
+        request.to = contract;
+        request.value = "0";
+        request.nonce = 0L;
+        request.gasPrice = "1";
+        request.gasLimit = "1";
+        request.contract = contractCallParameter;
+        return request;
+    }
 
     public static CallContractRequest buildQueryBalanceRequest(String address, String contract){
         ContractCallParameter contractCallParameter = new ContractCallParameter("balanceOf", JSON.toJSONString(Collections.singletonList(address)));

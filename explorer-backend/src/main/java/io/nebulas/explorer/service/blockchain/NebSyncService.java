@@ -3,7 +3,18 @@ package io.nebulas.explorer.service.blockchain;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-
+import io.nebulas.explorer.domain.*;
+import io.nebulas.explorer.enums.NebAddressTypeEnum;
+import io.nebulas.explorer.enums.NebTransactionTypeEnum;
+import io.nebulas.explorer.grpc.GrpcChannelService;
+import io.nebulas.explorer.service.NatSyncService;
+import io.nebulas.explorer.service.NaxSyncService;
+import io.nebulas.explorer.service.TransactionEventsService;
+import io.nebulas.explorer.service.redis.RedisService;
+import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
+import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,25 +26,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import io.nebulas.explorer.domain.NebAddress;
-import io.nebulas.explorer.domain.NebBlock;
-import io.nebulas.explorer.domain.NebContractTokenBalance;
-import io.nebulas.explorer.domain.NebPendingTransaction;
-import io.nebulas.explorer.domain.NebTransaction;
-import io.nebulas.explorer.enums.NebAddressTypeEnum;
-import io.nebulas.explorer.enums.NebTransactionTypeEnum;
-import io.nebulas.explorer.grpc.GrpcChannelService;
-import io.nebulas.explorer.service.NatSyncService;
-import io.nebulas.explorer.service.NaxSyncService;
-import io.nebulas.explorer.service.TransactionEventsService;
-import io.nebulas.explorer.service.redis.RedisService;
-import io.nebulas.explorer.service.thirdpart.nebulas.NebApiServiceWrapper;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.Block;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.Event;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.GetEventsByHashResponse;
-import io.nebulas.explorer.service.thirdpart.nebulas.bean.Transaction;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Desc:
@@ -180,6 +172,7 @@ public class NebSyncService {
 
             syncAddress(realReceiver, NebAddressTypeEnum.NORMAL);
             processContractBalanceInfo(tx, data);
+            processTokenContractSupply(tx, data);
 
             //如果是支持的nrc20代币，则正常处理其transfer
 //            NebContractToken nebContractToken = contractTokenService.getByContract(tx.getTo());
@@ -247,6 +240,7 @@ public class NebSyncService {
                     String realReceiver = extractReceiverAddress(data);
                     syncAddress(realReceiver, NebAddressTypeEnum.NORMAL);
                     processContractBalanceInfo(txSource, data);
+                    processTokenContractSupply(txSource, data);
 
                     //如果是支持的nrc20代币，则正常处理其transfer
 //                    NebContractToken nebContractToken = contractTokenService.getByContract(txSource.getTo());
@@ -407,9 +401,29 @@ public class NebSyncService {
         });
     }
 
+    private void processTokenContractSupply(Transaction tx, JSONObject data) {
+        if (!isContractMint(data)) {
+            return;
+        }
+        log.error("开始处理合约总金额: " + data.toJSONString());
+
+        SINGLE_EXECUTOR.execute(() -> {
+            try {
+                contractTokenService.updateTotalSupply(tx.getTo());
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+        });
+    }
+
     private boolean isContractTransfer(JSONObject data) {
         String func = data.getString("Function");
         return "transfer".equals(func);
+    }
+
+    private boolean isContractMint(JSONObject data) {
+        String func = data.getString("Function");
+        return "mint".equals(func) || "distribute".equals(func);
     }
 
     private JSONObject decodeData(String data) {
