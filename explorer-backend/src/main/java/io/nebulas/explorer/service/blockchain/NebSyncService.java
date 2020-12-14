@@ -409,7 +409,10 @@ public class NebSyncService {
 
         SINGLE_EXECUTOR.execute(() -> {
             try {
-                contractTokenService.updateTotalSupply(tx.getTo());
+                List<NebContractToken> lists = contractTokenService.getAllContractTokens();
+                for (NebContractToken token : lists) {
+                    contractTokenService.updateTotalSupply(token.getContract());
+                }
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
