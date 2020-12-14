@@ -423,7 +423,7 @@ public class NebSyncService {
 
     private boolean isContractMint(JSONObject data) {
         String func = data.getString("Function");
-        return "mint".equals(func) || "distribute".equals(func);
+        return "mint".equals(func) || "distribute".equals(func)  || "burnStake".equals(func) || "refund".equals(func);
     }
 
     private JSONObject decodeData(String data) {
