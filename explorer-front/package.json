@@ -10,7 +10,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bignumber.js": "7.2.1",
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.15.0",
