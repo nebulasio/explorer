@@ -21,7 +21,7 @@
     "js-beautify": "^1.7.5",
     "lodash": "^4.17.15",
     "mathjs": "^7.0.1",
-    "moment": "^2.23.0",
+    "moment": "^2.29.4",
     "nebulas": "^0.5.6",
     "numeral": "^2.0.6",
     "popper.js": "^1.14.3",
