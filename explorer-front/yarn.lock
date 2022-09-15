@@ -2647,10 +2647,15 @@ bootstrap-vue@^2.15.0:
     portal-vue "^2.1.7"
     vue-functional-data-merge "^3.1.0"
 
-"bootstrap@>=4.5.0 <5.0.0", bootstrap@^4.5.0:
+"bootstrap@>=4.5.0 <5.0.0":
   version "4.5.0"
   resolved "https://registry.npm.taobao.org/bootstrap/download/bootstrap-4.5.0.tgz#97d9dbcb5a8972f8722c9962483543b907d9b9ec"
   integrity sha1-l9nby1qJcvhyLJliSDVDuQfZuew=
+
+bootstrap@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.3.1.tgz#280ca8f610504d99d7b6b4bfc4b68cec601704ac"
+  integrity sha512-rXqOmH1VilAt2DyPzluTi2blhk17bO7ef+zLLPlWvG494pDxcM234pJ8wTc/6R40UWizAIIMgxjvxZg5kmsbag==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -6054,11 +6059,6 @@ in-publish@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/in-publish/download/in-publish-2.0.0.tgz#e20ff5e3a2afc2690320b6dc552682a9c7fadf51"
   integrity sha1-4g/146KvwmkDILbcVSaCqcf631E=
-
-include-media@^1.4.9:
-  version "1.4.9"
-  resolved "https://registry.npm.taobao.org/include-media/download/include-media-1.4.9.tgz#d0020b7be3eb2d54868a20943595ce380e0bc43b"
-  integrity sha1-0AILe+PrLVSGiiCUNZXOOA4LxDs=
 
 indent-string@^2.1.0:
   version "2.1.0"
