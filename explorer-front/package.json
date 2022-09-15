@@ -12,7 +12,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "bignumber.js": "7.2.1",
-    "bootstrap": "^4.5.0",
+    "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.15.0",
     "font-awesome": "^4.7.0",
     "highcharts": "^6.1.0",
