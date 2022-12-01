@@ -4006,9 +4006,9 @@ decimal.js@^10.2.0:
   integrity sha1-OUZhE6ngNhEdAvgkibX9awte0jE=
 
 decode-uri-component@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.npm.taobao.org/decode-uri-component/download/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
-  integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.2.tgz#e69dbe25d37941171dd540e024c444cd5188e1e9"
+  integrity sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==
 
 deep-equal@^1.0.1:
   version "1.1.0"
@@ -6054,11 +6054,6 @@ in-publish@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/in-publish/download/in-publish-2.0.0.tgz#e20ff5e3a2afc2690320b6dc552682a9c7fadf51"
   integrity sha1-4g/146KvwmkDILbcVSaCqcf631E=
-
-include-media@^1.4.9:
-  version "1.4.9"
-  resolved "https://registry.npm.taobao.org/include-media/download/include-media-1.4.9.tgz#d0020b7be3eb2d54868a20943595ce380e0bc43b"
-  integrity sha1-0AILe+PrLVSGiiCUNZXOOA4LxDs=
 
 indent-string@^2.1.0:
   version "2.1.0"
