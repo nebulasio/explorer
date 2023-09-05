@@ -1011,14 +1011,14 @@ public class RpcController {
         if (ninetyDayAccount != null) {
             newAddressCount = nasAccount.getAddressCount() - ninetyDayAccount.getAddressCount();
         }
+        long oldAddressCount = nasAccount.getAddressCount() - newAddressCount;
         result.put("totalAddressCount", totalAddressCount);
         result.put("totalContractCount", totalContractCount);
         result.put("txnCnt", totalTxnCnt);
         result.put("newAddressCount", newAddressCount);
-        result.put("oldAddressCount", ninetyDayAccount.getAddressCount());
+        result.put("oldAddressCount", oldAddressCount);
 
         List<NasAccount> nasAccountList = nasAccountService.getEightWeeks();
-
         result.put("addressWeekList", nasAccountList);
         return result;
     }
